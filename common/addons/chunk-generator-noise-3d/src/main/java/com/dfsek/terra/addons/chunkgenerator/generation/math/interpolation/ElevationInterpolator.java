@@ -7,9 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.GenerationSettings;
+import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -20,12 +18,12 @@ public class ElevationInterpolator {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
-        GenerationSettings[][] gens = new GenerationSettings[18 + 2 * smooth][18 + 2 * smooth];
+        BiomeNoiseProperties[][] gens = new BiomeNoiseProperties[18 + 2 * smooth][18 + 2 * smooth];
         
         // Precompute generators.
         for(int x = -1 - smooth; x <= 16 + smooth; x++) {
             for(int z = -1 - smooth; z <= 16 + smooth; z++) {
-                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getGenerator();
+                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getContext().get(BiomeNoiseProperties.class);
             }
         }
         
@@ -35,9 +33,9 @@ public class ElevationInterpolator {
                 double div = 0;
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
-                        GenerationSettings gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
-                        noise += gen.getElevationSampler().noise(seed, xOrigin + x, zOrigin + z) * gen.getElevationWeight();
-                        div += gen.getElevationWeight();
+                        BiomeNoiseProperties gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
+                        noise += gen.elevation().noise(seed, xOrigin + x, zOrigin + z) * gen.elevationWeight();
+                        div += gen.elevationWeight();
                     }
                 }
                 values[x + 1][z + 1] = noise / div;

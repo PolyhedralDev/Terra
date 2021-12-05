@@ -9,26 +9,26 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import java.util.Map;
 
+import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.world.biome.GenerationSettings;
 
 
 public interface ChunkInterpolator {
-    default double computeNoise(Map<GenerationSettings, MutableInteger> gens, double x, double y, double z) {
+    default double computeNoise(Map<BiomeNoiseProperties, MutableInteger> gens, double x, double y, double z) {
         double n = 0;
         double div = 0;
-        for(Map.Entry<GenerationSettings, MutableInteger> entry : gens.entrySet()) {
-            GenerationSettings gen = entry.getKey();
+        for(Map.Entry<BiomeNoiseProperties, MutableInteger> entry : gens.entrySet()) {
+            BiomeNoiseProperties gen = entry.getKey();
             int weight = entry.getValue().get();
             double noise = computeNoise(gen, x, y, z);
             
             n += noise * weight;
-            div += gen.getWeight() * weight;
+            div += gen.blendWeight() * weight;
         }
         return n / div;
     }
     
-    double computeNoise(GenerationSettings generationSettings, double x, double y, double z);
+    double computeNoise(BiomeNoiseProperties generationSettings, double x, double y, double z);
     
     /**
      * Gets the noise at a pair of internal chunk coordinates.

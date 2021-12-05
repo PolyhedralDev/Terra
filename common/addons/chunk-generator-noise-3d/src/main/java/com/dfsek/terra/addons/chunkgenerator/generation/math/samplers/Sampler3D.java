@@ -20,9 +20,7 @@ public class Sampler3D implements Sampler {
     private final ElevationInterpolator elevationInterpolator;
     
     public Sampler3D(int x, int z, long seed, int minHeight, int maxHeight, BiomeProvider provider, int elevationSmooth) {
-        this.interpolator = new ChunkInterpolator3D(seed, x, z, provider, (generator, coord) -> generator.getBaseSampler()
-                                                                                                          .noise(coord,
-                                                                                                                          seed),
+        this.interpolator = new ChunkInterpolator3D(seed, x, z, provider,
                                                     minHeight, maxHeight);
         this.elevationInterpolator = new ElevationInterpolator(seed, x, z, provider, elevationSmooth);
     }

@@ -8,15 +8,13 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dfsek.terra.addons.chunkgenerator.PaletteUtil;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProviderImpl;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.api.Platform;
@@ -26,7 +24,7 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
-import com.dfsek.terra.api.world.biome.GenerationSettings;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
@@ -75,16 +73,14 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
     
-                    GenerationSettings generationSettings = biome.getGenerator();
-    
                     int sea = paletteInfo.getSeaLevel();
                     Palette seaPalette = paletteInfo.getOcean();
     
                     BlockState data;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
-                            data = PaletteUtil.getPalette(x, y, z, generationSettings, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
-                                                                                                                 seed);
+                            data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
+                                                                                             seed);
                             chunk.setBlock(x, y, z, data);
     
                             paletteLevel++;
@@ -112,7 +108,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         Sampler sampler = samplerCache.get(x, z, world);
         
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-        Palette palette = PaletteUtil.getPalette(x, y, z, biome.getGenerator(), sampler, paletteInfo);
+        Palette palette = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo);
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
         double noise = sampler.sample(fdX, y, fdZ);

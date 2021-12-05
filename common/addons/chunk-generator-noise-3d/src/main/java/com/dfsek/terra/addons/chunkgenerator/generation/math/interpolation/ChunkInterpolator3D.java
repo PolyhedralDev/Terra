@@ -11,11 +11,9 @@ import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 
+import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.biome.GenerationSettings;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -25,24 +23,24 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
  */
 public class ChunkInterpolator3D implements ChunkInterpolator {
     private final Interpolator3[][][] interpGrid;
-    private final BiFunction<GenerationSettings, Vector3, Double> noiseGetter;
+    private final long seed;
     
     private final int min;
     private final int max;
     
     /**
      * Instantiates a 3D ChunkInterpolator3D at a pair of chunk coordinates.
-     *  @param chunkX   X coordinate of the chunk.
+     *
+     * @param chunkX   X coordinate of the chunk.
      * @param chunkZ   Z coordinate of the chunk.
      * @param provider Biome Provider to use for biome fetching.
      * @param min
      * @param max
      */
-    public ChunkInterpolator3D(long seed, int chunkX, int chunkZ, BiomeProvider provider,
-                               BiFunction<GenerationSettings, Vector3, Double> noiseGetter, int min, int max) {
-        this.noiseGetter = noiseGetter;
+    public ChunkInterpolator3D(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max) {
         this.min = min;
         this.max = max;
+        this.seed = seed;
         
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
@@ -58,16 +56,19 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
         
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                GenerationSettings generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getGenerator();
-                Map<GenerationSettings, MutableInteger> genMap = new HashMap<>();
+                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed).getContext().get(
+                        BiomeNoiseProperties.class);
+                Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
                 
-                int step = generationSettings.getBlendStep();
-                int blend = generationSettings.getBlendDistance();
+                int step = generationSettings.blendStep();
+                int blend = generationSettings.blendDistance();
                 
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
                         genMap.computeIfAbsent(
-                                provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed).getGenerator(),
+                                provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed)
+                                        .getContext()
+                                        .get(BiomeNoiseProperties.class),
                                 g -> new MutableInteger(0)).increment(); // Increment by 1
                     }
                 }
@@ -99,8 +100,8 @@ public class ChunkInterpolator3D implements ChunkInterpolator {
         return FastMath.max(FastMath.min(value, high), 0);
     }
     
-    public double computeNoise(GenerationSettings generationSettings, double x, double y, double z) {
-        return noiseGetter.apply(generationSettings, new Vector3(x, y, z));
+    public double computeNoise(BiomeNoiseProperties generationSettings, double x, double y, double z) {
+        return generationSettings.base().noise(seed, x, y, z);
     }
     
     /**
