@@ -167,6 +167,9 @@ public class ConfigPackImpl implements ConfigPack {
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
         this.addons = addonsTemplate.getAddons();
+    
+        Map<String, Configuration> configurations = discoverConfigurations();
+        registerMeta(configurations);
         
         platform.getEventManager().callEvent(
                 new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, packManifest)));
@@ -176,14 +179,6 @@ public class ConfigPackImpl implements ConfigPack {
         logger.info("Loading config pack \"{}\"", template.getID());
         
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
-        
-        Map<String, Configuration> configurations = new HashMap<>();
-        
-        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader,
-                                                                             (s, c) -> configurations.put(s.replace("\\", "/"),
-                                                                                                          c))); // Create all the configs.
-        
-        registerMeta(configurations);
         
         Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
         
@@ -222,6 +217,14 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.load(packPostTemplate, packManifest);
         seededBiomeProvider = packPostTemplate.getProviderBuilder();
         checkDeadEntries();
+    }
+    
+    private Map<String, Configuration> discoverConfigurations() {
+        Map<String, Configuration> configurations = new HashMap<>();
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader,
+                                                                             (s, c) -> configurations.put(s.replace("\\", "/"),
+                                                                                                          c))); // Create all the configs.
+        return configurations;
     }
     
     private void registerMeta(Map<String, Configuration> configurations) {
