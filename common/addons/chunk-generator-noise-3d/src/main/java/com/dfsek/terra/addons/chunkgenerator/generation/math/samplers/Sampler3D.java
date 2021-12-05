@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.Eleva
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-public class Sampler3D implements Sampler {
+public class Sampler3D {
     private final ChunkInterpolator3D interpolator;
     private final ElevationInterpolator elevationInterpolator;
     
@@ -24,12 +24,10 @@ public class Sampler3D implements Sampler {
         this.elevationInterpolator = new ElevationInterpolator(seed, x, z, provider, elevationSmooth);
     }
     
-    @Override
     public double sample(double x, double y, double z) {
         return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
     }
     
-    @Override
     public double sample(int x, int y, int z) {
         return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
     }

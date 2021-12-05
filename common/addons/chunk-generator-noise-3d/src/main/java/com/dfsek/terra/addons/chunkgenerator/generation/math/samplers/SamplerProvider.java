@@ -32,7 +32,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class SamplerProvider {
-    private final LoadingCache<Pair<Long, World>, Sampler> cache;
+    private final LoadingCache<Pair<Long, World>, Sampler3D> cache;
     
     
     
@@ -40,7 +40,7 @@ public class SamplerProvider {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override
-                                public Sampler load(@NotNull Pair<Long, World> pair) {
+                                public Sampler3D load(@NotNull Pair<Long, World> pair) {
                                     long key = pair.getLeft();
                                     int cx = (int) (key >> 32);
                                     int cz = (int) key;
@@ -50,13 +50,13 @@ public class SamplerProvider {
                             });
     }
     
-    public Sampler get(int x, int z, World world) {
+    public Sampler3D get(int x, int z, World world) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
         return getChunk(cx, cz, world);
     }
     
-    public Sampler getChunk(int cx, int cz, World world) {
+    public Sampler3D getChunk(int cx, int cz, World world) {
         long key = MathUtil.squash(cx, cz);
         return cache.getUnchecked(Pair.of(key, world));
     }

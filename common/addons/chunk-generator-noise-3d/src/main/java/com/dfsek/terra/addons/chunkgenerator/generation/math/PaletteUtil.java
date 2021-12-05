@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
@@ -19,7 +19,7 @@ public final class PaletteUtil {
      */
     private static final double DERIVATIVE_DIST = 0.55;
     
-    public static Palette getPalette(int x, int y, int z, Sampler sampler, PaletteInfo paletteInfo) {
+    public static Palette getPalette(int x, int y, int z, Sampler3D sampler, PaletteInfo paletteInfo) {
         SlantHolder slant = paletteInfo.getSlantHolder();
         if(slant != null) {
             double slope = derivative(sampler, x, y, z);
@@ -31,7 +31,7 @@ public final class PaletteUtil {
         return paletteInfo.getPaletteHolder().getPalette(y);
     }
     
-    public static double derivative(Sampler sampler, double x, double y, double z) {
+    public static double derivative(Sampler3D sampler, double x, double y, double z) {
         double baseSample = sampler.sample(x, y, z);
         
         double xVal1 = (sampler.sample(x + DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
