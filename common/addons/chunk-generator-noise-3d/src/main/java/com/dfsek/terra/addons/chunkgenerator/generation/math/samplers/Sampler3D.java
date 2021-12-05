@@ -9,18 +9,18 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
 import net.jafama.FastMath;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ElevationInterpolator;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class Sampler3D {
-    private final ChunkInterpolator3D interpolator;
+    private final ChunkInterpolator interpolator;
     private final ElevationInterpolator elevationInterpolator;
     
     public Sampler3D(int x, int z, long seed, int minHeight, int maxHeight, BiomeProvider provider, int elevationSmooth) {
-        this.interpolator = new ChunkInterpolator3D(seed, x, z, provider,
-                                                    minHeight, maxHeight);
+        this.interpolator = new ChunkInterpolator(seed, x, z, provider,
+                                                  minHeight, maxHeight);
         this.elevationInterpolator = new ElevationInterpolator(seed, x, z, provider, elevationSmooth);
     }
     
