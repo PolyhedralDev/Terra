@@ -19,7 +19,7 @@ public interface EventManager {
      *
      * @param event Event to pass to all registered EventListeners.
      */
-    void callEvent(Event event);
+    <T extends Event> T callEvent(T event);
     
     <T extends EventHandler> void registerHandler(Class<T> clazz, T handler);
     

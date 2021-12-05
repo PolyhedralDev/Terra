@@ -34,8 +34,9 @@ public class EventManagerImpl implements EventManager {
     }
     
     @Override
-    public void callEvent(Event event) {
+    public <T extends Event> T callEvent(T event) {
         handlers.values().forEach(handler -> handler.handle(event));
+        return event;
     }
     
     @Override
