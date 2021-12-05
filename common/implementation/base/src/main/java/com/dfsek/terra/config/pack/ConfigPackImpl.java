@@ -396,11 +396,6 @@ public class ConfigPackImpl implements ConfigPack {
                 .forEach((id, value) -> logger.debug("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    private void load(long start, Platform platform) throws ConfigException {
-    
-    }
-    
     protected Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
         return registryMap;
     }
