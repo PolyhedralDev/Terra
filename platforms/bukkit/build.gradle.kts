@@ -11,7 +11,8 @@ val mcVersion = "1.17.1"
 val testDir = "target/server"
 val testMem = "3G"
 
-val paperURL = "https://kennytv.eu/Paperclip-1.18-rc3-R0.1-EXPERIMENTAL-2.jar"
+val paperBuild = 47
+val paperURL = "https://papermc.io/api/v2/projects/paper/versions/1.18/builds/47/downloads/paper-1.18-$paperBuild.jar"
 val purpurURL = "https://api.pl3x.net/v2/purpur/%version%/latest/download"
 
 dependencies {
