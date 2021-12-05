@@ -9,21 +9,38 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public final class PaletteUtil {
+    /**
+     * Derivative constant.
+     */
+    private static final double DERIVATIVE_DIST = 0.55;
+    
     public static Palette getPalette(int x, int y, int z, Sampler sampler, PaletteInfo paletteInfo) {
         SlantHolder slant = paletteInfo.getSlantHolder();
         if(slant != null) {
-            double slope = MathUtil.derivative(sampler, x, y, z);
+            double slope = derivative(sampler, x, y, z);
             if(slope > slant.getMinSlope()) {
                 return slant.getPalette(slope).getPalette(y);
             }
         }
         
         return paletteInfo.getPaletteHolder().getPalette(y);
+    }
+    
+    public static double derivative(Sampler sampler, double x, double y, double z) {
+        double baseSample = sampler.sample(x, y, z);
+        
+        double xVal1 = (sampler.sample(x + DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
+        double xVal2 = (sampler.sample(x - DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
+        double zVal1 = (sampler.sample(x, y, z + DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
+        double zVal2 = (sampler.sample(x, y, z - DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
+        double yVal1 = (sampler.sample(x, y + DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
+        double yVal2 = (sampler.sample(x, y - DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
+        
+        return Math.sqrt(((xVal2 - xVal1) * (xVal2 - xVal1)) + ((zVal2 - zVal1) * (zVal2 - zVal1)) + ((yVal2 - yVal1) * (yVal2 - yVal1)));
     }
 }
