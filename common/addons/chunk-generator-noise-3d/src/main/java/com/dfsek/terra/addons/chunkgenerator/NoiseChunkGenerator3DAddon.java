@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator;
 
+import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.NoiseChunkGeneratorPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
@@ -46,7 +47,6 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                     event.getPack()
                          .applyLoader(SlantHolder.class, new SlantHolderLoader())
                          .applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-            
                 })
                 .failThrough();
         
@@ -56,6 +56,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                 .then(event -> {
                     if(event.is(Biome.class)) {
                         event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
+                        event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeNoiseConfigTemplate()).get());
                     }
                 })
                 .failThrough();
