@@ -37,7 +37,7 @@ public class YamlAddon implements AddonInitializer {
                 .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
                     LOGGER.debug("Discovered config {}", entry.getKey());
                     event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
-                })))
+                })).close())
                 .failThrough();
     }
 }
