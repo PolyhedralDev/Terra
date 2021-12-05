@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
 
+import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +72,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     int cz = zOrig + z;
     
                     Biome biome = grid.getBiome(cx, cz, seed);
+                    BiomeNoiseProperties properties = biome.getContext().get(BiomeNoiseProperties.class);
     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
     
@@ -79,9 +82,11 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     BlockState data;
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
-                            data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
-                                                                                             seed);
-                            chunk.setBlock(x, y, z, data);
+                            if(properties.carving().noise(seed, cx, y, cz) < 0) {
+                                data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
+                                                                                                 seed);
+                                chunk.setBlock(x, y, z, data);
+                            }
     
                             paletteLevel++;
                         } else if(y <= sea) {
