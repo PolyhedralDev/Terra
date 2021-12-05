@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.chunkgenerator.generation.generators;
+package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
 import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseProperties;

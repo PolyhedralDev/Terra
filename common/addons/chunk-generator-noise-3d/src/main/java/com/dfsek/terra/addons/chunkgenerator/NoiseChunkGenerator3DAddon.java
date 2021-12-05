@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.chunkgenerator;
 
 import com.dfsek.terra.addons.chunkgenerator.config.BiomeNoiseConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.NoiseChunkGeneratorPackConfigTemplate;
-import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderLoader;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;

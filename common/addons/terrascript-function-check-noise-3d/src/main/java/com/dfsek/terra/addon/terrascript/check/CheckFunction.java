@@ -13,7 +13,7 @@ import net.jafama.FastMath;
 
 import java.util.Map;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.generators.NoiseChunkGenerator3D;
+import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
