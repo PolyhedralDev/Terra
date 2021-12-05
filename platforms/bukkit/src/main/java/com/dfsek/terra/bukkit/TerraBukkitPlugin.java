@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.bukkit;
 
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
@@ -59,8 +58,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
-        
-        new Metrics(this, 9017); // Set up bStats.
         
         PluginCommand cmd = Objects.requireNonNull(getCommand("terra"));
         
