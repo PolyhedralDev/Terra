@@ -30,6 +30,9 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.util.generic.Construct;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +111,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final Platform platform;
     private final Loader loader;
     
-    private final Configuration configuration;
+    private final Configuration packManifest;
     
     private final Map<BaseAddon, VersionRange> addons;
     
@@ -122,98 +125,128 @@ public class ConfigPackImpl implements ConfigPack {
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
-        try {
-            this.loader = new FolderLoader(folder.toPath());
-            this.platform = platform;
-            this.configTypeRegistry = createRegistry();
-            long l = System.nanoTime();
-            
-            register(abstractConfigLoader);
-            platform.register(abstractConfigLoader);
-            
-            register(selfLoader);
-            platform.register(selfLoader);
-            
-            File pack = new File(folder, "pack.yml");
-            
+        this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
             try {
-                this.configuration = new YamlConfiguration(new FileInputStream(pack), "pack.yml");
-                
-                ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
-                selfLoader.load(addonsTemplate, configuration);
-                this.addons = addonsTemplate.getAddons();
-                
-                platform.getEventManager().callEvent(
-                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
-                
-                selfLoader.load(template, configuration);
-                
-                logger.info("Loading config pack \"{}\"", template.getID());
-                load(l, platform);
-                
-                ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
-                selfLoader.load(packPostTemplate, configuration);
-                seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries();
+                return new YamlConfiguration(new FileInputStream(new File(folder, "pack.yml")), "pack.yml");
             } catch(FileNotFoundException e) {
-                throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath(), e);
+                throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath());
             }
-        } catch(Exception e) {
-            logger.error("Failed to load config pack from folder \"{}\"", folder.getAbsolutePath(), e);
-            throw e;
-        }
+        }), platform);
     }
     
     public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
-        try {
-            this.loader = new ZIPLoader(file);
-            this.platform = platform;
-            this.configTypeRegistry = createRegistry();
-            long l = System.nanoTime();
-            
-            register(selfLoader);
-            platform.register(selfLoader);
-            
-            register(abstractConfigLoader);
-            platform.register(abstractConfigLoader);
-            
+        this(new ZIPLoader(file), Construct.construct(() -> {
+            ZipEntry pack = null;
+            Enumeration<? extends ZipEntry> entries = file.entries();
+            while(entries.hasMoreElements()) {
+                ZipEntry entry = entries.nextElement();
+                if(entry.getName().equals("pack.yml")) pack = entry;
+            }
+    
+            if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
+    
             try {
-                ZipEntry pack = null;
-                Enumeration<? extends ZipEntry> entries = file.entries();
-                while(entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    if(entry.getName().equals("pack.yml")) pack = entry;
-                }
-                
-                if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
-                
-                this.configuration = new YamlConfiguration(file.getInputStream(pack), "pack.yml");
-                
-                ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
-                selfLoader.load(addonsTemplate, configuration);
-                this.addons = addonsTemplate.getAddons();
-                
-                platform.getEventManager().callEvent(
-                        new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, configuration)));
-                
-                
-                selfLoader.load(template, configuration);
-                logger.info("Loading config pack \"{}\"", template.getID());
-                
-                load(l, platform);
-                
-                ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
-                
-                selfLoader.load(packPostTemplate, configuration);
-                seededBiomeProvider = packPostTemplate.getProviderBuilder();
-                checkDeadEntries();
+                return new YamlConfiguration(file.getInputStream(pack), "pack.yml");
             } catch(IOException e) {
                 throw new LoadException("Unable to load pack.yml from ZIP file", e);
             }
-        } catch(Exception e) {
-            logger.error("Failed to load config pack from ZIP archive \"{}\"", file.getName());
-            throw e;
+        }), platform);
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private ConfigPackImpl(Loader loader, Configuration packManifest, Platform platform) {
+        long start = System.nanoTime();
+        
+        this.loader = loader;
+        this.platform = platform;
+        this.packManifest = packManifest;
+        this.configTypeRegistry = createRegistry();
+        
+        
+        register(selfLoader);
+        platform.register(selfLoader);
+    
+        register(abstractConfigLoader);
+        platform.register(abstractConfigLoader);
+        
+        ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
+        selfLoader.load(addonsTemplate, packManifest);
+        this.addons = addonsTemplate.getAddons();
+    
+        platform.getEventManager().callEvent(
+                new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, packManifest)));
+    
+        selfLoader.load(template, packManifest);
+    
+        logger.info("Loading config pack \"{}\"", template.getID());
+    
+        configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
+    
+        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
+            varScope.create(var.getKey(), var.getValue());
         }
+    
+        Map<String, Configuration> configurations = new HashMap<>();
+    
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, (s, c) -> configurations.put(s.replace("\\","/"), c))); // Create all the configs.
+    
+        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
+    
+        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
+    
+        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
+    
+        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
+    
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
+    
+        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
+    
+        for(Configuration configuration : configurations.values()) { // Sort the configs
+            if(configuration.contains("type")) { // Only sort configs with type key
+                ProtoConfig config = new ProtoConfig();
+                selfLoader.load(config, configuration);
+                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
+            }
+        }
+    
+        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
+            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
+            platform.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
+            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
+                    configs.getOrDefault(configType, Collections.emptyList()))) {
+                try {
+                    Object loaded = ((ConfigFactory) configType.getFactory()).build(
+                            selfLoader.load(configType.getTemplate(this, platform), config), platform);
+                    registry.register(config.getID(), loaded);
+                    platform.getEventManager().callEvent(
+                            new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
+                } catch(DuplicateEntryException e) {
+                    throw new LoadException("Duplicate registry entry: ", e);
+                }
+            }
+            platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
+        }
+    
+        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, this.packManifest)));
+        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
+                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+        
+    
+        ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
+        selfLoader.load(packPostTemplate, packManifest);
+        seededBiomeProvider = packPostTemplate.getProviderBuilder();
+        checkDeadEntries();
     }
     
     @Override
@@ -365,67 +398,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private void load(long start, Platform platform) throws ConfigException {
-        configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
-        
-        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
-            varScope.create(var.getKey(), var.getValue());
-        }
-        
-        Map<String, Configuration> configurations = new HashMap<>();
-        
-        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader, (s, c) -> configurations.put(s.replace("\\","/"), c))); // Create all the configs.
-        
-        MetaStringPreprocessor stringPreprocessor = new MetaStringPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, stringPreprocessor);
-        
-        MetaListLikePreprocessor listPreprocessor = new MetaListLikePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, listPreprocessor);
-        
-        MetaMapPreprocessor mapPreprocessor = new MetaMapPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, mapPreprocessor);
-        
-        MetaValuePreprocessor valuePreprocessor = new MetaValuePreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
-        
-        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
-        selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
-        
-        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
-        
-        for(Configuration configuration : configurations.values()) { // Sort the configs
-            if(configuration.contains("type")) { // Only sort configs with type key
-                ProtoConfig config = new ProtoConfig();
-                selfLoader.load(config, configuration);
-                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
-            }
-        }
-        
-        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
-            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
-            platform.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
-            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
-                    configs.getOrDefault(configType, Collections.emptyList()))) {
-                try {
-                    Object loaded = ((ConfigFactory) configType.getFactory()).build(
-                            selfLoader.load(configType.getTemplate(this, platform), config), platform);
-                    registry.register(config.getID(), loaded);
-                    platform.getEventManager().callEvent(
-                            new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
-                } catch(DuplicateEntryException e) {
-                    throw new LoadException("Duplicate registry entry: ", e);
-                }
-            }
-            platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
-        }
-        
-        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, configuration)));
-        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
-                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+    
     }
     
     protected Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
