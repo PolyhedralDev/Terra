@@ -17,7 +17,7 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 /**
  * Represents a custom biome
  */
-public interface TerraBiome extends PropertyHolder {
+public interface Biome extends PropertyHolder {
     
     /**
      * Gets the Vanilla biome to represent the custom biome.

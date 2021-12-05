@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.api;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface Stage {
@@ -15,5 +15,5 @@ public interface Stage {
     
     boolean isExpansion();
     
-    Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes);
+    Iterable<Biome> getBiomes(Iterable<Biome> biomes);
 }

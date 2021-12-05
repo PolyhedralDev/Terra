@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline.api;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface BiomeExpander {
-    TerraBiome getBetween(double x, double z, long seed, TerraBiome... others);
+    Biome getBetween(double x, double z, long seed, Biome... others);
 }

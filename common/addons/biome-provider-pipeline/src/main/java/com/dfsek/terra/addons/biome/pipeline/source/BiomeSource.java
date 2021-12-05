@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.biome.pipeline.source;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface BiomeSource {
-    TerraBiome getBiome(double x, double z, long seed);
+    Biome getBiome(double x, double z, long seed);
     
-    Iterable<TerraBiome> getBiomes();
+    Iterable<Biome> getBiomes();
 }

@@ -10,9 +10,7 @@ package com.dfsek.terra.addons.biome.pipeline.stages;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-import com.dfsek.terra.api.world.biome.TerraBiome;
-
-import java.util.Collections;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class ExpanderStage implements Stage {
@@ -33,7 +31,7 @@ public class ExpanderStage implements Stage {
     }
     
     @Override
-    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
+    public Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
         return biomes;
     }
 }

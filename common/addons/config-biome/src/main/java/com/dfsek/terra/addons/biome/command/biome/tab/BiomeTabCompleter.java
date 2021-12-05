@@ -15,7 +15,7 @@ import com.dfsek.terra.api.command.tab.TabCompleter;
 import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class BiomeTabCompleter implements TabCompleter {
@@ -25,7 +25,7 @@ public class BiomeTabCompleter implements TabCompleter {
     @Override
     public List<String> complete(CommandSender sender) {
         Player player = (Player) sender;
-        return player.world().getPack().getRegistry(TerraBiome.class).entries().stream().map(TerraBiome::getID).collect(
+        return player.world().getPack().getRegistry(Biome.class).entries().stream().map(Biome::getID).collect(
                 Collectors.toList());
     }
 }

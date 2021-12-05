@@ -10,10 +10,10 @@ package com.dfsek.terra.addons.biome;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
-public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
+public class BiomeFactory implements ConfigFactory<BiomeTemplate, Biome> {
     private final ConfigPack pack;
     
     public BiomeFactory(ConfigPack pack) {
@@ -21,7 +21,7 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public TerraBiome build(BiomeTemplate template, Platform platform) {
+    public Biome build(BiomeTemplate template, Platform platform) {
         UserDefinedGenerationSettings generator = new UserDefinedGenerationSettings(template.getNoiseEquation(),
                                                                                     template.getElevationEquation(),
                                                                                     template.getCarvingEquation(), template.getBiomeNoise(),

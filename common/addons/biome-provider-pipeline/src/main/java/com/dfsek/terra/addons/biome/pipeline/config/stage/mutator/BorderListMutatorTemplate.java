@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 @SuppressWarnings("unused")
@@ -29,10 +29,10 @@ public class BorderListMutatorTemplate extends StageTemplate {
     private @Meta String defaultReplace;
     
     @Value("default-to")
-    private @Meta ProbabilityCollection<@Meta TerraBiome> defaultTo;
+    private @Meta ProbabilityCollection<@Meta Biome> defaultTo;
     
     @Value("replace")
-    private @Meta Map<@Meta TerraBiome, @Meta ProbabilityCollection<@Meta TerraBiome>> replace;
+    private @Meta Map<@Meta Biome, @Meta ProbabilityCollection<@Meta Biome>> replace;
     
     
     @Override

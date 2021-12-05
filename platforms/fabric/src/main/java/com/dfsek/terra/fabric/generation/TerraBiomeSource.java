@@ -17,12 +17,13 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
@@ -30,7 +31,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;
@@ -55,11 +55,11 @@ public class TerraBiomeSource extends BiomeSource {
                                                                                                       .apply(instance, instance.stable(
                                                                                                               TerraBiomeSource::new)));
     
-    private final Registry<Biome> biomeRegistry;
+    private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private final long seed;
     private ConfigPack pack;
     
-    public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
+    public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream()
                     .filter(biome -> Objects.requireNonNull(biomes.getId(biome))
                                             .getNamespace()
@@ -85,8 +85,8 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        TerraBiome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
+    public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
+        Biome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
         return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
     }
     

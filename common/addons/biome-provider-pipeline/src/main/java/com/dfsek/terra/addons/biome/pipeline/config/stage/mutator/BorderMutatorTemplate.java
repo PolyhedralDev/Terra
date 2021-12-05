@@ -15,7 +15,7 @@ import com.dfsek.terra.addons.biome.pipeline.mutator.BorderMutator;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 @SuppressWarnings("unused")
@@ -27,7 +27,7 @@ public class BorderMutatorTemplate extends StageTemplate {
     private @Meta String replace;
     
     @Value("to")
-    private @Meta ProbabilityCollection<@Meta TerraBiome> to;
+    private @Meta ProbabilityCollection<@Meta Biome> to;
     
     @Override
     public Stage get() {

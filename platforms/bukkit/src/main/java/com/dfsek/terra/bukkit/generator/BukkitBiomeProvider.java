@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.generator;
 
-import org.bukkit.block.Biome;
+import com.dfsek.terra.api.world.biome.Biome;
+
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 
 
 public class BukkitBiomeProvider extends BiomeProvider implements Handle {
@@ -19,18 +19,18 @@ public class BukkitBiomeProvider extends BiomeProvider implements Handle {
     public BukkitBiomeProvider(com.dfsek.terra.api.world.biome.generation.BiomeProvider delegate) { this.delegate = delegate; }
     
     @Override
-    public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
-        TerraBiome terraBiome = delegate.getBiome(x, z, worldInfo.getSeed());
-        return (Biome) terraBiome.getVanillaBiomes().get(terraBiome.getGenerator().getBiomeNoise(), x, y, z).getHandle();
+    public @NotNull org.bukkit.block.Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
+        Biome biome = delegate.getBiome(x, z, worldInfo.getSeed());
+        return (org.bukkit.block.Biome) biome.getVanillaBiomes().get(biome.getGenerator().getBiomeNoise(), x, y, z).getHandle();
     }
     
     @Override
-    public @NotNull List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
+    public @NotNull List<org.bukkit.block.Biome> getBiomes(@NotNull WorldInfo worldInfo) {
         return StreamSupport.stream(delegate.getBiomes().spliterator(), false)
                             .flatMap(terraBiome -> terraBiome.getVanillaBiomes()
                                                              .getContents()
                                                              .stream()
-                                                             .map(biome -> (Biome) biome.getHandle()))
+                                                             .map(biome -> (org.bukkit.block.Biome) biome.getHandle()))
                             .collect(Collectors.toList());
     }
     

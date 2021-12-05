@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.image;
 
+import com.dfsek.terra.api.world.biome.Biome;
 import net.jafama.FastMath;
 
 import java.awt.Color;
@@ -15,17 +16,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class ImageBiomeProvider implements BiomeProvider {
-    private final Map<Color, TerraBiome> colorBiomeMap = new HashMap<>();
+    private final Map<Color, Biome> colorBiomeMap = new HashMap<>();
     private final BufferedImage image;
     private final int resolution;
     private final Align align;
     
-    public ImageBiomeProvider(Set<TerraBiome> registry, BufferedImage image, int resolution, Align align) {
+    public ImageBiomeProvider(Set<Biome> registry, BufferedImage image, int resolution, Align align) {
         this.image = image;
         this.resolution = resolution;
         this.align = align;
@@ -37,7 +37,7 @@ public class ImageBiomeProvider implements BiomeProvider {
     }
     
     @Override
-    public TerraBiome getBiome(int x, int z, long seed) {
+    public Biome getBiome(int x, int z, long seed) {
         x /= resolution;
         z /= resolution;
         Color color = align.getColor(image, x, z);
@@ -52,7 +52,7 @@ public class ImageBiomeProvider implements BiomeProvider {
     }
     
     @Override
-    public Iterable<TerraBiome> getBiomes() {
+    public Iterable<Biome> getBiomes() {
         return colorBiomeMap.values();
     }
     

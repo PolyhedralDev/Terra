@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -18,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.util.HashSet;
@@ -50,7 +51,7 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     @Override
-    public TerraBiome getBiome(int x, int z, long seed) {
+    public Biome getBiome(int x, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
         
@@ -66,10 +67,10 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     @Override
-    public Iterable<TerraBiome> getBiomes() {
-        Set<TerraBiome> biomeSet = new HashSet<>();
+    public Iterable<Biome> getBiomes() {
+        Set<Biome> biomeSet = new HashSet<>();
         pipeline.getSource().getBiomes().forEach(biomeSet::add);
-        Iterable<TerraBiome> result = biomeSet;
+        Iterable<Biome> result = biomeSet;
         for(Stage stage : pipeline.getStages()) {
             result = stage.getBiomes(result); // pass through all stages
         }

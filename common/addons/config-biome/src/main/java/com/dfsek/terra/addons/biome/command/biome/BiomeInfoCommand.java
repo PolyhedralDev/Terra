@@ -16,7 +16,7 @@ import com.dfsek.terra.api.command.annotation.Argument;
 import com.dfsek.terra.api.command.annotation.Command;
 import com.dfsek.terra.api.command.annotation.inject.ArgumentTarget;
 import com.dfsek.terra.api.entity.CommandSender;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 @Command(arguments = @Argument(
@@ -26,7 +26,7 @@ import com.dfsek.terra.api.world.biome.TerraBiome;
 ))
 public class BiomeInfoCommand implements CommandTemplate {
     @ArgumentTarget("biome")
-    private TerraBiome biome;
+    private Biome biome;
     
     @Override
     public void execute(CommandSender sender) {

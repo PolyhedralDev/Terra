@@ -19,7 +19,7 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -41,7 +41,7 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                             PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(TerraBiome.class)));
+                    providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
                 })
                 .failThrough();
     }

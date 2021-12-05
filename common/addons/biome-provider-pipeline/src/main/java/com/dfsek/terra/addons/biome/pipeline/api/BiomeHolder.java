@@ -8,7 +8,7 @@
 package com.dfsek.terra.addons.biome.pipeline.api;
 
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface BiomeHolder {
@@ -18,7 +18,7 @@ public interface BiomeHolder {
     
     void fill(BiomeSource source, long seed);
     
-    TerraBiome getBiome(int x, int z);
+    Biome getBiome(int x, int z);
     
-    TerraBiome getBiomeRaw(int x, int z);
+    Biome getBiomeRaw(int x, int z);
 }

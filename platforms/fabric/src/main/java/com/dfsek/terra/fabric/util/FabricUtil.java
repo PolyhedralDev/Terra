@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -28,7 +30,6 @@ import net.minecraft.util.registry.MutableRegistry;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
@@ -45,7 +46,6 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
@@ -62,14 +62,14 @@ public final class FabricUtil {
      *
      * @return The Minecraft delegate biome.
      */
-    public static Biome createBiome(TerraBiome biome, ConfigPack pack, DynamicRegistryManager registryManager) {
+    public static net.minecraft.world.biome.Biome createBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager) {
         // BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = new HashMap<>(); // template.getColors();
         
         //TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
         
-        Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-        Biome vanilla = ((ProtoPlatformBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
+        Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
+        net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         
@@ -135,7 +135,7 @@ public final class FabricUtil {
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
         }
         
-        return new Biome.Builder()
+        return new net.minecraft.world.biome.Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
                 .temperature(vanilla.getTemperature())

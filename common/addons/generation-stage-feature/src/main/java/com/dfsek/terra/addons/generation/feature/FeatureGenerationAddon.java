@@ -15,7 +15,7 @@ import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
 
 
@@ -40,8 +40,8 @@ public class FeatureGenerationAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
-                    if(event.is(TerraBiome.class)) {
-                        event.getLoadedObject(TerraBiome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
+                    if(event.is(Biome.class)) {
+                        event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeFeaturesTemplate()).get());
                     }
                 })
                 .failThrough();

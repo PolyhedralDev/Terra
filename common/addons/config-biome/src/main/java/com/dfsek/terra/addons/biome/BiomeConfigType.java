@@ -18,11 +18,11 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
-public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
-    public static final TypeKey<TerraBiome> BIOME_TYPE_TOKEN = new TypeKey<>() {
+public class BiomeConfigType implements ConfigType<BiomeTemplate, Biome> {
+    public static final TypeKey<Biome> BIOME_TYPE_TOKEN = new TypeKey<>() {
     };
     private final BiomeFactory factory;
     
@@ -31,8 +31,8 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public Supplier<OpenRegistry<TerraBiome>> registrySupplier(ConfigPack pack) {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<TerraBiome>) (t, c, loader) -> {
+    public Supplier<OpenRegistry<Biome>> registrySupplier(ConfigPack pack) {
+        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Biome>) (t, c, loader) -> {
             if(c.equals("SELF")) return null;
             return registry.get((String) c).orElseThrow(() -> new LoadException(
                     "No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry."));
@@ -45,12 +45,12 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, TerraBiome> {
     }
     
     @Override
-    public ConfigFactory<BiomeTemplate, TerraBiome> getFactory() {
+    public ConfigFactory<BiomeTemplate, Biome> getFactory() {
         return factory;
     }
     
     @Override
-    public TypeKey<TerraBiome> getTypeKey() {
+    public TypeKey<Biome> getTypeKey() {
         return BIOME_TYPE_TOKEN;
     }
 }

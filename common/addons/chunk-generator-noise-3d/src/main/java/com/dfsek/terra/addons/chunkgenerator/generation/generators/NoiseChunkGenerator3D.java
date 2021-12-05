@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.generators;
 
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +27,6 @@ import com.dfsek.terra.api.util.math.Sampler;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.biome.GenerationSettings;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
@@ -70,7 +71,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     int cx = xOrig + x;
                     int cz = zOrig + z;
     
-                    TerraBiome biome = grid.getBiome(cx, cz, seed);
+                    Biome biome = grid.getBiome(cx, cz, seed);
     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
     
@@ -107,7 +108,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     @Override
     public BlockState getBlock(ServerWorld world, int x, int y, int z) {
         BiomeProvider provider = world.getBiomeProvider();
-        TerraBiome biome = provider.getBiome(x, z, world.getSeed());
+        Biome biome = provider.getBiome(x, z, world.getSeed());
         Sampler sampler = samplerCache.get(x, z, world);
         
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);

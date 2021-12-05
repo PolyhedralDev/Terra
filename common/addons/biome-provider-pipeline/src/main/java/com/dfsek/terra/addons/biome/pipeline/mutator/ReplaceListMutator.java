@@ -15,17 +15,17 @@ import java.util.stream.Stream;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.TerraBiome;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class ReplaceListMutator implements BiomeMutator {
-    private final Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace;
+    private final Map<Biome, ProbabilityCollection<Biome>> replace;
     private final NoiseSampler sampler;
-    private final ProbabilityCollection<TerraBiome> replaceDefault;
+    private final ProbabilityCollection<Biome> replaceDefault;
     private final String defaultTag;
     
-    public ReplaceListMutator(Map<TerraBiome, ProbabilityCollection<TerraBiome>> replace, String defaultTag,
-                              ProbabilityCollection<TerraBiome> replaceDefault, NoiseSampler sampler) {
+    public ReplaceListMutator(Map<Biome, ProbabilityCollection<Biome>> replace, String defaultTag,
+                              ProbabilityCollection<Biome> replaceDefault, NoiseSampler sampler) {
         this.replace = replace;
         this.sampler = sampler;
         this.defaultTag = defaultTag;
@@ -33,24 +33,24 @@ public class ReplaceListMutator implements BiomeMutator {
     }
     
     @Override
-    public TerraBiome mutate(ViewPoint viewPoint, double x, double z, long seed) {
-        TerraBiome center = viewPoint.getBiome(0, 0);
+    public Biome mutate(ViewPoint viewPoint, double x, double z, long seed) {
+        Biome center = viewPoint.getBiome(0, 0);
         if(replace.containsKey(center)) {
-            TerraBiome biome = replace.get(center).get(sampler, x, z, seed);
+            Biome biome = replace.get(center).get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         if(viewPoint.getBiome(0, 0).getTags().contains(defaultTag)) {
-            TerraBiome biome = replaceDefault.get(sampler, x, z, seed);
+            Biome biome = replaceDefault.get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return center;
     }
     
     @Override
-    public Iterable<TerraBiome> getBiomes(Iterable<TerraBiome> biomes) {
-        Set<TerraBiome> biomeSet = new HashSet<>();
+    public Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
+        Set<Biome> biomeSet = new HashSet<>();
         
-        Set<TerraBiome> reject = new HashSet<>();
+        Set<Biome> reject = new HashSet<>();
         
         biomes.forEach(biome -> {
             if(!biome.getTags().contains(defaultTag) && !replace.containsKey(biome)) {

@@ -20,9 +20,11 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.exception.ConfigException;
+
+import com.dfsek.terra.api.world.biome.Biome;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +37,6 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
-import com.dfsek.terra.api.world.biome.TerraBiome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
@@ -87,12 +88,12 @@ public final class FabricAddon implements BaseAddon {
                          .then(event -> {
                              logger.info("Registering biomes...");
             
-                             Registry<Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
+                             Registry<net.minecraft.world.biome.Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
                              terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
-                                 pack.getCheckedRegistry(TerraBiome.class)
+                                 pack.getCheckedRegistry(Biome.class)
                                      .forEach((id, biome) -> {
                                          Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-                                         Biome fabricBiome = FabricUtil.createBiome(biome, pack, event.getRegistryManager());
+                                         net.minecraft.world.biome.Biome fabricBiome = FabricUtil.createBiome(biome, pack, event.getRegistryManager());
                     
                                          FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, identifier, fabricBiome);
                                      });
