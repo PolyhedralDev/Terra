@@ -61,7 +61,6 @@ import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-import com.dfsek.terra.api.event.events.config.RegistrationEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
@@ -161,8 +160,6 @@ public class ConfigPackImpl implements ConfigPack {
         
         register(abstractConfigLoader);
         platform.register(abstractConfigLoader);
-        
-        platform.getEventManager().callEvent(new RegistrationEvent(this));
         
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
