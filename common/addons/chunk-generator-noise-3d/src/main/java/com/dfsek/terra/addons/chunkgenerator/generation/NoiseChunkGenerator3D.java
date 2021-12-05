@@ -124,9 +124,11 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         Sampler3D sampler = samplerCache.get(x, z, world);
         
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-        Palette palette = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo);
+        
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
+    
+        Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo);
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {
             int level = 0;

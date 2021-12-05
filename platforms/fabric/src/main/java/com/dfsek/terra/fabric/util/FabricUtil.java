@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -35,7 +33,6 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.carver.ConfiguredCarver;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -46,6 +43,7 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 

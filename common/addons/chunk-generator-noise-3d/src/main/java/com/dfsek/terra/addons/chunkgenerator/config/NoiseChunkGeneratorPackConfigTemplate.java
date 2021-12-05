@@ -15,11 +15,11 @@ public class NoiseChunkGeneratorPackConfigTemplate implements ConfigTemplate {
     
     @Value("carving.resolution.horizontal")
     @Default
-    private @Meta int horizontalRes = 2;
+    private @Meta int horizontalRes = 4;
     
     @Value("carving.resolution.vertical")
     @Default
-    private @Meta int verticalRes = 4;
+    private @Meta int verticalRes = 2;
     
     public int getElevationBlend() {
         return elevationBlend;

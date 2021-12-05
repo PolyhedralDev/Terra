@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -59,8 +56,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
@@ -101,7 +100,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private net.minecraft.server.world.ServerWorld world;
     
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
-        super(biomeSource, new StructuresConfig(false));
+        super(biomeSource, new StructuresConfig(true));
         this.pack = configPack;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
@@ -194,9 +193,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public void setStructureStarts(DynamicRegistryManager dynamicRegistryManager, StructureAccessor structureAccessor, Chunk chunk,
                                    StructureManager structureManager, long worldSeed) {
-        if(pack.vanillaStructures()) {
-            super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
-        }
+        super.setStructureStarts(dynamicRegistryManager, structureAccessor, chunk, structureManager, worldSeed);
     }
     
     @Override
@@ -248,8 +245,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         BlockState[] array = new BlockState[view.getHeight()];
-        for(int y = view.getBottomY() + view.getHeight() - 1; y >= view.getBottomY(); y--) {
-            array[y] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z)).getHandle();
+        for(int y = view.getTopY() - 1; y >= view.getBottomY(); y--) {
+            array[y - view.getBottomY()] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }
