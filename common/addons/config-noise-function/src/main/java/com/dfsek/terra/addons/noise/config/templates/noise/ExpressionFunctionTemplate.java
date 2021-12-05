@@ -76,11 +76,11 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         Map<String, Function> noiseFunctionMap = new HashMap<>();
         
         for(Map.Entry<String, FunctionTemplate> entry : globalFunctions.entrySet()) {
-            noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
+            noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));
         }
         
         for(Map.Entry<String, FunctionTemplate> entry : functions.entrySet()) {
-            noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue(), new Parser(), new Scope()));
+            noiseFunctionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));
         }
         
         otherFunctions.forEach((id, function) -> {

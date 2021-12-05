@@ -17,6 +17,8 @@ import com.dfsek.paralithic.node.Statefulness;
 
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 
+import java.util.Map.Entry;
+
 
 public class UserDefinedFunction implements DynamicFunction {
     private final Expression expression;
@@ -27,12 +29,20 @@ public class UserDefinedFunction implements DynamicFunction {
         this.args = args;
     }
     
-    public static UserDefinedFunction newInstance(FunctionTemplate template, Parser parser, Scope parent) throws ParseException {
+    public static UserDefinedFunction newInstance(FunctionTemplate template) throws ParseException {
+        Parser parser = new Parser();
+        Scope parent = new Scope();
         
         Scope functionScope = new Scope().withParent(parent);
         
         template.getArgs().forEach(functionScope::addInvocationVariable);
         
+        for(Entry<String, FunctionTemplate> entry : template.getFunctions().entrySet()) {
+            String id = entry.getKey();
+            FunctionTemplate nest = entry.getValue();
+            parser.registerFunction(id, newInstance(nest));
+        }
+    
         return new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
     }
     

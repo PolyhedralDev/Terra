@@ -7,9 +7,11 @@
 
 package com.dfsek.terra.addons.noise.config.templates;
 
+import com.dfsek.tectonic.annotations.Default;
 import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.dfsek.terra.api.config.meta.Meta;
@@ -23,6 +25,10 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     @Value("expression")
     private @Meta String function;
     
+    @Value("functions")
+    @Default
+    private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
+    
     @Override
     public FunctionTemplate get() {
         return this;
@@ -34,5 +40,9 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     
     public String getFunction() {
         return function;
+    }
+    
+    public LinkedHashMap<String, FunctionTemplate> getFunctions() {
+        return functions;
     }
 }
