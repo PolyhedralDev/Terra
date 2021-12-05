@@ -11,7 +11,6 @@ package com.dfsek.terra.api.world.biome;
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.PropertyHolder;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 /**
@@ -24,7 +23,7 @@ public interface Biome extends PropertyHolder {
      *
      * @return TerraBiome - The Vanilla biome.
      */
-    ProbabilityCollection<PlatformBiome> getVanillaBiomes();
+    PlatformBiome getPlatformBiome();
     
     /**
      * Gets the BiomeTerrain instance used to generate the biome.

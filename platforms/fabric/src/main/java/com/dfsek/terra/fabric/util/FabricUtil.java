@@ -69,7 +69,7 @@ public final class FabricUtil {
         //TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
         
         Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-        net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) (new ArrayList<>(biome.getVanillaBiomes().getContents()).get(0))).get(biomeRegistry);
+        net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         

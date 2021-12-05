@@ -31,7 +31,7 @@ public class BiomeInfoCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         sender.sendMessage("Biome info for \"" + biome.getID() + "\".");
-        sender.sendMessage("Vanilla biome: " + biome.getVanillaBiomes());
+        sender.sendMessage("Vanilla biome: " + biome.getPlatformBiome());
         
         if(biome instanceof UserDefinedBiome) {
             BiomeTemplate bio = ((UserDefinedBiome) biome).getConfig();

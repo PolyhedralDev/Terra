@@ -53,7 +53,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     private @Meta NoiseSampler carvingEquation = NoiseSampler.zero();
     
     @Value("vanilla")
-    private @Meta ProbabilityCollection<PlatformBiome> vanilla;
+    private @Meta PlatformBiome vanilla;
     
     @Value("biome-noise")
     @Default
@@ -198,7 +198,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return id;
     }
     
-    public ProbabilityCollection<PlatformBiome> getVanilla() {
+    public PlatformBiome getVanilla() {
         return vanilla;
     }
     

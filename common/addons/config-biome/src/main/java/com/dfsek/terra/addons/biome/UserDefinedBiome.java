@@ -21,7 +21,7 @@ import com.dfsek.terra.api.world.biome.GenerationSettings;
  */
 public class UserDefinedBiome implements Biome {
     private final UserDefinedGenerationSettings gen;
-    private final ProbabilityCollection<PlatformBiome> vanilla;
+    private final PlatformBiome vanilla;
     private final String id;
     private final BiomeTemplate config;
     private final int color;
@@ -29,7 +29,7 @@ public class UserDefinedBiome implements Biome {
     
     private final Context context = new Context();
     
-    public UserDefinedBiome(ProbabilityCollection<PlatformBiome> vanilla, UserDefinedGenerationSettings gen, BiomeTemplate config) {
+    public UserDefinedBiome(PlatformBiome vanilla, UserDefinedGenerationSettings gen, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.gen = gen;
         this.id = config.getID();
@@ -50,7 +50,7 @@ public class UserDefinedBiome implements Biome {
      * @return Collection of biomes to represent the custom biome.
      */
     @Override
-    public ProbabilityCollection<PlatformBiome> getVanillaBiomes() {
+    public PlatformBiome getPlatformBiome() {
         return vanilla;
     }
     
