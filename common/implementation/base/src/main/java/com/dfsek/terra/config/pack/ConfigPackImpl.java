@@ -107,11 +107,8 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
-    private final Scope varScope = new Scope();
     private final Platform platform;
     private final Loader loader;
-    
-    private final Configuration packManifest;
     
     private final Map<BaseAddon, VersionRange> addons;
     
@@ -159,9 +156,7 @@ public class ConfigPackImpl implements ConfigPack {
         
         this.loader = loader;
         this.platform = platform;
-        this.packManifest = packManifest;
         this.configTypeRegistry = createRegistry();
-        
         
         register(selfLoader);
         platform.register(selfLoader);
@@ -181,10 +176,6 @@ public class ConfigPackImpl implements ConfigPack {
         logger.info("Loading config pack \"{}\"", template.getID());
     
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
-    
-        for(Map.Entry<String, Double> var : template.getVariables().entrySet()) {
-            varScope.create(var.getKey(), var.getValue());
-        }
     
         Map<String, Configuration> configurations = new HashMap<>();
     
@@ -238,7 +229,7 @@ public class ConfigPackImpl implements ConfigPack {
             platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
         }
     
-        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, this.packManifest)));
+        platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, packManifest)));
         logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
                     template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
         
