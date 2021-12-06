@@ -20,4 +20,18 @@ public interface BiomeDelegate extends StringIdentifiable {
             }
         };
     }
+    
+    static BiomeDelegate from(Biome biome) {
+        return new BiomeDelegate() {
+            @Override
+            public Biome getBiome() {
+                return biome;
+            }
+    
+            @Override
+            public String getID() {
+                return biome.getID();
+            }
+        };
+    }
 }
