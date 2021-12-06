@@ -9,6 +9,7 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 
 import com.dfsek.tectonic.annotations.Value;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.addons.biome.pipeline.source.NoiseSource;
 import com.dfsek.terra.api.config.meta.Meta;
@@ -22,7 +23,7 @@ public class NoiseSourceTemplate extends SourceTemplate {
     private @Meta NoiseSampler noise;
     
     @Value("biomes")
-    private @Meta ProbabilityCollection<@Meta Biome> biomes;
+    private @Meta ProbabilityCollection<@Meta BiomeDelegate> biomes;
     
     @Override
     public BiomeSource get() {
