@@ -11,7 +11,9 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.config.BiomeDelegateLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.NoiseSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
@@ -28,7 +30,9 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -71,6 +75,10 @@ public class BiomePipelineAddon implements AddonInitializer {
                     stageRegistry.register("REPLACE_LIST", ReplaceListMutatorTemplate::new);
                     stageRegistry.register("BORDER", BorderMutatorTemplate::new);
                     stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
+                })
+                .then(event -> {
+                    Registry<Biome> biomeRegistry = event.getPack().getOrCreateRegistry(Biome.class);
+                    event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
                 })
                 .failThrough();
     }
