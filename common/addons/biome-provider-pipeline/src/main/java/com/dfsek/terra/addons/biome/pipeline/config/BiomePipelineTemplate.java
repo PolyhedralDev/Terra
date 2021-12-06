@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.dfsek.terra.addons.biome.pipeline.BiomePipeline;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineProvider;
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.meta.Meta;

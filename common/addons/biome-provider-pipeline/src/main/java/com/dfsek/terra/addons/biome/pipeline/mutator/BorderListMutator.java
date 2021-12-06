@@ -13,10 +13,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class BorderListMutator implements BiomeMutator {

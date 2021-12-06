@@ -5,8 +5,10 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.biome.pipeline.api;
+package com.dfsek.terra.addons.biome.pipeline.api.stage;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.api.world.biome.Biome;
 
 

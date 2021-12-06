@@ -8,10 +8,9 @@
 package com.dfsek.terra.addons.biome.pipeline.expand;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeExpander;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class FractalExpander implements BiomeExpander {

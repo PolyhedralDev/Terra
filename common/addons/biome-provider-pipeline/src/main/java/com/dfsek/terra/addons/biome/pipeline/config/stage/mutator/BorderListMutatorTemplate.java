@@ -12,13 +12,12 @@ import com.dfsek.tectonic.annotations.Value;
 import java.util.Map;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
 import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 @SuppressWarnings("unused")
