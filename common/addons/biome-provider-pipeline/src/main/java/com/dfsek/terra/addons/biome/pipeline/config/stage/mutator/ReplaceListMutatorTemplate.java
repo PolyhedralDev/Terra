@@ -11,6 +11,7 @@ import com.dfsek.tectonic.annotations.Value;
 
 import java.util.Map;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;
@@ -26,10 +27,10 @@ public class ReplaceListMutatorTemplate extends StageTemplate {
     private @Meta String defaultFrom;
     
     @Value("default-to")
-    private @Meta ProbabilityCollection<@Meta Biome> defaultTo;
+    private @Meta ProbabilityCollection<@Meta BiomeDelegate> defaultTo;
     
     @Value("to")
-    private @Meta Map<@Meta Biome, @Meta ProbabilityCollection<@Meta Biome>> replace;
+    private @Meta Map<@Meta BiomeDelegate, @Meta ProbabilityCollection<@Meta BiomeDelegate>> replace;
     
     @Override
     public Stage get() {

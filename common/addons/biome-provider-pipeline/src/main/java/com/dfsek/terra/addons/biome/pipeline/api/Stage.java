@@ -15,5 +15,5 @@ public interface Stage {
     
     boolean isExpansion();
     
-    Iterable<Biome> getBiomes(Iterable<Biome> biomes);
+    Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes);
 }

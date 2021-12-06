@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.stages;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
@@ -32,7 +33,7 @@ public class MutatorStage implements Stage {
     }
     
     @Override
-    public Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
+    public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         return mutator.getBiomes(biomes);
     }
     

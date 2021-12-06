@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.mutator;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
@@ -19,28 +20,28 @@ import java.util.stream.Stream;
 
 public class ReplaceMutator implements BiomeMutator {
     private final String replaceableTag;
-    private final ProbabilityCollection<Biome> replace;
+    private final ProbabilityCollection<BiomeDelegate> replace;
     private final NoiseSampler sampler;
     
-    public ReplaceMutator(String replaceable, ProbabilityCollection<Biome> replace, NoiseSampler sampler) {
+    public ReplaceMutator(String replaceable, ProbabilityCollection<BiomeDelegate> replace, NoiseSampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
     }
     
     @Override
-    public Biome mutate(ViewPoint viewPoint, double x, double z, long seed) {
+    public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         if(viewPoint.getBiome(0, 0).getTags().contains(replaceableTag)) {
-            Biome biome = replace.get(sampler, x, z, seed);
+            BiomeDelegate biome = replace.get(sampler, x, z, seed);
             return biome == null ? viewPoint.getBiome(0, 0) : biome;
         }
         return viewPoint.getBiome(0, 0);
     }
     
     @Override
-    public Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
-        Set<Biome> biomeSet = new HashSet<>();
-        Set<Biome> reject = new HashSet<>();
+    public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
+        Set<BiomeDelegate> biomeSet = new HashSet<>();
+        Set<BiomeDelegate> reject = new HashSet<>();
         biomes.forEach(biome -> {
             if(!biome.getTags().contains(replaceableTag)) {
                 biomeSet.add(biome);

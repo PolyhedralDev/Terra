@@ -9,6 +9,7 @@ package com.dfsek.terra.addons.biome.pipeline.config.stage.mutator;
 
 import com.dfsek.tectonic.annotations.Value;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceMutator;
@@ -24,7 +25,7 @@ public class ReplaceMutatorTemplate extends StageTemplate {
     private @Meta String from;
     
     @Value("to")
-    private @Meta ProbabilityCollection<@Meta Biome> to;
+    private @Meta ProbabilityCollection<@Meta BiomeDelegate> to;
     
     @Override
     public Stage get() {

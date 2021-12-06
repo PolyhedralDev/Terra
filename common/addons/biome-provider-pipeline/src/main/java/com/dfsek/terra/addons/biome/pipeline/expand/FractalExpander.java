@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.expand;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
@@ -21,7 +22,7 @@ public class FractalExpander implements BiomeExpander {
     }
     
     @Override
-    public Biome getBetween(double x, double z, long seed, Biome... others) {
+    public BiomeDelegate getBetween(double x, double z, long seed, BiomeDelegate... others) {
         return others[MathUtil.normalizeIndex(sampler.noise(seed, x, z), others.length)];
     }
 }

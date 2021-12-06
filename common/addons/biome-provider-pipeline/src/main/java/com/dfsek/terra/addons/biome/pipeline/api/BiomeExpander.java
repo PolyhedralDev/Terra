@@ -11,5 +11,5 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface BiomeExpander {
-    Biome getBetween(double x, double z, long seed, Biome... others);
+    BiomeDelegate getBetween(double x, double z, long seed, BiomeDelegate... others);
 }

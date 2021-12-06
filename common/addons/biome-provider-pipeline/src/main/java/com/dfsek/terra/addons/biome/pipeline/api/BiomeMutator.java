@@ -11,9 +11,9 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface BiomeMutator {
-    Biome mutate(ViewPoint viewPoint, double x, double z, long seed);
+    BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed);
     
-    default Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
+    default Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         return biomes;
     }
     
@@ -29,7 +29,7 @@ public interface BiomeMutator {
         }
         
         
-        public Biome getBiome(int x, int z) {
+        public BiomeDelegate getBiome(int x, int z) {
             return biomes.getBiomeRaw(x + offX, z + offZ);
         }
     }

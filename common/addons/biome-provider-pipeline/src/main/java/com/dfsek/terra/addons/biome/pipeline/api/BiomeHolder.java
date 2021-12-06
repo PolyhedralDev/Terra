@@ -18,7 +18,7 @@ public interface BiomeHolder {
     
     void fill(BiomeSource source, long seed);
     
-    Biome getBiome(int x, int z);
+    BiomeDelegate getBiome(int x, int z);
     
-    Biome getBiomeRaw(int x, int z);
+    BiomeDelegate getBiomeRaw(int x, int z);
 }

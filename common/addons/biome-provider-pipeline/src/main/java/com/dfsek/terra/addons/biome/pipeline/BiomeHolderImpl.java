@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeMutator;
@@ -19,17 +20,17 @@ public class BiomeHolderImpl implements BiomeHolder {
     private final Vector2 origin;
     private final int width;
     private final int offset;
-    private Biome[][] biomes;
+    private BiomeDelegate[][] biomes;
     
     public BiomeHolderImpl(int width, Vector2 origin) {
         width += 4;
         this.width = width;
-        biomes = new Biome[width][width];
+        biomes = new BiomeDelegate[width][width];
         this.origin = origin;
         this.offset = 2;
     }
     
-    private BiomeHolderImpl(Biome[][] biomes, Vector2 origin, int width, int offset) {
+    private BiomeHolderImpl(BiomeDelegate[][] biomes, Vector2 origin, int width, int offset) {
         this.biomes = biomes;
         this.origin = origin;
         this.width = width;
@@ -38,10 +39,10 @@ public class BiomeHolderImpl implements BiomeHolder {
     
     @Override
     public BiomeHolder expand(BiomeExpander expander, long seed) {
-        Biome[][] old = biomes;
+        BiomeDelegate[][] old = biomes;
         int newWidth = width * 2 - 1;
         
-        biomes = new Biome[newWidth][newWidth];
+        biomes = new BiomeDelegate[newWidth][newWidth];
         
         for(int x = 0; x < width; x++) {
             for(int z = 0; z < width; z++) {
@@ -80,14 +81,14 @@ public class BiomeHolderImpl implements BiomeHolder {
     }
     
     @Override
-    public Biome getBiome(int x, int z) {
+    public BiomeDelegate getBiome(int x, int z) {
         x += offset;
         z += offset;
         return getBiomeRaw(x, z);
     }
     
     @Override
-    public Biome getBiomeRaw(int x, int z) {
+    public BiomeDelegate getBiomeRaw(int x, int z) {
         if(x >= width || z >= width || x < 0 || z < 0) return null;
         return biomes[x][z];
     }

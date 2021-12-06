@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.stages;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
@@ -31,7 +32,7 @@ public class ExpanderStage implements Stage {
     }
     
     @Override
-    public Iterable<Biome> getBiomes(Iterable<Biome> biomes) {
+    public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         return biomes;
     }
 }

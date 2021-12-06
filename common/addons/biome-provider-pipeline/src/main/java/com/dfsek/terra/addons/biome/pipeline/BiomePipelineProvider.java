@@ -7,23 +7,22 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-
-import com.dfsek.terra.api.world.biome.Biome;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
 import java.util.HashSet;
 import java.util.Set;
+
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomePipelineProvider implements BiomeProvider {
@@ -32,6 +31,8 @@ public class BiomePipelineProvider implements BiomeProvider {
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
+    
+    private final Set<Biome> biomes;
     
     public BiomePipelineProvider(BiomePipeline pipeline, Platform platform, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
@@ -48,6 +49,21 @@ public class BiomePipelineProvider implements BiomeProvider {
                                           }
                                         );
         this.pipeline = pipeline;
+        
+        Set<BiomeDelegate> biomeSet = new HashSet<>();
+        pipeline.getSource().getBiomes().forEach(biomeSet::add);
+        Iterable<BiomeDelegate> result = biomeSet;
+        for(Stage stage : pipeline.getStages()) {
+            result = stage.getBiomes(result); // pass through all stages
+        }
+        this.biomes = new HashSet<>();
+        result.forEach(biomeDelegate -> {
+            if(biomeDelegate.isEphemeral()) {
+                throw new IllegalArgumentException("Biome Pipeline leaks ephemeral biome \"" + biomeDelegate.getID() +
+                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome.");
+            }
+            this.biomes.add(biomeDelegate.getBiome());
+        });
     }
     
     @Override
@@ -63,18 +79,12 @@ public class BiomePipelineProvider implements BiomeProvider {
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
         return holderCache.getUnchecked(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
-                                                                                   z - fdZ * pipeline.getSize());
+                                                                                   z - fdZ * pipeline.getSize()).getBiome();
     }
     
     @Override
     public Iterable<Biome> getBiomes() {
-        Set<Biome> biomeSet = new HashSet<>();
-        pipeline.getSource().getBiomes().forEach(biomeSet::add);
-        Iterable<Biome> result = biomeSet;
-        for(Stage stage : pipeline.getStages()) {
-            result = stage.getBiomes(result); // pass through all stages
-        }
-        return result;
+        return biomes;
     }
     
     private static final class SeededVector {
@@ -100,7 +110,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         @Override
         public boolean equals(Object obj) {
             if(!(obj instanceof SeededVector that)) return false;
-    
+            
             return this.seed == that.seed && this.x == that.x && this.z == that.z;
         }
     }
