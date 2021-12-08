@@ -16,10 +16,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -34,7 +33,7 @@ public class BiomePipelineProvider implements BiomeProvider {
     
     private final Set<Biome> biomes;
     
-    public BiomePipelineProvider(BiomePipeline pipeline, Platform platform, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public BiomePipelineProvider(BiomePipeline pipeline, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
