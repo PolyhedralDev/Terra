@@ -21,7 +21,7 @@ public class BiomeDelegateLoader implements TypeLoader<BiomeDelegate> {
     
     @Override
     public BiomeDelegate load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader) throws LoadException {
-        if(c == "SELF") return BiomeDelegate.self();
+        if(c.equals("SELF")) return BiomeDelegate.self();
         return biomeRegistry
                 .get((String) c)
                 .map(BiomeDelegate::from)
