@@ -16,6 +16,6 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public abstract class NormalizerTemplate<T extends Normalizer> extends SamplerTemplate<T> {
-    @Value("function")
+    @Value("sampler")
     protected @Meta NoiseSampler function;
 }

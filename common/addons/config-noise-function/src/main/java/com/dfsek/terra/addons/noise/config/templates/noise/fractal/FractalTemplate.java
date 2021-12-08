@@ -33,6 +33,6 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends Sa
     @Default
     protected @Meta double weightedStrength = 0.0D;
     
-    @Value("function")
+    @Value("sampler")
     protected @Meta NoiseSampler function;
 }
