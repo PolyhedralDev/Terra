@@ -32,7 +32,10 @@ public class KernelSampler implements NoiseSampler {
         
         for(int kx = 0; kx < kernel.length; kx++) {
             for(int ky = 0; ky < kernel[kx].length; ky++) {
-                accumulator += in.noise(seed, x + kx, y + ky) * kernel[kx][ky];
+                double k = kernel[kx][ky];
+                if(k != 0) {
+                    accumulator += in.noise(seed, x + kx, y + ky) * k;
+                }
             }
         }
         
@@ -48,7 +51,10 @@ public class KernelSampler implements NoiseSampler {
         
         for(int kx = 0; kx < kernel.length; kx++) {
             for(int ky = 0; ky < kernel[kx].length; ky++) {
-                accumulator += in.noise(seed, x + kx, y, z + ky) * kernel[kx][ky];
+                double k = kernel[kx][ky];
+                if(k != 0) {
+                    accumulator += in.noise(seed, x + kx, y, z + ky) * k;
+                }
             }
         }
         
