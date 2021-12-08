@@ -37,11 +37,11 @@ public class ReplaceListMutator implements BiomeMutator {
         BiomeDelegate center = viewPoint.getBiome(0, 0);
         if(replace.containsKey(center)) {
             BiomeDelegate biome = replace.get(center).get(sampler, x, z, seed);
-            return biome == null ? viewPoint.getBiome(0, 0) : biome;
+            return biome.isSelf() ? viewPoint.getBiome(0, 0) : biome;
         }
         if(viewPoint.getBiome(0, 0).getTags().contains(defaultTag)) {
             BiomeDelegate biome = replaceDefault.get(sampler, x, z, seed);
-            return biome == null ? viewPoint.getBiome(0, 0) : biome;
+            return biome.isSelf() ? viewPoint.getBiome(0, 0) : biome;
         }
         return center;
     }
@@ -60,11 +60,11 @@ public class ReplaceListMutator implements BiomeMutator {
             }
         });
         biomeSet.addAll(replaceDefault.getContents().stream().flatMap(terraBiome -> {
-            if(terraBiome == null) return reject.stream();
+            if(terraBiome.isSelf()) return reject.stream();
             return Stream.of(terraBiome);
         }).toList());
         replace.forEach((biome, collection) -> biomeSet.addAll(collection.getContents().stream().map(terraBiome -> {
-            if(terraBiome == null) return biome;
+            if(terraBiome.isSelf()) return biome;
             return terraBiome;
         }).toList()));
         return biomeSet;

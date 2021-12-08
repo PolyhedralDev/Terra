@@ -32,7 +32,7 @@ public class ReplaceMutator implements BiomeMutator {
     public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         if(viewPoint.getBiome(0, 0).getTags().contains(replaceableTag)) {
             BiomeDelegate biome = replace.get(sampler, x, z, seed);
-            return biome == null ? viewPoint.getBiome(0, 0) : biome;
+            return biome.isSelf() ? viewPoint.getBiome(0, 0) : biome;
         }
         return viewPoint.getBiome(0, 0);
     }
@@ -49,7 +49,7 @@ public class ReplaceMutator implements BiomeMutator {
             }
         });
         biomeSet.addAll(replace.getContents().stream().flatMap(terraBiome -> {
-            if(terraBiome == null) return reject.stream();
+            if(terraBiome.isSelf()) return reject.stream();
             return Stream.of(terraBiome);
         }).toList());
         return biomeSet;

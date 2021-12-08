@@ -13,8 +13,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 
 public class BorderMutator implements BiomeMutator {
@@ -38,10 +38,9 @@ public class BorderMutator implements BiomeMutator {
                 for(int zi = -1; zi <= 1; zi++) {
                     if(xi == 0 && zi == 0) continue;
                     BiomeDelegate current = viewPoint.getBiome(xi, zi);
-                    if(current == null) continue;
                     if(current.getTags().contains(border)) {
                         BiomeDelegate biome = replace.get(noiseSampler, x, z, seed);
-                        return biome == null ? origin : biome;
+                        return biome.isSelf() ? origin : biome;
                     }
                 }
             }
@@ -53,7 +52,15 @@ public class BorderMutator implements BiomeMutator {
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();
         biomes.forEach(biomeSet::add);
-        biomeSet.addAll(replace.getContents().stream().filter(Objects::nonNull).toList());
+        biomeSet.addAll(
+                        replace
+                                .getContents()
+                                .stream()
+                                .filter(
+                                        Predicate.not(BiomeDelegate::isSelf)
+                                       )
+                                .toList()
+                       );
         return biomeSet;
     }
 }

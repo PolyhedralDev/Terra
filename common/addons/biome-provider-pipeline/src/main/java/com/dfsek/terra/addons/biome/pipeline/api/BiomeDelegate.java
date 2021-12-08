@@ -16,6 +16,10 @@ public interface BiomeDelegate extends StringIdentifiable {
         return false;
     }
     
+    default boolean isSelf() {
+        return false;
+    }
+    
     static BiomeDelegate ephemeral(String id) {
         return new BiomeDelegate() {
             private final Set<String> tags = Collections.singleton(id);
@@ -56,6 +60,35 @@ public interface BiomeDelegate extends StringIdentifiable {
             @Override
             public String getID() {
                 return biome.getID();
+            }
+        };
+    }
+    
+    static BiomeDelegate self() {
+        return new BiomeDelegate() {
+            @Override
+            public Biome getBiome() {
+                throw new UnsupportedOperationException("Cannot get biome from self delegate");
+            }
+    
+            @Override
+            public boolean isSelf() {
+                return true;
+            }
+    
+            @Override
+            public boolean isEphemeral() {
+                return true;
+            }
+    
+            @Override
+            public Set<String> getTags() {
+                return Collections.emptySet();
+            }
+    
+            @Override
+            public String getID() {
+                return "SELF";
             }
         };
     }

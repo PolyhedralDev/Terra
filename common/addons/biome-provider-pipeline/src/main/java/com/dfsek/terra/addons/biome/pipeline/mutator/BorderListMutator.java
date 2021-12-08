@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
@@ -42,14 +43,13 @@ public class BorderListMutator implements BiomeMutator {
                 for(int zi = -1; zi <= 1; zi++) {
                     if(xi == 0 && zi == 0) continue;
                     BiomeDelegate current = viewPoint.getBiome(xi, zi);
-                    if(current == null) continue;
                     if(current.getTags().contains(border)) {
                         if(replace.containsKey(origin)) {
                             BiomeDelegate biome = replace.get(origin).get(noiseSampler, x, z, seed);
-                            return biome == null ? origin : biome;
+                            return biome.isSelf() ? origin : biome;
                         }
                         BiomeDelegate biome = replaceDefault.get(noiseSampler, x, z, seed);
-                        return biome == null ? origin : biome;
+                        return biome.isSelf() ? origin : biome;
                     }
                 }
             }
@@ -61,7 +61,7 @@ public class BorderListMutator implements BiomeMutator {
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();
         biomes.forEach(biomeSet::add);
-        biomeSet.addAll(replaceDefault.getContents().stream().filter(Objects::nonNull).toList());
+        biomeSet.addAll(replaceDefault.getContents().stream().filter(Predicate.not(BiomeDelegate::isSelf)).toList());
         replace.forEach((biome, collection) -> biomeSet.addAll(collection.getContents()));
         return biomeSet;
     }

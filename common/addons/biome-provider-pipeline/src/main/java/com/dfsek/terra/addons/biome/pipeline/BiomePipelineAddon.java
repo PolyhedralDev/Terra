@@ -26,6 +26,7 @@ import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -76,10 +77,13 @@ public class BiomePipelineAddon implements AddonInitializer {
                     stageRegistry.register("BORDER", BorderMutatorTemplate::new);
                     stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
                 })
-                .then(event -> {
-                    Registry<Biome> biomeRegistry = event.getPack().getOrCreateRegistry(Biome.class);
-                    event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
-                })
                 .failThrough();
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(addon, ConfigPackPostLoadEvent.class)
+                .then(event -> {
+                    Registry<Biome> biomeRegistry = event.getPack().getRegistry(Biome.class);
+                    event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
+                });
     }
 }
