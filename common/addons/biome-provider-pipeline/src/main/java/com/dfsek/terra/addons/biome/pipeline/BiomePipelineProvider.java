@@ -39,7 +39,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         holderCache = CacheBuilder.newBuilder()
-                                  .maximumSize(platform == null ? 32 : platform.getTerraConfig().getProviderCache())
+                                  .maximumSize(128)
                                   .build(
                                           new CacheLoader<>() {
                                               @Override
