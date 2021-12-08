@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.api.Platform;
@@ -57,10 +57,14 @@ public class BiomePipelineProvider implements BiomeProvider {
             result = stage.getBiomes(result); // pass through all stages
         }
         this.biomes = new HashSet<>();
+        Iterable<BiomeDelegate> finalResult = result;
         result.forEach(biomeDelegate -> {
             if(biomeDelegate.isEphemeral()) {
+                
+                StringBuilder biomeList = new StringBuilder("\n");
+                finalResult.forEach(delegate -> biomeList.append("    - ").append(delegate.getID()).append(':').append(delegate.getClass().getCanonicalName()).append('\n'));
                 throw new IllegalArgumentException("Biome Pipeline leaks ephemeral biome \"" + biomeDelegate.getID() +
-                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome.");
+                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome. Biomes: " + biomeList);
             }
             this.biomes.add(biomeDelegate.getBiome());
         });

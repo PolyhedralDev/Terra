@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;

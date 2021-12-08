@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;

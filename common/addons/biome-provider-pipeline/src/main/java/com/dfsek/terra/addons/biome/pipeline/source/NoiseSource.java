@@ -7,11 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline.source;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.config.BiomeDelegateLoader;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class NoiseSource implements BiomeSource {

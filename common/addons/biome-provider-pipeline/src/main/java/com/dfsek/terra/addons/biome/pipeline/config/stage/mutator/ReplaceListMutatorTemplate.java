@@ -11,7 +11,7 @@ import com.dfsek.tectonic.annotations.Value;
 
 import java.util.Map;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.mutator.ReplaceListMutator;

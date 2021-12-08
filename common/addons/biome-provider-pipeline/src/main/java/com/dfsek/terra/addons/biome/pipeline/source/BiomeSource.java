@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.source;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 
 
 public interface BiomeSource {

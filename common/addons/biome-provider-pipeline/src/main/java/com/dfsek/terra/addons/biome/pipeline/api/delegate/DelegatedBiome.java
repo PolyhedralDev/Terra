@@ -1,0 +1,29 @@
+package com.dfsek.terra.addons.biome.pipeline.api.delegate;
+
+import com.dfsek.terra.api.world.biome.Biome;
+
+import java.util.Set;
+
+
+final class DelegatedBiome implements BiomeDelegate {
+    private final Biome biome;
+    
+    public DelegatedBiome(Biome biome) {
+        this.biome = biome;
+    }
+    
+    @Override
+    public Biome getBiome() {
+        return biome;
+    }
+    
+    @Override
+    public Set<String> getTags() {
+        return biome.getTags();
+    }
+    
+    @Override
+    public String getID() {
+        return biome.getID();
+    }
+}

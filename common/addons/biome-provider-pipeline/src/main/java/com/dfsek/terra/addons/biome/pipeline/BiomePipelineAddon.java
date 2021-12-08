@@ -11,7 +11,7 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomeDelegateLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
