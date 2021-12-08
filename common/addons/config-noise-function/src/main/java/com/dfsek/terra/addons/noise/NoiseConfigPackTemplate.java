@@ -21,7 +21,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NoiseConfigPackTemplate implements ConfigTemplate {
-    @Value("noise")
+    @Value("samplers")
     private @Meta Map<String, @Meta DimensionApplicableNoiseSampler> noiseBuilderMap;
     
     @Value("functions")
