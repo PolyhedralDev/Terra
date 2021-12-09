@@ -34,4 +34,16 @@ final class EphemeralBiomeDelegate implements BiomeDelegate {
     public boolean isEphemeral() {
         return true;
     }
+    
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof EphemeralBiomeDelegate that)) return false;
+        
+        return this.id.equals(that.id);
+    }
 }
