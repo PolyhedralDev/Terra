@@ -50,11 +50,8 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                 if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
                     
-                    Map<Object, Object> newMap = new HashMap<>(map);
-                    
                     if(map.containsKey("<<")) {
-                        newMap.putAll(map);
-                        newMap.remove("<<"); // Remove placeholder
+                        Map<Object, Object> newMap = new HashMap<>(map);
                         
                         List<String> keys = (List<String>) loader.loadType(STRING_LIST.getAnnotatedType(), map.get("<<"));
                         keys.forEach(key -> {
@@ -65,10 +62,10 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                             }
                             newMap.putAll((Map<?, ?>) meta);
                         });
+                        newMap.putAll(map);
+                        newMap.remove("<<"); // Remove placeholder
                         return (Result<T>) Result.overwrite(newMap);
                     }
-                    
-                    
                 }
             }
         }
