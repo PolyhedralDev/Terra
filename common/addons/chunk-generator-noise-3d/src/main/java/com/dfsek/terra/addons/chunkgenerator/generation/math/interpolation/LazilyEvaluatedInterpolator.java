@@ -29,7 +29,7 @@ public class LazilyEvaluatedInterpolator {
     public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max, int min, int horizontalRes, int verticalRes, long seed) {
         int hSamples = FastMath.ceilToInt(16.0/horizontalRes);
         int vSamples = FastMath.ceilToInt((double) (max-min) / verticalRes);
-        samples = new Double[hSamples + 1][vSamples][hSamples + 1];
+        samples = new Double[hSamples + 1][vSamples + 1][hSamples + 1];
         samplers = new NoiseSampler[hSamples + 1][hSamples + 1];
         this.chunkX = cx << 4;
         this.chunkZ = cz << 4;
