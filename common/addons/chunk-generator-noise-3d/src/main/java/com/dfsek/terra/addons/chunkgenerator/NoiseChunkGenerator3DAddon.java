@@ -10,9 +10,8 @@ package com.dfsek.terra.addons.chunkgenerator;
 import com.dfsek.terra.addons.chunkgenerator.config.NoiseChunkGeneratorPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.BiomePaletteTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.SlantLayer;
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
-import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
-import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolderLoader;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -45,7 +44,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                                    pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(), config.getHorizontalRes(),
                                                                      config.getVerticalRes()));
                     event.getPack()
-                         .applyLoader(SlantHolder.class, new SlantHolderLoader());
+                         .applyLoader(SlantLayer.class, SlantLayer::new);
                 })
                 .failThrough();
         
