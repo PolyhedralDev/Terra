@@ -18,6 +18,17 @@ final class DelegatedBiome implements BiomeDelegate {
     }
     
     @Override
+    public int hashCode() {
+        return biome.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof DelegatedBiome that)) return false;
+        return that.biome.equals(this.biome);
+    }
+    
+    @Override
     public Set<String> getTags() {
         return biome.getTags();
     }
