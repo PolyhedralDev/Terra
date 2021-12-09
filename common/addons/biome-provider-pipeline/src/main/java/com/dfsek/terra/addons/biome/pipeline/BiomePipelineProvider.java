@@ -7,21 +7,24 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
-
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import java.util.stream.StreamSupport;
 
 
 public class BiomePipelineProvider implements BiomeProvider {
@@ -61,9 +64,17 @@ public class BiomePipelineProvider implements BiomeProvider {
             if(biomeDelegate.isEphemeral()) {
                 
                 StringBuilder biomeList = new StringBuilder("\n");
-                finalResult.forEach(delegate -> biomeList.append("    - ").append(delegate.getID()).append(':').append(delegate.getClass().getCanonicalName()).append('\n'));
+                StreamSupport.stream(finalResult.spliterator(), false)
+                             .sorted(Comparator.comparing(StringIdentifiable::getID))
+                             .forEach(delegate -> biomeList
+                                     .append("    - ")
+                                     .append(delegate.getID())
+                                     .append(':')
+                                     .append(delegate.getClass().getCanonicalName())
+                                     .append('\n'));
                 throw new IllegalArgumentException("Biome Pipeline leaks ephemeral biome \"" + biomeDelegate.getID() +
-                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome. Biomes: " + biomeList);
+                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome. Biomes: " +
+                                                   biomeList);
             }
             this.biomes.add(biomeDelegate.getBiome());
         });
