@@ -12,9 +12,14 @@ import com.dfsek.tectonic.annotations.Value;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
@@ -22,7 +27,7 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     @Default
     private @Meta SlantHolder slant;
     @Value("palette")
-    private @Meta PaletteHolder palette;
+    private @Meta List<@Meta Map<@Meta Palette, @Meta Integer>> palettes;
     @Value("ocean.level")
     private @Meta int seaLevel;
     
@@ -31,6 +36,12 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     
     @Override
     public PaletteInfo get() {
-        return new PaletteInfo(palette, slant, oceanPalette, seaLevel);
+        PaletteHolderBuilder builder = new PaletteHolderBuilder();
+        for(Map<Palette, Integer> layer : palettes) {
+            for(Entry<Palette, Integer> entry : layer.entrySet()) {
+                builder.add(entry.getValue(), entry.getKey());
+            }
+        }
+        return new PaletteInfo(builder.build(), slant, oceanPalette, seaLevel);
     }
 }
