@@ -57,7 +57,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     @Value("colors")
     @Default
-    private @Meta Map<String, @Meta Integer> colors = new HashMap<>();
+    private @Meta Map<@Meta String, @Meta Integer> colors = new HashMap<>();
     // Plain ol' map, so platforms can decide what to do with colors (if anything).
     
     public BiomeTemplate(ConfigPack pack, Platform platform) {
