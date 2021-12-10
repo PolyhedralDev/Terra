@@ -70,14 +70,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private @Meta int seaLevel = 62;
     
-    @Value("elevation.equation")
-    @Default
-    private @Meta NoiseSampler elevationEquation = NoiseSampler.zero();
-    
-    @Value("elevation.weight")
-    @Default
-    private @Meta double elevationWeight = 1;
-    
     @Value("slabs.enable")
     @Default
     private @Meta boolean doSlabs = false;
@@ -166,10 +158,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return stairPalettes;
     }
     
-    public NoiseSampler getElevationEquation() {
-        return elevationEquation;
-    }
-    
     public ConfigPack getPack() {
         return pack;
     }
@@ -188,10 +176,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public NoiseSampler getNoiseEquation() {
         return noiseEquation;
-    }
-    
-    public double getElevationWeight() {
-        return elevationWeight;
     }
     
     public int getBlendStep() {
