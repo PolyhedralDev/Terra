@@ -51,39 +51,10 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("vanilla")
     private @Meta PlatformBiome vanilla;
     
-    @Value("blend.distance")
-    @Default
-    private @Meta int blendDistance = 3;
-    
-    @Value("ocean.level")
-    @Default
-    private @Meta int seaLevel = 62;
-    
-    @Value("slabs.enable")
-    @Default
-    private @Meta boolean doSlabs = false;
-    
-    @Value("slabs.threshold")
-    @Default
-    private @Meta double slabThreshold = 0.0075D;
-    
-    @Value("slabs.palettes")
-    @Default
-    private @Meta Map<@Meta BlockType, @Meta Palette> slabPalettes;
-    
-    @Value("slabs.stair-palettes")
-    @Default
-    private @Meta Map<@Meta BlockType, @Meta Palette> stairPalettes;
-    
-    @Value("interpolate-elevation")
-    @Default
-    private @Meta boolean interpolateElevation = true;
-    
     @Value("color")
     @Final
     @Default
     private @Meta int color = 0;
-    
     @Value("tags")
     @Default
     private @Meta Set<@Meta String> tags = new HashSet<>();
@@ -95,14 +66,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public BiomeTemplate(ConfigPack pack, Platform platform) {
         this.pack = pack;
-    }
-    
-    public boolean interpolateElevation() {
-        return interpolateElevation;
-    }
-    
-    public boolean doSlabs() {
-        return doSlabs;
     }
     
     @Override
@@ -127,28 +90,8 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return color;
     }
     
-    public int getBlendDistance() {
-        return blendDistance;
-    }
-    
-    public double getSlabThreshold() {
-        return slabThreshold;
-    }
-    
-    public Map<BlockType, Palette> getSlabPalettes() {
-        return slabPalettes;
-    }
-    
-    public Map<BlockType, Palette> getStairPalettes() {
-        return stairPalettes;
-    }
-    
     public ConfigPack getPack() {
         return pack;
-    }
-    
-    public int getSeaLevel() {
-        return seaLevel;
     }
     
     public String getID() {
