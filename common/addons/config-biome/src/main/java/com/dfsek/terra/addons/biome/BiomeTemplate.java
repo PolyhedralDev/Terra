@@ -48,10 +48,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private @Meta Map<String, @Meta Double> variables = new HashMap<>();
     
-    @Value("beta.carving.equation")
-    @Default
-    private @Meta NoiseSampler carvingEquation = NoiseSampler.zero();
-    
     @Value("vanilla")
     private @Meta PlatformBiome vanilla;
     
@@ -172,10 +168,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public NoiseSampler getElevationEquation() {
         return elevationEquation;
-    }
-    
-    public NoiseSampler getCarvingEquation() {
-        return carvingEquation;
     }
     
     public ConfigPack getPack() {
