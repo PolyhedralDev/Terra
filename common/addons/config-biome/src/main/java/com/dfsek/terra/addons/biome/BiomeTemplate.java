@@ -63,9 +63,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private @Meta int blendStep = 4;
     
-    @Value("noise")
-    private @Meta NoiseSampler noiseEquation;
-    
     @Value("ocean.level")
     @Default
     private @Meta int seaLevel = 62;
@@ -172,10 +169,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public PlatformBiome getVanilla() {
         return vanilla;
-    }
-    
-    public NoiseSampler getNoiseEquation() {
-        return noiseEquation;
     }
     
     public int getBlendStep() {
