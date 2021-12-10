@@ -55,10 +55,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("vanilla")
     private @Meta PlatformBiome vanilla;
     
-    @Value("biome-noise")
-    @Default
-    private @Meta NoiseSampler biomeNoise = NoiseSampler.zero();
-    
     @Value("blend.distance")
     @Default
     private @Meta int blendDistance = 3;
@@ -172,10 +168,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public Map<BlockType, Palette> getStairPalettes() {
         return stairPalettes;
-    }
-    
-    public NoiseSampler getBiomeNoise() {
-        return biomeNoise;
     }
     
     public NoiseSampler getElevationEquation() {
