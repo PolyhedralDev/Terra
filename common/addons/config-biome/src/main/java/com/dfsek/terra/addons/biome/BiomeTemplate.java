@@ -44,10 +44,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private List<String> extended = Collections.emptyList();
     
-    @Value("variables")
-    @Default
-    private @Meta Map<String, @Meta Double> variables = new HashMap<>();
-    
     @Value("vanilla")
     private @Meta PlatformBiome vanilla;
     
@@ -100,9 +96,5 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public PlatformBiome getVanilla() {
         return vanilla;
-    }
-    
-    public Map<String, Double> getVariables() {
-        return variables;
     }
 }
