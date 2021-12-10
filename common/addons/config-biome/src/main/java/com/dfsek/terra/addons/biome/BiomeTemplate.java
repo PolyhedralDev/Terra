@@ -55,14 +55,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private @Meta int blendDistance = 3;
     
-    @Value("blend.weight")
-    @Default
-    private @Meta double blendWeight = 1;
-    
-    @Value("blend.step")
-    @Default
-    private @Meta int blendStep = 4;
-    
     @Value("ocean.level")
     @Default
     private @Meta int seaLevel = 62;
@@ -131,10 +123,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
         return colors;
     }
     
-    public double getBlendWeight() {
-        return blendWeight;
-    }
-    
     public int getColor() {
         return color;
     }
@@ -169,10 +157,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public PlatformBiome getVanilla() {
         return vanilla;
-    }
-    
-    public int getBlendStep() {
-        return blendStep;
     }
     
     public Map<String, Double> getVariables() {
