@@ -3,8 +3,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
-val minecraft = "1.18"
-val yarn = "1"
+val minecraft = "1.18.1"
+val yarn = "2"
 val fabricLoader = "0.12.5"
 
 plugins {
