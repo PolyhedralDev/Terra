@@ -43,7 +43,7 @@ public class OreTemplate implements AbstractableTemplate {
     private @Meta boolean physics = false;
     
     @Value("size")
-    private @Meta Range size;
+    private @Meta double size;
     
     @Value("deform")
     @Default
@@ -65,7 +65,7 @@ public class OreTemplate implements AbstractableTemplate {
         return deformFrequency;
     }
     
-    public Range getSize() {
+    public double getSize() {
         return size;
     }
     

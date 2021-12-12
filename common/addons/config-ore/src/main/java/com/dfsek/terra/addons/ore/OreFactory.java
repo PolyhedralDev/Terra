@@ -7,17 +7,17 @@
 
 package com.dfsek.terra.addons.ore;
 
-import com.dfsek.terra.addons.ore.ores.Ore;
 import com.dfsek.terra.addons.ore.ores.VanillaOre;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigFactory;
+import com.dfsek.terra.api.structure.Structure;
 
 
-public class OreFactory implements ConfigFactory<OreTemplate, Ore> {
+public class OreFactory implements ConfigFactory<OreTemplate, Structure> {
     @Override
-    public Ore build(OreTemplate config, Platform platform) {
+    public VanillaOre build(OreTemplate config, Platform platform) {
         BlockState m = config.getMaterial();
-        return new VanillaOre(m, config.getReplaceable(), config.doPhysics(), config.getSize(), platform, config.getMaterialOverrides());
+        return new VanillaOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.getMaterialOverrides());
     }
 }
