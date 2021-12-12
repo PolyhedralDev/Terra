@@ -45,24 +45,8 @@ public class OreTemplate implements AbstractableTemplate {
     @Value("size")
     private @Meta double size;
     
-    @Value("deform")
-    @Default
-    private @Meta double deform = 0.75D;
-    
-    @Value("deform-frequency")
-    @Default
-    private @Meta double deformFrequency = 0.1D;
-    
     public boolean doPhysics() {
         return physics;
-    }
-    
-    public double getDeform() {
-        return deform;
-    }
-    
-    public double getDeformFrequency() {
-        return deformFrequency;
     }
     
     public double getSize() {
