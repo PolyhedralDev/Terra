@@ -35,7 +35,6 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final Platform platform;
-    private final List<GenerationStage> generationStages = new ArrayList<>();
     
     private final SamplerProvider samplerCache;
     
@@ -51,7 +50,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.carverHorizontalResolution = carverHorizontalResolution;
         this.carverVerticalResolution = carverVerticalResolution;
         this.samplerCache = new SamplerProvider(platform, c.getBiomeProvider(), elevationBlend);
-        c.getStages().forEach(stage -> generationStages.add(stage.newInstance(c)));
     }
     
     @Override
@@ -110,11 +108,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 }
             }
         }
-    }
-    
-    @Override
-    public List<GenerationStage> getGenerationStages() {
-        return generationStages;
     }
     
     @Override

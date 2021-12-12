@@ -23,6 +23,7 @@ import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
 
@@ -53,7 +54,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
         return getOrCreateRegistry(type.getType());
     }
     
-    List<GenerationStageProvider> getStages();
+    List<GenerationStage> getStages();
     
     Loader getLoader();
     

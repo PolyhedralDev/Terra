@@ -67,12 +67,16 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return delegate.getGenerationStages().stream().map(generationStage -> new BlockPopulator() {
-            @Override
-            public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull LimitedRegion limitedRegion) {
-                generationStage.populate(new BukkitProtoWorld(limitedRegion));
-            }
-        }).collect(Collectors.toList());
+        return pack.getStages()
+                   .stream()
+                   .map(generationStage -> new BlockPopulator() {
+                       @Override
+                       public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
+                                            @NotNull LimitedRegion limitedRegion) {
+                           generationStage.populate(new BukkitProtoWorld(limitedRegion));
+                       }
+                   })
+                   .collect(Collectors.toList());
     }
     
     @Override

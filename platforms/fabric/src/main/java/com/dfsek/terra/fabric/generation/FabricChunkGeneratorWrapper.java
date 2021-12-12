@@ -21,11 +21,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.structure.StructureManager;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -195,7 +193,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             delegate.generateChunkData((ProtoChunk) chunk, world, chunk.getPos().x, chunk.getPos().z);
-            delegate.getGenerationStages().forEach(populator -> {
+            pack.getStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world);
                 }
@@ -207,7 +205,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
         super.generateFeatures(world, chunk, structureAccessor);
-        delegate.getGenerationStages().forEach(populator -> {
+        pack.getStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
                 populator.populate((ProtoWorld) world);
             }

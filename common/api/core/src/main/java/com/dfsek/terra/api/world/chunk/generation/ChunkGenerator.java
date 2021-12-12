@@ -23,8 +23,6 @@ public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkX, int chunkZ);
     
-    List<GenerationStage> getGenerationStages();
-    
     BlockState getBlock(ServerWorld world, int x, int y, int z);
     
     default BlockState getBlock(ServerWorld world, Vector3 vector3) {

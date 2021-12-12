@@ -29,6 +29,10 @@ import com.dfsek.tectonic.loading.TypeLoader;
 import com.dfsek.tectonic.loading.TypeRegistry;
 import com.dfsek.tectonic.loading.object.ObjectTemplate;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +53,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -75,7 +80,6 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
@@ -115,7 +119,11 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final ConfigTypeRegistry configTypeRegistry;
     
-    
+    private final Lazy<List<GenerationStage>> stages = Lazy.lazy(() -> template
+            .getStages()
+            .stream()
+            .map(stage -> stage.newInstance(this))
+            .collect(Collectors.toList()));
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
@@ -343,8 +351,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public List<GenerationStageProvider> getStages() {
-        return template.getStages();
+    public List<GenerationStage> getStages() {
+        return stages.value();
     }
     
     @Override
