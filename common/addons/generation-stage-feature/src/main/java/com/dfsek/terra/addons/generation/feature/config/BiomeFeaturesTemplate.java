@@ -13,6 +13,8 @@ import com.dfsek.tectonic.loading.object.ObjectTemplate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.feature.Feature;
@@ -22,7 +24,7 @@ import com.dfsek.terra.api.structure.feature.Feature;
 public class BiomeFeaturesTemplate implements ObjectTemplate<BiomeFeatures> {
     @Value("features")
     @Default
-    private @Meta List<@Meta Feature> features = Collections.emptyList();
+    private @Meta Map<@Meta String, @Meta List<@Meta Feature>> features = Collections.emptyMap();
     
     @Override
     public BiomeFeatures get() {

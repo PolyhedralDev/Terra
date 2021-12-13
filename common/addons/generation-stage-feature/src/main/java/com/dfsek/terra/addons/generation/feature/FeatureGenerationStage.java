@@ -7,17 +7,18 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
+import java.util.Collections;
+import java.util.Random;
+
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.PopulationUtil;
+import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-
-import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -42,21 +43,30 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                     int tx = cx + x;
                     int tz = cz + z;
                     ColumnImpl<ProtoWorld> column = new ColumnImpl<>(tx, tz, world);
-                    world.getBiomeProvider().getBiome(tx, tz, seed).getContext().get(BiomeFeatures.class).getFeatures().forEach(feature -> {
-                        try(ProfileFrame ignored = platform.getProfiler().profile(feature.getID())) {
-                            if(feature.getDistributor().matches(tx, tz, seed)) {
-                                feature.getLocator()
-                                       .getSuitableCoordinates(column)
-                                       .forEach(y ->
-                                                        feature.getStructure(world, tx, y, tz)
-                                                               .generate(new Vector3(tx, y, tz), world, new Random(
-                                                                                 PopulationUtil.getCarverChunkSeed(world.centerChunkX(),
-                                                                                                                   world.centerChunkZ(), seed)),
-                                                                         Rotation.NONE)
-                                               );
-                            }
-                        }
-                    });
+                    world.getBiomeProvider()
+                         .getBiome(tx, tz, seed)
+                         .getContext()
+                         .get(BiomeFeatures.class)
+                         .getFeatures()
+                         .getOrDefault(id, Collections.emptyList())
+                         .forEach(feature -> {
+                             try(ProfileFrame ignored = platform.getProfiler().profile(feature.getID())) {
+                                 if(feature.getDistributor().matches(tx, tz, seed)) {
+                                     feature.getLocator()
+                                            .getSuitableCoordinates(column)
+                                            .forEach(y ->
+                                                             feature.getStructure(world, tx, y, tz)
+                                                                    .generate(new Vector3(tx, y, tz),
+                                                                              world,
+                                                                              new Random(PopulationUtil.getCarverChunkSeed(
+                                                                                      world.centerChunkX(),
+                                                                                      world.centerChunkZ(),
+                                                                                      seed)),
+                                                                              Rotation.NONE)
+                                                    );
+                                 }
+                             }
+                         });
                 }
             }
         }
