@@ -118,12 +118,6 @@ public class ConfigPackImpl implements ConfigPack {
     private final Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
     
     private final ConfigTypeRegistry configTypeRegistry;
-    
-    private final Lazy<List<GenerationStage>> stages = Lazy.lazy(() -> template
-            .getStages()
-            .stream()
-            .map(stage -> stage.newInstance(this))
-            .collect(Collectors.toList()));
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
@@ -352,7 +346,7 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     public List<GenerationStage> getStages() {
-        return stages.value();
+        return template.getStages();
     }
     
     @Override
