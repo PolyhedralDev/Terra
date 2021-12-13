@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.feature.locator.config;
 
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.feature.locator.locators.Noise3DLocator;
 import com.dfsek.terra.api.config.meta.Meta;

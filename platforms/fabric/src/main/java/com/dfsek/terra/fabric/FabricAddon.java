@@ -19,7 +19,7 @@ package com.dfsek.terra.fabric;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.api.exception.ConfigException;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

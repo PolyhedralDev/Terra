@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.config.stage.mutator;
 
-import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;

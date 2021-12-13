@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.api.event.events.config;
 
-import com.dfsek.tectonic.abstraction.AbstractConfiguration;
-import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
+import com.dfsek.tectonic.impl.abstraction.AbstractConfiguration;
 
 import java.util.function.Consumer;
 

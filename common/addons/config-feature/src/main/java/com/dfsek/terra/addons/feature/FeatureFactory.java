@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.feature;
 
-import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.api.exception.LoadException;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;

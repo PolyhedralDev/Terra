@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.bukkit.handles;
 
-import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 

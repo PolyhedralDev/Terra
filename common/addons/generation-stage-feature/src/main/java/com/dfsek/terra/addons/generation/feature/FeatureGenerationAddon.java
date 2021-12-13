@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeaturesTemplate;
 import com.dfsek.terra.addons.generation.feature.config.FeatureStageTemplate;

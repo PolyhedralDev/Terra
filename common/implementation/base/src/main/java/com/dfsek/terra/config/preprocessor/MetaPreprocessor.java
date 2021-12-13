@@ -17,9 +17,9 @@
 
 package com.dfsek.terra.config.preprocessor;
 
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.preprocessor.ValuePreprocessor;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.preprocessor.ValuePreprocessor;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

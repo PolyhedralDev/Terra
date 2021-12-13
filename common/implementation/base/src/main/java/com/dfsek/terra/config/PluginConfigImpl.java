@@ -17,11 +17,11 @@
 
 package com.dfsek.terra.config;
 
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
+import com.dfsek.tectonic.api.exception.ConfigException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
 import com.dfsek.terra.api.config.PluginConfig;

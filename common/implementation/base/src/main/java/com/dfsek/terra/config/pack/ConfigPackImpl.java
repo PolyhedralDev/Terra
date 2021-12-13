@@ -18,21 +18,16 @@
 package com.dfsek.terra.config.pack;
 
 import ca.solostudios.strata.version.VersionRange;
-import com.dfsek.tectonic.abstraction.AbstractConfigLoader;
-import com.dfsek.tectonic.abstraction.AbstractConfiguration;
-import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.tectonic.loading.TypeRegistry;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import com.dfsek.tectonic.impl.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.util.generic.Lazy;
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +48,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -79,6 +73,7 @@ import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
@@ -120,7 +115,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final ConfigTypeRegistry configTypeRegistry;
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
-    public ConfigPackImpl(File folder, Platform platform) throws ConfigException {
+    public ConfigPackImpl(File folder, Platform platform) {
         this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
             try {
                 return new YamlConfiguration(new FileInputStream(new File(folder, "pack.yml")), "pack.yml");
@@ -130,7 +125,7 @@ public class ConfigPackImpl implements ConfigPack {
         }), platform);
     }
     
-    public ConfigPackImpl(ZipFile file, Platform platform) throws ConfigException {
+    public ConfigPackImpl(ZipFile file, Platform platform) {
         this(new ZIPLoader(file), Construct.construct(() -> {
             ZipEntry pack = null;
             Enumeration<? extends ZipEntry> entries = file.entries();

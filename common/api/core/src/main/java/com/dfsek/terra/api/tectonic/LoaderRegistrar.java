@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.tectonic;
 
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.TypeRegistry;
 
 
 public interface LoaderRegistrar {

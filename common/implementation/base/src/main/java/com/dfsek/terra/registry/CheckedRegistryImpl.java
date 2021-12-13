@@ -17,8 +17,8 @@
 
 package com.dfsek.terra.registry;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;

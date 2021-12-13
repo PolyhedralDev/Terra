@@ -9,9 +9,9 @@ package com.dfsek.terra.addons.manifest.impl.config;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 
 import java.util.Collections;
 import java.util.List;

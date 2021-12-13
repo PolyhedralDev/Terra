@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
-import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.normalizer.Normalizer;

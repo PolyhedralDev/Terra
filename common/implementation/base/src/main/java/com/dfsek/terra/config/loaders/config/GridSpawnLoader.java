@@ -17,8 +17,8 @@
 
 package com.dfsek.terra.config.loaders.config;
 
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;

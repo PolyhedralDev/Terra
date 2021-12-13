@@ -17,10 +17,10 @@
 
 package com.dfsek.terra.config.preprocessor;
 
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.preprocessor.Result;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.preprocessor.Result;
 import org.apache.commons.text.StringSubstitutor;
 import org.jetbrains.annotations.NotNull;
 

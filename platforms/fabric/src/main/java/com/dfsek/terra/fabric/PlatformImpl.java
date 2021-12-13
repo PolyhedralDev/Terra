@@ -20,8 +20,8 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.TypeRegistry;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 

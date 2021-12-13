@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.pipeline.config;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;

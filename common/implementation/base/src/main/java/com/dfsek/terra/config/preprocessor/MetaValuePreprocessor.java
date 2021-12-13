@@ -17,9 +17,9 @@
 
 package com.dfsek.terra.config.preprocessor;
 
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.preprocessor.Result;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.preprocessor.Result;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;

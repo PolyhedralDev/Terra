@@ -17,8 +17,8 @@
 
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.TypeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 

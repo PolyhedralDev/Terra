@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.biome.pipeline.config;
 
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.noise.config.templates;
 
-import com.dfsek.tectonic.annotations.Value;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.awt.image.BufferedImage;
 

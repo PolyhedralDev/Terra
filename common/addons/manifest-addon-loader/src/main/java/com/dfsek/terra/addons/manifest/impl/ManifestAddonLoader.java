@@ -10,8 +10,8 @@ package com.dfsek.terra.addons.manifest.impl;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;

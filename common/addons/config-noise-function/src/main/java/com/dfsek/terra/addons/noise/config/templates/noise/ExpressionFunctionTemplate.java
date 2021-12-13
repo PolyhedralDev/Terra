@@ -7,13 +7,11 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
-import com.dfsek.paralithic.eval.parser.Parser;
-import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.exception.ValidationException;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

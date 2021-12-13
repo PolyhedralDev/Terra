@@ -17,7 +17,7 @@
 
 package com.dfsek.terra;
 
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.TypeRegistry;
 
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.addon.InternalAddon;

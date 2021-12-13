@@ -17,12 +17,12 @@
 
 package com.dfsek.terra.config.loaders;
 
-import com.dfsek.tectonic.config.MapConfiguration;
-import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import com.dfsek.tectonic.api.exception.ConfigException;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import com.dfsek.tectonic.impl.MapConfiguration;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;

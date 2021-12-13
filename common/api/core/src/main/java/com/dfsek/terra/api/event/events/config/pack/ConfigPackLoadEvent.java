@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.api.event.events.config.pack;
 
-import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
+import com.dfsek.tectonic.api.exception.ConfigException;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
