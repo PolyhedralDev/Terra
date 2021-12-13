@@ -20,12 +20,13 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 import java.util.function.Supplier;
 
 
 public class FeatureGenerationAddon implements AddonInitializer {
-    public static final TypeKey<Supplier<ObjectTemplate<FeatureGenerationStage>>> STAGE_TYPE_KEY = new TypeKey<>() {};
+    public static final TypeKey<Supplier<ObjectTemplate<GenerationStage>>> STAGE_TYPE_KEY = new TypeKey<>() {};
     @Inject
     private Platform platform;
     
