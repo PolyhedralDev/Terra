@@ -1,16 +1,16 @@
 package com.dfsek.terra.addons.chunkgenerator.config.palette;
 
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 
 public class SlantLayer implements ObjectTemplate<SlantLayer> {

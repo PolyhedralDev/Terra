@@ -1,16 +1,18 @@
 package com.dfsek.terra.addons.biome.pipeline.api.delegate;
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import java.util.Collections;
 import java.util.Set;
+
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 final class SelfDelegate implements BiomeDelegate {
     public static final SelfDelegate INSTANCE = new SelfDelegate();
+    
     private SelfDelegate() {
     
     }
+    
     @Override
     public Biome getBiome() {
         throw new UnsupportedOperationException("Cannot get biome from self delegate");

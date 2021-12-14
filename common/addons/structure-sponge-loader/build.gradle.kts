@@ -1,5 +1,5 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.dfsek.terra.version
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 version = version("0.1.0")
 

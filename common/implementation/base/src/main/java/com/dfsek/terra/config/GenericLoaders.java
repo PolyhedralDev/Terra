@@ -18,7 +18,7 @@
 package com.dfsek.terra.config;
 
 import ca.solostudios.strata.version.VersionRange;
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.TypeRegistry;
 
 import java.util.LinkedHashMap;
 

@@ -37,8 +37,8 @@ import com.dfsek.terra.api.Platform;
  * StructureLocateEvent).
  */
 public class SpigotListener implements Listener {
-    private final Platform platform;
     private static final Logger logger = LoggerFactory.getLogger(SpigotListener.class);
+    private final Platform platform;
     
     public SpigotListener(Platform platform) {
         this.platform = platform;

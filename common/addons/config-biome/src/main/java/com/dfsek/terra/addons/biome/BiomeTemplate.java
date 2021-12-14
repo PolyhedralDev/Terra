@@ -7,11 +7,10 @@
 
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Final;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ValidatedConfigTemplate;
-import com.dfsek.tectonic.exception.ValidationException;
+import com.dfsek.tectonic.api.config.template.ValidatedConfigTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Final;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,14 +20,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
@@ -65,7 +60,7 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     }
     
     @Override
-    public boolean validate() throws ValidationException {
+    public boolean validate() {
         color |= 0xff000000; // Alpha adjustment
         return true;
     }

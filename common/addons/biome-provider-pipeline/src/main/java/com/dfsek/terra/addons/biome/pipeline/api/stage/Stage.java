@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.biome.pipeline.api.stage;
 
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 
 
 public interface Stage {

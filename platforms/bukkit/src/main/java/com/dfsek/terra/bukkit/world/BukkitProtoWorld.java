@@ -1,12 +1,11 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.config.ConfigPack;
-
 import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.world.ServerWorld;
@@ -67,7 +66,7 @@ public class BukkitProtoWorld implements ProtoWorld {
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return new BukkitEntity(
                 delegate.spawnEntity(new Location(delegate.getWorld(), x, y, z), ((BukkitEntityType) entityType).getHandle()));
-    
+        
     }
     
     @Override

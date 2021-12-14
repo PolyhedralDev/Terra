@@ -21,11 +21,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.structure.StructureManager;
 import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap;
@@ -68,8 +66,6 @@ import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
-    private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
-    
     public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
             config -> config.group(
                     Codec.STRING.fieldOf("pack")
@@ -81,7 +77,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                                                                               () -> new IllegalArgumentException(
                                                                                                       "No such config pack " +
                                                                                                       id)))));
-    
+    private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
     public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
                     TerraBiomeSource.CODEC.fieldOf("biome_source")
@@ -118,14 +114,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
         return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
-    }
-    
-    public void setPack(ConfigPack pack) {
-        this.pack = pack;
-        this.delegate = pack.getGeneratorProvider().newInstance(pack);
-        biomeSource.setPack(pack);
-        
-        logger.debug("Loading world with config pack {}", pack.getID());
     }
     
     @Override
@@ -195,7 +183,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             delegate.generateChunkData((ProtoChunk) chunk, world, chunk.getPos().x, chunk.getPos().z);
-            delegate.getGenerationStages().forEach(populator -> {
+            pack.getStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world);
                 }
@@ -207,7 +195,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
         super.generateFeatures(world, chunk, structureAccessor);
-        delegate.getGenerationStages().forEach(populator -> {
+        pack.getStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
                 populator.populate((ProtoWorld) world);
             }
@@ -238,13 +226,22 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getTopY() - 1; y >= view.getBottomY(); y--) {
-            array[y - view.getBottomY()] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z)).getHandle();
+            array[y - view.getBottomY()] = ((FabricBlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y,
+                                                                                                             z)).getHandle();
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }
     
     public ConfigPack getPack() {
         return pack;
+    }
+    
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+        this.delegate = pack.getGeneratorProvider().newInstance(pack);
+        biomeSource.setPack(pack);
+        
+        logger.debug("Loading world with config pack {}", pack.getID());
     }
     
     @Override

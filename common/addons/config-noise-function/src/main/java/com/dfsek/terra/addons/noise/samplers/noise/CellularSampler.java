@@ -7,9 +7,10 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise;
 
+import net.jafama.FastMath;
+
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 /**
@@ -355,6 +356,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
+            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     
@@ -376,7 +378,9 @@ public class CellularSampler extends NoiseFunction {
         int yPrimedBase = (yr - 1) * PRIME_Y;
         int zPrimedBase = (zr - 1) * PRIME_Z;
         
-        Vector3 center = new Vector3(x, y, z);
+        double centerX = x;
+        double centerY = y;
+        double centerZ = z;
         
         switch(distanceFunction) {
             case Euclidean:
@@ -400,9 +404,9 @@ public class CellularSampler extends NoiseFunction {
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
-                                center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
+                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
+                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
+                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
                             } else if(newDistance < distance1) {
                                 distance2 = distance1;
                                 distance1 = newDistance;
@@ -436,9 +440,9 @@ public class CellularSampler extends NoiseFunction {
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
-                                center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
+                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
+                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
+                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
                             } else if(newDistance < distance1) {
                                 distance2 = distance1;
                                 distance1 = newDistance;
@@ -474,9 +478,9 @@ public class CellularSampler extends NoiseFunction {
                             if(newDistance < distance0) {
                                 distance0 = newDistance;
                                 closestHash = hash;
-                                center.setX((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                center.setY((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                center.setZ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
+                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
+                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
+                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
                             } else if(newDistance < distance1) {
                                 distance2 = distance1;
                                 distance1 = newDistance;
@@ -509,12 +513,13 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.noise(sl, center.getX(), center.getY(), center.getZ());
+            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY, centerZ);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
+            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     
@@ -539,6 +544,7 @@ public class CellularSampler extends NoiseFunction {
         Distance3Add,
         Distance3Sub,
         Distance3Mul,
-        Distance3Div
+        Distance3Div,
+        Angle
     }
 }

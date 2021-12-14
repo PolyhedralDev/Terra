@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.structure.command;
 
-import com.dfsek.terra.api.world.ServerWorld;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -16,6 +14,7 @@ import java.util.function.Consumer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -31,7 +30,8 @@ public class AsyncStructureFinder implements Runnable {
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
     
-    public AsyncStructureFinder(BiomeProvider provider, ConfiguredStructure target, @NotNull Vector3 origin, ServerWorld world, int startRadius,
+    public AsyncStructureFinder(BiomeProvider provider, ConfiguredStructure target, @NotNull Vector3 origin, ServerWorld world,
+                                int startRadius,
                                 int maxRadius, Consumer<Vector3> callback, Platform platform) {
         //setSearchSize(target.getSpawn().getWidth() + 2 * target.getSpawn().getSeparation());
         this.provider = provider;

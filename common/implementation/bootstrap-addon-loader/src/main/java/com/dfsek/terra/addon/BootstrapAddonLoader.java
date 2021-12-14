@@ -40,6 +40,7 @@ import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAddon<?>> {
     private static final Logger logger = LoggerFactory.getLogger(BootstrapAddonLoader.class);
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
+    
     public BootstrapAddonLoader() { }
     
     private BootstrapBaseAddon<?> loadAddon(Path addonPath, ClassLoader parent) {

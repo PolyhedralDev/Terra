@@ -17,15 +17,12 @@
 
 package com.dfsek.terra.config;
 
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.config.ConfigTemplate;
-import com.dfsek.tectonic.exception.ConfigException;
-import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.exception.ConfigException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.config.PluginConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,9 +30,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.time.Duration;
 
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.config.PluginConfig;
 
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -100,6 +97,7 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     public boolean dumpDefaultConfig() {
         return dumpDefaultData;
     }
+    
     @Override
     public boolean isDebugCommands() {
         return debugCommands;

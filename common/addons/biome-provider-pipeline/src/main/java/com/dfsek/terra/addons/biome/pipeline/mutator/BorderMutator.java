@@ -7,14 +7,14 @@
 
 package com.dfsek.terra.addons.biome.pipeline.mutator;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Predicate;
+
 import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Predicate;
 
 
 public class BorderMutator implements BiomeMutator {
@@ -53,13 +53,13 @@ public class BorderMutator implements BiomeMutator {
         Set<BiomeDelegate> biomeSet = new HashSet<>();
         biomes.forEach(biomeSet::add);
         biomeSet.addAll(
-                        replace
-                                .getContents()
-                                .stream()
-                                .filter(
-                                        Predicate.not(BiomeDelegate::isSelf)
-                                       )
-                                .toList()
+                replace
+                        .getContents()
+                        .stream()
+                        .filter(
+                                Predicate.not(BiomeDelegate::isSelf)
+                               )
+                        .toList()
                        );
         return biomeSet;
     }

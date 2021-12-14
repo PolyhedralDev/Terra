@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.api.world.WritableWorld;
-
 import net.jafama.FastMath;
 
 import java.util.Random;
@@ -21,6 +19,7 @@ import com.dfsek.terra.api.structure.buffer.items.BufferedBlock;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.integer.Vector2Int;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 
 

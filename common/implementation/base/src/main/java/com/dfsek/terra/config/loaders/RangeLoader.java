@@ -17,9 +17,10 @@
 
 package com.dfsek.terra.config.loaders;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
@@ -31,7 +32,7 @@ import com.dfsek.terra.api.util.Range;
 @SuppressWarnings("unchecked")
 public class RangeLoader implements TypeLoader<Range> {
     @Override
-    public Range load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
+    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
         if(o instanceof Map) {
             Map<String, Integer> map = (Map<String, Integer>) o;
             return new ConstantRange(map.get("min"), map.get("max"));

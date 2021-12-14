@@ -17,8 +17,9 @@
 
 package com.dfsek.terra.registry;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
@@ -30,7 +31,6 @@ import java.util.function.Consumer;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import org.jetbrains.annotations.NotNull;
 
 
 /**

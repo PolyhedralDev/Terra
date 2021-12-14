@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.event.events.config;
 
-import com.dfsek.tectonic.config.Configuration;
+import com.dfsek.tectonic.api.config.Configuration;
 
 import java.util.function.BiConsumer;
 

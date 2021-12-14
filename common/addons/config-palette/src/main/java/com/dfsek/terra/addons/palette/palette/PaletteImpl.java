@@ -27,7 +27,7 @@ public abstract class PaletteImpl implements Palette {
      * Constructs a blank palette.
      */
     public PaletteImpl() {
-    
+
     }
     
     @Override

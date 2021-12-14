@@ -42,10 +42,10 @@ public class ProfileCommand implements CommandTemplate {
     @Override
     public void execute(CommandSender sender) {
         sender.sendMessage("""
-                                 ---------------Terra/profile---------------"
-                                 - "start - Starts the profiler"
-                                 - "stop  - Stops the profiler"
-                                 - "query - Fetches profiler data"
-                                 - "reset - Resets profiler data""");
+                           ---------------Terra/profile---------------"
+                           - "start - Starts the profiler"
+                           - "stop  - Stops the profiler"
+                           - "query - Fetches profiler data"
+                           - "reset - Resets profiler data""");
     }
 }

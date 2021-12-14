@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.feature.distributor.config;
 
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.api.structure.feature.Distributor;
 

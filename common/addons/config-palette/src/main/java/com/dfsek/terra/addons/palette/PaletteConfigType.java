@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.palette;
 
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import java.util.function.Supplier;
 

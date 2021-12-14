@@ -1,6 +1,6 @@
 package com.dfsek.terra;
 
-import com.dfsek.tectonic.loading.TypeRegistry;
+import com.dfsek.tectonic.api.TypeRegistry;
 
 import com.dfsek.terra.api.TerraPlugin;
 import com.dfsek.terra.api.addon.TerraAddon;
@@ -98,7 +98,7 @@ public class StandalonePlugin implements TerraPlugin {
     
     @Override
     public void saveDefaultConfig() {
-    
+
     }
     
     @Override

@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.api.tectonic;
 
-import com.dfsek.tectonic.loading.TypeLoader;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import java.lang.reflect.Type;
 import java.util.function.Supplier;

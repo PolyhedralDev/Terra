@@ -1,5 +1,6 @@
 package com.dfsek.terra
 
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
@@ -13,7 +14,6 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
-import org.apache.tools.ant.filters.ReplaceTokens
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")

@@ -7,7 +7,11 @@
 
 package com.dfsek.terra.addons.terrascript;
 
-import com.dfsek.tectonic.exception.LoadException;
+import com.dfsek.tectonic.api.exception.LoadException;
+
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
@@ -22,10 +26,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
-
-import java.io.InputStream;
-import java.lang.reflect.Type;
-import java.util.Map;
 
 
 public class TerraScriptAddon implements AddonInitializer {

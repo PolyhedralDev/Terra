@@ -1,7 +1,5 @@
 package com.dfsek.terra.fabric.mixin;
 
-import com.dfsek.terra.fabric.util.FabricUtil;
-
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
@@ -14,10 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
+import com.dfsek.terra.fabric.util.FabricUtil;
+
 
 @Mixin(ConfiguredStructureFeatures.class)
 public class ConfiguredStructureFeaturesMixin {
-    @Inject(method = "register(Ljava/util/function/BiConsumer;Lnet/minecraft/world/gen/feature/ConfiguredStructureFeature;Lnet/minecraft/util/registry/RegistryKey;)V", at = @At("HEAD"))
+    @Inject(method = "register(Ljava/util/function/BiConsumer;Lnet/minecraft/world/gen/feature/ConfiguredStructureFeature;" +
+                     "Lnet/minecraft/util/registry/RegistryKey;)V",
+            at = @At("HEAD"))
     private static void addStructuresToTerraBiomes(BiConsumer<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> registrar,
                                                    ConfiguredStructureFeature<?, ?> feature,
                                                    RegistryKey<Biome> biome,
@@ -27,7 +29,8 @@ public class ConfiguredStructureFeaturesMixin {
         }
     }
     
-    @Inject(method = "register(Ljava/util/function/BiConsumer;Lnet/minecraft/world/gen/feature/ConfiguredStructureFeature;Ljava/util/Set;)V",
+    @Inject(method = "register(Ljava/util/function/BiConsumer;Lnet/minecraft/world/gen/feature/ConfiguredStructureFeature;Ljava/util/Set;" +
+                     ")V",
             at = @At("HEAD"))
     private static void addStructuresToTerraBiomes(BiConsumer<ConfiguredStructureFeature<?, ?>, RegistryKey<Biome>> registrar,
                                                    ConfiguredStructureFeature<?, ?> feature, Set<RegistryKey<Biome>> biomes,

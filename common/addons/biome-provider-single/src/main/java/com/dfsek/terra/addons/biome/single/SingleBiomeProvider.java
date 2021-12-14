@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.biome.single;
 
+import java.util.Collections;
+
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
-import java.util.Collections;
 
 
 public class SingleBiomeProvider implements BiomeProvider {

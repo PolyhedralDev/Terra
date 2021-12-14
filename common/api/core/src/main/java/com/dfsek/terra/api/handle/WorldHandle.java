@@ -7,13 +7,11 @@
 
 package com.dfsek.terra.api.handle;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.EntityType;
 
 
 /**

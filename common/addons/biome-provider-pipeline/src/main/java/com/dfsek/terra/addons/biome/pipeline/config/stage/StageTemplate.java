@@ -7,8 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline.config.stage;
 
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Description;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.api.config.meta.Meta;
@@ -17,5 +18,6 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public abstract class StageTemplate implements ObjectTemplate<Stage> {
     @Value("noise")
+    @Description("Noise sampler to use for stage distribution.")
     protected @Meta NoiseSampler noise;
 }

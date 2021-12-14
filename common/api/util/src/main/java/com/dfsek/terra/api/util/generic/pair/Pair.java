@@ -56,7 +56,7 @@ public final class Pair<L, R> {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Pair<?, ?> that)) return false;
-    
+        
         return Objects.equals(this.left, that.left) && Objects.equals(this.right, that.right);
     }
     
@@ -104,7 +104,7 @@ public final class Pair<L, R> {
         @Override
         public boolean equals(Object obj) {
             if(!(obj instanceof Mutable<?, ?> that)) return false;
-    
+            
             return Objects.equals(this.left, that.left) && Objects.equals(this.right, that.right);
         }
     }

@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.api.structure.configured;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-
-import org.jetbrains.annotations.ApiStatus.Experimental;
 
 
 @Experimental

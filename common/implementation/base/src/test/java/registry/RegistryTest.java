@@ -48,7 +48,7 @@ public class RegistryTest {
             test.registerChecked("test", "bazinga2");
             fail("Shouldn't be able to re-register with #registerChecked!");
         } catch(DuplicateEntryException ignore) {
-        
+
         }
     }
     
@@ -64,7 +64,7 @@ public class RegistryTest {
             test.register("test", "bazinga2");
             fail("Shouldn't be able to re-register in CheckedRegistry!");
         } catch(DuplicateEntryException ignore) {
-        
+
         }
     }
 }

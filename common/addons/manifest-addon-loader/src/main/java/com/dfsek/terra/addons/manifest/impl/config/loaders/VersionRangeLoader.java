@@ -10,9 +10,9 @@ package com.dfsek.terra.addons.manifest.impl.config.loaders;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.VersionRange;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import java.lang.reflect.AnnotatedType;
 

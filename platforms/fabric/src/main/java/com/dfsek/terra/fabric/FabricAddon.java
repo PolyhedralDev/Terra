@@ -19,7 +19,7 @@ package com.dfsek.terra.fabric;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.api.exception.ConfigException;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +42,8 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 public final class FabricAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
-    private final PlatformImpl terraFabricPlugin;
     private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
-    
+    private final PlatformImpl terraFabricPlugin;
     private final Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
     public FabricAddon(PlatformImpl terraFabricPlugin) {

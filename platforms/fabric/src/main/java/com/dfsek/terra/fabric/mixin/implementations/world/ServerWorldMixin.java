@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.config.ConfigPack;
-
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerChunkManager;
@@ -45,12 +43,13 @@ import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
@@ -86,7 +85,8 @@ public abstract class ServerWorldMixin {
     }
     
     public Entity terra$spawnEntity(Vector3 location, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((net.minecraft.server.world.ServerWorld) (Object) this));
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
+                ((net.minecraft.server.world.ServerWorld) (Object) this));
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
@@ -94,7 +94,8 @@ public abstract class ServerWorldMixin {
     
     public void terra$setBlockData(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
-        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
+        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(),
+                                                                               physics ? 3 : 1042);
     }
     
     @Intrinsic
@@ -103,7 +104,8 @@ public abstract class ServerWorldMixin {
     }
     
     public int terra$getMaxHeight() {
-        return (((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY()) + ((net.minecraft.server.world.ServerWorld) (Object) this).getHeight();
+        return (((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY()) +
+               ((net.minecraft.server.world.ServerWorld) (Object) this).getHeight();
     }
     
     public Chunk terra$getChunkAt(int x, int z) {
@@ -127,7 +129,9 @@ public abstract class ServerWorldMixin {
     }
     
     public BiomeProvider terra$getBiomeProvider() {
-        return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager().getChunkGenerator().getBiomeSource()).getProvider();
+        return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
+                                                                                           .getChunkGenerator()
+                                                                                           .getBiomeSource()).getProvider();
     }
     
     public ConfigPack terra$getPack() {

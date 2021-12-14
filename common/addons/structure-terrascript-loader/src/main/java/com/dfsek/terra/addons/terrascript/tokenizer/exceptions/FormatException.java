@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
 import java.io.Serial;
+
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public class FormatException extends TokenizerException {

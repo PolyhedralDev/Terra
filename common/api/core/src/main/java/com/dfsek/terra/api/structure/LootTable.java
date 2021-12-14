@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.api.structure;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
-
-import org.jetbrains.annotations.ApiStatus.Experimental;
 
 
 @Experimental

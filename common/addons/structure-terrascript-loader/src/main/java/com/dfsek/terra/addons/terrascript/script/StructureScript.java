@@ -57,12 +57,11 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public class StructureScript implements Structure {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     private final Block block;
     private final String id;
     private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     
     public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry,
                            Registry<LootTable> lootRegistry,

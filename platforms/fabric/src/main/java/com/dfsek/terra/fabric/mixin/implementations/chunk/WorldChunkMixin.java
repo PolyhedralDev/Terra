@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.chunk;
 
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.chunk.Chunk;
-
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +29,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
@@ -54,7 +53,8 @@ public abstract class WorldChunkMixin {
     }
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(), false);
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(),
+                                                                        false);
     }
     
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {

@@ -17,10 +17,10 @@
 
 package com.dfsek.terra.config.preprocessor;
 
-import com.dfsek.tectonic.config.Configuration;
-import com.dfsek.tectonic.exception.LoadException;
-import com.dfsek.tectonic.loading.ConfigLoader;
-import com.dfsek.tectonic.preprocessor.Result;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.exception.LoadException;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.preprocessor.Result;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -46,7 +46,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
         if(t.getType() instanceof ParameterizedType parameterizedType) {
             if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
-    
+                
                 if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
                     

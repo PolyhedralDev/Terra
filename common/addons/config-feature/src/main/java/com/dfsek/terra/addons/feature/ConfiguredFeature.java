@@ -23,12 +23,15 @@ public class ConfiguredFeature implements Feature {
     private final Distributor distributor;
     private final Locator locator;
     
+    private final String id;
+    
     public ConfiguredFeature(ProbabilityCollection<Structure> structures, NoiseSampler structureSelector, Distributor distributor,
-                             Locator locator) {
+                             Locator locator, String id) {
         this.structures = structures;
         this.structureSelector = structureSelector;
         this.distributor = distributor;
         this.locator = locator;
+        this.id = id;
     }
     
     @Override
@@ -44,5 +47,10 @@ public class ConfiguredFeature implements Feature {
     @Override
     public Locator getLocator() {
         return locator;
+    }
+    
+    @Override
+    public String getID() {
+        return id;
     }
 }

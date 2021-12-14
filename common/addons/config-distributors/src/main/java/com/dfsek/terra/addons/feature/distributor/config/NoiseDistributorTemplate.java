@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.feature.distributor.config;
 
-import com.dfsek.tectonic.annotations.Default;
-import com.dfsek.tectonic.annotations.Value;
-import com.dfsek.tectonic.loading.object.ObjectTemplate;
+import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.feature.distributor.distributors.NoiseDistributor;
 import com.dfsek.terra.api.config.meta.Meta;

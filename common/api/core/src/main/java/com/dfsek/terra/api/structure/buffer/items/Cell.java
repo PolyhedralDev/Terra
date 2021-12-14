@@ -7,15 +7,14 @@
 
 package com.dfsek.terra.api.structure.buffer.items;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
-
 import com.dfsek.terra.api.world.WritableWorld;
-
-import org.jetbrains.annotations.ApiStatus.Experimental;
 
 
 @Experimental

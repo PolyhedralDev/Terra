@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
@@ -31,6 +29,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;

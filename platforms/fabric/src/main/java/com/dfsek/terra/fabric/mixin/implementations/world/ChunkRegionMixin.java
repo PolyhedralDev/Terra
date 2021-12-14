@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
@@ -44,12 +41,14 @@ import java.util.List;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -68,17 +67,17 @@ public abstract class ChunkRegionMixin {
     @Shadow
     @Final
     private long seed;
-    
-    @Shadow
-    public abstract QueryableTickScheduler<Fluid> getFluidTickScheduler();
-    
     @Shadow
     @Final
     private Chunk centerPos;
     
+    @Shadow
+    public abstract QueryableTickScheduler<Fluid> getFluidTickScheduler();
+    
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
-    public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list, ChunkStatus chunkStatus, int i,
+    public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list,
+                                  ChunkStatus chunkStatus, int i,
                                   CallbackInfo ci) {
         this.config = ((ServerWorld) world).getPack();
     }
@@ -97,8 +96,9 @@ public abstract class ChunkRegionMixin {
         BlockPos pos = new BlockPos(x, y, z);
         ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
         if(physics && ((FabricBlockState) data).getHandle().getBlock() instanceof FluidBlock) {
-            getFluidTickScheduler().scheduleTick(OrderedTick.create(((FluidBlock) ((FabricBlockState) data).getHandle().getBlock()).getFluidState(
-                    ((FabricBlockState) data).getHandle()).getFluid(), pos));
+            getFluidTickScheduler().scheduleTick(
+                    OrderedTick.create(((FluidBlock) ((FabricBlockState) data).getHandle().getBlock()).getFluidState(
+                            ((FabricBlockState) data).getHandle()).getFluid(), pos));
         }
     }
     
@@ -160,6 +160,7 @@ public abstract class ChunkRegionMixin {
     
     
     // TODO remove this; we shouldnt need it anymore
+
     /**
      * We need regions delegating to the same world
      * to have the same hashcode. This

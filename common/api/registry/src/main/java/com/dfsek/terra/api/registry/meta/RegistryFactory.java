@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.registry.meta;
 
-import com.dfsek.tectonic.loading.TypeLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import java.util.function.Function;
 

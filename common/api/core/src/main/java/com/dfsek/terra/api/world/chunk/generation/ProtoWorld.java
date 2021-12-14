@@ -13,6 +13,7 @@ public interface ProtoWorld extends WritableWorld {
      * Get the world object this ProtoWorld represents
      *
      * <b>Do not read from/write to this world!</b>
+     *
      * @return The world
      */
     ServerWorld getWorld();

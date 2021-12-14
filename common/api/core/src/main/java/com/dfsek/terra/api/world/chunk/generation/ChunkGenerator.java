@@ -9,21 +9,16 @@ package com.dfsek.terra.api.world.chunk.generation;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkX, int chunkZ);
-    
-    List<GenerationStage> getGenerationStages();
     
     BlockState getBlock(ServerWorld world, int x, int y, int z);
     

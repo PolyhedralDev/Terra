@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.config.fileloaders;
 
-import com.dfsek.tectonic.exception.ConfigException;
+import com.dfsek.tectonic.api.exception.ConfigException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

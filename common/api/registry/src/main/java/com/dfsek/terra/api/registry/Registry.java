@@ -7,10 +7,7 @@
 
 package com.dfsek.terra.api.registry;
 
-import com.dfsek.tectonic.loading.TypeLoader;
-
-import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
-
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

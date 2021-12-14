@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.Handle;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class BukkitBiomeProvider extends BiomeProvider implements Handle {

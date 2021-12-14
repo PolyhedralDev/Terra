@@ -11,16 +11,14 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
-import java.util.function.Supplier;
-
 
 public class StructureConfigType implements ConfigType<StructureTemplate, ConfiguredStructure> {
+    public static final TypeKey<ConfiguredStructure> CONFIGURED_STRUCTURE_TYPE_KEY = new TypeKey<>() {
+    };
     private final ConfigFactory<StructureTemplate, ConfiguredStructure> factory = new StructureFactory();
-    public static final TypeKey<ConfiguredStructure> CONFIGURED_STRUCTURE_TYPE_KEY = new TypeKey<>(){};
     
     @Override
     public StructureTemplate getTemplate(ConfigPack pack, Platform platform) {
