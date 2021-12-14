@@ -48,7 +48,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                          .getContext()
                          .get(BiomeFeatures.class)
                          .getFeatures()
-                         .getOrDefault(id, Collections.emptyList())
+                         .getOrDefault(this, Collections.emptyList())
                          .forEach(feature -> {
                              try(ProfileFrame ignored = platform.getProfiler().profile(feature.getID())) {
                                  if(feature.getDistributor().matches(tx, tz, seed)) {
