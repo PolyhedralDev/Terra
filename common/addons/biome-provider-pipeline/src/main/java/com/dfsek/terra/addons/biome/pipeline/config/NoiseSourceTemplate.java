@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.config;
 
+import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
@@ -19,9 +20,11 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 public class NoiseSourceTemplate extends SourceTemplate {
     @Value("noise")
+    @Description("The noise function to distribute biomes.")
     private @Meta NoiseSampler noise;
     
     @Value("biomes")
+    @Description("The biomes to be distributed.")
     private @Meta ProbabilityCollection<@Meta BiomeDelegate> biomes;
     
     @Override
