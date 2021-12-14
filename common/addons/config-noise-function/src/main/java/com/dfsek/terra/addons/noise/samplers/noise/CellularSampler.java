@@ -356,7 +356,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
-            case Angle -> FastMath.atan2(x - centerX, y - centerY);
+            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     
@@ -519,7 +519,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
-            case Angle -> FastMath.atan2(x - centerX, y - centerY);
+            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     
