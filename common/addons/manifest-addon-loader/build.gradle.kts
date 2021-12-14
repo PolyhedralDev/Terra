@@ -4,7 +4,7 @@ version = version("0.1.0")
 
 dependencies {
     shadedApi("commons-io:commons-io:2.6")
-    shadedImplementation("com.dfsek.tectonic:yaml:3.0.1")
+    shadedImplementation("com.dfsek.tectonic:yaml:3.1.0")
 }
 
 tasks.withType<Jar> {

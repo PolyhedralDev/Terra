@@ -6,7 +6,7 @@ dependencies {
     shadedApi("commons-io:commons-io:2.6")
     shadedImplementation("org.apache.commons:commons-text:1.9")
     
-    shadedImplementation("com.dfsek.tectonic:yaml:3.0.1")
+    shadedImplementation("com.dfsek.tectonic:yaml:3.1.0")
     
     shadedImplementation("org.yaml:snakeyaml:1.27")
     shadedImplementation("org.ow2.asm:asm:9.2")
