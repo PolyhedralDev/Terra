@@ -42,7 +42,7 @@ public class TypeKey<T> {
             if(!(b instanceof ParameterizedType pb)) {
                 return false;
             }
-    
+            
             return Objects.equals(pa.getOwnerType(), pb.getOwnerType())
                    && pa.getRawType().equals(pb.getRawType())
                    && Arrays.equals(pa.getActualTypeArguments(), pb.getActualTypeArguments());
@@ -50,13 +50,13 @@ public class TypeKey<T> {
             if(!(b instanceof GenericArrayType gb)) {
                 return false;
             }
-    
+            
             return equals(ga.getGenericComponentType(), gb.getGenericComponentType());
         } else if(a instanceof WildcardType wa) {
             if(!(b instanceof WildcardType wb)) {
                 return false;
             }
-    
+            
             return Arrays.equals(wa.getUpperBounds(), wb.getUpperBounds())
                    && Arrays.equals(wa.getLowerBounds(), wb.getLowerBounds());
         } else if(a instanceof TypeVariable<?> va) {

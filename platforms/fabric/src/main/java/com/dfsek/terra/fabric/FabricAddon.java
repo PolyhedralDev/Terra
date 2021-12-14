@@ -42,9 +42,8 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 public final class FabricAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
-    private final PlatformImpl terraFabricPlugin;
     private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
-    
+    private final PlatformImpl terraFabricPlugin;
     private final Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
     public FabricAddon(PlatformImpl terraFabricPlugin) {

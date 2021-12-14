@@ -111,7 +111,7 @@ public class ChunkInterpolator {
             BiomeNoiseProperties gen = entry.getKey();
             int weight = entry.getValue().get();
             double noise = computeNoise(gen, x, y, z);
-        
+            
             n += noise * weight;
             div += gen.blendWeight() * weight;
         }

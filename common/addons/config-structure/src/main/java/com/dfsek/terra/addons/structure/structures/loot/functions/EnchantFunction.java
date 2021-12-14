@@ -7,11 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.inventory.ItemStack;
-import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.inventory.item.ItemMeta;
-
 import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
@@ -22,14 +17,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
+
 
 public class EnchantFunction implements LootFunction {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EnchantFunction.class);
     private final int min;
     private final int max;
     private final JSONArray disabled;
     private final Platform platform;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(EnchantFunction.class);
     
     
     public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {

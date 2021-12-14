@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
-import com.dfsek.terra.api.world.World;
-
 import net.jafama.FastMath;
 
 import java.util.Map;
@@ -24,6 +22,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

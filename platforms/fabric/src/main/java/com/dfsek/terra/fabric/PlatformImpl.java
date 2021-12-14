@@ -20,11 +20,8 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-
+import com.dfsek.tectonic.api.exception.LoadException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.world.ServerWorld;
@@ -46,6 +43,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
 import com.dfsek.terra.fabric.handle.FabricWorldHandle;

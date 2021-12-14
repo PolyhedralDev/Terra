@@ -38,6 +38,7 @@ public class BiomeNoiseConfigTemplate implements ObjectTemplate<BiomeNoiseProper
     
     @Override
     public BiomeNoiseProperties get() {
-        return new BiomeNoiseProperties(baseSampler, elevationSampler, carvingSampler, blendDistance, blendStep, blendWeight, elevationWeight);
+        return new BiomeNoiseProperties(baseSampler, elevationSampler, carvingSampler, blendDistance, blendStep, blendWeight,
+                                        elevationWeight);
     }
 }

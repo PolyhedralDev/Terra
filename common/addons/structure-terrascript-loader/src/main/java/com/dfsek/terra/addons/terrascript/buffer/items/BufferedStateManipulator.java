@@ -7,20 +7,18 @@
 
 package com.dfsek.terra.addons.terrascript.buffer.items;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.structure.buffer.BufferedItem;
-import com.dfsek.terra.api.util.vector.Vector3;
-
-import com.dfsek.terra.api.world.WritableWorld;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.structure.buffer.BufferedItem;
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.WritableWorld;
+
 
 public class BufferedStateManipulator implements BufferedItem {
-    private final String data;
-    
     private static final Logger LOGGER = LoggerFactory.getLogger(BufferedStateManipulator.class);
+    private final String data;
     
     public BufferedStateManipulator(String state) {
         this.data = state;

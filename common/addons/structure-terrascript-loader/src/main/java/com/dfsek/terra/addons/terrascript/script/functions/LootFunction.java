@@ -30,14 +30,13 @@ import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LootFunction.class);
     private final Registry<LootTable> registry;
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final Platform platform;
     private final StructureScript script;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(LootFunction.class);
     
     public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
                         Returnable<String> data, Platform platform, Position position, StructureScript script) {

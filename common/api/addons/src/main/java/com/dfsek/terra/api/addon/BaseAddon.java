@@ -10,10 +10,10 @@ package com.dfsek.terra.api.addon;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
-
 import java.util.Collections;
 import java.util.Map;
+
+import com.dfsek.terra.api.util.StringIdentifiable;
 
 
 public interface BaseAddon extends StringIdentifiable {

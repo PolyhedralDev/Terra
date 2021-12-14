@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.parser.exceptions;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
 import java.io.Serial;
+
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public class ParseException extends RuntimeException {

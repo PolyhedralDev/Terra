@@ -11,9 +11,6 @@ package com.dfsek.terra.addons.chunkgenerator.generation;
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
@@ -29,7 +26,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
@@ -120,7 +116,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
-    
+        
         Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo);
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {

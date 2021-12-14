@@ -11,17 +11,17 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
-import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.world.chunk.generation.util.Palette;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
+import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
@@ -44,10 +44,10 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
                 builder.add(entry.getValue(), entry.getKey());
             }
         }
-    
+        
         TreeMap<Double, PaletteHolder> slantLayers = new TreeMap<>();
         double minThreshold = Double.MAX_VALUE;
-    
+        
         for(SlantLayer layer : slant) {
             double threshold = layer.getThreshold();
             if(threshold < minThreshold) minThreshold = threshold;

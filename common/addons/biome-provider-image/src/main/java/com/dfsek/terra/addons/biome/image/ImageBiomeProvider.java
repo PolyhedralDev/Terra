@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.biome.image;
 
-import com.dfsek.terra.api.world.biome.Biome;
 import net.jafama.FastMath;
 
 import java.awt.Color;
@@ -16,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 

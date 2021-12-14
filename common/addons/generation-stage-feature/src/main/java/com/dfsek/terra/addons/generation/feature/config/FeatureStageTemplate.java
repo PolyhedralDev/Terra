@@ -9,10 +9,9 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 
 public class FeatureStageTemplate implements ObjectTemplate<GenerationStage> {
+    private final Platform platform;
     @Value("id")
     private String id;
-    
-    private final Platform platform;
     
     public FeatureStageTemplate(Platform platform) { this.platform = platform; }
     

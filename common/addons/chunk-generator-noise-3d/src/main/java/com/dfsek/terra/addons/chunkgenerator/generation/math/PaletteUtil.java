@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 

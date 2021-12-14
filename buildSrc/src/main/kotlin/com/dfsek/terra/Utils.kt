@@ -1,8 +1,8 @@
 package com.dfsek.terra
 
+import java.io.ByteArrayOutputStream
 import org.gradle.api.Action
 import org.gradle.api.Project
-import java.io.ByteArrayOutputStream
 
 
 var isPrerelease = false

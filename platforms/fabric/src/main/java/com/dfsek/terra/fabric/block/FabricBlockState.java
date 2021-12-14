@@ -45,7 +45,7 @@ public class FabricBlockState implements BlockState {
             PROPERTY_DELEGATES_T2M = Construct.construct(() -> {
         Map<Property<?>, Pair<net.minecraft.state.property.Property<?>, Function<Object, Object>>> map = new HashMap<>();
         map.put(Properties.AXIS, Pair.of(net.minecraft.state.property.Properties.AXIS,
-                                                  a -> FabricAdapter.adapt((net.minecraft.util.math.Direction.Axis) a)));
+                                         a -> FabricAdapter.adapt((net.minecraft.util.math.Direction.Axis) a)));
         
         map.put(Properties.NORTH, Pair.of(net.minecraft.state.property.Properties.NORTH, Function.identity()));
         map.put(Properties.SOUTH, Pair.of(net.minecraft.state.property.Properties.SOUTH, Function.identity()));
@@ -53,13 +53,13 @@ public class FabricBlockState implements BlockState {
         map.put(Properties.WEST, Pair.of(net.minecraft.state.property.Properties.WEST, Function.identity()));
         
         map.put(Properties.NORTH_CONNECTION, Pair.of(net.minecraft.state.property.Properties.NORTH_WIRE_CONNECTION,
-                                                              c -> FabricAdapter.adapt((WireConnection) c)));
+                                                     c -> FabricAdapter.adapt((WireConnection) c)));
         map.put(Properties.SOUTH_CONNECTION, Pair.of(net.minecraft.state.property.Properties.SOUTH_WIRE_CONNECTION,
-                                                              c -> FabricAdapter.adapt((WireConnection) c)));
+                                                     c -> FabricAdapter.adapt((WireConnection) c)));
         map.put(Properties.EAST_CONNECTION, Pair.of(net.minecraft.state.property.Properties.EAST_WIRE_CONNECTION,
-                                                             c -> FabricAdapter.adapt((WireConnection) c)));
+                                                    c -> FabricAdapter.adapt((WireConnection) c)));
         map.put(Properties.WEST_CONNECTION, Pair.of(net.minecraft.state.property.Properties.WEST_WIRE_CONNECTION,
-                                                             c -> FabricAdapter.adapt((WireConnection) c)));
+                                                    c -> FabricAdapter.adapt((WireConnection) c)));
         
         
         map.put(Properties.NORTH_HEIGHT,

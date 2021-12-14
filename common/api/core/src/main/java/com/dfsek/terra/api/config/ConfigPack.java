@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.api.config;
 
+import ca.solostudios.strata.version.VersionRange;
+
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-
-import ca.solostudios.strata.version.VersionRange;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -21,11 +21,9 @@ import com.dfsek.terra.api.tectonic.LoaderHolder;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
 
 
 public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolder, StringIdentifiable {

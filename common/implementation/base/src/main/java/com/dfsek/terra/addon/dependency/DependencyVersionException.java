@@ -20,7 +20,7 @@ package com.dfsek.terra.addon.dependency;
 import java.io.Serial;
 
 
-public class DependencyVersionException extends DependencyException{
+public class DependencyVersionException extends DependencyException {
     @Serial
     private static final long serialVersionUID = 3564288935278878135L;
     

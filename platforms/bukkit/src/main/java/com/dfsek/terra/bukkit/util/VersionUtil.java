@@ -59,7 +59,7 @@ public final class VersionUtil {
             
             logger.debug("Spigot version info parsed successfully.");
         }
-    
+        
         public boolean isPaper() {
             return paper;
         }
@@ -67,7 +67,7 @@ public final class VersionUtil {
         public boolean isMohist() {
             return mohist;
         }
-    
+        
         public boolean isSpigot() {
             return spigot;
         }

@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.api.inject.exception;
 
-import com.dfsek.terra.api.inject.Injector;
-
 import java.io.Serial;
+
+import com.dfsek.terra.api.inject.Injector;
 
 
 /**

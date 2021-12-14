@@ -17,7 +17,7 @@ public interface BootstrapBaseAddon<T extends BaseAddon> extends BaseAddon {
      * Load all the relevant addons in the specified path.
      *
      * @param addonsFolder Path containing addons.
-     * @param parent parent class loader
+     * @param parent       parent class loader
      *
      * @return Loaded addons
      */

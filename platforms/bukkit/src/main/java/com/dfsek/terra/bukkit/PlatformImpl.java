@@ -17,10 +17,11 @@
 
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Locale;
@@ -33,8 +34,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class PlatformImpl extends AbstractPlatform {

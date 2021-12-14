@@ -7,11 +7,10 @@ import com.dfsek.terra.api.util.Rotation;
  * oh yeah
  */
 public class Vector2Int {
-    private final int x;
-    private final int z;
-    
     private static final Vector2Int ZERO = new Vector2Int(0, 0);
     private static final Vector2Int UNIT = new Vector2Int(0, 1);
+    private final int x;
+    private final int z;
     
     protected Vector2Int(int x, int z) {
         this.x = x;
@@ -62,19 +61,19 @@ public class Vector2Int {
             this.x = x;
             this.z = z;
         }
-    
+        
         public int getZ() {
             return z;
         }
-    
-        public int getX() {
-            return x;
-        }
-    
+        
         public void setZ(int z) {
             this.z = z;
         }
-    
+        
+        public int getX() {
+            return x;
+        }
+        
         public void setX(int x) {
             this.x = x;
         }

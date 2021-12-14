@@ -7,15 +7,14 @@
 
 package com.dfsek.terra.addons.biome.command.biome;
 
-import com.dfsek.terra.api.world.ServerWorld;
-
-import com.dfsek.terra.api.world.biome.Biome;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -35,7 +34,8 @@ public class AsyncBiomeFinder implements Runnable {
     private final Consumer<Vector3> callback;
     protected int searchSize = 1;
     
-    public AsyncBiomeFinder(BiomeProvider provider, Biome target, @NotNull Vector3 origin, ServerWorld world, int startRadius, int maxRadius,
+    public AsyncBiomeFinder(BiomeProvider provider, Biome target, @NotNull Vector3 origin, ServerWorld world, int startRadius,
+                            int maxRadius,
                             Consumer<Vector3> callback, Platform platform) {
         this.provider = provider;
         this.target = target;

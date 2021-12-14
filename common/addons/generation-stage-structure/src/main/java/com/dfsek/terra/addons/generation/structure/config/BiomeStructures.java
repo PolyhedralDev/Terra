@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.generation.structure.config;
 
+import java.util.List;
+
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-
-import java.util.List;
 
 
 public class BiomeStructures implements Properties {

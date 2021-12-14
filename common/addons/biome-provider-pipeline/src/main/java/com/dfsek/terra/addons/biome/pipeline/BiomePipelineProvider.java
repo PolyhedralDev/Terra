@@ -7,14 +7,6 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.StringIdentifiable;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -25,6 +17,14 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.StreamSupport;
+
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
+import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
+import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomePipelineProvider implements BiomeProvider {

@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import net.jafama.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -27,19 +29,16 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class StructureFunction implements Function<Boolean> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StructureFunction.class);
     private final Registry<Structure> registry;
     private final Returnable<String> id;
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final Platform platform;
     private final List<Returnable<String>> rotations;
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(StructureFunction.class);
+
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
                              List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform platform) {
         this.registry = registry;
@@ -79,10 +78,10 @@ public class StructureFunction implements Function<Boolean> {
                 LOGGER.warn("Invalid rotation {}", rotString);
                 return null;
             }
-    
+
             Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
                                          FastMath.roundToInt(xz.getZ()));
-    
+
             return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(),
                                    arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
         }).orElseGet(() -> {

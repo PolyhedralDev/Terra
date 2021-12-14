@@ -20,6 +20,7 @@ package com.dfsek.terra.bukkit.handles;
 import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
@@ -28,8 +29,6 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class BukkitWorldHandle implements WorldHandle {
@@ -51,7 +50,7 @@ public class BukkitWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull EntityType getEntity(String id) {
+    public @NotNull EntityType getEntity(@NotNull String id) {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }

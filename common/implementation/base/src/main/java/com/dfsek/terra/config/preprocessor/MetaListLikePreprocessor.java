@@ -43,7 +43,7 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
         if(t.getType() instanceof ParameterizedType parameterizedType) {
             if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
-    
+                
                 if((List.class.isAssignableFrom(baseClass) || Set.class.isAssignableFrom(baseClass)) &&
                    c instanceof List) { // List or set metaconfig
                     List<Object> list = (List<Object>) c;

@@ -134,7 +134,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
-        logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(), Bukkit.getServer().getName());
+        logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(),
+                    Bukkit.getServer().getName());
         
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
@@ -204,7 +205,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(() -> new IllegalArgumentException("No such config pack \"" + id + "\""));
+            ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(
+                    () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
         }), platform.getRawConfigRegistry().get(id).orElseThrow());
     }

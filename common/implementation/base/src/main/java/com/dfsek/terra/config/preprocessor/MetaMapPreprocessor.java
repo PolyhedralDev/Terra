@@ -46,7 +46,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
         if(t.getType() instanceof ParameterizedType parameterizedType) {
             if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
-    
+                
                 if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
                     

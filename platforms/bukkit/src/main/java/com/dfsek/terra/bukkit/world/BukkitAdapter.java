@@ -18,8 +18,6 @@
 package com.dfsek.terra.bukkit.world;
 
 
-import com.dfsek.terra.api.world.ServerWorld;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -37,6 +35,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;

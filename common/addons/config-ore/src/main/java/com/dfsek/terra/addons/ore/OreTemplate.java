@@ -18,7 +18,6 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 
 

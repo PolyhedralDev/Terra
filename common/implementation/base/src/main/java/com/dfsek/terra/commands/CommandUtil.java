@@ -27,6 +27,7 @@ import com.dfsek.terra.commands.profiler.ProfileCommand;
 
 public final class CommandUtil {
     private static final Logger logger = LoggerFactory.getLogger(CommandUtil.class);
+    
     public static void registerAll(CommandManager manager) throws MalformedCommandException {
         logger.info("Registering Terra commands...");
         manager.register("profile", ProfileCommand.class);

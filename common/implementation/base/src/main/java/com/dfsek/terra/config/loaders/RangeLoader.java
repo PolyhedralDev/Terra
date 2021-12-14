@@ -20,14 +20,13 @@ package com.dfsek.terra.config.loaders;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
-
-import org.jetbrains.annotations.NotNull;
 
 
 @SuppressWarnings("unchecked")

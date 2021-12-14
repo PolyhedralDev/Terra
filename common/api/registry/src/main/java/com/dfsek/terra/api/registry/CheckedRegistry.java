@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.api.registry;
 
-import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-
 import org.jetbrains.annotations.NotNull;
+
+import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 
 
 public interface CheckedRegistry<T> extends Registry<T> {

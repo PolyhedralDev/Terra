@@ -18,12 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.addon.EphemeralAddon;
-import com.dfsek.terra.addon.InternalAddon;
-
-import com.dfsek.terra.api.util.StringIdentifiable;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +41,8 @@ import java.util.Map;
 
 import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.addon.DependencySorter;
+import com.dfsek.terra.addon.EphemeralAddon;
+import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandManager;
@@ -61,6 +57,7 @@ import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.commands.CommandUtil;
 import com.dfsek.terra.commands.TerraCommandManager;
@@ -184,14 +181,14 @@ public abstract class AbstractPlatform implements Platform {
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
         
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
-    
+        
         Injector<Platform> platformInjector = new InjectorImpl<>(this);
         platformInjector.addExplicitTarget(Platform.class);
-    
+        
         bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
                             .forEach(bootstrapAddon -> {
                                 platformInjector.inject(bootstrapAddon);
-        
+            
                                 bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
                                               .forEach(addonList::add);
                             });
@@ -201,7 +198,7 @@ public abstract class AbstractPlatform implements Platform {
             builder.append("Loading ")
                    .append(addonList.size())
                    .append(" Terra addons:");
-        
+            
             for(BaseAddon addon : addonList) {
                 builder.append("\n        ")
                        .append("- ")
@@ -209,10 +206,10 @@ public abstract class AbstractPlatform implements Platform {
                        .append("@")
                        .append(addon.getVersion().getFormatted());
             }
-        
+            
             logger.info(builder.toString());
         }
-    
+        
         DependencySorter sorter = new DependencySorter();
         addonList.forEach(sorter::add);
         sorter.sort().forEach(addon -> {
@@ -222,7 +219,7 @@ public abstract class AbstractPlatform implements Platform {
                 addonRegistry.register(addon.getID(), addon);
             }
         });
-    
+        
         eventManager.getHandler(FunctionalEventHandler.class)
                     .register(internalAddon, PlatformInitializationEvent.class)
                     .then(event -> {
@@ -231,10 +228,10 @@ public abstract class AbstractPlatform implements Platform {
                         logger.info("Loaded packs.");
                     })
                     .global();
-    
-    
+        
+        
         logger.info("Terra addons successfully loaded.");
-    
+        
         try {
             CommandUtil.registerAll(manager);
         } catch(MalformedCommandException e) {

@@ -17,9 +17,9 @@
 
 package com.dfsek.terra.config.pack;
 
+import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,6 @@ import java.util.Map;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageProvider;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })

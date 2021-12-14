@@ -13,17 +13,6 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
-import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
-import com.dfsek.terra.addons.manifest.impl.config.WebsiteConfig;
-import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionLoader;
-import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionRangeLoader;
-import com.dfsek.terra.addons.manifest.impl.exception.AddonException;
-import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
-import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
-import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +29,16 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
+import com.dfsek.terra.addons.manifest.impl.config.WebsiteConfig;
+import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionLoader;
+import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionRangeLoader;
+import com.dfsek.terra.addons.manifest.impl.exception.AddonException;
+import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
+import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 
 public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {

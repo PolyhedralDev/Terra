@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import com.dfsek.terra.api.world.World;
-
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -28,12 +26,12 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class SamplerProvider {
     private final LoadingCache<Pair<Long, World>, Sampler3D> cache;
-    
     
     
     public SamplerProvider(Platform platform, BiomeProvider provider, int elevationSmooth) {
@@ -45,7 +43,8 @@ public class SamplerProvider {
                                     int cx = (int) (key >> 32);
                                     int cz = (int) key;
                                     World world = pair.getRight();
-                                    return new Sampler3D(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight(), provider, elevationSmooth);
+                                    return new Sampler3D(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight(), provider,
+                                                         elevationSmooth);
                                 }
                             });
     }

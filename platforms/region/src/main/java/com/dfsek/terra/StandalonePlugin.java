@@ -98,7 +98,7 @@ public class StandalonePlugin implements TerraPlugin {
     
     @Override
     public void saveDefaultConfig() {
-    
+
     }
     
     @Override

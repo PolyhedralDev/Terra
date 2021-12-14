@@ -15,9 +15,9 @@ import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 import com.dfsek.paralithic.node.Statefulness;
 
-import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
-
 import java.util.Map.Entry;
+
+import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 
 
 public class UserDefinedFunction implements DynamicFunction {
@@ -42,7 +42,7 @@ public class UserDefinedFunction implements DynamicFunction {
             FunctionTemplate nest = entry.getValue();
             parser.registerFunction(id, newInstance(nest));
         }
-    
+        
         return new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
     }
     

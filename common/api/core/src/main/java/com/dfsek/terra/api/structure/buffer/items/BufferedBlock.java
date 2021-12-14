@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.structure.buffer.items;
 
-import com.dfsek.terra.api.world.WritableWorld;
-
 import org.jetbrains.annotations.ApiStatus.Experimental;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.structure.buffer.BufferedItem;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.WritableWorld;
 
 
 @Experimental

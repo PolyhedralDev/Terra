@@ -77,11 +77,11 @@ public class FeatureGenerationAddon implements AddonInitializer {
                                                        .build());
                             }
                         });
-                        
+                
                         DynamicTemplate template = event.load(templateBuilder.build());
-                        
+                
                         Map<FeatureGenerationStage, List<Feature>> features = new HashMap<>();
-                        
+                
                         featureGenerationStages.forEach(stage -> features.put(stage, template.get(stage.getID(), List.class)));
                 
                         event.getLoadedObject(Biome.class).getContext().put(new BiomeFeatures(features));

@@ -19,6 +19,7 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
@@ -28,8 +29,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.dfsek.terra.api.registry.Registry;
-
-import org.jetbrains.annotations.NotNull;
 
 
 /**

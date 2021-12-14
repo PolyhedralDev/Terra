@@ -40,11 +40,9 @@ import com.dfsek.terra.bukkit.world.BukkitServerWorld;
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
     private final ChunkGenerator delegate;
-    
+    private final ConfigPack pack;
     private World world;
     private ServerWorld terraWorld;
-    
-    private final ConfigPack pack;
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack) {
         this.delegate = delegate;

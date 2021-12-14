@@ -161,7 +161,7 @@ public class ConfigPackImpl implements ConfigPack {
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
         this.addons = addonsTemplate.getAddons();
-    
+        
         Map<String, Configuration> configurations = discoverConfigurations();
         registerMeta(configurations);
         
