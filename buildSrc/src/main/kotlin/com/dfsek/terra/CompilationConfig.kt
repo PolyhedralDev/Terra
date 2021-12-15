@@ -14,12 +14,14 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
+import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")
     apply(plugin = "java")
     apply(plugin = "java-library")
     apply(plugin = "idea")
+    apply<TectonicDocPlugin>()
     
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
