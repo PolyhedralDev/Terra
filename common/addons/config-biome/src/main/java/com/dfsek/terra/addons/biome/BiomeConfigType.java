@@ -32,11 +32,7 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, Biome> {
     
     @Override
     public Supplier<OpenRegistry<Biome>> registrySupplier(ConfigPack pack) {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Biome>) (t, c, loader) -> {
-            if(c.equals("SELF")) return null;
-            return registry.get((String) c).orElseThrow(() -> new LoadException(
-                    "No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry."));
-        });
+        return () -> pack.getRegistryFactory().create();
     }
     
     @Override
