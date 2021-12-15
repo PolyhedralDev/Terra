@@ -12,6 +12,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.TaskAction
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
+import org.objectweb.asm.tree.FieldNode
 
 
 abstract class GenerateDocsTask : DefaultTask() {
@@ -68,7 +69,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                             keyName.append("final ")
                         }
                         
-                        keyName.append(descriptorToHumanReadable(field.desc).substringAfterLast("."))
+                        keyName.append(getType(field))
                             .append(" ")
                         
                         annotations.stream().filter {
@@ -91,6 +92,24 @@ abstract class GenerateDocsTask : DefaultTask() {
                 save.writeText(template.format())
             }
         }
+    }
+    
+    private fun getType(node: FieldNode): String {
+        if(node.signature != null) {
+            return generic(node.signature)
+        }
+        return descriptorToHumanReadable(node.desc).substringAfterLast('.')
+    }
+    
+    private fun generic(type: String): String {
+        val clean = descriptorToHumanReadable(type)
+        
+        if(clean.contains('<')) {
+            val typeIndex = clean.indexOf('<')
+            return clean.substring(0, typeIndex+1).substringAfterLast('.') + generic(clean.substring(typeIndex+1)) + "\\>"
+        }
+        
+        return clean.substringAfterLast('.')
     }
     
     private fun createClassNode(input: InputStream): ClassNode {
@@ -120,7 +139,7 @@ abstract class GenerateDocsTask : DefaultTask() {
             "J" -> "long"
             "S" -> "short"
             "Z" -> "boolean"
-            else -> throw IllegalArgumentException("Invalid descriptor: $descriptor")
+            else -> descriptor
         }
     }
     
