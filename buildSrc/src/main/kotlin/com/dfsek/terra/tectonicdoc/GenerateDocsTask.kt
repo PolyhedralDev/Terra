@@ -19,11 +19,11 @@ abstract class GenerateDocsTask : DefaultTask() {
     fun generateDocs() {
         project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.forEach { sources ->
             val classes = HashMap<String, ClassNode>()
-            sources.java.classesDirectory.get().asFileTree.forEach {
-                if (it.name.endsWith(".class")) {
-                    val node = createClassNode(FileInputStream(it))
-                    if (node.fields.stream().anyMatch {
-                            it.visibleAnnotations?.stream()?.anyMatch {
+            sources.java.classesDirectory.get().asFileTree.forEach { file ->
+                if (file.name.endsWith(".class")) {
+                    val node = createClassNode(FileInputStream(file))
+                    if (node.fields.stream().anyMatch { field ->
+                            field.visibleAnnotations?.stream()?.anyMatch {
                                 it.desc.equals(descriptor(Value::class.java.canonicalName))
                             } == true
                         }) {
@@ -33,7 +33,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                             .get()
                             .asFile
                             .toPath()
-                            .relativize(it.toPath())
+                            .relativize(file.toPath())
                             .toString()
                             .substringBeforeLast('.')] = node
                     }
@@ -43,16 +43,16 @@ abstract class GenerateDocsTask : DefaultTask() {
             val docsDir = File(project.buildDir, "tectonic")
             docsDir.mkdirs()
             
-            classes.forEach { name, clazz ->
+            classes.forEach { (name, clazz) ->
                 val template = DocumentedTemplate(name.substringAfterLast('/'))
                 clazz.fields
                     .stream()
-                    .filter {
-                        it.visibleAnnotations?.stream()?.anyMatch {
+                    .filter { field ->
+                        field.visibleAnnotations?.stream()?.anyMatch {
                             it.desc.equals(descriptor(Value::class.java.canonicalName))
                         } == true
-                    }.forEach {
-                        val annotations = it.visibleAnnotations
+                    }.forEach { field ->
+                        val annotations = field.visibleAnnotations
                         
                         val description = StringBuilder()
                         
@@ -62,23 +62,23 @@ abstract class GenerateDocsTask : DefaultTask() {
                             description.append(it.values[1])
                         }
                         
-                        val name = StringBuilder()
+                        val keyName = StringBuilder()
                         
                         if (annotations.stream().anyMatch { it.desc.equals(descriptor(Final::class.java.canonicalName)) }) {
-                            name.append("final ")
+                            keyName.append("final ")
                         }
                         
-                        name.append(descriptorToHumanReadable(it.desc))
+                        keyName.append(descriptorToHumanReadable(field.desc))
                             .append(" ")
                         
                         annotations.stream().filter {
                             it.desc.equals(descriptor(Value::class.java.canonicalName))
                         }.forEach {
-                            name.append(it.values[1])
+                            keyName.append(it.values[1])
                         }
                         
-                        template.add(name.toString(), description.toString().ifBlank {
-                            println("No description provided for field " + it.name)
+                        template.add(keyName.toString(), description.toString().ifBlank {
+                            println("No description provided for field " + field.name)
                             "*No description provided.*"
                         })
                     }
