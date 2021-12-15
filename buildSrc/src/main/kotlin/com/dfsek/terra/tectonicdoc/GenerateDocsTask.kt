@@ -6,7 +6,6 @@ import com.dfsek.tectonic.api.config.template.annotations.Value
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
-import java.lang.IllegalArgumentException
 import org.gradle.api.DefaultTask
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.TaskAction
@@ -28,7 +27,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                                 it.desc.equals(descriptor(Value::class.java.canonicalName))
                             } == true
                         }) {
-                        classes[sources
+                        var name = sources
                             .java
                             .classesDirectory
                             .get()
@@ -36,7 +35,11 @@ abstract class GenerateDocsTask : DefaultTask() {
                             .toPath()
                             .relativize(file.toPath())
                             .toString()
-                            .substringBeforeLast('.')] = node
+                            .substringBeforeLast('.')
+                        if(name.endsWith("Template")) {
+                            name = name.substringBeforeLast("Template")
+                        }
+                        classes[name] = node
                     }
                 }
             }
