@@ -70,7 +70,12 @@ abstract class GenerateDocsTask : DefaultTask() {
                         
                         name.append(descriptorToHumanReadable(it.desc))
                             .append(" ")
-                            .append(it.name)
+                        
+                        annotations.stream().filter {
+                            it.desc.equals(descriptor(Value::class.java.canonicalName))
+                        }.forEach {
+                            name.append(it.values[1])
+                        }
                         
                         template.add(name.toString(), description.toString().ifBlank {
                             println("No description provided for field " + it.name)
