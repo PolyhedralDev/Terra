@@ -7,16 +7,10 @@
 
 package com.dfsek.terra.addons.biome;
 
-import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import java.util.function.Supplier;
-
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 
@@ -28,11 +22,6 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, Biome> {
     
     public BiomeConfigType(ConfigPack pack) {
         this.factory = new BiomeFactory(pack);
-    }
-    
-    @Override
-    public Supplier<OpenRegistry<Biome>> registrySupplier(ConfigPack pack) {
-        return () -> pack.getRegistryFactory().create();
     }
     
     @Override
