@@ -68,7 +68,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                             keyName.append("final ")
                         }
                         
-                        keyName.append(descriptorToHumanReadable(field.desc))
+                        keyName.append(descriptorToHumanReadable(field.desc).substringAfterLast("."))
                             .append(" ")
                         
                         annotations.stream().filter {
@@ -78,7 +78,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                         }
                         
                         template.add(keyName.toString(), description.toString().ifBlank {
-                            println("No description provided for field " + field.name)
+                            println("No description provided for field " + field.name + " in class " + name)
                             "*No description provided.*"
                         })
                     }
