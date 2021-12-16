@@ -30,6 +30,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
@@ -76,6 +77,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("LINEAR", LinearNormalizerTemplate::new);
                   noiseRegistry.register("NORMAL", NormalNormalizerTemplate::new);
                   noiseRegistry.register("CLAMP", ClampNormalizerTemplate::new);
+                  noiseRegistry.register("PROBABILITY", ProbabilityNormalizerTemplate::new);
             
                   noiseRegistry.register("IMAGE", ImageSamplerTemplate::new);
             
