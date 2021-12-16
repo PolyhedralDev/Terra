@@ -41,7 +41,9 @@ public class RandomLocator implements Locator {
         
         BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
         for(int i = 0; i < size; i++) {
-            results.set(height.get(r));
+            int h = height.get(r);
+            if(h >= column.getMaxY() || h < column.getMinY()) continue;
+            results.set(h);
         }
         
         return results;
