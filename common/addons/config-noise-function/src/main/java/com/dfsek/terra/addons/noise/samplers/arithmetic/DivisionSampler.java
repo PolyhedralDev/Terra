@@ -4,7 +4,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class DivisionSampler extends BinaryArithmeticSampler{
-    protected DivisionSampler(NoiseSampler left, NoiseSampler right) {
+    public DivisionSampler(NoiseSampler left, NoiseSampler right) {
         super(left, right);
     }
     

@@ -122,7 +122,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("ADD", () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register("SUB", () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
                   noiseRegistry.register("MUL", () -> new BinaryArithmeticTemplate<>(MultiplicationSampler::new));
-                  
+                  noiseRegistry.register("DIV", () -> new BinaryArithmeticTemplate<>(DivisionSampler::new));
                   
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
