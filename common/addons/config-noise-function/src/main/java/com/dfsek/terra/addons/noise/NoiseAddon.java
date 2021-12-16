@@ -35,6 +35,8 @@ import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizer
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.DivisionSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
@@ -119,6 +121,8 @@ public class NoiseAddon implements AddonInitializer {
                   
                   noiseRegistry.register("ADD", () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register("SUB", () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
+                  noiseRegistry.register("MUL", () -> new BinaryArithmeticTemplate<>(MultiplicationSampler::new));
+                  
                   
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
