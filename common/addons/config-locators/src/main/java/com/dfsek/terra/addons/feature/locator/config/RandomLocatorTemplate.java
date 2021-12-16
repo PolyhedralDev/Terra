@@ -27,7 +27,7 @@ public class RandomLocatorTemplate implements ObjectTemplate<Locator> {
     
     @Value("salt")
     @Default
-    private int salt = 0;
+    private @Meta int salt = 0;
     
     @Override
     public Locator get() {
