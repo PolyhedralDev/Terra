@@ -26,11 +26,11 @@ public class GaussianRandomLocatorTemplate implements ObjectTemplate<Locator> {
     private @Meta Range amount;
     
     @Value("standard-deviation")
-    private double standardDeviation;
+    private @Meta double standardDeviation;
     
     @Value("salt")
     @Default
-    private int salt = 0;
+    private @Meta int salt = 0;
     
     @Override
     public Locator get() {
