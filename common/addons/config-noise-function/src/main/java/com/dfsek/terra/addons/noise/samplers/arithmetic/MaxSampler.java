@@ -6,7 +6,7 @@ import net.jafama.FastMath;
 
 
 public class MaxSampler extends BinaryArithmeticSampler{
-    protected MaxSampler(NoiseSampler left, NoiseSampler right) {
+    public MaxSampler(NoiseSampler left, NoiseSampler right) {
         super(left, right);
     }
     

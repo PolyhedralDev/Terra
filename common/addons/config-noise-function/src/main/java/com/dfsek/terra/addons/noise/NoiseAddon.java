@@ -36,6 +36,7 @@ import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNorma
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.DivisionSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.MaxSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
@@ -123,6 +124,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("SUB", () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
                   noiseRegistry.register("MUL", () -> new BinaryArithmeticTemplate<>(MultiplicationSampler::new));
                   noiseRegistry.register("DIV", () -> new BinaryArithmeticTemplate<>(DivisionSampler::new));
+                  noiseRegistry.register("MAX", () -> new BinaryArithmeticTemplate<>(MaxSampler::new));
                   
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
