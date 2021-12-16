@@ -35,43 +35,30 @@ import com.dfsek.terra.fabric.util.FabricAdapter;
 @Mixin(net.minecraft.block.entity.BlockEntity.class)
 @Implements(@Interface(iface = BlockEntity.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockEntityMixin {
-    @Final
-    @Shadow
-    protected BlockPos pos;
-    @Shadow
-    @Nullable
-    protected World world;
-    
-    @Shadow
-    public abstract net.minecraft.block.BlockState getCachedState();
-    
-    @Shadow
-    public abstract boolean hasWorld();
-    
     @Intrinsic
     public Object terra$getHandle() {
         return this;
     }
     
     public boolean terra$update(boolean applyPhysics) {
-        if(hasWorld()) //noinspection ConstantConditions
-            world.getChunk(pos).setBlockEntity((net.minecraft.block.entity.BlockEntity) (Object) this);
+        if(((net.minecraft.block.entity.BlockEntity) (Object) this).hasWorld()) //noinspection ConstantConditions
+            ((net.minecraft.block.entity.BlockEntity) (Object) this).getWorld().getChunk(((net.minecraft.block.entity.BlockEntity) (Object) this).getPos()).setBlockEntity((net.minecraft.block.entity.BlockEntity) (Object) this);
         return true;
     }
     
     public int terra$getX() {
-        return pos.getX();
+        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getX();
     }
     
     public int terra$getY() {
-        return pos.getY();
+        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getY();
     }
     
     public int terra$getZ() {
-        return pos.getZ();
+        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getZ();
     }
     
     public BlockState terra$getBlockData() {
-        return FabricAdapter.adapt(getCachedState());
+        return FabricAdapter.adapt(((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState());
     }
 }
