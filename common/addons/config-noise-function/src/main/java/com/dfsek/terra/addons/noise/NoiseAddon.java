@@ -15,6 +15,7 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
+import com.dfsek.terra.addons.noise.config.templates.BinaryArithmeticTemplate;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
@@ -33,6 +34,7 @@ import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizer
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.PositiveWhiteNoiseSampler;
@@ -112,6 +114,10 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("KERNEL", KernelTemplate::new);
                   
                   noiseRegistry.register("LINEAR_HEIGHTMAP", LinearHeightmapSamplerTemplate::new);
+                  
+                  
+                  noiseRegistry.register("ADD", () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
+                  
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
