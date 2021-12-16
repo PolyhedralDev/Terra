@@ -20,9 +20,12 @@ public class RandomLocator implements Locator {
     
     private final Range points;
     
-    public RandomLocator(Range height, Range points) {
+    private final int salt;
+    
+    public RandomLocator(Range height, Range points, int salt) {
         this.height = height;
         this.points = points;
+        this.salt = salt;
     }
     
     @Override
@@ -30,6 +33,7 @@ public class RandomLocator implements Locator {
         long seed = column.getWorld().getSeed();
         seed = 31 * seed + column.getX();
         seed = 31 * seed + column.getZ();
+        seed += salt;
         
         Random r = new Random(seed);
         
