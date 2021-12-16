@@ -33,6 +33,7 @@ import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizer
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
+import com.dfsek.terra.addons.noise.samplers.noise.random.PositiveWhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2SSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
@@ -100,6 +101,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("CELLULAR", CellularNoiseTemplate::new);
             
                   noiseRegistry.register("WHITE_NOISE", () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
+                  noiseRegistry.register("POSITIVE_WHITE_NOISE", () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
                   noiseRegistry.register("GAUSSIAN", () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
             
                   noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
