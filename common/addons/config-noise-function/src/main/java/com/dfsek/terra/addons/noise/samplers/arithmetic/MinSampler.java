@@ -6,7 +6,7 @@ import net.jafama.FastMath;
 
 
 public class MinSampler extends BinaryArithmeticSampler{
-    protected MinSampler(NoiseSampler left, NoiseSampler right) {
+    public MinSampler(NoiseSampler left, NoiseSampler right) {
         super(left, right);
     }
     
