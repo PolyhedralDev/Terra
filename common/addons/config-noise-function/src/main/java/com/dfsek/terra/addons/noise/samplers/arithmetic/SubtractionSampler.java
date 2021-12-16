@@ -4,7 +4,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class SubtractionSampler extends BinaryArithmeticSampler{
-    protected SubtractionSampler(NoiseSampler left, NoiseSampler right) {
+    public SubtractionSampler(NoiseSampler left, NoiseSampler right) {
         super(left, right);
     }
     
