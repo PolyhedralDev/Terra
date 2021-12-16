@@ -19,6 +19,7 @@ import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
+import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
@@ -107,6 +108,8 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register("CONSTANT", ConstantNoiseTemplate::new);
             
                   noiseRegistry.register("KERNEL", KernelTemplate::new);
+                  
+                  noiseRegistry.register("LINEAR_HEIGHTMAP", LinearHeightmapSamplerTemplate::new);
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
