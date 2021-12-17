@@ -31,14 +31,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     Map<BaseAddon, VersionRange> addons();
     
-    boolean vanillaMobs();
-    
-    boolean vanillaStructures();
-    
-    boolean vanillaCaves();
-    
-    boolean vanillaFlora();
-    
     BiomeProvider getBiomeProvider();
     
     <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);

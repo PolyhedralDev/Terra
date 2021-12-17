@@ -266,26 +266,6 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public boolean vanillaMobs() {
-        return template.vanillaMobs();
-    }
-    
-    @Override
-    public boolean vanillaStructures() {
-        return template.vanillaStructures();
-    }
-    
-    @Override
-    public boolean vanillaCaves() {
-        return template.vanillaCaves();
-    }
-    
-    @Override
-    public boolean vanillaFlora() {
-        return template.vanillaDecorations();
-    }
-    
-    @Override
     public BiomeProvider getBiomeProvider() {
         return seededBiomeProvider;
     }

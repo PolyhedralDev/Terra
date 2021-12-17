@@ -79,22 +79,26 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public boolean shouldGenerateCaves() {
-        return pack.vanillaCaves();
+        return false;
+        //return pack.vanillaCaves();
     }
     
     @Override
     public boolean shouldGenerateDecorations() {
-        return pack.vanillaFlora();
+        return false;
+        //return pack.vanillaFlora();
     }
     
     @Override
     public boolean shouldGenerateMobs() {
-        return pack.vanillaMobs();
+        return true;
+        //return pack.vanillaMobs();
     }
     
     @Override
     public boolean shouldGenerateStructures() {
-        return pack.vanillaStructures();
+        return false;
+        //return pack.vanillaStructures();
     }
     
     

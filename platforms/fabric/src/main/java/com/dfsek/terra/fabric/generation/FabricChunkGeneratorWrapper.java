@@ -17,42 +17,6 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.util.collection.Pool;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.HeightLimitView;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.StructuresConfig;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.feature.NetherFortressFeature;
-import net.minecraft.world.gen.feature.OceanMonumentFeature;
-import net.minecraft.world.gen.feature.PillagerOutpostFeature;
-import net.minecraft.world.gen.feature.StructureFeature;
-import net.minecraft.world.gen.feature.SwampHutFeature;
-import net.minecraft.world.gen.random.AtomicSimpleRandom;
-import net.minecraft.world.gen.random.ChunkRandom;
-import net.minecraft.world.gen.random.RandomSeed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -63,6 +27,34 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.SpawnGroup;
+import net.minecraft.util.collection.Pool;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.*;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.Blender;
+import net.minecraft.world.gen.chunk.StructuresConfig;
+import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.random.AtomicSimpleRandom;
+import net.minecraft.world.gen.random.ChunkRandom;
+import net.minecraft.world.gen.random.RandomSeed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -128,13 +120,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public void populateEntities(ChunkRegion region) {
-        if(pack.vanillaMobs()) {
-            ChunkPos chunkPos = region.getCenterPos();
-            Biome biome = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
-            ChunkRandom chunkRandom = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
-            chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
-            SpawnHelper.populateEntities(region, biome, chunkPos, chunkRandom);
-        }
+        ChunkPos chunkPos = region.getCenterPos();
+        Biome biome = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
+        ChunkRandom chunkRandom = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
+        chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
+        SpawnHelper.populateEntities(region, biome, chunkPos, chunkRandom);
+        
     }
     
     @Override

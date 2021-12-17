@@ -74,14 +74,6 @@ public final class FabricUtil {
         net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-        
-        if(pack.vanillaCaves()) {
-            for(GenerationStep.Carver carver : GenerationStep.Carver.values()) {
-                for(Supplier<ConfiguredCarver<?>> configuredCarverSupplier : vanilla.getGenerationSettings().getCarversForStep(carver)) {
-                    generationSettings.carver(carver, configuredCarverSupplier.get());
-                }
-            }
-        }
 
         /*
         Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions> pair = fabricAddon.getTemplates().get(pack);
