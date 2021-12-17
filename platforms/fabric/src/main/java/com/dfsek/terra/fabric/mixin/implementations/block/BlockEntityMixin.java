@@ -58,7 +58,7 @@ public abstract class BlockEntityMixin {
         return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getZ();
     }
     
-    public BlockState terra$getBlockData() {
+    public BlockState terra$getBlockState() {
         return FabricAdapter.adapt(((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState());
     }
 }
