@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.GaussianRandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.Noise3DLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.NoiseLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.SamplerLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
@@ -64,7 +64,7 @@ public class LocatorAddon implements AddonInitializer {
                     
                     locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
                     
-                    locatorRegistry.register("NOISE", NoiseLocatorTemplate::new);
+                    locatorRegistry.register("SAMPLER", SamplerLocatorTemplate::new);
                     locatorRegistry.register("NOISE_3D", Noise3DLocatorTemplate::new);
             
                     locatorRegistry.register("AND", AndLocatorTemplate::new);
