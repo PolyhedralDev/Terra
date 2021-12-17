@@ -12,11 +12,11 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
-public class NoiseSource implements BiomeSource {
+public class SamplerSource implements BiomeSource {
     private final ProbabilityCollection<BiomeDelegate> biomes;
     private final NoiseSampler sampler;
     
-    public NoiseSource(ProbabilityCollection<BiomeDelegate> biomes, NoiseSampler sampler) {
+    public SamplerSource(ProbabilityCollection<BiomeDelegate> biomes, NoiseSampler sampler) {
         this.biomes = biomes;
         this.sampler = sampler;
     }
