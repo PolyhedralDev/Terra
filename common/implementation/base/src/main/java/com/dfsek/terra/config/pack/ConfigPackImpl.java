@@ -189,7 +189,7 @@ public class ConfigPackImpl implements ConfigPack {
         
         platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, packManifest)));
         logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
-                    template.getID(), template.getVersion(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+                    template.getID(), getVersion().getFormatted(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
         
         
         ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
