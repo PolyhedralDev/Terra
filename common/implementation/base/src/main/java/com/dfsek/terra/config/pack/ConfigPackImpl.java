@@ -28,35 +28,10 @@ import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.impl.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Supplier;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.config.*;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
@@ -79,16 +54,28 @@ import com.dfsek.terra.config.fileloaders.FolderLoader;
 import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
-import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
-import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
-import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
-import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
+import com.dfsek.terra.config.preprocessor.*;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.RegistryFactoryImpl;
-import com.dfsek.terra.registry.config.ConfigTypeRegistry;
+import com.dfsek.terra.registry.ShortcutHolder;
+
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 /**
@@ -110,9 +97,10 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final BiomeProvider seededBiomeProvider;
     
-    private final Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> registryMap = new HashMap<>();
+    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
+    private final Map<Type, ShortcutHolder<?>> shortcuts = new HashMap<>();
     
-    private final ConfigTypeRegistry configTypeRegistry;
+    private final OpenRegistry<ConfigType<?, ?>> configTypeRegistry;
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     public ConfigPackImpl(File folder, Platform platform) {
@@ -150,7 +138,7 @@ public class ConfigPackImpl implements ConfigPack {
         
         this.loader = loader;
         this.platform = platform;
-        this.configTypeRegistry = createRegistry();
+        this.configTypeRegistry = createConfigRegistry();
         
         register(selfLoader);
         platform.register(selfLoader);
@@ -259,10 +247,10 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     public void register(TypeRegistry registry) {
-        registry
-                .registerLoader(ConfigType.class, configTypeRegistry)
+        registry.registerLoader(ConfigType.class, configTypeRegistry)
                 .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
-        registryMap.forEach((clazz, reg) -> registry.registerLoader(clazz, reg.getLeft()));
+        registryMap.forEach(registry::registerLoader);
+        shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
     }
     
     @Override
@@ -335,8 +323,8 @@ public class ConfigPackImpl implements ConfigPack {
                 }
             }
             
-            return Pair.of(registry, new CheckedRegistryImpl<>(registry));
-        }).getRight();
+            return new CheckedRegistryImpl<>(registry);
+        });
     }
     
     @Override
@@ -364,35 +352,43 @@ public class ConfigPackImpl implements ConfigPack {
         return registryFactory;
     }
     
+    @SuppressWarnings("unchecked,rawtypes")
+    @Override
+    public <T> ConfigPack registerShortcut(Type clazz, String shortcut, ShortcutLoader<T> loader) {
+        ShortcutHolder<?> holder = shortcuts
+                .computeIfAbsent(clazz, c -> new ShortcutHolder<>(getOrCreateRegistry(clazz)))
+                .register(shortcut, (ShortcutLoader) loader);
+        selfLoader.registerLoader(clazz, holder);
+        abstractConfigLoader.registerLoader(clazz, holder);
+        return this;
+    }
+    
     @Override
     public ChunkGeneratorProvider getGeneratorProvider() {
         return template.getGeneratorProvider();
     }
     
-    @SuppressWarnings("unchecked")
-    private ConfigTypeRegistry createRegistry() {
-        return new ConfigTypeRegistry(platform, (id, configType) -> {
-            OpenRegistry<?> openRegistry = configType.registrySupplier(this).get();
-            if(registryMap.containsKey(configType.getTypeKey()
-                                                 .getType())) { // Someone already registered something; we need to copy things to the
-                // new registry.
-                logger.warn("Copying values from old registry for {}", configType.getTypeKey());
-                registryMap.get(configType.getTypeKey().getType()).getLeft().forEach(((OpenRegistry<Object>) openRegistry)::register);
+    private OpenRegistry<ConfigType<?, ?>> createConfigRegistry() {
+        return new OpenRegistryImpl<>(new LinkedHashMap<>()) {
+            @Override
+            public boolean register(@NotNull String identifier, @NotNull ConfigType<?, ?> value) {
+                if(!registryMap
+                        .containsKey(value.getTypeKey()
+                                          .getType())) {
+                    OpenRegistry<?> openRegistry = value.registrySupplier(ConfigPackImpl.this).get();
+                    selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
+                    abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
+                    registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
+                }
+                return super.register(identifier, value);
             }
-            selfLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
-            abstractConfigLoader.registerLoader(configType.getTypeKey().getType(), openRegistry);
-            registryMap.put(configType.getTypeKey().getType(), Pair.of(openRegistry, new CheckedRegistryImpl<>(openRegistry)));
-        });
+        };
     }
     
     private void checkDeadEntries() {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getLeft())
+        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getRegistry())
                 .getDeadEntries()
                 .forEach((id, value) -> logger.debug("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
-    }
-    
-    protected Map<Type, Pair<OpenRegistry<?>, CheckedRegistry<?>>> getRegistryMap() {
-        return registryMap;
     }
     
     public ConfigPackTemplate getTemplate() {
@@ -402,18 +398,13 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     @SuppressWarnings("unchecked")
     public <T> CheckedRegistry<T> getRegistry(Type type) {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(type, Pair.ofNull()).getRight();
+        return (CheckedRegistry<T>) registryMap.get(type);
     }
     
     @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
-        return (CheckedRegistry<T>) registryMap.getOrDefault(type, Pair.ofNull()).getRight();
-    }
-    
-    @SuppressWarnings("unchecked")
-    protected <T> OpenRegistry<T> getOpenRegistry(Class<T> clazz) {
-        return (OpenRegistry<T>) registryMap.getOrDefault(clazz, Pair.ofNull()).getLeft();
+        return (CheckedRegistry<T>) registryMap.get(type);
     }
     
     @Override

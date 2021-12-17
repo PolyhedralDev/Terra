@@ -19,6 +19,7 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -40,6 +41,11 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
  */
 public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     private final OpenRegistry<T> registry;
+    
+    @Internal
+    public OpenRegistry<T> getRegistry() {
+        return registry;
+    }
     
     public CheckedRegistryImpl(OpenRegistry<T> registry) {
         this.registry = registry;
@@ -81,7 +87,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
     
     @Override
-    public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader) throws LoadException {
         return registry.load(t, c, loader);
     }
 }
