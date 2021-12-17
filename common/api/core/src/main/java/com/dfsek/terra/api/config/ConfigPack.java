@@ -60,8 +60,6 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     String getVersion();
     
-    RegistryFactory getRegistryFactory();
-    
     <T> ConfigPack registerShortcut(Type clazz, String shortcut, ShortcutLoader<T> loader);
     
     default <T> ConfigPack registerShortcut(Class<T> clazz, String shortcut, ShortcutLoader<T> loader) {

@@ -43,7 +43,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.registry.meta.RegistryFactory;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
@@ -58,7 +57,6 @@ import com.dfsek.terra.config.preprocessor.*;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-import com.dfsek.terra.registry.RegistryFactoryImpl;
 import com.dfsek.terra.registry.ShortcutHolder;
 
 import org.jetbrains.annotations.NotNull;
@@ -85,8 +83,6 @@ public class ConfigPackImpl implements ConfigPack {
     private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
     
     private final ConfigPackTemplate template = new ConfigPackTemplate();
-    
-    private final RegistryFactory registryFactory = new RegistryFactoryImpl();
     
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
@@ -345,11 +341,6 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public String getVersion() {
         return template.getVersion();
-    }
-    
-    @Override
-    public RegistryFactory getRegistryFactory() {
-        return registryFactory;
     }
     
     @SuppressWarnings("unchecked,rawtypes")
