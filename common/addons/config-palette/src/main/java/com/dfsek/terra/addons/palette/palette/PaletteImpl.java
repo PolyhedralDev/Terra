@@ -30,15 +30,6 @@ public abstract class PaletteImpl implements Palette {
 
     }
     
-    @Override
-    public Palette add(BlockState m, int layers, NoiseSampler sampler) {
-        for(int i = 0; i < layers; i++) {
-            pallet.add(new PaletteLayer(m, sampler));
-        }
-        return this;
-    }
-    
-    @Override
     public Palette add(ProbabilityCollection<BlockState> m, int layers, NoiseSampler sampler) {
         for(int i = 0; i < layers; i++) {
             pallet.add(new PaletteLayer(m, sampler));
@@ -47,7 +38,6 @@ public abstract class PaletteImpl implements Palette {
     }
     
     
-    @Override
     public int getSize() {
         return pallet.size();
     }
