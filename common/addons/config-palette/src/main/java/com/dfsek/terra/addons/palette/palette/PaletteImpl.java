@@ -7,27 +7,25 @@
 
 package com.dfsek.terra.addons.palette.palette;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A class representation of a "slice" of the world.
  * Used to get a section of blocks, based on the depth at which they are found.
  */
-public abstract class PaletteImpl implements Palette {
+public class PaletteImpl implements Palette {
     private final List<PaletteLayer> pallet = new ArrayList<>();
+    private final NoiseSampler sampler;
     
-    /**
-     * Constructs a blank palette.
-     */
-    public PaletteImpl() {
-
+    public PaletteImpl(NoiseSampler sampler) {
+        this.sampler = sampler;
     }
     
     public Palette add(ProbabilityCollection<BlockState> m, int layers, NoiseSampler sampler) {
@@ -35,6 +33,19 @@ public abstract class PaletteImpl implements Palette {
             pallet.add(new PaletteLayer(m, sampler));
         }
         return this;
+    }
+    
+    @Override
+    public BlockState get(int layer, double x, double y, double z, long seed) {
+        PaletteLayer paletteLayer;
+        if(layer > this.getSize()) paletteLayer = this.getLayers().get(this.getLayers().size() - 1);
+        else {
+            List<PaletteLayer> pl = getLayers();
+            if(layer >= pl.size()) paletteLayer = pl.get(pl.size() - 1);
+            else paletteLayer = pl.get(layer);
+        }
+        NoiseSampler paletteSampler = paletteLayer.getSampler();
+        return paletteLayer.get(paletteSampler == null ? sampler : paletteSampler, x, y, z, seed);
     }
     
     
@@ -50,10 +61,8 @@ public abstract class PaletteImpl implements Palette {
      * Class representation of a layer of a BlockPalette.
      */
     public static class PaletteLayer {
-        private final boolean col; // Is layer using a collection?
         private final NoiseSampler sampler;
-        private ProbabilityCollection<BlockState> collection;
-        private BlockState m;
+        private final ProbabilityCollection<BlockState> collection;
         
         /**
          * Constructs a PaletteLayerHolder with a ProbabilityCollection of materials and a number of layers.
@@ -63,47 +72,16 @@ public abstract class PaletteImpl implements Palette {
          */
         public PaletteLayer(ProbabilityCollection<BlockState> type, NoiseSampler sampler) {
             this.sampler = sampler;
-            this.col = true;
             this.collection = type;
         }
         
-        /**
-         * Constructs a PaletteLayerHolder with a single Material and a number of layers.
-         *
-         * @param type    The material to use.
-         * @param sampler Noise sampler to use
-         */
-        public PaletteLayer(BlockState type, NoiseSampler sampler) {
-            this.sampler = sampler;
-            this.col = false;
-            this.m = type;
-        }
-        
         public BlockState get(NoiseSampler random, double x, double y, double z, long seed) {
-            if(col) return this.collection.get(random, x, y, z, seed);
-            return m;
+            return this.collection.get(random, x, y, z, seed);
         }
         
         public NoiseSampler getSampler() {
             return sampler;
         }
         
-        public ProbabilityCollection<BlockState> getCollection() {
-            return collection;
-        }
-    }
-    
-    
-    public static class Singleton extends PaletteImpl {
-        private final BlockState item;
-        
-        public Singleton(BlockState item) {
-            this.item = item;
-        }
-        
-        @Override
-        public BlockState get(int layer, double x, double y, double z, long seed) {
-            return item;
-        }
     }
 }

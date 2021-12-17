@@ -33,17 +33,6 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     }
     
     @Override
-    public Supplier<OpenRegistry<Palette>> registrySupplier(ConfigPack pack) {
-        return () -> pack.getRegistryFactory().create(registry -> (TypeLoader<Palette>) (t, c, loader) -> {
-            if(((String) c).startsWith("BLOCK:"))
-                return new PaletteImpl.Singleton(
-                        platform.getWorldHandle().createBlockData(((String) c).substring(6))); // Return single palette for BLOCK: shortcut.
-            return registry.get((String) c).orElseThrow(() -> new LoadException(
-                    "No such " + t.getType().getTypeName() + " matching \"" + c + "\" was found in this registry."));
-        });
-    }
-    
-    @Override
     public PaletteTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new PaletteTemplate();
     }
