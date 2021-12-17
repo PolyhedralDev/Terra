@@ -19,6 +19,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.ConfigLoadingDelegate;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

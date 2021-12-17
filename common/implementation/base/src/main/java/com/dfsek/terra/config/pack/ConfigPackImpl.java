@@ -44,6 +44,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.config;
+package com.dfsek.terra.api.tectonic;
 
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 

@@ -4,7 +4,7 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
-import com.dfsek.terra.api.config.ShortcutLoader;
+import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.registry.Registry;
 
 import org.jetbrains.annotations.NotNull;
