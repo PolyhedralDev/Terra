@@ -92,7 +92,7 @@ public abstract class ServerWorldMixin {
         return (Entity) entity;
     }
     
-    public void terra$setBlockData(int x, int y, int z, BlockState data, boolean physics) {
+    public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
         ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(),
                                                                                physics ? 3 : 1042);
@@ -112,11 +112,11 @@ public abstract class ServerWorldMixin {
         return (Chunk) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunk(x, z);
     }
     
-    public BlockState terra$getBlockData(int x, int y, int z) {
+    public BlockState terra$getBlockState(int x, int y, int z) {
         return new FabricBlockState(((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z)));
     }
     
-    public BlockEntity terra$getBlockState(int x, int y, int z) {
+    public BlockEntity terra$getBlockEntity(int x, int y, int z) {
         return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
     
