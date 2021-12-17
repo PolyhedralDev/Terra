@@ -25,7 +25,7 @@ public class BufferedPulledBlock implements BufferedItem {
         Vector3 mutable = origin.clone();
         while(mutable.getY() > world.getMinHeight()) {
             if(!world.getBlockState(mutable).isAir()) {
-                world.setBlockData(mutable, data);
+                world.setBlockState(mutable, data);
                 break;
             }
             mutable.subtract(0, 1, 0);

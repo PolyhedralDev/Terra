@@ -7,19 +7,19 @@ import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public interface WritableWorld extends ReadableWorld {
-    default void setBlockData(Vector3 position, BlockState data, boolean physics) {
-        setBlockData(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
+    default void setBlockState(Vector3 position, BlockState data, boolean physics) {
+        setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
     }
     
-    default void setBlockData(Vector3 position, BlockState data) {
-        setBlockData(position, data, false);
+    default void setBlockState(Vector3 position, BlockState data) {
+        setBlockState(position, data, false);
     }
     
-    default void setBlockData(int x, int y, int z, BlockState data) {
-        setBlockData(x, y, z, data, false);
+    default void setBlockState(int x, int y, int z, BlockState data) {
+        setBlockState(x, y, z, data, false);
     }
     
-    void setBlockData(int x, int y, int z, BlockState data, boolean physics);
+    void setBlockState(int x, int y, int z, BlockState data, boolean physics);
     
     
     default Entity spawnEntity(Vector3 location, EntityType entityType) {

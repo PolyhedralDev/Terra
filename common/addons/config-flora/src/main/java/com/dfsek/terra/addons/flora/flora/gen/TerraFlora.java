@@ -113,7 +113,7 @@ public class TerraFlora implements Structure {
                     .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
                     .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
             }
-            world.setBlockData(location.clone().add(0, i + c, 0), data, physics);
+            world.setBlockState(location.clone().add(0, i + c, 0), data, physics);
         }
         return true;
     }

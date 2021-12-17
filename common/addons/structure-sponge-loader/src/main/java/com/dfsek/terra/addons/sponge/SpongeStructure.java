@@ -52,7 +52,7 @@ public class SpongeStructure implements Structure {
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
-                    world.setBlockData(bX + rX, bY + y, bZ + rZ, state);
+                    world.setBlockState(bX + rX, bY + y, bZ + rZ, state);
                 }
             }
         }
@@ -89,7 +89,7 @@ public class SpongeStructure implements Structure {
                 for(int y = 0; y < blocks[z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
-                    world.setBlockData(bX + rX, bY + y, bZ + rZ, state);
+                    world.setBlockState(bX + rX, bY + y, bZ + rZ, state);
                 }
             }
         }

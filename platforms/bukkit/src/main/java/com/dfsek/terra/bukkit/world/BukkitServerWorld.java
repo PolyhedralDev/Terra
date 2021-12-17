@@ -48,7 +48,7 @@ public class BukkitServerWorld implements ServerWorld {
     }
     
     @Override
-    public void setBlockData(int x, int y, int z, BlockState data, boolean physics) {
+    public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         delegate.getBlockAt(x, y, z).setBlockData(BukkitAdapter.adapt(data), physics);
     }
     

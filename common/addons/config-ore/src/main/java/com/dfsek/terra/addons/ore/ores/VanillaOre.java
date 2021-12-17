@@ -106,7 +106,7 @@ public class VanillaOre implements Structure {
                                 if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
                                 BlockType block = world.getBlockState(x, y, z).getBlockType();
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
-                                    world.setBlockData(x, y, z, getMaterial(block), isApplyGravity());
+                                    world.setBlockState(x, y, z, getMaterial(block), isApplyGravity());
                                 }
                             }
                         }

@@ -30,7 +30,7 @@ public class BukkitProtoWorld implements ProtoWorld {
     }
     
     @Override
-    public void setBlockData(int x, int y, int z, BlockState data, boolean physics) {
+    public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         delegate.setBlockData(x, y, z, BukkitAdapter.adapt(data));
         if(physics) {
             delegate.scheduleBlockUpdate(x, y, z);

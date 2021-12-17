@@ -43,7 +43,7 @@ public class BufferedBlock implements BufferedItem {
                 if(waterlog && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
                     current.set(Properties.WATERLOGGED, true);
                 }
-                world.setBlockData(origin, data);
+                world.setBlockState(origin, data);
             }
         } catch(RuntimeException e) {
             logger.error("Failed to place block at location {}", origin, e);
