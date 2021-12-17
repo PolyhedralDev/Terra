@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.config;
 
+import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 
 import java.lang.reflect.Type;
@@ -49,7 +50,7 @@ public interface ConfigPack extends LoaderRegistrar, LoaderHolder, RegistryHolde
     
     String getAuthor();
     
-    String getVersion();
+    Version getVersion();
     
     <T> ConfigPack registerShortcut(Type clazz, String shortcut, ShortcutLoader<T> loader);
     

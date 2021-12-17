@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.config.pack;
 
+import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.config.Configuration;
@@ -319,7 +320,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public String getVersion() {
+    public Version getVersion() {
         return template.getVersion();
     }
     

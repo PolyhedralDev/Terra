@@ -41,6 +41,6 @@ public class PacksCommand implements CommandTemplate {
             sender.sendMessage("No packs installed");
             return;
         }
-        registry.entries().forEach(configPack -> sender.sendMessage(" - " + configPack.getID() + "@" + configPack.getVersion()));
+        registry.entries().forEach(configPack -> sender.sendMessage(" - " + configPack.getID() + "@" + configPack.getVersion().getFormatted()));
     }
 }

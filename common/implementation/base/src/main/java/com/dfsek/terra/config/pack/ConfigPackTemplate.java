@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.config.pack;
 
+import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -79,8 +80,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
     private @Meta List<@Meta GenerationStage> stages;
     
     @Value("version")
-    @Default
-    private String version = "0.1.0";
+    private Version version;
     
     @Value("disable.carvers")
     @Default
@@ -153,7 +153,7 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return stages;
     }
     
-    public String getVersion() {
+    public Version getVersion() {
         return version;
     }
     
