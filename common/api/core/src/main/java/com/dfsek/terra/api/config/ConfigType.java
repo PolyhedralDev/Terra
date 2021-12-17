@@ -15,10 +15,6 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public interface ConfigType<T extends AbstractableTemplate, R> {
-    default Supplier<OpenRegistry<R>> registrySupplier(ConfigPack pack) {
-        return pack.getRegistryFactory()::create;
-    }
-    
     T getTemplate(ConfigPack pack, Platform platform);
     
     ConfigFactory<T, R> getFactory();

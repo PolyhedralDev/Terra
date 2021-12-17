@@ -375,7 +375,7 @@ public class ConfigPackImpl implements ConfigPack {
                 if(!registryMap
                         .containsKey(value.getTypeKey()
                                           .getType())) {
-                    OpenRegistry<?> openRegistry = value.registrySupplier(ConfigPackImpl.this).get();
+                    OpenRegistry<?> openRegistry = new OpenRegistryImpl<>();
                     selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
                     abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
                     registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
