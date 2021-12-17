@@ -38,7 +38,7 @@ public class BufferedLootApplication implements BufferedItem {
     @Override
     public void paste(Vector3 origin, WritableWorld world) {
         try {
-            BlockEntity data = world.getBlockState(origin);
+            BlockEntity data = world.getBlockEntity(origin);
             if(!(data instanceof Container container)) {
                 LOGGER.error("Failed to place loot at {}; block {} is not a container", origin, data);
                 return;

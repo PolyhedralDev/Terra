@@ -53,7 +53,7 @@ public class BukkitProtoWorld implements ProtoWorld {
     }
     
     @Override
-    public BlockEntity getBlockState(int x, int y, int z) {
+    public BlockEntity getBlockEntity(int x, int y, int z) {
         return BukkitBlockEntity.newInstance(delegate.getBlockState(x, y, z));
     }
     

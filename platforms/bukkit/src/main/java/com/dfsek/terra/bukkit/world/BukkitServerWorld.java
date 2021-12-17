@@ -73,7 +73,7 @@ public class BukkitServerWorld implements ServerWorld {
     }
     
     @Override
-    public BlockEntity getBlockState(int x, int y, int z) {
+    public BlockEntity getBlockEntity(int x, int y, int z) {
         return BukkitBlockEntity.newInstance(delegate.getBlockAt(x, y, z).getState());
     }
     

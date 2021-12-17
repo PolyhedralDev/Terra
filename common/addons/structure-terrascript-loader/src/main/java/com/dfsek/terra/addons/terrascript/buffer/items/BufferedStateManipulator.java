@@ -27,7 +27,7 @@ public class BufferedStateManipulator implements BufferedItem {
     @Override
     public void paste(Vector3 origin, WritableWorld world) {
         try {
-            BlockEntity state = world.getBlockState(origin);
+            BlockEntity state = world.getBlockEntity(origin);
             state.applyState(data);
             state.update(false);
         } catch(Exception e) {

@@ -17,13 +17,13 @@ public interface ReadableWorld extends World {
         return getBlockData(position.getX(), position.getY(), position.getZ());
     }
     
-    BlockEntity getBlockState(int x, int y, int z);
+    BlockEntity getBlockEntity(int x, int y, int z);
     
-    default BlockEntity getBlockState(Vector3 position) {
-        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
+    default BlockEntity getBlockEntity(Vector3 position) {
+        return getBlockEntity(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
     
-    default BlockEntity getBlockState(Vector3Int position) {
-        return getBlockState(position.getX(), position.getY(), position.getZ());
+    default BlockEntity getBlockEntity(Vector3Int position) {
+        return getBlockEntity(position.getX(), position.getY(), position.getZ());
     }
 }
