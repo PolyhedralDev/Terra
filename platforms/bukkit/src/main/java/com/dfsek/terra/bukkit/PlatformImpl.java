@@ -85,7 +85,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(BlockState.class, (t, o, l) -> handle.createBlockData((String) o))
+        registry.registerLoader(BlockState.class, (t, o, l) -> handle.createBlockState((String) o))
                 .registerLoader(PlatformBiome.class, (t, o, l) -> parseBiome((String) o))
                 .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
         

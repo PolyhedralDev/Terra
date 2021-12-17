@@ -91,7 +91,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                     for(int y = 0; y < hei; y++) {
                         String block = data.get((int) arr[x + z * wid + y * wid * len]);
                         if(block.startsWith("minecraft:structure_void")) continue;
-                        states[x][z][y] = platform.getWorldHandle().createBlockData(block);
+                        states[x][z][y] = platform.getWorldHandle().createBlockState(block);
                     }
                 }
             }

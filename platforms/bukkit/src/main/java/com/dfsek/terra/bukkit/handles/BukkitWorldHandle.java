@@ -39,7 +39,7 @@ public class BukkitWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState createBlockData(@NotNull String data) {
+    public @NotNull BlockState createBlockState(@NotNull String data) {
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data);
         return BukkitBlockState.newInstance(bukkitData);
     }

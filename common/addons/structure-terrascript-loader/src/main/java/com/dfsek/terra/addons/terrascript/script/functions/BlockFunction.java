@@ -79,7 +79,7 @@ public class BlockFunction implements Function<Void> {
     }
     
     protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
-        return data.computeIfAbsent(blockData.apply(arguments, variableMap), platform.getWorldHandle()::createBlockData);
+        return data.computeIfAbsent(blockData.apply(arguments, variableMap), platform.getWorldHandle()::createBlockState);
     }
     
     
@@ -89,7 +89,7 @@ public class BlockFunction implements Function<Void> {
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData,
                         Returnable<Boolean> overwrite, Platform platform, Position position) {
             super(x, y, z, blockData, overwrite, platform, position);
-            this.state = platform.getWorldHandle().createBlockData(blockData.getConstant());
+            this.state = platform.getWorldHandle().createBlockState(blockData.getConstant());
         }
         
         @Override

@@ -20,7 +20,7 @@ import com.dfsek.terra.api.entity.EntityType;
 public interface WorldHandle {
     @NotNull
     @Contract("_ -> new")
-    BlockState createBlockData(@NotNull String data);
+    BlockState createBlockState(@NotNull String data);
     
     @NotNull
     @Contract(pure = true)

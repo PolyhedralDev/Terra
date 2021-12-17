@@ -37,7 +37,7 @@ public class FabricWorldHandle implements WorldHandle {
     private static final com.dfsek.terra.api.block.state.BlockState AIR = FabricAdapter.adapt(Blocks.AIR.getDefaultState());
     
     @Override
-    public @NotNull FabricBlockState createBlockData(@NotNull String data) {
+    public @NotNull FabricBlockState createBlockState(@NotNull String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
             BlockState state = parser.parse(true).getBlockState();

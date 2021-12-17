@@ -35,7 +35,7 @@ public class SpongeWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState createBlockData(@NotNull String data) {
+    public @NotNull BlockState createBlockState(@NotNull String data) {
         return new SpongeBlockState(org.spongepowered.api.block.BlockState.fromString(data));
     }
     
