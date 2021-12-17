@@ -13,10 +13,10 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
-public class Noise3DLocator implements Locator {
+public class Sampler3DLocator implements Locator {
     private final NoiseSampler sampler;
     
-    public Noise3DLocator(NoiseSampler sampler) {
+    public Sampler3DLocator(NoiseSampler sampler) {
         this.sampler = sampler;
     }
     
