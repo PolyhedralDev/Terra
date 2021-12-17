@@ -38,7 +38,7 @@ public abstract class BlockMixin {
         return this;
     }
     
-    public com.dfsek.terra.api.block.state.BlockState terra$getDefaultData() {
+    public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
         return FabricAdapter.adapt(((Block) (Object) this).getDefaultState());
     }
     
