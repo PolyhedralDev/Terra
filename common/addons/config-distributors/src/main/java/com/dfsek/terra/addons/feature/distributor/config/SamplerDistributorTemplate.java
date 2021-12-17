@@ -11,22 +11,22 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import com.dfsek.terra.addons.feature.distributor.distributors.NoiseDistributor;
+import com.dfsek.terra.addons.feature.distributor.distributors.SamplerDistributor;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.Distributor;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class NoiseDistributorTemplate implements ObjectTemplate<Distributor> {
+public class SamplerDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("threshold")
     @Default
     private @Meta double threshold = 0;
-    @Value("distribution")
+    @Value("sampler")
     private @Meta NoiseSampler noise;
     
     @Override
     public Distributor get() {
-        return new NoiseDistributor(noise, threshold);
+        return new SamplerDistributor(noise, threshold);
     }
 }

@@ -12,7 +12,8 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
-import com.dfsek.terra.addons.feature.distributor.config.NoiseDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.NoDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.SamplerDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
@@ -46,12 +47,12 @@ public class DistributorAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
                             DISTRIBUTOR_TOKEN);
-                    distributorRegistry.register("NOISE", NoiseDistributorTemplate::new);
+                    distributorRegistry.register("SAMPLER", SamplerDistributorTemplate::new);
                     distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
                     distributorRegistry.register("AND", AndDistributorTemplate::new);
                     distributorRegistry.register("OR", OrDistributorTemplate::new);
                     distributorRegistry.register("YES", YesDistributorTemplate::new);
-                    distributorRegistry.register("NO", NoiseDistributorTemplate::new);
+                    distributorRegistry.register("NO", NoDistributorTemplate::new);
             
                     event.getPack()
                          .applyLoader(Point.class, PointTemplate::new);
