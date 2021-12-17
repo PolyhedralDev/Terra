@@ -34,6 +34,6 @@ public interface RegistryHolder {
     }
     
     default <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
-        throw new IllegalStateException("Cannot get checked registry.");
+        throw new UnsupportedOperationException("Cannot get checked registry.");
     }
 }
