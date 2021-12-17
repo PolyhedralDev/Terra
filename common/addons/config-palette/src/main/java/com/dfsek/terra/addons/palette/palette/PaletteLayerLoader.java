@@ -40,8 +40,8 @@ public class PaletteLayerLoader implements TypeLoader<PaletteLayerHolder> {
                 BLOCK_DATA_PROBABILITY_COLLECTION_TYPE, map.get("materials"));
         
         NoiseSampler sampler = null;
-        if(map.containsKey("noise")) {
-            sampler = configLoader.loadType(NoiseSampler.class, map.get("noise"));
+        if(map.containsKey("sampler")) {
+            sampler = configLoader.loadType(NoiseSampler.class, map.get("sampler"));
         }
         
         if(collection == null) throw new LoadException("Collection is null: " + map.get("materials"));
