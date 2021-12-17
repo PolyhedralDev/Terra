@@ -104,7 +104,7 @@ public class VanillaOre implements Structure {
                             for(int z = zStart; z <= zEnd; z++) {
                                 double d15 = (z + 0.5D - (d3 + (d4 - d3) * iFactor)) / (d11 / 2.0D);
                                 if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
-                                BlockType block = world.getBlockData(x, y, z).getBlockType();
+                                BlockType block = world.getBlockState(x, y, z).getBlockType();
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
                                     world.setBlockData(x, y, z, getMaterial(block), isApplyGravity());
                                 }

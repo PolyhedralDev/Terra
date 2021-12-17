@@ -24,7 +24,7 @@ public class BufferedPulledBlock implements BufferedItem {
     public void paste(Vector3 origin, WritableWorld world) {
         Vector3 mutable = origin.clone();
         while(mutable.getY() > world.getMinHeight()) {
-            if(!world.getBlockData(mutable).isAir()) {
+            if(!world.getBlockState(mutable).isAir()) {
                 world.setBlockData(mutable, data);
                 break;
             }

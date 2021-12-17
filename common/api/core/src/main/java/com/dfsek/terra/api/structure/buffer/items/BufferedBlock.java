@@ -38,7 +38,7 @@ public class BufferedBlock implements BufferedItem {
     @Override
     public void paste(Vector3 origin, WritableWorld world) {
         try {
-            BlockState current = world.getBlockData(origin);
+            BlockState current = world.getBlockState(origin);
             if(overwrite || current.isAir()) {
                 if(waterlog && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
                     current.set(Properties.WATERLOGGED, true);

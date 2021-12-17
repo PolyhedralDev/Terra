@@ -38,7 +38,7 @@ public class ColumnImpl<T extends WritableWorld> implements Column<T> {
     
     @Override
     public BlockState getBlock(int y) {
-        return world.getBlockData(x, y, z);
+        return world.getBlockState(x, y, z);
     }
     
     @Override

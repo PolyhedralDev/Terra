@@ -7,14 +7,14 @@ import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 
 
 public interface ReadableWorld extends World {
-    BlockState getBlockData(int x, int y, int z);
+    BlockState getBlockState(int x, int y, int z);
     
-    default BlockState getBlockData(Vector3 position) {
-        return getBlockData(position.getBlockX(), position.getBlockY(), position.getBlockZ());
+    default BlockState getBlockState(Vector3 position) {
+        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
     
-    default BlockState getBlockData(Vector3Int position) {
-        return getBlockData(position.getX(), position.getY(), position.getZ());
+    default BlockState getBlockState(Vector3Int position) {
+        return getBlockState(position.getX(), position.getY(), position.getZ());
     }
     
     BlockEntity getBlockEntity(int x, int y, int z);

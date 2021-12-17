@@ -68,7 +68,7 @@ public class BukkitServerWorld implements ServerWorld {
     }
     
     @Override
-    public BlockState getBlockData(int x, int y, int z) {
+    public BlockState getBlockState(int x, int y, int z) {
         return BukkitAdapter.adapt(delegate.getBlockAt(x, y, z).getBlockData());
     }
     

@@ -44,7 +44,7 @@ public class CheckBlockFunction implements Function<String> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         String data = arguments.getWorld()
-                               .getBlockData(arguments.getBuffer()
+                               .getBlockState(arguments.getBuffer()
                                                       .getOrigin()
                                                       .clone()
                                                       .add(new Vector3(FastMath.roundToInt(xz.getX()),
