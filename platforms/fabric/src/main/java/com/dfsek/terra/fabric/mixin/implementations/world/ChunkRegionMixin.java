@@ -92,7 +92,7 @@ public abstract class ChunkRegionMixin {
     }
     
     @Intrinsic(displace = true)
-    public void terraWorld$setBlockData(int x, int y, int z, BlockState data, boolean physics) {
+    public void terraWorld$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
         ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
         if(physics && ((FabricBlockState) data).getHandle().getBlock() instanceof FluidBlock) {
@@ -112,12 +112,12 @@ public abstract class ChunkRegionMixin {
     }
     
     @Intrinsic(displace = true)
-    public BlockState terraWorld$getBlockData(int x, int y, int z) {
+    public BlockState terraWorld$getBlockState(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
         return new FabricBlockState(((ChunkRegion) (Object) this).getBlockState(pos));
     }
     
-    public BlockEntity terraWorld$getBlockState(int x, int y, int z) {
+    public BlockEntity terraWorld$getBlockEntity(int x, int y, int z) {
         return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
     
