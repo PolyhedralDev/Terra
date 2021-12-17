@@ -27,5 +27,5 @@ public interface BlockEntity extends Handle {
     
     int getZ();
     
-    BlockState getBlockData();
+    BlockState getBlockState();
 }

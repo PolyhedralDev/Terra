@@ -73,7 +73,7 @@ public class BukkitBlockEntity implements BlockEntity {
     }
     
     @Override
-    public BlockState getBlockData() {
+    public BlockState getBlockState() {
         return BukkitBlockState.newInstance(delegate.getBlockData());
     }
 }
