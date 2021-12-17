@@ -37,7 +37,7 @@ public class SpongeBlockType implements BlockType {
     }
     
     @Override
-    public BlockState getDefaultData() {
+    public BlockState getDefaultState() {
         return new SpongeBlockState(delegate.defaultState());
     }
     

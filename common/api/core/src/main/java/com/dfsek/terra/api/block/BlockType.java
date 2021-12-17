@@ -12,7 +12,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 
 public interface BlockType extends Handle {
-    BlockState getDefaultData();
+    BlockState getDefaultState();
     
     boolean isSolid();
     

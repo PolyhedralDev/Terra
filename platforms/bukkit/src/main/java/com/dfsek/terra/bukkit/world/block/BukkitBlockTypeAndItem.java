@@ -39,7 +39,7 @@ public class BukkitBlockTypeAndItem implements BlockType, Item {
     }
     
     @Override
-    public BlockState getDefaultData() {
+    public BlockState getDefaultState() {
         return BukkitAdapter.adapt(delegate.createBlockData());
     }
     
