@@ -9,10 +9,10 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class BiomeNoiseConfigTemplate implements ObjectTemplate<BiomeNoiseProperties> {
-    @Value("noise")
+    @Value("terrain.sampler")
     private @Meta NoiseSampler baseSampler;
     
-    @Value("elevation.equation")
+    @Value("terrain.sampler-2d")
     @Default
     private @Meta NoiseSampler elevationSampler = NoiseSampler.zero();
     
@@ -20,19 +20,19 @@ public class BiomeNoiseConfigTemplate implements ObjectTemplate<BiomeNoiseProper
     @Default
     private @Meta NoiseSampler carvingSampler = NoiseSampler.zero();
     
-    @Value("blend.distance")
+    @Value("terrain.blend.distance")
     @Default
     private @Meta int blendDistance = 3;
     
-    @Value("blend.weight")
+    @Value("terrain.blend.weight")
     @Default
     private @Meta double blendWeight = 1;
     
-    @Value("blend.step")
+    @Value("terrain.blend.step")
     @Default
     private @Meta int blendStep = 4;
     
-    @Value("elevation.weight")
+    @Value("terrain.blend.weight-2d")
     @Default
     private @Meta double elevationWeight = 1;
     

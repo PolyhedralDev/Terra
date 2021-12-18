@@ -28,7 +28,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> {
     @Default
     private @Meta double factor = 1;
     
-    @Value("function")
+    @Value("sampler")
     private @Meta NoiseSampler function;
     
     @Value("frequency")

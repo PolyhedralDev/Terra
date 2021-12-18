@@ -17,7 +17,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public abstract class StageTemplate implements ObjectTemplate<Stage> {
-    @Value("noise")
-    @Description("Noise sampler to use for stage distribution.")
+    @Value("sampler")
+    @Description("Sampler to use for stage distribution.")
     protected @Meta NoiseSampler noise;
 }

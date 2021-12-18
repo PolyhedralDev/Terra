@@ -26,9 +26,9 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     Larger values are quadratically faster, but produce lower quality results.
     For example, a value of 3 would sample every 3 blocks.""")
     protected @Meta int resolution = 1;
-    @Value("blend.noise")
+    @Value("blend.sampler")
     @Default
-    @Description("A noise sampler to use for blending the edges of biomes via domain warping.")
+    @Description("A sampler to use for blending the edges of biomes via domain warping.")
     protected @Meta NoiseSampler blend = NoiseSampler.zero();
     @Value("blend.amplitude")
     @Default

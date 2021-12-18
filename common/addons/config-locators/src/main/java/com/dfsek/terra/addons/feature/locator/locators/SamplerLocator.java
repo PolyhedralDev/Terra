@@ -17,10 +17,10 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
-public class NoiseLocator implements Locator {
+public class SamplerLocator implements Locator {
     private final List<NoiseSampler> samplers;
     
-    public NoiseLocator(List<NoiseSampler> samplers) {
+    public SamplerLocator(List<NoiseSampler> samplers) {
         this.samplers = samplers;
     }
     

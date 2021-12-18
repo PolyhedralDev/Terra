@@ -20,7 +20,7 @@ public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     @Value("warp")
     private @Meta NoiseSampler warp;
     
-    @Value("function")
+    @Value("sampler")
     private @Meta NoiseSampler function;
     
     @Value("amplitude")

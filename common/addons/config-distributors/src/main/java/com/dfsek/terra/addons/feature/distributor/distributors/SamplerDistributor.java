@@ -11,12 +11,12 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.Distributor;
 
 
-public class NoiseDistributor implements Distributor {
+public class SamplerDistributor implements Distributor {
     private final NoiseSampler sampler;
     
     private final double threshold;
     
-    public NoiseDistributor(NoiseSampler sampler, double threshold) {
+    public SamplerDistributor(NoiseSampler sampler, double threshold) {
         this.sampler = sampler;
         this.threshold = threshold;
     }

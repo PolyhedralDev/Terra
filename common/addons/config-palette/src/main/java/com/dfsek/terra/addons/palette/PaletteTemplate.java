@@ -21,7 +21,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class PaletteTemplate implements AbstractableTemplate {
-    @Value("noise")
+    @Value("sampler")
     @Default
     private @Meta NoiseSampler noise = NoiseSampler.zero();
     
