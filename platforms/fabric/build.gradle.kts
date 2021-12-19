@@ -29,6 +29,14 @@ dependencies {
     }
     mappings("net.fabricmc:yarn:$minecraft+build.$yarn:v2")
     modImplementation("net.fabricmc:fabric-loader:$fabricLoader")
+    
+    
+    setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1").forEach { apiModule ->
+        modImplementation(fabricApi.module(apiModule, "0.44.0+1.18"))?.let { include(it) }
+    }
+    
+    modImplementation("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")?.let { include(it) }
+    modImplementation("cloud.commandframework:cloud-fabric:1.6.1")?.let { include(it) }
 }
 
 loom {

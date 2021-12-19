@@ -29,6 +29,8 @@ dependencies {
     shadedImplementation("io.papermc:paperlib:1.0.5")
     
     shadedApi("com.google.guava:guava:30.0-jre")
+    
+    shadedApi("cloud.commandframework", "cloud-paper", "1.6.1")
 }
 
 val jvmFlags = listOf(
