@@ -4,8 +4,8 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 val minecraft = "1.18.1"
-val yarn = "2"
-val fabricLoader = "0.12.5"
+val yarn = "6"
+val fabricLoader = "0.12.12"
 
 plugins {
     id("fabric-loom").version("0.10.58")
