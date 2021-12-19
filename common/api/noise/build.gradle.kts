@@ -1,8 +1,8 @@
 dependencies {
     shadedApi(project(":common:api:util"))
     
-    shadedApi("com.dfsek:paralithic:0.6.0")
+    shadedApi("com.dfsek", "paralithic", Versions.Libraries.paralithic)
     
-    shadedApi("net.jafama:jafama:2.3.2")
+    shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
 

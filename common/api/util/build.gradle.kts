@@ -1,6 +1,6 @@
 dependencies {
-    shadedApi("com.dfsek.tectonic:common:${Versions.Libraries.tectonic}")
+    shadedApi("com.dfsek.tectonic", "common", Versions.Libraries.tectonic)
     
-    shadedApi("net.jafama:jafama:2.3.2")
+    shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
 
