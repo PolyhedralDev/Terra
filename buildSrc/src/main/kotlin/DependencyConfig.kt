@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies

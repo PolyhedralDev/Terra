@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.File
 import java.io.FileInputStream

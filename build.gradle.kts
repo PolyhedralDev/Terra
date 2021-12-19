@@ -1,12 +1,3 @@
-import com.dfsek.terra.configureCompilation
-import com.dfsek.terra.configureDependencies
-import com.dfsek.terra.configureDistribution
-import com.dfsek.terra.configurePublishing
-import com.dfsek.terra.forSubProjects
-import com.dfsek.terra.preRelease
-import com.dfsek.terra.version
-import com.dfsek.terra.versionProjects
-
 
 preRelease(true)
 

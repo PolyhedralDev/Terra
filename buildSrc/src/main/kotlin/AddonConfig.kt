@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import java.io.File
 import java.util.function.Predicate
 import org.gradle.api.Project

@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project

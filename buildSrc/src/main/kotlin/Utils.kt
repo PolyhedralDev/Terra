@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import java.io.ByteArrayOutputStream
 import org.gradle.api.Action
 import org.gradle.api.Project

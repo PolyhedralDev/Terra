@@ -1,5 +1,3 @@
-import com.dfsek.terra.Versions
-
 dependencies {
     shadedApi(project(":common:api:util"))
     shadedApi(project(":common:api:noise"))

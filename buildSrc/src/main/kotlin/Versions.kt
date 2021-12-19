@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 object Versions {
     object Libraries {
         const val tectonic = "3.1.0"

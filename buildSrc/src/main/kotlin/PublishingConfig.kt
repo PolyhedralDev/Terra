@@ -1,5 +1,3 @@
-package com.dfsek.terra
-
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
