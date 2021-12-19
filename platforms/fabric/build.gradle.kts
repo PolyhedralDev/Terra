@@ -1,9 +1,9 @@
 import com.dfsek.terra.addonDir
+import com.dfsek.terra.Versions
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
-val minecraft = "1.18.1"
 val yarn = "6"
 val fabricLoader = "0.12.12"
 
@@ -16,27 +16,27 @@ plugins {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    shadedApi("org.slf4j:slf4j-api:1.7.32") {
+    shadedApi("org.slf4j", "slf4j-api", Versions.Libraries.slf4j) {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
     }
-    shaded("org.apache.logging.log4j:log4j-slf4j-impl:2.14.1") {
+    shaded("org.apache.logging.log4j", "log4j-slf4j-impl", Versions.Libraries.log4j_slf4j_impl) {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
         exclude("org.apache.logging.log4j")
     }
     
-    minecraft("com.mojang:minecraft:$minecraft") {
+    minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}") {
         exclude("org.slf4j")
     }
-    mappings("net.fabricmc:yarn:$minecraft+build.$yarn:v2")
+    mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
     modImplementation("net.fabricmc:fabric-loader:$fabricLoader")
     
     
     setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1").forEach { apiModule ->
-        modImplementation(fabricApi.module(apiModule, "0.44.0+1.18"))?.let { include(it) }
+        modImplementation(fabricApi.module(apiModule, Versions.Fabric.fabricAPI))?.let { include(it) }
     }
     
-    modImplementation("me.lucko:fabric-permissions-api:0.1-SNAPSHOT")?.let { include(it) }
-    modImplementation("cloud.commandframework:cloud-fabric:1.6.1")?.let { include(it) }
+    modImplementation(include("me.lucko", "fabric-permissions-api", "0.1-SNAPSHOT"))
+    modImplementation(include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
 }
 
 loom {
@@ -76,6 +76,6 @@ tasks.register<TaskModrinthUpload>("publishModrinth") {
     versionNumber = "${project.version}-fabric"
     uploadFile = remapped.get().archiveFile.get().asFile
     releaseType = "beta"
-    addGameVersion(minecraft)
+    addGameVersion(Versions.Fabric.minecraft)
     addLoader("fabric")
 }

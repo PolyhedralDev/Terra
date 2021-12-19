@@ -1,4 +1,5 @@
 import com.dfsek.terra.addonDir
+import com.dfsek.terra.Versions
 import com.dfsek.terra.gitClone
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.net.URL
@@ -25,12 +26,12 @@ dependencies {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
     }
     
-    compileOnly("io.papermc.paper:paper-api:1.18-R0.1-SNAPSHOT")
-    shadedImplementation("io.papermc:paperlib:1.0.5")
+    compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
+    shadedImplementation("io.papermc", "paperlib", Versions.Bukkit.paperLib)
     
     shadedApi("com.google.guava:guava:30.0-jre")
     
-    shadedApi("cloud.commandframework", "cloud-paper", "1.6.1")
+    shadedApi("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
 }
 
 val jvmFlags = listOf(

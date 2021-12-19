@@ -1,10 +1,11 @@
+import com.dfsek.terra.Versions
 import com.dfsek.terra.version
 
 version = version("0.1.0")
 
 dependencies {
     shadedApi("commons-io:commons-io:2.6")
-    shadedImplementation("com.dfsek.tectonic:yaml:3.1.0")
+    shadedImplementation("com.dfsek.tectonic:yaml:${Versions.Libraries.tectonic}")
 }
 
 tasks.withType<Jar> {
