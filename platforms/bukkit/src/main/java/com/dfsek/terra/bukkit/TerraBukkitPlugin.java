@@ -208,6 +208,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
             ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(
                     () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), platform.getRawConfigRegistry().get(id).orElseThrow());
+        }), platform.getRawConfigRegistry().get(id).orElseThrow(), platform.getWorldHandle().air());
     }
 }

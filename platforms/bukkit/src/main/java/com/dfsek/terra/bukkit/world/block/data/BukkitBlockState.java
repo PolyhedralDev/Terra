@@ -32,7 +32,7 @@ public class BukkitBlockState implements BlockState {
         this.delegate = delegate;
     }
     
-    public static BukkitBlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
+    public static BlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
         return new BukkitBlockState(bukkitData);
     }
     

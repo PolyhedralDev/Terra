@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.api.block.state.BlockState;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
@@ -41,12 +43,14 @@ import com.dfsek.terra.bukkit.world.BukkitServerWorld;
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
     private final ChunkGenerator delegate;
     private final ConfigPack pack;
+    private final BlockState air;
     private World world;
     private ServerWorld terraWorld;
     
-    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack) {
+    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
+        this.air = air;
     }
     
     @Override
@@ -71,7 +75,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
                        @Override
                        public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
                                             @NotNull LimitedRegion limitedRegion) {
-                           generationStage.populate(new BukkitProtoWorld(limitedRegion));
+                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air));
                        }
                    })
                    .collect(Collectors.toList());
