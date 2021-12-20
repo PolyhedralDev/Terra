@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.command;
+package com.dfsek.terra.api.command.arguments;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.arguments.CommandArgument;
