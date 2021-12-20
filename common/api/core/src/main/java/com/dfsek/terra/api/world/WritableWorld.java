@@ -28,4 +28,7 @@ public interface WritableWorld extends ReadableWorld {
     
     Entity spawnEntity(double x, double y, double z, EntityType entityType);
     
+    default BufferedWorld buffer(int offsetX, int offsetY, int offsetZ) {
+        return new BufferedWorld(this, offsetX, offsetY, offsetZ);
+    }
 }

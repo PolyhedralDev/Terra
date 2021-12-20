@@ -46,14 +46,11 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
 import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
-import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public class StructureScript implements Structure {
@@ -134,24 +131,6 @@ public class StructureScript implements Structure {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_chunk:" + id)) {
-            StructureBuffer buffer = computeBuffer(location, world, random, rotation);
-            buffer.paste(location, chunk);
-            return buffer.succeeded();
-        }
-    }
-    
-    @Override
-    @SuppressWarnings("try")
-    public boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_recursive:" + id)) {
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
-        }
-    }
-    
-    @Override
-    @SuppressWarnings("try")
     public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
             DirectBuffer buffer = new DirectBuffer(location, world);
@@ -159,11 +138,10 @@ public class StructureScript implements Structure {
         }
     }
     
-    @SuppressWarnings("try")
-    public boolean test(Vector3 location, ServerWorld world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_test:" + id)) {
-            StructureBuffer buffer = computeBuffer(location, world, random, rotation);
-            return buffer.succeeded();
+    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation, int recursions) {
+        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
+            DirectBuffer buffer = new DirectBuffer(location, world);
+            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
         }
     }
     

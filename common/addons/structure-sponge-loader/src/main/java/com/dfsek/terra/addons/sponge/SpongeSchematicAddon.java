@@ -96,7 +96,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 }
             }
             
-            return new SpongeStructure(states, platform, id);
+            return new SpongeStructure(states, id);
         } catch(IOException e) {
             throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);
         }

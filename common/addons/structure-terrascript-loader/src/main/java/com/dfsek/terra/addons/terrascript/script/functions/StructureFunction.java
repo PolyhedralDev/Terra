@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.script.StructureScript;
+
 import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +40,7 @@ public class StructureFunction implements Function<Boolean> {
     private final Position position;
     private final Platform platform;
     private final List<Returnable<String>> rotations;
-
+    
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
                              List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform platform) {
         this.registry = registry;
@@ -76,14 +78,25 @@ public class StructureFunction implements Function<Boolean> {
                 rotation1 = Rotation.valueOf(rotString);
             } catch(IllegalArgumentException e) {
                 LOGGER.warn("Invalid rotation {}", rotString);
-                return null;
+                return false;
             }
-
-            Vector3 offset = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
-                                         FastMath.roundToInt(xz.getZ()));
-
-            return script.generate(new IntermediateBuffer(arguments.getBuffer(), offset), arguments.getWorld(), arguments.getRandom(),
-                                   arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+            
+            if(script instanceof StructureScript structureScript) {
+                return structureScript.generate(arguments.getBuffer().getOrigin(),
+                                                arguments.getWorld()
+                                                         .buffer(FastMath.roundToInt(xz.getX()),
+                                                                 y.apply(implementationArguments, variableMap).intValue(),
+                                                                 FastMath.roundToInt(xz.getZ())),
+                                                arguments.getRandom(),
+                                                arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+            }
+            return script.generate(arguments.getBuffer().getOrigin(),
+                                   arguments.getWorld()
+                                            .buffer(FastMath.roundToInt(xz.getX()),
+                                                    y.apply(implementationArguments, variableMap).intValue(),
+                                                    FastMath.roundToInt(xz.getZ())),
+                                   arguments.getRandom(),
+                                   arguments.getRotation().rotate(rotation1));
         }).orElseGet(() -> {
             LOGGER.error("No such structure {}", app);
             return false;

@@ -18,9 +18,5 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public interface Structure extends StringIdentifiable {
-    boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation);
-    
-    boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions);
-    
     boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation);
 }

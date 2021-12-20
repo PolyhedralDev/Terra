@@ -19,13 +19,11 @@ import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.WritableWorld;
-import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public class TerraFlora implements Structure {
@@ -78,16 +76,6 @@ public class TerraFlora implements Structure {
     @Override
     public String getID() {
         return id;
-    }
-    
-    @Override
-    public boolean generate(Vector3 location, WritableWorld world, Chunk chunk, Random random, Rotation rotation) {
-        return generate(location, world, random, rotation);
-    }
-    
-    @Override
-    public boolean generate(Buffer buffer, WritableWorld world, Random random, Rotation rotation, int recursions) {
-        return generate(buffer.getOrigin(), world, random, rotation);
     }
     
     @Override
