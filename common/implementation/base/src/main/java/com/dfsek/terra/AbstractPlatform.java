@@ -48,7 +48,6 @@ import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.command.CommandManager;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
@@ -61,7 +60,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
-import com.dfsek.terra.commands.TerraCommandManager;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
@@ -92,18 +90,12 @@ public abstract class AbstractPlatform implements Platform {
     
     private final PluginConfigImpl config = new PluginConfigImpl();
     
-    private final CommandManager manager = new TerraCommandManager(this);
-    
     private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
     
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
-    }
-    
-    public CommandManager getManager() {
-        return manager;
     }
     
     protected Iterable<BaseAddon> platformAddon() {
