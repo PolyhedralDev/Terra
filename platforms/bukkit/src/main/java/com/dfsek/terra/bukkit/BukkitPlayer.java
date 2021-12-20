@@ -25,10 +25,11 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
-public class BukkitPlayer implements Player {
+public class BukkitPlayer extends BukkitCommandSender implements Player {
     private final org.bukkit.entity.Player delegate;
     
     public BukkitPlayer(org.bukkit.entity.Player delegate) {
+        super(delegate);
         this.delegate = delegate;
     }
     
