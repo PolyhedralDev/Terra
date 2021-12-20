@@ -45,7 +45,7 @@ public class SetMarkFunction implements Function<Void> {
         arguments.setMark(Vector3.of(FastMath.floorToInt(xz.getX()),
                                       FastMath.floorToInt(
                                               y.apply(implementationArguments, variableMap).doubleValue()),
-                                      FastMath.floorToInt(xz.getZ())).add(arguments.getOrigin()), mark.apply(implementationArguments, variableMap));
+                                      FastMath.floorToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(), mark.apply(implementationArguments, variableMap));
         return null;
     }
     

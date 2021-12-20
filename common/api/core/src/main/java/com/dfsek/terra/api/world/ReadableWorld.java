@@ -13,7 +13,15 @@ public interface ReadableWorld extends World {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
     
+    default BlockState getBlockState(Vector3.Mutable position) {
+        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
+    }
+    
     default BlockState getBlockState(Vector3Int position) {
+        return getBlockState(position.getX(), position.getY(), position.getZ());
+    }
+    
+    default BlockState getBlockState(Vector3Int.Mutable position) {
         return getBlockState(position.getX(), position.getY(), position.getZ());
     }
     

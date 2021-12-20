@@ -37,17 +37,19 @@ public class CheckBlockFunction implements Function<String> {
     @Override
     public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-    
+        
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
-    
-    
+                                                          z.apply(implementationArguments, variableMap).doubleValue()),
+                                               arguments.getRotation());
+        
+        
         String data = arguments.getWorld()
                                .getBlockState(arguments.getOrigin()
                                                        .toVector3()
+                                                       .mutable()
                                                        .add(Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                        y.apply(implementationArguments, variableMap)
-                                                                         .doubleValue(), FastMath.roundToInt(xz.getZ()))))
+                                                                       y.apply(implementationArguments, variableMap)
+                                                                        .doubleValue(), FastMath.roundToInt(xz.getZ()))))
                                .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;

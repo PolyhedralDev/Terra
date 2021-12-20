@@ -46,6 +46,10 @@ public class Vector3Int {
         return Vector3.of(x, y, z);
     }
     
+    public Vector3.Mutable toVector3Mutable() {
+        return Vector3.Mutable.of(x, y, z);
+    }
+    
     public static class Mutable {
         private int x, y, z;
         

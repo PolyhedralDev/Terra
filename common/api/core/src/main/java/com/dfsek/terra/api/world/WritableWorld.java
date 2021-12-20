@@ -12,7 +12,15 @@ public interface WritableWorld extends ReadableWorld {
         setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
     }
     
+    default void setBlockState(Vector3.Mutable position, BlockState data, boolean physics) {
+        setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
+    }
+    
     default void setBlockState(Vector3Int position, BlockState data, boolean physics) {
+        setBlockState(position.getX(), position.getY(), position.getZ(), data, physics);
+    }
+    
+    default void setBlockState(Vector3Int.Mutable position, BlockState data, boolean physics) {
         setBlockState(position.getX(), position.getY(), position.getZ(), data, physics);
     }
     
@@ -20,7 +28,15 @@ public interface WritableWorld extends ReadableWorld {
         setBlockState(position, data, false);
     }
     
+    default void setBlockState(Vector3.Mutable position, BlockState data) {
+        setBlockState(position, data, false);
+    }
+    
     default void setBlockState(Vector3Int position, BlockState data) {
+        setBlockState(position, data, false);
+    }
+    
+    default void setBlockState(Vector3Int.Mutable position, BlockState data) {
         setBlockState(position, data, false);
     }
     

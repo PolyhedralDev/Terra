@@ -51,8 +51,8 @@ public class PullFunction implements Function<Void> {
         BlockState rot = data.clone();
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         
-        Vector3 mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
-                                  FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
+        Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
+                                  FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {
                 arguments.getWorld().setBlockState(mutable, rot);

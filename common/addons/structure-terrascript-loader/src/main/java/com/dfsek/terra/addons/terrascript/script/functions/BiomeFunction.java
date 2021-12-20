@@ -42,16 +42,18 @@ public class BiomeFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                 z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+                                                          z.apply(implementationArguments, variableMap).doubleValue()),
+                                               arguments.getRotation());
         
         
         BiomeProvider grid = arguments.getWorld().getBiomeProvider();
         
         return grid.getBiome(arguments.getOrigin()
                                       .toVector3()
+                                      .mutable()
                                       .add(Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                       y.apply(implementationArguments, variableMap).intValue(),
-                                                       FastMath.roundToInt(xz.getZ()))), arguments.getWorld().getSeed()).getID();
+                                                      y.apply(implementationArguments, variableMap).intValue(),
+                                                      FastMath.roundToInt(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
     }
     
     @Override

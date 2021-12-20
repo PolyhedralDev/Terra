@@ -50,7 +50,7 @@ public class EntityFunction implements Function<Void> {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
                                                           z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
     
-        Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()).add(arguments.getOrigin()).add(0.5, 0, 0.5), data);
+        Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()).mutable().add(arguments.getOrigin()).add(0.5, 0, 0.5).immutable(), data);
         platform.getEventManager().callEvent(new EntitySpawnEvent(entity.world().getPack(), entity));
         return null;
     }

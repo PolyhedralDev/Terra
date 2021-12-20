@@ -59,9 +59,10 @@ public class LootFunction implements Function<Void> {
     public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
-    
-    
+                                                          z.apply(implementationArguments, variableMap).doubleValue()),
+                                               arguments.getRotation());
+        
+        
         String id = data.apply(implementationArguments, variableMap);
         
         
@@ -70,8 +71,8 @@ public class LootFunction implements Function<Void> {
                                      Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
                                                                 y.apply(implementationArguments, variableMap)
                                                                  .intValue(),
-                                                                FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
-    
+                                                                FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+            
                                      try {
                                          BlockEntity data = arguments.getWorld().getBlockEntity(apply);
                                          if(!(data instanceof Container container)) {

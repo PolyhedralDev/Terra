@@ -50,7 +50,7 @@ public class StateFunction implements Function<Void> {
     
     
         Vector3 origin = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
-                                     FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
+                                     FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
         try {
             BlockEntity state = arguments.getWorld().getBlockEntity(origin);
             state.applyState(data.apply(implementationArguments, variableMap));

@@ -77,9 +77,9 @@ public class BlockFunction implements Function<Void> {
     
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
-            Vector3 set = Vector3.of(FastMath.roundToInt(xz.getX()),
+            Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
                                      y.apply(implementationArguments, variableMap).doubleValue(),
-                                     FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
+                                     FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, variableMap) || current.isAir()) {
                 if(arguments.isWaterlog() && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {

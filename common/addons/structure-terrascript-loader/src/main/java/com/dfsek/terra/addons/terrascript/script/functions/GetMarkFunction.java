@@ -40,7 +40,7 @@ public class GetMarkFunction implements Function<String> {
                                                           z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
     
         String mark = arguments.getMark(Vector3.of(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(
-                y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())).add(arguments.getOrigin()));
+                y.apply(implementationArguments, variableMap).doubleValue()), FastMath.floorToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable());
         return mark == null ? "" : mark;
     }
     
