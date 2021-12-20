@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;

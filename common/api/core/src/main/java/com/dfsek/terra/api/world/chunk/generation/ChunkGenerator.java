@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
 

@@ -1,4 +1,4 @@
-package com.dfsek.terra.api.util.vector.integer;
+package com.dfsek.terra.api.util.vector;
 
 import com.dfsek.terra.api.util.Rotation;
 

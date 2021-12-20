@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.util.vector;
 
-import com.dfsek.terra.api.util.vector.integer.Vector3Int;
-
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 

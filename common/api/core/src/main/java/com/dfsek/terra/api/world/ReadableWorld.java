@@ -3,7 +3,7 @@ package com.dfsek.terra.api.world;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 public interface ReadableWorld extends World {

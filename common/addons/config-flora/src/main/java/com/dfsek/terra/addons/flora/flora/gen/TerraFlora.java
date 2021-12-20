@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.flora.flora.gen;
 
-import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 import net.jafama.FastMath;
 
@@ -24,7 +24,6 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

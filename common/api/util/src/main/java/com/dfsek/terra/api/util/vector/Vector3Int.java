@@ -1,6 +1,4 @@
-package com.dfsek.terra.api.util.vector.integer;
-
-import com.dfsek.terra.api.util.vector.Vector3;
+package com.dfsek.terra.api.util.vector;
 
 
 public class Vector3Int {
