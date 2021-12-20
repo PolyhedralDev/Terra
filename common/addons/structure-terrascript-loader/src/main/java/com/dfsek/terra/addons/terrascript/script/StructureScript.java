@@ -63,9 +63,10 @@ public class StructureScript implements Structure {
     private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
     
+    @SuppressWarnings("rawtypes")
     public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry,
                            Registry<LootTable> lootRegistry,
-                           Registry<FunctionBuilder<?>> functionRegistry) {
+                           Registry<FunctionBuilder> functionRegistry) {
         Parser parser;
         try {
             parser = new Parser(IOUtils.toString(inputStream, Charset.defaultCharset()));

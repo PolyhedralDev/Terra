@@ -30,7 +30,6 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class TerraScriptAddon implements AddonInitializer {
-    public static TypeKey<FunctionBuilder<?>> FUNCTION_BUILDER_TYPE = new TypeKey<>() {};
     @Inject
     private Platform platform;
     
@@ -49,10 +48,14 @@ public class TerraScriptAddon implements AddonInitializer {
                         for(Map.Entry<String, InputStream> entry : entries) {
                             try {
                                 String id = StringUtil.fileName(entry.getKey());
-                                StructureScript structureScript = new StructureScript(entry.getValue(), id, platform, structureRegistry,
+                                StructureScript structureScript = new StructureScript(entry.getValue(),
+                                                                                      id,
+                                                                                      platform,
+                                                                                      structureRegistry,
                                                                                       lootRegistry,
-                                                                                      event.getPack().getOrCreateRegistry(
-                                                                                              FUNCTION_BUILDER_TYPE));
+                                                                                      event
+                                                                                              .getPack()
+                                                                                              .getOrCreateRegistry(FunctionBuilder.class));
                                 structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
                                 throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
