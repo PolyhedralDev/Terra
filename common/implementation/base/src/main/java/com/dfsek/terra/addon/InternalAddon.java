@@ -45,6 +45,7 @@ public class InternalAddon implements BaseAddon {
                     CommandManager<CommandSender> manager = event.getCommandManager();
                     manager.command(
                                    manager.commandBuilder("addons", ArgumentDescription.of("List installed Terra addons"))
+                                          .permission("terra.addons")
                                           .handler(context -> {
                                               StringBuilder addons = new StringBuilder("Installed addons:\n");
                                               platform.getAddons()
@@ -60,6 +61,7 @@ public class InternalAddon implements BaseAddon {
                            .command(
                                    manager.commandBuilder("addons")
                                           .argument(RegistryArgument.of("addon", platform.getAddons()))
+                                          .permission("terra.addons.info")
                                           .handler(context -> {
                                               BaseAddon addon = context.get("addon");
                                               StringBuilder addonInfo = new StringBuilder("Addon ").append(addon.getID()).append('\n');
@@ -76,75 +78,93 @@ public class InternalAddon implements BaseAddon {
                                               context.getSender().sendMessage(addonInfo.toString());
                                           })
                                    )
-                           .command(manager.commandBuilder("packs", ArgumentDescription.of("List installed config packs"))
-                                           .handler(context -> {
-                                               StringBuilder packs = new StringBuilder("Installed packs:\n");
-                                               platform.getConfigRegistry().forEach(pack -> packs.append(" - ")
-                                                                                                 .append(pack.getID())
-                                                                                                 .append('@')
-                                                                                                 .append(pack.getVersion().getFormatted()));
-                                               context.getSender().sendMessage(packs.toString());
-                                           })
+                           .command(
+                                   manager.commandBuilder("packs", ArgumentDescription.of("List installed config packs"))
+                                          .permission("terra.packs")
+                                          .handler(context -> {
+                                              StringBuilder packs = new StringBuilder("Installed packs:\n");
+                                              platform.getConfigRegistry().forEach(pack -> packs.append(" - ")
+                                                                                                .append(pack.getID())
+                                                                                                .append('@')
+                                                                                                .append(pack.getVersion().getFormatted()));
+                                              context.getSender().sendMessage(packs.toString());
+                                          })
                                    )
-                            .command(manager.commandBuilder("packs")
-                                             .literal("info", ArgumentDescription.of("Get information about a pack"))
-                                             .argument(RegistryArgument.of("pack", platform.getConfigRegistry()))
-                                             .handler(context -> {
-                                                 ConfigPack pack = context.get("pack");
-                                                 StringBuilder packInfo = new StringBuilder("Pack ").append(pack.getID()).append('\n');
-    
-                                                 packInfo.append("Version: ").append(pack.getVersion().getFormatted()).append('\n');
-                                                 packInfo.append("Author: ").append(pack.getAuthor()).append('\n');
-    
-                                                 packInfo.append("Addon Dependencies:\n");
-                                                 pack.addons().forEach((id, versions) -> packInfo
-                                                         .append(" - ")
-                                                         .append(id.getID())
-                                                         .append('@')
-                                                         .append(versions.getFormatted())
-                                                         .append('\n'));
-                                                 context.getSender().sendMessage(packInfo.toString());
-                                             }))
-                           .command(manager.commandBuilder("packs")
-                                           .literal("reload", ArgumentDescription.of("Reload config packs"))
-                                           .handler(context -> {
-                                               context.getSender().sendMessage("Reloading Terra...");
-                                               logger.info("Reloading Terra...");
-                                               if(platform.reload()) {
-                                                   logger.info("Terra reloaded successfully.");
-                                                   context.getSender().sendMessage("Terra reloaded successfully.");
-                                               } else {
-                                                   logger.error("Terra failed to reload.");
-                                                   context.getSender().sendMessage("Terra failed to reload. See logs for more information.");
-                                               }
-                                           }))
-                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                           .literal("start", ArgumentDescription.of("Start profiling"), "st")
-                                           .handler(context -> {
-                                               platform.getProfiler().start();
-                                               context.getSender().sendMessage("Profiling started.");
-                                           }))
-                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                           .literal("stop", ArgumentDescription.of("Stop profiling"), "s")
-                                           .handler(context -> {
-                                               platform.getProfiler().stop();
-                                               context.getSender().sendMessage("Profiling stopped.");
-                                           }))
-                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                           .literal("query", ArgumentDescription.of("Query profiler results"), "q")
-                                           .handler(context -> {
-                                               StringBuilder data = new StringBuilder("Terra Profiler data: \n");
-                                               platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
-                                               logger.info(data.toString());
-                                               context.getSender().sendMessage("Profiling data dumped to console.");
-                                           }))
-                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                           .literal("reset", ArgumentDescription.of("Reset the profiler"), "r")
-                                           .handler(context -> {
-                                               platform.getProfiler().reset();
-                                               context.getSender().sendMessage("Profiler reset.");
-                                           }))
-                            ;
+                           .command(
+                                   manager.commandBuilder("packs")
+                                          .literal("info", ArgumentDescription.of("Get information about a pack"))
+                                          .permission("terra.packs.info")
+                                          .argument(RegistryArgument.of("pack", platform.getConfigRegistry()))
+                                          .handler(context -> {
+                                              ConfigPack pack = context.get("pack");
+                                              StringBuilder packInfo = new StringBuilder("Pack ").append(pack.getID()).append('\n');
+                        
+                                              packInfo.append("Version: ").append(pack.getVersion().getFormatted()).append('\n');
+                                              packInfo.append("Author: ").append(pack.getAuthor()).append('\n');
+                        
+                                              packInfo.append("Addon Dependencies:\n");
+                                              pack.addons().forEach((id, versions) -> packInfo
+                                                      .append(" - ")
+                                                      .append(id.getID())
+                                                      .append('@')
+                                                      .append(versions.getFormatted())
+                                                      .append('\n'));
+                                              context.getSender().sendMessage(packInfo.toString());
+                                          }))
+                           .command(
+                                   manager.commandBuilder("packs")
+                                          .literal("reload", ArgumentDescription.of("Reload config packs"))
+                                          .permission("terra.packs.reload")
+                                          .handler(context -> {
+                                              context.getSender().sendMessage("Reloading Terra...");
+                                              logger.info("Reloading Terra...");
+                                              if(platform.reload()) {
+                                                  logger.info("Terra reloaded successfully.");
+                                                  context.getSender().sendMessage("Terra reloaded successfully.");
+                                              } else {
+                                                  logger.error("Terra failed to reload.");
+                                                  context.getSender().sendMessage(
+                                                          "Terra failed to reload. See logs for more information.");
+                                              }
+                                          }))
+                           .command(
+                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                          .literal("start", ArgumentDescription.of("Start profiling"), "st")
+                                          .permission("terra.profiler.start")
+                                          .handler(context -> {
+                                              platform.getProfiler().start();
+                                              context.getSender().sendMessage("Profiling started.");
+                                          }))
+                           .command(
+                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                          .literal("stop", ArgumentDescription.of("Stop profiling"), "s")
+                                          .permission("terra.profiler.stop")
+                                          .handler(context -> {
+                                              platform.getProfiler().stop();
+                                              context.getSender().sendMessage("Profiling stopped.");
+                                          }))
+                           .command(
+                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                          .literal("query", ArgumentDescription.of("Query profiler results"), "q")
+                                          .permission("terra.profiler.query")
+                                          .handler(context -> {
+                                              StringBuilder data = new StringBuilder("Terra Profiler data: \n");
+                                              platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id)
+                                                                                                               .append(": ")
+                                                                                                               .append(timings.toString())
+                                                                                                               .append('\n'));
+                                              logger.info(data.toString());
+                                              context.getSender().sendMessage("Profiling data dumped to console.");
+                                          }))
+                           .command(
+                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                          .literal("reset", ArgumentDescription.of("Reset the profiler"), "r")
+                                          .permission("terra.profiler.reset")
+                                          .handler(context -> {
+                                              platform.getProfiler().reset();
+                                              context.getSender().sendMessage("Profiler reset.");
+                                          }))
+                    ;
             
             
                 });
