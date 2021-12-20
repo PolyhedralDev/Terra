@@ -152,7 +152,7 @@ public final class BukkitAdapter {
     }
     
     public static Vector3 adapt(Location location) {
-        return new Vector3(location.getX(), location.getY(), location.getZ());
+        return Vector3.of(location.getX(), location.getY(), location.getZ());
     }
     
     public static Vector adapt(Vector3 vector3) {
@@ -160,7 +160,7 @@ public final class BukkitAdapter {
     }
     
     public static Vector3 adapt(Vector vector) {
-        return new Vector3(vector.getX(), vector.getY(), vector.getZ());
+        return Vector3.of(vector.getX(), vector.getY(), vector.getZ());
     }
     
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {

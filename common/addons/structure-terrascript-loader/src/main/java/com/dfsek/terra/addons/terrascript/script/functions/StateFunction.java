@@ -49,7 +49,7 @@ public class StateFunction implements Function<Void> {
                                  z.apply(implementationArguments, variableMap).doubleValue());
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
-        Vector3 origin = new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
+        Vector3 origin = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
                                      FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
         try {
             BlockEntity state = arguments.getWorld().getBlockEntity(origin);

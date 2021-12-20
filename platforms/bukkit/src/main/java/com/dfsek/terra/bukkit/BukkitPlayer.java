@@ -41,7 +41,7 @@ public class BukkitPlayer extends BukkitCommandSender implements Player {
     @Override
     public Vector3 position() {
         org.bukkit.Location bukkit = delegate.getLocation();
-        return new Vector3(bukkit.getX(), bukkit.getY(), bukkit.getZ());
+        return Vector3.of(bukkit.getX(), bukkit.getY(), bukkit.getZ());
     }
     
     @Override

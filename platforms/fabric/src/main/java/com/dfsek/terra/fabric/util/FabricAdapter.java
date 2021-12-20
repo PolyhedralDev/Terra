@@ -39,7 +39,7 @@ public final class FabricAdapter {
     }
     
     public static Vector3 adapt(BlockPos pos) {
-        return new Vector3(pos.getX(), pos.getY(), pos.getZ());
+        return Vector3.of(pos.getX(), pos.getY(), pos.getZ());
     }
     
     public static FabricBlockState adapt(BlockState state) {

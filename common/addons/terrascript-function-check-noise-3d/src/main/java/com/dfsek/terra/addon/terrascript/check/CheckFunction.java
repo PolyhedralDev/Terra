@@ -51,7 +51,7 @@ public class CheckFunction implements Function<String> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         Vector3 location = arguments.getOrigin().toVector3().clone().add(
-                new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
+                Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
                             FastMath.roundToInt(xz.getZ())));
         
         return apply(location, arguments.getWorld());

@@ -135,7 +135,7 @@ public class Vector2 implements Cloneable {
     }
     
     public Vector3 extrude(double y) {
-        return new Vector3(this.x, y, this.z);
+        return Vector3.of(this.x, y, this.z);
     }
     
     public Vector2 add(double x, double z) {
