@@ -45,7 +45,7 @@ public class CheckFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
         
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(),
+        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
                                  z.apply(implementationArguments, variableMap).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());

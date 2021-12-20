@@ -25,9 +25,13 @@ public class Vector2 implements Cloneable {
      * @param x X component
      * @param z Z component
      */
-    public Vector2(double x, double z) {
+    private Vector2(double x, double z) {
         this.x = x;
         this.z = z;
+    }
+    
+    public static Vector2 of(double x, double z) {
+        return new Vector2(x, z);
     }
     
     /**

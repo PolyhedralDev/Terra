@@ -26,7 +26,7 @@ public class BiomeFunctionBuilder implements FunctionBuilder<BiomeFunction> {
     @SuppressWarnings("unchecked")
     @Override
     public BiomeFunction build(List<Returnable<?>> argumentList, Position position) {
-        return new BiomeFunction(platform, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
+        return new BiomeFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
                                  (Returnable<Number>) argumentList.get(2), position);
     }
     

@@ -25,13 +25,11 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomeFunction implements Function<String> {
-    private final Platform platform;
     private final Returnable<Number> x, y, z;
     private final Position position;
     
     
-    public BiomeFunction(Platform platform, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
-        this.platform = platform;
+    public BiomeFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -43,7 +41,7 @@ public class BiomeFunction implements Function<String> {
     public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(),
+        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
                                  z.apply(implementationArguments, variableMap).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());

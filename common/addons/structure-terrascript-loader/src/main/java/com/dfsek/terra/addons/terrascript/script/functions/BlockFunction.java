@@ -71,7 +71,7 @@ public class BlockFunction implements Function<Void> {
     
     void setBlock(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap,
                   TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = new Vector2(x.apply(implementationArguments, variableMap).doubleValue(),
+        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
                                  z.apply(implementationArguments, variableMap).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
