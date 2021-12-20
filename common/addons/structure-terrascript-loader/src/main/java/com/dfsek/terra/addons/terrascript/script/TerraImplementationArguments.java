@@ -7,32 +7,32 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.api.structure.buffer.Buffer;
 import com.dfsek.terra.api.util.Rotation;
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class TerraImplementationArguments implements ImplementationArguments {
-    private final Buffer buffer;
     private final Rotation rotation;
     private final Random random;
     private final WritableWorld world;
+    private final Map<Vector3, String> marks = new HashMap<>();
     private final int recursions;
     private boolean waterlog = false;
+    private final Vector3Int origin;
     
-    public TerraImplementationArguments(Buffer buffer, Rotation rotation, Random random, WritableWorld world, int recursions) {
-        this.buffer = buffer;
+    public TerraImplementationArguments(Vector3Int origin, Rotation rotation, Random random, WritableWorld world, int recursions) {
         this.rotation = rotation;
         this.random = random;
         this.world = world;
         this.recursions = recursions;
-    }
-    
-    public Buffer getBuffer() {
-        return buffer;
+        this.origin = origin;
     }
     
     public int getRecursions() {
@@ -57,5 +57,17 @@ public class TerraImplementationArguments implements ImplementationArguments {
     
     public WritableWorld getWorld() {
         return world;
+    }
+    
+    public Vector3Int getOrigin() {
+        return origin;
+    }
+    
+    public void setMark(Vector3 pos, String mark) {
+        marks.put(pos, mark);
+    }
+    
+    public String getMark(Vector3 pos) {
+        return marks.get(pos);
     }
 }

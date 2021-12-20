@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.util.vector;
 
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,6 +26,10 @@ public class Vector3 implements Cloneable {
         this.z = z;
     }
     
+    public static Vector3 of(double x, double y, double z) {
+        return new Vector3(x, y, z);
+    }
+    
     public Vector3 multiply(double m) {
         x *= m;
         y *= m;
@@ -39,6 +45,13 @@ public class Vector3 implements Cloneable {
     }
     
     public Vector3 add(Vector3 other) {
+        this.x += other.getX();
+        this.y += other.getY();
+        this.z += other.getZ();
+        return this;
+    }
+    
+    public Vector3 add(Vector3Int other) {
         this.x += other.getX();
         this.y += other.getY();
         this.z += other.getZ();

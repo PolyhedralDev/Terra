@@ -9,12 +9,11 @@ package com.dfsek.terra.addons.sponge;
 
 import java.util.Random;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.integer.Vector2Int;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -30,10 +29,10 @@ public class SpongeStructure implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
-        int bX = location.getBlockX();
-        int bY = location.getBlockY();
-        int bZ = location.getBlockZ();
+    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+        int bX = location.getX();
+        int bY = location.getY();
+        int bZ = location.getZ();
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
                 Vector2Int r = Vector2Int.of(x, z).rotate(rotation);

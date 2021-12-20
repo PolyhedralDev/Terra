@@ -43,12 +43,10 @@ public class SetMarkFunction implements Function<Void> {
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
-        arguments.getBuffer().setMark(mark.apply(implementationArguments, variableMap), new Vector3(FastMath.floorToInt(xz.getX()),
-                                                                                                    FastMath.floorToInt(
-                                                                                                            y.apply(implementationArguments,
-                                                                                                                    variableMap)
-                                                                                                             .doubleValue()),
-                                                                                                    FastMath.floorToInt(xz.getZ())));
+        arguments.setMark(Vector3.of(FastMath.floorToInt(xz.getX()),
+                                      FastMath.floorToInt(
+                                              y.apply(implementationArguments, variableMap).doubleValue()),
+                                      FastMath.floorToInt(xz.getZ())).add(arguments.getOrigin()), mark.apply(implementationArguments, variableMap));
         return null;
     }
     

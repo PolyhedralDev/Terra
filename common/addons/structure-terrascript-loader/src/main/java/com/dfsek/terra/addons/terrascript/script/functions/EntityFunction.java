@@ -19,7 +19,9 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
@@ -50,9 +52,8 @@ public class EntityFunction implements Function<Void> {
                                  z.apply(implementationArguments, variableMap).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
-        
-        arguments.getBuffer().addItem(new BufferedEntity(data, platform),
-                                      new Vector3(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()));
+        Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.apply(implementationArguments, variableMap).doubleValue(), xz.getZ()).add(arguments.getOrigin()).add(0.5, 0, 0.5), data);
+        platform.getEventManager().callEvent(new EntitySpawnEvent(entity.world().getPack(), entity));
         return null;
     }
     

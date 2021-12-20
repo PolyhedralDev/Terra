@@ -44,12 +44,11 @@ public class CheckBlockFunction implements Function<String> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         String data = arguments.getWorld()
-                               .getBlockState(arguments.getBuffer()
-                                                      .getOrigin()
-                                                      .clone()
-                                                      .add(new Vector3(FastMath.roundToInt(xz.getX()),
-                                                                       y.apply(implementationArguments, variableMap)
-                                                                        .doubleValue(), FastMath.roundToInt(xz.getZ()))))
+                               .getBlockState(arguments.getOrigin()
+                                                       .toVector3()
+                                                       .add(Vector3.of(FastMath.roundToInt(xz.getX()),
+                                                                        y.apply(implementationArguments, variableMap)
+                                                                         .doubleValue(), FastMath.roundToInt(xz.getZ()))))
                                .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;

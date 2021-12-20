@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.api.block.state.properties.base.Properties;
+
 import net.jafama.FastMath;
 
 import java.util.HashMap;
@@ -26,8 +28,12 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BlockFunction implements Function<Void> {
+    private static final Logger logger = LoggerFactory.getLogger(BlockFunction.class);
     protected final Returnable<Number> x, y, z;
     protected final Returnable<String> blockData;
     protected final Platform platform;
@@ -72,10 +78,20 @@ public class BlockFunction implements Function<Void> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
-        arguments.getBuffer().addItem(
-                new BufferedBlock(rot, overwrite.apply(implementationArguments, variableMap), platform, arguments.isWaterlog()),
-                new Vector3(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).doubleValue(),
-                            FastMath.roundToInt(xz.getZ())));
+        try {
+            Vector3 set = Vector3.of(FastMath.roundToInt(xz.getX()),
+                                     y.apply(implementationArguments, variableMap).doubleValue(),
+                                     FastMath.roundToInt(xz.getZ())).add(arguments.getOrigin());
+            BlockState current = arguments.getWorld().getBlockState(set);
+            if(overwrite.apply(implementationArguments, variableMap) || current.isAir()) {
+                if(arguments.isWaterlog() && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
+                    current.set(Properties.WATERLOGGED, true);
+                }
+                arguments.getWorld().setBlockState(set, rot);
+            }
+        } catch(RuntimeException e) {
+            logger.error("Failed to place block at location {}", arguments.getOrigin(), e);
+        }
     }
     
     protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {

@@ -29,7 +29,7 @@ public class StateFunctionBuilder implements FunctionBuilder<StateFunction> {
     public StateFunction build(List<Returnable<?>> argumentList, Position position) {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
         return new StateFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                 (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position);
+                                 (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), position);
     }
     
     @Override

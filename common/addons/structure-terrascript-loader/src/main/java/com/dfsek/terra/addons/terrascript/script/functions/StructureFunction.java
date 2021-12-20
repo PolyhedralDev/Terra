@@ -82,7 +82,7 @@ public class StructureFunction implements Function<Boolean> {
             }
             
             if(script instanceof StructureScript structureScript) {
-                return structureScript.generate(arguments.getBuffer().getOrigin(),
+                return structureScript.generate(arguments.getOrigin(),
                                                 arguments.getWorld()
                                                          .buffer(FastMath.roundToInt(xz.getX()),
                                                                  y.apply(implementationArguments, variableMap).intValue(),
@@ -90,7 +90,7 @@ public class StructureFunction implements Function<Boolean> {
                                                 arguments.getRandom(),
                                                 arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
             }
-            return script.generate(arguments.getBuffer().getOrigin(),
+            return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
                                             .buffer(FastMath.roundToInt(xz.getX()),
                                                     y.apply(implementationArguments, variableMap).intValue(),

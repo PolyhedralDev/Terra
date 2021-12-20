@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
@@ -46,10 +45,7 @@ import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.structure.buffer.buffers.DirectBuffer;
-import com.dfsek.terra.api.structure.buffer.buffers.StructureBuffer;
 import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -57,7 +53,6 @@ public class StructureScript implements Structure {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     private final Block block;
     private final String id;
-    private final Cache<Vector3, StructureBuffer> cache;
     private final Platform platform;
     
     @SuppressWarnings("rawtypes")
@@ -89,11 +84,11 @@ public class StructureScript implements Structure {
                 .registerFunction("getBlock", new CheckBlockFunctionBuilder())
                 .registerFunction("state", new StateFunctionBuilder(platform))
                 .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
-                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getX(),
+                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getX(),
                                                                                 Returnable.ReturnType.NUMBER))
-                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getY(),
+                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getY(),
                                                                                 Returnable.ReturnType.NUMBER))
-                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getBuffer().getOrigin().getZ(),
+                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getZ(),
                                                                                 Returnable.ReturnType.NUMBER))
                 .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(),
                                                                            Returnable.ReturnType.STRING))
@@ -126,34 +121,19 @@ public class StructureScript implements Structure {
         
         block = parser.parse();
         this.platform = platform;
-        this.cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getStructureCache()).build();
     }
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
-            DirectBuffer buffer = new DirectBuffer(location, world);
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, 0));
+            return applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
         }
     }
     
-    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation, int recursions) {
+    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation, int recursions) {
         try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
-            DirectBuffer buffer = new DirectBuffer(location, world);
-            return applyBlock(new TerraImplementationArguments(buffer, rotation, random, world, recursions));
-        }
-    }
-    
-    private StructureBuffer computeBuffer(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
-        try {
-            return cache.get(location, () -> {
-                StructureBuffer buf = new StructureBuffer(location);
-                buf.setSucceeded(applyBlock(new TerraImplementationArguments(buf, rotation, random, world, 0)));
-                return buf;
-            });
-        } catch(ExecutionException e) {
-            throw new RuntimeException(e);
+            return applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
         }
     }
     
@@ -161,7 +141,7 @@ public class StructureScript implements Structure {
         try {
             return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
-            LOGGER.error("Failed to generate structure at {}", arguments.getBuffer().getOrigin(), e);
+            LOGGER.error("Failed to generate structure at {}", arguments.getOrigin(), e);
             return false;
         }
     }

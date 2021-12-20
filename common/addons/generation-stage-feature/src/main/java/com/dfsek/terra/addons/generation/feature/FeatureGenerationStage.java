@@ -17,6 +17,7 @@ import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
@@ -56,7 +57,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                             .getSuitableCoordinates(column)
                                             .forEach(y ->
                                                              feature.getStructure(world, tx, y, tz)
-                                                                    .generate(new Vector3(tx, y, tz),
+                                                                    .generate(Vector3Int.of(tx, y, tz),
                                                                               world,
                                                                               new Random(PopulationUtil.getCarverChunkSeed(
                                                                                       world.centerChunkX(),

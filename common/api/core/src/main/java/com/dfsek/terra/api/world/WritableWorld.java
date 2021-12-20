@@ -4,6 +4,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
 
 
 public interface WritableWorld extends ReadableWorld {
@@ -11,7 +12,15 @@ public interface WritableWorld extends ReadableWorld {
         setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
     }
     
+    default void setBlockState(Vector3Int position, BlockState data, boolean physics) {
+        setBlockState(position.getX(), position.getY(), position.getZ(), data, physics);
+    }
+    
     default void setBlockState(Vector3 position, BlockState data) {
+        setBlockState(position, data, false);
+    }
+    
+    default void setBlockState(Vector3Int position, BlockState data) {
         setBlockState(position, data, false);
     }
     

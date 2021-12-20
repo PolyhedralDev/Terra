@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.flora.flora.gen;
 
+import com.dfsek.terra.api.util.vector.integer.Vector3Int;
+
 import net.jafama.FastMath;
 
 import java.util.ArrayList;
@@ -54,9 +56,9 @@ public class TerraFlora implements Structure {
         });
     }
     
-    private void test(EnumSet<Direction> faces, Direction f, Vector3 b, WritableWorld world) {
+    private void test(EnumSet<Direction> faces, Direction f, Vector3Int b, WritableWorld world) {
         if(testRotation.contains(
-                world.getBlockState(b.getBlockX() + f.getModX(), b.getBlockY() + f.getModY(), b.getBlockZ() + f.getModZ()).getBlockType()))
+                world.getBlockState(b.getX() + f.getModX(), b.getY() + f.getModY(), b.getZ() + f.getModZ()).getBlockType()))
             faces.add(f);
     }
     
@@ -64,7 +66,7 @@ public class TerraFlora implements Structure {
         return layers.get(FastMath.max(FastMath.min(layer, layers.size() - 1), 0));
     }
     
-    private EnumSet<Direction> getFaces(Vector3 b, WritableWorld world) {
+    private EnumSet<Direction> getFaces(Vector3Int b, WritableWorld world) {
         EnumSet<Direction> faces = EnumSet.noneOf(Direction.class);
         test(faces, Direction.NORTH, b, world);
         test(faces, Direction.SOUTH, b, world);
@@ -79,12 +81,12 @@ public class TerraFlora implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3 location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();
         int c = ceiling ? -1 : 1;
         
-        EnumSet<Direction> faces = doRotation ? getFaces(location.clone().add(0, c, 0), world) : EnumSet.noneOf(Direction.class);
+        EnumSet<Direction> faces = doRotation ? getFaces(location.mutable().add(0, c, 0).immutable(), world) : EnumSet.noneOf(Direction.class);
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
         
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
@@ -93,7 +95,7 @@ public class TerraFlora implements Structure {
                                                                                        location.getZ(), world.getSeed()).clone();
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
-                        new Random(location.getBlockX() ^ location.getBlockZ()).nextInt(faces.size())); // Get random face.
+                        new Random(location.getX() ^ location.getZ()).nextInt(faces.size())); // Get random face.
                 
                 data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
                     .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
@@ -101,7 +103,7 @@ public class TerraFlora implements Structure {
                     .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
                     .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
             }
-            world.setBlockState(location.clone().add(0, i + c, 0), data, physics);
+            world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }
         return true;
     }

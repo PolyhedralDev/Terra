@@ -1,5 +1,8 @@
 package com.dfsek.terra.api.util.vector.integer;
 
+import com.dfsek.terra.api.util.vector.Vector3;
+
+
 public class Vector3Int {
     private static final Vector3Int ZERO = new Vector3Int(0, 0, 0);
     private static final Vector3Int UNIT = new Vector3Int(0, 1, 0);
@@ -39,7 +42,10 @@ public class Vector3Int {
         return new Mutable(x, y, z);
     }
     
-
+    public Vector3 toVector3() {
+        return Vector3.of(x, y, z);
+    }
+    
     public static class Mutable {
         private int x, y, z;
         
@@ -75,6 +81,17 @@ public class Vector3Int {
         
         public Vector3Int immutable() {
             return Vector3Int.of(x, y, z);
+        }
+        
+        public Mutable add(int x, int y, int z) {
+            this.x += x;
+            this.y += y;
+            this.z += z;
+            return this;
+        }
+    
+        public Vector3 toVector3() {
+            return Vector3.of(x, y, z);
         }
     }
 }
