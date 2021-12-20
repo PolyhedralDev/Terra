@@ -117,7 +117,34 @@ public class InternalAddon implements BaseAddon {
                                                    logger.error("Terra failed to reload.");
                                                    context.getSender().sendMessage("Terra failed to reload. See logs for more information.");
                                                }
-                                           }));
+                                           }))
+                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                           .literal("start", ArgumentDescription.of("Start profiling"), "st")
+                                           .handler(context -> {
+                                               platform.getProfiler().start();
+                                               context.getSender().sendMessage("Profiling started.");
+                                           }))
+                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                           .literal("stop", ArgumentDescription.of("Stop profiling"), "s")
+                                           .handler(context -> {
+                                               platform.getProfiler().stop();
+                                               context.getSender().sendMessage("Profiling stopped.");
+                                           }))
+                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                           .literal("query", ArgumentDescription.of("Query profiler results"), "q")
+                                           .handler(context -> {
+                                               StringBuilder data = new StringBuilder("Terra Profiler data: \n");
+                                               platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id).append(": ").append(timings.toString()).append('\n'));
+                                               logger.info(data.toString());
+                                               context.getSender().sendMessage("Profiling data dumped to console.");
+                                           }))
+                           .command(manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
+                                           .literal("reset", ArgumentDescription.of("Reset the profiler"), "r")
+                                           .handler(context -> {
+                                               platform.getProfiler().reset();
+                                               context.getSender().sendMessage("Profiler reset.");
+                                           }))
+                            ;
             
             
                 });
