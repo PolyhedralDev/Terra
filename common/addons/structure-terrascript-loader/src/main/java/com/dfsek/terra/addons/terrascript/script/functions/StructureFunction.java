@@ -62,12 +62,11 @@ public class StructureFunction implements Function<Boolean> {
         
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
-        
-        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                 z.apply(implementationArguments, variableMap).doubleValue());
-        
-        RotationUtil.rotateVector(xz, arguments.getRotation());
-        
+    
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
+                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+    
+    
         String app = id.apply(implementationArguments, variableMap);
         return registry.get(app).map(script -> {
             Rotation rotation1;

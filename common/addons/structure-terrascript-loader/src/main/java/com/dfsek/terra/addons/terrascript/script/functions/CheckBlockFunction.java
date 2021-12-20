@@ -37,12 +37,11 @@ public class CheckBlockFunction implements Function<String> {
     @Override
     public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        
-        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                 z.apply(implementationArguments, variableMap).doubleValue());
-        
-        RotationUtil.rotateVector(xz, arguments.getRotation());
-        
+    
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
+                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+    
+    
         String data = arguments.getWorld()
                                .getBlockState(arguments.getOrigin()
                                                        .toVector3()

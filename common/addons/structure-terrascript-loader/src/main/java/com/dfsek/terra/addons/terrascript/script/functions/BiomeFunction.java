@@ -41,10 +41,9 @@ public class BiomeFunction implements Function<String> {
     public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
-        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                 z.apply(implementationArguments, variableMap).doubleValue());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
+                                 z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
         
-        RotationUtil.rotateVector(xz, arguments.getRotation());
         
         BiomeProvider grid = arguments.getWorld().getBiomeProvider();
         

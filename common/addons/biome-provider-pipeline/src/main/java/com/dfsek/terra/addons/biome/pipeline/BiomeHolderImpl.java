@@ -16,12 +16,12 @@ import com.dfsek.terra.api.util.vector.Vector2;
 
 
 public class BiomeHolderImpl implements BiomeHolder {
-    private final Vector2 origin;
+    private final Vector2.Mutable origin;
     private final int width;
     private final int offset;
     private BiomeDelegate[][] biomes;
     
-    public BiomeHolderImpl(int width, Vector2 origin) {
+    public BiomeHolderImpl(int width, Vector2.Mutable origin) {
         width += 4;
         this.width = width;
         biomes = new BiomeDelegate[width][width];
@@ -29,7 +29,7 @@ public class BiomeHolderImpl implements BiomeHolder {
         this.offset = 2;
     }
     
-    private BiomeHolderImpl(BiomeDelegate[][] biomes, Vector2 origin, int width, int offset) {
+    private BiomeHolderImpl(BiomeDelegate[][] biomes, Vector2.Mutable origin, int width, int offset) {
         this.biomes = biomes;
         this.origin = origin;
         this.width = width;

@@ -71,11 +71,10 @@ public class BlockFunction implements Function<Void> {
     
     void setBlock(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap,
                   TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                 z.apply(implementationArguments, variableMap).doubleValue());
-        
-        RotationUtil.rotateVector(xz, arguments.getRotation());
-        
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
+                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+    
+    
         RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
             Vector3 set = Vector3.of(FastMath.roundToInt(xz.getX()),

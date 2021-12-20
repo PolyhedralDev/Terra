@@ -16,10 +16,10 @@ import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector2.Mutable;
 
 
 public final class RotationUtil {
-    
     /**
      * Rotate and mirror a coordinate pair.
      *
@@ -29,15 +29,13 @@ public final class RotationUtil {
      * @return Rotated vector
      */
     public static Vector2 rotateVector(Vector2 orig, Rotation r) {
-        Vector2 copy = orig.clone();
+        Mutable copy = orig.mutable();
         switch(r) {
             case CW_90 -> copy.setX(orig.getZ()).setZ(-orig.getX());
             case CCW_90 -> copy.setX(-orig.getZ()).setZ(orig.getX());
             case CW_180 -> copy.multiply(-1);
         }
-        orig.setX(copy.getX());
-        orig.setZ(copy.getZ());
-        return orig;
+        return copy.immutable();
     }
     
     
