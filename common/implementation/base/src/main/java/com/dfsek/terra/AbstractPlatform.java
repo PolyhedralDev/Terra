@@ -234,14 +234,6 @@ public abstract class AbstractPlatform implements Platform {
         
         
         logger.info("Terra addons successfully loaded.");
-        
-        try {
-            CommandUtil.registerAll(manager);
-        } catch(MalformedCommandException e) {
-            logger.error("Error registering commands", e);
-        }
-        
-        
         logger.info("Finished initialization.");
     }
     

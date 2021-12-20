@@ -24,6 +24,8 @@ import com.dfsek.terra.api.entity.CommandSender;
 
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
+import com.dfsek.terra.api.util.generic.Construct;
+
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;

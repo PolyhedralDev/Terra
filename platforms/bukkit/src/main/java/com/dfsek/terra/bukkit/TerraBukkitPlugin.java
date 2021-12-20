@@ -63,7 +63,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
         
-        PluginCommand cmd = Objects.requireNonNull(getCommand("terra"));
         
         try {
             PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,

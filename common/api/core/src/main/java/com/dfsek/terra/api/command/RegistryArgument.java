@@ -46,12 +46,24 @@ public class RegistryArgument<T, R> extends CommandArgument<T, R> {
         return new Builder<>(name, registry);
     }
     
+    public static <T, R> CommandArgument<T, R> of(String name, Registry<R> registry) {
+        return RegistryArgument.<T, R>builder(name, registry).build();
+    }
+    
+    public static <T, R> CommandArgument<T, R> optional(String name, Registry<R> registry) {
+        return RegistryArgument.<T, R>builder(name, registry).asOptional().build();
+    }
+    
+    public static <T, R> CommandArgument<T, R> optional(String name, Registry<R> registry, String defaultKey) {
+        return RegistryArgument.<T, R>builder(name, registry).asOptionalWithDefault(defaultKey).build();
+    }
+    
     public static final class Builder<T, R> extends CommandArgument.Builder<T, R> {
         private final Registry<R> registry;
         
         @SuppressWarnings("unchecked")
         private Builder(@NonNull String name, Registry<R> registry) {
-            super((TypeToken<R>) registry.getType().getType(), name);
+            super((TypeToken<R>) TypeToken.get(registry.getType().getType()), name);
             this.registry = registry;
         }
         
