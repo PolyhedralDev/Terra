@@ -35,15 +35,11 @@ public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, Regi
     
     BiomeProvider getBiomeProvider();
     
-    <T> CheckedRegistry<T> getOrCreateRegistry(Type clazz);
-    
     default <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
-        return getOrCreateRegistry((Type) clazz);
+        return getOrCreateRegistry(TypeKey.of(clazz));
     }
     
-    default <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> type) {
-        return getOrCreateRegistry(type.getType());
-    }
+    <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> type);
     
     List<GenerationStage> getStages();
     
@@ -53,10 +49,10 @@ public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, Regi
     
     Version getVersion();
     
-    <T> ConfigPack registerShortcut(Type clazz, String shortcut, ShortcutLoader<T> loader);
+    <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader);
     
     default <T> ConfigPack registerShortcut(Class<T> clazz, String shortcut, ShortcutLoader<T> loader) {
-        return registerShortcut((Type) clazz, shortcut, loader);
+        return registerShortcut(TypeKey.of(clazz), shortcut, loader);
     }
     
     ChunkGeneratorProvider getGeneratorProvider();

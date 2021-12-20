@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.util.reflection;
 
+import com.dfsek.tectonic.util.ClassAnnotatedTypeImpl;
+
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
 import java.lang.reflect.GenericArrayType;
@@ -31,6 +33,17 @@ public class TypeKey<T> {
         this.annotatedType = getAnnotatedSuperclassTypeParameter(getClass());
         this.rawType = (Class<? super T>) ReflectionUtil.getRawType(type);
         this.hashCode = type.hashCode();
+    }
+    
+    protected TypeKey(Class<T> clazz) {
+        this.type = clazz;
+        this.rawType = clazz;
+        this.annotatedType = new ClassAnnotatedTypeImpl(clazz);
+        this.hashCode = type.hashCode();
+    }
+    
+    public static <T> TypeKey<T> of(Class<T> clazz) {
+        return new TypeKey<>(clazz);
     }
     
     public static boolean equals(Type a, Type b) {

@@ -19,6 +19,9 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -74,7 +77,12 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
+    public TypeKey<T> getType() {
+        return registry.getType();
+    }
+    
+    @Override
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader) throws LoadException {
         return registry.load(t, c, loader);
     }
 }

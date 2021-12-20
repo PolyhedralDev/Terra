@@ -20,11 +20,47 @@ package com.dfsek.terra.addon;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 
+import cloud.commandframework.ArgumentDescription;
+import cloud.commandframework.CommandManager;
+import cloud.commandframework.Description;
+
+import cloud.commandframework.arguments.standard.StringArgument;
+
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 
 public class InternalAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
+    
+    public InternalAddon(Platform platform) {
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, CommandRegistrationEvent.class)
+                .then(event -> {
+                    CommandManager<CommandSender> manager = event.getCommandManager();
+                    manager.command(
+                            manager.commandBuilder("addons", ArgumentDescription.of("Get information about installed Terra addons"))
+                                   .handler(context -> {
+                                       StringBuilder addons = new StringBuilder("Installed addons:\n");
+                                       platform.getAddons()
+                                               .forEach(addon -> addons
+                                                       .append("- ")
+                                                       .append(addon.getID())
+                                                       .append('@')
+                                                       .append(addon.getVersion())
+                                                       .append('\n'));
+                                       context.getSender().sendMessage(addons.toString());
+                                   })
+                                   );
+            
+            
+                });
+        
+    }
     
     @Override
     public String getID() {

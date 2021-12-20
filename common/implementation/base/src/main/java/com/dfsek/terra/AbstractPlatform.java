@@ -18,6 +18,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -93,7 +96,7 @@ public abstract class AbstractPlatform implements Platform {
     
     private final CommandManager manager = new TerraCommandManager(this);
     
-    private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>());
+    private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
     
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
     
@@ -172,7 +175,7 @@ public abstract class AbstractPlatform implements Platform {
         
         List<BaseAddon> addonList = new ArrayList<>();
         
-        InternalAddon internalAddon = new InternalAddon();
+        InternalAddon internalAddon = new InternalAddon(this);
         
         addonList.add(internalAddon);
         

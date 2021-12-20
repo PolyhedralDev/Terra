@@ -17,6 +17,8 @@
 
 package registry;
 
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 import org.junit.jupiter.api.Test;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -31,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RegistryTest {
     @Test
     public void openRegistry() {
-        OpenRegistry<String> test = new OpenRegistryImpl<>();
+        OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
         
         test.register("test", "bazinga");
         
@@ -40,7 +42,7 @@ public class RegistryTest {
     
     @Test
     public void openRegistryChecked() {
-        OpenRegistry<String> test = new OpenRegistryImpl<>();
+        OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
         
         test.registerChecked("test", "bazinga");
         
@@ -54,7 +56,7 @@ public class RegistryTest {
     
     @Test
     public void checkedRegistry() {
-        CheckedRegistry<String> test = new CheckedRegistryImpl<>(new OpenRegistryImpl<>());
+        CheckedRegistry<String> test = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(String.class)));
         
         test.register("test", "bazinga");
         

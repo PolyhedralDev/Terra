@@ -26,9 +26,11 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class TerraScriptAddon implements AddonInitializer {
+    public static TypeKey<FunctionBuilder<?>> FUNCTION_BUILDER_TYPE = new TypeKey<>() {};
     @Inject
     private Platform platform;
     
@@ -50,7 +52,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                 StructureScript structureScript = new StructureScript(entry.getValue(), id, platform, structureRegistry,
                                                                                       lootRegistry,
                                                                                       event.getPack().getOrCreateRegistry(
-                                                                                              (Type) FunctionBuilder.class));
+                                                                                              FUNCTION_BUILDER_TYPE));
                                 structureRegistry.register(structureScript.getID(), structureScript);
                             } catch(ParseException e) {
                                 throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);

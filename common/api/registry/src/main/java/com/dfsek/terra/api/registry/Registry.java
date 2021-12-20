@@ -8,6 +8,10 @@
 package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
+import com.google.common.reflect.TypeToken;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,4 +74,6 @@ public interface Registry<T> extends TypeLoader<T> {
     @NotNull
     @Contract(pure = true)
     Set<String> keys();
+    
+    TypeKey<T> getType();
 }

@@ -48,6 +48,7 @@ import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
@@ -82,6 +83,7 @@ import java.util.zip.ZipFile;
  * Represents a Terra configuration pack.
  */
 public class ConfigPackImpl implements ConfigPack {
+    public static final TypeKey<ConfigType<?, ?>> CONFIG_TYPE_TYPE_KEY = new TypeKey<>() {};
     private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
     
     private final ConfigPackTemplate template = new ConfigPackTemplate();
@@ -274,14 +276,14 @@ public class ConfigPackImpl implements ConfigPack {
     
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getOrCreateRegistry(Type type) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(type, c -> {
-            OpenRegistry<T> registry = new OpenRegistryImpl<>();
+    public <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> typeKey) {
+        return (CheckedRegistry<T>) registryMap.computeIfAbsent(typeKey.getType(), c -> {
+            OpenRegistry<T> registry = new OpenRegistryImpl<>(typeKey);
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
             logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
             
-            if(type instanceof ParameterizedType param) {
+            if(typeKey.getType() instanceof ParameterizedType param) {
                 Type base = param.getRawType();
                 if(base instanceof Class  // should always be true but we'll check anyways
                    && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
@@ -327,12 +329,12 @@ public class ConfigPackImpl implements ConfigPack {
     
     @SuppressWarnings("unchecked,rawtypes")
     @Override
-    public <T> ConfigPack registerShortcut(Type clazz, String shortcut, ShortcutLoader<T> loader) {
+    public <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader) {
         ShortcutHolder<?> holder = shortcuts
-                .computeIfAbsent(clazz, c -> new ShortcutHolder<>(getOrCreateRegistry(clazz)))
+                .computeIfAbsent(clazz.getType(), c -> new ShortcutHolder<>(getOrCreateRegistry(clazz)))
                 .register(shortcut, (ShortcutLoader) loader);
-        selfLoader.registerLoader(clazz, holder);
-        abstractConfigLoader.registerLoader(clazz, holder);
+        selfLoader.registerLoader(clazz.getType(), holder);
+        abstractConfigLoader.registerLoader(clazz.getType(), holder);
         return this;
     }
     
@@ -342,13 +344,13 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     private OpenRegistry<ConfigType<?, ?>> createConfigRegistry() {
-        return new OpenRegistryImpl<>(new LinkedHashMap<>()) {
+        return new OpenRegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
             @Override
             public boolean register(@NotNull String identifier, @NotNull ConfigType<?, ?> value) {
                 if(!registryMap
                         .containsKey(value.getTypeKey()
                                           .getType())) {
-                    OpenRegistry<?> openRegistry = new OpenRegistryImpl<>();
+                    OpenRegistry<?> openRegistry = new OpenRegistryImpl<>(value.getTypeKey());
                     selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
                     abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
                     registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));

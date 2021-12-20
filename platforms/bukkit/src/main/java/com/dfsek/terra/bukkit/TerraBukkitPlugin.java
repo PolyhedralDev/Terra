@@ -17,6 +17,13 @@
 
 package com.dfsek.terra.bukkit;
 
+import cloud.commandframework.brigadier.CloudBrigadierManager;
+import cloud.commandframework.bukkit.CloudBukkitCapabilities;
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+import cloud.commandframework.paper.PaperCommandManager;
+
+import com.dfsek.terra.api.entity.CommandSender;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
@@ -30,19 +37,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.dfsek.terra.api.command.CommandManager;
-import com.dfsek.terra.api.command.exception.MalformedCommandException;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.bukkit.command.BukkitCommandAdapter;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.listeners.PaperListener;
 import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
-import com.dfsek.terra.commands.CommandUtil;
-import com.dfsek.terra.commands.TerraCommandManager;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
@@ -61,12 +65,26 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         PluginCommand cmd = Objects.requireNonNull(getCommand("terra"));
         
-        CommandManager manager = new TerraCommandManager(platform);
-        
-        
         try {
-            CommandUtil.registerAll(manager);
-        } catch(MalformedCommandException e) { // This should never happen.
+            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
+                                                                                          CommandExecutionCoordinator.simpleCoordinator(),
+                                                                                          BukkitAdapter::adapt,
+                                                                                          BukkitAdapter::adapt);
+            if (commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+                commandManager.registerBrigadier();
+                final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+                if (brigManager != null) {
+                    brigManager.setNativeNumberSuggestions(false);
+                }
+            }
+    
+            if (commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+                commandManager.registerAsynchronousCompletions();
+            }
+            
+            platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
+            
+        } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
                                                   
@@ -76,12 +94,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        
-        BukkitCommandAdapter command = new BukkitCommandAdapter(manager);
-        
-        cmd.setExecutor(command);
-        cmd.setTabCompleter(command);
-        
         
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);

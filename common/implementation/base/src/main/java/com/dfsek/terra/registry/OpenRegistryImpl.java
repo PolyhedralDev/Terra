@@ -19,6 +19,9 @@ package com.dfsek.terra.registry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -46,17 +49,19 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
     private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
     private final Map<String, Entry<T>> objects;
+    private final TypeKey<T> typeKey;
     
-    public OpenRegistryImpl() {
-        objects = new HashMap<>();
+    public OpenRegistryImpl(TypeKey<T> typeKey) {
+        this(new HashMap<>(), typeKey);
     }
     
-    protected OpenRegistryImpl(Map<String, Entry<T>> init) {
+    protected OpenRegistryImpl(Map<String, Entry<T>> init, TypeKey<T> typeKey) {
         this.objects = init;
+        this.typeKey = typeKey;
     }
     
     @Override
-    public T load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
+    public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
         return get((String) o).orElseThrow(() -> {
             String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
             if(objects.isEmpty()) list = "[ ]";
@@ -121,6 +126,11 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public @NotNull Set<String> keys() {
         return objects.keySet();
+    }
+    
+    @Override
+    public TypeKey<T> getType() {
+        return typeKey;
     }
     
     public Map<String, T> getDeadEntries() {
