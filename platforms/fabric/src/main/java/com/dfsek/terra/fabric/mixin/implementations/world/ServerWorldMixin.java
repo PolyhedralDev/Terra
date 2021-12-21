@@ -142,20 +142,4 @@ public abstract class ServerWorldMixin {
     public Object terra$getHandle() {
         return this;
     }
-    
-    /**
-     * Overridden in the same manner as {@link ChunkRegionMixin#hashCode()}
-     *
-     * @param other Another object
-     *
-     * @return Whether this world is the same as other.
-     *
-     * @see ChunkRegionMixin#hashCode()
-     */
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public boolean equals(Object other) {
-        if(!(other instanceof ServerWorldAccess)) return false;
-        return (ServerWorldAccess) this == (((ServerWorldAccess) other).toServerWorld());
-    }
 }
