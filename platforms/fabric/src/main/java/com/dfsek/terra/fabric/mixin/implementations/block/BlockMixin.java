@@ -34,7 +34,7 @@ import com.dfsek.terra.fabric.util.FabricAdapter;
 @Implements(@Interface(iface = BlockType.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockMixin {
     public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
-        return FabricAdapter.adapt(((Block) (Object) this).getDefaultState());
+        return (com.dfsek.terra.api.block.state.BlockState) ((Block) (Object) this).getDefaultState();
     }
     
     public boolean terra$isSolid() {

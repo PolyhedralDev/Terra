@@ -48,8 +48,7 @@ public class PullFunction implements Function<Void> {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
                                                           z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
     
-        BlockState rot = data.clone();
-        RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
+        BlockState rot = RotationUtil.rotateBlockData(data, arguments.getRotation().inverse());
         
         Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, variableMap).intValue(),
                                   FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());

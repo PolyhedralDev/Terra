@@ -21,13 +21,11 @@ import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
 @Mixin(net.minecraft.world.chunk.ProtoChunk.class)
@@ -37,12 +35,12 @@ public abstract class ProtoChunkMixin {
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(),
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
                                                                         false);
     }
     
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {
-        return new FabricBlockState(getBlockState(new BlockPos(x, y, z)));
+        return (BlockState) getBlockState(new BlockPos(x, y, z));
     }
     
     public int terra$getMaxHeight() {

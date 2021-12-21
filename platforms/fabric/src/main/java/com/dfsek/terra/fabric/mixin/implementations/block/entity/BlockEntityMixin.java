@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.mixin.implementations.block;
+package com.dfsek.terra.fabric.mixin.implementations.block.entity;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -54,6 +54,6 @@ public abstract class BlockEntityMixin {
     }
     
     public BlockState terra$getBlockState() {
-        return FabricAdapter.adapt(((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState());
+        return (BlockState) ((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState();
     }
 }

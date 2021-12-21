@@ -104,8 +104,8 @@ public final class RotationUtil {
         };
     }
     
-    public static void rotateBlockData(BlockState data, Rotation r) {
-        data
+    public static BlockState rotateBlockData(BlockState data, Rotation r) {
+        return data
                 .ifProperty(Properties.NORTH, state -> state.set(rotateCardinal(Properties.NORTH, r), state.get(Properties.NORTH)))
                 .ifProperty(Properties.SOUTH, state -> state.set(rotateCardinal(Properties.SOUTH, r), state.get(Properties.SOUTH)))
                 .ifProperty(Properties.EAST, state -> state.set(rotateCardinal(Properties.EAST, r), state.get(Properties.EAST)))

@@ -28,7 +28,6 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
 @Mixin(ChunkRegion.class)
@@ -41,13 +40,12 @@ public abstract class ChunkRegionMixin {
     
     public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState blockState, boolean physics) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)),
-                                                    ((FabricBlockState) blockState).getHandle(), 0);
+                                                    (net.minecraft.block.BlockState) blockState, 0);
     }
     
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
-        return new FabricBlockState(
-                ((ChunkRegion) (Object) this).getBlockState(
-                        new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4))));
+        return (BlockState) ((ChunkRegion) (Object) this).getBlockState(
+                        new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)));
     }
     
     public int terraChunk$getX() {

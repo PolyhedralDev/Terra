@@ -46,17 +46,17 @@ public class BukkitBlockState implements BlockState {
     }
     
     @Override
-    public <T> boolean has(Property<T> property) {
+    public <T extends Comparable<T>> boolean has(Property<T> property) {
         return false;
     }
     
     @Override
-    public <T> T get(Property<T> property) {
+    public <T extends Comparable<T>> T get(Property<T> property) {
         return null;
     }
     
     @Override
-    public <T> BlockState set(Property<T> property, T value) {
+    public <T extends Comparable<T>> BlockState set(Property<T> property, T value) {
         return null;
     }
     
@@ -66,23 +66,12 @@ public class BukkitBlockState implements BlockState {
     }
     
     @Override
-    public String getAsString() {
-        return delegate.getAsString(false);
+    public String getAsString(boolean properties) {
+        return delegate.getAsString(!properties);
     }
     
     @Override
     public boolean isAir() {
         return delegate.getMaterial().isAir();
-    }
-
-    @Override
-    public BukkitBlockState clone() {
-        try {
-            BukkitBlockState n = (BukkitBlockState) super.clone();
-            n.delegate = delegate.clone();
-            return n;
-        } catch(CloneNotSupportedException e) {
-            throw new Error(e);
-        }
     }
 }

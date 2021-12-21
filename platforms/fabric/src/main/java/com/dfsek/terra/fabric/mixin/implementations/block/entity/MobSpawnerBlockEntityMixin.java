@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.mixin.implementations.block.state;
+package com.dfsek.terra.fabric.mixin.implementations.block.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;

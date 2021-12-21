@@ -17,9 +17,11 @@
 
 package com.dfsek.terra.fabric.handle;
 
+import com.dfsek.terra.api.block.state.BlockState;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.block.BlockState;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.util.Identifier;
@@ -28,28 +30,27 @@ import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
 
 public class FabricWorldHandle implements WorldHandle {
     
-    private static final com.dfsek.terra.api.block.state.BlockState AIR = FabricAdapter.adapt(Blocks.AIR.getDefaultState());
+    private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
     
     @Override
-    public @NotNull FabricBlockState createBlockState(@NotNull String data) {
+    public @NotNull BlockState createBlockState(@NotNull String data) {
         BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
-            BlockState state = parser.parse(true).getBlockState();
+            net.minecraft.block.BlockState state = parser.parse(true).getBlockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
-            return FabricAdapter.adapt(state);
+            return (BlockState) state;
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
     }
     
     @Override
-    public com.dfsek.terra.api.block.state.@NotNull BlockState air() {
+    public @NotNull BlockState air() {
         return AIR;
     }
     
@@ -59,5 +60,4 @@ public class FabricWorldHandle implements WorldHandle {
         if(identifier == null) identifier = Identifier.tryParse(id);
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);
     }
-    
 }

@@ -3,6 +3,7 @@ package com.dfsek.terra.fabric.mixin.implementations;
 import com.dfsek.terra.api.Handle;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
@@ -31,6 +32,7 @@ import org.spongepowered.asm.mixin.Mixin;
         ChunkRegion.class,
         
         Block.class,
+        BlockState.class,
         
         BlockEntity.class,
         LootableContainerBlockEntity.class,

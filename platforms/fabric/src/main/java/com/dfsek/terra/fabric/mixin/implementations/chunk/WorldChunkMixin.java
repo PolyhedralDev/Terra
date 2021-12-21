@@ -31,7 +31,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
 @Mixin(WorldChunk.class)
@@ -49,16 +48,17 @@ public abstract class WorldChunkMixin {
     public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, boolean moved);
     
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
-        setBlockState(new BlockPos(x, y, z), ((FabricBlockState) data).getHandle(), false);
+        setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) data, false);
     }
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockState) blockState).getHandle(),
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
                                                                         false);
     }
     
+    @Intrinsic
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {
-        return new FabricBlockState(getBlockState(new BlockPos(x, y, z)));
+        return (BlockState) getBlockState(new BlockPos(x, y, z));
     }
     
     public int terra$getX() {

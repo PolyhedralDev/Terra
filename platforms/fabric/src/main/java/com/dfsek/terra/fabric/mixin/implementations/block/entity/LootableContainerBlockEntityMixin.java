@@ -15,17 +15,15 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.mixin.implementations.block.state;
+package com.dfsek.terra.fabric.mixin.implementations.block.entity;
 
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.inventory.Inventory;
-import com.dfsek.terra.fabric.mixin.implementations.block.BlockEntityMixin;
 
 
 @Mixin(LootableContainerBlockEntity.class)

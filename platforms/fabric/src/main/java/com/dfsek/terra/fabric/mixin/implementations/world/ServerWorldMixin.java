@@ -22,7 +22,6 @@ import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.Spawner;
@@ -51,7 +50,6 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
@@ -94,7 +92,7 @@ public abstract class ServerWorldMixin {
     
     public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
-        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(),
+        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data,
                                                                                physics ? 3 : 1042);
     }
     
@@ -113,7 +111,7 @@ public abstract class ServerWorldMixin {
     }
     
     public BlockState terra$getBlockState(int x, int y, int z) {
-        return new FabricBlockState(((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z)));
+        return (BlockState) ((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z));
     }
     
     public BlockEntity terra$getBlockEntity(int x, int y, int z) {

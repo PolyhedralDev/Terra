@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.fabric.util;
 
-import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.WallShape;
 import net.minecraft.block.enums.WireConnection;
@@ -30,7 +29,6 @@ import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 
 
 public final class FabricAdapter {
@@ -40,10 +38,6 @@ public final class FabricAdapter {
     
     public static Vector3 adapt(BlockPos pos) {
         return Vector3.of(pos.getX(), pos.getY(), pos.getZ());
-    }
-    
-    public static FabricBlockState adapt(BlockState state) {
-        return new FabricBlockState(state);
     }
     
     public static Direction adapt(com.dfsek.terra.api.block.state.properties.enums.Direction direction) {

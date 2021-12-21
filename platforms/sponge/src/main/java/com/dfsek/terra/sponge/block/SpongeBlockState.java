@@ -42,17 +42,17 @@ public class SpongeBlockState implements BlockState {
     }
     
     @Override
-    public <T> boolean has(Property<T> property) {
+    public <T extends Comparable<T>> boolean has(Property<T> property) {
         return false;
     }
     
     @Override
-    public <T> T get(Property<T> property) {
+    public <T extends Comparable<T>> T get(Property<T> property) {
         return null;
     }
     
     @Override
-    public <T> BlockState set(Property<T> property, T value) {
+    public <T extends Comparable<T>> BlockState set(Property<T> property, T value) {
         return this;
     }
     
@@ -62,7 +62,7 @@ public class SpongeBlockState implements BlockState {
     }
     
     @Override
-    public String getAsString() {
+    public String getAsString(boolean verbose) {
         return delegate.toString();
     }
     

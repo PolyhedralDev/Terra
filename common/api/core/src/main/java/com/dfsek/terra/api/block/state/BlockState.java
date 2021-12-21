@@ -14,31 +14,33 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 
 
-public interface BlockState extends Cloneable, Handle {
+public interface BlockState extends Handle {
     
     boolean matches(BlockState other);
     
-    BlockState clone();
+    <T extends Comparable<T>> boolean has(Property<T> property);
     
-    <T> boolean has(Property<T> property);
+    <T extends Comparable<T>> T get(Property<T> property);
     
-    <T> T get(Property<T> property);
+    <T extends Comparable<T>> BlockState set(Property<T> property, T value);
     
-    <T> BlockState set(Property<T> property, T value);
-    
-    default <T> BlockState ifProperty(Property<T> property, Consumer<BlockState> action) {
+    default <T extends Comparable<T>> BlockState ifProperty(Property<T> property, Consumer<BlockState> action) {
         if(has(property)) action.accept(this);
         return this;
     }
     
-    default <T> BlockState setIfPresent(Property<T> property, T value) {
+    default <T extends Comparable<T>> BlockState setIfPresent(Property<T> property, T value) {
         if(has(property)) set(property, value);
         return this;
     }
     
     BlockType getBlockType();
     
-    String getAsString();
+    default String getAsString() {
+        return getAsString(true);
+    }
+    
+    String getAsString(boolean properties);
     
     boolean isAir();
 }

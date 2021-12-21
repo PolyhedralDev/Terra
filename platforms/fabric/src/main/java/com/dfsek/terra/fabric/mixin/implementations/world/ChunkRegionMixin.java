@@ -21,7 +21,6 @@ import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -49,7 +48,6 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-import com.dfsek.terra.fabric.block.FabricBlockState;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
@@ -94,11 +92,11 @@ public abstract class ChunkRegionMixin {
     @Intrinsic(displace = true)
     public void terraWorld$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
-        ((ChunkRegion) (Object) this).setBlockState(pos, ((FabricBlockState) data).getHandle(), physics ? 3 : 1042);
-        if(physics && ((FabricBlockState) data).getHandle().getBlock() instanceof FluidBlock) {
+        ((ChunkRegion) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data, physics ? 3 : 1042);
+        if(physics && ((net.minecraft.block.BlockState) data).getBlock() instanceof FluidBlock) {
             getFluidTickScheduler().scheduleTick(
-                    OrderedTick.create(((FluidBlock) ((FabricBlockState) data).getHandle().getBlock()).getFluidState(
-                            ((FabricBlockState) data).getHandle()).getFluid(), pos));
+                    OrderedTick.create(((FluidBlock) ((net.minecraft.block.BlockState) data).getBlock()).getFluidState(
+                            (net.minecraft.block.BlockState) data).getFluid(), pos));
         }
     }
     
@@ -114,7 +112,7 @@ public abstract class ChunkRegionMixin {
     @Intrinsic(displace = true)
     public BlockState terraWorld$getBlockState(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        return new FabricBlockState(((ChunkRegion) (Object) this).getBlockState(pos));
+        return (BlockState) ((ChunkRegion) (Object) this).getBlockState(pos);
     }
     
     public BlockEntity terraWorld$getBlockEntity(int x, int y, int z) {

@@ -85,22 +85,23 @@ public class TerraFlora implements Structure {
         int size = layers.size();
         int c = ceiling ? -1 : 1;
         
-        EnumSet<Direction> faces = doRotation ? getFaces(location.mutable().add(0, c, 0).immutable(), world) : EnumSet.noneOf(Direction.class);
+        EnumSet<Direction> faces = doRotation ? getFaces(location.mutable().add(0, c, 0).immutable(), world) : EnumSet.noneOf(
+                Direction.class);
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
         
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(),
-                                                                                       location.getZ(), world.getSeed()).clone();
+                                                                                       location.getZ(), world.getSeed());
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
                         new Random(location.getX() ^ location.getZ()).nextInt(faces.size())); // Get random face.
                 
-                data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
-                    .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
-                    .setIfPresent(Properties.SOUTH, faces.contains(Direction.SOUTH))
-                    .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
-                    .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
+                data = data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
+                           .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
+                           .setIfPresent(Properties.SOUTH, faces.contains(Direction.SOUTH))
+                           .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
+                           .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
             }
             world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }

@@ -54,7 +54,7 @@ public class BlockFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockState rot = getBlockState(implementationArguments, variableMap).clone();
+        BlockState rot = getBlockState(implementationArguments, variableMap);
         setBlock(implementationArguments, variableMap, arguments, rot);
         return null;
     }
@@ -75,7 +75,7 @@ public class BlockFunction implements Function<Void> {
                                                           z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
     
     
-        RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
+        rot = RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
             Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
                                      y.apply(implementationArguments, variableMap).doubleValue(),
