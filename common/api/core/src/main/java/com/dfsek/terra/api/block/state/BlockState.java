@@ -41,6 +41,4 @@ public interface BlockState extends Cloneable, Handle {
     String getAsString();
     
     boolean isAir();
-    
-    boolean isStructureVoid();
 }

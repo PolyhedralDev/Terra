@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.fabric.block;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.RailShape;
 import net.minecraft.block.enums.WallShape;
@@ -141,12 +140,7 @@ public class FabricBlockState implements BlockState {
     public boolean isAir() {
         return delegate.isAir();
     }
-    
-    @Override
-    public boolean isStructureVoid() {
-        return delegate.getBlock() == Blocks.STRUCTURE_VOID;
-    }
-    
+
     @Override
     public BlockState clone() {
         try {

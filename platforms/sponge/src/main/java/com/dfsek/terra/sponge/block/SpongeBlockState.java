@@ -72,11 +72,6 @@ public class SpongeBlockState implements BlockState {
     }
     
     @Override
-    public boolean isStructureVoid() {
-        return delegate.type().equals(BlockTypes.STRUCTURE_VOID.get());
-    }
-    
-    @Override
     public BlockState clone() {
         return this;
     }

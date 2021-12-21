@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.bukkit.world.block.data;
 
-import org.bukkit.Material;
-
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
@@ -76,12 +74,7 @@ public class BukkitBlockState implements BlockState {
     public boolean isAir() {
         return delegate.getMaterial().isAir();
     }
-    
-    @Override
-    public boolean isStructureVoid() {
-        return delegate.getMaterial() == Material.STRUCTURE_VOID;
-    }
-    
+
     @Override
     public BukkitBlockState clone() {
         try {

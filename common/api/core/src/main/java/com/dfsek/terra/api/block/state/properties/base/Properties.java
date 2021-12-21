@@ -14,7 +14,7 @@ import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 
-
+@Deprecated
 public final class Properties {
     public static final EnumProperty<Direction> DIRECTION = EnumProperty.of("facing", Direction.class);
     public static final EnumProperty<Axis> AXIS = EnumProperty.of("axis", Axis.class);
