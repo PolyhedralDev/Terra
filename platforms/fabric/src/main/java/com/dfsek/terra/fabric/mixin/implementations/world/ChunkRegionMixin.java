@@ -157,37 +157,4 @@ public abstract class ChunkRegionMixin {
     public Object terraWorld$getHandle() {
         return this;
     }
-    
-    
-    // TODO remove this; we shouldnt need it anymore
-
-    /**
-     * We need regions delegating to the same world
-     * to have the same hashcode. This
-     * minimizes cache misses.
-     * <p>
-     * This is sort of jank, but shouldn't(tm)
-     * break any other mods, unless they're doing
-     * something they really shouldn't, since
-     * ChunkRegions are not supposed to persist.
-     */
-    @Override
-    public int hashCode() {
-        return world.hashCode();
-    }
-    
-    /**
-     * Overridden in the same manner as {@link #hashCode()}
-     *
-     * @param other Another object
-     *
-     * @return Whether this world is the same as other.
-     *
-     * @see #hashCode()
-     */
-    @Override
-    public boolean equals(Object other) {
-        if(!(other instanceof ServerWorldAccess)) return false;
-        return world.equals(((ServerWorldAccess) other).toServerWorld());
-    }
 }
