@@ -32,12 +32,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 public abstract class ItemMixin {
     @Shadow
     public abstract int getMaxDamage();
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
+
     @SuppressWarnings("ConstantConditions")
     public ItemStack terra$newItemStack(int amount) {
         return (ItemStack) (Object) new net.minecraft.item.ItemStack((Item) (Object) this, amount);

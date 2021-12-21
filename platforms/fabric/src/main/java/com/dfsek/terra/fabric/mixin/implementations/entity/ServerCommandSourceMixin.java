@@ -38,9 +38,4 @@ public abstract class ServerCommandSourceMixin {
     public void terra$sendMessage(String message) {
         sendFeedback(new LiteralText(message), true);
     }
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
 }

@@ -137,9 +137,4 @@ public abstract class ServerWorldMixin {
     public ConfigPack terra$getPack() {
         return config;
     }
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
 }

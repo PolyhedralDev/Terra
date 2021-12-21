@@ -152,9 +152,4 @@ public abstract class ChunkRegionMixin {
     public ConfigPack terraWorld$getPack() {
         return config;
     }
-    
-    @Intrinsic
-    public Object terraWorld$getHandle() {
-        return this;
-    }
 }

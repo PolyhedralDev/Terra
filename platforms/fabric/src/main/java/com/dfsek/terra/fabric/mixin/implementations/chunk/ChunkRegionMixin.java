@@ -57,8 +57,4 @@ public abstract class ChunkRegionMixin {
     public int terraChunk$getZ() {
         return centerPos.getPos().z;
     }
-    
-    // getWorld already added in world/ChunkRegionMixin
-    
-    // getHandle already added in world/ChunkRegionMixin.
 }

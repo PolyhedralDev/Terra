@@ -49,11 +49,6 @@ public abstract class EntityMixin {
     @Shadow
     public abstract void sendSystemMessage(Text message, UUID senderUuid);
     
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     public Vector3 terra$position() {
         return FabricAdapter.adapt(blockPos);
     }

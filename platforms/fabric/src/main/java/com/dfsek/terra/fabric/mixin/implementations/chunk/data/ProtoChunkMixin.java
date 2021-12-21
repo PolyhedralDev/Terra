@@ -45,11 +45,6 @@ public abstract class ProtoChunkMixin {
         return new FabricBlockState(getBlockState(new BlockPos(x, y, z)));
     }
     
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     public int terra$getMaxHeight() {
         return 255; // TODO: 1.17 - Implement dynamic height.
     }

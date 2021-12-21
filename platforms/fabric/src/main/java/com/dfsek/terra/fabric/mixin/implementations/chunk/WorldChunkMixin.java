@@ -72,9 +72,4 @@ public abstract class WorldChunkMixin {
     public ServerWorld terra$getWorld() {
         return (ServerWorld) world;
     }
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
 }

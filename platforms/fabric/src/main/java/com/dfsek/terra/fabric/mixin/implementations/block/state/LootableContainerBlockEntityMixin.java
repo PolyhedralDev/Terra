@@ -34,9 +34,4 @@ public abstract class LootableContainerBlockEntityMixin extends BlockEntityMixin
     public Inventory terra$getInventory() {
         return (Inventory) this;
     }
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
 }

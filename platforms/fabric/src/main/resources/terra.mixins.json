@@ -11,6 +11,7 @@
         "access.StateAccessor",
         "access.StructureAccessorAccessor",
         "implementations.BiomeMixin",
+        "implementations.HandleImplementationMixin",
         "implementations.block.BlockEntityMixin",
         "implementations.block.BlockMixin",
         "implementations.block.state.LootableContainerBlockEntityMixin",

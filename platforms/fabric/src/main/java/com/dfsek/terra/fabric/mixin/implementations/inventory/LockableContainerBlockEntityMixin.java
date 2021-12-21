@@ -31,11 +31,6 @@ import com.dfsek.terra.api.inventory.ItemStack;
 @Mixin(LockableContainerBlockEntity.class)
 @Implements(@Interface(iface = Inventory.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public class LockableContainerBlockEntityMixin {
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     @SuppressWarnings("ConstantConditions")
     public void terra$setItem(int slot, ItemStack newStack) {
         ((LockableContainerBlockEntity) (Object) this).setStack(slot, (net.minecraft.item.ItemStack) (Object) newStack);

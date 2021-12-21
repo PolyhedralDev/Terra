@@ -33,11 +33,6 @@ import com.dfsek.terra.fabric.util.FabricAdapter;
 @Mixin(Block.class)
 @Implements(@Interface(iface = BlockType.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class BlockMixin {
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
         return FabricAdapter.adapt(((Block) (Object) this).getDefaultState());
     }

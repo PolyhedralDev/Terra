@@ -73,9 +73,4 @@ public abstract class ItemStackMixin {
     public boolean terra$isDamageable() {
         return isDamageable();
     }
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
 }

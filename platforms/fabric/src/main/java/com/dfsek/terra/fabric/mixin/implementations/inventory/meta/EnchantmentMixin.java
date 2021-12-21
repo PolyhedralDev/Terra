@@ -38,12 +38,6 @@ public abstract class EnchantmentMixin {
     
     @Shadow
     public abstract boolean canCombine(Enchantment other);
-    
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-    
     @SuppressWarnings("ConstantConditions")
     public boolean terra$canEnchantItem(ItemStack itemStack) {
         return isAcceptableItem((net.minecraft.item.ItemStack) (Object) itemStack);
