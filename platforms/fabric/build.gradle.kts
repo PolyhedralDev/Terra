@@ -63,7 +63,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
 }
 
 tasks.named("assemble").configure {
-    dependsOn("remapShadowJar")
+    dependsOn("remapShadedJar")
 }
 
 tasks.withType<Jar> {
