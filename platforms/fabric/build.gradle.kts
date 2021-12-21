@@ -33,8 +33,8 @@ dependencies {
         modImplementation(fabricApi.module(apiModule, Versions.Fabric.fabricAPI))?.let { include(it) }
     }
     
-    modImplementation(include("me.lucko", "fabric-permissions-api", "0.1-SNAPSHOT"))
-    modImplementation(include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    include(modImplementation("me.lucko", "fabric-permissions-api", "0.1-SNAPSHOT"))
+    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
 }
 
 loom {
@@ -60,6 +60,10 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "-shaded-mapped.jar"))
     addNestedDependencies.set(true)
     remapAccessWidener.set(true)
+}
+
+tasks.named("assemble").configure {
+    dependsOn("remapShadowJar")
 }
 
 tasks.withType<Jar> {
