@@ -31,19 +31,15 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class SamplerProvider {
-    private final LoadingCache<Pair<Long, World>, Sampler3D> cache;
+    private final LoadingCache<WorldContext, Sampler3D> cache;
     
     
     public SamplerProvider(Platform platform, BiomeProvider provider, int elevationSmooth) {
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
                             .build(new CacheLoader<>() {
                                 @Override
-                                public Sampler3D load(@NotNull Pair<Long, World> pair) {
-                                    long key = pair.getLeft();
-                                    int cx = (int) (key >> 32);
-                                    int cz = (int) key;
-                                    World world = pair.getRight();
-                                    return new Sampler3D(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight(), provider,
+                                public Sampler3D load(@NotNull WorldContext context) {
+                                    return new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
                                                          elevationSmooth);
                                 }
                             });
@@ -56,7 +52,9 @@ public class SamplerProvider {
     }
     
     public Sampler3D getChunk(int cx, int cz, World world) {
-        long key = MathUtil.squash(cx, cz);
-        return cache.getUnchecked(Pair.of(key, world));
+        return cache.getUnchecked(new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight()));
+    }
+    
+    private record WorldContext(int cx, int cz, long seed, int minHeight, int maxHeight) {
     }
 }
