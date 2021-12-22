@@ -11,6 +11,7 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.exception.ValidationException;
 
 import java.util.HashMap;
@@ -55,7 +56,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
             Map<String, Function> noiseFunctionMap = generateFunctions();
             return new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
-            throw new IllegalStateException(e);
+            throw new LoadException("Failed to parse expression.", e);
         }
     }
     
