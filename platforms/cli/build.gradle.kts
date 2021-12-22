@@ -13,3 +13,12 @@ dependencies {
     
     shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
+
+tasks.withType<Jar>() {
+    entryCompression = ZipEntryCompression.STORED
+    manifest {
+        attributes(
+            "Main-Class" to "com.dfsek.terra.cli.TerraCLI",
+                  )
+    }
+}
