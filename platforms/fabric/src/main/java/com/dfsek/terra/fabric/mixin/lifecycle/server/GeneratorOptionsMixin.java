@@ -83,8 +83,6 @@ public abstract class GeneratorOptionsMixin {
             ConfigPack config = main.getConfigRegistry().get(prop).orElseThrow(() -> new IllegalArgumentException(
                     "No such pack " + finalProp));
             
-            main.getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
-            
             cir.setReturnValue(new GeneratorOptions(l, generateStructures, false,
                                                     GeneratorOptions.getRegistryWithReplacedOverworldGenerator(dimensionTypes,
                                                                                                                dimensionOptions,

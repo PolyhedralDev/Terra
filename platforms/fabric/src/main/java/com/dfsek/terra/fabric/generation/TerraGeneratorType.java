@@ -40,14 +40,6 @@ public class TerraGeneratorType extends GeneratorType {
     }
     
     @Override
-    public GeneratorOptions createDefaultOptions(DynamicRegistryManager.Impl registryManager, long seed, boolean generateStructures,
-                                                 boolean bonusChest) {
-        GeneratorOptions options = super.createDefaultOptions(registryManager, seed, generateStructures, bonusChest);
-        FabricEntryPoint.getPlatform().getEventManager().callEvent(new BiomeRegistrationEvent(registryManager)); // register biomes
-        return options;
-    }
-    
-    @Override
     protected ChunkGenerator getChunkGenerator(DynamicRegistryManager manager, long seed) {
         return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack);
     }

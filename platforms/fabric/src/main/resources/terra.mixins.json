@@ -33,7 +33,8 @@
         "implementations.inventory.meta.ItemStackDamageableMixin",
         "implementations.inventory.meta.ItemStackMetaMixin",
         "implementations.world.ChunkRegionMixin",
-        "implementations.world.ServerWorldMixin"
+        "implementations.world.ServerWorldMixin",
+        "lifecycle.ServerResourceManagerMixin"
     ],
     "client": [
         "access.GeneratorTypeAccessor",
