@@ -7,9 +7,11 @@ dependencies {
     shadedApi("com.github.Querz:NBT:6.1")
     shadedApi(project(":common:implementation:base"))
     
-    implementation("com.google.guava:guava:31.0.1-jre")
+    shadedImplementation("com.google.guava:guava:31.0.1-jre")
     
-    implementation("ch.qos.logback:logback-classic:1.2.7")
+    shadedImplementation("ch.qos.logback:logback-classic:1.2.7")
+    
+    shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
 
 tasks.named("build") {

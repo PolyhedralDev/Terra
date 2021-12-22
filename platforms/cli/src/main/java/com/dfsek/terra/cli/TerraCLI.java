@@ -1,5 +1,6 @@
 package com.dfsek.terra.cli;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 
 import org.slf4j.Logger;
@@ -14,5 +15,9 @@ public final class TerraCLI {
         
         CLIPlatform platform = new CLIPlatform();
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
+    
+        ConfigPack generate = platform.getConfigRegistry().get("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
+        
+        
     }
 }
