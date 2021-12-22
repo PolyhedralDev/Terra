@@ -59,17 +59,6 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
         }
     }
     
-    @Override
-    public boolean validate() throws ValidationException {
-        try {
-            Map<String, Function> noiseFunctionMap = generateFunctions();
-            new ExpressionFunction(noiseFunctionMap, equation, vars);
-        } catch(ParseException e) {
-            throw new ValidationException("Errors occurred while parsing noise equation: ", e);
-        }
-        return super.validate();
-    }
-    
     private Map<String, Function> generateFunctions() throws ParseException {
         Map<String, Function> noiseFunctionMap = new HashMap<>();
         
