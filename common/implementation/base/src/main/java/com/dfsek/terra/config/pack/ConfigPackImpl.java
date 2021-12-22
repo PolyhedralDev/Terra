@@ -62,6 +62,9 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.ShortcutHolder;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +77,11 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -83,7 +90,8 @@ import java.util.zip.ZipFile;
  * Represents a Terra configuration pack.
  */
 public class ConfigPackImpl implements ConfigPack {
-    public static final TypeKey<ConfigType<?, ?>> CONFIG_TYPE_TYPE_KEY = new TypeKey<>() {};
+    public static final TypeKey<ConfigType<?, ?>> CONFIG_TYPE_TYPE_KEY = new TypeKey<>() {
+    };
     private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
     
     private final ConfigPackTemplate template = new ConfigPackTemplate();
@@ -162,33 +170,36 @@ public class ConfigPackImpl implements ConfigPack {
         
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
         
-        Map<ConfigType<? extends ConfigTemplate, ?>, List<Configuration>> configs = new HashMap<>();
+        ListMultimap<ConfigType<?, ?>, Configuration> multimap = configurations.values().parallelStream().collect(
+                () -> Multimaps.newListMultimap(new ConcurrentHashMap<>(), ArrayList::new), (configs, configuration) -> {
+                    if(configuration.contains("type")) { // Only sort configs with type key
+                        ProtoConfig config = new ProtoConfig();
+                        selfLoader.load(config, configuration);
+                        configs.put(config.getType(), configuration);
+                    }
+                }, ListMultimap::putAll);
         
-        for(Configuration configuration : configurations.values()) { // Sort the configs
-            if(configuration.contains("type")) { // Only sort configs with type key
-                ProtoConfig config = new ProtoConfig();
-                selfLoader.load(config, configuration);
-                configs.computeIfAbsent(config.getType(), configType -> new ArrayList<>()).add(configuration);
-            }
-        }
-        
-        for(ConfigType<?, ?> configType : configTypeRegistry.entries()) { // Load the configs
+        configTypeRegistry.forEach(configType -> {
             CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
-            platform.getEventManager().callEvent(new ConfigTypePreLoadEvent(configType, registry, this));
-            for(AbstractConfiguration config : abstractConfigLoader.loadConfigs(
-                    configs.getOrDefault(configType, Collections.emptyList()))) {
-                try {
-                    Object loaded = ((ConfigFactory) configType.getFactory()).build(
-                            selfLoader.load(configType.getTemplate(this, platform), config), platform);
-                    registry.register(config.getID(), loaded);
-                    platform.getEventManager().callEvent(
-                            new ConfigurationLoadEvent(this, config, template -> selfLoader.load(template, config), configType, loaded));
-                } catch(DuplicateEntryException e) {
-                    throw new LoadException("Duplicate registry entry: ", e);
-                }
-            }
+            abstractConfigLoader
+                    .loadConfigs(multimap.get(configType))
+                    .stream()
+                    .parallel()
+                    .map(configuration -> {
+                        logger.debug("Loading abstract config {}", configuration.getID());
+                        Object loaded = ((ConfigFactory) configType.getFactory()).build(
+                                selfLoader.load(configType.getTemplate(this, platform), configuration), platform);
+                        platform.getEventManager().callEvent(new ConfigurationLoadEvent(this,
+                                                          configuration,
+                                                          template -> selfLoader.load(template, configuration),
+                                                          configType,
+                                                          loaded));
+                        return Pair.of(configuration.getID(), loaded);
+                    })
+                    .toList()
+                    .forEach(pair -> registry.register(pair.getLeft(), pair.getRight()));
             platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
-        }
+        });
         
         platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, packManifest)));
         logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
