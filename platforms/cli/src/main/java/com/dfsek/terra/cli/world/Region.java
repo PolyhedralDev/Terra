@@ -1,10 +1,9 @@
 package com.dfsek.terra.cli.world;
 
+import net.querz.mca.MCAFile;
+
 import com.dfsek.terra.cli.NBTSerializable;
 import com.dfsek.terra.cli.world.chunk.CLIChunk;
-
-import net.querz.mca.MCAFile;
-import net.querz.mca.MCAUtil;
 
 
 public class Region implements NBTSerializable<MCAFile> {

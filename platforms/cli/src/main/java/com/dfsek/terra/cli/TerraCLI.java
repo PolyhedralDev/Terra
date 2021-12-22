@@ -24,7 +24,7 @@ public final class TerraCLI {
     
         ConfigPack generate = platform.getConfigRegistry().get("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
     
-        CLIWorld world = new CLIWorld(2, 2, 384, -64, generate);
+        CLIWorld world = new CLIWorld(1, 2, 384, -64, generate);
         
         world.generate();
         

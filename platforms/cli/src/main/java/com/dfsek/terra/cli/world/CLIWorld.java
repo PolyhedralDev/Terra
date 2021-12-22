@@ -7,6 +7,7 @@ import com.dfsek.terra.cli.NBTSerializable;
 
 import com.dfsek.terra.cli.world.chunk.CLIChunk;
 
+import com.google.common.collect.Streams;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
@@ -37,8 +38,8 @@ import java.util.stream.Stream;
 
 public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector2Int, MCAFile>>> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CLIWorld.class);
-    private static final int regionBlocks = 32 * 16;
     private final Region[] regions;
+    private final Region[] negativeRegions;
     private final int size;
     private final long seed;
     private final int maxHeight;
@@ -48,7 +49,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     private final ConfigPack pack;
     private final AtomicInteger amount = new AtomicInteger(0);
     
-    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()-1);
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
     
     public CLIWorld(int size,
                     long seed,
@@ -64,10 +65,13 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         this.pack = pack;
         
         
-        this.regions = new Region[(size + 1) * (size + 1)];
-        for(int x = 0; x < size + 1; x++) {
-            for(int z = 0; z < size + 1; z++) {
-                regions[x + z * (size + 1)] = new Region(this, x, z);
+        size+=1;
+        this.regions = new Region[size * size];
+        this.negativeRegions = new Region[size * size];
+        for(int x = 0; x < size; x++) {
+            for(int z = 0; z < size; z++) {
+                regions[x + z * size] = new Region(this, x, z);
+                negativeRegions[x + z * size] = new Region(this, x, z);
             }
         }
     }
@@ -163,10 +167,14 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public CLIChunk getChunkAt(int x, int z) {
-        int cx = x + (size + 1) * 16;
-        int cz = z + (size + 1) * 16;
-        return regions[FastMath.floorDiv(cx, regionBlocks) + regionBlocks * FastMath.floorDiv(cz, regionBlocks)]
+        return getRegion(FastMath.floorDiv(x, 32), FastMath.floorDiv(z, 32))
                 .get(FastMath.floorMod(x, 32), FastMath.floorMod(z, 32));
+    }
+    
+    public Region getRegion(int x, int z) {
+        int key = x + z * size;
+        if(key >= 0) return regions[key];
+        else return negativeRegions[-key];
     }
     
     @Override
@@ -212,7 +220,9 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public Stream<Pair<Vector2Int, MCAFile>> serialize() {
-        return Arrays.stream(regions).map(region -> Pair.of(Vector2Int.of(region.getX(), region.getZ()), region.serialize()));
+        return Streams
+                .concat(Arrays.stream(regions), Arrays.stream(negativeRegions))
+                .map(region -> Pair.of(Vector2Int.of(region.getX(), region.getZ()), region.serialize()));
     }
     
     private static final class CLIProtoWorld implements ProtoWorld {

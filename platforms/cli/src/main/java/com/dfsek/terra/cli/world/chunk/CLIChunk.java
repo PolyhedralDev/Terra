@@ -1,6 +1,5 @@
 package com.dfsek.terra.cli.world.chunk;
 
-import net.querz.mca.Section;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -9,10 +8,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.cli.NBTSerializable;
 import com.dfsek.terra.cli.block.CLIBlockState;
-import com.dfsek.terra.cli.handle.CLIWorldHandle;
 import com.dfsek.terra.cli.world.CLIWorld;
-
-import java.lang.reflect.Field;
 
 import static com.dfsek.terra.cli.handle.CLIWorldHandle.getAIR;
 
