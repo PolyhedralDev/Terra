@@ -1,5 +1,12 @@
 package com.dfsek.terra.cli.world;
 
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.cli.NBTSerializable;
+
+import com.dfsek.terra.cli.world.chunk.CLIChunk;
+
 import net.jafama.FastMath;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
@@ -10,11 +17,25 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
+import net.querz.mca.MCAFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class CLIWorld implements ServerWorld {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
+
+
+public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector2Int, MCAFile>>> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CLIWorld.class);
     private static final int regionBlocks = 32 * 16;
     private final Region[] regions;
     private final int size;
@@ -24,6 +45,9 @@ public class CLIWorld implements ServerWorld {
     private final ChunkGenerator chunkGenerator;
     private final BiomeProvider biomeProvider;
     private final ConfigPack pack;
+    private final AtomicInteger amount = new AtomicInteger(0);
+    
+    private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()-1);
     
     public CLIWorld(int size,
                     long seed,
@@ -31,13 +55,50 @@ public class CLIWorld implements ServerWorld {
                     int minHeight,
                     ConfigPack pack) {
         this.size = size;
-        this.regions = new Region[size * size];
-        this.seed = seed;
         this.maxHeight = maxHeight;
         this.minHeight = minHeight;
+        this.seed = seed;
         this.chunkGenerator = pack.getGeneratorProvider().newInstance(pack);
         this.biomeProvider = pack.getBiomeProvider();
         this.pack = pack;
+        
+        
+        this.regions = new Region[(size + 1) * (size + 1)];
+        for(int x = 0; x < size + 1; x++) {
+            for(int z = 0; z < size + 1; z++) {
+                regions[x + z * (size + 1)] = new Region(this, x, z);
+            }
+        }
+    }
+    
+    public void generate() {
+        int sizeChunks = size * 32;
+        List<Future<?>> futures = new ArrayList<>();
+        final long start = System.nanoTime();
+        for(int x = -sizeChunks + 1; x < sizeChunks; x++) {
+            for(int z = -sizeChunks + 1; z < sizeChunks; z++) {
+                int finalX = x;
+                int finalZ = z;
+                futures.add(executor.submit(() -> {
+                    int num = amount.getAndIncrement();
+                    long time = System.nanoTime();
+                    double cps = num / ((double) (time - start) / 1000000000);
+                    LOGGER.info("Generating chunk at ({}, {}), generated {} chunks at {}cps", finalX, finalZ, num, cps);
+                    CLIChunk chunk = getChunkAt(finalX, finalZ);
+                    chunkGenerator.generateChunkData(chunk, this, finalX, finalZ);
+                    CLIProtoWorld protoWorld = new CLIProtoWorld(this, finalX, finalZ);
+                    pack.getStages().forEach(stage -> stage.populate(protoWorld));
+                }));
+            }
+        }
+        
+        for(Future<?> future : futures) {
+            try {
+                future.get();
+            } catch(InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     @Override
@@ -92,7 +153,9 @@ public class CLIWorld implements ServerWorld {
     }
     
     @Override
-    public Chunk getChunkAt(int x, int z) {
+    public CLIChunk getChunkAt(int x, int z) {
+        x += (size + 1) * 16;
+        z += (size + 1) * 16;
         return regions[FastMath.floorDiv(x, regionBlocks) + regionBlocks * FastMath.floorDiv(z, regionBlocks)]
                 .get(FastMath.floorMod(FastMath.floorDiv(x, 16), 32), FastMath.floorMod(FastMath.floorDiv(z, 16), 32));
     }
@@ -136,5 +199,91 @@ public class CLIWorld implements ServerWorld {
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return null;
+    }
+    
+    @Override
+    public Stream<Pair<Vector2Int, MCAFile>> serialize() {
+        return Arrays.stream(regions).map(region -> Pair.of(Vector2Int.of(region.getX(), region.getZ()), region.serialize()));
+    }
+    
+    private static final class CLIProtoWorld implements ProtoWorld {
+        private final CLIWorld delegate;
+        private final int x, z;
+        
+        private CLIProtoWorld(CLIWorld delegate, int x, int z) {
+            this.delegate = delegate;
+            this.x = x;
+            this.z = z;
+        }
+        
+        @Override
+        public Object getHandle() {
+            return this;
+        }
+        
+        @Override
+        public BlockState getBlockState(int x, int y, int z) {
+            return delegate.getBlockState(x, y, z);
+        }
+        
+        @Override
+        public BlockEntity getBlockEntity(int x, int y, int z) {
+            return delegate.getBlockEntity(x, y, z);
+        }
+        
+        @Override
+        public long getSeed() {
+            return delegate.seed;
+        }
+        
+        @Override
+        public int getMaxHeight() {
+            return delegate.maxHeight;
+        }
+        
+        @Override
+        public int getMinHeight() {
+            return delegate.minHeight;
+        }
+        
+        @Override
+        public ChunkGenerator getGenerator() {
+            return delegate.chunkGenerator;
+        }
+        
+        @Override
+        public BiomeProvider getBiomeProvider() {
+            return delegate.biomeProvider;
+        }
+        
+        @Override
+        public ConfigPack getPack() {
+            return delegate.pack;
+        }
+        
+        @Override
+        public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
+            delegate.setBlockState(x, y, z, data, physics);
+        }
+        
+        @Override
+        public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
+            return delegate.spawnEntity(x, y, z, entityType);
+        }
+        
+        @Override
+        public int centerChunkX() {
+            return x;
+        }
+        
+        @Override
+        public int centerChunkZ() {
+            return z;
+        }
+        
+        @Override
+        public ServerWorld getWorld() {
+            return delegate;
+        }
     }
 }

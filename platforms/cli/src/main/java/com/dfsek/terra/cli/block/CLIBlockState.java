@@ -4,11 +4,14 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
 
+import net.querz.nbt.tag.CompoundTag;
+
 
 public class CLIBlockState implements BlockState {
     private final String value;
     private final CLIBlockType type;
     private final boolean isAir;
+    private final CompoundTag nbt;
     
     public CLIBlockState(String value) {
         this.value = value;
@@ -18,6 +21,8 @@ public class CLIBlockState implements BlockState {
             this.type = new CLIBlockType(value);
         }
         this.isAir = value.startsWith("minecraft:air");
+        this.nbt = new CompoundTag();
+        this.nbt.putString("Name", value);
     }
     
     @Override
@@ -58,5 +63,9 @@ public class CLIBlockState implements BlockState {
     @Override
     public boolean isAir() {
         return isAir;
+    }
+    
+    public CompoundTag getNbt() {
+        return nbt;
     }
 }

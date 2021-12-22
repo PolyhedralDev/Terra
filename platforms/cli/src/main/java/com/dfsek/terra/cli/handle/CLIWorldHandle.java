@@ -25,4 +25,8 @@ public class CLIWorldHandle implements WorldHandle {
     public @NotNull EntityType getEntity(@NotNull String id) {
         return null;
     }
+    
+    public static CLIBlockState getAIR() {
+        return AIR;
+    }
 }
