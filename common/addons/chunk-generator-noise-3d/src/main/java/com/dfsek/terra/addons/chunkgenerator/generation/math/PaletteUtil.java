@@ -21,7 +21,7 @@ public final class PaletteUtil {
     
     public static Palette getPalette(int x, int y, int z, Sampler3D sampler, PaletteInfo paletteInfo) {
         SlantHolder slant = paletteInfo.slantHolder();
-        if(slant != null) {
+        if(!slant.isEmpty()) {
             double slope = derivative(sampler, x, y, z);
             if(slope > slant.getMinSlope()) {
                 return slant.getPalette(slope).getPalette(y);
