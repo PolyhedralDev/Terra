@@ -13,7 +13,3 @@ dependencies {
     
     shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
-
-tasks.named("build") {
-    finalizedBy(tasks.named("shadowJar"))
-}
