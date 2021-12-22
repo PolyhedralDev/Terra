@@ -1,21 +1,15 @@
 package com.dfsek.terra.cli.world.chunk;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
-
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.cli.NBTSerializable;
 import com.dfsek.terra.cli.block.CLIBlockState;
-
 import com.dfsek.terra.cli.handle.CLIWorldHandle;
 import com.dfsek.terra.cli.world.CLIWorld;
-
-import net.querz.mca.MCAFile;
-import net.querz.nbt.tag.CompoundTag;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.dfsek.terra.cli.handle.CLIWorldHandle.getAIR;
 
@@ -71,7 +65,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
     
     @Override
     public net.querz.mca.Chunk serialize() {
-        net.querz.mca.Chunk chunk = net.querz.mca.Chunk.newChunk();
+        net.querz.mca.Chunk chunk = net.querz.mca.Chunk.newChunk(2230);
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
                 for(int y = 0; y < blocks[z][z].length; y++) {
@@ -85,6 +79,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
                 }
             }
         }
+        chunk.setStatus("features");
         return chunk;
     }
     

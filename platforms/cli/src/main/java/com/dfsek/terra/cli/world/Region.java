@@ -32,7 +32,7 @@ public class Region implements NBTSerializable<MCAFile> {
         MCAFile mcaFile = new MCAFile(x, z);
         for(int cx = 0; cx < 32; cx++) {
             for(int cz = 0; cz < 32; cz++) {
-                mcaFile.setChunk(cx, cz, chunks[cx + cz * 32].serialize());
+                mcaFile.setChunk(cx + cz * 32, chunks[cx + cz * 32].serialize());
             }
         }
         return mcaFile;

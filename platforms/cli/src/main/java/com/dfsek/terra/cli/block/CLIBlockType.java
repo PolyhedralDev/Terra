@@ -14,13 +14,13 @@ public class CLIBlockType implements BlockType {
     public CLIBlockType(String value) {
         if(value.contains("[")) throw new IllegalArgumentException("Block Type must not contain properties");
         this.value = value;
-        this.solid = value.equals("minecraft:air");
+        this.solid = !value.equals("minecraft:air");
         this.water = value.equals("minecraft:water");
         this.defaultState = Lazy.lazy(() -> new CLIBlockState(value));
     }
     
     @Override
-    public Object getHandle() {
+    public String  getHandle() {
         return value;
     }
     

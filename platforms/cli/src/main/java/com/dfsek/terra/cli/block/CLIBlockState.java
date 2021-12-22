@@ -16,13 +16,26 @@ public class CLIBlockState implements BlockState {
     public CLIBlockState(String value) {
         this.value = value;
         if(value.contains("[")) {
-            this.type = new CLIBlockType(value.substring(0, value.indexOf("[")));
+        
         } else {
-            this.type = new CLIBlockType(value);
+        
         }
         this.isAir = value.startsWith("minecraft:air");
         this.nbt = new CompoundTag();
-        this.nbt.putString("Name", value);
+        if(value.contains("[")) {
+            this.type = new CLIBlockType(value.substring(0, value.indexOf("[")));
+            String properties = value.substring(value.indexOf('[') + 1, value.indexOf(']'));
+            String[] props = properties.split(",");
+            CompoundTag pTag = new CompoundTag();
+            for(String property : props) {
+                String name = property.substring(0, property.indexOf('='));
+                String val = property.substring(property.indexOf('=') + 1);
+            
+                pTag.putString(name, val);
+            }
+            this.nbt.put("Properties", pTag);
+        } else this.type = new CLIBlockType(value);
+        this.nbt.putString("Name", type.getHandle());
     }
     
     @Override

@@ -24,11 +24,11 @@ public final class TerraCLI {
     
         ConfigPack generate = platform.getConfigRegistry().get("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
     
-        CLIWorld world = new CLIWorld(1, 2, 384, -64, generate);
+        CLIWorld world = new CLIWorld(2, 2, 384, -64, generate);
         
         world.generate();
         
-        world.serialize().forEach(mcaFile -> {
+        world.serialize().parallel().forEach(mcaFile -> {
             Vector2Int pos = mcaFile.getLeft();
             String name = MCAUtil.createNameFromRegionLocation(pos.getX(), pos.getZ());
             LOGGER.info("Writing region ({}, {}) to {}", pos.getX(), pos.getZ(), name);
@@ -39,6 +39,9 @@ public final class TerraCLI {
             } catch(IOException e) {
                 e.printStackTrace();
             }
+            LOGGER.info("Wrote region to file.");
         });
+        LOGGER.info("Done.");
+        System.exit(0);
     }
 }

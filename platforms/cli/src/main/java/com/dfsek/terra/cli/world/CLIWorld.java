@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 
@@ -74,20 +75,28 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     public void generate() {
         int sizeChunks = size * 32;
         List<Future<?>> futures = new ArrayList<>();
-        final long start = System.nanoTime();
-        for(int x = -sizeChunks + 1; x < sizeChunks; x++) {
-            for(int z = -sizeChunks + 1; z < sizeChunks; z++) {
+        final AtomicLong start = new AtomicLong(System.nanoTime());
+        for(int x = 0; x < sizeChunks; x++) {
+            for(int z = 0; z < sizeChunks; z++) {
                 int finalX = x;
                 int finalZ = z;
                 futures.add(executor.submit(() -> {
-                    int num = amount.getAndIncrement();
-                    long time = System.nanoTime();
-                    double cps = num / ((double) (time - start) / 1000000000);
-                    LOGGER.info("Generating chunk at ({}, {}), generated {} chunks at {}cps", finalX, finalZ, num, cps);
-                    CLIChunk chunk = getChunkAt(finalX, finalZ);
-                    chunkGenerator.generateChunkData(chunk, this, finalX, finalZ);
-                    CLIProtoWorld protoWorld = new CLIProtoWorld(this, finalX, finalZ);
-                    pack.getStages().forEach(stage -> stage.populate(protoWorld));
+                    try {
+                        int num = amount.getAndIncrement();
+                        CLIChunk chunk = getChunkAt(finalX, finalZ);
+                        chunkGenerator.generateChunkData(chunk, this, finalX, finalZ);
+                        CLIProtoWorld protoWorld = new CLIProtoWorld(this, finalX, finalZ);
+                        pack.getStages().forEach(stage -> stage.populate(protoWorld));
+                        if(num % 240 == 239) {
+                            long time = System.nanoTime();
+                            double cps = num / ((double) (time - start.get()) / 1000000000);
+                            LOGGER.info("Generating chunk at ({}, {}), generated {} chunks at {}cps", finalX, finalZ, num, cps);
+                            amount.set(0);
+                            start.set(System.nanoTime());
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
                 }));
             }
         }
@@ -154,10 +163,10 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public CLIChunk getChunkAt(int x, int z) {
-        x += (size + 1) * 16;
-        z += (size + 1) * 16;
-        return regions[FastMath.floorDiv(x, regionBlocks) + regionBlocks * FastMath.floorDiv(z, regionBlocks)]
-                .get(FastMath.floorMod(FastMath.floorDiv(x, 16), 32), FastMath.floorMod(FastMath.floorDiv(z, 16), 32));
+        int cx = x + (size + 1) * 16;
+        int cz = z + (size + 1) * 16;
+        return regions[FastMath.floorDiv(cx, regionBlocks) + regionBlocks * FastMath.floorDiv(cz, regionBlocks)]
+                .get(FastMath.floorMod(x, 32), FastMath.floorMod(z, 32));
     }
     
     @Override
