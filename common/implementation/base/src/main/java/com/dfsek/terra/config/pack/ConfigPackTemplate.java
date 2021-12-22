@@ -22,6 +22,7 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +78,8 @@ public class ConfigPackTemplate implements ConfigTemplate {
     private @Meta boolean disableSaplings = false;
     
     @Value("stages")
-    private @Meta List<@Meta GenerationStage> stages;
+    @Default
+    private @Meta List<@Meta GenerationStage> stages = Collections.emptyList();
     
     @Value("version")
     private Version version;
