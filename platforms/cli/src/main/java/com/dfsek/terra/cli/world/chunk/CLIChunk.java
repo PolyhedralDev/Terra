@@ -1,5 +1,6 @@
 package com.dfsek.terra.cli.world.chunk;
 
+import net.querz.mca.Section;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -10,6 +11,8 @@ import com.dfsek.terra.cli.NBTSerializable;
 import com.dfsek.terra.cli.block.CLIBlockState;
 import com.dfsek.terra.cli.handle.CLIWorldHandle;
 import com.dfsek.terra.cli.world.CLIWorld;
+
+import java.lang.reflect.Field;
 
 import static com.dfsek.terra.cli.handle.CLIWorldHandle.getAIR;
 
@@ -69,13 +72,12 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
                 for(int y = 0; y < blocks[z][z].length; y++) {
-                    CLIBlockState blockState = blocks[x][z][y];
-                    if(blockState == null) {
-                        blockState = CLIWorldHandle.getAIR();
-                    }
                     int yi = y + minHeight;
                     if(yi < 0 || yi >= 256) continue;
-                    chunk.setBlockStateAt(x, yi, z, blockState.getNbt(), false);
+                    CLIBlockState blockState = blocks[x][z][y];
+                    if(blockState != null) {
+                        chunk.setBlockStateAt(x, yi, z, blockState.getNbt(), false);
+                    }
                 }
             }
         }
