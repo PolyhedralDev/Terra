@@ -2,6 +2,8 @@ package com.dfsek.terra.api.util.vector;
 
 import com.dfsek.terra.api.util.Rotation;
 
+import java.util.Objects;
+
 
 /**
  * oh yeah
@@ -81,5 +83,18 @@ public class Vector2Int {
         public Vector2Int immutable() {
             return new Vector2Int(x, z);
         }
+    }
+    
+    @Override
+    public int hashCode() {
+        return (31 * x) + z;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Vector2Int that) {
+            return this.x == that.x && this.z == that.z;
+        }
+        return false;
     }
 }
