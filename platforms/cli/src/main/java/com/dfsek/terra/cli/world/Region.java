@@ -9,30 +9,40 @@ import com.dfsek.terra.cli.world.chunk.CLIChunk;
 public class Region implements NBTSerializable<MCAFile> {
     private final CLIChunk[] chunks;
     private final int x, z;
+    private final CLIWorld world;
     
     public Region(CLIWorld world, int x, int z) {
         this.x = x;
         this.z = z;
-        CLIChunk[] chunks = new CLIChunk[32 * 32];
-        for(int cx = 0; cx < 32; cx++) {
-            for(int cz = 0; cz < 32; cz++) {
-                chunks[cx + cz * 32] = new CLIChunk(cx, cz, world);
-            }
-        }
-        this.chunks = chunks;
+        this.world = world;
+        this.chunks = new CLIChunk[32 * 32];;
     }
     
     public CLIChunk get(int x, int z) {
-        return chunks[x + z*32];
+        int key = x + z*32;
+        CLIChunk chunk = chunks[key];
+        if(chunk == null) {
+            chunk = new CLIChunk(x, z, world);
+            chunks[key] = chunk;
+        }
+        return chunk;
     }
     
     @Override
     public MCAFile serialize() {
         MCAFile mcaFile = new MCAFile(x, z);
+        int count = 0;
         for(int cx = 0; cx < 32; cx++) {
             for(int cz = 0; cz < 32; cz++) {
-                mcaFile.setChunk(cx + cz * 32, chunks[cx + cz * 32].serialize());
+                CLIChunk chunk = chunks[cx + cz * 32];
+                if(chunk != null) {
+                    count++;
+                    mcaFile.setChunk(cx + cz * 32, chunk.serialize());
+                }
             }
+        }
+        if(count > 0) {
+            mcaFile.cleanupPalettesAndBlockStates();
         }
         return mcaFile;
     }

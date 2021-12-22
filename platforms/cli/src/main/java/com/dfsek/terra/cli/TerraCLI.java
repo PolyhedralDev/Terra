@@ -24,7 +24,7 @@ public final class TerraCLI {
     
         ConfigPack generate = platform.getConfigRegistry().get("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
     
-        CLIWorld world = new CLIWorld(1, 2, 384, -64, generate);
+        CLIWorld world = new CLIWorld(2, 2, 384, -64, generate);
         
         world.generate();
         
@@ -32,7 +32,6 @@ public final class TerraCLI {
             Vector2Int pos = mcaFile.getLeft();
             String name = MCAUtil.createNameFromRegionLocation(pos.getX(), pos.getZ());
             LOGGER.info("Writing region ({}, {}) to {}", pos.getX(), pos.getZ(), name);
-            mcaFile.getRight().cleanupPalettesAndBlockStates();
             
             try {
                 MCAUtil.write(mcaFile.getRight(), name);
