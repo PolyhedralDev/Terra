@@ -12,5 +12,8 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.terra.api.util.StringIdentifiable;
 
 
+/**
+ * An abstractable config template
+ */
 public interface AbstractableTemplate extends ConfigTemplate, StringIdentifiable {
 }

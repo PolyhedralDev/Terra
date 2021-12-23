@@ -2,8 +2,6 @@ package com.dfsek.terra.api.util.vector;
 
 import com.dfsek.terra.api.util.Rotation;
 
-import java.util.Objects;
-
 
 /**
  * oh yeah
@@ -11,8 +9,8 @@ import java.util.Objects;
 public class Vector2Int {
     private static final Vector2Int ZERO = new Vector2Int(0, 0);
     private static final Vector2Int UNIT = new Vector2Int(0, 1);
-    private final int x;
-    private final int z;
+    protected int x;
+    protected int z;
     
     protected Vector2Int(int x, int z) {
         this.x = x;
@@ -56,12 +54,10 @@ public class Vector2Int {
         };
     }
     
-    public static class Mutable {
-        private int x, z;
+    public static class Mutable extends Vector2Int {
         
         protected Mutable(int x, int z) {
-            this.x = x;
-            this.z = z;
+            super(x, z);
         }
         
         public int getZ() {

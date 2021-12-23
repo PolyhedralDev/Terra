@@ -7,13 +7,24 @@
 
 package com.dfsek.terra.api.block.state.properties;
 
+import com.dfsek.terra.api.util.StringIdentifiable;
+
 import java.util.Collection;
 
 
-public interface Property<T> {
+/**
+ * Represents a property a state holds
+ */
+public interface Property<T> extends StringIdentifiable {
+    /**
+     * Get all possible values of this property
+     * @return All values of this property
+     */
     Collection<T> values();
     
+    /**
+     * Get the type of this property.
+     * @return {@link Class} instance representing the type of this property
+     */
     Class<T> getType();
-    
-    String getName();
 }

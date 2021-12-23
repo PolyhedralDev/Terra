@@ -4,7 +4,7 @@ package com.dfsek.terra.api.util.vector;
 public class Vector3Int {
     private static final Vector3Int ZERO = new Vector3Int(0, 0, 0);
     private static final Vector3Int UNIT = new Vector3Int(0, 1, 0);
-    private final int x, y, z;
+    protected int x, y, z;
     
     protected Vector3Int(int x, int y, int z) {
         this.x = x;
@@ -48,13 +48,9 @@ public class Vector3Int {
         return Vector3.Mutable.of(x, y, z);
     }
     
-    public static class Mutable {
-        private int x, y, z;
-        
+    public static class Mutable extends Vector3Int {
         protected Mutable(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            super(x, y, z);
         }
         
         public int getX() {

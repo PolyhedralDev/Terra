@@ -14,9 +14,9 @@ import com.dfsek.terra.api.util.MathUtil;
 
 
 public class Vector3 {
-    private final double x;
-    private final double y;
-    private final double z;
+    protected double x;
+    protected double y;
+    protected double z;
     
     private Vector3(double x, double y, double z) {
         this.x = x;
@@ -146,13 +146,9 @@ public class Vector3 {
         return new Mutable(x, y, z);
     }
     
-    public static class Mutable {
-        private double x, y, z;
-        
+    public static class Mutable extends Vector3 {
         private Mutable(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            super(x, y, z);
         }
         
         public static Mutable of(double x, double y, double z) {

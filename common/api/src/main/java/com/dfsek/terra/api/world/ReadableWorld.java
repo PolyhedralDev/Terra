@@ -6,22 +6,34 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
+/**
+ * A {@link World} with read access.
+ */
 public interface ReadableWorld extends World {
+    /**
+     * Get the {@link BlockState} at a location.
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @param z Z coordinate
+     * @return {@link BlockState} at coordinates.
+     */
     BlockState getBlockState(int x, int y, int z);
     
+    /**
+     * Get the {@link BlockState} at a location.
+     * @param position Location to get block.
+     * @return {@link BlockState} at coordinates.
+     */
     default BlockState getBlockState(Vector3 position) {
         return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
     }
     
-    default BlockState getBlockState(Vector3.Mutable position) {
-        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
-    }
-    
+    /**
+     * Get the {@link BlockState} at a location.
+     * @param position Location to get block.
+     * @return {@link BlockState} at coordinates.
+     */
     default BlockState getBlockState(Vector3Int position) {
-        return getBlockState(position.getX(), position.getY(), position.getZ());
-    }
-    
-    default BlockState getBlockState(Vector3Int.Mutable position) {
         return getBlockState(position.getX(), position.getY(), position.getZ());
     }
     

@@ -30,7 +30,7 @@ public interface EnumProperty<T extends Enum<T>> extends Property<T> {
             }
             
             @Override
-            public String getName() {
+            public String getID() {
                 return name;
             }
         };

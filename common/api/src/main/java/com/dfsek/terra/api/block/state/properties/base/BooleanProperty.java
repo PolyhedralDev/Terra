@@ -24,7 +24,7 @@ public interface BooleanProperty extends Property<Boolean> {
             }
             
             @Override
-            public String getName() {
+            public String getID() {
                 return name;
             }
         };

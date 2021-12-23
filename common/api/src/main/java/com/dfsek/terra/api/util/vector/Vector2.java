@@ -15,9 +15,9 @@ import com.dfsek.terra.api.util.MathUtil;
 /**
  * oh yeah
  */
-public class Vector2 implements Cloneable {
-    private final double x;
-    private final double z;
+public class Vector2 {
+    protected double x;
+    protected double z;
     
     /**
      * Create a vector with a given X and Z component
@@ -127,12 +127,10 @@ public class Vector2 implements Cloneable {
         return new Mutable(x, z);
     }
     
-    public static class Mutable {
-        private double x, z;
+    public static class Mutable extends Vector2 {
         
         private Mutable(double x, double z) {
-            this.x = x;
-            this.z = z;
+            super(x, z);
         }
     
         public double getX() {

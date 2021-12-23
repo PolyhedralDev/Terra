@@ -32,7 +32,7 @@ public interface IntProperty extends Property<Integer> {
             }
             
             @Override
-            public String getName() {
+            public String getID() {
                 return name;
             }
         };

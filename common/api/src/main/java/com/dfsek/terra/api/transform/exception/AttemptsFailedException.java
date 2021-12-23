@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Thrown when all transformation attempts fail
+ */
 public class AttemptsFailedException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -1160459550006067137L;

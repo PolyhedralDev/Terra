@@ -9,6 +9,10 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 
+/**
+ * A {@link WritableWorld} implementation which delegates read/write operations to
+ * another {@link WritableWorld}, at an offset.
+ */
 public class BufferedWorld implements WritableWorld {
     private final WritableWorld delegate;
     private final int offsetX, offsetY, offsetZ;
@@ -76,6 +80,10 @@ public class BufferedWorld implements WritableWorld {
         return delegate.spawnEntity(x + offsetX, y + offsetY, z + offsetZ, entityType);
     }
     
+    /**
+     * Get the world this {@link BufferedWorld} delegates to.
+     * @return Delegate world.
+     */
     public WritableWorld getDelegate() {
         return delegate;
     }

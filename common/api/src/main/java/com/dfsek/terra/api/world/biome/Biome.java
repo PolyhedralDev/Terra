@@ -11,23 +11,30 @@ package com.dfsek.terra.api.world.biome;
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.PropertyHolder;
+import com.dfsek.terra.api.util.StringIdentifiable;
 
 
 /**
- * Represents a custom biome
+ * Represents a Terra biome
  */
-public interface Biome extends PropertyHolder {
+public interface Biome extends PropertyHolder, StringIdentifiable {
     
     /**
-     * Gets the Vanilla biome to represent the custom biome.
+     * Gets the platform biome this custom biome delegates to.
      *
-     * @return TerraBiome - The Vanilla biome.
+     * @return The platform biome.
      */
     PlatformBiome getPlatformBiome();
     
+    /**
+     * Get the color of this biome.
+     * @return ARGB color of this biome
+     */
     int getColor();
     
+    /**
+     * Get the tags this biome holds
+     * @return A {@link Set} of String tags this biome holds.
+     */
     Set<String> getTags();
-    
-    String getID();
 }

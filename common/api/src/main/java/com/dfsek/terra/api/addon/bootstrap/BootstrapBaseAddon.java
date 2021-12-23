@@ -12,6 +12,16 @@ import java.nio.file.Path;
 import com.dfsek.terra.api.addon.BaseAddon;
 
 
+/**
+ * Interface representing a bootstrap addon.
+ *
+ * A bootstrap addon is the only type of addon Terra implements a loader for.
+ * It is a minimal base for addon loaders to be implemented on top of.
+ *
+ * Unless you are writing your own addon loader, you will want to depend on the
+ * {@code manifest-addon-loader} addon, and implement its AddonInitializer.
+ * @param <T> Type of addon this bootstrap addon loads
+ */
 public interface BootstrapBaseAddon<T extends BaseAddon> extends BaseAddon {
     /**
      * Load all the relevant addons in the specified path.
