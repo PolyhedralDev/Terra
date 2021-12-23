@@ -29,6 +29,10 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+
+import java.util.function.Supplier;
+
 
 @Environment(EnvType.CLIENT)
 public class TerraGeneratorType extends GeneratorType {
@@ -41,6 +45,8 @@ public class TerraGeneratorType extends GeneratorType {
     
     @Override
     protected ChunkGenerator getChunkGenerator(DynamicRegistryManager manager, long seed) {
-        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack);
+        Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
+        Supplier<ChunkGeneratorSettings> settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
+        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack, settingsSupplier);
     }
 }

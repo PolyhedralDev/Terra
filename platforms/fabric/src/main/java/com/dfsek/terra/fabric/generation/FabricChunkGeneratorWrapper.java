@@ -43,6 +43,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.*;
@@ -54,6 +55,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -76,7 +78,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                     Codec.LONG.fieldOf("seed").stable()
                               .forGetter(generator -> generator.seed),
                     PACK_CODEC.fieldOf("pack").stable()
-                              .forGetter(generator -> generator.pack)
+                              .forGetter(generator -> generator.pack),
+                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
+                                                         .forGetter(generator -> generator.settingsSupplier)
                                       ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
                                                                                             );
     
@@ -85,10 +89,13 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private ChunkGenerator delegate;
     private ConfigPack pack;
     private net.minecraft.server.world.ServerWorld world;
+    private final Supplier<ChunkGeneratorSettings> settingsSupplier;
     
-    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
+                                       Supplier<ChunkGeneratorSettings> settingsSupplier) {
         super(biomeSource, new StructuresConfig(true));
         this.pack = configPack;
+        this.settingsSupplier = settingsSupplier;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
@@ -104,7 +111,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
+        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settingsSupplier);
     }
     
     @Override
