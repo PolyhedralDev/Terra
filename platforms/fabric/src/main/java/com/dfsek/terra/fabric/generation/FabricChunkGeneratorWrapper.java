@@ -136,7 +136,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getWorldHeight() {
-        return world.getTopY();
+        return settingsSupplier.get().getGenerationShapeConfig().height();
     }
     
     public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
@@ -201,19 +201,19 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getSeaLevel() {
-        return world.getSeaLevel();
+        return settingsSupplier.get().getSeaLevel();
     }
     
     @Override
     public int getMinimumY() {
-        return world.getBottomY();
+        return settingsSupplier.get().getGenerationShapeConfig().minimumY();
     }
     
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
-        int height = ((ServerWorld) world).getMaxHeight();
-        while(height >= ((ServerWorld) world).getMinHeight() && !heightmap.getBlockPredicate().test(
-                (BlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, height - 1, z))) {
+        int height = getMinimumY() + getWorldHeight();
+        while(height >= getMinimumY() && !heightmap.getBlockPredicate().test(
+                (BlockState) delegate.getBlock((ServerWorld) world, x, height - 1, z))) {
             height--;
         }
         return height;
