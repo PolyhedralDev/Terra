@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -45,13 +47,13 @@ public class SamplerProvider {
                             });
     }
     
-    public Sampler3D get(int x, int z, World world) {
+    public Sampler3D get(int x, int z, WorldProperties world) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
         return getChunk(cx, cz, world);
     }
     
-    public Sampler3D getChunk(int cx, int cz, World world) {
+    public Sampler3D getChunk(int cx, int cz, WorldProperties world) {
         return cache.getUnchecked(new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight()));
     }
     

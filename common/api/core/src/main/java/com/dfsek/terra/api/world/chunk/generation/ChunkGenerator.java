@@ -7,12 +7,13 @@
 
 package com.dfsek.terra.api.world.chunk.generation;
 
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -20,13 +21,13 @@ public interface ChunkGenerator {
     void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
                            int chunkX, int chunkZ);
     
-    BlockState getBlock(ServerWorld world, int x, int y, int z);
+    BlockState getBlock(WorldProperties world, int x, int y, int z);
     
-    default BlockState getBlock(ServerWorld world, Vector3 vector3) {
+    default BlockState getBlock(WorldProperties world, Vector3 vector3) {
         return getBlock(world, vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ());
     }
     
-    default BlockState getBlock(ServerWorld world, Vector3Int vector3) {
+    default BlockState getBlock(WorldProperties world, Vector3Int vector3) {
         return getBlock(world, vector3.getX(), vector3.getY(), vector3.getZ());
     }
 }
