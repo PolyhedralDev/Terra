@@ -216,7 +216,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
         BlockState[] array = new BlockState[view.getHeight()];
         for(int y = view.getTopY() - 1; y >= view.getBottomY(); y--) {
-            array[y - view.getBottomY()] = (BlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z);
+            array[y - view.getBottomY()] = (BlockState) delegate.getBlock((ServerWorld) world, x, y, z);
         }
         return new VerticalBlockSample(view.getBottomY(), array);
     }
