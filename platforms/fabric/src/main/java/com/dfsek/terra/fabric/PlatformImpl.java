@@ -24,6 +24,7 @@ import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.exception.LoadException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -70,7 +71,7 @@ public class PlatformImpl extends AbstractPlatform {
     public boolean reload() {
         getTerraConfig().load(this);
         boolean succeed = getRawConfigRegistry().loadAll(this);
-        
+    
         worlds.forEach(world -> {
             FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
             chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getID()).orElseThrow());

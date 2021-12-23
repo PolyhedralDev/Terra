@@ -43,7 +43,7 @@ import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 
 @Mixin(ServerWorld.class)
 public abstract class ServerWorldMixin {
-    private static final Logger logger = LoggerFactory.getLogger(ServerWorldMixin.class);
+    private static final Logger logger = LoggerFactory.getLogger(ServerWorld.class);
     
     @Inject(method = "<init>", at = @At("RETURN"))
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session,
@@ -51,7 +51,6 @@ public abstract class ServerWorldMixin {
                                   WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator,
                                   boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
-            ((FabricChunkGeneratorWrapper) chunkGenerator).setWorld((ServerWorld) (Object) this);
             FabricEntryPoint.getPlatform().addWorld((ServerWorld) (Object) this);
             logger.info("Registered world {}", this);
         }
