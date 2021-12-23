@@ -20,6 +20,10 @@ public class SlantHolder {
         this.minSlope = minSlope;
     }
     
+    public boolean isEmpty() {
+        return layers.isEmpty();
+    }
+    
     public PaletteHolder getPalette(double slope) {
         return layers.floorEntry(slope).getValue();
     }

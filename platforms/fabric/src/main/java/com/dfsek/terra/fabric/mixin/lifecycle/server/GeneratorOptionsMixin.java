@@ -25,6 +25,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.GeneratorOptions;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Properties;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
@@ -57,16 +59,16 @@ public abstract class GeneratorOptionsMixin {
         
         String prop = properties.get("level-type").toString().trim();
         if(prop.startsWith("Terra")) {
-            String seed = (String) MoreObjects.firstNonNull(properties.get("level-seed"), "");
-            long l = new Random().nextLong();
-            if(!seed.isEmpty()) {
+            String seedProperty = (String) properties.get("level-seed");
+            long seed = new Random().nextLong();
+            if(seedProperty != null) {
                 try {
-                    long m = Long.parseLong(seed);
+                    long m = Long.parseLong(seedProperty);
                     if(m != 0L) {
-                        l = m;
+                        seed = m;
                     }
                 } catch(NumberFormatException exception) {
-                    l = seed.hashCode();
+                    seed = seedProperty.hashCode();
                 }
             }
             
@@ -74,23 +76,30 @@ public abstract class GeneratorOptionsMixin {
             boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
             Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
             Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager,
-                                                                                                            l, false);
+            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager, seed, false);
+            
+            Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
+            Supplier<ChunkGeneratorSettings>
+                    settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
             
             prop = prop.substring(prop.indexOf(":") + 1);
-
+            
             String finalProp = prop;
             ConfigPack config = main.getConfigRegistry().get(prop).orElseThrow(() -> new IllegalArgumentException(
                     "No such pack " + finalProp));
             
-            cir.setReturnValue(new GeneratorOptions(l, generateStructures, false,
-                                                    GeneratorOptions.getRegistryWithReplacedOverworldGenerator(dimensionTypes,
-                                                                                                               dimensionOptions,
-                                                                                                               new FabricChunkGeneratorWrapper(
-                                                                                                                       new TerraBiomeSource(
-                                                                                                                               biomeRegistry,
-                                                                                                                               l, config),
-                                                                                                                       l, config))));
+            cir.setReturnValue(
+                    new GeneratorOptions(seed,
+                                         generateStructures,
+                                         false,
+                                         GeneratorOptions
+                                                 .getRegistryWithReplacedOverworldGenerator(
+                                                         dimensionTypes,
+                                                         dimensionOptions,
+                                                         new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, config),
+                                                                                         seed,
+                                                                                         config,
+                                                                                         settingsSupplier))));
         }
     }
 }

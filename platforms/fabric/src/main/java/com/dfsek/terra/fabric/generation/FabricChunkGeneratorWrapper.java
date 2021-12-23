@@ -27,6 +27,8 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 
+import com.dfsek.terra.fabric.util.FabricAdapter;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
@@ -43,6 +45,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.*;
@@ -54,6 +57,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.function.Supplier;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -76,7 +80,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                     Codec.LONG.fieldOf("seed").stable()
                               .forGetter(generator -> generator.seed),
                     PACK_CODEC.fieldOf("pack").stable()
-                              .forGetter(generator -> generator.pack)
+                              .forGetter(generator -> generator.pack),
+                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
+                                                         .forGetter(generator -> generator.settingsSupplier)
                                       ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
                                                                                             );
     
@@ -84,11 +90,13 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private final TerraBiomeSource biomeSource;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    private net.minecraft.server.world.ServerWorld world;
+    private final Supplier<ChunkGeneratorSettings> settingsSupplier;
     
-    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack) {
+    public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
+                                       Supplier<ChunkGeneratorSettings> settingsSupplier) {
         super(biomeSource, new StructuresConfig(true));
         this.pack = configPack;
+        this.settingsSupplier = settingsSupplier;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
@@ -104,7 +112,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack);
+        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settingsSupplier);
     }
     
     @Override
@@ -129,7 +137,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getWorldHeight() {
-        return world.getTopY();
+        return settingsSupplier.get().getGenerationShapeConfig().height();
     }
     
     public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
@@ -194,31 +202,31 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getSeaLevel() {
-        return world.getSeaLevel();
+        return settingsSupplier.get().getSeaLevel();
     }
     
     @Override
     public int getMinimumY() {
-        return world.getBottomY();
+        return settingsSupplier.get().getGenerationShapeConfig().minimumY();
     }
     
     @Override
-    public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView heightmapType) {
-        int height = ((ServerWorld) world).getMaxHeight();
-        while(height >= ((ServerWorld) world).getMinHeight() && !heightmap.getBlockPredicate().test(
-                (BlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, height - 1, z))) {
-            height--;
+    public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView height) {
+        int y = height.getTopY();
+        while(y >= getMinimumY() && !heightmap.getBlockPredicate().test(
+                (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y - 1, z))) {
+            y--;
         }
-        return height;
+        return y;
     }
     
     @Override
-    public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView view) {
-        BlockState[] array = new BlockState[view.getHeight()];
-        for(int y = view.getTopY() - 1; y >= view.getBottomY(); y--) {
-            array[y - view.getBottomY()] = (BlockState) ((ServerWorld) world).getGenerator().getBlock((ServerWorld) world, x, y, z);
+    public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height) {
+        BlockState[] array = new BlockState[height.getHeight()];
+        for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
+            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y, z);
         }
-        return new VerticalBlockSample(view.getBottomY(), array);
+        return new VerticalBlockSample(height.getBottomY(), array);
     }
     
     public ConfigPack getPack() {
@@ -237,10 +245,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public void carve(ChunkRegion chunkRegion, long seed, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk,
                       GenerationStep.Carver generationStep) {
         
-    }
-    
-    public void setWorld(net.minecraft.server.world.ServerWorld world) {
-        this.world = world;
     }
     
     @Override

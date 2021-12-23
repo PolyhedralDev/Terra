@@ -44,24 +44,27 @@ public class TerraScriptAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                     CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
-                    event.getPack().getLoader().open("", ".tesf").thenEntries(entries -> {
-                        for(Map.Entry<String, InputStream> entry : entries) {
-                            try {
-                                String id = StringUtil.fileName(entry.getKey());
-                                StructureScript structureScript = new StructureScript(entry.getValue(),
-                                                                                      id,
-                                                                                      platform,
-                                                                                      structureRegistry,
-                                                                                      lootRegistry,
-                                                                                      event
-                                                                                              .getPack()
-                                                                                              .getOrCreateRegistry(FunctionBuilder.class));
-                                structureRegistry.register(structureScript.getID(), structureScript);
-                            } catch(ParseException e) {
-                                throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
-                            }
-                        }
-                    }).close();
+                    event.getPack().getLoader().open("", ".tesf").thenEntries(
+                                 entries ->
+                                         entries.stream()
+                                                .parallel()
+                                                .map(entry -> {
+                                                    try {
+                                                        String id = StringUtil.fileName(entry.getKey());
+                                                        return new StructureScript(entry.getValue(),
+                                                                                   id,
+                                                                                   platform,
+                                                                                   structureRegistry,
+                                                                                   lootRegistry,
+                                                                                   event.getPack().getOrCreateRegistry(FunctionBuilder.class));
+                                                    } catch(ParseException e) {
+                                                        throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
+                                                    }
+                                                })
+                                                .toList()
+                                                .forEach(structureScript -> structureRegistry.register(structureScript.getID(),
+                                                                                                       structureScript)))
+                         .close();
                 })
                 .priority(2)
                 .failThrough();

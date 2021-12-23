@@ -41,7 +41,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         holderCache = CacheBuilder.newBuilder()
-                                  .maximumSize(128)
+                                  .maximumSize(1024)
                                   .build(
                                           new CacheLoader<>() {
                                               @Override
@@ -101,31 +101,6 @@ public class BiomePipelineProvider implements BiomeProvider {
         return biomes;
     }
     
-    private static final class SeededVector {
-        private final int x;
-        private final int z;
-        private final long seed;
-        
-        private SeededVector(int x, int z, long seed) {
-            this.x = x;
-            this.z = z;
-            this.seed = seed;
-        }
-        
-        @Override
-        public int hashCode() {
-            int result = 0;
-            result = 31 * result + ((int) (seed ^ (seed >>> 32)));
-            result = 31 * result + x;
-            result = 31 * result + z;
-            return result;
-        }
-        
-        @Override
-        public boolean equals(Object obj) {
-            if(!(obj instanceof SeededVector that)) return false;
-            
-            return this.seed == that.seed && this.x == that.x && this.z == that.z;
-        }
+    private record SeededVector(int x, int z, long seed) {
     }
 }

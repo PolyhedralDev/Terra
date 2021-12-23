@@ -61,7 +61,7 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     
     @Value("cache.sampler")
     @Default
-    private int samplerCache = 64;
+    private int samplerCache = 1024;
     
     @Value("cache.biome-provider")
     @Default
