@@ -9,6 +9,9 @@ package com.dfsek.terra.addons.manifest.impl;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+
+import com.dfsek.terra.api.inject.impl.InjectorImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +57,13 @@ public class ManifestAddon implements BaseAddon {
         logger.debug("Initializing addon {}", getID());
         
         initializers.forEach(initializer -> {
+            Injector<Logger> loggerInjector = Injector.get(LoggerFactory.getLogger(initializer.getClass()));
+            loggerInjector.addExplicitTarget(Logger.class);
+            
             logger.debug("Invoking entry point {}", initializer.getClass());
             addonInjector.inject(initializer);
             platformInjector.inject(initializer);
+            loggerInjector.inject(initializer);
             initializer.initialize();
         });
     }
