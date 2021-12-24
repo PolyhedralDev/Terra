@@ -10,7 +10,6 @@ package com.dfsek.terra.api.config;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.tectonic.ConfigLoadingDelegate;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;

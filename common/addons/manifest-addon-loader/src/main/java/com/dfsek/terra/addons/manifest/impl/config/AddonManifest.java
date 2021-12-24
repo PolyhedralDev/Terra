@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 
 
 @SuppressWarnings("FieldMayBeFinal")

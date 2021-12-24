@@ -9,7 +9,7 @@ package com.dfsek.terra.api.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 
 
 /**

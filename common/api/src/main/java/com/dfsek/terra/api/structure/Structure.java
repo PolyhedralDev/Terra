@@ -10,7 +10,7 @@ package com.dfsek.terra.api.structure;
 import java.util.Random;
 
 import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 

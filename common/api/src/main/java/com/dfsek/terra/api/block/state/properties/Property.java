@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.block.state.properties;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 
 import java.util.Collection;
 

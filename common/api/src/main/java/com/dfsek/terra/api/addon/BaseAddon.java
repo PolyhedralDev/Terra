@@ -13,7 +13,7 @@ import ca.solostudios.strata.version.VersionRange;
 import java.util.Collections;
 import java.util.Map;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 
 
 /**

@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.biome.pipeline.api.delegate;
 
 import java.util.Set;
 
-import com.dfsek.terra.api.util.StringIdentifiable;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.world.biome.Biome;
 
 
