@@ -18,7 +18,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface ChunkGenerator {
-    void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
+    void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
                            int chunkX, int chunkZ);
     
     BlockState getBlock(WorldProperties world, int x, int y, int z);

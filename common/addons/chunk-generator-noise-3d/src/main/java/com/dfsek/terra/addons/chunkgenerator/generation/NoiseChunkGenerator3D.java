@@ -53,10 +53,10 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     @SuppressWarnings("try")
-    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WritableWorld world,
+    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
                                   int chunkX, int chunkZ) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
-            BiomeProvider grid = world.getBiomeProvider();
+            BiomeProvider grid = configPack.getBiomeProvider();
             
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
@@ -65,7 +65,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
             
             long seed = world.getSeed();
             
-            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(world.getBiomeProvider(),
+            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(configPack.getBiomeProvider(),
                                                                                  chunkX,
                                                                                  chunkZ,
                                                                                  world.getMaxHeight(),

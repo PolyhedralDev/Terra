@@ -19,6 +19,8 @@ package com.dfsek.terra.bukkit.generator;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
+import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
@@ -44,8 +46,6 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final ChunkGenerator delegate;
     private final ConfigPack pack;
     private final BlockState air;
-    private World world;
-    private ServerWorld terraWorld;
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
@@ -60,11 +60,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
-        if(this.world == null) {
-            this.world = Bukkit.getWorld(worldInfo.getUID());
-            this.terraWorld = new BukkitServerWorld(world);
-        }
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), terraWorld, x, z);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), new BukkitWorldProperties(worldInfo), x, z);
     }
     
     @Override
@@ -103,11 +99,6 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public boolean shouldGenerateStructures() {
         return false;
         //return pack.vanillaStructures();
-    }
-    
-    
-    public World getWorld() {
-        return world;
     }
     
     public ConfigPack getPack() {
