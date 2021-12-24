@@ -39,8 +39,8 @@ public class BukkitWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
-        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data);
+    public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
     }
     
@@ -54,5 +54,5 @@ public class BukkitWorldHandle implements WorldHandle {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
-
+    
 }
