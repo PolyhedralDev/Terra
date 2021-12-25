@@ -22,7 +22,7 @@ public final class TerraCLI {
         CLIPlatform platform = new CLIPlatform();
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
     
-        ConfigPack generate = platform.getConfigRegistry().get("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
+        ConfigPack generate = platform.getConfigRegistry().getIDMatches("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
     
         CLIWorld world = new CLIWorld(2, 2, 384, -64, generate);
         

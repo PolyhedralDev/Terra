@@ -32,7 +32,6 @@ import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -67,9 +66,9 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @Override
     public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
-        return tryGet((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                                                      "\" was found in this registry. Registry contains items: " +
-                                                                      getItemsFormatted()));
+        return getFromID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
+                                                                         "\" was found in this registry. Registry contains items: " +
+                                                                         getItemsFormatted()));
     }
     
     private String getItemsFormatted() {
@@ -145,7 +144,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public Map<RegistryKey, T> get(String id) {
+    public Map<RegistryKey, T> getIDMatches(String id) {
         return objectIDs
                 .get(id)
                 .stream()

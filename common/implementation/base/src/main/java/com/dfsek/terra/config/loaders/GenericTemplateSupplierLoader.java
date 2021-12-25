@@ -46,7 +46,7 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
         Map<String, Object> map = (Map<String, Object>) c;
         try {
             return loader
-                    .load(registry.tryGet(((String) map.get("type")))
+                    .load(registry.getFromID(((String) map.get("type")))
                                   .orElseThrow(() -> new LoadException("No such entry: " + map.get("type")))
                                   .get(), new MapConfiguration(map)).get();
         } catch(ConfigException e) {

@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
-import com.google.common.base.MoreObjects;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -38,7 +37,6 @@ import java.util.function.Supplier;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.PlatformImpl;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
@@ -85,7 +83,7 @@ public abstract class GeneratorOptionsMixin {
             prop = prop.substring(prop.indexOf(":") + 1);
             
             String finalProp = prop;
-            ConfigPack config = main.getConfigRegistry().tryGet(prop).orElseThrow(() -> new IllegalArgumentException(
+            ConfigPack config = main.getConfigRegistry().getFromID(prop).orElseThrow(() -> new IllegalArgumentException(
                     "No such pack " + finalProp));
             
             cir.setReturnValue(

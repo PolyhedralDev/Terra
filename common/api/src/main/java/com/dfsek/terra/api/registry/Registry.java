@@ -79,13 +79,13 @@ public interface Registry<T> extends TypeLoader<T> {
     
     TypeKey<T> getType();
     
-    default Optional<T> tryGet(String attempt) {
-        return get(attempt, map -> {
+    default Optional<T> getFromID(String id) {
+        return getFromID(id, map -> {
             if(map.isEmpty()) return Optional.empty();
             if(map.size() == 1) {
                 return map.values().stream().findFirst(); // only one value.
             }
-            throw new IllegalArgumentException("ID \"" + attempt + "\" is ambiguous; matches: " + map
+            throw new IllegalArgumentException("ID \"" + id + "\" is ambiguous; matches: " + map
                     .keySet()
                     .stream()
                     .map(RegistryKey::toString)
@@ -93,12 +93,12 @@ public interface Registry<T> extends TypeLoader<T> {
         });
     }
     
-    Map<RegistryKey, T> get(String id);
+    Map<RegistryKey, T> getIDMatches(String id);
     
-    default Optional<T> get(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
+    default Optional<T> getFromID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
         if(attempt.contains(":")) {
             return get(RegistryKey.parse(attempt));
         }
-        return reduction.apply(get(attempt));
+        return reduction.apply(getIDMatches(attempt));
     }
 }

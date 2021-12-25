@@ -97,8 +97,8 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
     
     @Override
-    public Map<RegistryKey, T> get(String id) {
-        return registry.get(id);
+    public Map<RegistryKey, T> getIDMatches(String id) {
+        return registry.getIDMatches(id);
     }
     
     @Override

@@ -37,7 +37,7 @@ public class RegistryTest {
         
         test.register("test", "bazinga");
         
-        assertEquals(test.get("test").orElseThrow(), "bazinga");
+        assertEquals(test.getIDMatches("test").orElseThrow(), "bazinga");
     }
     
     @Test
@@ -60,7 +60,7 @@ public class RegistryTest {
         
         test.register("test", "bazinga");
         
-        assertEquals(test.get("test").orElseThrow(), "bazinga");
+        assertEquals(test.getIDMatches("test").orElseThrow(), "bazinga");
         
         try {
             test.register("test", "bazinga2");

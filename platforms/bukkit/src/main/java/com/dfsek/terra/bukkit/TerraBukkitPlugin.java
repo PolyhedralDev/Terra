@@ -25,7 +25,6 @@ import cloud.commandframework.paper.PaperCommandManager;
 import com.dfsek.terra.api.entity.CommandSender;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
@@ -216,9 +214,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            ConfigPack pack = platform.getConfigRegistry().get(id).orElseThrow(
+            ConfigPack pack = platform.getConfigRegistry().getIDMatches(id).orElseThrow(
                     () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), platform.getRawConfigRegistry().get(id).orElseThrow(), platform.getWorldHandle().air());
+        }), platform.getRawConfigRegistry().getIDMatches(id).orElseThrow(), platform.getWorldHandle().air());
     }
 }
