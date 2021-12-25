@@ -16,32 +16,26 @@ import java.util.Map;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.key.Keyed;
-import com.dfsek.terra.api.registry.key.Namespaced;
 import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.registry.meta.CheckedRegistryHolder;
 import com.dfsek.terra.api.registry.meta.RegistryHolder;
+import com.dfsek.terra.api.registry.meta.RegistryProvider;
 import com.dfsek.terra.api.tectonic.ConfigLoadingDelegate;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
-import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
-public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, RegistryHolder, Keyed {
+public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, CheckedRegistryHolder, RegistryProvider, Keyed {
     
     ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey id, int priority);
     
     Map<BaseAddon, VersionRange> addons();
     
     BiomeProvider getBiomeProvider();
-    
-    default <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
-        return getOrCreateRegistry(TypeKey.of(clazz));
-    }
-    
-    <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> type);
     
     List<GenerationStage> getStages();
     
