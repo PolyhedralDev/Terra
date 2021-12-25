@@ -20,6 +20,7 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -71,5 +72,42 @@ public final class ReflectionUtil {
     
     public static String typeToString(Type type) {
         return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
+    }
+
+    public static boolean equals(Type a, Type b) {
+        if(a == b) {
+            return true;
+        } else if(a instanceof Class) {
+            return a.equals(b);
+        } else if(a instanceof ParameterizedType pa) {
+            if(!(b instanceof ParameterizedType pb)) {
+                return false;
+            }
+            
+            return Objects.equals(pa.getOwnerType(), pb.getOwnerType())
+                   && pa.getRawType().equals(pb.getRawType())
+                   && Arrays.equals(pa.getActualTypeArguments(), pb.getActualTypeArguments());
+        } else if(a instanceof GenericArrayType ga) {
+            if(!(b instanceof GenericArrayType gb)) {
+                return false;
+            }
+            
+            return equals(ga.getGenericComponentType(), gb.getGenericComponentType());
+        } else if(a instanceof WildcardType wa) {
+            if(!(b instanceof WildcardType wb)) {
+                return false;
+            }
+            
+            return Arrays.equals(wa.getUpperBounds(), wb.getUpperBounds())
+                   && Arrays.equals(wa.getLowerBounds(), wb.getLowerBounds());
+        } else if(a instanceof TypeVariable<?> va) {
+            if(!(b instanceof TypeVariable<?> vb)) {
+                return false;
+            }
+            return va.getGenericDeclaration() == vb.getGenericDeclaration()
+                   && va.getName().equals(vb.getName());
+        } else {
+            return false;
+        }
     }
 }
