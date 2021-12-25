@@ -73,7 +73,7 @@ public class TerraBiomeSource extends BiomeSource {
     public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         Biome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
         return terraToMinecraft.computeIfAbsent(biome, b -> biomeRegistry
-                .get(new Identifier("terra", FabricUtil.createBiomeID(pack, pack.getKey(b.getID())))));
+                .get(new Identifier("terra", FabricUtil.createBiomeID(pack, pack.key(b.getID())))));
     }
     
     public BiomeProvider getProvider() {

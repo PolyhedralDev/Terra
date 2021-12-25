@@ -40,7 +40,7 @@ public class SingleBiomeProviderAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                             PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register(addon.getKey("SINGLE"), SingleBiomeProviderTemplate::new);
+                    providerRegistry.register(addon.key("SINGLE"), SingleBiomeProviderTemplate::new);
                 })
                 .failThrough();
     }

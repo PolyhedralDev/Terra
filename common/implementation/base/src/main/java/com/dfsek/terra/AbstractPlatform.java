@@ -209,7 +209,7 @@ public abstract class AbstractPlatform implements Platform {
             platformInjector.inject(addon);
             addon.initialize();
             if(!(addon instanceof EphemeralAddon)) { // ephemeral addons exist only for version checking
-                addonRegistry.register(addon.getKey(addon.getID()), addon);
+                addonRegistry.register(addon.key(addon.getID()), addon);
             }
         });
         

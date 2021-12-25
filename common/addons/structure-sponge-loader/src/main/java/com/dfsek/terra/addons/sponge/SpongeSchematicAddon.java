@@ -60,7 +60,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                     event.getPack().getLoader().open("", ".schem").thenEntries(entries -> {
                         for(Map.Entry<String, InputStream> entry : entries) {
                             String id = StringUtil.fileName(entry.getKey());
-                            structureRegistry.register(addon.getKey(id), convert(entry.getValue(), id));
+                            structureRegistry.register(addon.key(id), convert(entry.getValue(), id));
                         }
                     }).close();
                 })

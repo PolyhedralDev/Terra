@@ -23,7 +23,7 @@ public class TerraScriptCheckFunctionAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(1)
                 .then(event -> {
-                    event.getPack().getOrCreateRegistry(FunctionBuilder.class).register(addon.getKey("check"), new CheckFunctionBuilder(platform));
+                    event.getPack().getOrCreateRegistry(FunctionBuilder.class).register(addon.key("check"), new CheckFunctionBuilder(platform));
                 })
                 .failThrough();
     }

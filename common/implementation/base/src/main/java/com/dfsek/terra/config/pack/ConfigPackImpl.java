@@ -220,7 +220,7 @@ public class ConfigPackImpl implements ConfigPack {
                         return Pair.of(configuration.getID(), loaded);
                     })
                     .toList()
-                    .forEach(pair -> registry.register(getKey(pair.getLeft()), pair.getRight()));
+                    .forEach(pair -> registry.register(key(pair.getLeft()), pair.getRight()));
             platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
         });
         
