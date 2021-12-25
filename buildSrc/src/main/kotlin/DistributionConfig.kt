@@ -38,7 +38,7 @@ fun Project.configureDistribution() {
             }
         }
         
-        doFirst {
+        doLast {
             // The addons are copied into a JAR because of a ShadowJar bug
             // which expands *all* JARs, even resource ones, into the fat JAR.
             // To get around this, we copy all addon JARs into a *new* JAR,
@@ -53,13 +53,16 @@ fun Project.configureDistribution() {
             
             forSubProjects(":common:addons") {
                 val jar = (tasks.named("jar").get() as Jar)
-                println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}.")
+                println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
                 
                 val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
                 
                 val entry = ZipEntry("addons/$boot${jar.archiveFileName.get()}")
                 zip.putNextEntry(entry)
-                FileInputStream(jar.archiveFile.get().asFile).copyTo(zip)
+                FileInputStream(jar.archiveFile.get().asFile).run {
+                    copyTo(zip)
+                    close()
+                }
                 zip.closeEntry()
             }
             zip.close()
@@ -70,7 +73,7 @@ fun Project.configureDistribution() {
         group = "terra"
         dependsOn(downloadDefaultPacks)
         dependsOn(installAddons)
-        doFirst {
+        doLast {
             val resources = HashMap<String, MutableList<String>>()
             val packsDir = File("${project.buildDir}/resources/main/packs/")
             
