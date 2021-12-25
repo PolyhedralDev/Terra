@@ -60,22 +60,22 @@ public class BiomePipelineAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                             PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register("PIPELINE", BiomePipelineTemplate::new);
+                    providerRegistry.register(addon.getKey("PIPELINE"), BiomePipelineTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(
                             SOURCE_REGISTRY_KEY);
-                    sourceRegistry.register("SAMPLER", SamplerSourceTemplate::new);
+                    sourceRegistry.register(addon.getKey("SAMPLER"), SamplerSourceTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(
                             STAGE_REGISTRY_KEY);
-                    stageRegistry.register("FRACTAL_EXPAND", ExpanderStageTemplate::new);
-                    stageRegistry.register("SMOOTH", SmoothMutatorTemplate::new);
-                    stageRegistry.register("REPLACE", ReplaceMutatorTemplate::new);
-                    stageRegistry.register("REPLACE_LIST", ReplaceListMutatorTemplate::new);
-                    stageRegistry.register("BORDER", BorderMutatorTemplate::new);
-                    stageRegistry.register("BORDER_LIST", BorderListMutatorTemplate::new);
+                    stageRegistry.register(addon.getKey("FRACTAL_EXPAND"), ExpanderStageTemplate::new);
+                    stageRegistry.register(addon.getKey("SMOOTH"), SmoothMutatorTemplate::new);
+                    stageRegistry.register(addon.getKey("REPLACE"), ReplaceMutatorTemplate::new);
+                    stageRegistry.register(addon.getKey("REPLACE_LIST"), ReplaceListMutatorTemplate::new);
+                    stageRegistry.register(addon.getKey("BORDER"), BorderMutatorTemplate::new);
+                    stageRegistry.register(addon.getKey("BORDER_LIST"), BorderListMutatorTemplate::new);
                 })
                 .failThrough();
         platform.getEventManager()

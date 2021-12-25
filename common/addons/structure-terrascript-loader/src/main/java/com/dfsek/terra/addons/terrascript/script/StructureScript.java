@@ -66,8 +66,9 @@ public class StructureScript implements Structure {
             throw new RuntimeException(e);
         }
         this.id = id;
-        
-        functionRegistry.forEach(parser::registerFunction); // Register registry functions.
+    
+        //noinspection unchecked
+        functionRegistry.forEach((key, function) -> parser.registerFunction(key.getID(), function)); // Register registry functions.
         
         parser
                 .registerFunction("block", new BlockFunctionBuilder(platform))

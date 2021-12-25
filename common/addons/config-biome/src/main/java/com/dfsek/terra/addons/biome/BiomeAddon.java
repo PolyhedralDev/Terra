@@ -30,7 +30,7 @@ public class BiomeAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                    event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), "BIOME", 5);
+                    event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), addon.getKey("BIOME"), 5);
                     event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
                 })
                 .failThrough();

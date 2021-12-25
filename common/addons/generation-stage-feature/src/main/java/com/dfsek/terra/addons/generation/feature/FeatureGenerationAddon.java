@@ -54,7 +54,7 @@ public class FeatureGenerationAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
                                     .getOrCreateRegistry(STAGE_TYPE_KEY)
-                                    .register("FEATURE", () -> new FeatureStageTemplate(platform)))
+                                    .register(addon.getKey("FEATURE"), () -> new FeatureStageTemplate(platform)))
                 .failThrough();
         
         platform.getEventManager()

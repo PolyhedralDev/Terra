@@ -20,20 +20,25 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
@@ -47,36 +52,45 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
-    private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
-    private final Map<String, Entry<T>> objects;
+    private final Map<RegistryKey, Entry<T>> objects;
+    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new HashMap<>(), ArrayList::new);
     private final TypeKey<T> typeKey;
     
     public OpenRegistryImpl(TypeKey<T> typeKey) {
         this(new HashMap<>(), typeKey);
     }
     
-    protected OpenRegistryImpl(Map<String, Entry<T>> init, TypeKey<T> typeKey) {
+    protected OpenRegistryImpl(Map<RegistryKey, Entry<T>> init, TypeKey<T> typeKey) {
         this.objects = init;
         this.typeKey = typeKey;
     }
     
     @Override
     public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
-        return get((String) o).orElseThrow(() -> {
-            String list = objects.keySet().stream().sorted().reduce("", (a, b) -> a + "\n - " + b);
-            if(objects.isEmpty()) list = "[ ]";
-            return new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                     "\" was found in this registry. Registry contains items: " + list);
-        });
+        return tryGet((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
+                                                                      "\" was found in this registry. Registry contains items: " +
+                                                                      getItemsFormatted()));
+    }
+    
+    private String getItemsFormatted() {
+        if(objects.isEmpty()) {
+            return "[ ]";
+        }
+        return objects
+                .keySet()
+                .stream()
+                .map(RegistryKey::toString)
+                .sorted()
+                .reduce("", (a, b) -> a + "\n - " + b);
     }
     
     @Override
-    public boolean register(@NotNull String identifier, @NotNull T value) {
+    public boolean register(@NotNull RegistryKey identifier, @NotNull T value) {
         return register(identifier, new Entry<>(value));
     }
     
     @Override
-    public void registerChecked(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException {
+    public void registerChecked(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
         register(identifier, value);
@@ -87,25 +101,22 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
         objects.clear();
     }
     
-    public boolean register(String identifier, Entry<T> value) {
-        if(!ID_PATTERN.matcher(identifier).matches())
-            throw new IllegalArgumentException(
-                    "Registry ID must only contain alphanumeric characters, hyphens, and underscores. \"" + identifier +
-                    "\" is not a valid ID.");
+    private boolean register(RegistryKey identifier, Entry<T> value) {
         boolean exists = objects.containsKey(identifier);
         objects.put(identifier, value);
+        objectIDs.put(identifier.getID(), Pair.of(identifier, value));
         return exists;
     }
     
     @SuppressWarnings("unchecked")
     @Override
-    public Optional<T> get(@NotNull String identifier) {
-        return Optional.ofNullable(objects.getOrDefault(identifier, (Entry<T>) NULL).getValue());
+    public Optional<T> get(@NotNull RegistryKey key) {
+        return Optional.ofNullable(objects.getOrDefault(key, (Entry<T>) NULL).getValue());
     }
     
     @Override
-    public boolean contains(@NotNull String identifier) {
-        return objects.containsKey(identifier);
+    public boolean contains(@NotNull RegistryKey key) {
+        return objects.containsKey(key);
     }
     
     @Override
@@ -114,7 +125,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public void forEach(@NotNull BiConsumer<String, T> consumer) {
+    public void forEach(@NotNull BiConsumer<RegistryKey, T> consumer) {
         objects.forEach((id, entry) -> consumer.accept(id, entry.getRaw()));
     }
     
@@ -124,7 +135,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public @NotNull Set<String> keys() {
+    public @NotNull Set<RegistryKey> keys() {
         return objects.keySet();
     }
     
@@ -133,8 +144,16 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
         return typeKey;
     }
     
-    public Map<String, T> getDeadEntries() {
-        Map<String, T> dead = new HashMap<>();
+    @Override
+    public Map<RegistryKey, T> get(String id) {
+        return objectIDs
+                .get(id)
+                .stream()
+                .collect(HashMap::new, (map, pair) -> map.put(pair.getLeft(), pair.getRight().getValue()), Map::putAll);
+    }
+    
+    public Map<RegistryKey, T> getDeadEntries() {
+        Map<RegistryKey, T> dead = new HashMap<>();
         objects.forEach((id, entry) -> {
             if(entry.dead()) dead.put(id, entry.value); // dont increment value here.
         });
@@ -142,7 +161,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     
-    protected static final class Entry<T> {
+    private static final class Entry<T> {
         private final T value;
         private final AtomicInteger access = new AtomicInteger(0);
         

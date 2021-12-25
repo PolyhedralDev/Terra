@@ -27,6 +27,9 @@ import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
@@ -115,10 +118,9 @@ public class ConfigPackImpl implements ConfigPack {
     private final Map<Type, ShortcutHolder<?>> shortcuts = new HashMap<>();
     
     private final OpenRegistry<ConfigType<?, ?>> configTypeRegistry;
-    private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
+    private final TreeMap<Integer, List<Pair<RegistryKey, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
-    private final String namespace;
-    private final String id;
+    private final RegistryKey key;
     
     public ConfigPackImpl(File folder, Platform platform) {
         this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
@@ -175,13 +177,17 @@ public class ConfigPackImpl implements ConfigPack {
         
         selfLoader.load(template, packManifest);
         
+        String namespace;
+        String id;
         if(template.getID().contains(":")) {
-            this.namespace = template.getID().substring(0, template.getID().indexOf(":"));
-            this.id = template.getID().substring(template.getID().indexOf(":") + 1);
+            namespace = template.getID().substring(0, template.getID().indexOf(":"));
+            id = template.getID().substring(template.getID().indexOf(":") + 1);
         } else {
-            this.id = template.getID();
-            this.namespace = template.getID();
+            id = template.getID();
+            namespace = template.getID();
         }
+        
+        this.key = RegistryKey.of(namespace, id);
         
         logger.info("Loading config pack \"{}:{}\"", id, namespace);
         
@@ -214,7 +220,7 @@ public class ConfigPackImpl implements ConfigPack {
                         return Pair.of(configuration.getID(), loaded);
                     })
                     .toList()
-                    .forEach(pair -> registry.register(pair.getLeft(), pair.getRight()));
+                    .forEach(pair -> registry.register(getKey(pair.getLeft()), pair.getRight()));
             platform.getEventManager().callEvent(new ConfigTypePostLoadEvent(configType, registry, this));
         });
         
@@ -282,13 +288,13 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public ConfigPack registerConfigType(ConfigType<?, ?> type, String id, int priority) {
-        Set<String> contained = new HashSet<>();
+    public ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey key, int priority) {
+        Set<RegistryKey> contained = new HashSet<>();
         configTypes.forEach((p, configs) -> configs.forEach(pair -> {
-            if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config ID: " + id);
-            contained.add(id);
+            if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config key: " + key);
+            contained.add(key);
         }));
-        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(id, type));
+        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(key, type));
         return this;
     }
     
@@ -374,7 +380,7 @@ public class ConfigPackImpl implements ConfigPack {
     private OpenRegistry<ConfigType<?, ?>> createConfigRegistry() {
         return new OpenRegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
             @Override
-            public boolean register(@NotNull String identifier, @NotNull ConfigType<?, ?> value) {
+            public boolean register(@NotNull RegistryKey key, @NotNull ConfigType<?, ?> value) {
                 if(!registryMap
                         .containsKey(value.getTypeKey()
                                           .getType())) {
@@ -383,7 +389,7 @@ public class ConfigPackImpl implements ConfigPack {
                     abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
                     registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
                 }
-                return super.register(identifier, value);
+                return super.register(key, value);
             }
         };
     }
@@ -411,12 +417,7 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     @Override
-    public String getID() {
-        return id;
-    }
-    
-    @Override
-    public String getNamespace() {
-        return namespace;
+    public RegistryKey getRegistryKey() {
+        return key;
     }
 }

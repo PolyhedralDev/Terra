@@ -9,39 +9,41 @@ package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
-import com.google.common.reflect.TypeToken;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 
 public interface Registry<T> extends TypeLoader<T> {
     /**
      * Get a value from the registry.
      *
-     * @param identifier Identifier of value.
+     * @param key Identifier of value.
      *
      * @return Value matching the identifier, {@code null} if no value is present.
      */
     @Contract(pure = true)
-    Optional<T> get(@NotNull String identifier);
+    Optional<T> get(@NotNull RegistryKey key);
     
     /**
      * Check if the registry contains a value.
      *
-     * @param identifier Identifier of value.
+     * @param key Identifier of value.
      *
      * @return Whether the registry contains the value.
      */
     @Contract(pure = true)
-    boolean contains(@NotNull String identifier);
+    boolean contains(@NotNull RegistryKey key);
     
     /**
      * Perform the given action for every value in the registry.
@@ -55,7 +57,7 @@ public interface Registry<T> extends TypeLoader<T> {
      *
      * @param consumer Action to perform on pair.
      */
-    void forEach(@NotNull BiConsumer<String, T> consumer);
+    void forEach(@NotNull BiConsumer<RegistryKey, T> consumer);
     
     /**
      * Get the entries of this registry as a {@link Set}.
@@ -73,7 +75,30 @@ public interface Registry<T> extends TypeLoader<T> {
      */
     @NotNull
     @Contract(pure = true)
-    Set<String> keys();
+    Set<RegistryKey> keys();
     
     TypeKey<T> getType();
+    
+    default Optional<T> tryGet(String attempt) {
+        return get(attempt, map -> {
+            if(map.isEmpty()) return Optional.empty();
+            if(map.size() == 1) {
+                return map.values().stream().findFirst(); // only one value.
+            }
+            throw new IllegalArgumentException("ID \"" + attempt + "\" is ambiguous; matches: " + map
+                    .keySet()
+                    .stream()
+                    .map(RegistryKey::toString)
+                    .reduce("", (a, b) -> a + "\n - " + b));
+        });
+    }
+    
+    Map<RegistryKey, T> get(String id);
+    
+    default Optional<T> get(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
+        if(attempt.contains(":")) {
+            return get(RegistryKey.parse(attempt));
+        }
+        return reduction.apply(get(attempt));
+    }
 }

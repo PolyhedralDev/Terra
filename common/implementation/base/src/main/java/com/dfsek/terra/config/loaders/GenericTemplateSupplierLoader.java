@@ -30,6 +30,8 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.api.registry.Registry;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     private final Registry<Supplier<ObjectTemplate<T>>> registry;
@@ -40,12 +42,11 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public T load(AnnotatedType t, Object c, ConfigLoader loader) throws LoadException {
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, ConfigLoader loader) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
         try {
             return loader
-                    .load(registry
-                                  .get(((String) map.get("type")))
+                    .load(registry.tryGet(((String) map.get("type")))
                                   .orElseThrow(() -> new LoadException("No such entry: " + map.get("type")))
                                   .get(), new MapConfiguration(map)).get();
         } catch(ConfigException e) {

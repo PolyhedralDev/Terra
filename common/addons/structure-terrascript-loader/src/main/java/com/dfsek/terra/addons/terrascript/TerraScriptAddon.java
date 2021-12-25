@@ -62,7 +62,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                                     }
                                                 })
                                                 .toList()
-                                                .forEach(structureScript -> structureRegistry.register(structureScript.getID(),
+                                                .forEach(structureScript -> structureRegistry.register(addon.getKey(structureScript.getID()),
                                                                                                        structureScript)))
                          .close();
                 })

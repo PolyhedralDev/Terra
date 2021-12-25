@@ -11,6 +11,7 @@ import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.vector.Vector3;
 
 import net.jafama.FastMath;
@@ -66,7 +67,7 @@ public class LootFunction implements Function<Void> {
         String id = data.apply(implementationArguments, variableMap);
         
         
-        registry.get(id)
+        registry.get(RegistryKey.parse(id))
                 .ifPresentOrElse(table -> {
                                      Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
                                                                 y.apply(implementationArguments, variableMap)

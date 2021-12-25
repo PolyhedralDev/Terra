@@ -26,7 +26,7 @@ public class StructureGenerationAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
                                     .getOrCreateRegistry(GenerationStageProvider.class)
-                                    .register("STRUCTURE", pack -> new StructureGenerationStage(platform)))
+                                    .register(addon.getKey("STRUCTURE"), pack -> new StructureGenerationStage(platform)))
                 .failThrough();
         
         platform.getEventManager()

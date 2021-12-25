@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.registry;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -21,5 +23,5 @@ public interface CheckedRegistry<T> extends Registry<T> {
      *
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void register(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException;
+    void register(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException;
 }

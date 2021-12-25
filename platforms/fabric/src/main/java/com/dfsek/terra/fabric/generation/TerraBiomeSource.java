@@ -17,46 +17,32 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.fabric.data.Codecs;
+
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.RegistryLookupCodec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 public class TerraBiomeSource extends BiomeSource {
-    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-                                                                                                          Codec.STRING.fieldOf("pack").forGetter(ConfigPack::getID)
-                                                                                                        )
-                                                                                                  .apply(config, config.stable(
-                                                                                                          id -> FabricEntryPoint.getPlatform()
-                                                                                                                                .getConfigRegistry()
-                                                                                                                                .get(id)
-                                                                                                                                .orElseThrow(
-                                                                                                                                        () -> new IllegalArgumentException(
-                                                                                                                                                "No such config pack " +
-                                                                                                                                                id))))));
-    public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                                                                                                              RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
-                                                                                                              Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
-                                                                                                              PACK_CODEC.fieldOf("pack").stable().forGetter(source -> source.pack))
-                                                                                                      .apply(instance, instance.stable(
-                                                                                                              TerraBiomeSource::new)));
     
     private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private final long seed;
     private ConfigPack pack;
+    
+    private final Map<Biome, net.minecraft.world.biome.Biome> terraToMinecraft = new HashMap<>();
     
     public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream()
@@ -75,7 +61,7 @@ public class TerraBiomeSource extends BiomeSource {
     
     @Override
     protected Codec<? extends BiomeSource> getCodec() {
-        return CODEC;
+        return Codecs.TERRA_BIOME_SOURCE;
     }
     
     @Override
@@ -86,10 +72,23 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         Biome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
-        return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
+        return terraToMinecraft.computeIfAbsent(biome, b -> biomeRegistry
+                .get(new Identifier("terra", FabricUtil.createBiomeID(pack, pack.getKey(b.getID())))));
     }
     
     public BiomeProvider getProvider() {
         return pack.getBiomeProvider();
+    }
+    
+    public Registry<net.minecraft.world.biome.Biome> getBiomeRegistry() {
+        return biomeRegistry;
+    }
+    
+    public ConfigPack getPack() {
+        return pack;
+    }
+    
+    public long getSeed() {
+        return seed;
     }
 }

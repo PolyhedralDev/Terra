@@ -54,8 +54,9 @@ public final class FabricUtil {
     private static final Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>>
             terraVanillaBiomes = new HashMap<>();
     
-    public static String createBiomeID(ConfigPack pack, String biomeID) {
-        return pack.getID().toLowerCase() + "/" + biomeID.toLowerCase(Locale.ROOT);
+    public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
+        return pack.getID()
+                   .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
     }
     
     /**
@@ -64,7 +65,8 @@ public final class FabricUtil {
      * @param biome The Terra BiomeBuilder.
      * @param pack  The ConfigPack this biome belongs to.
      */
-    public static void registerBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager, String id) {
+    public static void registerBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager,
+                                     com.dfsek.terra.api.registry.key.RegistryKey id) {
         // BiomeTemplate template = biome.getTemplate();
         Map<String, Integer> colors = new HashMap<>(); // template.getColors();
         

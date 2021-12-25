@@ -9,10 +9,13 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +71,7 @@ public class StructureFunction implements Function<Boolean> {
     
     
         String app = id.apply(implementationArguments, variableMap);
-        return registry.get(app).map(script -> {
+        return registry.tryGet(app).map(script -> {
             Rotation rotation1;
             String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
             try {

@@ -20,12 +20,14 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -47,13 +49,13 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public Optional<T> get(@NotNull String identifier) {
-        return registry.get(identifier);
+    public Optional<T> get(@NotNull RegistryKey key) {
+        return registry.get(key);
     }
     
     @Override
-    public boolean contains(@NotNull String identifier) {
-        return registry.contains(identifier);
+    public boolean contains(@NotNull RegistryKey key) {
+        return registry.contains(key);
     }
     
     @Override
@@ -62,7 +64,7 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public void forEach(@NotNull BiConsumer<String, T> consumer) {
+    public void forEach(@NotNull BiConsumer<RegistryKey, T> consumer) {
         registry.forEach(consumer);
     }
     
@@ -72,13 +74,18 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public @NotNull Set<String> keys() {
+    public @NotNull Set<RegistryKey> keys() {
         return registry.keys();
     }
     
     @Override
     public TypeKey<T> getType() {
         return registry.getType();
+    }
+    
+    @Override
+    public Map<RegistryKey, T> get(String id) {
+        return registry.get(id);
     }
     
     @Override

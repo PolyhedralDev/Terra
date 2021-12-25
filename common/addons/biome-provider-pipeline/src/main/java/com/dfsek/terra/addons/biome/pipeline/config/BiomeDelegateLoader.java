@@ -3,6 +3,9 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -23,7 +26,7 @@ public class BiomeDelegateLoader implements TypeLoader<BiomeDelegate> {
     public BiomeDelegate load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader) throws LoadException {
         if(c.equals("SELF")) return BiomeDelegate.self();
         return biomeRegistry
-                .get((String) c)
+                .tryGet((String) c)
                 .map(BiomeDelegate::from)
                 .orElseGet(() -> BiomeDelegate.ephemeral((String) c));
     }

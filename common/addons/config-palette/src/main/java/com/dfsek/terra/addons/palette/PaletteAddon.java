@@ -30,7 +30,7 @@ public class PaletteAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                    event.getPack().registerConfigType(new PaletteConfigType(platform), "PALETTE", 2);
+                    event.getPack().registerConfigType(new PaletteConfigType(platform), addon.getKey("PALETTE"), 2);
                     event.getPack().applyLoader(PaletteLayerHolder.class, new PaletteLayerLoader());
                 })
                 .failThrough();

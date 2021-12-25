@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
@@ -46,14 +47,14 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
 
     public void load(File folder, Platform platform) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, platform);
-        register(pack.getID(), pack);
+        register(pack.getRegistryKey(), pack);
     }
     
     public boolean loadAll(Platform platform) {
         boolean valid = true;
         File packsFolder = new File(platform.getDataFolder(), "packs");
         packsFolder.mkdirs();
-        for(File dir : packsFolder.listFiles(File::isDirectory)) {
+        for(File dir : Objects.requireNonNull(packsFolder.listFiles(File::isDirectory))) {
             try {
                 load(dir, platform);
             } catch(ConfigException e) {
@@ -61,7 +62,8 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
                 valid = false;
             }
         }
-        for(File zip : packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra"))) {
+        for(File zip : Objects.requireNonNull(
+                packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra")))) {
             try {
                 logger.info("Loading ZIP archive: {}", zip.getName());
                 load(new ZipFile(zip), platform);
@@ -75,6 +77,6 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     
     public void load(ZipFile file, Platform platform) throws ConfigException {
         ConfigPackImpl pack = new ConfigPackImpl(file, platform);
-        register(pack.getTemplate().getID(), pack);
+        register(pack.getRegistryKey(), pack);
     }
 }

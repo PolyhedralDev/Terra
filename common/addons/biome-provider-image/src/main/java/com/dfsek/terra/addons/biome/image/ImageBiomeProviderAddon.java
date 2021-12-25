@@ -41,7 +41,7 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
                             PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register("IMAGE", () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
+                    providerRegistry.register(addon.getKey("IMAGE"), () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
                 })
                 .failThrough();
     }

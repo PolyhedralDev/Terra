@@ -27,7 +27,7 @@ public class OreAddon implements AddonInitializer {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().registerConfigType(new OreConfigType(), "ORE", 1))
+                .then(event -> event.getPack().registerConfigType(new OreConfigType(), addon.getKey("ORE"), 1))
                 .failThrough();
     }
 }

@@ -18,19 +18,17 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.collection.Pool;
@@ -61,30 +59,7 @@ import java.util.function.Supplier;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
-    public static final Codec<ConfigPack> PACK_CODEC = RecordCodecBuilder.create(
-            config -> config.group(
-                    Codec.STRING.fieldOf("pack")
-                                .forGetter(ConfigPack::getID)
-                                  ).apply(config, config.stable(id -> FabricEntryPoint.getPlatform()
-                                                                                      .getConfigRegistry()
-                                                                                      .get(id)
-                                                                                      .orElseThrow(
-                                                                                              () -> new IllegalArgumentException(
-                                                                                                      "No such config pack " +
-                                                                                                      id)))));
     private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
-    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
-            instance -> instance.group(
-                    TerraBiomeSource.CODEC.fieldOf("biome_source")
-                                          .forGetter(generator -> generator.biomeSource),
-                    Codec.LONG.fieldOf("seed").stable()
-                              .forGetter(generator -> generator.seed),
-                    PACK_CODEC.fieldOf("pack").stable()
-                              .forGetter(generator -> generator.pack),
-                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
-                                                         .forGetter(generator -> generator.settingsSupplier)
-                                      ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
-                                                                                            );
     
     private final long seed;
     private final TerraBiomeSource biomeSource;
@@ -107,7 +82,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
-        return CODEC;
+        return Codecs.CODEC;
     }
     
     @Override
@@ -250,5 +225,18 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public ChunkGenerator getHandle() {
         return delegate;
+    }
+    
+    public long getSeed() {
+        return seed;
+    }
+    
+    public Supplier<ChunkGeneratorSettings> getSettingsSupplier() {
+        return settingsSupplier;
+    }
+    
+    @Override
+    public TerraBiomeSource getBiomeSource() {
+        return biomeSource;
     }
 }

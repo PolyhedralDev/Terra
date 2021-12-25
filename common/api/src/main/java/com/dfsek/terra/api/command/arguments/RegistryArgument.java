@@ -10,6 +10,8 @@ import com.dfsek.terra.api.registry.Registry;
 
 import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import io.leangen.geantyref.TypeToken;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -92,12 +94,12 @@ public class RegistryArgument<T, R> extends CommandArgument<T, R> {
         public @NonNull ArgumentParseResult<@NonNull R> parse(@NonNull CommandContext<@NonNull T> commandContext,
                                                               @NonNull Queue<@NonNull String> inputQueue) {
             String input = inputQueue.remove();
-            return registry.get(input).map(ArgumentParseResult::success).orElse(ArgumentParseResult.failure(new NoSuchEntryException("No such entry: " + input)));
+            return registry.get(RegistryKey.parse(input)).map(ArgumentParseResult::success).orElse(ArgumentParseResult.failure(new NoSuchEntryException("No such entry: " + input)));
         }
         
         @Override
         public @NonNull List<@NonNull String> suggestions(@NonNull CommandContext<T> commandContext, @NonNull String input) {
-            return registry.keys().stream().sorted().collect(Collectors.toList());
+            return registry.keys().stream().map(RegistryKey::toString).sorted().collect(Collectors.toList());
         }
     }
 }

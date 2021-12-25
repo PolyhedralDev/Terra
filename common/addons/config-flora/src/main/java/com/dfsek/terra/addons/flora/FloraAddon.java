@@ -30,7 +30,7 @@ public class FloraAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                    event.getPack().registerConfigType(new FloraConfigType(), "FLORA", 2);
+                    event.getPack().registerConfigType(new FloraConfigType(), addon.getKey("FLORA"), 2);
                     event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
                 })
                 .failThrough();

@@ -57,29 +57,29 @@ public class LocatorAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-                    locatorRegistry.register("SURFACE", () -> new SurfaceLocatorTemplate(platform));
+                    locatorRegistry.register(addon.getKey("SURFACE"), () -> new SurfaceLocatorTemplate(platform));
                     
-                    locatorRegistry.register("RANDOM", RandomLocatorTemplate::new);
-                    locatorRegistry.register("GAUSSIAN_RANDOM", GaussianRandomLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("RANDOM"), RandomLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
                     
-                    locatorRegistry.register("PATTERN", PatternLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("PATTERN"), PatternLocatorTemplate::new);
                     
-                    locatorRegistry.register("SAMPLER", SamplerLocatorTemplate::new);
-                    locatorRegistry.register("SAMPLER_3D", Sampler3DLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("SAMPLER"), SamplerLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
             
-                    locatorRegistry.register("AND", AndLocatorTemplate::new);
-                    locatorRegistry.register("OR", OrLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("AND"), AndLocatorTemplate::new);
+                    locatorRegistry.register(addon.getKey("OR"), OrLocatorTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
-                    patternRegistry.register("MATCH_AIR", AirMatchPatternTemplate::new);
-                    patternRegistry.register("MATCH_SOLID", SolidMatchPatternTemplate::new);
-                    patternRegistry.register("MATCH", SingleBlockMatchPatternTemplate::new);
-                    patternRegistry.register("MATCH_SET", BlockSetMatchPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("MATCH_AIR"), AirMatchPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("MATCH_SOLID"), SolidMatchPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("MATCH"), SingleBlockMatchPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("MATCH_SET"), BlockSetMatchPatternTemplate::new);
             
-                    patternRegistry.register("AND", AndPatternTemplate::new);
-                    patternRegistry.register("OR", OrPatternTemplate::new);
-                    patternRegistry.register("NOT", NotPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("AND"), AndPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("OR"), OrPatternTemplate::new);
+                    patternRegistry.register(addon.getKey("NOT"), NotPatternTemplate::new);
                 })
                 .failThrough();
     }

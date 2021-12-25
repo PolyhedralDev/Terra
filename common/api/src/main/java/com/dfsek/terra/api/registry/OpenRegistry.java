@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.registry;
 
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
@@ -19,7 +21,7 @@ public interface OpenRegistry<T> extends Registry<T> {
      * @param identifier Identifier to assign value.
      * @param value      Value to register.
      */
-    boolean register(@NotNull String identifier, @NotNull T value);
+    boolean register(@NotNull RegistryKey identifier, @NotNull T value);
     
     /**
      * Add a value to this registry, checking whether it is present first.
@@ -29,7 +31,7 @@ public interface OpenRegistry<T> extends Registry<T> {
      *
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void registerChecked(@NotNull String identifier, @NotNull T value) throws DuplicateEntryException;
+    void registerChecked(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException;
     
     /**
      * Clears all entries from the registry.

@@ -24,7 +24,7 @@ import com.dfsek.terra.api.entity.CommandSender;
 
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
-import com.dfsek.terra.api.util.generic.Construct;
+import com.dfsek.terra.fabric.data.Codecs;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -32,9 +32,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 
 public class FabricEntryPoint implements ModInitializer {
@@ -51,8 +48,8 @@ public class FabricEntryPoint implements ModInitializer {
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
         // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), FabricChunkGeneratorWrapper.CODEC);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), TerraBiomeSource.CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.CODEC);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),

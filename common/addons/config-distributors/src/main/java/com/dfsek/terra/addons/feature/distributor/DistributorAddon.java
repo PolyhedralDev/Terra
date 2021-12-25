@@ -47,12 +47,12 @@ public class DistributorAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
                             DISTRIBUTOR_TOKEN);
-                    distributorRegistry.register("SAMPLER", SamplerDistributorTemplate::new);
-                    distributorRegistry.register("POINTS", PointSetDistributorTemplate::new);
-                    distributorRegistry.register("AND", AndDistributorTemplate::new);
-                    distributorRegistry.register("OR", OrDistributorTemplate::new);
-                    distributorRegistry.register("YES", YesDistributorTemplate::new);
-                    distributorRegistry.register("NO", NoDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("SAMPLER"), SamplerDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("POINTS"), PointSetDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("AND"), AndDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("OR"), OrDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("YES"), YesDistributorTemplate::new);
+                    distributorRegistry.register(addon.getKey("NO"), NoDistributorTemplate::new);
             
                     event.getPack()
                          .applyLoader(Point.class, PointTemplate::new);
