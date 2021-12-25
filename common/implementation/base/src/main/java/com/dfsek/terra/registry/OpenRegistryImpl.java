@@ -66,9 +66,9 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @Override
     public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
-        return getFromID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                                                         "\" was found in this registry. Registry contains items: " +
-                                                                         getItemsFormatted()));
+        return getByID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
+                                                                       "\" was found in this registry. Registry contains items: " +
+                                                                       getItemsFormatted()));
     }
     
     private String getItemsFormatted() {
@@ -144,7 +144,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public Map<RegistryKey, T> getIDMatches(String id) {
+    public Map<RegistryKey, T> getMatches(String id) {
         return objectIDs
                 .get(id)
                 .stream()

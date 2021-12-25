@@ -83,7 +83,7 @@ public abstract class GeneratorOptionsMixin {
             prop = prop.substring(prop.indexOf(":") + 1);
             
             String finalProp = prop;
-            ConfigPack config = main.getConfigRegistry().getFromID(prop).orElseThrow(() -> new IllegalArgumentException(
+            ConfigPack config = main.getConfigRegistry().getByID(prop).orElseThrow(() -> new IllegalArgumentException(
                     "No such pack " + finalProp));
             
             cir.setReturnValue(

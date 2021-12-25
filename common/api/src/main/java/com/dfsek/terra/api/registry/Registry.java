@@ -79,8 +79,8 @@ public interface Registry<T> extends TypeLoader<T> {
     
     TypeKey<T> getType();
     
-    default Optional<T> getFromID(String id) {
-        return getFromID(id, map -> {
+    default Optional<T> getByID(String id) {
+        return getByID(id, map -> {
             if(map.isEmpty()) return Optional.empty();
             if(map.size() == 1) {
                 return map.values().stream().findFirst(); // only one value.
@@ -93,12 +93,12 @@ public interface Registry<T> extends TypeLoader<T> {
         });
     }
     
-    Map<RegistryKey, T> getIDMatches(String id);
+    Map<RegistryKey, T> getMatches(String id);
     
-    default Optional<T> getFromID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
+    default Optional<T> getByID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
         if(attempt.contains(":")) {
             return get(RegistryKey.parse(attempt));
         }
-        return reduction.apply(getIDMatches(attempt));
+        return reduction.apply(getMatches(attempt));
     }
 }

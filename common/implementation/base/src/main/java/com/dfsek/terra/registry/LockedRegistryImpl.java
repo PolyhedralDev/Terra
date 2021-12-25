@@ -84,8 +84,8 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public Map<RegistryKey, T> getIDMatches(String id) {
-        return registry.getIDMatches(id);
+    public Map<RegistryKey, T> getMatches(String id) {
+        return registry.getMatches(id);
     }
     
     @Override

@@ -68,7 +68,7 @@ public class StructureFunction implements Function<Boolean> {
     
     
         String app = id.apply(implementationArguments, variableMap);
-        return registry.getFromID(app).map(script -> {
+        return registry.getByID(app).map(script -> {
             Rotation rotation1;
             String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
             try {
