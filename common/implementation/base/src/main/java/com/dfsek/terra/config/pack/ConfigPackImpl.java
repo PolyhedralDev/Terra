@@ -21,49 +21,13 @@ import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.config.Configuration;
-import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import com.dfsek.tectonic.impl.abstraction.AbstractConfiguration;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.*;
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
-import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
-import com.dfsek.terra.api.event.events.config.type.ConfigTypePreLoadEvent;
-import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.OpenRegistry;
-import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
-import com.dfsek.terra.api.tectonic.ShortcutLoader;
-import com.dfsek.terra.api.util.generic.Construct;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.config.fileloaders.FolderLoader;
-import com.dfsek.terra.config.fileloaders.ZIPLoader;
-import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
-import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.preprocessor.*;
-import com.dfsek.terra.config.prototype.ProtoConfig;
-import com.dfsek.terra.registry.CheckedRegistryImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
-import com.dfsek.terra.registry.ShortcutHolder;
-
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -76,14 +40,56 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.config.ConfigFactory;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.ConfigType;
+import com.dfsek.terra.api.config.Loader;
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
+import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
+import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
+import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.OpenRegistry;
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.tectonic.ShortcutLoader;
+import com.dfsek.terra.api.util.generic.Construct;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
+import com.dfsek.terra.api.util.reflection.TypeKey;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
+import com.dfsek.terra.config.fileloaders.FolderLoader;
+import com.dfsek.terra.config.fileloaders.ZIPLoader;
+import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
+import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
+import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
+import com.dfsek.terra.config.prototype.ProtoConfig;
+import com.dfsek.terra.registry.CheckedRegistryImpl;
+import com.dfsek.terra.registry.OpenRegistryImpl;
+import com.dfsek.terra.registry.ShortcutHolder;
 
 
 /**
@@ -110,6 +116,9 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final OpenRegistry<ConfigType<?, ?>> configTypeRegistry;
     private final TreeMap<Integer, List<Pair<String, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
+    
+    private final String namespace;
+    private final String id;
     
     public ConfigPackImpl(File folder, Platform platform) {
         this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
@@ -166,7 +175,15 @@ public class ConfigPackImpl implements ConfigPack {
         
         selfLoader.load(template, packManifest);
         
-        logger.info("Loading config pack \"{}\"", template.getID());
+        if(template.getID().contains(":")) {
+            this.namespace = template.getID().substring(0, template.getID().indexOf(":"));
+            this.id = template.getID().substring(template.getID().indexOf(":") + 1);
+        } else {
+            this.id = template.getID();
+            this.namespace = template.getID();
+        }
+        
+        logger.info("Loading config pack \"{}:{}\"", id, namespace);
         
         configTypes.values().forEach(list -> list.forEach(pair -> configTypeRegistry.register(pair.getLeft(), pair.getRight())));
         
@@ -202,8 +219,8 @@ public class ConfigPackImpl implements ConfigPack {
         });
         
         platform.getEventManager().callEvent(new ConfigPackPostLoadEvent(this, template -> selfLoader.load(template, packManifest)));
-        logger.info("Loaded config pack \"{}\" v{} by {} in {}ms.",
-                    template.getID(), getVersion().getFormatted(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
+        logger.info("Loaded config pack \"{}:{}\" v{} by {} in {}ms.",
+                    namespace, id, getVersion().getFormatted(), template.getAuthor(), (System.nanoTime() - start) / 1000000.0D);
         
         
         ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
@@ -395,6 +412,11 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     public String getID() {
-        return template.getID();
+        return id;
+    }
+    
+    @Override
+    public String getNamespace() {
+        return namespace;
     }
 }
