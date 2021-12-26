@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.registry.key;
 
-public interface Keyed extends Namespaced, StringIdentifiable {
+public interface Keyed<T extends Keyed<T>> extends Namespaced, StringIdentifiable {
     RegistryKey getRegistryKey();
     
     @Override

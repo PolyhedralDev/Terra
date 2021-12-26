@@ -29,7 +29,7 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
-public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, CheckedRegistryHolder, RegistryProvider, Keyed {
+public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, CheckedRegistryHolder, RegistryProvider, Keyed<ConfigPack> {
     
     ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey id, int priority);
     
