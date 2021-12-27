@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.registry;
 
+import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +24,11 @@ public interface OpenRegistry<T> extends Registry<T> {
      */
     boolean register(@NotNull RegistryKey identifier, @NotNull T value);
     
+    @SuppressWarnings("unchecked")
+    default boolean register(@NotNull Keyed<? extends T> value) {
+        return register(value.getRegistryKey(), (T) value);
+    }
+    
     /**
      * Add a value to this registry, checking whether it is present first.
      *
@@ -32,6 +38,11 @@ public interface OpenRegistry<T> extends Registry<T> {
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
     void registerChecked(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException;
+    
+    @SuppressWarnings("unchecked")
+    default void registerChecked(@NotNull Keyed<? extends T> value) {
+        registerChecked(value.getRegistryKey(), (T) value);
+    }
     
     /**
      * Clears all entries from the registry.
