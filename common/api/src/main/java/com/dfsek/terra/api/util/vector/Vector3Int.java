@@ -24,6 +24,10 @@ public class Vector3Int {
         return new Vector3Int(x, y, z);
     }
     
+    public static Vector3Int of(Vector3Int origin, int x, int y, int z) {
+        return new Vector3Int(origin.x + x, origin.y + y, origin.z + z);
+    }
+    
     public int getX() {
         return x;
     }
