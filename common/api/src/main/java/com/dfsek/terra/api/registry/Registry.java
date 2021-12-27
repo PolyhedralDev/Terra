@@ -97,6 +97,10 @@ public interface Registry<T> extends TypeLoader<T> {
         });
     }
     
+    default Collection<T> getAllWithID(String id) {
+        return getMatches(id).values();
+    }
+    
     Map<RegistryKey, T> getMatches(String id);
     
     default Optional<T> getByID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
