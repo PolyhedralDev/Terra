@@ -47,7 +47,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                                     try {
                                                         String id = StringUtil.fileName(entry.getKey());
                                                         return new StructureScript(entry.getValue(),
-                                                                                   id,
+                                                                                   addon.key(id),
                                                                                    platform,
                                                                                    structureRegistry,
                                                                                    lootRegistry,
@@ -57,8 +57,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                                     }
                                                 })
                                                 .toList()
-                                                .forEach(structureScript -> structureRegistry.register(addon.key(structureScript.getID()),
-                                                                                                       structureScript)))
+                                                .forEach(structureRegistry::register))
                          .close();
                 })
                 .priority(2)

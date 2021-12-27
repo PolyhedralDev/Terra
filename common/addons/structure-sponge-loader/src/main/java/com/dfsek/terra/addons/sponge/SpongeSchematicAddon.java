@@ -57,12 +57,13 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                    event.getPack().getLoader().open("", ".schem").thenEntries(entries -> {
-                        for(Map.Entry<String, InputStream> entry : entries) {
-                            String id = StringUtil.fileName(entry.getKey());
-                            structureRegistry.register(addon.key(id), convert(entry.getValue(), id));
-                        }
-                    }).close();
+                    event.getPack()
+                         .getLoader()
+                         .open("", ".schem")
+                         .thenEntries(entries -> entries
+                                 .stream()
+                                 .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey())))
+                                 .forEach(structureRegistry::register)).close();
                 })
                 .failThrough();
     }
@@ -96,7 +97,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 }
             }
             
-            return new SpongeStructure(states, id);
+            return new SpongeStructure(states, addon.key(id));
         } catch(IOException e) {
             throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);
         }
