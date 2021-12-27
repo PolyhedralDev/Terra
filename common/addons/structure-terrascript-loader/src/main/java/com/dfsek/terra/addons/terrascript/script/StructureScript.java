@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.terra.api.registry.key.Keyed;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 
 import net.jafama.FastMath;
@@ -49,14 +51,14 @@ import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
-public class StructureScript implements Structure {
+public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     private final Block block;
-    private final String id;
+    private final RegistryKey id;
     private final Platform platform;
     
     @SuppressWarnings("rawtypes")
-    public StructureScript(InputStream inputStream, String id, Platform platform, Registry<Structure> registry,
+    public StructureScript(InputStream inputStream, RegistryKey id, Platform platform, Registry<Structure> registry,
                            Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder> functionRegistry) {
         Parser parser;
@@ -148,7 +150,7 @@ public class StructureScript implements Structure {
     }
     
     @Override
-    public String getID() {
-        return id;
+    public RegistryKey getRegistryKey() {
+        return null;
     }
 }

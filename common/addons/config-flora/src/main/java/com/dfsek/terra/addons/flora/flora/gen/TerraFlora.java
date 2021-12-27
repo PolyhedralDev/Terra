@@ -75,11 +75,6 @@ public class TerraFlora implements Structure {
     }
     
     @Override
-    public String getID() {
-        return id;
-    }
-    
-    @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();

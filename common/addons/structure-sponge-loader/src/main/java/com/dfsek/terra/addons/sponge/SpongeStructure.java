@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.sponge;
 import java.util.Random;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.registry.key.Keyed;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector2Int;
@@ -17,13 +19,13 @@ import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
-public class SpongeStructure implements Structure {
+public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
     
     private final BlockState[][][] blocks;
     
-    private final String id;
+    private final RegistryKey id;
     
-    public SpongeStructure(BlockState[][][] blocks, String id) {
+    public SpongeStructure(BlockState[][][] blocks, RegistryKey id) {
         this.blocks = blocks;
         this.id = id;
     }
@@ -49,7 +51,7 @@ public class SpongeStructure implements Structure {
     }
     
     @Override
-    public String getID() {
+    public RegistryKey getRegistryKey() {
         return id;
     }
 }

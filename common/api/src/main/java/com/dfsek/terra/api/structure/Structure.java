@@ -9,12 +9,13 @@ package com.dfsek.terra.api.structure;
 
 import java.util.Random;
 
+import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
-public interface Structure extends StringIdentifiable {
+public interface Structure {
     boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation);
 }

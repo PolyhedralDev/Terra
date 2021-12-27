@@ -95,11 +95,6 @@ public class VanillaOre implements Structure {
         return true;
     }
     
-    @Override
-    public String getID() {
-        return null;
-    }
-    
     public BlockState getMaterial(BlockType replace) {
         return materials.getOrDefault(replace, material);
     }
