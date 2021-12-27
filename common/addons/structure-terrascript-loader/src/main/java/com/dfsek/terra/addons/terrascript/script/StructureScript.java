@@ -151,6 +151,6 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     
     @Override
     public RegistryKey getRegistryKey() {
-        return null;
+        return id;
     }
 }
