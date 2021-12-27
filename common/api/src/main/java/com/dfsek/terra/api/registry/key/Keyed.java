@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.registry.key;
 
+@SuppressWarnings("unused")
 public interface Keyed<T extends Keyed<T>> extends Namespaced, StringIdentifiable {
     RegistryKey getRegistryKey();
     
