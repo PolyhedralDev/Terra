@@ -84,7 +84,7 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
                         depthTracker.addIntrinsicLevel(level -> {
                             if(level instanceof IndexLevel indexLevel &&
                                indexLevel.getIndex() >= begin &&
-                               indexLevel.getIndex() < end) {
+                               indexLevel.getIndex() <= end) {
                                 String configName;
                                 if(pair.getLeft().getName() == null) {
                                     configName = "Anonymous Configuration";
