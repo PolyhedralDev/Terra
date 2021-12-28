@@ -28,6 +28,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -42,7 +43,7 @@ public class TerraBiomeSource extends BiomeSource {
     private final long seed;
     private ConfigPack pack;
     
-    private final Map<Biome, net.minecraft.world.biome.Biome> terraToMinecraft = new HashMap<>();
+    private final Map<Biome, net.minecraft.world.biome.Biome> terraToMinecraft = new ConcurrentHashMap<>();
     
     public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
         super(biomes.stream()
@@ -72,8 +73,10 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         Biome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
-        return terraToMinecraft.computeIfAbsent(biome, b -> biomeRegistry
-                .get(new Identifier("terra", FabricUtil.createBiomeID(pack, pack.key(b.getID())))));
+        return terraToMinecraft.computeIfAbsent(biome,
+                                                b -> biomeRegistry
+                                                        .get(new Identifier("terra", FabricUtil
+                                                                .createBiomeID(pack, pack.key(b.getID())))));
     }
     
     public BiomeProvider getProvider() {
