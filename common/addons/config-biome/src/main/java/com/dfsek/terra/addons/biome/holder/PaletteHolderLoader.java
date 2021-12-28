@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.holder;
 
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
@@ -17,16 +18,18 @@ import java.util.Map;
 
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
     @SuppressWarnings("unchecked")
     @Override
-    public PaletteHolder load(AnnotatedType type, Object o, ConfigLoader configLoader) throws LoadException {
+    public PaletteHolder load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
         List<Map<String, Integer>> palette = (List<Map<String, Integer>>) o;
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<String, Integer> layer : palette) {
             for(Map.Entry<String, Integer> entry : layer.entrySet()) {
-                builder.add(entry.getValue(), configLoader.loadType(Palette.class, entry.getKey()));
+                builder.add(entry.getValue(), configLoader.loadType(Palette.class, entry.getKey(), depthTracker));
             }
         }
         return builder.build();

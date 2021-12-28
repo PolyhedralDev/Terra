@@ -51,7 +51,7 @@ public class BukkitWorldHandle implements WorldHandle {
     
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid entity identifier " + id);
+        if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
     

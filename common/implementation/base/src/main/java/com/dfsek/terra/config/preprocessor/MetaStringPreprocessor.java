@@ -18,6 +18,7 @@
 package com.dfsek.terra.config.preprocessor;
 
 import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
@@ -37,17 +38,17 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
+    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(String.class.equals(t.getType()) && c instanceof String candidate) { // String is final so we use #equals
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
-                Object meta = getMetaValue(key);
+                Object meta = getMetaValue(key, depthTracker).getRight();
                 if(!(meta instanceof String) && !(meta instanceof Number) && !(meta instanceof Character) && !(meta instanceof Boolean)) {
                     throw new LoadException("MetaString template injection candidate must be string or primitive, is type " +
-                                            meta.getClass().getCanonicalName());
+                                            meta.getClass().getCanonicalName(), depthTracker);
                 }
                 return meta.toString();
             });
-            return (Result<T>) Result.overwrite(substitutor.replace(candidate));
+            return (Result<T>) Result.overwrite(substitutor.replace(candidate), depthTracker);
         }
         return Result.noOp();
     }

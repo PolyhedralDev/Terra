@@ -20,6 +20,7 @@ package com.dfsek.terra.config.preprocessor;
 import com.dfsek.paralithic.eval.parser.Parser;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
@@ -51,13 +52,13 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation) {
+    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(t.getType() instanceof Class && isNumber((Class<?>) t.getType()) && c instanceof String) {
-            String expression = (String) loader.loadType(META_STRING_KEY.getAnnotatedType(), c);
+            String expression = (String) loader.loadType(META_STRING_KEY.getAnnotatedType(), c, depthTracker);
             try {
-                return (Result<T>) Result.overwrite(new Parser().parse(expression).evaluate());
+                return (Result<T>) Result.overwrite(new Parser().parse(expression).evaluate(), depthTracker);
             } catch(ParseException e) {
-                throw new LoadException("Invalid expression: ", e);
+                throw new LoadException("Invalid expression: ", e, depthTracker);
             }
         }
         return Result.noOp();

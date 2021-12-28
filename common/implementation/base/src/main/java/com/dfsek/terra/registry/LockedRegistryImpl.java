@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.registry;
 
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 
@@ -89,7 +90,7 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader) throws LoadException {
-        return registry.load(t, c, loader);
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+        return registry.load(t, c, loader, depthTracker);
     }
 }

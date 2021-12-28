@@ -57,9 +57,10 @@ public class GenericLoaders implements LoaderRegistrar {
         
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
-                    .registerLoader(BlockType.class,
-                                    (t, object, cf) -> platform.getWorldHandle().createBlockState((String) object).getBlockType())
-                    .registerLoader(BlockState.class, (t, object, cf) -> platform.getWorldHandle().createBlockState((String) object));
+                    .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
+                            .getWorldHandle().createBlockState((String) object).getBlockType())
+                    .registerLoader(BlockState.class, (type, object, configLoader, depthTracker) -> platform
+                            .getWorldHandle().createBlockState((String) object));
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.dfsek.terra.registry;
 
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
@@ -34,15 +35,15 @@ public class ShortcutHolder<T> implements TypeLoader<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
+    public T load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
         String id = (String) o;
         if(id.contains(":")) {
             String shortcut = id.substring(0, id.indexOf(":"));
             if(shortcuts.containsKey(shortcut)) {
-                return shortcuts.get(shortcut).load(configLoader, id.substring(id.indexOf(":") + 1));
+                return shortcuts.get(shortcut).load(configLoader, id.substring(id.indexOf(":") + 1), depthTracker.intrinsic("Using shortcut \"" + shortcut + "\""));
             }
-            throw new LoadException("Shortcut \"" + shortcut + "\" is not defined.");
+            throw new LoadException("Shortcut \"" + shortcut + "\" is not defined.", depthTracker);
         }
-        return back.load(annotatedType, o, configLoader);
+        return back.load(annotatedType, o, configLoader, depthTracker);
     }
 }

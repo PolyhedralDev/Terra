@@ -18,8 +18,12 @@
 package com.dfsek.terra.config.preprocessor;
 
 import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
+
+import com.dfsek.terra.api.util.generic.pair.Pair;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -36,11 +40,20 @@ public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader configLoader, Meta annotation) {
+    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader configLoader, Meta annotation, DepthTracker depthTracker) {
         if(c instanceof String) { // Can we do standard metaconfig?
             String value = ((String) c).trim();
             if(value.startsWith("$")) { // it's a meta value.
-                return (Result<T>) Result.overwrite(getMetaValue(value.substring(1)));
+                Pair<Configuration, Object> pair = getMetaValue(value.substring(1), depthTracker);
+    
+                String configName;
+                if(pair.getLeft().getName() == null) {
+                    configName = "Anonymous Configuration";
+                } else {
+                    configName = pair.getLeft().getName();
+                }
+                
+                return (Result<T>) Result.overwrite(pair.getRight(), depthTracker.intrinsic("From configuration \"" + configName + "\""));
             }
         }
         return Result.noOp();

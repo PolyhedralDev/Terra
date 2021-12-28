@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.config.loaders;
 
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
@@ -32,12 +33,12 @@ import com.dfsek.terra.api.util.Range;
 @SuppressWarnings("unchecked")
 public class RangeLoader implements TypeLoader<Range> {
     @Override
-    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
+    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
         if(o instanceof Map) {
             Map<String, Integer> map = (Map<String, Integer>) o;
             return new ConstantRange(map.get("min"), map.get("max"));
         } else {
-            int h = configLoader.loadType(Integer.class, o);
+            int h = configLoader.loadType(Integer.class, o, depthTracker);
             return new ConstantRange(h, h + 1);
         }
     }

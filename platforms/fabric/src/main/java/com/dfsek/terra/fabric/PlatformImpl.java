@@ -21,6 +21,7 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
@@ -137,19 +138,19 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(PlatformBiome.class, (t, o, l) -> parseBiome((String) o))
-                .registerLoader(Identifier.class, (t, o, l) -> {
+        registry.registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
+                .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
                     Identifier identifier = Identifier.tryParse((String) o);
                     if(identifier == null)
-                        throw new LoadException("Invalid identifier: " + o);
+                        throw new LoadException("Invalid identifier: " + o, depthTracker);
                     return identifier;
                 });
     }
     
     
-    private ProtoPlatformBiome parseBiome(String id) throws LoadException {
+    private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier); // failure.
+        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
 }

@@ -18,6 +18,7 @@
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -85,14 +86,14 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(BlockState.class, (t, o, l) -> handle.createBlockState((String) o))
-                .registerLoader(PlatformBiome.class, (t, o, l) -> parseBiome((String) o))
-                .registerLoader(EntityType.class, (t, o, l) -> EntityType.valueOf((String) o));
+        registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> handle.createBlockState((String) o))
+                .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
+                .registerLoader(EntityType.class, (type, o, loader, depthTracker) -> EntityType.valueOf((String) o));
         
     }
     
-    private BukkitPlatformBiome parseBiome(String id) throws LoadException {
-        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id);
+    private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
+        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
         return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
 }

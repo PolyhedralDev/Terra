@@ -53,7 +53,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                                                                    lootRegistry,
                                                                                    event.getPack().getOrCreateRegistry(FunctionBuilder.class));
                                                     } catch(ParseException e) {
-                                                        throw new LoadException("Failed to load script \"" + entry.getKey() + "\"", e);
+                                                        throw new RuntimeException("Failed to load script \"" + entry.getKey() + "\"", e);
                                                     }
                                                 })
                                                 .toList()

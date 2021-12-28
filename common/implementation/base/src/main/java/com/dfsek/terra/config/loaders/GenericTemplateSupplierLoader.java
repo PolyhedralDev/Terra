@@ -18,6 +18,7 @@
 package com.dfsek.terra.config.loaders;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.ConfigException;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
@@ -42,15 +43,13 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, ConfigLoader loader) throws LoadException {
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
-        try {
-            return loader
-                    .load(registry.getByID(((String) map.get("type")))
-                                  .orElseThrow(() -> new LoadException("No such entry: " + map.get("type")))
-                                  .get(), new MapConfiguration(map)).get();
-        } catch(ConfigException e) {
-            throw new LoadException("Unable to load object: ", e);
-        }
+        String type = (String) map.get("type");
+        return loader
+                .load(registry.getByID(type)
+                              .orElseThrow(() -> new LoadException("No such entry: " + map.get("type"), depthTracker))
+                              .get(), new MapConfiguration(map), depthTracker.intrinsic("With type \"" + type + "\"")).get();
+        
     }
 }

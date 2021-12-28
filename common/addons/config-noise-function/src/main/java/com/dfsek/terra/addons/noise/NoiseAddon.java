@@ -79,8 +79,8 @@ public class NoiseAddon implements AddonInitializer {
                           NOISE_SAMPLER_TOKEN);
                   event.getPack()
                        .applyLoader(CellularSampler.DistanceFunction.class,
-                                    (t, o, l) -> CellularSampler.DistanceFunction.valueOf((String) o))
-                       .applyLoader(CellularSampler.ReturnType.class, (t, o, l) -> CellularSampler.ReturnType.valueOf((String) o))
+                                    (type, o, loader, depthTracker) -> CellularSampler.DistanceFunction.valueOf((String) o))
+                       .applyLoader(CellularSampler.ReturnType.class, (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
             

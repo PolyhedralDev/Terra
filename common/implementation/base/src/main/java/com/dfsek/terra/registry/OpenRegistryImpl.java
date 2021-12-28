@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.registry;
 
+import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 
@@ -65,10 +66,10 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader) throws LoadException {
+    public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
         return getByID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
                                                                        "\" was found in this registry. Registry contains items: " +
-                                                                       getItemsFormatted()));
+                                                                       getItemsFormatted(), depthTracker));
     }
     
     private String getItemsFormatted() {

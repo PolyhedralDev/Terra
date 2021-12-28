@@ -60,6 +60,6 @@ public class CLIPlatform extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(PlatformBiome.class, (TypeLoader<PlatformBiome>) (annotatedType, o, configLoader) -> () -> o);
+        registry.registerLoader(PlatformBiome.class, (TypeLoader<PlatformBiome>) (annotatedType, o, configLoader, depthTracker) -> () -> o);
     }
 }

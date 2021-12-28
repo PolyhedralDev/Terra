@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class ConfigPackImpl implements ConfigPack {
             try {
                 return new YamlConfiguration(new FileInputStream(new File(folder, "pack.yml")), "pack.yml");
             } catch(FileNotFoundException e) {
-                throw new LoadException("No pack.yml file found in " + folder.getAbsolutePath());
+                throw new UncheckedIOException("No pack.yml file found in " + folder.getAbsolutePath(), e);
             }
         }), platform);
     }
@@ -141,12 +142,12 @@ public class ConfigPackImpl implements ConfigPack {
                 if(entry.getName().equals("pack.yml")) pack = entry;
             }
             
-            if(pack == null) throw new LoadException("No pack.yml file found in " + file.getName());
+            if(pack == null) throw new IllegalArgumentException("No pack.yml file found in " + file.getName());
             
             try {
                 return new YamlConfiguration(file.getInputStream(pack), "pack.yml");
             } catch(IOException e) {
-                throw new LoadException("Unable to load pack.yml from ZIP file", e);
+                throw new UncheckedIOException("Unable to load pack.yml from ZIP file", e);
             }
         }), platform);
     }

@@ -56,7 +56,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
             Map<String, Function> noiseFunctionMap = generateFunctions();
             return new ExpressionFunction(noiseFunctionMap, equation, vars);
         } catch(ParseException e) {
-            throw new LoadException("Failed to parse expression.", e);
+            throw new RuntimeException("Failed to parse expression.", e);
         }
     }
     
