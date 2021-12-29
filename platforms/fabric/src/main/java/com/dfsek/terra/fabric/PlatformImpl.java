@@ -71,6 +71,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
+        getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
     
         worlds.forEach(world -> {
