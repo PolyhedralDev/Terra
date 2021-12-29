@@ -38,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
@@ -141,24 +142,17 @@ public final class FabricUtil {
                 .generationSettings(generationSettings.build())
                 .build();
         Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-        FabricUtil.registerOrOverwrite(biomeRegistry, Registry.BIOME_KEY, identifier, minecraftBiome);
         
-        terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
-                biomeRegistry.getKey(minecraftBiome).orElseThrow());
-        
+        if(!biomeRegistry.containsId(identifier)) {
+            Registry.register(biomeRegistry, identifier, minecraftBiome);
+            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(minecraftBiome);
+            terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
+                    biomeRegistry.getKey(minecraftBiome).orElseThrow());
+        }
     }
     
     public static Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>> getTerraVanillaBiomes() {
         return terraVanillaBiomes;
-    }
-    
-    public static <T> void registerOrOverwrite(Registry<T> registry, RegistryKey<Registry<T>> key, Identifier identifier, T item) {
-        if(registry.containsId(identifier)) {
-            ((MutableRegistry<T>) registry).set(registry.getRawId(registry.get(identifier)), RegistryKey.of(key, identifier), item,
-                                                Lifecycle.stable());
-        } else {
-            Registry.register(registry, identifier, item);
-        }
     }
     
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {

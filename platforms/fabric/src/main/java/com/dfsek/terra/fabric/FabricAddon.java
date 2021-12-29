@@ -84,8 +84,7 @@ public final class FabricAddon implements BaseAddon {
                          .register(this, BiomeRegistrationEvent.class)
                          .then(event -> {
                              logger.info("Registering biomes...");
-            
-                             Registry<net.minecraft.world.biome.Biome> biomeRegistry = event.getRegistryManager().get(Registry.BIOME_KEY);
+                             
                              terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
                                  pack.getCheckedRegistry(Biome.class)
                                      .forEach((id, biome) -> FabricUtil.registerBiome(biome, pack, event.getRegistryManager(), id));

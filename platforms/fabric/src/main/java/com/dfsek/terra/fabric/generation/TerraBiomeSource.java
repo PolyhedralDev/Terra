@@ -19,6 +19,8 @@ package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.fabric.data.Codecs;
 
+import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -72,11 +74,7 @@ public class TerraBiomeSource extends BiomeSource {
     
     @Override
     public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        Biome biome = pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed);
-        return terraToMinecraft.computeIfAbsent(biome,
-                                                b -> biomeRegistry
-                                                        .get(new Identifier("terra", FabricUtil
-                                                                .createBiomeID(pack, pack.key(b.getID())))));
+        return ((ProtoPlatformBiome) pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed).getPlatformBiome()).getDelegate();
     }
     
     public BiomeProvider getProvider() {

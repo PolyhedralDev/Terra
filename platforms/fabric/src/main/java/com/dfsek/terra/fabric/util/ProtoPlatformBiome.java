@@ -22,9 +22,13 @@ import net.minecraft.util.registry.Registry;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
+import net.minecraft.world.biome.Biome;
+
 
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
+    
+    private Biome delegate;
     
     public ProtoPlatformBiome(Identifier identifier) {
         this.identifier = identifier;
@@ -37,5 +41,13 @@ public class ProtoPlatformBiome implements PlatformBiome {
     @Override
     public Object getHandle() {
         return identifier;
+    }
+    
+    public Biome getDelegate() {
+        return delegate;
+    }
+    
+    public void setDelegate(Biome delegate) {
+        this.delegate = delegate;
     }
 }
