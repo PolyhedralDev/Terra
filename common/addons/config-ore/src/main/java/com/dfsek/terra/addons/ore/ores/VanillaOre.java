@@ -29,14 +29,16 @@ public class VanillaOre implements Structure {
     private final double size;
     private final MaterialSet replaceable;
     private final boolean applyGravity;
+    private final boolean exposed;
     private final Map<BlockType, BlockState> materials;
     
     public VanillaOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity,
-                      Map<BlockType, BlockState> materials) {
+                      boolean exposed, Map<BlockType, BlockState> materials) {
         this.material = material;
         this.size = size;
         this.replaceable = replaceable;
         this.applyGravity = applyGravity;
+        this.exposed = exposed;
         this.materials = materials;
     }
     
@@ -84,7 +86,14 @@ public class VanillaOre implements Structure {
                                 if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
                                 BlockType block = world.getBlockState(x, y, z).getBlockType();
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
-                                    world.setBlockState(x, y, z, getMaterial(block), isApplyGravity());
+                                    if(exposed || !(world.getBlockState(x, y, z - 1).isAir() ||
+                                                    world.getBlockState(x, y, z + 1).isAir() ||
+                                                    world.getBlockState(x, y - 1, z).isAir() ||
+                                                    world.getBlockState(x, y + 1, z).isAir() ||
+                                                    world.getBlockState(x - 1, y, z).isAir() ||
+                                                    world.getBlockState(x + 1, y, z).isAir())) {
+                                        world.setBlockState(x, y, z, getMaterial(block), isApplyGravity());
+                                    }
                                 }
                             }
                         }

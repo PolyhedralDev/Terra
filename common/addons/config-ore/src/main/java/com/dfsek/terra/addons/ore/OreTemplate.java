@@ -44,6 +44,10 @@ public class OreTemplate implements AbstractableTemplate {
     @Value("size")
     private @Meta double size;
     
+    @Value("exposed")
+    @Default
+    private @Meta boolean exposed = true;
+    
     public boolean doPhysics() {
         return physics;
     }
@@ -66,5 +70,9 @@ public class OreTemplate implements AbstractableTemplate {
     
     public Map<BlockType, BlockState> getMaterialOverrides() {
         return materials;
+    }
+    
+    public boolean isExposed() {
+        return exposed;
     }
 }
