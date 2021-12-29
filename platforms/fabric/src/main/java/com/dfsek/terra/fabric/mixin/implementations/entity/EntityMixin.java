@@ -60,8 +60,4 @@ public abstract class EntityMixin {
     public ServerWorld terra$world() {
         return (ServerWorld) world;
     }
-    
-    public void terra$sendMessage(String message) {
-        sendSystemMessage(new LiteralText(message), UUID.randomUUID()); // TODO: look into how this actually works and make it less jank
-    }
 }

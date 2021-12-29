@@ -18,10 +18,13 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.api.entity.Entity;
+
+import com.dfsek.terra.bukkit.BukkitEntity;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -31,14 +34,13 @@ import com.dfsek.terra.api.block.state.properties.enums.Axis;
 import com.dfsek.terra.api.block.state.properties.enums.Half;
 import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
-import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.bukkit.BukkitCommandSender;
-import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
@@ -164,9 +166,11 @@ public final class BukkitAdapter {
     }
     
     public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
-        if(sender instanceof Player) return new BukkitPlayer((Player) sender);
-        if(sender instanceof Entity) return new BukkitEntity((Entity) sender);
         return new BukkitCommandSender(sender);
+    }
+    
+    public static Entity adapt(org.bukkit.entity.Entity entity) {
+        return new BukkitEntity(entity);
     }
     
     public static org.bukkit.command.CommandSender adapt(CommandSender sender) {

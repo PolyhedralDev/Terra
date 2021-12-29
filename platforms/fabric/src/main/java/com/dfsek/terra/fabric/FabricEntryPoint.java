@@ -20,7 +20,7 @@ package com.dfsek.terra.fabric;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.fabric.FabricServerCommandManager;
 
-import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.command.CommandSender;
 
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 

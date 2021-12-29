@@ -2,7 +2,7 @@ package com.dfsek.terra.api.event.events.platform;
 
 import cloud.commandframework.CommandManager;
 
-import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.Event;
 
 

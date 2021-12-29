@@ -17,9 +17,16 @@
 
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.Player;
+
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
+
 import org.bukkit.ChatColor;
 
-import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.command.CommandSender;
+
+import java.util.Optional;
 
 
 public class BukkitCommandSender implements CommandSender {
@@ -32,6 +39,22 @@ public class BukkitCommandSender implements CommandSender {
     @Override
     public void sendMessage(String message) {
         delegate.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+    }
+    
+    @Override
+    public Optional<Entity> getEntity() {
+        if(delegate instanceof org.bukkit.entity.Entity entity) {
+            return Optional.of(BukkitAdapter.adapt(entity));
+        }
+        return Optional.empty();
+    }
+    
+    @Override
+    public Optional<Player> getPlayer() {
+        if(delegate instanceof org.bukkit.entity.Player player) {
+            return Optional.of(BukkitAdapter.adapt(player));
+        }
+        return Optional.empty();
     }
     
     @Override

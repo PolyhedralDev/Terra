@@ -17,16 +17,22 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.entity;
 
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.dfsek.terra.api.entity.CommandSender;
+import java.util.Optional;
+
+import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.Player;
 
 
 @Mixin(ServerCommandSource.class)
@@ -35,7 +41,27 @@ public abstract class ServerCommandSourceMixin {
     @Shadow
     public abstract void sendFeedback(Text message, boolean broadcastToOps);
     
+    @Shadow
+    public abstract ServerPlayerEntity getPlayer() throws CommandSyntaxException;
+    
+    @Shadow
+    @Nullable
+    public abstract net.minecraft.entity.@Nullable Entity getEntity();
+    
     public void terra$sendMessage(String message) {
         sendFeedback(new LiteralText(message), true);
+    }
+    
+    @Nullable
+    public Optional<Entity> terra$getEntity() {
+        return Optional.ofNullable((Entity) getEntity());
+    }
+    
+    public Optional<Player> terra$getPlayer() {
+        try {
+            return Optional.ofNullable((Player) getPlayer());
+        } catch(CommandSyntaxException e) {
+            return Optional.empty();
+        }
     }
 }

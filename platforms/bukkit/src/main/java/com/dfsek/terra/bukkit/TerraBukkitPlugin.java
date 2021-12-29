@@ -22,7 +22,7 @@ import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 
-import com.dfsek.terra.api.entity.CommandSender;
+import com.dfsek.terra.api.command.CommandSender;
 
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;

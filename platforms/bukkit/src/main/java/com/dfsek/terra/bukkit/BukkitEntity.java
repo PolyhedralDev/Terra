@@ -58,9 +58,4 @@ public class BukkitEntity implements Entity {
     public ServerWorld world() {
         return BukkitAdapter.adapt(entity.getWorld());
     }
-    
-    @Override
-    public void sendMessage(String message) {
-        entity.sendMessage(message);
-    }
 }

@@ -25,11 +25,10 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
-public class BukkitPlayer extends BukkitCommandSender implements Player {
+public class BukkitPlayer implements Player {
     private final org.bukkit.entity.Player delegate;
     
     public BukkitPlayer(org.bukkit.entity.Player delegate) {
-        super(delegate);
         this.delegate = delegate;
     }
     
@@ -59,10 +58,5 @@ public class BukkitPlayer extends BukkitCommandSender implements Player {
     @Override
     public ServerWorld world() {
         return BukkitAdapter.adapt(delegate.getWorld());
-    }
-    
-    @Override
-    public void sendMessage(String message) {
-        delegate.sendMessage(message);
     }
 }
