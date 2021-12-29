@@ -81,17 +81,20 @@ public class PlatformImpl extends AbstractPlatform {
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
     
+        
         if(server != null) {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             });
         }
-    
-    
+        
         worlds.forEach(world -> {
             FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
-            chunkGeneratorWrapper.setPack(getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).orElseThrow());
+            getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                chunkGeneratorWrapper.setPack(pack);
+                LOGGER.info("Replaced pack in chunk generator for world {}", world);
+            });
         });
         
         return succeed;
