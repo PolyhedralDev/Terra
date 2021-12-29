@@ -28,6 +28,7 @@ import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 
 import com.google.common.collect.ListMultimap;
@@ -100,6 +101,7 @@ import com.dfsek.terra.registry.ShortcutHolder;
  * Represents a Terra configuration pack.
  */
 public class ConfigPackImpl implements ConfigPack {
+    private final Context context = new Context();
     public static final TypeKey<ConfigType<?, ?>> CONFIG_TYPE_TYPE_KEY = new TypeKey<>() {
     };
     private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
@@ -420,5 +422,10 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public RegistryKey getRegistryKey() {
         return key;
+    }
+    
+    @Override
+    public Context getContext() {
+        return context;
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
@@ -29,7 +30,12 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
-public interface ConfigPack extends LoaderRegistrar, ConfigLoadingDelegate, CheckedRegistryHolder, RegistryProvider, Keyed<ConfigPack> {
+public interface ConfigPack extends LoaderRegistrar,
+                                    ConfigLoadingDelegate,
+                                    CheckedRegistryHolder,
+                                    RegistryProvider,
+                                    Keyed<ConfigPack>,
+                                    PropertyHolder {
     
     ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey id, int priority);
     
