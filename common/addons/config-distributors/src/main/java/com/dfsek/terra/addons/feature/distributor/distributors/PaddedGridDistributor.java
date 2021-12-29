@@ -27,11 +27,20 @@ public class PaddedGridDistributor implements Distributor {
         int cellX = FastMath.floorDiv(x, cellWidth);
         int cellZ = FastMath.floorDiv(z, cellWidth);
     
-        Random random = new Random((MathUtil.squash(cellX, cellZ) ^ seed) + salt);
+        Random random = new Random((murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
         
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;
         
         return x == pointX && z == pointZ;
+    }
+    
+    private static long murmur64(long h) {
+        h ^= h >>> 33;
+        h *= 0xff51afd7ed558ccdL;
+        h ^= h >>> 33;
+        h *= 0xc4ceb9fe1a85ec53L;
+        h ^= h >>> 33;
+        return h;
     }
 }
