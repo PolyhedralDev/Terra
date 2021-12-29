@@ -27,7 +27,7 @@ public class PaddedGridDistributor implements Distributor {
         int cellX = FastMath.floorDiv(x, cellWidth);
         int cellZ = FastMath.floorDiv(z, cellWidth);
     
-        Random random = new Random(MathUtil.squash(cellX, cellZ) + salt);
+        Random random = new Random((MathUtil.squash(cellX, cellZ) ^ seed) + salt);
         
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;
