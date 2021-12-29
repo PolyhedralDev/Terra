@@ -91,7 +91,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                         if(sampler.sample(x, y, z) > 0) {
                             if(carver.sample(x, y, z) <= 0) {
-                                data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo).get(paletteLevel, cx, y, cz,
+                                data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,
                                                                                                  seed);
                                 chunk.setBlock(x, y, z, data);
                             }
@@ -120,7 +120,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);
         
-        Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo);
+        Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo, 0);
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {
             int level = 0;

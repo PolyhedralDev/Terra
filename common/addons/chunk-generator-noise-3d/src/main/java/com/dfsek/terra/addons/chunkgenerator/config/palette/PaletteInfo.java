@@ -16,5 +16,6 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 public record PaletteInfo(PaletteHolder paletteHolder,
                           SlantHolder slantHolder,
                           Palette ocean,
-                          int seaLevel) implements Properties {
+                          int seaLevel,
+                          int maxSlantDepth) implements Properties {
 }
