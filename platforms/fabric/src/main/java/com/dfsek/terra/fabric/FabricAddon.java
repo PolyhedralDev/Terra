@@ -20,6 +20,9 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.exception.ConfigException;
+
+import com.dfsek.terra.api.registry.key.RegistryKey;
+
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +47,6 @@ public final class FabricAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private static final Logger logger = LoggerFactory.getLogger(FabricAddon.class);
     private final PlatformImpl terraFabricPlugin;
-    private final Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> templates = new HashMap<>();
     
     public FabricAddon(PlatformImpl terraFabricPlugin) {
         this.terraFabricPlugin = terraFabricPlugin;
@@ -57,8 +59,7 @@ public final class FabricAddon implements BaseAddon {
                          .register(this, ConfigPackPreLoadEvent.class)
                          .then(event -> {
                              try {
-                                 PreLoadCompatibilityOptions template = event.loadTemplate(new PreLoadCompatibilityOptions());
-                                 templates.put(event.getPack(), Mutable.of(template, null));
+                                 event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions()));
                              } catch(ConfigException e) {
                                  logger.error("Error loading config template", e);
                              }
@@ -70,7 +71,7 @@ public final class FabricAddon implements BaseAddon {
                          .register(this, ConfigPackPostLoadEvent.class)
                          .then(event -> {
                              try {
-                                 templates.get(event.getPack()).setRight(event.loadTemplate(new PostLoadCompatibilityOptions()));
+                                 event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions()));
                              } catch(ConfigException e) {
                                  logger.error("Error loading config template", e);
                              }
@@ -97,11 +98,6 @@ public final class FabricAddon implements BaseAddon {
     @Override
     public Version getVersion() {
         return VERSION;
-    }
-    
-    
-    public Map<ConfigPack, Mutable<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions>> getTemplates() {
-        return templates;
     }
     
     @Override
