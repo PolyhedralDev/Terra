@@ -29,11 +29,11 @@ public class VanillaOre implements Structure {
     private final double size;
     private final MaterialSet replaceable;
     private final boolean applyGravity;
-    private final boolean exposed;
+    private final double exposed;
     private final Map<BlockType, BlockState> materials;
     
     public VanillaOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity,
-                      boolean exposed, Map<BlockType, BlockState> materials) {
+                      double exposed, Map<BlockType, BlockState> materials) {
         this.material = material;
         this.size = size;
         this.replaceable = replaceable;
@@ -86,7 +86,7 @@ public class VanillaOre implements Structure {
                                 if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
                                 BlockType block = world.getBlockState(x, y, z).getBlockType();
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
-                                    if(exposed || !(world.getBlockState(x, y, z - 1).isAir() ||
+                                    if(exposed > random.nextDouble() || !(world.getBlockState(x, y, z - 1).isAir() ||
                                                     world.getBlockState(x, y, z + 1).isAir() ||
                                                     world.getBlockState(x, y - 1, z).isAir() ||
                                                     world.getBlockState(x, y + 1, z).isAir() ||

@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.ore;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
+import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Final;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
@@ -46,7 +47,8 @@ public class OreTemplate implements AbstractableTemplate {
     
     @Value("exposed")
     @Default
-    private @Meta boolean exposed = true;
+    @Description("The chance that ore blocks bordering air will be exposed. 0 = 0%, 1 = 100%")
+    private @Meta double exposed = 1;
     
     public boolean doPhysics() {
         return physics;
@@ -72,7 +74,7 @@ public class OreTemplate implements AbstractableTemplate {
         return materials;
     }
     
-    public boolean isExposed() {
+    public double isExposed() {
         return exposed;
     }
 }
