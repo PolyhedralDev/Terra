@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.NoDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.PaddedGridDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.SamplerDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
@@ -49,6 +50,7 @@ public class DistributorAddon implements AddonInitializer {
                             DISTRIBUTOR_TOKEN);
                     distributorRegistry.register(addon.key("SAMPLER"), SamplerDistributorTemplate::new);
                     distributorRegistry.register(addon.key("POINTS"), PointSetDistributorTemplate::new);
+                    distributorRegistry.register(addon.key("PADDED_GRID"), PaddedGridDistributorTemplate::new);
                     distributorRegistry.register(addon.key("AND"), AndDistributorTemplate::new);
                     distributorRegistry.register(addon.key("OR"), OrDistributorTemplate::new);
                     distributorRegistry.register(addon.key("YES"), YesDistributorTemplate::new);
