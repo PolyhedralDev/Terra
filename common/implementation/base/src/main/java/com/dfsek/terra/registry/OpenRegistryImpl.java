@@ -99,6 +99,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public void clear() {
         objects.clear();
+        objectIDs.clear();
     }
     
     private boolean register(RegistryKey identifier, Entry<T> value) {
