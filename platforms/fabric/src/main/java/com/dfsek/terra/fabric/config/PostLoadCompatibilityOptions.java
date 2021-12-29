@@ -20,6 +20,9 @@ package com.dfsek.terra.fabric.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+
+import com.dfsek.terra.api.properties.Properties;
+
 import net.minecraft.util.Identifier;
 
 import java.util.HashMap;
@@ -30,7 +33,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PostLoadCompatibilityOptions implements ConfigTemplate {
+public class PostLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Value("structures.inject-biome.exclude-biomes")
     @Default
     private Map<Biome, Set<Identifier>> excludedPerBiomeStructures = new HashMap<>();

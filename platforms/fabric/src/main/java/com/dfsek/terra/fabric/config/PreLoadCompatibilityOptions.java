@@ -20,6 +20,9 @@ package com.dfsek.terra.fabric.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+
+import com.dfsek.terra.api.properties.Properties;
+
 import net.minecraft.util.Identifier;
 
 import java.util.HashSet;
@@ -27,7 +30,7 @@ import java.util.Set;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PreLoadCompatibilityOptions implements ConfigTemplate {
+public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Value("features.inject-registry.enable")
     @Default
     private boolean doRegistryInjection = false;
