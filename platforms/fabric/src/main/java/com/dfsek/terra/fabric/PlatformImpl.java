@@ -27,6 +27,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import org.jetbrains.annotations.NotNull;
@@ -68,11 +69,25 @@ public class PlatformImpl extends AbstractPlatform {
         worlds.add(world);
     }
     
+    private MinecraftServer server;
+    
+    public void setServer(MinecraftServer server) {
+        this.server = server;
+    }
+    
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
+    
+        if(server != null) {
+            server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
+                LOGGER.warn("Failed to execute reload", throwable);
+                return null;
+            });
+        }
+    
     
         worlds.forEach(world -> {
             FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());

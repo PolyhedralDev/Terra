@@ -142,8 +142,10 @@ public final class FabricUtil {
                 .generationSettings(generationSettings.build())
                 .build();
         Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-        
-        if(!biomeRegistry.containsId(identifier)) {
+    
+        if(biomeRegistry.containsId(identifier)) {
+            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
+        } else {
             Registry.register(biomeRegistry, identifier, minecraftBiome);
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(minecraftBiome);
             terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
