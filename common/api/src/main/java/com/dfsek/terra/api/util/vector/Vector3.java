@@ -142,6 +142,10 @@ public class Vector3 {
         return MathUtil.equals(x, other.getX()) && MathUtil.equals(y, other.getY()) && MathUtil.equals(z, other.getZ());
     }
     
+    public Vector3Int toInt() {
+        return Vector3Int.of(getBlockX(), getBlockY(), getBlockZ());
+    }
+    
     public Mutable mutable() {
         return new Mutable(x, y, z);
     }
