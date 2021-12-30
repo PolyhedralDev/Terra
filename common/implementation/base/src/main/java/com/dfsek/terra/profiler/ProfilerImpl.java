@@ -113,7 +113,7 @@ public class ProfilerImpl implements Profiler {
                 for(int i = 1; i < keys.length; i++) {
                     timings = timings.getSubItem(keys[i]);
                 }
-                list.forEach(timings::addTime);
+                new ArrayList<>(list).forEach(timings::addTime);
             }));
         }
         return map;
