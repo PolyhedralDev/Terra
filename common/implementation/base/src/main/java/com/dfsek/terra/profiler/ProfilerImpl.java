@@ -106,14 +106,16 @@ public class ProfilerImpl implements Profiler {
     @Override
     public Map<String, Timings> getTimings() {
         Map<String, Timings> map = new HashMap<>();
-        accessibleThreadMaps.forEach(smap -> smap.forEach((key, list) -> {
-            String[] keys = key.split("\\.");
-            Timings timings = map.computeIfAbsent(keys[0], id -> new Timings());
-            for(int i = 1; i < keys.length; i++) {
-                timings = timings.getSubItem(keys[i]);
-            }
-            list.forEach(timings::addTime);
-        }));
+        synchronized(accessibleThreadMaps) {
+            accessibleThreadMaps.forEach(smap -> smap.forEach((key, list) -> {
+                String[] keys = key.split("\\.");
+                Timings timings = map.computeIfAbsent(keys[0], id -> new Timings());
+                for(int i = 1; i < keys.length; i++) {
+                    timings = timings.getSubItem(keys[i]);
+                }
+                list.forEach(timings::addTime);
+            }));
+        }
         return map;
     }
 }
