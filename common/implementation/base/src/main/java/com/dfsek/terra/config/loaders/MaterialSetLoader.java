@@ -36,6 +36,11 @@ public class MaterialSetLoader implements TypeLoader<MaterialSet> {
     @Override
     public MaterialSet load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
         List<String> stringData = (List<String>) o;
+        
+        if(stringData.size() == 1) {
+            return MaterialSet.singleton(configLoader.loadType(BlockType.class, stringData.get(0), depthTracker));
+        }
+        
         MaterialSet set = new MaterialSet();
         
         for(String string : stringData) {
