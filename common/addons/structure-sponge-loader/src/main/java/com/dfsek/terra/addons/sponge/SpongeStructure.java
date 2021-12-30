@@ -40,7 +40,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
                 Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
                 int rX = r.getX();
                 int rZ = r.getZ();
-                for(int y = 0; y < blocks[z].length; y++) {
+                for(int y = 0; y < blocks[x][z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
                     world.setBlockState(bX + rX, bY + y, bZ + rZ, state);
