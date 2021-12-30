@@ -19,6 +19,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -31,30 +32,32 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
+import java.util.concurrent.ExecutionException;
+
 
 public class SamplerProvider {
-    private final LoadingCache<WorldContext, Sampler3D> cache;
+    private final Cache<WorldContext, Sampler3D> cache;
+    private final int elevationSmooth;
     
-    
-    public SamplerProvider(Platform platform, BiomeProvider provider, int elevationSmooth) {
-        cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache())
-                            .build(new CacheLoader<>() {
-                                @Override
-                                public Sampler3D load(@NotNull WorldContext context) {
-                                    return new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
-                                                         elevationSmooth);
-                                }
-                            });
+    public SamplerProvider(Platform platform, int elevationSmooth) {
+        this.elevationSmooth = elevationSmooth;
+        cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache()).build();
     }
     
-    public Sampler3D get(int x, int z, WorldProperties world) {
+    public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
         int cx = FastMath.floorDiv(x, 16);
         int cz = FastMath.floorDiv(z, 16);
-        return getChunk(cx, cz, world);
+        return getChunk(cx, cz, world, provider);
     }
     
-    public Sampler3D getChunk(int cx, int cz, WorldProperties world) {
-        return cache.getUnchecked(new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight()));
+    public Sampler3D getChunk(int cx, int cz, WorldProperties world, BiomeProvider provider) {
+        WorldContext context = new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight());
+        try {
+            return cache.get(context, () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
+                                                      elevationSmooth));
+        } catch(ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     private record WorldContext(int cx, int cz, long seed, int minHeight, int maxHeight) {

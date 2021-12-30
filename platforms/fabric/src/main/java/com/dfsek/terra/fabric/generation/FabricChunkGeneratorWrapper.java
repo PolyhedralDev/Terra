@@ -155,7 +155,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            delegate.generateChunkData((ProtoChunk) chunk, world, chunk.getPos().x, chunk.getPos().z);
+            delegate.generateChunkData((ProtoChunk) chunk, world, pack.getBiomeProvider().caching(), chunk.getPos().x, chunk.getPos().z);
             pack.getStages().forEach(populator -> {
                 if(populator instanceof Chunkified) {
                     populator.populate(world);

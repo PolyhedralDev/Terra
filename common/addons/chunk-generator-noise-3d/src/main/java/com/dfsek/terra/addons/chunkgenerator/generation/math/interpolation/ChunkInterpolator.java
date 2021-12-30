@@ -56,12 +56,9 @@ public class ChunkInterpolator {
         
         double[][][] noiseStorage = new double[5][5][size + 1];
         
-        BiomeCache cache = new BiomeCache(provider);
-        
-        
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                BiomeNoiseProperties generationSettings = cache.get(xOrigin + (x << 2), zOrigin + (z << 2), seed)
+                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed)
                         .getContext()
                         .get(BiomeNoiseProperties.class);
                 Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
@@ -72,7 +69,7 @@ public class ChunkInterpolator {
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
                         genMap.computeIfAbsent(
-                                cache.get(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed)
+                                provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed)
                                         .getContext()
                                         .get(BiomeNoiseProperties.class),
                                 g -> new MutableInteger(0)).increment(); // Increment by 1
@@ -99,20 +96,6 @@ public class ChunkInterpolator {
                             noiseStorage[x + 1][z + 1][y + 1]);
                 }
             }
-        }
-    }
-    
-    private static final class BiomeCache {
-        
-        private final BiomeProvider provider;
-        private final Map<Vector2Int, Biome> cache = new HashMap<>();
-        
-        private BiomeCache(BiomeProvider provider) {
-            this.provider = provider;
-        }
-        
-        public Biome get(int x, int z, long seed) {
-            return cache.computeIfAbsent(Vector2Int.of(x, z), vec -> provider.getBiome(x, z, seed));
         }
     }
     

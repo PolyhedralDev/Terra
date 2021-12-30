@@ -59,4 +59,8 @@ public interface BiomeProvider {
      * @return {@link Iterable} of all biomes this provider can generate.
      */
     Iterable<Biome> getBiomes();
+    
+    default BiomeProvider caching() {
+        return new CachingBiomeProvider(this);
+    }
 }

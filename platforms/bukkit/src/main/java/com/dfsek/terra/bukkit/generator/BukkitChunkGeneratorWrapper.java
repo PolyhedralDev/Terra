@@ -21,7 +21,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
@@ -35,11 +34,9 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
-import com.dfsek.terra.bukkit.world.BukkitServerWorld;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
@@ -60,7 +57,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), new BukkitWorldProperties(worldInfo), x, z);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), new BukkitWorldProperties(worldInfo), pack.getBiomeProvider().caching(), x, z);
     }
     
     @Override

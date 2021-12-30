@@ -86,6 +86,6 @@ public class CheckFunction implements Function<String> {
     private double sample(double x, double y, double z, SamplerProvider cache, World world) {
         int cx = FastMath.floorDiv((int) x, 16);
         int cz = FastMath.floorDiv((int) z, 16);
-        return cache.getChunk(cx, cz, world).sample(x - (cx << 4), y, z - (cz << 4));
+        return cache.getChunk(cx, cz, world, world.getBiomeProvider()).sample(x - (cx << 4), y, z - (cz << 4));
     }
 }

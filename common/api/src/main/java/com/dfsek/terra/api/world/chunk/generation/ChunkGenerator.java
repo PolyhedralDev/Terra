@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.world.chunk.generation;
 
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface ChunkGenerator {
-    void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
+    void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world, @NotNull BiomeProvider biomeProvider,
                            int chunkX, int chunkZ);
     
     BlockState getBlock(WorldProperties world, int x, int y, int z);

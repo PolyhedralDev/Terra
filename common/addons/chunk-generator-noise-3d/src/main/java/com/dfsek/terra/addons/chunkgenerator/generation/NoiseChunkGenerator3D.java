@@ -22,7 +22,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -48,24 +47,23 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
         this.carverVerticalResolution = carverVerticalResolution;
-        this.samplerCache = new SamplerProvider(platform, c.getBiomeProvider(), elevationBlend);
+        this.samplerCache = new SamplerProvider(platform, elevationBlend);
     }
     
     @Override
     @SuppressWarnings("try")
     public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
+                                  @NotNull BiomeProvider biomeProvider,
                                   int chunkX, int chunkZ) {
         try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
-            BiomeProvider grid = configPack.getBiomeProvider();
-            
             int xOrig = (chunkX << 4);
             int zOrig = (chunkZ << 4);
             
-            Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world);
+            Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world, biomeProvider);
             
             long seed = world.getSeed();
             
-            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(configPack.getBiomeProvider(),
+            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(biomeProvider,
                                                                                  chunkX,
                                                                                  chunkZ,
                                                                                  world.getMaxHeight(),
@@ -80,7 +78,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                     int cx = xOrig + x;
                     int cz = zOrig + z;
                     
-                    Biome biome = grid.getBiome(cx, cz, seed);
+                    Biome biome = biomeProvider.getBiome(cx, cz, seed);
                     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                     
@@ -113,7 +111,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     public BlockState getBlock(WorldProperties world, int x, int y, int z) {
         BiomeProvider provider = configPack.getBiomeProvider();
         Biome biome = provider.getBiome(x, z, world.getSeed());
-        Sampler3D sampler = samplerCache.get(x, z, world);
+        Sampler3D sampler = samplerCache.get(x, z, world, configPack.getBiomeProvider());
         
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
         
