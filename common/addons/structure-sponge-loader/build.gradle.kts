@@ -17,7 +17,6 @@ dependencies {
 }
 
 tasks.named<ShadowJar>("shadowJar") {
-    archiveClassifier.set("")
     relocate("org.apache.commons", "com.dfsek.terra.addons.sponge.lib.commons")
 }
 
