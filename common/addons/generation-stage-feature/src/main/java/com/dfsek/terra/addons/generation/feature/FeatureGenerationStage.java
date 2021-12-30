@@ -43,6 +43,8 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                     int tx = cx + x;
                     int tz = cz + z;
                     ColumnImpl<ProtoWorld> column = new ColumnImpl<>(tx, tz, world);
+                    long coordinateSeed = (seed * 31 + tx) * 31 + tz;
+                    
                     world.getBiomeProvider()
                          .getBiome(tx, tz, seed)
                          .getContext()
@@ -58,10 +60,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                              feature.getStructure(world, tx, y, tz)
                                                                     .generate(Vector3Int.of(tx, y, tz),
                                                                               world,
-                                                                              new Random(PopulationUtil.getCarverChunkSeed(
-                                                                                      world.centerChunkX(),
-                                                                                      world.centerChunkZ(),
-                                                                                      seed)),
+                                                                              new Random(coordinateSeed * 31 + y),
                                                                               Rotation.NONE)
                                                     );
                                  }
