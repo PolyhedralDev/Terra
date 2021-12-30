@@ -18,6 +18,7 @@
 package com.dfsek.terra.fabric.generation;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
@@ -188,8 +189,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView height) {
         int y = height.getTopY();
+        BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
         while(y >= getMinimumY() && !heightmap.getBlockPredicate().test(
-                (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y - 1, z))) {
+                (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y - 1, z, biomeProvider))) {
             y--;
         }
         return y;
@@ -198,8 +200,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height) {
         BlockState[] array = new BlockState[height.getHeight()];
+        BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
         for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
-            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y, z);
+            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y, z, biomeProvider);
         }
         return new VerticalBlockSample(height.getBottomY(), array);
     }
