@@ -20,6 +20,9 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -36,8 +39,13 @@ import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class PlatformImpl extends AbstractPlatform {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PlatformImpl.class);
+    
     private final ItemHandle itemHandle = new BukkitItemHandle();
     
     private final WorldHandle handle = new BukkitWorldHandle();
@@ -55,7 +63,20 @@ public class PlatformImpl extends AbstractPlatform {
     
     @Override
     public boolean reload() {
-        return false;
+        getTerraConfig().load(this);
+        getRawConfigRegistry().clear();
+        boolean succeed = getRawConfigRegistry().loadAll(this);
+        
+        Bukkit.getWorlds().forEach(world -> {
+            if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
+                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                    wrapper.setPack(pack);
+                    LOGGER.info("Replaced pack in chunk generator for world {}", world);
+                });
+            }
+        });
+        
+        return succeed;
     }
     
     @Override
