@@ -9,7 +9,6 @@ import java.util.zip.ZipOutputStream
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
-import org.gradle.api.tasks.bundling.AbstractArchiveTask
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
@@ -35,12 +34,7 @@ fun Project.configureDistribution() {
         group = "terra"
         forSubProjects(":common:addons") {
             afterEvaluate {
-                if(tasks.findByName("shadowJar") != null) {
-                    dependsOn(tasks.getByName("shadowJar")) // Depend on addon JARs
-                    println("Using shaded JAR for addon ${this.name}")
-                } else {
-                    dependsOn(tasks.getByName("build")) // Depend on addon JARs
-                }
+                dependsOn(getJarTask())
             }
         }
         
@@ -58,11 +52,7 @@ fun Project.configureDistribution() {
             val zip = ZipOutputStream(FileOutputStream(dest))
             
             forSubProjects(":common:addons") {
-                val jar = if(tasks.findByName("shadowJar") != null) {
-                    (tasks.named("shadowJar").get() as ShadowJar)
-                } else {
-                    (tasks.named("jar").get() as Jar)
-                }
+                val jar = getJarTask()
                 
                 println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
                 
@@ -101,7 +91,7 @@ fun Project.configureDistribution() {
             }
             
             forSubProjects(":common:addons") {
-                val jar = (tasks.named("jar").get() as Jar).archiveFileName.get()
+                val jar = getJarTask().archiveFileName.get()
                 resources.computeIfAbsent(
                     if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "addons/bootstrap"
                     else "addons"
@@ -156,4 +146,12 @@ fun downloadPack(packUrl: URL, project: Project) {
     val file = File("${project.buildDir}/resources/main/packs/${fileName}")
     file.parentFile.mkdirs()
     file.outputStream().write(packUrl.readBytes())
+}
+
+fun Project.getJarTask(): Jar {
+    return if(tasks.findByName("shadowJar") != null) {
+        (tasks.named("shadowJar").get() as ShadowJar)
+    } else {
+        (tasks.named("jar").get() as Jar)
+    }
 }
