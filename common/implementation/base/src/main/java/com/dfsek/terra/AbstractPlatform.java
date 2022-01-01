@@ -165,7 +165,7 @@ public abstract class AbstractPlatform implements Platform {
         
         List<BaseAddon> addonList = new ArrayList<>();
         
-        InternalAddon internalAddon = new InternalAddon(this);
+        InternalAddon internalAddon = new InternalAddon();
         
         addonList.add(internalAddon);
         

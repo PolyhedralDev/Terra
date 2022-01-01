@@ -34,58 +34,10 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 
 public class InternalAddon implements BaseAddon {
-    private static final Logger logger = LoggerFactory.getLogger(InternalAddon.class);
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     
-    public InternalAddon(Platform platform) {
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(this, CommandRegistrationEvent.class)
-                .then(event -> {
-                    CommandManager<CommandSender> manager = event.getCommandManager();
-                    manager
-                           .command(
-                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                          .literal("start", ArgumentDescription.of("Start profiling"), "st")
-                                          .permission("terra.profiler.start")
-                                          .handler(context -> {
-                                              platform.getProfiler().start();
-                                              context.getSender().sendMessage("Profiling started.");
-                                          }))
-                           .command(
-                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                          .literal("stop", ArgumentDescription.of("Stop profiling"), "s")
-                                          .permission("terra.profiler.stop")
-                                          .handler(context -> {
-                                              platform.getProfiler().stop();
-                                              context.getSender().sendMessage("Profiling stopped.");
-                                          }))
-                           .command(
-                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                          .literal("query", ArgumentDescription.of("Query profiler results"), "q")
-                                          .permission("terra.profiler.query")
-                                          .handler(context -> {
-                                              StringBuilder data = new StringBuilder("Terra Profiler data: \n");
-                                              platform.getProfiler().getTimings().forEach((id, timings) -> data.append(id)
-                                                                                                               .append(": ")
-                                                                                                               .append(timings.toString())
-                                                                                                               .append('\n'));
-                                              logger.info(data.toString());
-                                              context.getSender().sendMessage("Profiling data dumped to console.");
-                                          }))
-                           .command(
-                                   manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                                          .literal("reset", ArgumentDescription.of("Reset the profiler"), "r")
-                                          .permission("terra.profiler.reset")
-                                          .handler(context -> {
-                                              platform.getProfiler().reset();
-                                              context.getSender().sendMessage("Profiler reset.");
-                                          }))
-                    ;
-            
-            
-                });
-        
+    public InternalAddon() {
+    
     }
     
     @Override
