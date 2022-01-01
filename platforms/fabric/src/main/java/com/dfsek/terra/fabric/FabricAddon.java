@@ -21,7 +21,10 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.exception.ConfigException;
 
+import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.registry.key.RegistryKey;
+
+import com.dfsek.terra.fabric.config.BiomeColors;
 
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
@@ -90,6 +93,16 @@ public final class FabricAddon implements BaseAddon {
                                      .forEach((id, biome) -> FabricUtil.registerBiome(biome, pack, event.getRegistryManager(), id));
                              });
                              logger.info("Biomes registered.");
+                         })
+                         .global();
+        
+        terraFabricPlugin.getEventManager()
+                         .getHandler(FunctionalEventHandler.class)
+                         .register(this, ConfigurationLoadEvent.class)
+                         .then(event -> {
+                             if(event.is(Biome.class)) {
+                                event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeColors()));
+                             }
                          })
                          .global();
     }

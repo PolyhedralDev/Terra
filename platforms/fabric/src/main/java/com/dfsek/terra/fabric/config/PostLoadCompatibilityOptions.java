@@ -34,19 +34,5 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PostLoadCompatibilityOptions implements ConfigTemplate, Properties {
-    @Value("structures.inject-biome.exclude-biomes")
-    @Default
-    private Map<Biome, Set<Identifier>> excludedPerBiomeStructures = new HashMap<>();
-    
-    @Value("features.inject-biome.exclude-biomes")
-    @Default
-    private Map<Biome, Set<Identifier>> excludedPerBiomeFeatures = new HashMap<>();
-    
-    public Map<Biome, Set<Identifier>> getExcludedPerBiomeFeatures() {
-        return excludedPerBiomeFeatures;
-    }
-    
-    public Map<Biome, Set<Identifier>> getExcludedPerBiomeStructures() {
-        return excludedPerBiomeStructures;
-    }
+
 }

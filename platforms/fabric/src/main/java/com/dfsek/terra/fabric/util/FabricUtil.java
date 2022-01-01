@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.util;
 
+import com.dfsek.terra.fabric.config.BiomeColors;
+
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -68,68 +70,61 @@ public final class FabricUtil {
      */
     public static void registerBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager,
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
-        // BiomeTemplate template = biome.getTemplate();
-        Map<String, Integer> colors = new HashMap<>(); // template.getColors();
-        
-        //TerraFabricPlugin.FabricAddon fabricAddon = TerraFabricPlugin.getInstance().getFabricAddon();
-        
         Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
         net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-
-        /*
-        Pair<PreLoadCompatibilityOptions, PostLoadCompatibilityOptions> pair = fabricAddon.getTemplates().get(pack);
-        PreLoadCompatibilityOptions compatibilityOptions = pair.getLeft();
-        PostLoadCompatibilityOptions postLoadCompatibilityOptions = pair.getRight();
-
-        //TerraFabricPlugin.getInstance().getDebugLogger().info("Injecting Vanilla structures and features into Terra biome " + biome
-        .getTemplate().getID());
-
-        Registry<ConfiguredStructureFeature<?, ?>> configuredStructureFeatureRegistry = registryManager.get(Registry
-        .CONFIGURED_STRUCTURE_FEATURE_KEY);
-        for(Supplier<ConfiguredStructureFeature<?, ?>> structureFeature : vanilla.getGenerationSettings().getStructureFeatures()) {
-            Identifier key = configuredStructureFeatureRegistry.getId(structureFeature.get());
-            if(!compatibilityOptions.getExcludedBiomeStructures().contains(key) && !postLoadCompatibilityOptions
-            .getExcludedPerBiomeStructures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
-                generationSettings.structureFeature(structureFeature.get());
-                TerraFabricPlugin.getInstance().getDebugLogger().info("Injected structure " + key);
-            }
-        }
-
-        if(compatibilityOptions.doBiomeInjection()) {
-            Registry<ConfiguredFeature<?, ?>> configuredFeatureRegistry = registryManager.get(Registry.CONFIGURED_FEATURE_KEY);
-            for(int step = 0; step < vanilla.getGenerationSettings().getFeatures().size(); step++) {
-                for(Supplier<ConfiguredFeature<?, ?>> featureSupplier : vanilla.getGenerationSettings().getFeatures().get(step)) {
-                    Identifier key = configuredFeatureRegistry.getId(featureSupplier.get());
-                    if(!compatibilityOptions.getExcludedBiomeFeatures().contains(key) && !postLoadCompatibilityOptions
-                    .getExcludedPerBiomeFeatures().getOrDefault(biome, Collections.emptySet()).contains(key)) {
-                        generationSettings.feature(step, featureSupplier);
-                        TerraFabricPlugin.getInstance().getDebugLogger().info("Injected feature " + key + " at stage " + step);
-                    }
-                }
-            }
-        }
-
-         */
         
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .waterColor(colors.getOrDefault("water", accessor.getWaterColor()))
-                .waterFogColor(colors.getOrDefault("water-fog", accessor.getWaterFogColor()))
-                .fogColor(colors.getOrDefault("fog", accessor.getFogColor()))
-                .skyColor(colors.getOrDefault("sky", accessor.getSkyColor()))
                 .grassColorModifier(accessor.getGrassColorModifier());
         
-        if(colors.containsKey("grass")) {
-            effects.grassColor(colors.get("grass"));
+        if(biome.getContext().has(BiomeColors.class)) {
+            BiomeColors biomeColors = biome.getContext().get(BiomeColors.class);
+            
+            if(biomeColors.getWaterColor() == null) {
+                effects.waterColor(vanilla.getWaterColor());
+            } else {
+                effects.waterColor(biomeColors.getWaterColor());
+            }
+            
+            if(biomeColors.getWaterFogColor() == null) {
+                effects.waterFogColor(vanilla.getWaterFogColor());
+            } else {
+                effects.waterFogColor(biomeColors.getWaterFogColor());
+            }
+            
+            if(biomeColors.getFogColor() == null) {
+                effects.fogColor(vanilla.getFogColor());
+            } else {
+                effects.fogColor(biomeColors.getFogColor());
+            }
+            
+            if(biomeColors.getSkyColor() == null) {
+                effects.skyColor(vanilla.getSkyColor());
+            } else {
+                effects.skyColor(biomeColors.getSkyColor());
+            }
+            
+            if(biomeColors.getGrassColor() == null) {
+                accessor.getGrassColor().ifPresent(effects::grassColor);
+            } else  {
+                effects.grassColor(biomeColors.getGrassColor());
+            }
+            
+            if(biomeColors.getFoliageColor() == null) {
+                accessor.getFoliageColor().ifPresent(effects::foliageColor);
+            } else {
+                effects.foliageColor(biomeColors.getFoliageColor());
+            }
+            
         } else {
-            accessor.getGrassColor().ifPresent(effects::grassColor);
-        }
-        if(colors.containsKey("foliage")) {
-            effects.foliageColor(colors.get("foliage"));
-        } else {
+            effects.waterColor(accessor.getWaterColor())
+                   .waterFogColor(accessor.getWaterFogColor())
+                   .fogColor(accessor.getFogColor())
+                   .skyColor(accessor.getSkyColor());
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
+            accessor.getGrassColor().ifPresent(effects::grassColor);
         }
         
         net.minecraft.world.biome.Biome minecraftBiome = new net.minecraft.world.biome.Biome.Builder()
@@ -141,8 +136,9 @@ public final class FabricUtil {
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
+        
         Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-    
+        
         if(biomeRegistry.containsId(identifier)) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
         } else {

@@ -27,4 +27,8 @@ public class Context {
         map.put(properties.getClass(), properties);
         return this;
     }
+    
+    public <T extends Properties> boolean has(Class<T> test) {
+        return map.containsKey(test);
+    }
 }
