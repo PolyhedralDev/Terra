@@ -43,6 +43,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -154,14 +155,14 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
+        new StructureWeightSampler(structureAccessor, chunk);
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            delegate.generateChunkData((ProtoChunk) chunk, world, pack.getBiomeProvider().caching(), chunk.getPos().x, chunk.getPos().z);
-            pack.getStages().forEach(populator -> {
-                if(populator instanceof Chunkified) {
-                    populator.populate(world);
-                }
-            });
+            BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
+            delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
+            
+            new BeardGenerator(structureAccessor, chunk).generate(delegate, world, biomeProvider);
+            
             return chunk;
         }, executor);
     }

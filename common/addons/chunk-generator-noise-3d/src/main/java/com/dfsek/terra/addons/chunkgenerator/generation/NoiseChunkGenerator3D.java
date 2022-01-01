@@ -20,7 +20,6 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -38,11 +37,9 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     private final int carverHorizontalResolution;
     private final int carverVerticalResolution;
-    private final ConfigPack configPack;
     
-    public NoiseChunkGenerator3D(ConfigPack c, Platform platform, int elevationBlend, int carverHorizontalResolution,
+    public NoiseChunkGenerator3D(Platform platform, int elevationBlend, int carverHorizontalResolution,
                                  int carverVerticalResolution) {
-        this.configPack = c;
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
@@ -129,6 +126,11 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         } else if(y <= paletteInfo.seaLevel()) {
             return paletteInfo.ocean().get(paletteInfo.seaLevel() - y, x, y, z, world.getSeed());
         } else return air;
+    }
+    
+    @Override
+    public Palette getPalette(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
+        return biomeProvider.getBiome(x, z, world.getSeed()).getContext().get(PaletteInfo.class).paletteHolder().getPalette(y);
     }
     
     public SamplerProvider samplerProvider() {

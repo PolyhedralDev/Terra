@@ -1,3 +1,5 @@
 accessWidener v1 named
 
 extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/String;)V
+
+accessible method net/minecraft/world/gen/StructureWeightSampler <init> (Lnet/minecraft/world/gen/StructureAccessor;Lnet/minecraft/world/chunk/Chunk;)V

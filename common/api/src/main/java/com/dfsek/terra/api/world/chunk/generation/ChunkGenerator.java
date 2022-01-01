@@ -8,6 +8,7 @@
 package com.dfsek.terra.api.world.chunk.generation;
 
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
-import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface ChunkGenerator {
@@ -31,4 +31,6 @@ public interface ChunkGenerator {
     default BlockState getBlock(WorldProperties world, Vector3Int vector3, BiomeProvider biomeProvider) {
         return getBlock(world, vector3.getX(), vector3.getY(), vector3.getZ(), biomeProvider);
     }
+    
+    Palette getPalette(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider);
 }
