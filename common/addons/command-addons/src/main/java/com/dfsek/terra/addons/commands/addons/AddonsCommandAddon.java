@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class AddonsCommandAddon implements AddonInitializer {
-    private static final Logger logger = LoggerFactory.getLogger(AddonsCommandAddon.class);
-    
     @Inject
     private Platform platform;
     
