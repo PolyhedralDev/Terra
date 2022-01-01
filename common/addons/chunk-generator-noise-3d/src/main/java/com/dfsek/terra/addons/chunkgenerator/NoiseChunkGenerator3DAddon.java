@@ -53,7 +53,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                 .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
                     if(event.is(Biome.class)) {
-                        event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomePaletteTemplate()).get());
+                        event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomePaletteTemplate(platform)).get());
                         event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeNoiseConfigTemplate()).get());
                     }
                 })

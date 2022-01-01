@@ -21,11 +21,15 @@ import java.util.TreeMap;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
+    private final Platform platform;
+    
     @Value("slant")
     @Default
     @Description("The slant palettes to use in this biome.")
@@ -41,12 +45,21 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     private @Meta List<@Meta Map<@Meta Palette, @Meta Integer>> palettes;
     
     @Value("ocean.level")
-    @Description("Sea level in this biome.")
-    private @Meta int seaLevel;
+    @Description("Sea level in this biome. Defaults to zero")
+    @Default
+    private @Meta int seaLevel = 0;
     
     @Value("ocean.palette")
-    @Description("The palette to use for the ocean in this biome.")
-    private @Meta Palette oceanPalette;
+    @Description("The palette to use for the ocean in this biome. Defaults to a blank palette.")
+    @Default
+    private @Meta Palette oceanPalette = new Palette() {
+        @Override
+        public BlockState get(int layer, double x, double y, double z, long seed) {
+            return platform.getWorldHandle().air();
+        }
+    };
+    
+    public BiomePaletteTemplate(Platform platform) { this.platform = platform; }
     
     @Override
     public PaletteInfo get() {
