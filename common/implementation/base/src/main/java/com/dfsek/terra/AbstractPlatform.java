@@ -121,7 +121,6 @@ public abstract class AbstractPlatform implements Platform {
             logger.error("Error loading config.yml resource from jar", e);
         }
         
-        
         config.load(this); // load config.yml
         
         if(config.dumpDefaultConfig()) {
@@ -134,55 +133,7 @@ public abstract class AbstractPlatform implements Platform {
             profiler.start();
         }
         
-        List<BaseAddon> addonList = new ArrayList<>();
-        
-        InternalAddon internalAddon = new InternalAddon();
-        
-        addonList.add(internalAddon);
-        
-        platformAddon().forEach(addonList::add);
-        
-        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
-        
-        Path addonsFolder = getDataFolder().toPath().resolve("addons");
-        
-        Injector<Platform> platformInjector = new InjectorImpl<>(this);
-        platformInjector.addExplicitTarget(Platform.class);
-        
-        bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
-                            .forEach(bootstrapAddon -> {
-                                platformInjector.inject(bootstrapAddon);
-            
-                                bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
-                                              .forEach(addonList::add);
-                            });
-        addonList.sort(Comparator.comparing(StringIdentifiable::getID));
-        if(logger.isInfoEnabled()) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Loading ")
-                   .append(addonList.size())
-                   .append(" Terra addons:");
-            
-            for(BaseAddon addon : addonList) {
-                builder.append("\n        ")
-                       .append("- ")
-                       .append(addon.getID())
-                       .append("@")
-                       .append(addon.getVersion().getFormatted());
-            }
-            
-            logger.info(builder.toString());
-        }
-        
-        DependencySorter sorter = new DependencySorter();
-        addonList.forEach(sorter::add);
-        sorter.sort().forEach(addon -> {
-            platformInjector.inject(addon);
-            addon.initialize();
-            if(!(addon instanceof EphemeralAddon)) { // ephemeral addons exist only for version checking
-                addonRegistry.register(addon.key(addon.getID()), addon);
-            }
-        });
+        InternalAddon internalAddon = loadAddons();
         
         eventManager.getHandler(FunctionalEventHandler.class)
                     .register(internalAddon, PlatformInitializationEvent.class)
@@ -196,6 +147,61 @@ public abstract class AbstractPlatform implements Platform {
         
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
+    }
+    
+    protected InternalAddon loadAddons() {
+        List<BaseAddon> addonList = new ArrayList<>();
+    
+        InternalAddon internalAddon = new InternalAddon();
+    
+        addonList.add(internalAddon);
+    
+        platformAddon().forEach(addonList::add);
+    
+        BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
+    
+        Path addonsFolder = getDataFolder().toPath().resolve("addons");
+    
+        Injector<Platform> platformInjector = new InjectorImpl<>(this);
+        platformInjector.addExplicitTarget(Platform.class);
+    
+        bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
+                            .forEach(bootstrapAddon -> {
+                                platformInjector.inject(bootstrapAddon);
+        
+                                bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
+                                              .forEach(addonList::add);
+                            });
+        
+        addonList.sort(Comparator.comparing(StringIdentifiable::getID));
+        if(logger.isInfoEnabled()) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Loading ")
+                   .append(addonList.size())
+                   .append(" Terra addons:");
+        
+            for(BaseAddon addon : addonList) {
+                builder.append("\n        ")
+                       .append("- ")
+                       .append(addon.getID())
+                       .append("@")
+                       .append(addon.getVersion().getFormatted());
+            }
+        
+            logger.info(builder.toString());
+        }
+    
+        DependencySorter sorter = new DependencySorter();
+        addonList.forEach(sorter::add);
+        sorter.sort().forEach(addon -> {
+            platformInjector.inject(addon);
+            addon.initialize();
+            if(!(addon instanceof EphemeralAddon)) { // ephemeral addons exist only for version checking
+                addonRegistry.register(addon.key(addon.getID()), addon);
+            }
+        });
+        
+        return internalAddon;
     }
     
     protected void dumpResources() {
