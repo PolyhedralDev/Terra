@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.util.vector.Vector2Int;
-import com.dfsek.terra.api.world.biome.Biome;
-
 import net.jafama.FastMath;
 
 import java.util.HashMap;

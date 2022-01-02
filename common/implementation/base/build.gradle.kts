@@ -8,7 +8,6 @@ dependencies {
     shadedImplementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
     
     shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
-    shadedImplementation("org.ow2.asm", "asm", Versions.Libraries.Internal.asm)
     
-    shadedImplementation("it.unimi.dsi", "fastutil:", Versions.Libraries.Internal.fastutil)
+    implementation("org.ow2.asm", "asm", Versions.Libraries.Internal.asm)
 }
