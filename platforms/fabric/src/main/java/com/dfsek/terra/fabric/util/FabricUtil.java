@@ -19,6 +19,8 @@ package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.fabric.config.BiomeColors;
 
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
@@ -72,52 +74,72 @@ public final class FabricUtil {
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
         Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
         net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
-        
+    
+    
+        if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
+            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
+        } else {
+            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, vanilla);
+    
+            Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
+    
+            if(biomeRegistry.containsId(identifier)) {
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
+            } else {
+                Registry.register(biomeRegistry, identifier, minecraftBiome);
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(minecraftBiome);
+                terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
+                        biomeRegistry.getKey(minecraftBiome).orElseThrow());
+            }
+        }
+    }
+    
+    public static net.minecraft.world.biome.Biome createBiome(Biome biome, net.minecraft.world.biome.Biome vanilla) {
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-        
+    
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder()
                 .grassColorModifier(accessor.getGrassColorModifier());
-        
+    
         if(biome.getContext().has(BiomeColors.class)) {
             BiomeColors biomeColors = biome.getContext().get(BiomeColors.class);
-            
+        
             if(biomeColors.getWaterColor() == null) {
                 effects.waterColor(vanilla.getWaterColor());
             } else {
                 effects.waterColor(biomeColors.getWaterColor());
             }
-            
+        
             if(biomeColors.getWaterFogColor() == null) {
                 effects.waterFogColor(vanilla.getWaterFogColor());
             } else {
                 effects.waterFogColor(biomeColors.getWaterFogColor());
             }
-            
+        
             if(biomeColors.getFogColor() == null) {
                 effects.fogColor(vanilla.getFogColor());
             } else {
                 effects.fogColor(biomeColors.getFogColor());
             }
-            
+        
             if(biomeColors.getSkyColor() == null) {
                 effects.skyColor(vanilla.getSkyColor());
             } else {
                 effects.skyColor(biomeColors.getSkyColor());
             }
-            
+        
             if(biomeColors.getGrassColor() == null) {
                 accessor.getGrassColor().ifPresent(effects::grassColor);
             } else  {
                 effects.grassColor(biomeColors.getGrassColor());
             }
-            
+        
             if(biomeColors.getFoliageColor() == null) {
                 accessor.getFoliageColor().ifPresent(effects::foliageColor);
             } else {
                 effects.foliageColor(biomeColors.getFoliageColor());
             }
-            
+        
         } else {
             effects.waterColor(accessor.getWaterColor())
                    .waterFogColor(accessor.getWaterFogColor())
@@ -126,8 +148,8 @@ public final class FabricUtil {
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
             accessor.getGrassColor().ifPresent(effects::grassColor);
         }
-        
-        net.minecraft.world.biome.Biome minecraftBiome = new net.minecraft.world.biome.Biome.Builder()
+    
+        return new net.minecraft.world.biome.Biome.Builder()
                 .precipitation(vanilla.getPrecipitation())
                 .category(vanilla.getCategory())
                 .temperature(vanilla.getTemperature())
@@ -136,17 +158,6 @@ public final class FabricUtil {
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
-        
-        Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-        
-        if(biomeRegistry.containsId(identifier)) {
-            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
-        } else {
-            Registry.register(biomeRegistry, identifier, minecraftBiome);
-            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(minecraftBiome);
-            terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
-                    biomeRegistry.getKey(minecraftBiome).orElseThrow());
-        }
     }
     
     public static Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>> getTerraVanillaBiomes() {

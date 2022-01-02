@@ -60,25 +60,13 @@ public final class FabricAddon implements BaseAddon {
         terraFabricPlugin.getEventManager()
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigPackPreLoadEvent.class)
-                         .then(event -> {
-                             try {
-                                 event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions()));
-                             } catch(ConfigException e) {
-                                 logger.error("Error loading config template", e);
-                             }
-                         })
+                         .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
                          .global();
         
         terraFabricPlugin.getEventManager()
                          .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigPackPostLoadEvent.class)
-                         .then(event -> {
-                             try {
-                                 event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions()));
-                             } catch(ConfigException e) {
-                                 logger.error("Error loading config template", e);
-                             }
-                         })
+                         .then(event -> event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions())))
                          .priority(100)
                          .global();
         

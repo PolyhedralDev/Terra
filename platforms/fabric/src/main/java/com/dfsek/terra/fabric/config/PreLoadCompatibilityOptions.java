@@ -31,5 +31,11 @@ import java.util.Set;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
-
+    @Value("fabric.use-vanilla-biomes")
+    @Default
+    private boolean vanillaBiomes = false;
+    
+    public boolean useVanillaBiomes() {
+        return vanillaBiomes;
+    }
 }
