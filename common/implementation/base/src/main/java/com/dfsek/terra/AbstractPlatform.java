@@ -125,36 +125,7 @@ public abstract class AbstractPlatform implements Platform {
         config.load(this); // load config.yml
         
         if(config.dumpDefaultConfig()) {
-            try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
-                if(resourcesConfig == null) {
-                    logger.info("No resources config found. Skipping resource dumping.");
-                    return;
-                }
-                String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
-                Map<String, List<String>> resources = new Yaml().load(resourceYaml);
-                resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                    String resourcePath = String.format("%s/%s", dir, entry);
-                    File resource = new File(getDataFolder(), resourcePath);
-                    if(resource.exists())
-                        return; // dont overwrite
-                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
-                    try {
-                        resource.getParentFile().mkdirs();
-                        resource.createNewFile();
-                    } catch(IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                    logger.debug("Copying resource {}", resourcePath);
-                    try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
-                        OutputStream os = new FileOutputStream(resource)) {
-                        IOUtils.copy(is, os);
-                    } catch(IOException e) {
-                        throw new UncheckedIOException(e);
-                    }
-                }));
-            } catch(IOException e) {
-                logger.error("Error while dumping resources...", e);
-            }
+            dumpResources();
         } else {
             logger.info("Skipping resource dumping.");
         }
@@ -225,6 +196,39 @@ public abstract class AbstractPlatform implements Platform {
         
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
+    }
+    
+    protected void dumpResources() {
+        try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
+            if(resourcesConfig == null) {
+                logger.info("No resources config found. Skipping resource dumping.");
+                return;
+            }
+            String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
+            Map<String, List<String>> resources = new Yaml().load(resourceYaml);
+            resources.forEach((dir, entries) -> entries.forEach(entry -> {
+                String resourcePath = String.format("%s/%s", dir, entry);
+                File resource = new File(getDataFolder(), resourcePath);
+                if(resource.exists())
+                    return; // dont overwrite
+                logger.info("Dumping resource {}...", resource.getAbsolutePath());
+                try {
+                    resource.getParentFile().mkdirs();
+                    resource.createNewFile();
+                } catch(IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+                logger.debug("Copying resource {}", resourcePath);
+                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
+                    OutputStream os = new FileOutputStream(resource)) {
+                    IOUtils.copy(is, os);
+                } catch(IOException e) {
+                    throw new UncheckedIOException(e);
+                }
+            }));
+        } catch(IOException e) {
+            logger.error("Error while dumping resources...", e);
+        }
     }
     
     @Override
