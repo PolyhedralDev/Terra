@@ -18,17 +18,13 @@ public class ElevationInterpolator {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
-        double[][] noiseStorage = new double[18 + 2 * smooth][18 + 2 * smooth];
-        double[][] weightStorage = new double[18 + 2 * smooth][18 + 2 * smooth];
+        BiomeNoiseProperties[][] gens = new BiomeNoiseProperties[18 + 2 * smooth][18 + 2 * smooth];
         
         // Precompute generators.
         for(int x = -1 - smooth; x <= 16 + smooth; x++) {
             for(int z = -1 - smooth; z <= 16 + smooth; z++) {
-                BiomeNoiseProperties noiseProperties = provider.getBiome(xOrigin + x, zOrigin + z, seed).getContext().get(
+                gens[x + 1 + smooth][z + 1 + smooth] = provider.getBiome(xOrigin + x, zOrigin + z, seed).getContext().get(
                         BiomeNoiseProperties.class);
-                noiseStorage[x + 1 + smooth][z + 1 + smooth] = noiseProperties.elevation().noise(seed, xOrigin + x, zOrigin + z)
-                                                               * noiseProperties.elevationWeight();
-                weightStorage[x + 1 + smooth][z + 1 + smooth] = noiseProperties.elevationWeight();
             }
         }
         
@@ -38,8 +34,9 @@ public class ElevationInterpolator {
                 double div = 0;
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
-                        noise += noiseStorage[x + 1 + smooth + xi][z + 1 + smooth + zi];
-                        div += weightStorage[x + 1 + smooth + xi][z + 1 + smooth + zi];
+                        BiomeNoiseProperties gen = gens[x + 1 + smooth + xi][z + 1 + smooth + zi];
+                        noise += gen.elevation().noise(seed, xOrigin + x, zOrigin + z) * gen.elevationWeight();
+                        div += gen.elevationWeight();
                     }
                 }
                 values[x + 1][z + 1] = noise / div;
