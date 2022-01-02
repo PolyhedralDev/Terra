@@ -11,6 +11,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.feature.locator.config.AdjacentPatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.GaussianRandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.Sampler3DLocatorTemplate;
@@ -63,6 +64,7 @@ public class LocatorAddon implements AddonInitializer {
                     locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
                     
                     locatorRegistry.register(addon.key("PATTERN"), PatternLocatorTemplate::new);
+                    locatorRegistry.register(addon.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
                     
                     locatorRegistry.register(addon.key("SAMPLER"), SamplerLocatorTemplate::new);
                     locatorRegistry.register(addon.key("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
