@@ -17,20 +17,53 @@ import com.dfsek.terra.api.world.WritableWorld;
 /**
  * A single vertical column of a world.
  */
-public interface Column<T extends WritableWorld> {
-    int getX();
+public class Column<T extends WritableWorld> {
+    private final int x;
+    private final int z;
+    private final T world;
     
-    int getZ();
+    public Column(int x, int z, T world) {
+        this.x = x;
+        this.z = z;
+        this.world = world;
+    }
     
-    BlockState getBlock(int y);
+    public int getX() {
+        return x;
+    }
     
-    T getWorld();
+    public int getZ() {
+        return z;
+    }
     
-    int getMinY();
+    public BlockState getBlock(int y) {
+        return world.getBlockState(x, y, z);
+    }
     
-    int getMaxY();
+    public T getWorld() {
+        return world;
+    }
     
-    void forEach(IntConsumer function);
+    public int getMinY() {
+        return world.getMinHeight();
+    }
     
-    BinaryColumn newBinaryColumn();
+    public int getMaxY() {
+        return world.getMaxHeight();
+    }
+    
+    public void forEach(IntConsumer function) {
+        for(int y = world.getMinHeight(); y < world.getMaxHeight(); y++) {
+            function.accept(y);
+        }
+    }
+    
+    public BinaryColumn newBinaryColumn() {
+        return new BinaryColumn(getMinY(), getMaxY());
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Column<T> adjacent(int offsetX, int offsetZ) {
+        return (Column<T>) world.column(x + offsetX, z + offsetZ);
+    }
 }
