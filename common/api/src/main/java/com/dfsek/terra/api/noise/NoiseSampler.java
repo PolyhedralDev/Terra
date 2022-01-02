@@ -48,5 +48,13 @@ public interface NoiseSampler {
     
     double noise(long seed, double x, double y);
     
+    default double noise(long seed, int x, int y) {
+        return noise(seed, (double) x, y);
+    }
+    
     double noise(long seed, double x, double y, double z);
+    
+    default double noise(long seed, int x, int y, int z) {
+        return noise(seed, (double) x, y, z);
+    }
 }
