@@ -14,6 +14,7 @@ object Versions {
             const val jafama = "2.3.2"
             const val apacheIO = "2.6"
             const val asm = "9.2"
+            const val fastutil = "8.2.1"
         }
     }
     
