@@ -13,12 +13,13 @@ import java.util.Random;
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
-import com.dfsek.terra.api.util.PopulationUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -42,7 +43,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 for(int z = 0; z < 16; z++) {
                     int tx = cx + x;
                     int tz = cz + z;
-                    ColumnImpl<ProtoWorld> column = new ColumnImpl<>(tx, tz, world);
+                    Column<WritableWorld> column = world.column(tx, tz);
                     long coordinateSeed = (seed * 31 + tx) * 31 + tz;
                     
                     world.getBiomeProvider()

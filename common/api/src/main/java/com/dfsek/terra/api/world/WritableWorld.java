@@ -5,6 +5,7 @@ import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public interface WritableWorld extends ReadableWorld {
@@ -55,5 +56,9 @@ public interface WritableWorld extends ReadableWorld {
     
     default BufferedWorld buffer(int offsetX, int offsetY, int offsetZ) {
         return new BufferedWorld(this, offsetX, offsetY, offsetZ);
+    }
+    
+    default Column<WritableWorld> column(int x, int z) {
+        return new Column<>(x, z, this);
     }
 }
