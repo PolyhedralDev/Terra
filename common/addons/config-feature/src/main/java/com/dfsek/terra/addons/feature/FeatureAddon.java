@@ -27,7 +27,7 @@ public class FeatureAddon implements AddonInitializer {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), addon.key("FEATURE"), 3))
+                .then(event -> event.getPack().registerConfigType(new FeatureConfigType(), addon.key("FEATURE"), 500))
                 .failThrough();
     }
 }
