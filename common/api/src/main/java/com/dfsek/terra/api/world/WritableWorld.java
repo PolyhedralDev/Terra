@@ -6,6 +6,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+import com.dfsek.terra.api.world.util.Interceptors;
 
 
 public interface WritableWorld extends ReadableWorld {
@@ -55,7 +56,11 @@ public interface WritableWorld extends ReadableWorld {
     Entity spawnEntity(double x, double y, double z, EntityType entityType);
     
     default BufferedWorld buffer(int offsetX, int offsetY, int offsetZ) {
-        return new BufferedWorld(this, offsetX, offsetY, offsetZ);
+        return BufferedWorld.builder(this).offsetX(offsetX).offsetY(offsetY).offsetZ(offsetZ).build();
+    }
+    
+    default BufferedWorld.Builder buffer() {
+        return BufferedWorld.builder(this);
     }
     
     default Column<WritableWorld> column(int x, int z) {
