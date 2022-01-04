@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.api.util.collection;
 
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3Int;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -50,6 +53,18 @@ public class ProbabilityCollection<E> implements Collection<E> {
     public E get(NoiseSampler n, double x, double y, double z, long seed) {
         if(array.length == 0) return null;
         return (E) array[MathUtil.normalizeIndex(n.noise(seed, x, y, z), array.length)];
+    }
+    
+    @SuppressWarnings("unchecked")
+    public E get(NoiseSampler n, Vector3Int vector3Int, long seed) {
+        if(array.length == 0) return null;
+        return (E) array[MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()), array.length)];
+    }
+    
+    @SuppressWarnings("unchecked")
+    public E get(NoiseSampler n, Vector3 vector3Int, long seed) {
+        if(array.length == 0) return null;
+        return (E) array[MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()), array.length)];
     }
     
     @SuppressWarnings("unchecked")
