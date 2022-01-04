@@ -43,8 +43,11 @@ public class BeardGenerator {
     private final int minY;
     private final int maxY;
     
-    public BeardGenerator(StructureAccessor structureAccessor, Chunk chunk) {
+    private final double threshold;
+    
+    public BeardGenerator(StructureAccessor structureAccessor, Chunk chunk, double threshold) {
         this.chunk = chunk;
+        this.threshold = threshold;
         ChunkPos chunkPos = chunk.getPos();
         int i = chunkPos.getStartX();
         int j = chunkPos.getStartZ();
@@ -93,7 +96,7 @@ public class BeardGenerator {
             for(int z = 0; z < 16; z++) {
                 int depth = 0;
                 for(int y = maxY; y >= minY; y--) {
-                    if(calculateNoise(x + xi, y, z + zi) > 0.5) {
+                    if(calculateNoise(x + xi, y, z + zi) > threshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), (BlockState) generator
                                 .getPalette(x + xi, y, z + zi, worldProperties, biomeProvider)
                                 .get(depth, x + xi, y, z + zi, worldProperties.getSeed()), false);

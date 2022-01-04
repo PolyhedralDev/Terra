@@ -24,6 +24,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 
@@ -43,7 +44,6 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.StructuresConfig;
@@ -159,9 +159,11 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
-            
-            new BeardGenerator(structureAccessor, chunk).generate(delegate, world, biomeProvider);
-            
+    
+            PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
+            if(compatibilityOptions.isBeard()) {
+                new BeardGenerator(structureAccessor, chunk, compatibilityOptions.getBeardThreshold()).generate(delegate, world, biomeProvider);
+            }
             return chunk;
         }, executor);
     }

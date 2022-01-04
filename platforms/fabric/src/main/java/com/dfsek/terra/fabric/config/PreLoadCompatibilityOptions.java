@@ -35,7 +35,23 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Default
     private boolean vanillaBiomes = false;
     
+    @Value("fabric.beard.enable")
+    @Default
+    private boolean beard = true;
+    
+    @Value("fabric.beard.threshold")
+    @Default
+    private double beardThreshold = 0.5;
+    
     public boolean useVanillaBiomes() {
         return vanillaBiomes;
+    }
+    
+    public boolean isBeard() {
+        return beard;
+    }
+    
+    public double getBeardThreshold() {
+        return beardThreshold;
     }
 }
