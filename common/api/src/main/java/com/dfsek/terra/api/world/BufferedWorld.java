@@ -44,7 +44,7 @@ public class BufferedWorld implements WritableWorld {
     
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        return readInterceptor.read(x, y, z, delegate);
+        return readInterceptor.read(x + offsetX, y + offsetY, z + offsetZ, delegate);
     }
     
     @Override
@@ -84,7 +84,7 @@ public class BufferedWorld implements WritableWorld {
     
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        writeInterceptor.write(x, y, z, data, delegate, physics);
+        writeInterceptor.write(x + offsetX, y + offsetY, z + offsetZ, data, delegate, physics);
     }
     
     @Override
@@ -148,9 +148,9 @@ public class BufferedWorld implements WritableWorld {
         
         public BufferedWorld build() {
             return new BufferedWorld(delegate,
-                                     x,
-                                     y,
-                                     z,
+                                     this.x,
+                                     this.y,
+                                     this.z,
                                      Objects.requireNonNullElse(readInterceptor, Interceptors.readThrough()),
                                      Objects.requireNonNullElse(writeInterceptor, Interceptors.writeThrough()));
         }
