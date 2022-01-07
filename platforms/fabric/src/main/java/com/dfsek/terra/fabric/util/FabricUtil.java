@@ -36,6 +36,7 @@ import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 
@@ -88,12 +89,15 @@ public final class FabricUtil {
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
         
-        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+        
+        net.minecraft.world.biome.Biome.Builder builder = new Builder();
         
         if(biome.getContext().has(VanillaBiomeProperties.class)) {
+            VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+            
             effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
                    .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-                   .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
+                   .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
                    .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
                    .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), accessor.getGrassColorModifier()));
             
@@ -110,6 +114,10 @@ public final class FabricUtil {
                 effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
             }
             
+            
+            builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()))
+                   .category(Objects.requireNonNullElse(vanillaBiomeProperties.getCategory(), vanilla.getCategory()));
+            
         } else {
             effects.waterColor(accessor.getWaterColor())
                    .waterFogColor(accessor.getWaterFogColor())
@@ -117,11 +125,12 @@ public final class FabricUtil {
                    .skyColor(accessor.getSkyColor());
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
             accessor.getGrassColor().ifPresent(effects::grassColor);
+            
+            builder.precipitation(vanilla.getPrecipitation())
+                    .category(vanilla.getCategory());
         }
         
-        return new net.minecraft.world.biome.Biome.Builder()
-                .precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()))
-                .category(Objects.requireNonNullElse(vanillaBiomeProperties.getCategory(), vanilla.getCategory()))
+        return builder
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
