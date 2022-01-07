@@ -41,9 +41,6 @@ public abstract class BlockStateMixin extends State<Block, net.minecraft.block.B
     @Shadow
     public abstract boolean isAir();
     
-    @Shadow
-    public abstract void randomTick(ServerWorld world, BlockPos pos, Random random);
-    
     public boolean terra$matches(BlockState other) {
         return getBlock() == ((net.minecraft.block.BlockState) other).getBlock();
     }
