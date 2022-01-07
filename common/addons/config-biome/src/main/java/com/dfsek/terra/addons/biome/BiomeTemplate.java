@@ -50,11 +50,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private @Meta Set<@Meta String> tags = new HashSet<>();
     
-    @Value("colors")
-    @Default
-    private @Meta Map<@Meta String, @Meta Integer> colors = new HashMap<>();
-    // Plain ol' map, so platforms can decide what to do with colors (if anything).
-    
     public BiomeTemplate(ConfigPack pack, Platform platform) {
         this.pack = pack;
     }
@@ -71,10 +66,6 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public Set<String> getTags() {
         return tags;
-    }
-    
-    public Map<String, Integer> getColors() {
-        return colors;
     }
     
     public int getColor() {
