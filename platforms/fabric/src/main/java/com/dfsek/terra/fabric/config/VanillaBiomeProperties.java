@@ -38,7 +38,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     @Value("colors.modifier")
     @Default
-    private GrassColorModifier modifier = GrassColorModifier.NONE;
+    private GrassColorModifier modifier = null;
     
     @Value("climate.precipitation")
     @Default
