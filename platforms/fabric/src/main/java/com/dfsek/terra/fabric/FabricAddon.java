@@ -19,26 +19,18 @@ package com.dfsek.terra.fabric;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.tectonic.api.exception.ConfigException;
 
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-import com.dfsek.terra.api.registry.key.RegistryKey;
 
-import com.dfsek.terra.fabric.config.BiomeColors;
+import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 
-import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
@@ -89,7 +81,7 @@ public final class FabricAddon implements BaseAddon {
                          .register(this, ConfigurationLoadEvent.class)
                          .then(event -> {
                              if(event.is(Biome.class)) {
-                                event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeColors()));
+                                event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
                              }
                          })
                          .global();

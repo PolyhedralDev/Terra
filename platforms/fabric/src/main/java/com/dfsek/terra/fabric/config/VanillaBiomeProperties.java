@@ -6,8 +6,12 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.api.properties.Properties;
 
+import net.minecraft.world.biome.Biome.Category;
+import net.minecraft.world.biome.Biome.Precipitation;
+import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 
-public class BiomeColors implements ConfigTemplate, Properties {
+
+public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Value("colors.grass")
     @Default
     private Integer grassColor = null;
@@ -32,6 +36,18 @@ public class BiomeColors implements ConfigTemplate, Properties {
     @Default
     private Integer skyColor = null;
     
+    @Value("colors.modifier")
+    @Default
+    private GrassColorModifier modifier = GrassColorModifier.NONE;
+    
+    @Value("climate.precipitation")
+    @Default
+    private Precipitation precipitation = null;
+    
+    @Value("climate.category")
+    @Default
+    private Category category = null;
+    
     public Integer getFogColor() {
         return fogColor;
     }
@@ -54,5 +70,17 @@ public class BiomeColors implements ConfigTemplate, Properties {
     
     public Integer getSkyColor() {
         return skyColor;
+    }
+    
+    public Category getCategory() {
+        return category;
+    }
+    
+    public Precipitation getPrecipitation() {
+        return precipitation;
+    }
+    
+    public GrassColorModifier getModifier() {
+        return modifier;
     }
 }

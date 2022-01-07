@@ -30,6 +30,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.world.biome.Biome.Category;
+import net.minecraft.world.biome.Biome.Precipitation;
+import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,7 +166,10 @@ public class PlatformImpl extends AbstractPlatform {
                     if(identifier == null)
                         throw new LoadException("Invalid identifier: " + o, depthTracker);
                     return identifier;
-                });
+                })
+                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.byName((String) o))
+                .registerLoader(Category.class, (type, o, loader, depthTracker) -> Category.byName((String) o))
+                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> GrassColorModifier.byName((String) o));
     }
     
     

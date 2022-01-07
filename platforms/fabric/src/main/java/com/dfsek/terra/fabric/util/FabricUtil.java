@@ -17,41 +17,29 @@
 
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.fabric.config.BiomeColors;
-
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-
-import com.mojang.serialization.Lifecycle;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.MutableRegistry;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.gen.GenerationStep;
-import net.minecraft.world.gen.carver.ConfiguredCarver;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.OptionalInt;
-import java.util.function.Supplier;
-
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
+
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.DynamicRegistryManager;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.GenerationSettings;
+
+import java.util.*;
 
 
 public final class FabricUtil {
@@ -74,15 +62,15 @@ public final class FabricUtil {
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
         Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
         net.minecraft.world.biome.Biome vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
-    
-    
+        
+        
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
             net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, vanilla);
-    
+            
             Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
-    
+            
             if(biomeRegistry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
             } else {
@@ -96,50 +84,32 @@ public final class FabricUtil {
     
     public static net.minecraft.world.biome.Biome createBiome(Biome biome, net.minecraft.world.biome.Biome vanilla) {
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-    
+        
         BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
-        BiomeEffects.Builder effects = new BiomeEffects.Builder()
-                .grassColorModifier(accessor.getGrassColorModifier());
-    
-        if(biome.getContext().has(BiomeColors.class)) {
-            BiomeColors biomeColors = biome.getContext().get(BiomeColors.class);
+        BiomeEffects.Builder effects = new BiomeEffects.Builder();
         
-            if(biomeColors.getWaterColor() == null) {
-                effects.waterColor(vanilla.getWaterColor());
-            } else {
-                effects.waterColor(biomeColors.getWaterColor());
-            }
+        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
         
-            if(biomeColors.getWaterFogColor() == null) {
-                effects.waterFogColor(vanilla.getWaterFogColor());
-            } else {
-                effects.waterFogColor(biomeColors.getWaterFogColor());
-            }
-        
-            if(biomeColors.getFogColor() == null) {
-                effects.fogColor(vanilla.getFogColor());
-            } else {
-                effects.fogColor(biomeColors.getFogColor());
-            }
-        
-            if(biomeColors.getSkyColor() == null) {
-                effects.skyColor(vanilla.getSkyColor());
-            } else {
-                effects.skyColor(biomeColors.getSkyColor());
-            }
-        
-            if(biomeColors.getGrassColor() == null) {
+        if(biome.getContext().has(VanillaBiomeProperties.class)) {
+            effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
+                   .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
+                   .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
+                   .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
+                   .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), accessor.getGrassColorModifier()));
+            
+            
+            if(vanillaBiomeProperties.getGrassColor() == null) {
                 accessor.getGrassColor().ifPresent(effects::grassColor);
-            } else  {
-                effects.grassColor(biomeColors.getGrassColor());
+            } else {
+                effects.grassColor(vanillaBiomeProperties.getGrassColor());
             }
-        
-            if(biomeColors.getFoliageColor() == null) {
+            
+            if(vanillaBiomeProperties.getFoliageColor() == null) {
                 accessor.getFoliageColor().ifPresent(effects::foliageColor);
             } else {
-                effects.foliageColor(biomeColors.getFoliageColor());
+                effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
             }
-        
+            
         } else {
             effects.waterColor(accessor.getWaterColor())
                    .waterFogColor(accessor.getWaterFogColor())
@@ -148,10 +118,10 @@ public final class FabricUtil {
             accessor.getFoliageColor().ifPresent(effects::foliageColor);
             accessor.getGrassColor().ifPresent(effects::grassColor);
         }
-    
+        
         return new net.minecraft.world.biome.Biome.Builder()
-                .precipitation(vanilla.getPrecipitation())
-                .category(vanilla.getCategory())
+                .precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()))
+                .category(Objects.requireNonNullElse(vanillaBiomeProperties.getCategory(), vanilla.getCategory()))
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
