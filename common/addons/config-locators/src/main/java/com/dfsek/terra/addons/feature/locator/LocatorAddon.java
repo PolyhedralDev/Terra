@@ -20,6 +20,7 @@ import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.XorLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.AirMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.AndPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.BlockSetMatchPatternTemplate;
@@ -71,6 +72,7 @@ public class LocatorAddon implements AddonInitializer {
             
                     locatorRegistry.register(addon.key("AND"), AndLocatorTemplate::new);
                     locatorRegistry.register(addon.key("OR"), OrLocatorTemplate::new);
+                    locatorRegistry.register(addon.key("XOR"), XorLocatorTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
