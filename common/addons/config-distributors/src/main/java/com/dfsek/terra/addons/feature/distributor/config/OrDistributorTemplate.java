@@ -34,7 +34,7 @@ public class OrDistributorTemplate implements ObjectTemplate<Distributor>, Valid
     
     @Override
     public boolean validate() throws ValidationException {
-        if(distributors.isEmpty()) throw new ValidationException("AND Distributor must specify at least 1 distributor.");
+        if(distributors.isEmpty()) throw new ValidationException("OR Distributor must specify at least 1 distributor.");
         return true;
     }
 }
