@@ -109,7 +109,7 @@ public class BinaryColumn {
             if(that.data.length > index) {
                 right = this.data[index];
             }
-            next.data[i] = operator.apply(left, right);
+            next.data[index] = operator.apply(left, right);
         }
     
         return next;
