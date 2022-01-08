@@ -88,6 +88,10 @@ public class BinaryColumn {
         return bool(that, Boolean::logicalOr);
     }
     
+    public BinaryColumn xor(BinaryColumn that) {
+        return bool(that, Boolean::logicalXor);
+    }
+    
     private BinaryColumn bool(BinaryColumn that, BinaryOperator<Boolean> operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
