@@ -25,4 +25,8 @@ public interface Distributor {
     default Distributor or(Distributor other) {
         return (x, z, seed) -> this.matches(x, z, seed) || other.matches(x, z, seed);
     }
+    
+    default Distributor xor(Distributor other) {
+        return (x, z, seed) -> this.matches(x, z, seed) ^ other.matches(x, z, seed);
+    }
 }
