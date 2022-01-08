@@ -54,6 +54,11 @@ public class BinaryColumn {
         return data[y - minY];
     }
     
+    
+    public boolean contains(int y) {
+        return y >= minY && y < maxY;
+    }
+    
     /**
      * Perform an action for all heights which have been set.
      * @param consumer Action to perform
@@ -99,17 +104,18 @@ public class BinaryColumn {
         BinaryColumn next = new BinaryColumn(smallMinY, bigMaxY);
     
         for(int i = smallMinY; i < bigMaxY; i++) {
-            int index = i - smallMinY;
             boolean left = false;
             boolean right = false;
-            if(this.data.length > index) {
-                left = this.data[index];
+            
+            if(this.contains(i)) {
+                left = this.get(i);
             }
         
-            if(that.data.length > index) {
-                right = that.data[index];
+            if(that.contains(i)) {
+                right = that.get(i);
             }
-            next.data[index] = operator.apply(left, right);
+            
+            next.data[i - smallMinY] = operator.apply(left, right);
         }
     
         return next;
