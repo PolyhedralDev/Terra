@@ -9,6 +9,7 @@ package com.dfsek.terra.api.structure.feature;
 
 import com.dfsek.terra.api.util.Range;
 
+import java.util.function.BinaryOperator;
 import java.util.function.IntConsumer;
 
 
@@ -73,15 +74,7 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn and(BinaryColumn that) {
-        if(that.minY != this.minY) throw new IllegalArgumentException("Must share same min Y");
-        if(that.data.length != this.data.length) throw new IllegalArgumentException("Must share same max Y");
-        BinaryColumn next = new BinaryColumn(minY, data.length - minY);
-        
-        for(int i = 0; i < this.data.length; i++) {
-            next.data[i] = this.data[i] && that.data[i];
-        }
-        
-        return next;
+        return bool(that, Boolean::logicalAnd);
     }
     
     /**
@@ -92,11 +85,15 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn or(BinaryColumn that) {
+        return bool(that, Boolean::logicalOr);
+    }
+    
+    private BinaryColumn bool(BinaryColumn that, BinaryOperator<Boolean> operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
-        
+    
         BinaryColumn next = new BinaryColumn(smallMinY, bigMaxY);
-        
+    
         for(int i = smallMinY; i < bigMaxY; i++) {
             int index = i - smallMinY;
             boolean left = false;
@@ -104,13 +101,13 @@ public class BinaryColumn {
             if(this.data.length > index) {
                 left = this.data[index];
             }
-    
+        
             if(that.data.length > index) {
                 right = this.data[index];
             }
-            next.data[i] = left || right;
+            next.data[i] = operator.apply(left, right);
         }
-        
+    
         return next;
     }
 }
