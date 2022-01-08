@@ -18,6 +18,7 @@ import java.util.function.IntConsumer;
 public class BinaryColumn {
     private final boolean[] data;
     private final int minY;
+    private final int maxY;
     
     /**
      * Constructs a new {@link BinaryColumn} with all values initiated to {@code false}
@@ -26,6 +27,7 @@ public class BinaryColumn {
      */
     public BinaryColumn(int minY, int maxY) {
         this.minY = minY;
+        this.maxY = maxY;
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
         this.data = new boolean[maxY - minY];
     }
@@ -90,12 +92,23 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn or(BinaryColumn that) {
-        if(that.minY != this.minY) throw new IllegalArgumentException("Must share same min Y");
-        if(that.data.length != this.data.length) throw new IllegalArgumentException("Must share same max Y");
-        BinaryColumn next = new BinaryColumn(minY, data.length - minY);
+        int smallMinY = Math.min(this.minY, that.minY);
+        int bigMaxY = Math.max(this.maxY, that.maxY);
         
-        for(int i = 0; i < this.data.length; i++) {
-            next.data[i] = this.data[i] || that.data[i];
+        BinaryColumn next = new BinaryColumn(smallMinY, bigMaxY);
+        
+        for(int i = smallMinY; i < bigMaxY; i++) {
+            int index = i - smallMinY;
+            boolean left = false;
+            boolean right = false;
+            if(this.data.length > index) {
+                left = this.data[index];
+            }
+    
+            if(that.data.length > index) {
+                right = this.data[index];
+            }
+            next.data[i] = left || right;
         }
         
         return next;
