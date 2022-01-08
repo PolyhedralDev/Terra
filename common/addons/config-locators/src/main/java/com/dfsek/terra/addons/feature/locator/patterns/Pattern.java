@@ -21,6 +21,10 @@ public interface Pattern {
         return (y, column) -> this.matches(y, column) || that.matches(y, column);
     }
     
+    default Pattern xor(Pattern that) {
+        return (y, column) -> this.matches(y, column) ^ that.matches(y, column);
+    }
+    
     default Pattern not() {
         return (y, column) -> !this.matches(y, column);
     }
