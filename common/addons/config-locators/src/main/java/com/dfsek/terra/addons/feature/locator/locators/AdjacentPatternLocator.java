@@ -25,7 +25,7 @@ public class AdjacentPatternLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        BinaryColumn locations = new BinaryColumn(column.getMinY(), column.getMaxY());
+        BinaryColumn locations = new BinaryColumn(search);
         
         for(int y : search) {
             if(isValid(y, column)) locations.set(y);

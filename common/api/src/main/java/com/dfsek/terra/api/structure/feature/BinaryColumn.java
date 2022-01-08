@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.structure.feature;
 
+import com.dfsek.terra.api.util.Range;
+
 import java.util.function.IntConsumer;
 
 
@@ -26,6 +28,10 @@ public class BinaryColumn {
         this.minY = minY;
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
         this.data = new boolean[maxY - minY];
+    }
+    
+    public BinaryColumn(Range y) {
+        this(y.getMin(), y.getMax());
     }
     
     /**
