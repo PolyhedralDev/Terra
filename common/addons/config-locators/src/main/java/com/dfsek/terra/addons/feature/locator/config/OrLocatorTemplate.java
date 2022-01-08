@@ -33,7 +33,7 @@ public class OrLocatorTemplate implements ObjectTemplate<Locator>, ValidatedConf
     
     @Override
     public boolean validate() throws ValidationException {
-        if(locators.isEmpty()) throw new ValidationException("AND Pattern must specify at least 1 pattern.");
+        if(locators.isEmpty()) throw new ValidationException("OR Pattern must specify at least 1 pattern.");
         return true;
     }
 }
