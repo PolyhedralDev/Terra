@@ -17,6 +17,7 @@ import com.dfsek.terra.addons.feature.distributor.config.PaddedGridDistributorTe
 import com.dfsek.terra.addons.feature.distributor.config.SamplerDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.XorDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.addons.feature.distributor.util.PointTemplate;
@@ -46,13 +47,16 @@ public class DistributorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event.getPack().getOrCreateRegistry(
-                            DISTRIBUTOR_TOKEN);
+                    CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event
+                            .getPack()
+                            .getOrCreateRegistry(DISTRIBUTOR_TOKEN);
+                    
                     distributorRegistry.register(addon.key("SAMPLER"), SamplerDistributorTemplate::new);
                     distributorRegistry.register(addon.key("POINTS"), PointSetDistributorTemplate::new);
                     distributorRegistry.register(addon.key("PADDED_GRID"), PaddedGridDistributorTemplate::new);
                     distributorRegistry.register(addon.key("AND"), AndDistributorTemplate::new);
                     distributorRegistry.register(addon.key("OR"), OrDistributorTemplate::new);
+                    distributorRegistry.register(addon.key("XOR"), XorDistributorTemplate::new);
                     distributorRegistry.register(addon.key("YES"), YesDistributorTemplate::new);
                     distributorRegistry.register(addon.key("NO"), NoDistributorTemplate::new);
             
