@@ -28,6 +28,7 @@ import com.dfsek.terra.addons.feature.locator.config.pattern.NotPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.OrPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SingleBlockMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.SolidMatchPatternTemplate;
+import com.dfsek.terra.addons.feature.locator.config.pattern.XorPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -83,6 +84,7 @@ public class LocatorAddon implements AddonInitializer {
             
                     patternRegistry.register(addon.key("AND"), AndPatternTemplate::new);
                     patternRegistry.register(addon.key("OR"), OrPatternTemplate::new);
+                    patternRegistry.register(addon.key("XOR"), XorPatternTemplate::new);
                     patternRegistry.register(addon.key("NOT"), NotPatternTemplate::new);
                 })
                 .failThrough();
