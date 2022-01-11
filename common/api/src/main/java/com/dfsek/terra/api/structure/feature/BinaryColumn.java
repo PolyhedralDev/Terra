@@ -7,10 +7,9 @@
 
 package com.dfsek.terra.api.structure.feature;
 
-import com.dfsek.terra.api.util.Range;
-
-import java.util.function.BinaryOperator;
 import java.util.function.IntConsumer;
+
+import com.dfsek.terra.api.util.Range;
 
 
 /**
@@ -97,7 +96,7 @@ public class BinaryColumn {
         return bool(that, Boolean::logicalXor);
     }
     
-    private BinaryColumn bool(BinaryColumn that, BinaryOperator<Boolean> operator) {
+    private BinaryColumn bool(BinaryColumn that, BooleanBinaryOperator operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
     
@@ -119,5 +118,9 @@ public class BinaryColumn {
         }
     
         return next;
+    }
+    
+    private interface BooleanBinaryOperator {
+        boolean apply(boolean a, boolean b);
     }
 }
