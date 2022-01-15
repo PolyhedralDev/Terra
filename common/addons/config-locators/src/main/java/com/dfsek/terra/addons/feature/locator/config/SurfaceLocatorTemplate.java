@@ -18,14 +18,8 @@ import com.dfsek.terra.api.util.Range;
 
 
 public class SurfaceLocatorTemplate implements ObjectTemplate<Locator> {
-    private final Platform platform;
-    
     @Value("range")
     private @Meta Range range;
-    
-    public SurfaceLocatorTemplate(Platform platform) {
-        this.platform = platform;
-    }
     
     @Override
     public Locator get() {
