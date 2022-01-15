@@ -33,6 +33,7 @@ public class UserDefinedBiome implements Biome {
         this.color = config.getColor();
         this.tags = config.getTags();
         tags.add("BIOME:" + id);
+        tags.add("ALL");
     }
     
     @Override
