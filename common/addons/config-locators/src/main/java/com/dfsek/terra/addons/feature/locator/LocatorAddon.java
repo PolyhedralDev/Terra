@@ -20,6 +20,7 @@ import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.TopLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.XorLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.AirMatchPatternTemplate;
 import com.dfsek.terra.addons.feature.locator.config.pattern.AndPatternTemplate;
@@ -60,7 +61,8 @@ public class LocatorAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-                    locatorRegistry.register(addon.key("SURFACE"), () -> new SurfaceLocatorTemplate(platform));
+                    locatorRegistry.register(addon.key("SURFACE"), SurfaceLocatorTemplate::new);
+                    locatorRegistry.register(addon.key("TOP"), TopLocatorTemplate::new);
                     
                     locatorRegistry.register(addon.key("RANDOM"), RandomLocatorTemplate::new);
                     locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
