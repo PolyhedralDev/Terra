@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.feature.locator.config;
 
+import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
@@ -17,6 +18,7 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 
 
+@SuppressWarnings({ "FieldCanBeLocal", "FieldMayBeFinal" })
 public class AdjacentPatternLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("range")
     private @Meta Range range;
@@ -24,8 +26,12 @@ public class AdjacentPatternLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("pattern")
     private @Meta Pattern pattern;
     
+    @Value("match-all")
+    @Default
+    private @Meta boolean matchAll = false;
+    
     @Override
     public Locator get() {
-        return new AdjacentPatternLocator(pattern, range);
+        return new AdjacentPatternLocator(pattern, range, matchAll);
     }
 }

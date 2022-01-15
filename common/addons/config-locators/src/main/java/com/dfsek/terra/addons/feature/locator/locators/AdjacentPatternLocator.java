@@ -17,10 +17,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 public class AdjacentPatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;
+    private final boolean matchAll;
     
-    public AdjacentPatternLocator(Pattern pattern, Range search) {
+    public AdjacentPatternLocator(Pattern pattern, Range search, boolean matchAll) {
         this.pattern = pattern;
         this.search = search;
+        this.matchAll = matchAll;
     }
     
     @Override
@@ -35,9 +37,16 @@ public class AdjacentPatternLocator implements Locator {
     }
     
     private boolean isValid(int y, Column<?> column) {
-        return pattern.matches(y, column.adjacent(0, -1)) ||
-               pattern.matches(y, column.adjacent(0, 1)) ||
-               pattern.matches(y, column.adjacent(-1, 0)) ||
-               pattern.matches(y, column.adjacent(1, 0));
+        if(matchAll) {
+            return pattern.matches(y, column.adjacent(0, -1)) &&
+                   pattern.matches(y, column.adjacent(0, 1)) &&
+                   pattern.matches(y, column.adjacent(-1, 0)) &&
+                   pattern.matches(y, column.adjacent(1, 0));
+        } else {
+            return pattern.matches(y, column.adjacent(0, -1)) ||
+                   pattern.matches(y, column.adjacent(0, 1)) ||
+                   pattern.matches(y, column.adjacent(-1, 0)) ||
+                   pattern.matches(y, column.adjacent(1, 0));
+        }
     }
 }
