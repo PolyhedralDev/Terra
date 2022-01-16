@@ -65,7 +65,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                 AddonManifest manifest = manifestLoader.load(new AddonManifest(),
                                                              new YamlConfiguration(jar.getInputStream(manifestEntry),
                                                                                    "terra.addon.yml"));
-    
+                
                 logger.debug("Loading addon {}@{}", manifest.getID(), manifest.getVersion().getFormatted());
                 
                 if(manifest.getSchemaVersion() != 1) {
@@ -107,10 +107,12 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
         logger.debug("Loading addons...");
         
         try(Stream<Path> files = Files.walk(addonsFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
-            List<Path> addons = files.filter(path -> path.toFile().isFile())
-                                     .filter(path -> path.toFile().canRead())
-                                     .filter(path -> path.toString().endsWith(".jar"))
-                                     .toList();
+            List<Path> addons = files
+                    .filter(path -> path.toFile().isFile())
+                    .filter(path -> path.toFile().canRead())
+                    .filter(path -> !path.getFileName().startsWith(".")) // ignore hidden files.
+                    .filter(path -> path.toString().endsWith(".jar"))
+                    .toList();
             
             ManifestAddonClassLoader loader = new ManifestAddonClassLoader(addons.stream().map(path -> {
                 try {
