@@ -7,9 +7,3 @@ website: "@WIKI@"
 api-version: "1.13"
 description: "@DESCRIPTION@"
 softdepend: [ "WorldEdit" ]
-commands:
-  terra:
-    description: "Terra base command"
-    usage: "/terra "
-    aliases: [ "te" ]
-    permission: "terra.command"
