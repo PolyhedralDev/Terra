@@ -58,7 +58,6 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Mixin(net.minecraft.server.world.ServerWorld.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$", remap = Interface.Remap.NONE))
 public abstract class ServerWorldMixin {
-    private ConfigPack config;
     @Shadow
     @Final
     private ServerChunkManager chunkManager;
@@ -66,21 +65,6 @@ public abstract class ServerWorldMixin {
     @Shadow
     public abstract long getSeed();
     
-    @Inject(at = @At("RETURN"),
-            method = "<init>(Lnet/minecraft/server/MinecraftServer;Ljava/util/concurrent/Executor;" +
-                     "Lnet/minecraft/world/level/storage/LevelStorage$Session;Lnet/minecraft/world/level/ServerWorldProperties;" +
-                     "Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/world/dimension/DimensionType;" +
-                     "Lnet/minecraft/server/WorldGenerationProgressListener;Lnet/minecraft/world/gen/chunk/ChunkGenerator;" +
-                     "ZJLjava/util/List;Z)V")
-    public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session,
-                                  ServerWorldProperties properties, RegistryKey<net.minecraft.world.World> worldKey,
-                                  DimensionType dimensionType, WorldGenerationProgressListener worldGenerationProgressListener,
-                                  net.minecraft.world.gen.chunk.ChunkGenerator chunkGenerator, boolean debugWorld, long seed,
-                                  List<Spawner> spawners, boolean shouldTickTime, CallbackInfo ci) {
-        if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
-            config = ((FabricChunkGeneratorWrapper) chunkGenerator).getPack();
-        }
-    }
     
     public Entity terra$spawnEntity(Vector3 location, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
@@ -133,6 +117,6 @@ public abstract class ServerWorldMixin {
     }
     
     public ConfigPack terra$getPack() {
-        return config;
+        return ((FabricChunkGeneratorWrapper) chunkManager.getChunkGenerator()).getPack();
     }
 }
