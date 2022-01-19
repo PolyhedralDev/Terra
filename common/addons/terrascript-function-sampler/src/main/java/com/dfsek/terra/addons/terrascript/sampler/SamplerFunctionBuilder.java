@@ -12,6 +12,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -42,10 +43,11 @@ public class SamplerFunctionBuilder implements FunctionBuilder<SamplerFunction> 
         
         if(argumentList.size() == 3) { // 2D
             if(arg instanceof StringConstant constant) {
-                NoiseSampler sampler = samplers2d.get(constant.getConstant()).getSampler();
+                NoiseSampler sampler = Objects.requireNonNull(samplers2d.get(constant.getConstant()),
+                                                              "No such 2D noise function " + constant.getConstant()).getSampler();
                 function = s -> sampler;
             } else {
-                function = s -> samplers2d.get(s.get()).getSampler();
+                function = s -> Objects.requireNonNull(samplers2d.get(s.get()), "No such 2D noise function " + s.get()).getSampler();
             }
             return new SamplerFunction((Returnable<String>) argumentList.get(0),
                                        (Returnable<Number>) argumentList.get(1),
@@ -56,10 +58,11 @@ public class SamplerFunctionBuilder implements FunctionBuilder<SamplerFunction> 
                                        position);
         } else { // 3D
             if(arg instanceof StringConstant constant) {
-                NoiseSampler sampler = samplers3d.get(constant.getConstant()).getSampler();
+                NoiseSampler sampler = Objects.requireNonNull(samplers3d.get(constant.getConstant()),
+                                                              "No such 3D noise function " + constant.getConstant()).getSampler();
                 function = s -> sampler;
             } else {
-                function = s -> samplers3d.get(s.get()).getSampler();
+                function = s -> Objects.requireNonNull(samplers3d.get(s.get()), "No such 3D noise function " + s.get()).getSampler();
             }
             return new SamplerFunction((Returnable<String>) argumentList.get(0),
                                        (Returnable<Number>) argumentList.get(1),
