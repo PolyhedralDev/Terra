@@ -80,7 +80,8 @@ public class NoiseAddon implements AddonInitializer {
                   event.getPack()
                        .applyLoader(CellularSampler.DistanceFunction.class,
                                     (type, o, loader, depthTracker) -> CellularSampler.DistanceFunction.valueOf((String) o))
-                       .applyLoader(CellularSampler.ReturnType.class, (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
+                       .applyLoader(CellularSampler.ReturnType.class,
+                                    (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
             
@@ -117,17 +118,17 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("CONSTANT"), ConstantNoiseTemplate::new);
             
                   noiseRegistry.register(addon.key("KERNEL"), KernelTemplate::new);
-                  
+            
                   noiseRegistry.register(addon.key("LINEAR_HEIGHTMAP"), LinearHeightmapSamplerTemplate::new);
-                  
-                  
+            
+            
                   noiseRegistry.register(addon.key("ADD"), () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register(addon.key("SUB"), () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
                   noiseRegistry.register(addon.key("MUL"), () -> new BinaryArithmeticTemplate<>(MultiplicationSampler::new));
                   noiseRegistry.register(addon.key("DIV"), () -> new BinaryArithmeticTemplate<>(DivisionSampler::new));
                   noiseRegistry.register(addon.key("MAX"), () -> new BinaryArithmeticTemplate<>(MaxSampler::new));
                   noiseRegistry.register(addon.key("MIN"), () -> new BinaryArithmeticTemplate<>(MinSampler::new));
-                  
+            
             
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
@@ -137,7 +138,9 @@ public class NoiseAddon implements AddonInitializer {
                   NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                   packSamplers.putAll(template.getSamplers());
                   packFunctions.putAll(template.getFunctions());
+                  event.getPack().getContext().put(template);
               })
+              .priority(50)
               .failThrough();
     }
 }
