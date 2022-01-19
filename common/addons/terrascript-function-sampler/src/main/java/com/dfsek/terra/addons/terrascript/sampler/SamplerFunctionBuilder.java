@@ -50,7 +50,7 @@ public class SamplerFunctionBuilder implements FunctionBuilder<SamplerFunction> 
             return new SamplerFunction((Returnable<String>) argumentList.get(0),
                                        (Returnable<Number>) argumentList.get(1),
                                        new NumericConstant(0, position),
-                                       (Returnable<Number>) argumentList.get(3),
+                                       (Returnable<Number>) argumentList.get(2),
                                        function,
                                        true,
                                        position);
