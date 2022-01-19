@@ -60,7 +60,7 @@ public class TerraScriptAddon implements AddonInitializer {
                                                 .forEach(structureRegistry::register))
                          .close();
                 })
-                .priority(2)
+                .priority(100)
                 .failThrough();
     }
 }
