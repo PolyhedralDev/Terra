@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.terrascript.sampler;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.noise.NoiseConfigPackTemplate;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -26,7 +27,8 @@ public class TerraScriptSamplerFunctionAddon implements AddonInitializer {
                 .then(event -> event
                         .getPack()
                         .getOrCreateRegistry(FunctionBuilder.class)
-                        .register(addon.key("sampler"), new SamplerFunctionBuilder(event.getPack().getContext().get())))
+                        .register(addon.key("sampler"), new SamplerFunctionBuilder(event.getPack().getContext().get(
+                                NoiseConfigPackTemplate.class).getSamplers())))
                 .failThrough();
     }
 }
