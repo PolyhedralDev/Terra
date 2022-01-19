@@ -42,12 +42,7 @@ public class DependencySorter {
     
     private void sortDependencies(BaseAddon addon, List<BaseAddon> sort) {
         addon.getDependencies().forEach((id, range) -> {
-            if(!addons.containsKey(id)) {
-                throw new DependencyException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range +
-                                              ", but no such addon is installed.");
-            }
-            
-            BaseAddon dependency = addons.get(id);
+            BaseAddon dependency = get(id, addon);
             
             if(!range.isSatisfiedBy(dependency.getVersion())) {
                 throw new DependencyVersionException(
@@ -65,9 +60,17 @@ public class DependencySorter {
         });
     }
     
+    private BaseAddon get(String id, BaseAddon addon) {
+        if(!addons.containsKey(id)) {
+            throw new DependencyException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + addon.getDependencies().get(id).getFormatted() +
+                                          ", but no such addon is installed.");
+        }
+        return addons.get(id);
+    }
+    
     private void checkDependencies(BaseAddon base, BaseAddon current) {
         current.getDependencies().forEach((id, range) -> {
-            BaseAddon dependency = addons.get(id);
+            BaseAddon dependency = get(id, current);
             if(dependency.getID().equals(base.getID())) {
                 throw new CircularDependencyException(
                         "Addon " + base.getID() + " has circular dependency beginning with " + dependency.getID());
