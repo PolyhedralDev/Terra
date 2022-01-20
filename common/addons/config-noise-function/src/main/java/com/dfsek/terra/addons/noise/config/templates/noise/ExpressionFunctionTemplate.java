@@ -11,8 +11,6 @@ import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.tectonic.api.exception.ValidationException;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -37,7 +35,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private @Meta Map<String, @Meta Double> vars = new HashMap<>();
     @Value("expression")
-    private @Meta String equation;
+    private @Meta String expression;
     @Value("samplers")
     @Default
     private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> samplers = new LinkedHashMap<>();
@@ -54,7 +52,7 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     public NoiseSampler get() {
         try {
             Map<String, Function> noiseFunctionMap = generateFunctions();
-            return new ExpressionFunction(noiseFunctionMap, equation, vars);
+            return new ExpressionFunction(noiseFunctionMap, expression, vars);
         } catch(ParseException e) {
             throw new RuntimeException("Failed to parse expression.", e);
         }
