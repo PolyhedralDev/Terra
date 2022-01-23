@@ -100,6 +100,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("print",
                                   new UnaryStringFunctionBuilder(string -> LOGGER.debug("[TerraScript:{}] {}", id, string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
+                .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> FastMath.pow2(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
