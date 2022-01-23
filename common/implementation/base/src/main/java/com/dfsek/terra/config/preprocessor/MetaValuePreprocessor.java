@@ -43,7 +43,8 @@ public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader configLoader, Meta annotation, DepthTracker depthTracker) {
         if(c instanceof String) { // Can we do standard metaconfig?
             String value = ((String) c).trim();
-            if(value.startsWith("$")) { // it's a meta value.
+            if(value.startsWith("$") // it's a meta value.
+               && !value.startsWith("${")) { // it's not a meta string template.
                 Pair<Configuration, Object> pair = getMetaValue(value.substring(1), depthTracker);
     
                 String configName;
