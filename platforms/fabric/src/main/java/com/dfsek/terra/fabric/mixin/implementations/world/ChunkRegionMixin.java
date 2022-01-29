@@ -135,6 +135,13 @@ public abstract class ChunkRegionMixin {
                                                                 .getBiomeSource()).getProvider();
     }
     
+    public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world);
+        entity.setPos(x, y, z);
+        ((ChunkRegion) (Object) this).spawnEntity(entity);
+        return (Entity) entity;
+    }
+    
     public int terraWorld$centerChunkX() {
         return centerPos.getPos().x;
     }
