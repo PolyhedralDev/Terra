@@ -66,10 +66,10 @@ public abstract class ServerWorldMixin {
     public abstract long getSeed();
     
     
-    public Entity terra$spawnEntity(Vector3 location, EntityType entityType) {
+    public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
                 ((net.minecraft.server.world.ServerWorld) (Object) this));
-        entity.setPos(location.getX(), location.getY(), location.getZ());
+        entity.setPos(x, y, z);
         ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
     }
