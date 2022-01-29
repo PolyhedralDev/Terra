@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.api.delegate;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.dfsek.terra.api.world.biome.Biome;
@@ -12,7 +13,9 @@ final class EphemeralBiomeDelegate implements BiomeDelegate {
     
     public EphemeralBiomeDelegate(String id) {
         this.id = id;
-        tags = Collections.singleton(id);
+        tags = new HashSet<>();
+        tags.add(id);
+        tags.add("ALL");
     }
     
     @Override
