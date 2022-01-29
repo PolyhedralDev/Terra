@@ -42,7 +42,7 @@ public class BorderListMutator implements BiomeMutator {
                 for(int zi = -1; zi <= 1; zi++) {
                     if(xi == 0 && zi == 0) continue;
                     BiomeDelegate current = viewPoint.getBiome(xi, zi);
-                    if(current.getTags().contains(border)) {
+                    if(current != null && current.getTags().contains(border)) {
                         if(replace.containsKey(origin)) {
                             BiomeDelegate biome = replace.get(origin).get(noiseSampler, x, z, seed);
                             return biome.isSelf() ? origin : biome;

@@ -38,7 +38,7 @@ public class BorderMutator implements BiomeMutator {
                 for(int zi = -1; zi <= 1; zi++) {
                     if(xi == 0 && zi == 0) continue;
                     BiomeDelegate current = viewPoint.getBiome(xi, zi);
-                    if(current.getTags().contains(border)) {
+                    if(current != null && current.getTags().contains(border)) {
                         BiomeDelegate biome = replace.get(noiseSampler, x, z, seed);
                         return biome.isSelf() ? origin : biome;
                     }
