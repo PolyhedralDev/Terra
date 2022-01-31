@@ -89,7 +89,7 @@ public class PlatformImpl extends AbstractPlatform {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
-            });
+            }).join();
         }
         
         worlds.forEach(world -> {
