@@ -17,8 +17,10 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
+import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerChunkManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryKey;
@@ -65,6 +67,12 @@ public abstract class ServerWorldMixin {
     @Shadow
     public abstract long getSeed();
     
+    
+    @Shadow
+    public abstract ServerChunkManager getChunkManager();
+    
+    @Shadow
+    public abstract void removePlayer(ServerPlayerEntity player, RemovalReason reason);
     
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
@@ -117,6 +125,10 @@ public abstract class ServerWorldMixin {
     }
     
     public ConfigPack terra$getPack() {
-        return ((FabricChunkGeneratorWrapper) chunkManager.getChunkGenerator()).getPack();
+        net.minecraft.world.gen.chunk.ChunkGenerator generator = chunkManager.getChunkGenerator();
+        if(generator instanceof FabricChunkGeneratorWrapper fabricChunkGeneratorWrapper) {
+            return fabricChunkGeneratorWrapper.getPack();
+        }
+        return null;
     }
 }
