@@ -43,7 +43,7 @@ public class TerraBiomeSource extends BiomeSource {
     
     private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private final long seed;
-    private ConfigPack pack;
+    private volatile ConfigPack pack;
     
     private final Map<Biome, net.minecraft.world.biome.Biome> terraToMinecraft = new ConcurrentHashMap<>();
     

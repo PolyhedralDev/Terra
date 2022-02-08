@@ -44,6 +44,7 @@ loom {
     }
 }
 
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.create("generateAddonDir"))
 
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
 addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())

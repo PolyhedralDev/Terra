@@ -53,7 +53,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
-    private final Block block;
+    private final ThreadLocal<Block> block;
     private final RegistryKey id;
     private final Platform platform;
     
@@ -123,7 +123,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             parser.ignoreFunction("debugBlock");
         }
         
-        block = parser.parse();
+        block = ThreadLocal.withInitial(parser::parse);
         this.platform = platform;
     }
     
@@ -143,7 +143,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
-            return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
+            return block.get().apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
         } catch(RuntimeException e) {
             LOGGER.error("Failed to generate structure at {}", arguments.getOrigin(), e);
             return false;

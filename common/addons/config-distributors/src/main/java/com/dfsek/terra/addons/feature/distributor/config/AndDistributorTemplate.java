@@ -24,7 +24,7 @@ public class AndDistributorTemplate implements ObjectTemplate<Distributor>, Vali
     
     
     @Override
-    public Distributor get() {
+    public synchronized Distributor get() {
         Distributor current = distributors.remove(0);
         while(!distributors.isEmpty()) {
             current = current.and(distributors.remove(0));

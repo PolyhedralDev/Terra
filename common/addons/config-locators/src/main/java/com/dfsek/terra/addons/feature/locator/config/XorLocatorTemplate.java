@@ -23,7 +23,7 @@ public class XorLocatorTemplate implements ObjectTemplate<Locator>, ValidatedCon
     private @Meta List<@Meta Locator> locators;
     
     @Override
-    public Locator get() {
+    public synchronized Locator get() {
         Locator current = locators.remove(0);
         while(!locators.isEmpty()) {
             current = current.xor(locators.remove(0));

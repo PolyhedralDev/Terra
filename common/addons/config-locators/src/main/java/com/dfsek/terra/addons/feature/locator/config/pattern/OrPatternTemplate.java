@@ -23,7 +23,7 @@ public class OrPatternTemplate implements ObjectTemplate<Pattern>, ValidatedConf
     private @Meta List<@Meta Pattern> patterns;
     
     @Override
-    public Pattern get() {
+    public synchronized Pattern get() {
         Pattern current = patterns.remove(0);
         while(!patterns.isEmpty()) {
             current = current.or(patterns.remove(0));

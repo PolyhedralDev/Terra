@@ -35,21 +35,21 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
         fractalBounding = 1 / ampFractal;
     }
     
-    public void setGain(double gain) {
+    public synchronized void setGain(double gain) {
         this.gain = gain;
         calculateFractalBounding();
     }
     
-    public void setLacunarity(double lacunarity) {
+    public synchronized void setLacunarity(double lacunarity) {
         this.lacunarity = lacunarity;
     }
     
-    public void setOctaves(int octaves) {
+    public synchronized void setOctaves(int octaves) {
         this.octaves = octaves;
         calculateFractalBounding();
     }
     
-    public void setWeightedStrength(double weightedStrength) {
+    public synchronized void setWeightedStrength(double weightedStrength) {
         this.weightedStrength = weightedStrength;
     }
 }

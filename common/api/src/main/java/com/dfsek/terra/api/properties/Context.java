@@ -9,26 +9,44 @@ package com.dfsek.terra.api.properties;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 public class Context {
+    private final ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
+    
     private final Map<Class<? extends Properties>, Properties> map = new HashMap<>();
     
     @SuppressWarnings("unchecked")
     public <T extends Properties> T get(Class<T> clazz) {
-        return (T) map.computeIfAbsent(clazz, k -> {
-            throw new IllegalArgumentException("No properties registered for class " + clazz.getCanonicalName());
-        });
+        rwLock.readLock().lock();
+        try {
+            final T object = (T) map.get(clazz);
+            if (object == null) throw new IllegalArgumentException("No properties registered for class " + clazz.getCanonicalName());
+            return object;
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
     
     public Context put(Properties properties) {
-        if(map.containsKey(properties.getClass())) throw new IllegalArgumentException(
+        if(this.has(properties.getClass())) throw new IllegalArgumentException(
                 "Property for class " + properties.getClass().getCanonicalName() + " already registered.");
-        map.put(properties.getClass(), properties);
+        rwLock.writeLock().lock();
+        try {
+            map.put(properties.getClass(), properties);
+        } finally {
+            rwLock.writeLock().unlock();
+        }
         return this;
     }
     
     public <T extends Properties> boolean has(Class<T> test) {
-        return map.containsKey(test);
+        rwLock.readLock().lock();
+        try {
+            return map.containsKey(test);
+        } finally {
+            rwLock.readLock().unlock();
+        }
     }
 }

@@ -76,29 +76,29 @@ public class GaborNoiseSampler extends NoiseFunction {
                 omega_0))));
     }
     
-    public void setA(double a) {
+    public synchronized void setA(double a) {
         this.a = a;
         recalculateRadiusAndDensity();
     }
     
-    public void setDeviation(double k) {
+    public synchronized void setDeviation(double k) {
         this.k = k;
     }
     
-    public void setFrequency0(double f0) {
+    public synchronized void setFrequency0(double f0) {
         this.f0 = f0;
     }
     
-    public void setImpulsesPerKernel(double impulsesPerKernel) {
+    public synchronized void setImpulsesPerKernel(double impulsesPerKernel) {
         this.impulsesPerKernel = impulsesPerKernel;
         recalculateRadiusAndDensity();
     }
     
-    public void setIsotropic(boolean isotropic) {
+    public synchronized void setIsotropic(boolean isotropic) {
         this.isotropic = isotropic;
     }
     
-    public void setRotation(double omega0) {
+    public synchronized void setRotation(double omega0) {
         this.omega0 = Math.PI * omega0;
     }
     

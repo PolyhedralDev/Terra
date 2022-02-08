@@ -49,9 +49,9 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.random.AtomicSimpleRandom;
 import net.minecraft.world.gen.random.ChunkRandom;
 import net.minecraft.world.gen.random.RandomSeed;
+import net.minecraft.world.gen.random.SimpleRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,8 +65,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     private final long seed;
     private final TerraBiomeSource biomeSource;
-    private ChunkGenerator delegate;
-    private ConfigPack pack;
+    private volatile ChunkGenerator delegate;
+    private volatile ConfigPack pack;
     private final Supplier<ChunkGeneratorSettings> settingsSupplier;
     
     public FabricChunkGeneratorWrapper(TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
@@ -106,7 +106,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public void populateEntities(ChunkRegion region) {
         ChunkPos chunkPos = region.getCenterPos();
         Biome biome = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
-        ChunkRandom chunkRandom = new ChunkRandom(new AtomicSimpleRandom(RandomSeed.getSeed()));
+        ChunkRandom chunkRandom = new ChunkRandom(new SimpleRandom(RandomSeed.getSeed()));
         chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
         SpawnHelper.populateEntities(region, biome, chunkPos, chunkRandom);
         

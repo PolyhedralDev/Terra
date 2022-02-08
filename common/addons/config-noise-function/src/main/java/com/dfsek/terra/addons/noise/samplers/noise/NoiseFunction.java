@@ -122,7 +122,7 @@ public abstract class NoiseFunction implements NoiseSampler {
         return a >= 0 ? sin[a % (modulus)] : -sin[-a % (modulus)];
     }
     
-    public void setSalt(long salt) {
+    public synchronized void setSalt(long salt) {
         this.salt = salt;
     }
     
@@ -130,7 +130,7 @@ public abstract class NoiseFunction implements NoiseSampler {
         return frequency;
     }
     
-    public void setFrequency(double frequency) {
+    public synchronized void setFrequency(double frequency) {
         this.frequency = frequency;
     }
     

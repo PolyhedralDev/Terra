@@ -31,7 +31,7 @@ public class Getter implements Returnable<Object> {
     }
     
     @Override
-    public synchronized Object apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Object apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
         return variableMap.get(identifier).getValue();
     }
     

@@ -25,7 +25,7 @@ public class ConstantRange implements Range {
     }
     
     @Override
-    public Range multiply(int mult) {
+    public synchronized Range multiply(int mult) {
         min *= mult;
         max *= mult;
         return this;
@@ -51,14 +51,14 @@ public class ConstantRange implements Range {
     }
     
     @Override
-    public Range add(int add) {
+    public synchronized Range add(int add) {
         this.min += add;
         this.max += add;
         return this;
     }
     
     @Override
-    public Range sub(int sub) {
+    public synchronized Range sub(int sub) {
         this.min -= sub;
         this.max -= sub;
         return this;
@@ -81,7 +81,7 @@ public class ConstantRange implements Range {
     }
     
     @Override
-    public Range setMax(int max) {
+    public synchronized Range setMax(int max) {
         this.max = max;
         return this;
     }
@@ -92,7 +92,7 @@ public class ConstantRange implements Range {
     }
     
     @Override
-    public Range setMin(int min) {
+    public synchronized Range setMin(int min) {
         this.min = min;
         return this;
     }

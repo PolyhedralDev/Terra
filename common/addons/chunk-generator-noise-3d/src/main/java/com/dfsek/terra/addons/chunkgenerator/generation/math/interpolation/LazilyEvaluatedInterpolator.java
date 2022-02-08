@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import static com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.Interpolator.lerp;
 
 
+@javax.annotation.concurrent.NotThreadSafe
 public class LazilyEvaluatedInterpolator {
     private final Double[][][] samples;
     

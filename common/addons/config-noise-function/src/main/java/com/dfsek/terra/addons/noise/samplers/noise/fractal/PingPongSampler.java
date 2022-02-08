@@ -23,7 +23,7 @@ public class PingPongSampler extends FractalNoiseFunction {
         return t < 1 ? t : 2 - t;
     }
     
-    public void setPingPongStrength(double strength) {
+    public synchronized void setPingPongStrength(double strength) {
         this.pingPongStrength = strength;
     }
     

@@ -24,7 +24,7 @@ public class OrDistributorTemplate implements ObjectTemplate<Distributor>, Valid
     
     
     @Override
-    public Distributor get() {
+    public synchronized Distributor get() {
         Distributor current = distributors.remove(0);
         while(!distributors.isEmpty()) {
             current = current.or(distributors.remove(0));

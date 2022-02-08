@@ -23,7 +23,7 @@ public class XorPatternTemplate implements ObjectTemplate<Pattern>, ValidatedCon
     private @Meta List<@Meta Pattern> patterns;
     
     @Override
-    public Pattern get() {
+    public synchronized Pattern get() {
         Pattern current = patterns.remove(0);
         while(!patterns.isEmpty()) {
             current = current.xor(patterns.remove(0));

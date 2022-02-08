@@ -35,10 +35,8 @@ public class BeardGenerator {
             }
         }
     });
-    private final ObjectList<StructurePiece> pieces;
-    private final ObjectList<JigsawJunction> junctions;
-    private final ObjectListIterator<StructurePiece> pieceIterator;
-    private final ObjectListIterator<JigsawJunction> junctionIterator;
+    private final ObjectArrayList<StructurePiece> pieces;
+    private final ObjectArrayList<JigsawJunction> junctions;
     private final Chunk chunk;
     private final int minY;
     private final int maxY;
@@ -83,8 +81,8 @@ public class BeardGenerator {
                 }
             }
         }
-        this.pieceIterator = this.pieces.iterator();
-        this.junctionIterator = this.junctions.iterator();
+        this.pieces.trim();
+        this.junctions.trim();
         this.minY = minY;
         this.maxY = maxY;
     }
@@ -110,11 +108,13 @@ public class BeardGenerator {
     }
     
     
+    @SuppressWarnings("RedundantCast") // Suppressed to prevent IDEs from removing these casts causing ClassCastExceptions
     public double calculateNoise(int x, int y, int z) {
         double noise = 0.0;
         
-        while (this.pieceIterator.hasNext()) {
-            StructurePiece structurePiece = this.pieceIterator.next();
+        for (Object __structurePiece: (Object[]) this.pieces.elements()) {
+            if (__structurePiece == null) break;
+            StructurePiece structurePiece = (StructurePiece) __structurePiece;
             BlockBox blockBox = structurePiece.getBoundingBox();
             int structureX = Math.max(0, Math.max(blockBox.getMinX() - x, x - blockBox.getMaxX()));
             int structureY = y - (blockBox.getMinY() + (structurePiece instanceof PoolStructurePiece ? ((PoolStructurePiece)structurePiece).getGroundLevelDelta() : 0));
@@ -128,15 +128,16 @@ public class BeardGenerator {
             
             noise += getStructureWeight(structureX, structureY, structureZ) * 0.8;
         }
-        this.pieceIterator.back(this.pieces.size());
-        while (this.junctionIterator.hasNext()) {
-            JigsawJunction structurePiece = this.junctionIterator.next();
+    
+        for (Object __structurePiece: (Object[]) this.junctions.elements()) {
+            if (__structurePiece == null) break;
+            JigsawJunction structurePiece = (JigsawJunction) __structurePiece;
             int structureX = x - structurePiece.getSourceX();
             int structureY = y - structurePiece.getSourceGroundY();
             int structureZ = z - structurePiece.getSourceZ();
             noise += getStructureWeight(structureX, structureY, structureZ) * 0.4;
         }
-        this.junctionIterator.back(this.junctions.size());
+        
         return noise;
     }
     

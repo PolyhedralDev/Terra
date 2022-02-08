@@ -24,7 +24,7 @@ public class XorDistributorTemplate implements ObjectTemplate<Distributor>, Vali
     
     
     @Override
-    public Distributor get() {
+    public synchronized Distributor get() {
         Distributor current = distributors.remove(0);
         while(!distributors.isEmpty()) {
             current = current.xor(distributors.remove(0));
