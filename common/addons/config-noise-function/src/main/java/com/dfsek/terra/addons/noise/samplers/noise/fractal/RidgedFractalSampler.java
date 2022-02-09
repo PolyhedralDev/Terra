@@ -12,8 +12,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class RidgedFractalSampler extends FractalNoiseFunction {
     
-    public RidgedFractalSampler(NoiseSampler input) {
-        super(input);
+    public RidgedFractalSampler(long salt, NoiseSampler input, int octaves, double gain, double lacunarity, double weightedStrength) {
+        super(salt, input, octaves, gain, lacunarity, weightedStrength);
     }
     
     @Override
@@ -51,5 +51,19 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
         }
         
         return sum;
+    }
+    
+    public static class Builder extends FractalNoiseFunction.Builder<Builder, RidgedFractalSampler> {
+        
+        @Override
+        protected Builder self() {
+            return this;
+        }
+        
+        @Override
+        public RidgedFractalSampler build() {
+            return new RidgedFractalSampler(salt, input, octaves, gain, lacunarity, weightedStrength);
+        }
+        
     }
 }

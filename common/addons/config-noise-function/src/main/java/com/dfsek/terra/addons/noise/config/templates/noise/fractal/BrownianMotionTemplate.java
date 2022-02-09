@@ -14,11 +14,12 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class BrownianMotionTemplate extends FractalTemplate<BrownianMotionSampler> {
     @Override
     public NoiseSampler get() {
-        BrownianMotionSampler sampler = new BrownianMotionSampler(function);
-        sampler.setGain(fractalGain);
-        sampler.setLacunarity(fractalLacunarity);
-        sampler.setOctaves(octaves);
-        sampler.setWeightedStrength(weightedStrength);
-        return sampler;
+        return new BrownianMotionSampler.Builder()
+                .input(function)
+                .gain(fractalGain)
+                .lacunarity(fractalLacunarity)
+                .octaves(octaves)
+                .weightedStrength(weightedStrength)
+                .build();
     }
 }

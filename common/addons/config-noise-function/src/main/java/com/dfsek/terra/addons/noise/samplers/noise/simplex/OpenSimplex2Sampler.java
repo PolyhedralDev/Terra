@@ -13,6 +13,13 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
     
+    public OpenSimplex2Sampler() {
+    }
+    
+    public OpenSimplex2Sampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;

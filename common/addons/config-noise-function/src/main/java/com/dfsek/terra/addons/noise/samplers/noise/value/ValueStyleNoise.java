@@ -27,4 +27,11 @@ public abstract class ValueStyleNoise extends NoiseFunction {
         hash ^= hash << 19;
         return hash * (1 / 2147483648.0);
     }
+    
+    protected ValueStyleNoise() {
+    }
+    
+    protected ValueStyleNoise(double frequency, long salt) {
+        super(frequency, salt);
+    }
 }

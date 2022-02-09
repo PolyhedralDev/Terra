@@ -13,9 +13,6 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
-/**
- * **This implementation is not synchronized**
- */
 public class HashMapDoubleDouble extends HashIntrinsic {
     @Serial
     private static final long serialVersionUID = 2109458761298324234L;

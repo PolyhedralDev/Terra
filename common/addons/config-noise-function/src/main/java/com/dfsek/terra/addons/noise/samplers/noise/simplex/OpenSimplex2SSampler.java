@@ -11,6 +11,14 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
  * NoiseSampler implementation to provide OpenSimplex2 (Smooth Variant) noise.
  */
 public class OpenSimplex2SSampler extends SimplexStyleSampler {
+    
+    public OpenSimplex2SSampler() {
+    }
+    
+    public OpenSimplex2SSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     @Override
     @SuppressWarnings("NumericOverflow")
     public double getNoiseRaw(long sl, double x, double y) {

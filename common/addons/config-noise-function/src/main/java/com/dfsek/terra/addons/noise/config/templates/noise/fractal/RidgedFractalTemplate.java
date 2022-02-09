@@ -14,11 +14,12 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class RidgedFractalTemplate extends FractalTemplate<RidgedFractalSampler> {
     @Override
     public NoiseSampler get() {
-        RidgedFractalSampler sampler = new RidgedFractalSampler(function);
-        sampler.setGain(fractalGain);
-        sampler.setLacunarity(fractalLacunarity);
-        sampler.setOctaves(octaves);
-        sampler.setWeightedStrength(weightedStrength);
-        return sampler;
+        return new RidgedFractalSampler.Builder()
+                .input(function)
+                .gain(fractalGain)
+                .lacunarity(fractalLacunarity)
+                .octaves(octaves)
+                .weightedStrength(weightedStrength)
+                .build();
     }
 }

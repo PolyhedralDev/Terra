@@ -17,6 +17,14 @@ public class PositiveWhiteNoiseSampler extends WhiteNoiseSampler {
     private static final long POSITIVE_POW1 = 0b01111111111L << 52;
     // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
     
+    
+    public PositiveWhiteNoiseSampler() {
+    }
+    
+    public PositiveWhiteNoiseSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     public double getNoiseRaw(long seed) {
         return (Double.longBitsToDouble((murmur64(seed) & 0x000fffffffffffffL) | POSITIVE_POW1) - 1.5) * 2;
     }

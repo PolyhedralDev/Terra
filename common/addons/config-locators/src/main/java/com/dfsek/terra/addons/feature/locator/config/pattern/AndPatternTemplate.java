@@ -23,7 +23,7 @@ public class AndPatternTemplate implements ObjectTemplate<Pattern>, ValidatedCon
     private @Meta List<@Meta Pattern> patterns;
     
     @Override
-    public synchronized Pattern get() {
+    public Pattern get() {
         Pattern current = patterns.remove(0);
         while(!patterns.isEmpty()) {
             current = current.and(patterns.remove(0));

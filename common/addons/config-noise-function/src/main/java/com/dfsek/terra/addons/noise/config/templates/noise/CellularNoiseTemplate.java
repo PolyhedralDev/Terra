@@ -37,13 +37,13 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     
     @Override
     public NoiseSampler get() {
-        CellularSampler sampler = new CellularSampler();
-        sampler.setNoiseLookup(lookup);
-        sampler.setFrequency(frequency);
-        sampler.setJitterModifier(cellularJitter);
-        sampler.setReturnType(cellularReturnType);
-        sampler.setDistanceFunction(cellularDistanceFunction);
-        sampler.setSalt(salt);
-        return sampler;
+        return new CellularSampler.Builder()
+                .noiseLookup(lookup)
+                .frequency(frequency)
+                .jitterModifier(cellularJitter)
+                .returnType(cellularReturnType)
+                .distanceFunction(cellularDistanceFunction)
+                .salt(salt)
+                .build();
     }
 }

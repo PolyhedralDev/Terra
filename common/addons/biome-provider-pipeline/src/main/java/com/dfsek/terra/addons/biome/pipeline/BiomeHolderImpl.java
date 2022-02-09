@@ -14,8 +14,10 @@ import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.api.util.vector.Vector2;
 
+import javax.annotation.concurrent.NotThreadSafe;
 
-@javax.annotation.concurrent.NotThreadSafe
+
+@NotThreadSafe
 public class BiomeHolderImpl implements BiomeHolder {
     private final Vector2.Mutable origin;
     private final int width;

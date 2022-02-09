@@ -124,6 +124,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         }
         
         block = ThreadLocal.withInitial(parser::parse);
+        block.get();
         this.platform = platform;
     }
     

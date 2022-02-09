@@ -39,14 +39,14 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborNoiseSampler> {
     
     @Override
     public NoiseSampler get() {
-        GaborNoiseSampler gaborNoiseSampler = new GaborNoiseSampler();
-        gaborNoiseSampler.setFrequency(frequency);
-        gaborNoiseSampler.setRotation(rotation);
-        gaborNoiseSampler.setIsotropic(isotropic);
-        gaborNoiseSampler.setDeviation(deviation);
-        gaborNoiseSampler.setImpulsesPerKernel(impulses);
-        gaborNoiseSampler.setFrequency0(f0);
-        gaborNoiseSampler.setSalt(salt);
-        return gaborNoiseSampler;
+        return new GaborNoiseSampler.Builder()
+                .frequency(frequency)
+                .rotation(rotation)
+                .isotropic(isotropic)
+                .deviation(deviation)
+                .impulsesPerKernel(impulses)
+                .frequency0(f0)
+                .salt(salt)
+                .build();
     }
 }

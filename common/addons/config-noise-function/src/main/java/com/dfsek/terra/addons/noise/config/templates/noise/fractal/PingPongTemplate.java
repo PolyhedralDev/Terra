@@ -23,12 +23,13 @@ public class PingPongTemplate extends FractalTemplate<PingPongSampler> {
     
     @Override
     public NoiseSampler get() {
-        PingPongSampler sampler = new PingPongSampler(function);
-        sampler.setGain(fractalGain);
-        sampler.setLacunarity(fractalLacunarity);
-        sampler.setOctaves(octaves);
-        sampler.setWeightedStrength(weightedStrength);
-        sampler.setPingPongStrength(pingPong);
-        return sampler;
+        return new PingPongSampler.Builder()
+                .input(function)
+                .gain(fractalGain)
+                .lacunarity(fractalLacunarity)
+                .octaves(octaves)
+                .weightedStrength(weightedStrength)
+                .pingPongStrength(pingPong)
+                .build();
     }
 }

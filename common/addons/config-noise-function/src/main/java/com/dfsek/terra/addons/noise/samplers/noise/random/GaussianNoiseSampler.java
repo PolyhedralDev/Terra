@@ -14,10 +14,13 @@ import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
  * NoiseSampler implementation to provide random, normally distributed (Gaussian) noise.
  */
 public class GaussianNoiseSampler extends NoiseFunction {
-    private final WhiteNoiseSampler whiteNoiseSampler; // Back with a white noise sampler.
+    private final WhiteNoiseSampler whiteNoiseSampler = new WhiteNoiseSampler(); // Back with a white noise sampler.
     
     public GaussianNoiseSampler() {
-        whiteNoiseSampler = new WhiteNoiseSampler();
+    }
+    
+    public GaussianNoiseSampler(double frequency, long salt) {
+        super(frequency, salt);
     }
     
     @Override

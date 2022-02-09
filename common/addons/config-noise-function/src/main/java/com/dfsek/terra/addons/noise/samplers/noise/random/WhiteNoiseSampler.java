@@ -20,6 +20,10 @@ public class WhiteNoiseSampler extends NoiseFunction {
     public WhiteNoiseSampler() {
     }
     
+    public WhiteNoiseSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     public long randomBits(long seed, double x, double y, double z) {
         long hashX = Double.doubleToRawLongBits(x) ^ seed;
         long hashZ = Double.doubleToRawLongBits(y) ^ seed;

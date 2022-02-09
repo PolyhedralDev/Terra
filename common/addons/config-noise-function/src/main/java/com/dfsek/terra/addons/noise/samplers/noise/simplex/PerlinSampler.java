@@ -11,6 +11,14 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
  * NoiseSampler implementation to provide Perlin Noise.
  */
 public class PerlinSampler extends SimplexStyleSampler {
+    
+    public PerlinSampler() {
+    }
+    
+    public PerlinSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;

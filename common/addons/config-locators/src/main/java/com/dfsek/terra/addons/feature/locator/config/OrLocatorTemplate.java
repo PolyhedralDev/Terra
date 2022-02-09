@@ -18,7 +18,6 @@ import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.feature.Locator;
 
 
-@javax.annotation.concurrent.NotThreadSafe
 public class OrLocatorTemplate implements ObjectTemplate<Locator>, ValidatedConfigTemplate {
     @Value("locators")
     private @Meta List<@Meta Locator> locators;

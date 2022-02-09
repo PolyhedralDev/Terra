@@ -11,6 +11,8 @@ import net.jafama.FastMath;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.function.BiFunction;
+
 
 @SuppressWarnings("ManualMinMaxCalculation")
 public abstract class NoiseFunction implements NoiseSampler {
@@ -26,11 +28,16 @@ public abstract class NoiseFunction implements NoiseSampler {
             sin[i] = (float) Math.sin((double) (i) / (precision));
         }
     }
-    protected double frequency = 0.02d;
-    protected long salt;
+    protected final double frequency;
+    protected final long salt;
     
-    public NoiseFunction() {
-        this.salt = 0;
+    protected NoiseFunction() {
+        this(0.02d, 0);
+    }
+    
+    protected NoiseFunction(double frequency, long salt) {
+        this.frequency = frequency;
+        this.salt = salt;
     }
     
     protected static int fastFloor(double f) {
@@ -122,16 +129,8 @@ public abstract class NoiseFunction implements NoiseSampler {
         return a >= 0 ? sin[a % (modulus)] : -sin[-a % (modulus)];
     }
     
-    public synchronized void setSalt(long salt) {
-        this.salt = salt;
-    }
-    
     public double getFrequency() {
         return frequency;
-    }
-    
-    public synchronized void setFrequency(double frequency) {
-        this.frequency = frequency;
     }
     
     @Override
@@ -147,4 +146,38 @@ public abstract class NoiseFunction implements NoiseSampler {
     public abstract double getNoiseRaw(long seed, double x, double y);
     
     public abstract double getNoiseRaw(long seed, double x, double y, double z);
+    
+    public static abstract class Builder<BUILDER_TYPE, TYPE> {
+        
+        public static <T, BT extends Builder<BT, T>> Builder<BT, T> simple(BiFunction<Double, Long, T> constructor) {
+            return (Builder<BT, T>) new Builder<Builder<BT, T>, T>() {
+                @Override
+                protected Builder<BT, T> self() {
+                    return (Builder<BT, T>) this;
+                }
+    
+                @Override
+                public T build() {
+                    return constructor.apply(frequency, salt);
+                }
+            };
+        }
+        
+        protected double frequency = 0.02d;
+        protected long salt = 0;
+        
+        protected abstract BUILDER_TYPE self();
+        
+        public BUILDER_TYPE frequency(double frequency) {
+            this.frequency = frequency;
+            return self();
+        }
+        
+        public BUILDER_TYPE salt(long salt) {
+            this.salt = salt;
+            return self();
+        }
+        
+        public abstract TYPE build();
+    }
 }

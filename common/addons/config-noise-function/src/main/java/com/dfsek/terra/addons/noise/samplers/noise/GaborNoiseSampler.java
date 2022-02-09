@@ -14,25 +14,30 @@ import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
 
 public class GaborNoiseSampler extends NoiseFunction {
     private final WhiteNoiseSampler rand;
-    private double k = 1.0;
-    private double a = 0.1;
-    private double f0 = 0.625;
-    private double kernelRadius = (FastMath.sqrt(-FastMath.log(0.05) / Math.PI) / a);
-    private double impulsesPerKernel = 64d;
-    private double impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
-    private double impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
-    private double g = FastMath.exp(-impulsesPerCell);
-    private double omega0 = Math.PI * 0.25;
-    private boolean isotropic = true;
+    private final double k;
+    private final double a;
+    private final double f0;
+    private final double kernelRadius;
+    private final double impulsesPerKernel;
+    private final double impulseDensity;
+    private final double impulsesPerCell;
+    private final double g;
+    private final double omega0;
+    private final boolean isotropic;
     
+    public GaborNoiseSampler(double frequency, long salt, double deviation, double a, double frequency0, double impulsesPerKernel, double omega0,
+                             boolean isotropic) {
+        super(frequency, salt);
+        this.k = deviation;
+        this.a = a;
+        this.f0 = frequency0;
+        this.impulsesPerKernel = impulsesPerKernel;
+        this.omega0 = omega0;
+        this.isotropic = isotropic;
     
-    public GaborNoiseSampler() {
         rand = new WhiteNoiseSampler();
-    }
-    
-    private void recalculateRadiusAndDensity() {
         kernelRadius = (FastMath.sqrt(-FastMath.log(0.05) / Math.PI) / this.a);
-        impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
+        impulseDensity = (this.impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
         impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
         g = FastMath.exp(-impulsesPerCell);
     }
@@ -76,32 +81,6 @@ public class GaborNoiseSampler extends NoiseFunction {
                 omega_0))));
     }
     
-    public synchronized void setA(double a) {
-        this.a = a;
-        recalculateRadiusAndDensity();
-    }
-    
-    public synchronized void setDeviation(double k) {
-        this.k = k;
-    }
-    
-    public synchronized void setFrequency0(double f0) {
-        this.f0 = f0;
-    }
-    
-    public synchronized void setImpulsesPerKernel(double impulsesPerKernel) {
-        this.impulsesPerKernel = impulsesPerKernel;
-        recalculateRadiusAndDensity();
-    }
-    
-    public synchronized void setIsotropic(boolean isotropic) {
-        this.isotropic = isotropic;
-    }
-    
-    public synchronized void setRotation(double omega0) {
-        this.omega0 = Math.PI * omega0;
-    }
-    
     @Override
     public double getNoiseRaw(long seed, double x, double z) {
         return gaborNoise(seed, x, z);
@@ -110,5 +89,58 @@ public class GaborNoiseSampler extends NoiseFunction {
     @Override
     public double getNoiseRaw(long seed, double x, double y, double z) {
         return gaborNoise(seed, x, z);
+    }
+    
+    public static class Builder extends NoiseFunction.Builder<Builder, GaborNoiseSampler> {
+        private double k = 1.0;
+        private double a = 0.1;
+        private double f0 = 0.625;
+        private double impulsesPerKernel = 64d;
+        private double omega0 = Math.PI * 0.25;
+        private boolean isotropic = true;
+        
+        public Builder() {
+        }
+    
+        @Override
+        protected Builder self() {
+            return this;
+        }
+        
+        public Builder a(double a) {
+            this.a = a;
+            return this;
+        }
+        
+        public Builder deviation(double k) {
+            this.k = k;
+            return this;
+        }
+        
+        public Builder frequency0(double f0) {
+            this.f0 = f0;
+            return this;
+        }
+    
+        public Builder impulsesPerKernel(double impulsesPerKernel) {
+            this.impulsesPerKernel = impulsesPerKernel;
+            return this;
+        }
+        
+        public Builder isotropic(boolean isotropic) {
+            this.isotropic = isotropic;
+            return this;
+        }
+        
+        public Builder rotation(double omega0) {
+            this.omega0 = Math.PI * omega0;
+            return this;
+        }
+    
+        @Override
+        public GaborNoiseSampler build() {
+            return new GaborNoiseSampler(frequency, salt, k, a, f0, impulsesPerKernel, omega0, isotropic);
+        }
+        
     }
 }

@@ -194,30 +194,21 @@ public class CellularSampler extends NoiseFunction {
             };
     
     
-    private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
-    private ReturnType returnType = ReturnType.Distance;
-    private double jitterModifier = 1.0;
+    private final DistanceFunction distanceFunction;
+    private final ReturnType returnType;
+    private final double jitterModifier;
     
-    private NoiseSampler noiseLookup;
+    private final NoiseSampler noiseLookup;
     
-    public CellularSampler() {
-        noiseLookup = new OpenSimplex2Sampler();
-    }
-    
-    public void setDistanceFunction(DistanceFunction distanceFunction) {
+    public CellularSampler(double frequency, long salt,
+                           DistanceFunction distanceFunction,
+                           ReturnType returnType, double jitterModifier, NoiseSampler noiseLookup) {
+        super(frequency, salt);
         this.distanceFunction = distanceFunction;
-    }
-    
-    public void setJitterModifier(double jitterModifier) {
-        this.jitterModifier = jitterModifier;
-    }
-    
-    public void setNoiseLookup(NoiseSampler noiseLookup) {
-        this.noiseLookup = noiseLookup;
-    }
-    
-    public void setReturnType(ReturnType returnType) {
         this.returnType = returnType;
+        this.jitterModifier = jitterModifier;
+        
+        this.noiseLookup = noiseLookup;
     }
     
     @Override
@@ -546,5 +537,43 @@ public class CellularSampler extends NoiseFunction {
         Distance3Mul,
         Distance3Div,
         Angle
+    }
+    
+    public static class Builder extends NoiseFunction.Builder<Builder, CellularSampler> {
+    
+        private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
+        private ReturnType returnType = ReturnType.Distance;
+        private double jitterModifier = 1.0;
+        private NoiseSampler noiseLookup = new OpenSimplex2Sampler();
+        
+        @Override
+        protected Builder self() {
+            return this;
+        }
+        
+        public Builder distanceFunction(DistanceFunction distanceFunction) {
+            this.distanceFunction = distanceFunction;
+            return this;
+        }
+        
+        public Builder returnType(ReturnType returnType) {
+            this.returnType = returnType;
+            return this;
+        }
+        
+        public Builder jitterModifier(double jitterModifier) {
+            this.jitterModifier = jitterModifier;
+            return this;
+        }
+        
+        public Builder noiseLookup(NoiseSampler noiseLookup) {
+            this.noiseLookup = noiseLookup;
+            return this;
+        }
+    
+        @Override
+        public CellularSampler build() {
+            return new CellularSampler(frequency, salt, distanceFunction, returnType, jitterModifier, noiseLookup);
+        }
     }
 }

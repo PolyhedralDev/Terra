@@ -57,6 +57,13 @@ public class SimplexSampler extends SimplexStyleSampler {
         return xd * g.x + yd * g.y;
     }
     
+    public SimplexSampler() {
+    }
+    
+    public SimplexSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;

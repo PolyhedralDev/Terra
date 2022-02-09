@@ -11,8 +11,9 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class BrownianMotionSampler extends FractalNoiseFunction {
-    public BrownianMotionSampler(NoiseSampler input) {
-        super(input);
+    
+    public BrownianMotionSampler(long salt, NoiseSampler input, int octaves, double gain, double lacunarity, double weightedStrength) {
+        super(salt, input, octaves, gain, lacunarity, weightedStrength);
     }
     
     @Override
@@ -50,5 +51,19 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         }
         
         return sum;
+    }
+    
+    public static class Builder extends FractalNoiseFunction.Builder<Builder, BrownianMotionSampler> {
+    
+        @Override
+        protected Builder self() {
+            return this;
+        }
+    
+        @Override
+        public BrownianMotionSampler build() {
+            return new BrownianMotionSampler(salt, input, octaves, gain, lacunarity, weightedStrength);
+        }
+
     }
 }

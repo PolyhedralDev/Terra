@@ -14,6 +14,7 @@ public class ConstantSampler extends NoiseFunction {
     private final double constant;
     
     public ConstantSampler(double constant) {
+        super();
         this.constant = constant;
     }
     

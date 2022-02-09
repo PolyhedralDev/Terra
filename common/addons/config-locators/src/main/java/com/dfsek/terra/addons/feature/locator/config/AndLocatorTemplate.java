@@ -23,7 +23,7 @@ public class AndLocatorTemplate implements ObjectTemplate<Locator>, ValidatedCon
     private @Meta List<@Meta Locator> locators;
     
     @Override
-    public synchronized Locator get() {
+    public Locator get() {
         Locator current = locators.remove(0);
         while(!locators.isEmpty()) {
             current = current.and(locators.remove(0));

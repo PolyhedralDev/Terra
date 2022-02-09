@@ -8,6 +8,14 @@
 package com.dfsek.terra.addons.noise.samplers.noise.value;
 
 public class ValueCubicSampler extends ValueStyleNoise {
+    
+    public ValueCubicSampler() {
+    }
+    
+    public ValueCubicSampler(double frequency, long salt) {
+        super(frequency, salt);
+    }
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
