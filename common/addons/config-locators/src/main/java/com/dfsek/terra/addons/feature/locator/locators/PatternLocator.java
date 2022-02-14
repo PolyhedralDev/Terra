@@ -25,6 +25,6 @@ public class PatternLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        return new BinaryColumn(column.getMinY(), column.getMaxY(), y -> pattern.matches(y, column));
+        return new BinaryColumn(search, y -> pattern.matches(y, column));
     }
 }
