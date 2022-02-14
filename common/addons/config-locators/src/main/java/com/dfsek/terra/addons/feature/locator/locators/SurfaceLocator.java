@@ -11,6 +11,7 @@ import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
 
 
 public class SurfaceLocator implements Locator {
@@ -22,12 +23,12 @@ public class SurfaceLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        BinaryColumn location = new BinaryColumn(column.getMinY(), column.getMaxY());
+        BinaryColumnBuilder builder = column.newBinaryColumn();
         for(int y : search) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
-                location.set(y);
+                builder.set(y);
             }
         }
-        return location;
+        return builder.build();
     }
 }

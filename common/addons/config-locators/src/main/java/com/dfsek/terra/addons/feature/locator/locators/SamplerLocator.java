@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
+import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
+
 import net.jafama.FastMath;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class SamplerLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
+        BinaryColumnBuilder results = column.newBinaryColumn();
         
         long seed = column.getWorld().getSeed();
         samplers.forEach(sampler -> {
@@ -35,6 +37,6 @@ public class SamplerLocator implements Locator {
             results.set(y);
         });
         
-        return results;
+        return results.build();
     }
 }

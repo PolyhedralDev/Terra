@@ -22,13 +22,9 @@ public class Sampler3DLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        BinaryColumn results = column.newBinaryColumn();
         long seed = column.getWorld().getSeed();
         int x = column.getX();
         int z = column.getZ();
-        column.forEach(y -> {
-            if(sampler.noise(seed, x, y, z) > 0) results.set(y);
-        });
-        return results;
+        return column.newBinaryColumn(y -> sampler.noise(seed, x, y, z) > 0);
     }
 }

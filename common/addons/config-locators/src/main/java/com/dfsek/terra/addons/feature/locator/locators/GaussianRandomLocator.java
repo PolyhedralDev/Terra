@@ -11,6 +11,7 @@ import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
 
 import java.util.Random;
 
@@ -44,13 +45,13 @@ public class GaussianRandomLocator implements Locator {
         int size = points.get(r);
         
         
-        BinaryColumn results = new BinaryColumn(column.getMinY(), column.getMaxY());
+        BinaryColumnBuilder results = column.newBinaryColumn();
         for(int i = 0; i < size; i++) {
             int h = (int) r.nextGaussian(mean, standardDeviation);
             if(h >= column.getMaxY() || h < column.getMinY()) continue;
             results.set(h);
         }
         
-        return results;
+        return results.build();
     }
 }

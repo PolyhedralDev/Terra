@@ -7,41 +7,41 @@
 
 package com.dfsek.terra.api.structure.feature;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.IntConsumer;
 
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.function.IntToBooleanFunction;
 
 
 /**
  * A column of binary data
  */
 public class BinaryColumn {
-    private final boolean[] data;
+    private final IntToBooleanFunction data;
     private final int minY;
     private final int maxY;
+    
+    private static final BinaryColumn NULL = new BinaryColumn(0, 1, y -> false);
     
     /**
      * Constructs a new {@link BinaryColumn} with all values initiated to {@code false}
      * @param minY Minimum Y value
      * @param maxY Maximum Y value
      */
-    public BinaryColumn(int minY, int maxY) {
+    public BinaryColumn(int minY, int maxY, IntToBooleanFunction data) {
         this.minY = minY;
         this.maxY = maxY;
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
-        this.data = new boolean[maxY - minY];
+        this.data = data;
     }
     
-    public BinaryColumn(Range y) {
-        this(y.getMin(), y.getMax());
+    public static BinaryColumn getNull() {
+        return NULL;
     }
     
-    /**
-     * Set the value of a height to {@code true}.
-     * @param y Height of entry to set.
-     */
-    public void set(int y) {
-        data[y - minY] = true;
+    public BinaryColumn(Range y, IntToBooleanFunction data) {
+        this(y.getMin(), y.getMax(), data);
     }
     
     /**
@@ -50,7 +50,7 @@ public class BinaryColumn {
      * @return Whether height has been set.
      */
     public boolean get(int y) {
-        return data[y - minY];
+        return data.apply(y);
     }
     
     
@@ -63,9 +63,9 @@ public class BinaryColumn {
      * @param consumer Action to perform
      */
     public void forEach(IntConsumer consumer) {
-        for(int y = 0; y < data.length; y++) {
-            if(data[y]) {
-                consumer.accept(y + minY);
+        for(int y = minY; y < maxY; y++) {
+            if(get(y)) {
+                consumer.accept(y);
             }
         }
     }
@@ -78,7 +78,7 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn and(BinaryColumn that) {
-        return bool(that, Boolean::logicalAnd);
+        return bool(that, (a, b) -> a.getAsBoolean() && b.getAsBoolean());
     }
     
     /**
@@ -89,38 +89,21 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn or(BinaryColumn that) {
-        return bool(that, Boolean::logicalOr);
+        return bool(that, (a, b) -> a.getAsBoolean() || b.getAsBoolean());
     }
     
     public BinaryColumn xor(BinaryColumn that) {
-        return bool(that, Boolean::logicalXor);
+        return bool(that, (a, b) -> a.getAsBoolean() ^ b.getAsBoolean());
     }
     
     private BinaryColumn bool(BinaryColumn that, BooleanBinaryOperator operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
     
-        BinaryColumn next = new BinaryColumn(smallMinY, bigMaxY);
-    
-        for(int i = smallMinY; i < bigMaxY; i++) {
-            boolean left = false;
-            boolean right = false;
-            
-            if(this.contains(i)) {
-                left = this.get(i);
-            }
-        
-            if(that.contains(i)) {
-                right = that.get(i);
-            }
-            
-            next.data[i - smallMinY] = operator.apply(left, right);
-        }
-    
-        return next;
+        return new BinaryColumn(smallMinY, bigMaxY, y -> operator.apply(() -> this.get(y), () -> that.get(y)));
     }
     
     private interface BooleanBinaryOperator {
-        boolean apply(boolean a, boolean b);
+        boolean apply(BooleanSupplier a, BooleanSupplier b);
     }
 }

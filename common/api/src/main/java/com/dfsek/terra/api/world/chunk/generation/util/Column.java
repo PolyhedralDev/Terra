@@ -11,6 +11,7 @@ import java.util.function.IntConsumer;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
+import com.dfsek.terra.api.util.function.IntToBooleanFunction;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -58,8 +59,31 @@ public class Column<T extends WritableWorld> {
         }
     }
     
-    public BinaryColumn newBinaryColumn() {
-        return new BinaryColumn(getMinY(), getMaxY());
+    public BinaryColumn newBinaryColumn(IntToBooleanFunction function) {
+        return new BinaryColumn(getMinY(), getMaxY(), function);
+    }
+    
+    public BinaryColumnBuilder newBinaryColumn() {
+        return new BinaryColumnBuilder(this);
+    }
+    
+    public static class BinaryColumnBuilder {
+        private final boolean[] arr;
+        private final Column<?> column;
+        
+        public BinaryColumnBuilder(Column<?> column) {
+            this.column = column;
+            arr = new boolean[column.getMaxY() - column.getMinY()];
+        }
+        
+        public BinaryColumn build() {
+            return new BinaryColumn(column.getMinY(), column.getMaxY(), y -> arr[y - column.getMinY()]);
+        }
+        
+        public BinaryColumnBuilder set(int y) {
+            arr[y - column.getMinY()] = true;
+            return this;
+        }
     }
     
     @SuppressWarnings("unchecked")
