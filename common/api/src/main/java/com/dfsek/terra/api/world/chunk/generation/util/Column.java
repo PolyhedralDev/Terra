@@ -77,7 +77,7 @@ public class Column<T extends WritableWorld> {
         }
         
         public BinaryColumn build() {
-            return new BinaryColumn(column.getMinY(), column.getMaxY(), y -> arr[y - column.getMinY()]);
+            return new BinaryColumn(column.getMinY(), column.getMaxY(), arr);
         }
         
         public BinaryColumnBuilder set(int y) {

@@ -7,12 +7,15 @@
 
 package com.dfsek.terra.api.structure.feature;
 
+import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.function.IntToBooleanFunction;
+import com.dfsek.terra.api.util.generic.Lazy;
 
 
 /**
@@ -22,6 +25,8 @@ public class BinaryColumn {
     private final IntToBooleanFunction data;
     private final int minY;
     private final int maxY;
+    
+    private final Lazy<boolean[]> results;
     
     private static final BinaryColumn NULL = new BinaryColumn(0, 1, y -> false);
     
@@ -33,8 +38,23 @@ public class BinaryColumn {
     public BinaryColumn(int minY, int maxY, IntToBooleanFunction data) {
         this.minY = minY;
         this.maxY = maxY;
+        this.results = Lazy.lazy(() -> {
+            boolean[] res = new boolean[maxY - minY];
+            for(int y = minY; y < maxY; y++) {
+                res[y - minY] = get(y);
+            }
+            return res;
+        });
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
         this.data = data;
+    }
+    
+    public BinaryColumn(int minY, int maxY, boolean[] data) {
+        this.minY = minY;
+        this.maxY = maxY;
+        this.results = Lazy.lazy(() -> data);
+        if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
+        this.data = y -> data[y - minY];
     }
     
     public static BinaryColumn getNull() {
@@ -64,13 +84,12 @@ public class BinaryColumn {
      * @param consumer Action to perform
      */
     public void forEach(IntConsumer consumer) {
-        for(int y : matching()) {
-            consumer.accept(y);
+        boolean[] results = this.results.value();
+        for(int y = minY; y < maxY; y++) {
+            if(results[y - minY]) {
+                consumer.accept(y);
+            }
         }
-    }
-    
-    public int[] matching() {
-        return IntStream.range(minY, maxY).filter(this::get).toArray();
     }
     
     /**
