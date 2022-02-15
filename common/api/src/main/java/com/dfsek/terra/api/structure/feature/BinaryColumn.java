@@ -9,6 +9,7 @@ package com.dfsek.terra.api.structure.feature;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.IntConsumer;
+import java.util.stream.IntStream;
 
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.function.IntToBooleanFunction;
@@ -63,11 +64,13 @@ public class BinaryColumn {
      * @param consumer Action to perform
      */
     public void forEach(IntConsumer consumer) {
-        for(int y = minY; y < maxY; y++) {
-            if(get(y)) {
-                consumer.accept(y);
-            }
+        for(int y : matching()) {
+            consumer.accept(y);
         }
+    }
+    
+    public int[] matching() {
+        return IntStream.range(minY, maxY).filter(this::get).toArray();
     }
     
     /**
