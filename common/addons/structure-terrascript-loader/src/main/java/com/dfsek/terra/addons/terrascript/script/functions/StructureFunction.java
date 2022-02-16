@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 
 import net.jafama.FastMath;
@@ -14,12 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
@@ -57,20 +56,20 @@ public class StructureFunction implements Function<Boolean> {
     }
     
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
     
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
+                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
     
     
-        String app = id.apply(implementationArguments, variableMap);
+        String app = id.apply(implementationArguments, scope);
         return registry.getByID(app).map(script -> {
             Rotation rotation1;
-            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, variableMap);
+            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, scope);
             try {
                 rotation1 = Rotation.valueOf(rotString);
             } catch(IllegalArgumentException e) {
@@ -82,7 +81,7 @@ public class StructureFunction implements Function<Boolean> {
                 return structureScript.generate(arguments.getOrigin(),
                                                 arguments.getWorld()
                                                          .buffer(FastMath.roundToInt(xz.getX()),
-                                                                 y.apply(implementationArguments, variableMap).intValue(),
+                                                                 y.apply(implementationArguments, scope).intValue(),
                                                                  FastMath.roundToInt(xz.getZ())),
                                                 arguments.getRandom(),
                                                 arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
@@ -90,7 +89,7 @@ public class StructureFunction implements Function<Boolean> {
             return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
                                             .buffer(FastMath.roundToInt(xz.getX()),
-                                                    y.apply(implementationArguments, variableMap).intValue(),
+                                                    y.apply(implementationArguments, scope).intValue(),
                                                     FastMath.roundToInt(xz.getZ())),
                                    arguments.getRandom(),
                                    arguments.getRotation().rotate(rotation1));

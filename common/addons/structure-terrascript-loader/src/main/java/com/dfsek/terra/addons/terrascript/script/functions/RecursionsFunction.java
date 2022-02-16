@@ -7,11 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
@@ -29,7 +27,7 @@ public class RecursionsFunction implements Function<Number> {
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
     

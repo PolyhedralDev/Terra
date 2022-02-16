@@ -7,11 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -25,12 +22,22 @@ public class Block implements Item<Block.ReturnInfo<?>> {
     }
     
     public ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
-        return apply(implementationArguments, new HashMap<>());
+        return apply(implementationArguments, new Scope());
     }
     
     @Override
-    public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        Map<String, Variable<?>> scope = new HashMap<>(variableMap);
+    public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
+        Scope sub = scope.sub();
+        for(Item<?> item : items) {
+            Object result = item.apply(implementationArguments, sub);
+            if(result instanceof ReturnInfo<?> level) {
+                if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
+            }
+        }
+        return new ReturnInfo<>(ReturnLevel.NONE, null);
+    }
+    
+    public ReturnInfo<?> applyNoNewScope(ImplementationArguments implementationArguments, Scope scope) {
         for(Item<?> item : items) {
             Object result = item.apply(implementationArguments, scope);
             if(result instanceof ReturnInfo<?> level) {

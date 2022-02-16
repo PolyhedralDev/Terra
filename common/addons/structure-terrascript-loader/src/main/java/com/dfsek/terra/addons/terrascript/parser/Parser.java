@@ -48,9 +48,9 @@ import com.dfsek.terra.addons.terrascript.parser.lang.operations.statements.Grea
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.statements.LessThanOrEqualsStatement;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.statements.LessThanStatement;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.statements.NotEqualsStatement;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Assignment;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Declaration;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Getter;
+import com.dfsek.terra.addons.terrascript.parser.lang.variables.VariableAssignmentNode;
+import com.dfsek.terra.addons.terrascript.parser.lang.variables.VariableDeclarationNode;
+import com.dfsek.terra.addons.terrascript.parser.lang.variables.VariableReferenceNode;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
@@ -160,7 +160,7 @@ public class Parser {
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
         Item<?> initializer;
         if(f.isVariableDeclaration()) {
-            Declaration<?> forVar = parseVariableDeclaration(tokens, variableMap);
+            VariableDeclarationNode<?> forVar = parseVariableDeclaration(tokens, variableMap);
             Token name = tokens.get();
             if(functions.containsKey(name.getContent()) || variableMap.containsKey(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
@@ -208,7 +208,7 @@ public class Parser {
                 expression = parseFunction(tokens, false, variableMap);
             else if(variableMap.containsKey(id.getContent())) {
                 ParserUtil.checkType(tokens.consume(), Token.Type.IDENTIFIER);
-                expression = new Getter(id.getContent(), id.getPosition(), variableMap.get(id.getContent()));
+                expression = new VariableReferenceNode(id.getContent(), id.getPosition(), variableMap.get(id.getContent()));
             } else throw new ParseException("Unexpected token \" " + id.getContent() + "\"", id.getPosition());
         }
         
@@ -306,7 +306,7 @@ public class Parser {
         }
     }
     
-    private Declaration<?> parseVariableDeclaration(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
+    private VariableDeclarationNode<?> parseVariableDeclaration(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         Token type = tokens.consume();
         ParserUtil.checkType(type, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
         
@@ -324,7 +324,7 @@ public class Parser {
         
         variableMap.put(identifier.getContent(), returnType);
         
-        return new Declaration<>(tokens.get().getPosition(), identifier.getContent(), value, returnType);
+        return new VariableDeclarationNode<>(tokens.get().getPosition(), identifier.getContent(), value, returnType);
     }
     
     private Block parseBlock(Tokenizer tokens, Map<String, Returnable.ReturnType> superVars, boolean loop) {
@@ -373,7 +373,7 @@ public class Parser {
         else throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
     }
     
-    private Assignment<?> parseAssignment(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
+    private VariableAssignmentNode<?> parseAssignment(Tokenizer tokens, Map<String, Returnable.ReturnType> variableMap) {
         Token identifier = tokens.consume();
         
         ParserUtil.checkType(identifier, Token.Type.IDENTIFIER);
@@ -384,7 +384,7 @@ public class Parser {
         
         ParserUtil.checkReturnType(value, variableMap.get(identifier.getContent()));
         
-        return new Assignment<>(value, identifier.getContent(), identifier.getPosition());
+        return new VariableAssignmentNode<>(value, identifier.getContent(), identifier.getPosition());
     }
     
     private Function<?> parseFunction(Tokenizer tokens, boolean fullStatement, Map<String, Returnable.ReturnType> variableMap) {

@@ -7,14 +7,12 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Item;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -34,11 +32,12 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        for(initializer.apply(implementationArguments, variableMap);
-            statement.apply(implementationArguments, variableMap);
-            incrementer.apply(implementationArguments, variableMap)) {
-            Block.ReturnInfo<?> level = conditional.apply(implementationArguments, variableMap);
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
+        Scope sub = scope.sub();
+        for(initializer.apply(implementationArguments, sub);
+            statement.apply(implementationArguments, sub);
+            incrementer.apply(implementationArguments, sub)) {
+            Block.ReturnInfo<?> level = conditional.applyNoNewScope(implementationArguments, sub);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

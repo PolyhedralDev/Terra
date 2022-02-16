@@ -7,12 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -24,7 +22,7 @@ public class ContinueKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         return new Block.ReturnInfo<>(Block.ReturnLevel.CONTINUE, null);
     }
     

@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
@@ -18,13 +19,11 @@ import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
@@ -57,20 +56,20 @@ public class LootFunction implements Function<Void> {
     }
     
     @Override
-    public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()),
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
+                                                          z.apply(implementationArguments, scope).doubleValue()),
                                                arguments.getRotation());
         
         
-        String id = data.apply(implementationArguments, variableMap);
+        String id = data.apply(implementationArguments, scope);
         
         
         registry.get(RegistryKey.parse(id))
                 .ifPresentOrElse(table -> {
                                      Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                y.apply(implementationArguments, variableMap)
+                                                                y.apply(implementationArguments, scope)
                                                                  .intValue(),
                                                                 FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
             

@@ -7,11 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -29,8 +27,8 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
     public abstract O apply(I left, I right);
     
     @Override
-    public O apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        return apply(left.apply(implementationArguments, variableMap), right.apply(implementationArguments, variableMap));
+    public O apply(ImplementationArguments implementationArguments, Scope scope) {
+        return apply(left.apply(implementationArguments, scope), right.apply(implementationArguments, scope));
     }
     
     @Override

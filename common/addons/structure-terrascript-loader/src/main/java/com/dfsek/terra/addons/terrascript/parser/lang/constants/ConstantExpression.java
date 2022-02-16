@@ -7,11 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -25,7 +23,7 @@ public abstract class ConstantExpression<T> implements Returnable<T> {
     }
     
     @Override
-    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public T apply(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
     

@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.api.block.state.properties.base.Properties;
 
 import net.jafama.FastMath;
@@ -52,10 +53,10 @@ public class BlockFunction implements Function<Void> {
     }
     
     @Override
-    public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        BlockState rot = getBlockState(implementationArguments, variableMap);
-        setBlock(implementationArguments, variableMap, arguments, rot);
+        BlockState rot = getBlockState(implementationArguments, scope);
+        setBlock(implementationArguments, scope, arguments, rot);
         return null;
     }
     
@@ -69,19 +70,19 @@ public class BlockFunction implements Function<Void> {
         return ReturnType.VOID;
     }
     
-    void setBlock(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap,
+    void setBlock(ImplementationArguments implementationArguments, Scope scope,
                   TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
+                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
     
     
         rot = RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
             Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                     y.apply(implementationArguments, variableMap).doubleValue(),
+                                     y.apply(implementationArguments, scope).doubleValue(),
                                      FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
-            if(overwrite.apply(implementationArguments, variableMap) || current.isAir()) {
+            if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 if(arguments.isWaterlog() && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
                     current.set(Properties.WATERLOGGED, true);
                 }
@@ -92,8 +93,8 @@ public class BlockFunction implements Function<Void> {
         }
     }
     
-    protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
-        return data.computeIfAbsent(blockData.apply(arguments, variableMap), platform.getWorldHandle()::createBlockState);
+    protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
+        return data.computeIfAbsent(blockData.apply(arguments, scope), platform.getWorldHandle()::createBlockState);
     }
     
     
@@ -107,7 +108,7 @@ public class BlockFunction implements Function<Void> {
         }
         
         @Override
-        protected BlockState getBlockState(ImplementationArguments arguments, Map<String, Variable<?>> variableMap) {
+        protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
             return state;
         }
     }

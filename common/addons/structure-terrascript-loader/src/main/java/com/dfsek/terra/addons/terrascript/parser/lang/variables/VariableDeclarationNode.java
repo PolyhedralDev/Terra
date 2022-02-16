@@ -7,21 +7,20 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Item;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
-public class Declaration<T> implements Item<T> {
+public class VariableDeclarationNode<T> implements Item<T> {
     private final Position position;
     private final String identifier;
     private final Returnable<T> value;
     private final Returnable.ReturnType type;
     
-    public Declaration(Position position, String identifier, Returnable<T> value, Returnable.ReturnType type) {
+    public VariableDeclarationNode(Position position, String identifier, Returnable<T> value, Returnable.ReturnType type) {
         switch(type) {
             case STRING:
             case BOOLEAN:
@@ -37,13 +36,14 @@ public class Declaration<T> implements Item<T> {
     }
     
     @Override
-    public T apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-        T result = value.apply(implementationArguments, variableMap);
-        switch(type) {
-            case NUMBER -> variableMap.put(identifier, new NumberVariable((Number) result, position));
-            case BOOLEAN -> variableMap.put(identifier, new BooleanVariable((Boolean) result, position));
-            case STRING -> variableMap.put(identifier, new StringVariable((String) result, position));
-        }
+    public T apply(ImplementationArguments implementationArguments, Scope scope) {
+        T result = value.apply(implementationArguments, scope);
+        scope.put(identifier, switch(type) {
+            case NUMBER -> new NumberVariable((Number) result, position);
+            case BOOLEAN -> new BooleanVariable((Boolean) result, position);
+            case STRING -> new StringVariable((String) result, position);
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        });
         return result;
     }
     

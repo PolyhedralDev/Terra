@@ -7,14 +7,12 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import net.jafama.FastMath;
-
-import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -35,11 +33,11 @@ public class CheckBlockFunction implements Function<String> {
     
     
     @Override
-    public String apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
+    public String apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, variableMap).doubleValue(),
-                                                          z.apply(implementationArguments, variableMap).doubleValue()),
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
+                                                          z.apply(implementationArguments, scope).doubleValue()),
                                                arguments.getRotation());
         
         
@@ -48,7 +46,7 @@ public class CheckBlockFunction implements Function<String> {
                                                        .toVector3()
                                                        .mutable()
                                                        .add(Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                       y.apply(implementationArguments, variableMap)
+                                                                       y.apply(implementationArguments, scope)
                                                                         .doubleValue(), FastMath.roundToInt(xz.getZ()))))
                                .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties

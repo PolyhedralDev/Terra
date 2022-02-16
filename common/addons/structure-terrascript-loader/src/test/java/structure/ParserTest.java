@@ -8,6 +8,7 @@
 package structure;
 
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
@@ -24,7 +24,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -60,9 +59,9 @@ public class ParserTest {
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
         
-        block.apply(null, new HashMap<>());
+        block.apply(null, new Scope());
         
-        block.apply(null, new HashMap<>());
+        block.apply(null, new Scope());
     }
     
     private static class Test1 implements Function<Void> {
@@ -77,9 +76,9 @@ public class ParserTest {
         }
         
         @Override
-        public Void apply(ImplementationArguments implementationArguments, Map<String, Variable<?>> variableMap) {
-            System.out.println("string: " + a.apply(implementationArguments, variableMap) + ", double: " +
-                               b.apply(implementationArguments, variableMap));
+        public Void apply(ImplementationArguments implementationArguments, Scope scope) {
+            System.out.println("string: " + a.apply(implementationArguments, scope) + ", double: " +
+                               b.apply(implementationArguments, scope));
             return null;
         }
         
