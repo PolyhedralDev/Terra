@@ -1,0 +1,25 @@
+num epsilon = 0.001;
+
+for(num n = 1; n < 1000000; n = n + 1) {
+
+    num x = n;
+
+    num root = 0;
+
+    while(true) {
+        root = 0.5 * (x + (n / x));
+
+        num diff = root - x;
+        if(diff < 0) diff = -diff;
+
+        if(diff < epsilon) break;
+
+        x = root;
+    }
+
+    num diff = root - sqrt(n);
+
+    if(diff < 0) diff = -diff;
+
+    assert(diff <= epsilon);
+}
