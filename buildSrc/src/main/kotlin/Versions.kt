@@ -19,9 +19,9 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.44.0+1.18"
-        const val minecraft = "1.18.1"
-        const val yarn = "$minecraft+build.7"
+        const val fabricAPI = "0.48.0+1.18.2"
+        const val minecraft = "1.18.2"
+        const val yarn = "$minecraft+build.2"
     }
     
     object Bukkit {
