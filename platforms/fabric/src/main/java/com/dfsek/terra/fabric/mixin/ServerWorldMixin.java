@@ -20,13 +20,14 @@ package com.dfsek.terra.fabric.mixin;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.Spawner;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.level.ServerWorldProperties;
 import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.world.spawner.Spawner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.asm.mixin.Mixin;
@@ -47,9 +48,9 @@ public abstract class ServerWorldMixin {
     
     @Inject(method = "<init>", at = @At("RETURN"))
     public void injectConstructor(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session,
-                                  ServerWorldProperties properties, RegistryKey<World> registryKey, DimensionType dimensionType,
+                                  ServerWorldProperties properties, RegistryKey<World> worldKey, RegistryEntry<DimensionType> registryEntry,
                                   WorldGenerationProgressListener worldGenerationProgressListener, ChunkGenerator chunkGenerator,
-                                  boolean debugWorld, long l, List<Spawner> list, boolean bl, CallbackInfo ci) {
+                                  boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime, CallbackInfo ci) {
         if(chunkGenerator instanceof FabricChunkGeneratorWrapper) {
             FabricEntryPoint.getPlatform().addWorld((ServerWorld) (Object) this);
             logger.info("Registered world {}", this);
