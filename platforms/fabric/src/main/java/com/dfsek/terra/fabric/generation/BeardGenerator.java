@@ -18,13 +18,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightType;
-import net.minecraft.world.gen.feature.StructureFeature;
 
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
-
+// net.minecraft.world.gen.StructureWeightSampler
 public class BeardGenerator {
     private static final float[] STRUCTURE_WEIGHT_TABLE = Util.make(new float[13824], array -> {
         for (int i = 0; i < 24; ++i) {
@@ -55,32 +54,28 @@ public class BeardGenerator {
         this.pieces = new ObjectArrayList<>(10);
         int minY = chunk.getBottomY();
         int maxY = chunk.getTopY();
-        for (StructureFeature<?> structureFeature : StructureFeature.LAND_MODIFYING_STRUCTURES) {
-            for(StructureStart<?> start : structureAccessor.getStructureStarts(ChunkSectionPos.from(chunk), structureFeature)) {
-                for(StructurePiece structurePiece : start.getChildren()) {
-                    if(!structurePiece.intersectsChunk(chunkPos, 12)) continue;
-                    if(structurePiece instanceof PoolStructurePiece poolStructurePiece) {
-                        Projection projection = poolStructurePiece.getPoolElement().getProjection();
-                        if(projection == Projection.RIGID) {
-                            this.pieces.add(poolStructurePiece);
-                        }
-                        for(JigsawJunction jigsawJunction : poolStructurePiece.getJunctions()) {
-                            int k = jigsawJunction.getSourceX();
-                            int l = jigsawJunction.getSourceZ();
-                            if(k <= i - 12 || l <= j - 12 || k >= i + 15 + 12 || l >= j + 15 + 12) {
-                                continue;
-                            }
-                            maxY = Math.max(maxY, jigsawJunction.getSourceGroundY());
-                            minY = Math.min(minY, jigsawJunction.getSourceGroundY());
-                    
-                            this.junctions.add(jigsawJunction);
-                        }
-                        continue;
+        for(StructureStart start : structureAccessor.method_41035(ChunkSectionPos.from(chunk),
+                                                                  configuredStructureFeature -> configuredStructureFeature.field_37144)) {
+            for(StructurePiece structurePiece : start.getChildren()) {
+                if(!structurePiece.intersectsChunk(chunkPos, 12)) continue;
+                if(structurePiece instanceof PoolStructurePiece poolStructurePiece) {
+                    Projection projection = poolStructurePiece.getPoolElement().getProjection();
+                    if(projection == Projection.RIGID) {
+                        this.pieces.add(poolStructurePiece);
                     }
-                    maxY = Math.max(maxY, structurePiece.getCenter().getY());
-                    minY = Math.min(minY, structurePiece.getCenter().getY());
-                    this.pieces.add(structurePiece);
+                    for(JigsawJunction jigsawJunction : poolStructurePiece.getJunctions()) {
+                        int k = jigsawJunction.getSourceX();
+                        int l = jigsawJunction.getSourceZ();
+                        if(k <= i - 12 || l <= j - 12 || k >= i + 15 + 12 || l >= j + 15 + 12) continue;
+                        maxY = Math.max(maxY, jigsawJunction.getSourceGroundY());
+                        minY = Math.min(minY, jigsawJunction.getSourceGroundY());
+                        this.junctions.add(jigsawJunction);
+                    }
+                    continue;
                 }
+                maxY = Math.max(maxY, structurePiece.getCenter().getY());
+                minY = Math.min(minY, structurePiece.getCenter().getY());
+                this.pieces.add(structurePiece);
             }
         }
         this.pieceIterator = this.pieces.iterator();
