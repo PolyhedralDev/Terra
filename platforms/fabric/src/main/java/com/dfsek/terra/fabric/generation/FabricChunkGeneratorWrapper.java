@@ -17,31 +17,19 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
-import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.data.Codecs;
-import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
-
-import com.dfsek.terra.fabric.util.FabricAdapter;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.structure.StructureSet;
-import net.minecraft.util.collection.Pool;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.*;
+import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.HeightLimitView;
+import net.minecraft.world.Heightmap;
+import net.minecraft.world.SpawnHelper;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.chunk.Chunk;
@@ -49,9 +37,7 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.random.AtomicSimpleRandom;
 import net.minecraft.world.gen.random.ChunkRandom;
 import net.minecraft.world.gen.random.RandomSeed;
@@ -64,6 +50,18 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
+import com.dfsek.terra.fabric.util.FabricAdapter;
+
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
     private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
@@ -71,12 +69,14 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private final long seed;
     private final TerraBiomeSource biomeSource;
     private ChunkGenerator delegate;
+    private final Registry<StructureSet> noiseRegistry;
     private ConfigPack pack;
     private final Supplier<ChunkGeneratorSettings> settingsSupplier;
     
     public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
                                        Supplier<ChunkGeneratorSettings> settingsSupplier) {
         super(noiseRegistry, Optional.empty(), biomeSource, biomeSource, seed);
+        this.noiseRegistry = noiseRegistry;
         this.pack = configPack;
         this.settingsSupplier = settingsSupplier;
         
@@ -94,7 +94,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper((TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settingsSupplier);
+        return new FabricChunkGeneratorWrapper(noiseRegistry, (TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settingsSupplier);
     }
     
     @Override
