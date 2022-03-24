@@ -31,8 +31,8 @@ import com.dfsek.terra.fabric.FabricEntryPoint;
 public class ServerMainMixin {
     @Inject(method = "main([Ljava/lang/String;)V",
             at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/util/registry/DynamicRegistryManager;create()" +
-                              "Lnet/minecraft/util/registry/DynamicRegistryManager$Impl;"))
+                     target = "Lnet/minecraft/server/SaveLoader;refresh()V") // after registry manager creation
+    )
     private static void injectConstructor(String[] args, CallbackInfo ci) {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
