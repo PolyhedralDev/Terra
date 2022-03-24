@@ -62,14 +62,8 @@ public class PlatformImpl extends AbstractPlatform {
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
     
-    private final Set<ServerWorld> worlds = new HashSet<>();
-    
     public PlatformImpl() {
         load();
-    }
-    
-    public void addWorld(ServerWorld world) {
-        worlds.add(world);
     }
     
     private MinecraftServer server;
@@ -90,16 +84,15 @@ public class PlatformImpl extends AbstractPlatform {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
-        }
-        
-        worlds.forEach(world -> {
-            FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
-            getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
-                chunkGeneratorWrapper.setPack(pack);
-                LOGGER.info("Replaced pack in chunk generator for world {}", world);
+            server.getWorlds().forEach(world -> {
+                if(world.getChunkManager().getChunkGenerator() instanceof FabricChunkGeneratorWrapper chunkGeneratorWrapper) {
+                    getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                        chunkGeneratorWrapper.setPack(pack);
+                        LOGGER.info("Replaced pack in chunk generator for world {}", world);
+                    });
+                }
             });
-        });
-        
+        }
         return succeed;
     }
     
