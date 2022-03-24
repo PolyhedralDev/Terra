@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.SimpleRegistry;
@@ -47,7 +48,7 @@ public abstract class GeneratorOptionsMixin {
                      "Lnet/minecraft/world/gen/GeneratorOptions;",
             at = @At("HEAD"),
             cancellable = true)
-    private static void fromProperties(DynamicRegistryManager registryManager, Properties properties,
+    private static void fromProperties(DynamicRegistryManager manager, Properties properties,
                                        CallbackInfoReturnable<GeneratorOptions> cir) {
         if(properties.get("level-type") == null) {
             return;
@@ -72,13 +73,14 @@ public abstract class GeneratorOptionsMixin {
             
             String generate_structures = (String) properties.get("generate-structures");
             boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
-            Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
-            Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager, seed, false);
+            Registry<DimensionType> dimensionTypes = manager.get(Registry.DIMENSION_TYPE_KEY);
+            Registry<Biome> biomeRegistry = manager.get(Registry.BIOME_KEY);
+            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(manager, seed, false);
             
-            Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
+            Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
             Supplier<ChunkGeneratorSettings>
                     settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
+            Registry<StructureSet> noiseRegistry = manager.get(Registry.STRUCTURE_SET_KEY);
             
             prop = prop.substring(prop.indexOf(":") + 1);
             
@@ -94,7 +96,8 @@ public abstract class GeneratorOptionsMixin {
                                                  .getRegistryWithReplacedOverworldGenerator(
                                                          dimensionTypes,
                                                          dimensionOptions,
-                                                         new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, config),
+                                                         new FabricChunkGeneratorWrapper(noiseRegistry,
+                                                                                         new TerraBiomeSource(biomeRegistry, seed, config),
                                                                                          seed,
                                                                                          config,
                                                                                          settingsSupplier))));
