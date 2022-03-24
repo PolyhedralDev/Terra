@@ -10,8 +10,12 @@ import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.RegistryLookupCodec;
+import net.minecraft.util.dynamic.RegistryElementCodec;
+import net.minecraft.util.dynamic.RegistryLoader;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryCodecs;
+import net.minecraft.util.registry.RegistryFixedCodec;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 
@@ -34,8 +38,9 @@ public final class Codecs {
                                                                                                id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY)
-                                                                  .forGetter(TerraBiomeSource::getBiomeRegistry),
+            .create(instance -> instance.group(RegistryCodecs.entryList(Registry.BIOME_KEY)
+                                                       .fieldOf("biome_registry")
+                                                             .forGetter(TerraBiomeSource::getBiomeRegistry),
                                                Codec.LONG.fieldOf("seed").stable()
                                                          .forGetter(TerraBiomeSource::getSeed),
                                                CONFIG_PACK.fieldOf("pack").stable()

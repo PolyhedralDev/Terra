@@ -22,12 +22,11 @@ import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +35,6 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 public class TerraBiomeSource extends BiomeSource {
@@ -73,7 +71,7 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public net.minecraft.world.biome.Biome getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
+    public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return ((ProtoPlatformBiome) pack.getBiomeProvider().getBiome(biomeX << 2, biomeZ << 2, seed).getPlatformBiome()).getDelegate();
     }
     

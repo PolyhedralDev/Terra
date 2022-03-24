@@ -94,7 +94,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public MultiNoiseUtil.MultiNoiseSampler getMultiNoiseSampler() {
-        return (x, y, z) -> new MultiNoiseUtil.NoiseValuePoint(0, 0, 0, 0, 0, 0);
+        return MultiNoiseUtil.method_40443(); // zero
     }
     
     @Override
@@ -114,43 +114,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getWorldHeight() {
-        return settingsSupplier.get().getGenerationShapeConfig().height();
-    }
-    
-    public Pool<SpawnSettings.SpawnEntry> getEntitySpawnList(Biome biome, StructureAccessor accessor, SpawnGroup group, BlockPos pos) {
-        if(!accessor.hasStructureReferences(pos)) {
-            return super.getEntitySpawnList(biome, accessor, group, pos);
-        } else {
-            if(accessor.getStructureAt(pos, StructureFeature.SWAMP_HUT).hasChildren()) {
-                if(group == SpawnGroup.MONSTER) {
-                    return SwampHutFeature.MONSTER_SPAWNS;
-                }
-                
-                if(group == SpawnGroup.CREATURE) {
-                    return SwampHutFeature.CREATURE_SPAWNS;
-                }
-            }
-            
-            if(group == SpawnGroup.MONSTER) {
-                if(accessor.getStructureAt(pos, StructureFeature.PILLAGER_OUTPOST).hasChildren()) {
-                    return PillagerOutpostFeature.MONSTER_SPAWNS;
-                }
-                
-                if(accessor.getStructureAt(pos, StructureFeature.MONUMENT).hasChildren()) {
-                    return OceanMonumentFeature.MONSTER_SPAWNS;
-                }
-                
-                if(accessor.getStructureAt(pos, StructureFeature.FORTRESS).hasChildren()) {
-                    return NetherFortressFeature.MONSTER_SPAWNS;
-                }
-            }
-            
-            return (group == SpawnGroup.UNDERGROUND_WATER_CREATURE || group == SpawnGroup.AXOLOTLS) && accessor.getStructureAt(pos,
-                                                                                                                               StructureFeature.MONUMENT)
-                                                                                                               .hasChildren()
-                   ? SpawnSettings.EMPTY_ENTRY_POOL
-                   : super.getEntitySpawnList(biome, accessor, group, pos);
-        }
+        return settingsSupplier.get().generationShapeConfig().height();
     }
     
     @Override
@@ -180,12 +144,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getSeaLevel() {
-        return settingsSupplier.get().getSeaLevel();
+        return settingsSupplier.get().seaLevel();
     }
     
     @Override
     public int getMinimumY() {
-        return settingsSupplier.get().getGenerationShapeConfig().minimumY();
+        return settingsSupplier.get().generationShapeConfig().minimumY();
     }
     
     @Override
