@@ -35,20 +35,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 
-import java.util.*;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 
 public final class FabricUtil {
-    
-    private static final Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>>
-            terraVanillaBiomes = new HashMap<>();
-    
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID()
                    .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
@@ -69,17 +66,15 @@ public final class FabricUtil {
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
-            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, vanilla);
+            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, vanilla.value());
             
             Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
             
             if(biomeRegistry.containsId(identifier)) {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(biomeRegistry.get(identifier));
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(biomeRegistry, identifier).orElseThrow());
             } else {
                 Registry.register(biomeRegistry, identifier, minecraftBiome);
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(minecraftBiome);
-                terraVanillaBiomes.computeIfAbsent(biomeRegistry.getKey(vanilla).orElseThrow(), b -> new ArrayList<>()).add(
-                        biomeRegistry.getKey(minecraftBiome).orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(biomeRegistry, identifier).orElseThrow());
             }
         }
     }
@@ -128,7 +123,7 @@ public final class FabricUtil {
             accessor.getGrassColor().ifPresent(effects::grassColor);
             
             builder.precipitation(vanilla.getPrecipitation())
-                    .category(vanilla.getCategory());
+                   .category(vanilla.getCategory());
         }
         
         return builder
@@ -138,10 +133,6 @@ public final class FabricUtil {
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
-    }
-    
-    public static Map<RegistryKey<net.minecraft.world.biome.Biome>, List<RegistryKey<net.minecraft.world.biome.Biome>>> getTerraVanillaBiomes() {
-        return terraVanillaBiomes;
     }
     
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
@@ -154,5 +145,11 @@ public final class FabricUtil {
             return (Container) entity;
         }
         return null;
+    }
+    
+    public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
+        return registry.getOrEmpty(identifier)
+                       .flatMap(registry::getKey)
+                       .flatMap(registry::getEntry);
     }
 }
