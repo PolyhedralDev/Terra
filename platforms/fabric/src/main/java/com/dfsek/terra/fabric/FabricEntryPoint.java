@@ -48,7 +48,7 @@ public class FabricEntryPoint implements ModInitializer {
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
         // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.CODEC);
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(

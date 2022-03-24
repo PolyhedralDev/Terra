@@ -12,13 +12,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryCodecs;
-import net.minecraft.util.registry.RegistryFixedCodec;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 
 public final class Codecs {
-    public static final Codec<RegistryKey> REGISTRY_KEY = RecordCodecBuilder
+    public static final Codec<RegistryKey> TERRA_REGISTRY_KEY = RecordCodecBuilder
             .create(registryKey -> registryKey.group(Codec.STRING.fieldOf("namespace")
                                                                  .forGetter(RegistryKey::getNamespace),
                                                      Codec.STRING.fieldOf("id")
@@ -26,8 +25,8 @@ public final class Codecs {
                                               .apply(registryKey, registryKey.stable(RegistryKey::of)));
     
     public static final Codec<ConfigPack> CONFIG_PACK = RecordCodecBuilder
-            .create(config -> config.group(REGISTRY_KEY.fieldOf("pack")
-                                                       .forGetter(ConfigPack::getRegistryKey))
+            .create(config -> config.group(TERRA_REGISTRY_KEY.fieldOf("pack")
+                                                             .forGetter(ConfigPack::getRegistryKey))
                                     .apply(config, config.stable(id -> FabricEntryPoint.getPlatform()
                                                                                        .getConfigRegistry()
                                                                                        .get(id)
@@ -45,7 +44,7 @@ public final class Codecs {
                                                           .forGetter(TerraBiomeSource::getPack))
                                         .apply(instance, instance.stable(TerraBiomeSource::new)));
     
-    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
+    public static final Codec<FabricChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder.create(
             instance -> instance.group(
                     RegistryCodecs.dynamicRegistry(Registry.STRUCTURE_SET_KEY, Lifecycle.stable(), StructureSet.CODEC)
                                       .fieldOf("structures")
@@ -59,5 +58,5 @@ public final class Codecs {
                     ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
                                                          .forGetter(FabricChunkGeneratorWrapper::getSettings)
                                       ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
-                                                                                            );
+                                                                                                                     );
 }
