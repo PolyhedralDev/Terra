@@ -29,6 +29,7 @@ import com.dfsek.terra.fabric.data.Codecs;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +48,6 @@ public class FabricEntryPoint implements ModInitializer {
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
-        // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),
@@ -57,8 +55,14 @@ public class FabricEntryPoint implements ModInitializer {
                 commandSender -> (ServerCommandSource) commandSender
         );
         
+        
         manager.brigadierManager().setNativeNumberSuggestions(false);
         
         TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(manager));
+    }
+    
+    public static void register() { // register the things
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     }
 }
