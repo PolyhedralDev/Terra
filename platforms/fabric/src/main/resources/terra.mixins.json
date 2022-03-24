@@ -33,7 +33,7 @@
     "implementations.world.ChunkRegionMixin",
     "implementations.world.ServerWorldMixin",
     "lifecycle.MinecraftServerMixin",
-    "lifecycle.ServerResourceManagerMixin"
+      "lifecycle.MinecraftServer_BiomeRegistrationMixin"
   ],
   "client": [
     "access.GeneratorTypeAccessor",
