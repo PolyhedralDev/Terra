@@ -75,7 +75,7 @@ public abstract class GeneratorOptionsMixin {
             boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
             Registry<DimensionType> dimensionTypes = manager.get(Registry.DIMENSION_TYPE_KEY);
             Registry<Biome> biomeRegistry = manager.get(Registry.BIOME_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(manager, seed, false);
+            Registry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(manager, seed, false);
             
             Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
             Supplier<ChunkGeneratorSettings>
