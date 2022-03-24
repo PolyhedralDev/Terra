@@ -43,11 +43,9 @@ public class TerraBiomeSource extends BiomeSource {
     private final long seed;
     private ConfigPack pack;
     
-    private final Map<Biome, net.minecraft.world.biome.Biome> terraToMinecraft = new ConcurrentHashMap<>();
-    
     public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
-        super(biomes.stream()
-                    .filter(biome -> Objects.requireNonNull(biomes.getId(biome))
+        super(biomes.streamEntries()
+                    .filter(biome -> Objects.requireNonNull(biomes.getId(biome.value()))
                                             .getNamespace()
                                             .equals("terra")) // Filter out non-Terra biomes.
                     .collect(Collectors.toList()));
