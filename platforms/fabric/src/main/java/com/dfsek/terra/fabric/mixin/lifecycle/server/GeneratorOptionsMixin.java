@@ -27,6 +27,7 @@ import net.minecraft.server.dedicated.ServerPropertiesHandler;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
@@ -79,8 +80,8 @@ public abstract class GeneratorOptionsMixin {
             Registry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(manager, seed, false);
             
             Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-            Supplier<ChunkGeneratorSettings>
-                    settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
+            RegistryEntry<ChunkGeneratorSettings>
+                    settingsSupplier = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD).orElseThrow();
             Registry<StructureSet> noiseRegistry = manager.get(Registry.STRUCTURE_SET_KEY);
             
             String pack = levelType.substring(levelType.indexOf(":") + 1);

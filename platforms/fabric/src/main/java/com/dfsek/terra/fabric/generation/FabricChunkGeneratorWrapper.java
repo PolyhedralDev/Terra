@@ -71,20 +71,24 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private ChunkGenerator delegate;
     private final Registry<StructureSet> noiseRegistry;
     private ConfigPack pack;
-    private final Supplier<ChunkGeneratorSettings> settingsSupplier;
+    private final RegistryEntry<ChunkGeneratorSettings> settings;
     
     public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
-                                       Supplier<ChunkGeneratorSettings> settingsSupplier) {
+                                       RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
         super(noiseRegistry, Optional.empty(), biomeSource, biomeSource, seed);
         this.noiseRegistry = noiseRegistry;
         this.pack = configPack;
-        this.settingsSupplier = settingsSupplier;
+        this.settings = settingsSupplier;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
         
         this.seed = seed;
+    }
+    
+    public Registry<StructureSet> getNoiseRegistry() {
+        return noiseRegistry;
     }
     
     @Override
@@ -94,7 +98,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public net.minecraft.world.gen.chunk.ChunkGenerator withSeed(long seed) {
-        return new FabricChunkGeneratorWrapper(noiseRegistry, (TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settingsSupplier);
+        return new FabricChunkGeneratorWrapper(noiseRegistry, (TerraBiomeSource) this.biomeSource.withSeed(seed), seed, pack, settings);
     }
     
     @Override
@@ -118,7 +122,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getWorldHeight() {
-        return settingsSupplier.get().generationShapeConfig().height();
+        return settings.value().generationShapeConfig().height();
     }
     
     @Override
@@ -148,12 +152,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getSeaLevel() {
-        return settingsSupplier.get().seaLevel();
+        return settings.value().seaLevel();
     }
     
     @Override
     public int getMinimumY() {
-        return settingsSupplier.get().generationShapeConfig().minimumY();
+        return settings.value().generationShapeConfig().minimumY();
     }
     
     @Override
@@ -209,8 +213,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return seed;
     }
     
-    public Supplier<ChunkGeneratorSettings> getSettingsSupplier() {
-        return settingsSupplier;
+    public RegistryEntry<ChunkGeneratorSettings> getSettings() {
+        return settings;
     }
     
     @Override
