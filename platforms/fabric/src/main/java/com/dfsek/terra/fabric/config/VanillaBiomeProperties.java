@@ -3,12 +3,11 @@ package com.dfsek.terra.fabric.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
-import com.dfsek.terra.api.properties.Properties;
-
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
+
+import com.dfsek.terra.api.properties.Properties;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {

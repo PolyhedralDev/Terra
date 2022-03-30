@@ -23,9 +23,6 @@ import com.dfsek.tectonic.api.depth.IndexLevel;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -37,6 +34,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
@@ -64,13 +62,14 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
                         if(!s.startsWith("<< ")) continue;
                         String meta = s.substring(3);
                         
-    
+
                         Pair<Configuration, Object> pair = getMetaValue(meta, depthTracker);
                         Object metaValue = pair.getRight();
                         
                         if(!(metaValue instanceof List)) {
                             throw new LoadException(
-                                    "MetaList/Set injection candidate must be list, is type " + metaValue.getClass().getCanonicalName(), depthTracker);
+                                    "MetaList/Set injection candidate must be list, is type " + metaValue.getClass().getCanonicalName(),
+                                    depthTracker);
                         }
                         
                         List<Object> metaList = (List<Object>) metaValue;

@@ -14,7 +14,7 @@ public abstract class BinaryArithmeticSampler implements NoiseSampler {
     
     @Override
     public double noise(long seed, double x, double y) {
-        return operate(left.noise(seed, x, y),right.noise(seed, x, y));
+        return operate(left.noise(seed, x, y), right.noise(seed, x, y));
     }
     
     @Override

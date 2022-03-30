@@ -10,19 +10,10 @@ package com.dfsek.terra.addons.palette.palette;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import com.dfsek.tectonic.api.depth.DepthTracker;
-import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.tectonic.api.loader.ConfigLoader;
-import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import java.lang.reflect.AnnotatedType;
-import java.util.Map;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class PaletteLayerLoader implements ObjectTemplate<PaletteLayerHolder> {

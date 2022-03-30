@@ -37,6 +37,10 @@ public class BufferedWorld implements WritableWorld {
         this.writeInterceptor = writeInterceptor;
     }
     
+    protected static Builder builder(WritableWorld world) {
+        return new Builder(world);
+    }
+    
     @Override
     public Object getHandle() {
         return delegate.getHandle();
@@ -101,6 +105,7 @@ public class BufferedWorld implements WritableWorld {
         return delegate;
     }
     
+
     public static final class Builder {
         private final WritableWorld delegate;
         private ReadInterceptor readInterceptor;
@@ -154,9 +159,5 @@ public class BufferedWorld implements WritableWorld {
                                      Objects.requireNonNullElse(readInterceptor, Interceptors.readThrough()),
                                      Objects.requireNonNullElse(writeInterceptor, Interceptors.writeThrough()));
         }
-    }
-    
-    protected static Builder builder(WritableWorld world) {
-        return new Builder(world);
     }
 }

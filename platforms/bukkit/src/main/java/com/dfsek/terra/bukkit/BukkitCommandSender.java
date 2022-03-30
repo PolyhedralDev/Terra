@@ -17,16 +17,14 @@
 
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.entity.Player;
-
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-
 import org.bukkit.ChatColor;
 
-import com.dfsek.terra.api.command.CommandSender;
-
 import java.util.Optional;
+
+import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class BukkitCommandSender implements CommandSender {

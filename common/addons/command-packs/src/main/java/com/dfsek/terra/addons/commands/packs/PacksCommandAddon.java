@@ -2,30 +2,18 @@ package com.dfsek.terra.addons.commands.packs;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.CommandManager;
-
-import cloud.commandframework.arguments.standard.EnumArgument;
-import cloud.commandframework.arguments.standard.LongArgument;
-import cloud.commandframework.context.CommandContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Random;
 
 
 public class PacksCommandAddon implements AddonInitializer {
@@ -45,7 +33,7 @@ public class PacksCommandAddon implements AddonInitializer {
                 .register(addon, CommandRegistrationEvent.class)
                 .then(event -> {
                     CommandManager<CommandSender> manager = event.getCommandManager();
-                    
+            
                     manager.command(
                                    manager.commandBuilder("packs", ArgumentDescription.of("List installed config packs"))
                                           .permission("terra.packs")
@@ -66,10 +54,10 @@ public class PacksCommandAddon implements AddonInitializer {
                                           .handler(context -> {
                                               ConfigPack pack = context.get("pack");
                                               StringBuilder packInfo = new StringBuilder("Pack ").append(pack.getID()).append('\n');
-            
+                        
                                               packInfo.append("Version: ").append(pack.getVersion().getFormatted()).append('\n');
                                               packInfo.append("Author: ").append(pack.getAuthor()).append('\n');
-            
+                        
                                               packInfo.append("Addon Dependencies:\n");
                                               pack.addons().forEach((id, versions) -> packInfo
                                                       .append(" - ")

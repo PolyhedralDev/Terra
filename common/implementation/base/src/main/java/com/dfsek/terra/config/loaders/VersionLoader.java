@@ -14,7 +14,8 @@ import java.lang.reflect.AnnotatedType;
 
 public class VersionLoader implements TypeLoader<Version> {
     @Override
-    public Version load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public Version load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    throws LoadException {
         try {
             return Versions.parseVersion((String) c);
         } catch(ParseException e) {

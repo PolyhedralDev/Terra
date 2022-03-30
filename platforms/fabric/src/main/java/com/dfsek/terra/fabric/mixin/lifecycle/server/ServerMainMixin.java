@@ -17,10 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-
 import net.minecraft.server.Main;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.DynamicRegistryManager.Mutable;
@@ -32,6 +28,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 
 
 @Mixin(Main.class)

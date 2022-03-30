@@ -2,18 +2,16 @@ package com.dfsek.terra.addons.commands.profiler;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.CommandManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class ProfilerCommandAddon implements AddonInitializer {

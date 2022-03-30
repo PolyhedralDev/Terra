@@ -1,6 +1,7 @@
 ---
 name: "Other Issue"
-about: "Use this template if your issue doesn't accurately fit into any of the other categories."
+about: "Use this template if your issue doesn't accurately fit into any of the
+other categories."
 title: ""
 labels: "Type: Question, Status: Pending"
 assignees: ""

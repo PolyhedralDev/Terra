@@ -20,10 +20,6 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
-
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +34,8 @@ import java.util.function.Consumer;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 /**
@@ -48,13 +46,13 @@ import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     private final OpenRegistry<T> registry;
     
+    public CheckedRegistryImpl(OpenRegistry<T> registry) {
+        this.registry = registry;
+    }
+    
     @Internal
     public OpenRegistry<T> getRegistry() {
         return registry;
-    }
-    
-    public CheckedRegistryImpl(OpenRegistry<T> registry) {
-        this.registry = registry;
     }
     
     @Override
@@ -103,7 +101,8 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    throws LoadException {
         return registry.load(t, c, loader, depthTracker);
     }
 }

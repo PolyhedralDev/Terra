@@ -5,16 +5,6 @@ import cloud.commandframework.arguments.CommandArgument;
 import cloud.commandframework.arguments.parser.ArgumentParseResult;
 import cloud.commandframework.arguments.parser.ArgumentParser;
 import cloud.commandframework.context.CommandContext;
-
-import com.dfsek.terra.api.registry.Registry;
-
-import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
-
-import com.dfsek.terra.api.registry.key.RegistryKey;
-
-import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import io.leangen.geantyref.TypeToken;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,6 +15,11 @@ import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class RegistryArgument<T, R> extends CommandArgument<T, R> {
@@ -63,19 +58,23 @@ public class RegistryArgument<T, R> extends CommandArgument<T, R> {
     }
     
     @SuppressWarnings("unchecked")
-    public static <T, R> Builder<T, R> builder(String name, Function<CommandContext<T>, Registry<R>> registryFunction, TypeKey<R> registryType) {
+    public static <T, R> Builder<T, R> builder(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
+                                               TypeKey<R> registryType) {
         return new Builder<>(name, registryFunction, (TypeToken<R>) TypeToken.get(registryType.getType()));
     }
     
-    public static <T, R> CommandArgument<T, R> of(String name, Function<CommandContext<T>, Registry<R>> registryFunction, TypeKey<R> registryType) {
+    public static <T, R> CommandArgument<T, R> of(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
+                                                  TypeKey<R> registryType) {
         return RegistryArgument.<T, R>builder(name, registryFunction, registryType).build();
     }
     
-    public static <T, R> CommandArgument<T, R> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction, TypeKey<R> registryType) {
+    public static <T, R> CommandArgument<T, R> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
+                                                        TypeKey<R> registryType) {
         return RegistryArgument.builder(name, registryFunction, registryType).asOptional().build();
     }
     
-    public static <T, R> CommandArgument<T, R> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction, TypeKey<R> registryType, String defaultKey) {
+    public static <T, R> CommandArgument<T, R> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
+                                                        TypeKey<R> registryType, String defaultKey) {
         return RegistryArgument.builder(name, registryFunction, registryType).asOptionalWithDefault(defaultKey).build();
     }
     
@@ -89,7 +88,7 @@ public class RegistryArgument<T, R> extends CommandArgument<T, R> {
             this.registryFunction = commandContext -> registry;
             this.typeToken = (TypeToken<R>) TypeToken.get(registry.getType().getType());
         }
-    
+        
         private Builder(@NonNull String name, Function<CommandContext<T>, Registry<R>> registryFunction, TypeToken<R> typeToken) {
             super(typeToken, name);
             this.typeToken = typeToken;

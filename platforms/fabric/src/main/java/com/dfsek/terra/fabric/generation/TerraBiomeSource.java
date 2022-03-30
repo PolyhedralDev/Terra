@@ -17,24 +17,19 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.fabric.data.Codecs;
-
-import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 
 public class TerraBiomeSource extends BiomeSource {
@@ -51,10 +46,6 @@ public class TerraBiomeSource extends BiomeSource {
                     .collect(Collectors.toList()));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.pack = pack;
-    }
-    
-    public void setPack(ConfigPack pack) {
         this.pack = pack;
     }
     
@@ -83,6 +74,10 @@ public class TerraBiomeSource extends BiomeSource {
     
     public ConfigPack getPack() {
         return pack;
+    }
+    
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
     }
     
     public long getSeed() {

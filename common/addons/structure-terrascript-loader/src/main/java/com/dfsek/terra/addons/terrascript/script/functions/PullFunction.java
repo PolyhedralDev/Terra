@@ -7,12 +7,12 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
@@ -45,11 +45,11 @@ public class PullFunction implements Function<Void> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-    
+
         BlockState rot = RotationUtil.rotateBlockData(data, arguments.getRotation().inverse());
         
         Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-                                  FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
+                                             FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {
                 arguments.getWorld().setBlockState(mutable, rot);

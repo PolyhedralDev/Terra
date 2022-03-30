@@ -19,19 +19,17 @@ package com.dfsek.terra.config.loaders;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.tectonic.api.depth.DepthTracker;
-import com.dfsek.tectonic.api.exception.ConfigException;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.impl.MapConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.api.registry.Registry;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {

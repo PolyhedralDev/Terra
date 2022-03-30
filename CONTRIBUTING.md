@@ -77,9 +77,9 @@ Unsure where to begin contributing to Terra? You can start by looking through "
 beginner" and "help wanted" issues:
 
 - [Beginner issues](https://github.com/PolyhedralDev/Terra/labels/Note%3A%20Good%20First%20Issue)
-  - issues which should be friendly to anyone new to terra.
+    - issues which should be friendly to anyone new to terra.
 - [Help wanted issues](https://github.com/PolyhedralDev/Terra/labels/Note%3A%20Help%20Wanted)
-  - issues which should be a bit more involved than "beginner" issues.
+    - issues which should be a bit more involved than "beginner" issues.
 
 New to github? Working on your first Pull Request? Check
 out [How to Contribute to an Open Source Project on GitHub](https://app.egghead.io/playlists/how-to-contribute-to-an-open-source-project-on-github)
@@ -365,8 +365,9 @@ into packs) is acceptable in the platform project.
 
 #### Specific Compatibility
 
-Specific compatibility should *not* be put in the platform project. (Example: Adding
-the ability to generate TechCraft v7's doo-dads with a TerraScript function)
+Specific compatibility should *not* be put in the platform project. (Example:
+Adding the ability to generate TechCraft v7's doo-dads with a TerraScript
+function)
 
 Having specific compatibilities leads to tons of extra dependencies to keep
 track of, as well as adding lots of additional stuff to maintain. It quickly

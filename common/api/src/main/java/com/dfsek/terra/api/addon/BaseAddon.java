@@ -28,6 +28,7 @@ public interface BaseAddon extends StringIdentifiable, Namespaced {
     
     /**
      * Gets the dependencies of this addon.
+     *
      * @return Map of dependency ID to {@link VersionRange} of dependency
      */
     default Map<String, VersionRange> getDependencies() {
@@ -36,6 +37,7 @@ public interface BaseAddon extends StringIdentifiable, Namespaced {
     
     /**
      * Get the version of the addon
+     *
      * @return Version of addon
      */
     Version getVersion();

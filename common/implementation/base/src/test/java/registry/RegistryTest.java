@@ -17,14 +17,13 @@
 
 package registry;
 
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.junit.jupiter.api.Test;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
@@ -91,7 +90,7 @@ public class RegistryTest {
             test.getByID("test");
             fail("Shouldn't be able to get with ambiguous ID!");
         } catch(IllegalArgumentException ignore) {
-        
+
         }
     }
 }

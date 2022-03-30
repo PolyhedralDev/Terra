@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.random;
 
-import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
-
-
 /**
  * NoiseSampler implementation to produce random, uniformly distributed (white) noise.
  */

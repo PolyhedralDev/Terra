@@ -1,7 +1,5 @@
 package com.dfsek.terra.fabric.mixin.implementations;
 
-import com.dfsek.terra.api.Handle;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -22,6 +20,8 @@ import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+
+import com.dfsek.terra.api.Handle;
 
 
 /**

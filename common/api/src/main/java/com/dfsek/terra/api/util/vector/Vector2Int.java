@@ -54,33 +54,6 @@ public class Vector2Int {
         };
     }
     
-    public static class Mutable extends Vector2Int {
-        
-        protected Mutable(int x, int z) {
-            super(x, z);
-        }
-        
-        public int getZ() {
-            return z;
-        }
-        
-        public void setZ(int z) {
-            this.z = z;
-        }
-        
-        public int getX() {
-            return x;
-        }
-        
-        public void setX(int x) {
-            this.x = x;
-        }
-        
-        public Vector2Int immutable() {
-            return new Vector2Int(x, z);
-        }
-    }
-    
     @Override
     public int hashCode() {
         return (31 * x) + z;
@@ -92,5 +65,33 @@ public class Vector2Int {
             return this.x == that.x && this.z == that.z;
         }
         return false;
+    }
+    
+
+    public static class Mutable extends Vector2Int {
+
+        protected Mutable(int x, int z) {
+            super(x, z);
+        }
+
+        public int getZ() {
+            return z;
+        }
+
+        public void setZ(int z) {
+            this.z = z;
+        }
+
+        public int getX() {
+            return x;
+        }
+
+        public void setX(int x) {
+            this.x = x;
+        }
+
+        public Vector2Int immutable() {
+            return new Vector2Int(x, z);
+        }
     }
 }

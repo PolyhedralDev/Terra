@@ -22,10 +22,10 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.preprocessor.ValuePreprocessor;
 
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import java.lang.annotation.Annotation;
 import java.util.Map;
+
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public abstract class MetaPreprocessor<A extends Annotation> implements ValuePreprocessor<A> {

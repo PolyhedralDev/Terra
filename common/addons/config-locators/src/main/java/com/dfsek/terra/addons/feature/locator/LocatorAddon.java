@@ -14,11 +14,11 @@ import java.util.function.Supplier;
 import com.dfsek.terra.addons.feature.locator.config.AdjacentPatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.GaussianRandomLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.Sampler3DLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.SamplerLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.Sampler3DLocatorTemplate;
+import com.dfsek.terra.addons.feature.locator.config.SamplerLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.TopLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.XorLocatorTemplate;
@@ -63,13 +63,13 @@ public class LocatorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                     locatorRegistry.register(addon.key("SURFACE"), SurfaceLocatorTemplate::new);
                     locatorRegistry.register(addon.key("TOP"), TopLocatorTemplate::new);
-                    
+            
                     locatorRegistry.register(addon.key("RANDOM"), RandomLocatorTemplate::new);
                     locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
-                    
+            
                     locatorRegistry.register(addon.key("PATTERN"), PatternLocatorTemplate::new);
                     locatorRegistry.register(addon.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
-                    
+            
                     locatorRegistry.register(addon.key("SAMPLER"), SamplerLocatorTemplate::new);
                     locatorRegistry.register(addon.key("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
             

@@ -21,15 +21,13 @@ import com.dfsek.tectonic.api.config.Configuration;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
@@ -46,7 +44,7 @@ public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
             if(value.startsWith("$") // it's a meta value.
                && !value.startsWith("${")) { // it's not a meta string template.
                 Pair<Configuration, Object> pair = getMetaValue(value.substring(1), depthTracker);
-    
+
                 String configName;
                 if(pair.getLeft().getName() == null) {
                     configName = "Anonymous Configuration";

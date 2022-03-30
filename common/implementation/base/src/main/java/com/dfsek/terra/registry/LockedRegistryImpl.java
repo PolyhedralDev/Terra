@@ -20,10 +20,6 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
-
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -35,6 +31,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 /**
@@ -90,7 +88,8 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    throws LoadException {
         return registry.load(t, c, loader, depthTracker);
     }
 }

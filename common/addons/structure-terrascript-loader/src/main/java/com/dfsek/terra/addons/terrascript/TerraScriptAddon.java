@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript;
 
-import com.dfsek.tectonic.api.exception.LoadException;
-
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;

@@ -9,8 +9,8 @@ package com.dfsek.terra.api.noise;
 
 
 import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 
 

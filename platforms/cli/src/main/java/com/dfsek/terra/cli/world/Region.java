@@ -15,11 +15,12 @@ public class Region implements NBTSerializable<MCAFile> {
         this.x = x;
         this.z = z;
         this.world = world;
-        this.chunks = new CLIChunk[32 * 32];;
+        this.chunks = new CLIChunk[32 * 32];
+        ;
     }
     
     public CLIChunk get(int x, int z) {
-        int key = x + z*32;
+        int key = x + z * 32;
         CLIChunk chunk = chunks[key];
         if(chunk == null) {
             chunk = new CLIChunk(x, z, world);

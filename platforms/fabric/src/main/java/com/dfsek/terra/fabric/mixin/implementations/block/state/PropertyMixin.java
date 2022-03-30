@@ -1,7 +1,5 @@
 package com.dfsek.terra.fabric.mixin.implementations.block.state;
 
-import com.dfsek.terra.api.block.state.properties.Property;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -12,6 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Collection;
 
+import com.dfsek.terra.api.block.state.properties.Property;
+
 
 @Mixin(net.minecraft.state.property.Property.class)
 @Implements(@Interface(iface = Property.class, prefix = "terra$", remap = Remap.NONE))
@@ -19,13 +19,12 @@ public abstract class PropertyMixin<T> {
     @Shadow
     @Final
     private Class<T> type;
-    
-    @Shadow
-    public abstract Collection<T> getValues();
-    
     @Shadow
     @Final
     private String name;
+    
+    @Shadow
+    public abstract Collection<T> getValues();
     
     @Intrinsic
     public Collection<T> terra$values() {

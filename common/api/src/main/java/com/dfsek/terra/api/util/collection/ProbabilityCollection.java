@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.api.util.collection;
 
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -25,6 +22,8 @@ import java.util.function.Function;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 public class ProbabilityCollection<E> implements Collection<E> {

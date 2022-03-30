@@ -21,9 +21,6 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
-
-import com.dfsek.terra.api.command.CommandSender;
-
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -67,15 +65,15 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                                                                           CommandExecutionCoordinator.simpleCoordinator(),
                                                                                           BukkitAdapter::adapt,
                                                                                           BukkitAdapter::adapt);
-            if (commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            if(commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
                 commandManager.registerBrigadier();
                 final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-                if (brigManager != null) {
+                if(brigManager != null) {
                     brigManager.setNativeNumberSuggestions(false);
                 }
             }
-    
-            if (commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            
+            if(commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
                 commandManager.registerAsynchronousCompletions();
             }
             

@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.bukkit.handles;
 
-import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +39,8 @@ public class BukkitWorldHandle implements WorldHandle {
     
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
-        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data); // somehow bukkit managed to make this not thread safe! :)
+        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
+                data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
     }
     

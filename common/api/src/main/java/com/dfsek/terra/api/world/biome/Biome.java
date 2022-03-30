@@ -28,12 +28,14 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
     
     /**
      * Get the color of this biome.
+     *
      * @return ARGB color of this biome
      */
     int getColor();
     
     /**
      * Get the tags this biome holds
+     *
      * @return A {@link Set} of String tags this biome holds.
      */
     Set<String> getTags();

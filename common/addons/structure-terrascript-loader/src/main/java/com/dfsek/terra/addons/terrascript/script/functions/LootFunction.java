@@ -7,14 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.entity.Container;
-import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
-
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.vector.Vector3;
-
 import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +15,21 @@ import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {

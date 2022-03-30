@@ -35,7 +35,6 @@ public class Vector2 {
     }
     
     
-    
     /**
      * Get the length of this Vector
      *
@@ -127,34 +126,40 @@ public class Vector2 {
         return new Mutable(x, z);
     }
     
+    @Override
+    public String toString() {
+        return "(" + x + ", " + z + ")";
+    }
+    
+
     public static class Mutable extends Vector2 {
-        
+
         private Mutable(double x, double z) {
             super(x, z);
         }
-    
+
         public double getX() {
             return x;
         }
-    
-        public double getZ() {
-            return z;
-        }
-        
-        public Vector2 immutable() {
-            return Vector2.of(x, z);
-        }
-    
+
         public Mutable setX(double x) {
             this.x = x;
             return this;
         }
-    
+
+        public double getZ() {
+            return z;
+        }
+
         public Mutable setZ(double z) {
             this.z = z;
             return this;
         }
-    
+
+        public Vector2 immutable() {
+            return Vector2.of(x, z);
+        }
+
         /**
          * Get the length of this Vector
          *
@@ -163,7 +168,7 @@ public class Vector2 {
         public double length() {
             return FastMath.sqrt(lengthSquared());
         }
-    
+
         /**
          * Get the squared length of this Vector
          *
@@ -172,13 +177,13 @@ public class Vector2 {
         public double lengthSquared() {
             return x * x + z * z;
         }
-    
+
         public Mutable add(double x, double z) {
             this.x += x;
             this.z += z;
             return this;
         }
-    
+
         /**
          * Multiply X and Z components by a value.
          *
@@ -191,7 +196,7 @@ public class Vector2 {
             z *= m;
             return this;
         }
-    
+
         /**
          * Add this vector to another.
          *
@@ -204,7 +209,7 @@ public class Vector2 {
             z += other.getZ();
             return this;
         }
-    
+
         /**
          * Subtract a vector from this vector,
          *
@@ -217,7 +222,7 @@ public class Vector2 {
             z -= other.getZ();
             return this;
         }
-    
+
         /**
          * Normalize this vector to length 1
          *
@@ -227,7 +232,7 @@ public class Vector2 {
             divide(length());
             return this;
         }
-    
+
         /**
          * Divide X and Z components by a value.
          *
@@ -240,10 +245,5 @@ public class Vector2 {
             z /= d;
             return this;
         }
-    }
-    
-    @Override
-    public String toString() {
-        return "(" + x + ", " + z + ")";
     }
 }

@@ -18,18 +18,8 @@
 package com.dfsek.terra.fabric.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
-import com.dfsek.tectonic.api.config.template.annotations.Default;
-import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.api.properties.Properties;
-
-import net.minecraft.util.Identifier;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 @SuppressWarnings("FieldMayBeFinal")

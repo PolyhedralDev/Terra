@@ -17,16 +17,6 @@
 
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.entity.Container;
-import com.dfsek.terra.api.block.entity.MobSpawner;
-import com.dfsek.terra.api.block.entity.Sign;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
-import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
-
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -43,6 +33,16 @@ import net.minecraft.world.biome.GenerationSettings;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.Sign;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
+import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
 public final class FabricUtil {

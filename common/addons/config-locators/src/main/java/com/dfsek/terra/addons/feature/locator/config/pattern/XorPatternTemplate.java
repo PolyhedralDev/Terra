@@ -12,10 +12,10 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.tectonic.api.exception.ValidationException;
 
+import java.util.List;
+
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.config.meta.Meta;
-
-import java.util.List;
 
 
 public class XorPatternTemplate implements ObjectTemplate<Pattern>, ValidatedConfigTemplate {

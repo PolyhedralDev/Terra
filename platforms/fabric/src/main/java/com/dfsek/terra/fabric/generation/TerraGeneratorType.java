@@ -24,16 +24,10 @@ import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
-import java.util.function.Supplier;
+import com.dfsek.terra.api.config.ConfigPack;
 
 
 @Environment(EnvType.CLIENT)
@@ -51,6 +45,7 @@ public class TerraGeneratorType extends GeneratorType {
         RegistryEntry<ChunkGeneratorSettings>
                 settingsSupplier = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD).orElseThrow();
         Registry<StructureSet> noiseRegistry = manager.get(Registry.STRUCTURE_SET_KEY);
-        return new FabricChunkGeneratorWrapper(noiseRegistry, new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack, settingsSupplier);
+        return new FabricChunkGeneratorWrapper(noiseRegistry, new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack,
+                                               settingsSupplier);
     }
 }

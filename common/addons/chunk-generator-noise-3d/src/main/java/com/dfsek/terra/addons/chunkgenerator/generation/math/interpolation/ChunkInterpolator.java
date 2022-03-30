@@ -56,8 +56,8 @@ public class ChunkInterpolator {
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
                 BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed)
-                        .getContext()
-                        .get(BiomeNoiseProperties.class);
+                                                                  .getContext()
+                                                                  .get(BiomeNoiseProperties.class);
                 Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
                 
                 int step = generationSettings.blendStep();

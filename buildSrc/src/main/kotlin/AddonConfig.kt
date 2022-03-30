@@ -21,7 +21,7 @@ fun Project.addonDir(dir: File, task: Task) {
             it.delete()
         }
         forSubProjects(":common:addons") {
-            val jar = if(tasks.findByName("shadowJar") != null) {
+            val jar = if (tasks.findByName("shadowJar") != null) {
                 (tasks.named("shadowJar").get() as ShadowJar)
             } else {
                 (tasks.named("jar").get() as Jar)

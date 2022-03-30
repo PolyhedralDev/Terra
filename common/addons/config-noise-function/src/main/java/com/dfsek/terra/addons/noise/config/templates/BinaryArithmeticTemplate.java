@@ -2,11 +2,11 @@ package com.dfsek.terra.addons.noise.config.templates;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
+import java.util.function.BiFunction;
+
 import com.dfsek.terra.addons.noise.samplers.arithmetic.BinaryArithmeticSampler;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
-
-import java.util.function.BiFunction;
 
 
 public class BinaryArithmeticTemplate<T extends BinaryArithmeticSampler> extends SamplerTemplate<T> {

@@ -1,13 +1,12 @@
 package com.dfsek.terra.addons.palette.shortcut.block;
 
+import java.util.Random;
+
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
-
-import java.util.Random;
 
 
 public class SingletonStructure implements Structure {

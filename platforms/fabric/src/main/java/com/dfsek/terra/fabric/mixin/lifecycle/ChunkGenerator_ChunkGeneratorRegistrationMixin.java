@@ -1,13 +1,13 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
 
-import com.dfsek.terra.fabric.FabricEntryPoint;
-
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.dfsek.terra.fabric.FabricEntryPoint;
 
 
 @Mixin(ChunkGenerator.class)

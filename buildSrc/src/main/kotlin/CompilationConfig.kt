@@ -1,3 +1,4 @@
+import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -12,7 +13,6 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
-import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")

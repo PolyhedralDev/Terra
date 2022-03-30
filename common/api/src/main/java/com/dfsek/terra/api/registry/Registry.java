@@ -8,10 +8,6 @@
 package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +18,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public interface Registry<T> extends TypeLoader<T> {

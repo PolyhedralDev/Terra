@@ -27,8 +27,8 @@ for everyone. We do not tolerate harassment of participants in any form.
 ## When and How to Use These Guidelines
 
 This code of conduct applies to all Terra community spaces, both online and off.
-This applies to the github discussion tab, the 
-[Polyhedral Development community discord server](https://discord.gg/PXUEbbF), 
+This applies to the github discussion tab, the
+[Polyhedral Development community discord server](https://discord.gg/PXUEbbF),
 and any other Terra community. In addition, we may choose to invoke them in
 instances of harassment outside the Terra communities, and we will punish the
 responsible individuals appropriately. We will not tolerate harassment in any
@@ -58,8 +58,8 @@ listen carefully, apologize sincerely, and correct the behavior going forward.
 Any member of the Terra community should always be open to new ideas and must
 always be open to the possibility of being wrong. Nobody can always be right,
 and we are only human; we are
-[fallible](https://www.merriam-webster.com/dictionary/fallible) by nature.
-It is okay to make mistakes, but we must be willing to admit when we make one.
+[fallible](https://www.merriam-webster.com/dictionary/fallible) by nature. It is
+okay to make mistakes, but we must be willing to admit when we make one.
 
 ### Be Direct but Professional
 

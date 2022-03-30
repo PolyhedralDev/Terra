@@ -26,8 +26,6 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome.Category;
@@ -39,9 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.addon.EphemeralAddon;
@@ -61,12 +57,11 @@ public class PlatformImpl extends AbstractPlatform {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
+    private MinecraftServer server;
     
     public PlatformImpl() {
         load();
     }
-    
-    private MinecraftServer server;
     
     public void setServer(MinecraftServer server) {
         this.server = server;
@@ -77,7 +72,7 @@ public class PlatformImpl extends AbstractPlatform {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
-    
+
         
         if(server != null) {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {

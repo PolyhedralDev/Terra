@@ -1,11 +1,5 @@
 package com.dfsek.terra.fabric.data;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -14,6 +8,12 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryCodecs;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 
 public final class Codecs {
@@ -47,8 +47,8 @@ public final class Codecs {
     public static final Codec<FabricChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder.create(
             instance -> instance.group(
                     RegistryCodecs.dynamicRegistry(Registry.STRUCTURE_SET_KEY, Lifecycle.stable(), StructureSet.CODEC)
-                                      .fieldOf("structures")
-                                      .forGetter(FabricChunkGeneratorWrapper::getNoiseRegistry),
+                                  .fieldOf("structures")
+                                  .forGetter(FabricChunkGeneratorWrapper::getNoiseRegistry),
                     TERRA_BIOME_SOURCE.fieldOf("biome_source")
                                       .forGetter(FabricChunkGeneratorWrapper::getBiomeSource),
                     Codec.LONG.fieldOf("seed").stable()

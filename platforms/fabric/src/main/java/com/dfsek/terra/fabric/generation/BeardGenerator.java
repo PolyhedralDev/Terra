@@ -23,12 +23,13 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+
 // net.minecraft.world.gen.StructureWeightSampler
 public class BeardGenerator {
     private static final float[] STRUCTURE_WEIGHT_TABLE = Util.make(new float[13824], array -> {
-        for (int i = 0; i < 24; ++i) {
-            for (int j = 0; j < 24; ++j) {
-                for (int k = 0; k < 24; ++k) {
+        for(int i = 0; i < 24; ++i) {
+            for(int j = 0; j < 24; ++j) {
+                for(int k = 0; k < 24; ++k) {
                     array[i * 24 * 24 + j * 24 + k] = (float) calculateStructureWeight(j - 12, k - 12, i - 12);
                 }
             }
@@ -84,6 +85,45 @@ public class BeardGenerator {
         this.maxY = maxY;
     }
     
+    private static double getMagnitudeWeight(int x, int y, int z) {
+        double d = MathHelper.magnitude(x, (double) y / 2.0, z);
+        return MathHelper.clampedLerpFromProgress(d, 0.0, 6.0, 1.0, 0.0);
+    }
+    
+    /**
+     * Gets the structure weight from the array from the given position, or 0 if the position is out of bounds.
+     */
+    private static double getStructureWeight(int x, int y, int z) {
+        int xOffset = x + 12;
+        int yOffset = y + 12;
+        int zOffset = z + 12;
+        if(xOffset < 0 || xOffset >= 24) {
+            return 0.0;
+        }
+        if(yOffset < 0 || yOffset >= 24) {
+            return 0.0;
+        }
+        if(zOffset < 0 || zOffset >= 24) {
+            return 0.0;
+        }
+        return STRUCTURE_WEIGHT_TABLE[zOffset * 24 * 24 + xOffset * 24 + yOffset];
+    }
+    
+    /**
+     * Calculates the structure weight for the given position.
+     * <p>The weight increases as x and z approach {@code (0, 0)}, and positive y values make the weight negative while negative y
+     * values make the weight positive.
+     */
+    private static double calculateStructureWeight(int x, int y, int z) {
+        double horizontalDistanceSquared = x * x + z * z;
+        double yOffset = y + 0.5;
+        double verticalSquared = yOffset * yOffset;
+        double naturalDistance = Math.pow(Math.E, -(verticalSquared / 16.0 + horizontalDistanceSquared / 16.0));
+        double inverseSquareRootDistance = -yOffset * MathHelper.fastInverseSqrt(verticalSquared / 2.0 + horizontalDistanceSquared / 2.0) /
+                                           2.0;
+        return inverseSquareRootDistance * naturalDistance;
+    }
+    
     public void generate(ChunkGenerator generator, WorldProperties worldProperties, BiomeProvider biomeProvider) {
         int xi = chunk.getPos().x << 4;
         int zi = chunk.getPos().z << 4;
@@ -104,27 +144,28 @@ public class BeardGenerator {
         }
     }
     
-    
     public double calculateNoise(int x, int y, int z) {
         double noise = 0.0;
         
-        while (this.pieceIterator.hasNext()) {
+        while(this.pieceIterator.hasNext()) {
             StructurePiece structurePiece = this.pieceIterator.next();
             BlockBox blockBox = structurePiece.getBoundingBox();
             int structureX = Math.max(0, Math.max(blockBox.getMinX() - x, x - blockBox.getMaxX()));
-            int structureY = y - (blockBox.getMinY() + (structurePiece instanceof PoolStructurePiece ? ((PoolStructurePiece)structurePiece).getGroundLevelDelta() : 0));
+            int structureY = y - (blockBox.getMinY() + (structurePiece instanceof PoolStructurePiece
+                                                        ? ((PoolStructurePiece) structurePiece).getGroundLevelDelta()
+                                                        : 0));
             int structureZ = Math.max(0, Math.max(blockBox.getMinZ() - z, z - blockBox.getMaxZ()));
             StructureWeightType structureWeightType = structurePiece.getWeightType();
-            if (structureWeightType == StructureWeightType.BURY) {
+            if(structureWeightType == StructureWeightType.BURY) {
                 noise += getMagnitudeWeight(structureX, structureY, structureZ);
                 continue;
             }
-            if (structureWeightType != StructureWeightType.BEARD) continue;
+            if(structureWeightType != StructureWeightType.BEARD) continue;
             
             noise += getStructureWeight(structureX, structureY, structureZ) * 0.8;
         }
         this.pieceIterator.back(this.pieces.size());
-        while (this.junctionIterator.hasNext()) {
+        while(this.junctionIterator.hasNext()) {
             JigsawJunction structurePiece = this.junctionIterator.next();
             int structureX = x - structurePiece.getSourceX();
             int structureY = y - structurePiece.getSourceGroundY();
@@ -133,44 +174,5 @@ public class BeardGenerator {
         }
         this.junctionIterator.back(this.junctions.size());
         return noise;
-    }
-    
-    private static double getMagnitudeWeight(int x, int y, int z) {
-        double d = MathHelper.magnitude(x, (double)y / 2.0, z);
-        return MathHelper.clampedLerpFromProgress(d, 0.0, 6.0, 1.0, 0.0);
-    }
-    
-    /**
-     * Gets the structure weight from the array from the given position, or 0 if the position is out of bounds.
-     */
-    private static double getStructureWeight(int x, int y, int z) {
-        int xOffset = x + 12;
-        int yOffset = y + 12;
-        int zOffset = z + 12;
-        if (xOffset < 0 || xOffset >= 24) {
-            return 0.0;
-        }
-        if (yOffset < 0 || yOffset >= 24) {
-            return 0.0;
-        }
-        if (zOffset < 0 || zOffset >= 24) {
-            return 0.0;
-        }
-        return STRUCTURE_WEIGHT_TABLE[zOffset * 24 * 24 + xOffset * 24 + yOffset];
-    }
-    
-    
-    /**
-     * Calculates the structure weight for the given position.
-     * <p>The weight increases as x and z approach {@code (0, 0)}, and positive y values make the weight negative while negative y
-     * values make the weight positive.
-     */
-    private static double calculateStructureWeight(int x, int y, int z) {
-        double horizontalDistanceSquared = x * x + z * z;
-        double yOffset = y + 0.5;
-        double verticalSquared = yOffset * yOffset;
-        double naturalDistance = Math.pow(Math.E, -(verticalSquared / 16.0 + horizontalDistanceSquared / 16.0));
-        double inverseSquareRootDistance = -yOffset * MathHelper.fastInverseSqrt(verticalSquared / 2.0 + horizontalDistanceSquared / 2.0) / 2.0;
-        return inverseSquareRootDistance * naturalDistance;
     }
 }

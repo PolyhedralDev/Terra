@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.noise.samplers.arithmetic;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-
 import net.jafama.FastMath;
 
+import com.dfsek.terra.api.noise.NoiseSampler;
 
-public class MaxSampler extends BinaryArithmeticSampler{
+
+public class MaxSampler extends BinaryArithmeticSampler {
     public MaxSampler(NoiseSampler left, NoiseSampler right) {
         super(left, right);
     }

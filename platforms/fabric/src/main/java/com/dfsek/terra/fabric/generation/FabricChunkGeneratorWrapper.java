@@ -67,10 +67,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     private final long seed;
     private final TerraBiomeSource biomeSource;
-    private ChunkGenerator delegate;
     private final Registry<StructureSet> noiseRegistry;
-    private ConfigPack pack;
     private final RegistryEntry<ChunkGeneratorSettings> settings;
+    private ChunkGenerator delegate;
+    private ConfigPack pack;
     
     public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
                                        RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
@@ -130,10 +130,11 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
-    
+            
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
             if(compatibilityOptions.isBeard()) {
-                new BeardGenerator(structureAccessor, chunk, compatibilityOptions.getBeardThreshold()).generate(delegate, world, biomeProvider);
+                new BeardGenerator(structureAccessor, chunk, compatibilityOptions.getBeardThreshold()).generate(delegate, world,
+                                                                                                                biomeProvider);
             }
             return chunk;
         }, executor);

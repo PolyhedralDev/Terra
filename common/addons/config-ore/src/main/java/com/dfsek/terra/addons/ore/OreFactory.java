@@ -18,6 +18,7 @@ public class OreFactory implements ConfigFactory<OreTemplate, Structure> {
     @Override
     public VanillaOre build(OreTemplate config, Platform platform) {
         BlockState m = config.getMaterial();
-        return new VanillaOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.isExposed(), config.getMaterialOverrides());
+        return new VanillaOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.isExposed(),
+                              config.getMaterialOverrides());
     }
 }

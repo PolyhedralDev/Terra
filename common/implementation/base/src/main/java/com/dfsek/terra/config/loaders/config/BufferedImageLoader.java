@@ -21,6 +21,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -28,8 +29,6 @@ import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
 
 import com.dfsek.terra.api.config.Loader;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class BufferedImageLoader implements TypeLoader<BufferedImage> {
@@ -40,7 +39,8 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     }
     
     @Override
-    public BufferedImage load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public BufferedImage load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    throws LoadException {
         try {
             return ImageIO.read(files.get((String) c));
         } catch(IOException e) {

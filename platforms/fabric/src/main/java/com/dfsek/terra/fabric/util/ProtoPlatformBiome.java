@@ -19,13 +19,12 @@ package com.dfsek.terra.fabric.util;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 
 import java.util.Objects;
+
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 public class ProtoPlatformBiome implements PlatformBiome {

@@ -24,8 +24,8 @@ public class TerraImplementationArguments implements ImplementationArguments {
     private final WritableWorld world;
     private final Map<Vector3, String> marks = new HashMap<>();
     private final int recursions;
-    private boolean waterlog = false;
     private final Vector3Int origin;
+    private boolean waterlog = false;
     
     public TerraImplementationArguments(Vector3Int origin, Rotation rotation, Random random, WritableWorld world, int recursions) {
         this.rotation = rotation;

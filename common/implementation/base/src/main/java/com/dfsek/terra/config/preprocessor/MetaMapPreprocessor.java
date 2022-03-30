@@ -23,9 +23,6 @@ import com.dfsek.tectonic.api.depth.EntryLevel;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -36,6 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
@@ -65,10 +63,11 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                             Object meta = pair.getRight();
                             if(!(meta instanceof Map)) {
                                 throw new LoadException(
-                                        "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(), depthTracker);
+                                        "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(),
+                                        depthTracker);
                             }
                             newMap.putAll((Map<?, ?>) meta);
-    
+
                             String configName;
                             if(pair.getLeft().getName() == null) {
                                 configName = "Anonymous Configuration";

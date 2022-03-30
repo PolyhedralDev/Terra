@@ -6,15 +6,11 @@ import cloud.commandframework.CommandManager;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class AddonsCommandAddon implements AddonInitializer {
@@ -32,7 +28,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                 .register(addon, CommandRegistrationEvent.class)
                 .then(event -> {
                     CommandManager<CommandSender> manager = event.getCommandManager();
-                    
+            
                     manager.command(
                                    manager.commandBuilder("addons", ArgumentDescription.of("List installed Terra addons"))
                                           .permission("terra.addons")
@@ -55,9 +51,9 @@ public class AddonsCommandAddon implements AddonInitializer {
                                           .handler(context -> {
                                               BaseAddon addon = context.get("addon");
                                               StringBuilder addonInfo = new StringBuilder("Addon ").append(addon.getID()).append('\n');
-            
+                        
                                               addonInfo.append("Version: ").append(addon.getVersion().getFormatted()).append('\n');
-            
+                        
                                               addonInfo.append("Dependencies:\n");
                                               addon.getDependencies().forEach((id, versions) -> addonInfo
                                                       .append(" - ")

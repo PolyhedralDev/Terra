@@ -17,12 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.PlatformImpl;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
-
 import net.minecraft.server.dedicated.ServerPropertiesHandler;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
@@ -39,7 +33,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Random;
-import java.util.function.Supplier;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.fabric.PlatformImpl;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 
 @Mixin(GeneratorOptions.class)

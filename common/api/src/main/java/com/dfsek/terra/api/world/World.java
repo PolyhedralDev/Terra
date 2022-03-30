@@ -12,18 +12,21 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 public interface World extends WorldProperties {
     /**
      * Get the {@link ChunkGenerator} this world uses.
+     *
      * @return Chunk generator.
      */
     ChunkGenerator getGenerator();
     
     /**
      * Get the {@link BiomeProvider} this world uses.
+     *
      * @return Biome provider.
      */
     BiomeProvider getBiomeProvider();
     
     /**
      * Get the {@link ConfigPack} this world uses.
+     *
      * @return Config pack.
      */
     ConfigPack getPack();

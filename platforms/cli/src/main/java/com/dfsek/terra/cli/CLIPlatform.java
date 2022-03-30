@@ -1,25 +1,19 @@
 package com.dfsek.terra.cli;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.handle.ItemHandle;
-import com.dfsek.terra.api.handle.WorldHandle;
-
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.cli.handle.CLIItemHandle;
-import com.dfsek.terra.cli.handle.CLIWorldHandle;
-
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.lang.reflect.AnnotatedType;
+
+import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.cli.handle.CLIItemHandle;
+import com.dfsek.terra.cli.handle.CLIWorldHandle;
 
 
 public class CLIPlatform extends AbstractPlatform {
@@ -27,11 +21,13 @@ public class CLIPlatform extends AbstractPlatform {
     
     private final CLIWorldHandle worldHandle = new CLIWorldHandle();
     private final CLIItemHandle itemHandle = new CLIItemHandle();
+    
     public CLIPlatform() {
         LOGGER.info("Root directory: {}", getDataFolder().getAbsoluteFile());
         load();
         LOGGER.info("Initialized Terra platform.");
     }
+    
     @Override
     public boolean reload() {
         return false;

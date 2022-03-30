@@ -149,7 +149,7 @@ fun downloadPack(packUrl: URL, project: Project) {
 }
 
 fun Project.getJarTask(): Jar {
-    return if(tasks.findByName("shadowJar") != null) {
+    return if (tasks.findByName("shadowJar") != null) {
         (tasks.named("shadowJar").get() as ShadowJar)
     } else {
         (tasks.named("jar").get() as Jar)
