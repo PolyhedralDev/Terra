@@ -1,50 +1,51 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "com.dfsek.terra.fabric.mixin",
-    "compatibilityLevel": "JAVA_16",
-    "mixins": [
-        "access.BiomeEffectsAccessor",
-        "access.MobSpawnerLogicAccessor",
-        "access.StateAccessor",
-        "access.StructureAccessorAccessor",
-        "implementations.BiomeMixin",
-        "implementations.HandleImplementationMixin",
-        "implementations.block.BlockMixin",
-        "implementations.block.entity.BlockEntityMixin",
-        "implementations.block.entity.LootableContainerBlockEntityMixin",
-        "implementations.block.entity.MobSpawnerBlockEntityMixin",
-        "implementations.block.entity.SignBlockEntityMixin",
-        "implementations.block.state.BlockStateMixin",
-        "implementations.block.state.PropertyMixin",
-        "implementations.chunk.ChunkRegionMixin",
-        "implementations.chunk.WorldChunkMixin",
-        "implementations.chunk.data.ProtoChunkMixin",
-        "implementations.entity.EntityMixin",
-        "implementations.entity.EntityTypeMixin",
-        "implementations.entity.PlayerEntityMixin",
-        "implementations.entity.ServerCommandSourceMixin",
-        "implementations.inventory.LockableContainerBlockEntityMixin",
-        "implementations.inventory.item.ItemMixin",
-        "implementations.inventory.item.ItemStackMixin",
-        "implementations.inventory.meta.EnchantmentMixin",
-        "implementations.inventory.meta.ItemStackDamageableMixin",
-        "implementations.inventory.meta.ItemStackMetaMixin",
-        "implementations.world.ChunkRegionMixin",
-        "implementations.world.ServerWorldMixin",
-        "lifecycle.ChunkGenerator_ChunkGeneratorRegistrationMixin",
-        "lifecycle.MinecraftServerMixin"
-    ],
-    "client": [
-        "access.GeneratorTypeAccessor",
-        "lifecycle.client.MinecraftClientMixin"
-    ],
-    "server": [
-        "lifecycle.server.GeneratorOptionsMixin",
-        "lifecycle.server.ServerMainMixin"
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    },
-    "refmap": "terra-refmap.json"
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.dfsek.terra.fabric.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "access.BiomeEffectsAccessor",
+    "access.MobSpawnerLogicAccessor",
+    "access.StateAccessor",
+    "access.StructureAccessorAccessor",
+    "implementations.BiomeMixin",
+    "implementations.HandleImplementationMixin",
+    "implementations.block.BlockMixin",
+    "implementations.block.entity.BlockEntityMixin",
+    "implementations.block.entity.LootableContainerBlockEntityMixin",
+    "implementations.block.entity.MobSpawnerBlockEntityMixin",
+    "implementations.block.entity.SignBlockEntityMixin",
+    "implementations.block.state.BlockStateMixin",
+    "implementations.block.state.PropertyMixin",
+    "implementations.chunk.ChunkRegionMixin",
+    "implementations.chunk.WorldChunkMixin",
+    "implementations.chunk.data.ProtoChunkMixin",
+    "implementations.entity.EntityMixin",
+    "implementations.entity.EntityTypeMixin",
+    "implementations.entity.PlayerEntityMixin",
+    "implementations.entity.ServerCommandSourceMixin",
+    "implementations.inventory.LockableContainerBlockEntityMixin",
+    "implementations.inventory.item.ItemMixin",
+    "implementations.inventory.item.ItemStackMixin",
+    "implementations.inventory.meta.EnchantmentMixin",
+    "implementations.inventory.meta.ItemStackDamageableMixin",
+    "implementations.inventory.meta.ItemStackMetaMixin",
+    "implementations.world.ChunkRegionMixin",
+    "implementations.world.ServerWorldMixin",
+    "lifecycle.ChunkGenerator_ChunkGeneratorRegistrationMixin",
+    "lifecycle.DataPackContentsMixin",
+    "lifecycle.MinecraftServerMixin"
+  ],
+  "client": [
+    "access.GeneratorTypeAccessor",
+    "lifecycle.client.MinecraftClientMixin"
+  ],
+  "server": [
+    "lifecycle.server.GeneratorOptionsMixin",
+    "lifecycle.server.ServerMainMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "terra-refmap.json"
 }
