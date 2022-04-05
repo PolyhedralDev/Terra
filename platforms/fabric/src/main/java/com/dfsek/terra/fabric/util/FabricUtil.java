@@ -97,8 +97,7 @@ public final class FabricUtil {
                 Registry.register(registry, identifier, minecraftBiome);
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow());
             }
-            
-            RegistryEntry<net.minecraft.world.biome.Biome> entry = getEntry(registry, identifier).orElseThrow();
+    
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }

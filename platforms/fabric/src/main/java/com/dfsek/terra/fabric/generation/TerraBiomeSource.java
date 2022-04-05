@@ -23,6 +23,8 @@ import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -32,6 +34,7 @@ import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 
 public class TerraBiomeSource extends BiomeSource {
+    
     private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private final long seed;
     private ConfigPack pack;
