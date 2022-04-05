@@ -37,7 +37,7 @@ public class ProtoPlatformBiome implements PlatformBiome {
     }
     
     public RegistryEntry<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
-        return registry.getOrCreateEntry(registry.getKey(registry.get(identifier)).orElseThrow());
+        return FabricUtil.getEntry(registry, identifier).orElseThrow();
     }
     
     @Override

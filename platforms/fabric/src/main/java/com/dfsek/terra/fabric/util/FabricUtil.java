@@ -118,11 +118,18 @@ public final class FabricUtil {
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
         
-        TERRA_BIOME_MAP.forEach((vanilla, terra) -> getEntry(registry, vanilla.getKey().orElseThrow().getValue()).orElseThrow()
-                .streamTags()
-                .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>()).add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow())));
+        TERRA_BIOME_MAP.forEach((vanilla, terra) -> {
+            RegistryEntry<net.minecraft.world.biome.Biome> entry = getEntry(registry,
+                                                                            vanilla.getKey().orElseThrow().getValue())
+                    .orElseThrow();
+            logger.info(entry.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
+                        vanilla.streamTags().toList());
+            entry.streamTags()
+                 .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>())
+                                        .add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow()));
+        });
         
-        registry.clearTags();
+        
         registry.populateTags(ImmutableMap.copyOf(collect));
         
         registry.streamEntries()
