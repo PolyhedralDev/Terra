@@ -19,9 +19,6 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 @Mixin(DataPackContents.class)
 public class DataPackContentsMixin {
-    @Shadow
-    @Final
-    private static Logger LOGGER;
     
     @Inject(method = "refresh(Lnet/minecraft/util/registry/DynamicRegistryManager;)V", at = @At("RETURN"))
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
