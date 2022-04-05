@@ -70,7 +70,7 @@ public final class FabricUtil {
         logger.info("Biomes registered.");
     }
     
-    private static final Map<RegistryEntry<net.minecraft.world.biome.Biome>, RegistryEntry<net.minecraft.world.biome.Biome>>
+    private static final Map<Identifier, List<Identifier>>
             TERRA_BIOME_MAP = new HashMap<>();
     private static final Map<Biome, RegistryEntry<net.minecraft.world.biome.Biome>> BIOME_MAP = new HashMap<>();
     
@@ -100,7 +100,7 @@ public final class FabricUtil {
             }
             
             RegistryEntry<net.minecraft.world.biome.Biome> entry = getEntry(registry, identifier).orElseThrow();
-            TERRA_BIOME_MAP.put(vanilla, entry);
+            TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
             BIOME_MAP.put(biome, entry);
         }
     }
@@ -118,15 +118,16 @@ public final class FabricUtil {
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
         
-        TERRA_BIOME_MAP.forEach((vanilla, terra) -> {
-            RegistryEntry<net.minecraft.world.biome.Biome> entry = getEntry(registry,
-                                                                            vanilla.getKey().orElseThrow().getValue())
-                    .orElseThrow();
-            logger.info(entry.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
-                        vanilla.streamTags().toList());
-            entry.streamTags()
-                 .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>())
-                                        .add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow()));
+        TERRA_BIOME_MAP.forEach((vb, terraBiomes) -> {
+            RegistryEntry<net.minecraft.world.biome.Biome> vanilla = getEntry(registry, vb).orElseThrow();
+            terraBiomes.forEach(tb -> {
+                RegistryEntry<net.minecraft.world.biome.Biome> terra = getEntry(registry, tb).orElseThrow();
+                logger.info(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
+                            vanilla.streamTags().toList());
+                vanilla.streamTags()
+                       .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>())
+                                              .add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow()));
+            });
         });
         
         
