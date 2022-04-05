@@ -72,7 +72,6 @@ public final class FabricUtil {
     
     private static final Map<Identifier, List<Identifier>>
             TERRA_BIOME_MAP = new HashMap<>();
-    private static final Map<Biome, RegistryEntry<net.minecraft.world.biome.Biome>> BIOME_MAP = new HashMap<>();
     
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
@@ -101,12 +100,7 @@ public final class FabricUtil {
             
             RegistryEntry<net.minecraft.world.biome.Biome> entry = getEntry(registry, identifier).orElseThrow();
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
-            BIOME_MAP.put(biome, entry);
         }
-    }
-    
-    public static RegistryEntry<net.minecraft.world.biome.Biome> getMinecraftBiome(Biome biome) {
-        return BIOME_MAP.get(biome);
     }
     
     public static void registerTags(Registry<net.minecraft.world.biome.Biome> registry) {
