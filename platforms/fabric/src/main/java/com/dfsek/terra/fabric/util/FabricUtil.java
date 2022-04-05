@@ -17,28 +17,29 @@
 
 package com.dfsek.terra.fabric.util;
 
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryEntryList.Named;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -46,15 +47,27 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
 public final class FabricUtil {
+    private static final Logger logger = LoggerFactory.getLogger(FabricUtil.class);
+    
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID()
                    .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
+    }
+    
+    public static void registerBiomes(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
+        logger.info("Registering biomes...");
+        FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
+            pack.getCheckedRegistry(Biome.class)
+                .forEach((id, biome) -> registerBiome(biome, pack, biomeRegistry, id));
+        });
+        logger.info("Biomes registered.");
     }
     
     private static final Map<RegistryEntry<net.minecraft.world.biome.Biome>, RegistryEntry<net.minecraft.world.biome.Biome>>
@@ -67,9 +80,8 @@ public final class FabricUtil {
      * @param biome The Terra BiomeBuilder.
      * @param pack  The ConfigPack this biome belongs to.
      */
-    public static void registerBiome(Biome biome, ConfigPack pack, DynamicRegistryManager registryManager,
+    public static void registerBiome(Biome biome, ConfigPack pack, Registry<net.minecraft.world.biome.Biome> registry,
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
-        Registry<net.minecraft.world.biome.Biome> registry = registryManager.get(Registry.BIOME_KEY);
         RegistryEntry<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
         
         
@@ -97,29 +109,26 @@ public final class FabricUtil {
         return BIOME_MAP.get(biome);
     }
     
-    private static Stream<RegistryEntry<net.minecraft.world.biome.Biome>> getMatchingBiome(Named<net.minecraft.world.biome.Biome> named) {
-        return TERRA_BIOME_MAP.keySet()
-                              .stream()
-                              .filter(named::contains)
-                              .map(TERRA_BIOME_MAP::get);
-    }
-    
     public static void registerTags(Registry<net.minecraft.world.biome.Biome> registry) {
+        logger.info("Doing tag garbage....");
         Map<TagKey<net.minecraft.world.biome.Biome>, List<RegistryEntry<net.minecraft.world.biome.Biome>>> collect = registry
                 .streamTagsAndEntries()
-                .peek(System.out::println)
                 .collect(HashMap::new,
                          (map, pair) ->
-                                 map.put(pair.getFirst(),
-                                         Stream.concat(pair.getSecond().stream(), getMatchingBiome(pair.getSecond())).toList()),
+                                 map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
-        registry.clearTags();
-        registry.populateTags(collect);
         
-        System.out.println(registry.streamEntries()
-                                   .map(e -> e.registryKey().getValue() + ": " +
-                                             e.streamTags().reduce("", (s, t) -> s + ", " + t, String::concat))
-                                   .reduce("", (s, s2) -> s + "\n" + s2));
+        TERRA_BIOME_MAP.forEach((vanilla, terra) -> getEntry(registry, vanilla.getKey().orElseThrow().getValue()).orElseThrow()
+                .streamTags()
+                .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>()).add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow())));
+        
+        registry.clearTags();
+        registry.populateTags(ImmutableMap.copyOf(collect));
+        
+        registry.streamEntries()
+                .map(e -> e.registryKey().getValue() + ": " +
+                          e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
+                .forEach(logger::info);
     }
     
     public static net.minecraft.world.biome.Biome createBiome(Biome biome, net.minecraft.world.biome.Biome vanilla) {

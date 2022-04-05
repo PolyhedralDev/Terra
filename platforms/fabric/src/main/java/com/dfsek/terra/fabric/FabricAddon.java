@@ -61,20 +61,6 @@ public final class FabricAddon implements BaseAddon {
         
         terraFabricPlugin.getEventManager()
                          .getHandler(FunctionalEventHandler.class)
-                         .register(this, BiomeRegistrationEvent.class)
-                         .then(event -> {
-                             logger.info("Registering biomes...");
-
-                             terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
-                                 pack.getCheckedRegistry(Biome.class)
-                                     .forEach((id, biome) -> FabricUtil.registerBiome(biome, pack, event.getRegistryManager(), id));
-                             });
-                             logger.info("Biomes registered.");
-                         })
-                         .global();
-        
-        terraFabricPlugin.getEventManager()
-                         .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigurationLoadEvent.class)
                          .then(event -> {
                              if(event.is(Biome.class)) {

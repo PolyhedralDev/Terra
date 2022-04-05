@@ -17,9 +17,12 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import com.dfsek.terra.fabric.util.FabricUtil;
+
 import net.minecraft.server.Main;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.DynamicRegistryManager.Mutable;
+import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -31,7 +34,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
 
 
 @Mixin(Main.class)
@@ -60,7 +62,7 @@ public class ServerMainMixin {
     private static Mutable injectBiomes() {
         Mutable mutable = DynamicRegistryManager.createAndLoad();
         LOGGER.info("Injecting Terra biomes...");
-        FabricEntryPoint.getPlatform().getEventManager().callEvent(new BiomeRegistrationEvent(mutable));
+        FabricUtil.registerBiomes(mutable.get(Registry.BIOME_KEY));
         return mutable;
     }
 }
