@@ -122,7 +122,7 @@ public final class FabricUtil {
             RegistryEntry<net.minecraft.world.biome.Biome> vanilla = getEntry(registry, vb).orElseThrow();
             terraBiomes.forEach(tb -> {
                 RegistryEntry<net.minecraft.world.biome.Biome> terra = getEntry(registry, tb).orElseThrow();
-                logger.info(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
+                logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
                             vanilla.streamTags().toList());
                 vanilla.streamTags()
                        .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>())
@@ -133,10 +133,12 @@ public final class FabricUtil {
         
         registry.populateTags(ImmutableMap.copyOf(collect));
         
-        registry.streamEntries()
-                .map(e -> e.registryKey().getValue() + ": " +
-                          e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
-                .forEach(logger::info);
+        if(logger.isDebugEnabled()) {
+            registry.streamEntries()
+                    .map(e -> e.registryKey().getValue() + ": " +
+                              e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
+                    .forEach(logger::debug);
+        }
     }
     
     public static net.minecraft.world.biome.Biome createBiome(Biome biome, net.minecraft.world.biome.Biome vanilla) {
