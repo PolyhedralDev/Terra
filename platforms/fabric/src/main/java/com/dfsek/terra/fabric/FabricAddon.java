@@ -31,8 +31,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 public final class FabricAddon implements BaseAddon {
