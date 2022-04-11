@@ -32,7 +32,7 @@
     "implementations.inventory.meta.ItemStackMetaMixin",
     "implementations.world.ChunkRegionMixin",
     "implementations.world.ServerWorldMixin",
-    "lifecycle.ChunkGenerator_ChunkGeneratorRegistrationMixin",
+    "lifecycle.RegistryMixin",
     "lifecycle.DataPackContentsMixin",
     "lifecycle.MinecraftServerMixin"
   ],
