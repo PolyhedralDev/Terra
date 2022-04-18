@@ -19,25 +19,15 @@ package com.dfsek.terra.addon;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.CommandManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.command.arguments.RegistryArgument;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 
 public class InternalAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     
     public InternalAddon() {
-    
+
     }
     
     @Override

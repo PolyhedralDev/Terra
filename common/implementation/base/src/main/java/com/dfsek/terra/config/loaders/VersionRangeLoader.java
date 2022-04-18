@@ -31,7 +31,8 @@ import java.lang.reflect.AnnotatedType;
 
 public class VersionRangeLoader implements TypeLoader<VersionRange> {
     @Override
-    public VersionRange load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public VersionRange load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    throws LoadException {
         try {
             return Versions.parseVersionRange((String) c);
         } catch(ParseException e) {

@@ -12,6 +12,6 @@ public class StructureGenerationStage implements GenerationStage {
     
     @Override
     public void populate(ProtoWorld world) {
-
+    
     }
 }

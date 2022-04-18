@@ -13,10 +13,10 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.distributor.config.AndDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.NoDistributorTemplate;
-import com.dfsek.terra.addons.feature.distributor.config.PaddedGridDistributorTemplate;
-import com.dfsek.terra.addons.feature.distributor.config.SamplerDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.OrDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.PaddedGridDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.PointSetDistributorTemplate;
+import com.dfsek.terra.addons.feature.distributor.config.SamplerDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.XorDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.config.YesDistributorTemplate;
 import com.dfsek.terra.addons.feature.distributor.util.Point;
@@ -50,7 +50,7 @@ public class DistributorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event
                             .getPack()
                             .getOrCreateRegistry(DISTRIBUTOR_TOKEN);
-                    
+            
                     distributorRegistry.register(addon.key("SAMPLER"), SamplerDistributorTemplate::new);
                     distributorRegistry.register(addon.key("POINTS"), PointSetDistributorTemplate::new);
                     distributorRegistry.register(addon.key("PADDED_GRID"), PaddedGridDistributorTemplate::new);

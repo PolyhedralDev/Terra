@@ -32,7 +32,8 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Object>> {
     @Override
-    public LinkedHashMap<Object, Object> load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public LinkedHashMap<Object, Object> load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader,
+                                              DepthTracker depthTracker) throws LoadException {
         Map<String, Object> config = (Map<String, Object>) c;
         LinkedHashMap<Object, Object> map = new LinkedHashMap<>();
         if(t instanceof AnnotatedParameterizedType pType) {

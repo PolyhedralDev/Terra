@@ -17,13 +17,12 @@
 
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.world.info.WorldProperties;
-
 import net.minecraft.block.enums.BlockHalf;
 import net.minecraft.block.enums.WallShape;
 import net.minecraft.block.enums.WireConnection;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.HeightLimitView;
 
 import com.dfsek.terra.api.block.state.properties.enums.Axis;
 import com.dfsek.terra.api.block.state.properties.enums.Half;
@@ -31,8 +30,7 @@ import com.dfsek.terra.api.block.state.properties.enums.RailShape;
 import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
 import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.util.vector.Vector3;
-
-import net.minecraft.world.HeightLimitView;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public final class FabricAdapter {
@@ -61,17 +59,17 @@ public final class FabricAdapter {
             public long getSeed() {
                 return seed;
             }
-    
+            
             @Override
             public int getMaxHeight() {
                 return height.getTopY();
             }
-    
+            
             @Override
             public int getMinHeight() {
                 return height.getBottomY();
             }
-    
+            
             @Override
             public Object getHandle() {
                 return height;

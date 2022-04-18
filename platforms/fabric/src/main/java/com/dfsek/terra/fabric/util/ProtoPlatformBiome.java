@@ -19,23 +19,25 @@ package com.dfsek.terra.fabric.util;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.world.biome.Biome;
+
+import java.util.Objects;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-
-import net.minecraft.world.biome.Biome;
 
 
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
     
-    private Biome delegate;
+    private RegistryEntry<Biome> delegate;
     
     public ProtoPlatformBiome(Identifier identifier) {
         this.identifier = identifier;
     }
     
-    public net.minecraft.world.biome.Biome get(Registry<net.minecraft.world.biome.Biome> registry) {
-        return registry.get(identifier);
+    public RegistryEntry<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
+        return FabricUtil.getEntry(registry, identifier).orElseThrow();
     }
     
     @Override
@@ -43,11 +45,11 @@ public class ProtoPlatformBiome implements PlatformBiome {
         return identifier;
     }
     
-    public Biome getDelegate() {
+    public RegistryEntry<Biome> getDelegate() {
         return delegate;
     }
     
-    public void setDelegate(Biome delegate) {
-        this.delegate = delegate;
+    public void setDelegate(RegistryEntry<Biome> delegate) {
+        this.delegate = Objects.requireNonNull(delegate);
     }
 }

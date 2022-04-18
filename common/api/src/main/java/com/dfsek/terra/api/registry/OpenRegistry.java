@@ -7,12 +7,11 @@
 
 package com.dfsek.terra.api.registry;
 
-import com.dfsek.terra.api.registry.key.Keyed;
-import com.dfsek.terra.api.registry.key.RegistryKey;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
+import com.dfsek.terra.api.registry.key.Keyed;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 
 
 public interface OpenRegistry<T> extends Registry<T> {

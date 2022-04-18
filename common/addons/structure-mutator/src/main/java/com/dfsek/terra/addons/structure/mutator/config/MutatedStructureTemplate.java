@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.structure.mutator.config;
 
-import com.dfsek.tectonic.api.config.template.ConfigTemplate;
-
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.api.config.AbstractableTemplate;

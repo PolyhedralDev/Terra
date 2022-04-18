@@ -22,9 +22,10 @@ public class StructureBlockShortcutAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
-                                .registerShortcut(Structure.class, "BLOCK",
-                                                  (configLoader, input, tracker) -> new SingletonStructure(configLoader.loadType(BlockState.class, input, tracker)
-                                                  )))
+                                    .registerShortcut(Structure.class, "BLOCK",
+                                                      (configLoader, input, tracker) -> new SingletonStructure(
+                                                              configLoader.loadType(BlockState.class, input, tracker)
+                                                      )))
                 .failThrough();
     }
 }

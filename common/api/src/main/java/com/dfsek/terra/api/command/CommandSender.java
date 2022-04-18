@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.api.command;
 
+import java.util.Optional;
+
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.Player;
-
-import java.util.Optional;
 
 
 public interface CommandSender extends Handle {

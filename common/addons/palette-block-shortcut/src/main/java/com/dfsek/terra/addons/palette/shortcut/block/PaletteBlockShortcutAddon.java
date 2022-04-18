@@ -22,8 +22,9 @@ public class PaletteBlockShortcutAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
-                                .registerShortcut(Palette.class, "BLOCK",
-                                                  (configLoader, input, tracker) -> new SingletonPalette(configLoader.loadType(BlockState.class, input, tracker))))
+                                    .registerShortcut(Palette.class, "BLOCK",
+                                                      (configLoader, input, tracker) -> new SingletonPalette(
+                                                              configLoader.loadType(BlockState.class, input, tracker))))
                 .failThrough();
     }
 }

@@ -9,9 +9,6 @@ package com.dfsek.terra.addons.manifest.impl;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
-
-import com.dfsek.terra.api.inject.impl.InjectorImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

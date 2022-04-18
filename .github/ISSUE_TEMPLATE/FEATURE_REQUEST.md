@@ -31,9 +31,11 @@ assignees: ""
 -->
 
 - [ ] I have checked that I am on the latest version of Terra.
-- [ ] I have searched github for similar features requests, including closed ones, and found none.
+- [ ] I have searched github for similar features requests, including closed
+  ones, and found none.
 - [ ] I believe this is within the scope of Terra.
-- [ ] This feature request is for *all* of Terra, and isn't something that should be implemented by a pack or addon.
+- [ ] This feature request is for *all* of Terra, and isn't something that
+  should be implemented by a pack or addon.
 
 ## Feature Description
 

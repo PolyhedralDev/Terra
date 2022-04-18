@@ -7,10 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.api.registry.key.Keyed;
-import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.vector.Vector3Int;
-
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -45,9 +41,12 @@ import com.dfsek.terra.addons.terrascript.script.builders.ZeroArgFunctionBuilder
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.key.Keyed;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -68,7 +67,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             throw new RuntimeException(e);
         }
         this.id = id;
-    
+
         //noinspection unchecked
         functionRegistry.forEach((key, function) -> parser.registerFunction(key.getID(), function)); // Register registry functions.
         

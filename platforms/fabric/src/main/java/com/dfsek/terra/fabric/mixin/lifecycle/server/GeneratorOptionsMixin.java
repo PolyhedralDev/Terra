@@ -17,9 +17,13 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import com.dfsek.terra.api.registry.CheckedRegistry;
+
+import net.minecraft.server.dedicated.ServerPropertiesHandler;
+import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
@@ -30,9 +34,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Properties;
+import java.util.Locale;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.fabric.FabricEntryPoint;
@@ -43,21 +46,24 @@ import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
 @Mixin(GeneratorOptions.class)
 public abstract class GeneratorOptionsMixin {
-    @Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;Ljava/util/Properties;)" +
+    @Inject(method = "fromProperties(Lnet/minecraft/util/registry/DynamicRegistryManager;" +
+                     "Lnet/minecraft/server/dedicated/ServerPropertiesHandler$WorldGenProperties;)" +
                      "Lnet/minecraft/world/gen/GeneratorOptions;",
             at = @At("HEAD"),
             cancellable = true)
-    private static void fromProperties(DynamicRegistryManager registryManager, Properties properties,
+    private static void fromProperties(DynamicRegistryManager manager,
+                                       ServerPropertiesHandler.WorldGenProperties properties,
                                        CallbackInfoReturnable<GeneratorOptions> cir) {
-        if(properties.get("level-type") == null) {
+        if(properties.levelType() == null) {
             return;
         }
         
         PlatformImpl main = FabricEntryPoint.getPlatform();
         
-        String prop = properties.get("level-type").toString().trim();
-        if(prop.startsWith("Terra")) {
-            String seedProperty = (String) properties.get("level-seed");
+        String levelType = properties.levelType();
+        
+        if(levelType.toLowerCase(Locale.ROOT).startsWith("terra")) {
+            String seedProperty = properties.levelSeed();
             long seed = new Random().nextLong();
             if(seedProperty != null) {
                 try {
@@ -70,21 +76,23 @@ public abstract class GeneratorOptionsMixin {
                 }
             }
             
-            String generate_structures = (String) properties.get("generate-structures");
-            boolean generateStructures = generate_structures == null || Boolean.parseBoolean(generate_structures);
-            Registry<DimensionType> dimensionTypes = registryManager.get(Registry.DIMENSION_TYPE_KEY);
-            Registry<Biome> biomeRegistry = registryManager.get(Registry.BIOME_KEY);
-            SimpleRegistry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(registryManager, seed, false);
+            boolean generateStructures = properties.generateStructures();
+            Registry<DimensionType> dimensionTypes = manager.get(Registry.DIMENSION_TYPE_KEY);
+            Registry<Biome> biomeRegistry = manager.get(Registry.BIOME_KEY);
+            Registry<DimensionOptions> dimensionOptions = DimensionType.createDefaultDimensionOptions(manager, seed, false);
             
-            Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = registryManager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-            Supplier<ChunkGeneratorSettings>
-                    settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
+            Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
+            RegistryEntry<ChunkGeneratorSettings>
+                    settingsSupplier = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD).orElseThrow();
+            Registry<StructureSet> noiseRegistry = manager.get(Registry.STRUCTURE_SET_KEY);
             
-            prop = prop.substring(prop.indexOf(":") + 1);
+            String pack = levelType.substring(levelType.indexOf(":") + 1);
             
-            String finalProp = prop;
-            ConfigPack config = main.getConfigRegistry().getByID(prop).orElseThrow(() -> new IllegalArgumentException(
-                    "No such pack " + finalProp));
+            CheckedRegistry<ConfigPack> configRegistry = main.getConfigRegistry();
+            ConfigPack config = configRegistry
+                    .getByID(pack)
+                    .or(() -> configRegistry.getByID(pack.toUpperCase(Locale.ROOT)))
+                    .orElseThrow(() -> new IllegalArgumentException("No such pack " + pack));
             
             cir.setReturnValue(
                     new GeneratorOptions(seed,
@@ -94,7 +102,8 @@ public abstract class GeneratorOptionsMixin {
                                                  .getRegistryWithReplacedOverworldGenerator(
                                                          dimensionTypes,
                                                          dimensionOptions,
-                                                         new FabricChunkGeneratorWrapper(new TerraBiomeSource(biomeRegistry, seed, config),
+                                                         new FabricChunkGeneratorWrapper(noiseRegistry,
+                                                                                         new TerraBiomeSource(biomeRegistry, seed, config),
                                                                                          seed,
                                                                                          config,
                                                                                          settingsSupplier))));

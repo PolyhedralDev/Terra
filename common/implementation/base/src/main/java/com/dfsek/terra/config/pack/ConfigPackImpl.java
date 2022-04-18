@@ -22,15 +22,10 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.config.Configuration;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.properties.Context;
-import com.dfsek.terra.api.registry.key.RegistryKey;
-
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
@@ -71,9 +66,11 @@ import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
@@ -101,11 +98,10 @@ import com.dfsek.terra.registry.ShortcutHolder;
  * Represents a Terra configuration pack.
  */
 public class ConfigPackImpl implements ConfigPack {
-    private final Context context = new Context();
     public static final TypeKey<ConfigType<?, ?>> CONFIG_TYPE_TYPE_KEY = new TypeKey<>() {
     };
     private static final Logger logger = LoggerFactory.getLogger(ConfigPackImpl.class);
-    
+    private final Context context = new Context();
     private final ConfigPackTemplate template = new ConfigPackTemplate();
     
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
@@ -216,10 +212,11 @@ public class ConfigPackImpl implements ConfigPack {
                         Object loaded = ((ConfigFactory) configType.getFactory()).build(
                                 selfLoader.load(configType.getTemplate(this, platform), configuration), platform);
                         platform.getEventManager().callEvent(new ConfigurationLoadEvent(this,
-                                                          configuration,
-                                                          template -> selfLoader.load(template, configuration),
-                                                          configType,
-                                                          loaded));
+                                                                                        configuration,
+                                                                                        template -> selfLoader.load(template,
+                                                                                                                    configuration),
+                                                                                        configType,
+                                                                                        loaded));
                         return Pair.of(configuration.getID(), loaded);
                     })
                     .toList()

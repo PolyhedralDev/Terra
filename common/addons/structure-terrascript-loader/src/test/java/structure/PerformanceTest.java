@@ -1,5 +1,12 @@
 package structure;
 
+import net.jafama.FastMath;
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
@@ -11,13 +18,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryNumberFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
-import net.jafama.FastMath;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.List;
 
 
 public class PerformanceTest {

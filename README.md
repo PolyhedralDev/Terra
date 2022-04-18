@@ -91,7 +91,6 @@ If you're not sure which license a particular file is under, check:
 Terra is still in beta! While it is stable, it is not feature-complete. There is
 a lot to be added!
 
-
 ## Special Thanks
 
 [![YourKit-Logo](https://www.yourkit.com/images/yklogo.png)](https://www.yourkit.com/)
@@ -100,9 +99,9 @@ YourKit has granted Polyhedral Development an open-source license to their
 outstanding Java profiler, allowing us to make our software as performant as it
 can be!
 
-YourKit supports open source projects with innovative and intelligent tools
-for monitoring and profiling Java and .NET applications.
-YourKit is the creator of the 
+YourKit supports open source projects with innovative and intelligent tools for
+monitoring and profiling Java and .NET applications. YourKit is the creator of
+the
 [YourKit Java Profiler](https://www.yourkit.com/java/profiler/),
 [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/),
 and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).

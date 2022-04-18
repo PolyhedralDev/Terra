@@ -12,16 +12,20 @@ import com.dfsek.terra.api.util.vector.Vector3Int;
 public interface ReadableWorld extends World {
     /**
      * Get the {@link BlockState} at a location.
+     *
      * @param x X coordinate
      * @param y Y coordinate
      * @param z Z coordinate
+     *
      * @return {@link BlockState} at coordinates.
      */
     BlockState getBlockState(int x, int y, int z);
     
     /**
      * Get the {@link BlockState} at a location.
+     *
      * @param position Location to get block.
+     *
      * @return {@link BlockState} at coordinates.
      */
     default BlockState getBlockState(Vector3 position) {
@@ -30,7 +34,9 @@ public interface ReadableWorld extends World {
     
     /**
      * Get the {@link BlockState} at a location.
+     *
      * @param position Location to get block.
+     *
      * @return {@link BlockState} at coordinates.
      */
     default BlockState getBlockState(Vector3Int position) {

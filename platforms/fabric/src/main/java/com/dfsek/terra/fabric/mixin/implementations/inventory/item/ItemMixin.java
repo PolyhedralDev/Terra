@@ -20,7 +20,6 @@ package com.dfsek.terra.fabric.mixin.implementations.inventory.item;
 import net.minecraft.item.Item;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -32,7 +31,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 public abstract class ItemMixin {
     @Shadow
     public abstract int getMaxDamage();
-
+    
     @SuppressWarnings("ConstantConditions")
     public ItemStack terra$newItemStack(int amount) {
         return (ItemStack) (Object) new net.minecraft.item.ItemStack((Item) (Object) this, amount);

@@ -1,10 +1,10 @@
 package com.dfsek.terra.cli.block;
 
+import net.querz.nbt.tag.CompoundTag;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
-
-import net.querz.nbt.tag.CompoundTag;
 
 
 public class CLIBlockState implements BlockState {
@@ -30,7 +30,7 @@ public class CLIBlockState implements BlockState {
             for(String property : props) {
                 String name = property.substring(0, property.indexOf('='));
                 String val = property.substring(property.indexOf('=') + 1);
-            
+                
                 pTag.putString(name, val);
             }
             this.nbt.put("Properties", pTag);

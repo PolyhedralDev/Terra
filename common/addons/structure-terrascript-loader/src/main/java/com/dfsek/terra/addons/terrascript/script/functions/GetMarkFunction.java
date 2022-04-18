@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
@@ -36,9 +36,13 @@ public class GetMarkFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-    
+
         String mark = arguments.getMark(Vector3.of(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(
-                y.apply(implementationArguments, scope).doubleValue()), FastMath.floorToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable());
+                                                       y.apply(implementationArguments, scope).doubleValue()),
+                                                   FastMath.floorToInt(xz.getZ()))
+                                               .mutable()
+                                               .add(arguments.getOrigin())
+                                               .immutable());
         return mark == null ? "" : mark;
     }
     

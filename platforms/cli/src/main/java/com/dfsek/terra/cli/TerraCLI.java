@@ -1,16 +1,15 @@
 package com.dfsek.terra.cli;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-
-import com.dfsek.terra.api.util.vector.Vector2Int;
-import com.dfsek.terra.cli.world.CLIWorld;
-
 import net.querz.mca.MCAUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.terra.cli.world.CLIWorld;
 
 
 public final class TerraCLI {
@@ -21,9 +20,9 @@ public final class TerraCLI {
         
         CLIPlatform platform = new CLIPlatform();
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
-    
+        
         ConfigPack generate = platform.getConfigRegistry().getByID("OVERWORLD").orElseThrow(); // TODO: make this a cli argument
-    
+        
         CLIWorld world = new CLIWorld(2, 2, 384, -64, generate);
         
         world.generate();

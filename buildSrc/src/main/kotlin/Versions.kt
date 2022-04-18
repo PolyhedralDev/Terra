@@ -4,7 +4,7 @@ object Versions {
         const val paralithic = "0.6.0"
         const val strata = "1.1.1"
         
-        const val cloud = "1.6.1"
+        const val cloud = "1.6.2"
         
         const val slf4j = "1.7.32"
         const val log4j_slf4j_impl = "2.14.1"
@@ -19,9 +19,11 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.44.0+1.18"
-        const val minecraft = "1.18.1"
-        const val yarn = "$minecraft+build.7"
+        const val fabricLoader = "0.13.3"
+        const val fabricAPI = "0.48.0+1.18.2"
+        const val minecraft = "1.18.2"
+        const val yarn = "$minecraft+build.2"
+        const val permissionsAPI = "0.1-SNAPSHOT"
     }
     
     object Bukkit {

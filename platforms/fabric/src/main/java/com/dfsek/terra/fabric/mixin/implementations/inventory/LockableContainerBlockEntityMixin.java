@@ -21,7 +21,6 @@ import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.item.Items;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.dfsek.terra.api.inventory.Inventory;

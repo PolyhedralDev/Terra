@@ -2,6 +2,11 @@ package com.dfsek.terra.bukkit.world;
 
 import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -18,17 +23,11 @@ import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
-import java.util.function.Supplier;
-
 
 public class BukkitProtoWorld implements ProtoWorld {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BukkitProtoWorld.class);
     private final LimitedRegion delegate;
     private final BlockState air;
-    private static final Logger LOGGER = LoggerFactory.getLogger(BukkitProtoWorld.class);
     
     public BukkitProtoWorld(LimitedRegion delegate, BlockState air) {
         this.delegate = delegate;
@@ -78,7 +77,8 @@ public class BukkitProtoWorld implements ProtoWorld {
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return access((int) x, (int) y, (int) z, () -> new BukkitEntity(
-                delegate.spawnEntity(new Location(delegate.getWorld(), x, y, z), ((BukkitEntityType) entityType).getHandle()))).orElse(null);
+                delegate.spawnEntity(new Location(delegate.getWorld(), x, y, z), ((BukkitEntityType) entityType).getHandle()))).orElse(
+                null);
     }
     
     @Override

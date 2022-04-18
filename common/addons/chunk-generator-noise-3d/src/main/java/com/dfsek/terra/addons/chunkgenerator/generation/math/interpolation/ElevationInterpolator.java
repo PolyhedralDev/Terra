@@ -8,11 +8,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 public class ElevationInterpolator {
@@ -39,10 +35,11 @@ public class ElevationInterpolator {
                 
                 BiomeNoiseProperties center = gens[x + 1 + smooth][z + 1 + smooth];
                 boolean same = true;
-    
+                
                 for(int xi = -smooth; xi <= smooth; xi++) {
                     for(int zi = -smooth; zi <= smooth; zi++) {
-                        if(gens[x + 1 + smooth + xi][z + 1 + smooth + zi] != center) { // test referential equality because thats all we need to know
+                        if(gens[x + 1 + smooth + xi][z + 1 + smooth + zi] !=
+                           center) { // test referential equality because thats all we need to know
                             same = false;
                             break;
                         }

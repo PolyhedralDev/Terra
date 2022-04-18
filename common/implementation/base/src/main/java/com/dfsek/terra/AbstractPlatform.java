@@ -18,9 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +57,7 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
@@ -151,24 +149,24 @@ public abstract class AbstractPlatform implements Platform {
     
     protected InternalAddon loadAddons() {
         List<BaseAddon> addonList = new ArrayList<>();
-    
+
         InternalAddon internalAddon = new InternalAddon();
-    
+
         addonList.add(internalAddon);
-    
+
         platformAddon().forEach(addonList::add);
-    
+
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
-    
+
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
-    
+
         Injector<Platform> platformInjector = new InjectorImpl<>(this);
         platformInjector.addExplicitTarget(Platform.class);
-    
+
         bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
                             .forEach(bootstrapAddon -> {
                                 platformInjector.inject(bootstrapAddon);
-        
+
                                 bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
                                               .forEach(addonList::add);
                             });
@@ -179,7 +177,7 @@ public abstract class AbstractPlatform implements Platform {
             builder.append("Loading ")
                    .append(addonList.size())
                    .append(" Terra addons:");
-        
+
             for(BaseAddon addon : addonList) {
                 builder.append("\n        ")
                        .append("- ")
@@ -187,10 +185,10 @@ public abstract class AbstractPlatform implements Platform {
                        .append("@")
                        .append(addon.getVersion().getFormatted());
             }
-        
+
             logger.info(builder.toString());
         }
-    
+
         DependencySorter sorter = new DependencySorter();
         addonList.forEach(sorter::add);
         sorter.sort().forEach(addon -> {

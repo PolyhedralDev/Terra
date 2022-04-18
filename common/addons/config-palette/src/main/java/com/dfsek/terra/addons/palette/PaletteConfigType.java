@@ -7,17 +7,10 @@
 
 package com.dfsek.terra.addons.palette;
 
-import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import java.util.function.Supplier;
-
-import com.dfsek.terra.addons.palette.palette.PaletteImpl;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 

@@ -2,9 +2,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
-val yarn = "6"
-val fabricLoader = "0.12.12"
-
 plugins {
     id("fabric-loom").version("0.10.58")
     id("com.modrinth.minotaur").version("1.1.0")
@@ -26,14 +23,14 @@ dependencies {
         exclude("org.slf4j")
     }
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
-    modImplementation("net.fabricmc:fabric-loader:$fabricLoader")
+    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
     
     setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1").forEach { apiModule ->
         modImplementation(fabricApi.module(apiModule, Versions.Fabric.fabricAPI))?.let { include(it) }
     }
     
-    include(modImplementation("me.lucko", "fabric-permissions-api", "0.1-SNAPSHOT"))
+    include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
     include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
 }
 

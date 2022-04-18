@@ -19,23 +19,18 @@ package com.dfsek.terra.fabric;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-
-import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-import com.dfsek.terra.fabric.util.FabricUtil;
+import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 
 
 public final class FabricAddon implements BaseAddon {
@@ -64,24 +59,10 @@ public final class FabricAddon implements BaseAddon {
         
         terraFabricPlugin.getEventManager()
                          .getHandler(FunctionalEventHandler.class)
-                         .register(this, BiomeRegistrationEvent.class)
-                         .then(event -> {
-                             logger.info("Registering biomes...");
-                             
-                             terraFabricPlugin.getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
-                                 pack.getCheckedRegistry(Biome.class)
-                                     .forEach((id, biome) -> FabricUtil.registerBiome(biome, pack, event.getRegistryManager(), id));
-                             });
-                             logger.info("Biomes registered.");
-                         })
-                         .global();
-        
-        terraFabricPlugin.getEventManager()
-                         .getHandler(FunctionalEventHandler.class)
                          .register(this, ConfigurationLoadEvent.class)
                          .then(event -> {
                              if(event.is(Biome.class)) {
-                                event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
+                                 event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
                              }
                          })
                          .global();

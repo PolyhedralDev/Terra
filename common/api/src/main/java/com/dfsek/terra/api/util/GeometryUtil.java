@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.util.vector.Vector3Int;
-
 import java.util.function.Consumer;
+
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 public final class GeometryUtil {

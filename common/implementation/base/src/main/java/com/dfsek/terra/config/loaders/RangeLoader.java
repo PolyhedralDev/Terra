@@ -33,7 +33,8 @@ import com.dfsek.terra.api.util.Range;
 @SuppressWarnings("unchecked")
 public class RangeLoader implements TypeLoader<Range> {
     @Override
-    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker) throws LoadException {
+    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
+    throws LoadException {
         if(o instanceof Map) {
             Map<String, Integer> map = (Map<String, Integer>) o;
             return new ConstantRange(map.get("min"), map.get("max"));

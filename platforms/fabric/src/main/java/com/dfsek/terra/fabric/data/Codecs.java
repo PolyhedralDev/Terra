@@ -1,31 +1,35 @@
 package com.dfsek.terra.fabric.data;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Lifecycle;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.structure.StructureSet;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryCodecs;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
-
 import com.dfsek.terra.fabric.FabricEntryPoint;
-
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.RegistryLookupCodec;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-
 
 public final class Codecs {
-    public static final Codec<RegistryKey> REGISTRY_KEY = RecordCodecBuilder
+    public static final Codec<RegistryKey> TERRA_REGISTRY_KEY = RecordCodecBuilder
             .create(registryKey -> registryKey.group(Codec.STRING.fieldOf("namespace")
+                                                                 .stable()
                                                                  .forGetter(RegistryKey::getNamespace),
                                                      Codec.STRING.fieldOf("id")
+                                                                 .stable()
                                                                  .forGetter(RegistryKey::getID))
                                               .apply(registryKey, registryKey.stable(RegistryKey::of)));
     
     public static final Codec<ConfigPack> CONFIG_PACK = RecordCodecBuilder
-            .create(config -> config.group(REGISTRY_KEY.fieldOf("pack")
-                                                       .forGetter(ConfigPack::getRegistryKey))
+            .create(config -> config.group(TERRA_REGISTRY_KEY.fieldOf("pack")
+                                                             .stable()
+                                                             .forGetter(ConfigPack::getRegistryKey))
                                     .apply(config, config.stable(id -> FabricEntryPoint.getPlatform()
                                                                                        .getConfigRegistry()
                                                                                        .get(id)
@@ -34,25 +38,36 @@ public final class Codecs {
                                                                                                id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(RegistryLookupCodec.of(Registry.BIOME_KEY)
-                                                                  .forGetter(TerraBiomeSource::getBiomeRegistry),
-                                               Codec.LONG.fieldOf("seed").stable()
+            .create(instance -> instance.group(RegistryCodecs.dynamicRegistry(Registry.BIOME_KEY, Lifecycle.stable(), Biome.CODEC)
+                                                             .fieldOf("biome_registry")
+                                                             .stable()
+                                                             .forGetter(TerraBiomeSource::getBiomeRegistry),
+                                               Codec.LONG.fieldOf("seed")
+                                                         .stable()
                                                          .forGetter(TerraBiomeSource::getSeed),
-                                               CONFIG_PACK.fieldOf("pack").stable()
+                                               CONFIG_PACK.fieldOf("pack")
+                                                          .stable()
                                                           .forGetter(TerraBiomeSource::getPack))
-                                        .apply(instance, instance.stable(
-                                                TerraBiomeSource::new)));
+                                        .apply(instance, instance.stable(TerraBiomeSource::new)));
     
-    public static final Codec<FabricChunkGeneratorWrapper> CODEC = RecordCodecBuilder.create(
+    public static final Codec<FabricChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder.create(
             instance -> instance.group(
+                    RegistryCodecs.dynamicRegistry(Registry.STRUCTURE_SET_KEY, Lifecycle.stable(), StructureSet.CODEC)
+                                  .fieldOf("structures")
+                                  .stable()
+                                  .forGetter(FabricChunkGeneratorWrapper::getNoiseRegistry),
                     TERRA_BIOME_SOURCE.fieldOf("biome_source")
+                                      .stable()
                                       .forGetter(FabricChunkGeneratorWrapper::getBiomeSource),
-                    Codec.LONG.fieldOf("seed").stable()
+                    Codec.LONG.fieldOf("seed")
+                              .stable()
                               .forGetter(FabricChunkGeneratorWrapper::getSeed),
-                    CONFIG_PACK.fieldOf("pack").stable()
-                              .forGetter(FabricChunkGeneratorWrapper::getPack),
+                    CONFIG_PACK.fieldOf("pack")
+                               .stable()
+                               .forGetter(FabricChunkGeneratorWrapper::getPack),
                     ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
-                                                         .forGetter(FabricChunkGeneratorWrapper::getSettingsSupplier)
+                                                         .stable()
+                                                         .forGetter(FabricChunkGeneratorWrapper::getSettings)
                                       ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
-                                                                                            );
+                                                                                                                     );
 }

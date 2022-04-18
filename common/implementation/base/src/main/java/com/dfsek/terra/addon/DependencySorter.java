@@ -62,7 +62,8 @@ public class DependencySorter {
     
     private BaseAddon get(String id, BaseAddon addon) {
         if(!addons.containsKey(id)) {
-            throw new DependencyException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + addon.getDependencies().get(id).getFormatted() +
+            throw new DependencyException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " +
+                                          addon.getDependencies().get(id).getFormatted() +
                                           ", but no such addon is installed.");
         }
         return addons.get(id);

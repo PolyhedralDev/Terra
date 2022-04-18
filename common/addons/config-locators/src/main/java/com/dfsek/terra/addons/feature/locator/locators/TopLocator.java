@@ -24,7 +24,7 @@ public class TopLocator implements Locator {
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         for(int y : search) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
-                return new BinaryColumn(y, y+1, yi -> true);
+                return new BinaryColumn(y, y + 1, yi -> true);
             }
         }
         return BinaryColumn.getNull();

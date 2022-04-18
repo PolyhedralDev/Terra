@@ -91,7 +91,7 @@ public class Vector3Int {
             this.z += z;
             return this;
         }
-    
+
         public Vector3 toVector3() {
             return Vector3.of(x, y, z);
         }

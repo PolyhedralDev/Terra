@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.terrascript.sampler;
 
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -7,8 +9,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.noise.NoiseSampler;
-
-import java.util.function.Supplier;
 
 
 public class SamplerFunction implements Function<Number> {

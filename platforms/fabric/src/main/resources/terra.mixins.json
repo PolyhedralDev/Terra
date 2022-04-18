@@ -4,8 +4,6 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ConfiguredStructureFeaturesMixin",
-    "ServerWorldMixin",
     "access.BiomeEffectsAccessor",
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
@@ -34,8 +32,9 @@
     "implementations.inventory.meta.ItemStackMetaMixin",
     "implementations.world.ChunkRegionMixin",
     "implementations.world.ServerWorldMixin",
+    "lifecycle.DataPackContentsMixin",
     "lifecycle.MinecraftServerMixin",
-    "lifecycle.ServerResourceManagerMixin"
+    "lifecycle.RegistryMixin"
   ],
   "client": [
     "access.GeneratorTypeAccessor",

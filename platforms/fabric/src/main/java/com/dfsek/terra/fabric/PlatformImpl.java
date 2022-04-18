@@ -23,13 +23,15 @@ import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.fabric.util.FabricUtil;
+
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
@@ -39,9 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.addon.EphemeralAddon;
@@ -61,18 +61,11 @@ public class PlatformImpl extends AbstractPlatform {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
-    
-    private final Set<ServerWorld> worlds = new HashSet<>();
+    private MinecraftServer server;
     
     public PlatformImpl() {
         load();
     }
-    
-    public void addWorld(ServerWorld world) {
-        worlds.add(world);
-    }
-    
-    private MinecraftServer server;
     
     public void setServer(MinecraftServer server) {
         this.server = server;
@@ -83,23 +76,23 @@ public class PlatformImpl extends AbstractPlatform {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
-    
+
         
         if(server != null) {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
-        }
-        
-        worlds.forEach(world -> {
-            FabricChunkGeneratorWrapper chunkGeneratorWrapper = ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator());
-            getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
-                chunkGeneratorWrapper.setPack(pack);
-                LOGGER.info("Replaced pack in chunk generator for world {}", world);
+            FabricUtil.registerBiomes(server.getRegistryManager().get(Registry.BIOME_KEY));
+            server.getWorlds().forEach(world -> {
+                if(world.getChunkManager().getChunkGenerator() instanceof FabricChunkGeneratorWrapper chunkGeneratorWrapper) {
+                    getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                        chunkGeneratorWrapper.setPack(pack);
+                        LOGGER.info("Replaced pack in chunk generator for world {}", world);
+                    });
+                }
             });
-        });
-        
+        }
         return succeed;
     }
     

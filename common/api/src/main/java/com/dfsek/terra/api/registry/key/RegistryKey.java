@@ -15,7 +15,7 @@ public final class RegistryKey implements StringIdentifiable, Namespaced {
                     "Namespace must only contain alphanumeric characters, hyphens, and underscores. \"" + namespace +
                     "\" is not a valid namespace.");
         }
-    
+        
         if(!ID_PATTERN.matcher(id).matches()) {
             throw new IllegalArgumentException(
                     "ID must only contain alphanumeric characters, hyphens, and underscores. \"" + id +

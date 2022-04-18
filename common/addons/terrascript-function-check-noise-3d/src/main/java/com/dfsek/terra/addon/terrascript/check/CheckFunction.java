@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
@@ -44,13 +44,13 @@ public class CheckFunction implements Function<String> {
         
         
         Vector2 xz = Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                 z.apply(implementationArguments, scope).doubleValue());
+                                z.apply(implementationArguments, scope).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         Vector3 location = arguments.getOrigin().toVector3Mutable().add(
                 Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
-                            FastMath.roundToInt(xz.getZ()))).immutable();
+                           FastMath.roundToInt(xz.getZ()))).immutable();
         
         return apply(location, arguments.getWorld());
     }

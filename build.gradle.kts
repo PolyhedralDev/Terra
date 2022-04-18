@@ -1,4 +1,3 @@
-
 preRelease(true)
 
 versionProjects(":common:api", version("6.0.0"))

@@ -20,18 +20,14 @@ package com.dfsek.terra.fabric.generation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.world.GeneratorType;
+import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.GeneratorOptions;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.event.BiomeRegistrationEvent;
-
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
-import java.util.function.Supplier;
+import com.dfsek.terra.api.config.ConfigPack;
 
 
 @Environment(EnvType.CLIENT)
@@ -46,7 +42,10 @@ public class TerraGeneratorType extends GeneratorType {
     @Override
     protected ChunkGenerator getChunkGenerator(DynamicRegistryManager manager, long seed) {
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = manager.get(Registry.CHUNK_GENERATOR_SETTINGS_KEY);
-        Supplier<ChunkGeneratorSettings> settingsSupplier = () -> chunkGeneratorSettingsRegistry.getOrThrow(ChunkGeneratorSettings.OVERWORLD);
-        return new FabricChunkGeneratorWrapper(new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack, settingsSupplier);
+        RegistryEntry<ChunkGeneratorSettings>
+                settingsSupplier = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD).orElseThrow();
+        Registry<StructureSet> noiseRegistry = manager.get(Registry.STRUCTURE_SET_KEY);
+        return new FabricChunkGeneratorWrapper(noiseRegistry, new TerraBiomeSource(manager.get(Registry.BIOME_KEY), seed, pack), seed, pack,
+                                               settingsSupplier);
     }
 }

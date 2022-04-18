@@ -20,7 +20,7 @@ public class CLIBlockType implements BlockType {
     }
     
     @Override
-    public String  getHandle() {
+    public String getHandle() {
         return value;
     }
     

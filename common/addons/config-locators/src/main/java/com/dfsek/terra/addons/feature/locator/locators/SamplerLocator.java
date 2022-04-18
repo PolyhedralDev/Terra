@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
-
 import net.jafama.FastMath;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
 
 
 public class SamplerLocator implements Locator {

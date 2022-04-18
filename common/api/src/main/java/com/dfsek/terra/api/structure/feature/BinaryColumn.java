@@ -7,11 +7,8 @@
 
 package com.dfsek.terra.api.structure.feature;
 
-import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
-import java.util.function.Function;
 import java.util.function.IntConsumer;
-import java.util.stream.IntStream;
 
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.function.IntToBooleanFunction;
@@ -22,16 +19,15 @@ import com.dfsek.terra.api.util.generic.Lazy;
  * A column of binary data
  */
 public class BinaryColumn {
+    private static final BinaryColumn NULL = new BinaryColumn(0, 1, y -> false);
     private final IntToBooleanFunction data;
     private final int minY;
     private final int maxY;
-    
     private final Lazy<boolean[]> results;
-    
-    private static final BinaryColumn NULL = new BinaryColumn(0, 1, y -> false);
     
     /**
      * Constructs a new {@link BinaryColumn} with all values initiated to {@code false}
+     *
      * @param minY Minimum Y value
      * @param maxY Maximum Y value
      */
@@ -57,17 +53,19 @@ public class BinaryColumn {
         this.data = y -> data[y - minY];
     }
     
-    public static BinaryColumn getNull() {
-        return NULL;
-    }
-    
     public BinaryColumn(Range y, IntToBooleanFunction data) {
         this(y.getMin(), y.getMax(), data);
     }
     
+    public static BinaryColumn getNull() {
+        return NULL;
+    }
+    
     /**
      * Get the value at a height.
+     *
      * @param y Height of entry to get.
+     *
      * @return Whether height has been set.
      */
     public boolean get(int y) {
@@ -81,6 +79,7 @@ public class BinaryColumn {
     
     /**
      * Perform an action for all heights which have been set.
+     *
      * @param consumer Action to perform
      */
     public void forEach(IntConsumer consumer) {
@@ -94,7 +93,9 @@ public class BinaryColumn {
     
     /**
      * Return a {@link BinaryColumn} of equal height with a boolean AND operation applied to each height.
+     *
      * @param that Other binary column, must match this column's height.
+     *
      * @return Merged column.
      *
      * @throws IllegalArgumentException if column heights do not match
@@ -105,7 +106,9 @@ public class BinaryColumn {
     
     /**
      * Return a {@link BinaryColumn} of equal height with a boolean OR operation applied to each height.
+     *
      * @param that Other binary column, must match this column's height.
+     *
      * @return Merged column.
      *
      * @throws IllegalArgumentException if column heights do not match
@@ -121,7 +124,7 @@ public class BinaryColumn {
     private BinaryColumn bool(BinaryColumn that, BooleanBinaryOperator operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
-    
+        
         return new BinaryColumn(smallMinY, bigMaxY, y -> operator.apply(() -> this.get(y), () -> that.get(y)));
     }
     

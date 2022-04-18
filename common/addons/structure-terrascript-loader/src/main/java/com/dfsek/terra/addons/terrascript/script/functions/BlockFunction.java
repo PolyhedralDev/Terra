@@ -7,29 +7,26 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.api.block.state.properties.base.Properties;
-
 import net.jafama.FastMath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.Variable;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class BlockFunction implements Function<Void> {
@@ -74,13 +71,13 @@ public class BlockFunction implements Function<Void> {
                   TerraImplementationArguments arguments, BlockState rot) {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-    
-    
+
+
         rot = RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
             Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                     y.apply(implementationArguments, scope).doubleValue(),
-                                     FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
+                                             y.apply(implementationArguments, scope).doubleValue(),
+                                             FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 if(arguments.isWaterlog() && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {

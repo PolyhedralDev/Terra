@@ -38,6 +38,6 @@ public class StructureGenerationAddon implements AddonInitializer {
                     }
                 })
                 .failThrough();
-
+        
     }
 }

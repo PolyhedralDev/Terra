@@ -7,11 +7,15 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
+import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 

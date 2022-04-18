@@ -27,7 +27,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
         this.minHeight = world.getMinHeight();
         this.maxHeight = world.getMaxHeight();
         this.world = world;
-        this.blocks= new CLIBlockState[16][16][maxHeight - minHeight];
+        this.blocks = new CLIBlockState[16][16][maxHeight - minHeight];
     }
     
     @Override

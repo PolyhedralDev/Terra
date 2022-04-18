@@ -17,22 +17,15 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import com.dfsek.terra.api.world.info.WorldProperties;
-
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
-
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.world.World;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.util.concurrent.ExecutionException;
+
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class SamplerProvider {
@@ -53,8 +46,9 @@ public class SamplerProvider {
     public Sampler3D getChunk(int cx, int cz, WorldProperties world, BiomeProvider provider) {
         WorldContext context = new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight());
         try {
-            return cache.get(context, () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
-                                                      elevationSmooth));
+            return cache.get(context,
+                             () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
+                                                 elevationSmooth));
         } catch(ExecutionException e) {
             throw new RuntimeException(e);
         }

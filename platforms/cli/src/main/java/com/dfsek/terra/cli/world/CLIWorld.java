@@ -1,25 +1,7 @@
 package com.dfsek.terra.cli.world;
 
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.vector.Vector2Int;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-import com.dfsek.terra.cli.NBTSerializable;
-
-import com.dfsek.terra.cli.world.chunk.CLIChunk;
-
 import com.google.common.collect.Streams;
 import net.jafama.FastMath;
-
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-
 import net.querz.mca.MCAFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +16,21 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.cli.NBTSerializable;
+import com.dfsek.terra.cli.world.chunk.CLIChunk;
 
 
 public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector2Int, MCAFile>>> {
@@ -65,7 +62,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         this.pack = pack;
         
         
-        size+=1;
+        size += 1;
         this.regions = new Region[size * size];
         this.negativeRegions = new Region[size * size];
         for(int x = 0; x < size; x++) {

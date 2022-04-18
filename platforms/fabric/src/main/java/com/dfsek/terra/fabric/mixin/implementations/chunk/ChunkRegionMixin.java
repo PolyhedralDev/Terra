@@ -45,7 +45,7 @@ public abstract class ChunkRegionMixin {
     
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
         return (BlockState) ((ChunkRegion) (Object) this).getBlockState(
-                        new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)));
+                new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)));
     }
     
     public int terraChunk$getX() {

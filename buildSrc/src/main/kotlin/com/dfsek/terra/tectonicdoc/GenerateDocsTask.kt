@@ -36,7 +36,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                             .relativize(file.toPath())
                             .toString()
                             .substringBeforeLast('.')
-                        if(name.endsWith("Template")) {
+                        if (name.endsWith("Template")) {
                             name = name.substringBeforeLast("Template")
                         }
                         classes[name] = node
@@ -98,7 +98,7 @@ abstract class GenerateDocsTask : DefaultTask() {
     }
     
     private fun getType(node: FieldNode): String {
-        if(node.signature != null) {
+        if (node.signature != null) {
             return generic(node.signature)
         }
         return descriptorToHumanReadable(node.desc).substringAfterLast('.')
@@ -107,9 +107,9 @@ abstract class GenerateDocsTask : DefaultTask() {
     private fun generic(type: String): String {
         val clean = descriptorToHumanReadable(type)
         
-        if(clean.contains('<')) {
+        if (clean.contains('<')) {
             val typeIndex = clean.indexOf('<')
-            return clean.substring(0, typeIndex+1).substringAfterLast('.') + generic(clean.substring(typeIndex+1)) + "\\>"
+            return clean.substring(0, typeIndex + 1).substringAfterLast('.') + generic(clean.substring(typeIndex + 1)) + "\\>"
         }
         
         return clean.substringAfterLast('.')
@@ -127,21 +127,21 @@ abstract class GenerateDocsTask : DefaultTask() {
     }
     
     private fun descriptorToHumanReadable(descriptor: String): String {
-        if(descriptor.startsWith('L')) {
+        if (descriptor.startsWith('L')) {
             return descriptor.substring(1).substringBeforeLast(';').replace('/', '.')
         }
-        if(descriptor.startsWith("[")) {
+        if (descriptor.startsWith("[")) {
             return "${descriptorToHumanReadable(descriptor.substring(1))}[]"
         }
-        return when(descriptor) {
-            "B" -> "byte"
-            "C" -> "char"
-            "I" -> "int"
-            "D" -> "double"
-            "F" -> "float"
-            "J" -> "long"
-            "S" -> "short"
-            "Z" -> "boolean"
+        return when (descriptor) {
+            "B"  -> "byte"
+            "C"  -> "char"
+            "I"  -> "int"
+            "D"  -> "double"
+            "F"  -> "float"
+            "J"  -> "long"
+            "S"  -> "short"
+            "Z"  -> "boolean"
             else -> descriptor
         }
     }
