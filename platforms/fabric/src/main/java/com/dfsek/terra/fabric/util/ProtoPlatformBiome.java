@@ -46,7 +46,7 @@ public class ProtoPlatformBiome implements PlatformBiome {
     }
     
     public RegistryEntry<Biome> getDelegate() {
-        return Objects.requireNonNull(delegate);
+        return delegate;
     }
     
     public void setDelegate(RegistryEntry<Biome> delegate) {
