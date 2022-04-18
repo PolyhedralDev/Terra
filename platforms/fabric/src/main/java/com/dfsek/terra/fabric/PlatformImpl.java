@@ -23,11 +23,15 @@ import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.fabric.util.FabricUtil;
+
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
@@ -79,6 +83,7 @@ public class PlatformImpl extends AbstractPlatform {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
+            FabricUtil.registerBiomes(server.getRegistryManager().get(Registry.BIOME_KEY));
             server.getWorlds().forEach(world -> {
                 if(world.getChunkManager().getChunkGenerator() instanceof FabricChunkGeneratorWrapper chunkGeneratorWrapper) {
                     getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
