@@ -123,7 +123,7 @@ public final class FabricUtil {
             });
         });
         
-        
+        registry.clearTags();
         registry.populateTags(ImmutableMap.copyOf(collect));
         
         if(logger.isDebugEnabled()) {
