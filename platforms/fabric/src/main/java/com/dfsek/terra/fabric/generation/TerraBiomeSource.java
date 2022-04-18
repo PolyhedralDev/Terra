@@ -45,6 +45,16 @@ public class TerraBiomeSource extends BiomeSource {
                                   .getBiomes()
                                   .spliterator(), false)
                       .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate()));
+        /*
+        A little (unfortunately, required) jank to watch out for:
+        
+        The first time this BiomeSource gets created it passes a list of one null value to the superconstructor.
+        This is because the biomes haven't yet been made at that point in time. Once the client creates the world,
+        Minecraft *re-instantiates* the chunk generator, this is after the biomes have been created so it's populated with
+        real values.
+        
+        This code can therefore break pretty easily with changes to Minecraft, unfortunately Mojang gives us no other option.
+         */
         this.biomeRegistry = biomes;
         this.seed = seed;
         this.pack = pack;
