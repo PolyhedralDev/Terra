@@ -44,7 +44,7 @@ public class ServerMainMixin {
     
     @Inject(method = "main([Ljava/lang/String;)V",
             at = @At(value = "INVOKE",
-                     target = "Lnet/minecraft/server/SaveLoader;refresh()V") // after registry manager creation
+                     target = "Lnet/minecraft/resource/ResourcePackManager;<init>(Lnet/minecraft/resource/ResourceType;[Lnet/minecraft/resource/ResourcePackProvider;)V") // after registry manager creation
             )
     private static void injectConstructor(String[] args, CallbackInfo ci) {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
