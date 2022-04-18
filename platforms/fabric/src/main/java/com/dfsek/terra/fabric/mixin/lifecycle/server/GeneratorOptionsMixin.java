@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import com.dfsek.terra.api.registry.CheckedRegistry;
+
 import net.minecraft.server.dedicated.ServerPropertiesHandler;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
@@ -32,6 +34,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Locale;
 import java.util.Random;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -59,7 +62,7 @@ public abstract class GeneratorOptionsMixin {
         
         String levelType = properties.levelType();
         
-        if(levelType.startsWith("Terra")) {
+        if(levelType.toLowerCase(Locale.ROOT).startsWith("terra")) {
             String seedProperty = properties.levelSeed();
             long seed = new Random().nextLong();
             if(seedProperty != null) {
@@ -85,8 +88,11 @@ public abstract class GeneratorOptionsMixin {
             
             String pack = levelType.substring(levelType.indexOf(":") + 1);
             
-            ConfigPack config = main.getConfigRegistry().getByID(pack).orElseThrow(() -> new IllegalArgumentException(
-                    "No such pack " + pack));
+            CheckedRegistry<ConfigPack> configRegistry = main.getConfigRegistry();
+            ConfigPack config = configRegistry
+                    .getByID(pack)
+                    .or(() -> configRegistry.getByID(pack.toUpperCase(Locale.ROOT)))
+                    .orElseThrow(() -> new IllegalArgumentException("No such pack " + pack));
             
             cir.setReturnValue(
                     new GeneratorOptions(seed,
