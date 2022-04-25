@@ -1,7 +1,6 @@
 package com.dfsek.terra.noise_bench;
 
-import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
-import com.dfsek.terra.api.block.state.properties.enums.RailShape;
+import com.dfsek.terra.addons.noise.samplers.noise.cellular.CellularSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 import com.dfsek.terra.noise_bench.old.OldCellularSampler;
@@ -11,7 +10,6 @@ import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -73,37 +71,37 @@ public class Cellular {
     }
     
     @Benchmark()
-    @Warmup(iterations = 25, time = 300, timeUnit = MILLISECONDS)
+    @Warmup(iterations = 25, time = 200, timeUnit = MILLISECONDS)
     @Measurement(iterations = 15, time = 200, timeUnit = MILLISECONDS)
     @Fork(warmups = 2, value = 3)
-    @BenchmarkMode(Mode.AverageTime)
+    @BenchmarkMode(Mode.Throughput)
     public void old2D(OldCellularParameters parameters, Blackhole blackhole) {
         blackhole.consume(parameters.sampler.noise(parameters.seed, parameters.x, parameters.y));
     }
     
     @Benchmark
-    @Warmup(iterations = 25, time = 300, timeUnit = MILLISECONDS)
+    @Warmup(iterations = 25, time = 200, timeUnit = MILLISECONDS)
     @Measurement(iterations = 15, time = 200, timeUnit = MILLISECONDS)
     @Fork(warmups = 2, value = 3)
-    @BenchmarkMode(Mode.AverageTime)
+    @BenchmarkMode(Mode.Throughput)
     public void old3D(OldCellularParameters parameters, Blackhole blackhole) {
         blackhole.consume(parameters.sampler.noise(parameters.seed, parameters.x, parameters.y, parameters.z));
     }
     
     @Benchmark
-    @Warmup(iterations = 25, time = 300, timeUnit = MILLISECONDS)
+    @Warmup(iterations = 25, time = 200, timeUnit = MILLISECONDS)
     @Measurement(iterations = 15, time = 200, timeUnit = MILLISECONDS)
     @Fork(warmups = 2, value = 3)
-    @BenchmarkMode(Mode.AverageTime)
+    @BenchmarkMode(Mode.Throughput)
     public void new2D(CellularParameters parameters, Blackhole blackhole) {
         blackhole.consume(parameters.sampler.noise(parameters.seed, parameters.x, parameters.y));
     }
     
     @Benchmark
-    @Warmup(iterations = 25, time = 300, timeUnit = MILLISECONDS)
+    @Warmup(iterations = 25, time = 200, timeUnit = MILLISECONDS)
     @Measurement(iterations = 15, time = 200, timeUnit = MILLISECONDS)
     @Fork(warmups = 2, value = 3)
-    @BenchmarkMode(Mode.AverageTime)
+    @BenchmarkMode(Mode.Throughput)
     public void new3D(CellularParameters parameters, Blackhole blackhole) {
         blackhole.consume(parameters.sampler.noise(parameters.seed, parameters.x, parameters.y, parameters.z));
     }

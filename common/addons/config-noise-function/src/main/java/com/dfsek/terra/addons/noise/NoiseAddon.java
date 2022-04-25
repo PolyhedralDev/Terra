@@ -40,7 +40,7 @@ import com.dfsek.terra.addons.noise.samplers.arithmetic.MaxSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MinSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.addons.noise.samplers.noise.cellular.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.PositiveWhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
