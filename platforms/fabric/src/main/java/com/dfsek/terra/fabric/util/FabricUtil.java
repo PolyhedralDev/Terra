@@ -50,7 +50,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
-import com.dfsek.terra.fabric.mixin.access.BiomeEffectsAccessor;
 
 
 public final class FabricUtil {
@@ -137,9 +136,7 @@ public final class FabricUtil {
     public static net.minecraft.world.biome.Biome createBiome(Biome biome, net.minecraft.world.biome.Biome vanilla) {
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         
-        BiomeEffectsAccessor accessor = (BiomeEffectsAccessor) vanilla.getEffects();
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
-        
         
         net.minecraft.world.biome.Biome.Builder builder = new Builder();
         
@@ -150,17 +147,17 @@ public final class FabricUtil {
                    .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
                    .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
                    .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-                   .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), accessor.getGrassColorModifier()));
+                   .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), vanilla.getEffects().getGrassColorModifier()));
             
             
             if(vanillaBiomeProperties.getGrassColor() == null) {
-                accessor.getGrassColor().ifPresent(effects::grassColor);
+                vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
             } else {
                 effects.grassColor(vanillaBiomeProperties.getGrassColor());
             }
             
             if(vanillaBiomeProperties.getFoliageColor() == null) {
-                accessor.getFoliageColor().ifPresent(effects::foliageColor);
+                vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
             } else {
                 effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
             }
@@ -170,12 +167,13 @@ public final class FabricUtil {
                    .category(Objects.requireNonNullElse(vanillaBiomeProperties.getCategory(), vanilla.getCategory()));
             
         } else {
-            effects.waterColor(accessor.getWaterColor())
-                   .waterFogColor(accessor.getWaterFogColor())
-                   .fogColor(accessor.getFogColor())
-                   .skyColor(accessor.getSkyColor());
-            accessor.getFoliageColor().ifPresent(effects::foliageColor);
-            accessor.getGrassColor().ifPresent(effects::grassColor);
+            
+            effects.waterColor(vanilla.getWaterColor())
+                   .waterFogColor(vanilla.getWaterFogColor())
+                   .fogColor(vanilla.getFogColor())
+                   .skyColor(vanilla.getSkyColor());
+            vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
+            vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
             
             builder.precipitation(vanilla.getPrecipitation())
                    .category(vanilla.getCategory());
