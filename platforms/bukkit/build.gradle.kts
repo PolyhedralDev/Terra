@@ -5,12 +5,12 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 
-val mcVersion = "1.17.1"
+val mcVersion = "1.18.2"
 val testDir = "target/server"
 val testMem = "3G"
 
-val paperBuild = 47
-val paperURL = "https://papermc.io/api/v2/projects/paper/versions/1.18/builds/47/downloads/paper-1.18-$paperBuild.jar"
+val paperBuild = 322
+val paperURL = "https://papermc.io/api/v2/projects/paper/versions/%version%/builds/$paperBuild/downloads/paper-%version%-$paperBuild.jar"
 val purpurURL = "https://api.pl3x.net/v2/purpur/%version%/latest/download"
 
 dependencies {
