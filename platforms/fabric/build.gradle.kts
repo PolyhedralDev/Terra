@@ -7,24 +7,13 @@ plugins {
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
-// Do not shade because minecraft already includes it
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    shadedApi("org.slf4j", "slf4j-api", Versions.Libraries.slf4j) {
-        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
-    }
-    shaded("org.apache.logging.log4j", "log4j-slf4j-impl", Versions.Libraries.log4j_slf4j_impl) {
-        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, but we want slf4j 1.7.")
-        exclude("org.apache.logging.log4j")
-    }
-    
-    minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}") {
-        exclude("org.slf4j")
-    }
+    minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
+    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
     setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1").forEach { apiModule ->
         modImplementation(fabricApi.module(apiModule, Versions.Fabric.fabricAPI))?.let { include(it) }
@@ -47,6 +36,10 @@ addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("run
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(17)
+}
+
+tasks.getByName<ShadowJar>("shadowJar") {
+    exclude("org/slf4j/**")
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
