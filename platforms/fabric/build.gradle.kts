@@ -3,7 +3,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id("fabric-loom").version("0.10.58")
+    id("fabric-loom").version("0.11-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -49,7 +49,6 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     input.set(shadowJar.archiveFile)
     archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "-shaded-mapped.jar"))
     addNestedDependencies.set(true)
-    remapAccessWidener.set(true)
 }
 
 tasks.named("assemble").configure {
