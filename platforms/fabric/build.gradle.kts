@@ -46,7 +46,7 @@ val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
     group = "fabric"
     val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
     dependsOn(shadowJar)
-    input.set(shadowJar.archiveFile)
+    inputFile.set(shadowJar.archiveFile)
     archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "-shaded-mapped.jar"))
     addNestedDependencies.set(true)
 }
