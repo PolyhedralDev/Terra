@@ -6,7 +6,7 @@ object Versions {
         
         const val cloud = "1.6.2"
         
-        const val slf4j = "1.7.32"
+        const val slf4j = "1.7.36"
         const val log4j_slf4j_impl = "2.14.1"
         
         object Internal {
