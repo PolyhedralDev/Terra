@@ -133,6 +133,10 @@ public class ChunkInterpolator {
     }
     
     public double getNoise(int x, int y, int z) {
-        return interpGrid[x / 4][(y - min) / 4][z / 4].trilerp((double) (x % 4) / 4, (double) (y % 4) / 4, (double) (z % 4) / 4);
+        return interpGrid[x / 4][(y - min) / 4][z / 4].trilerp(
+                (double) (x & 3) / 4, // x & 3 == x % 4
+                (double) (y & 3) / 4, // x & 3 == x % 4
+                (double) (z & 3) / 4  // x & 3 == x % 4
+                                                              );
     }
 }
