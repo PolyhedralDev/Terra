@@ -1,5 +1,5 @@
 version = version("0.1.0")
 
 dependencies {
-    shadedApi(project(":common:addons:manifest-addon-loader"))
+    compileOnly(project(":common:addons:manifest-addon-loader"))
 }

@@ -21,11 +21,7 @@ fun Project.addonDir(dir: File, task: Task) {
             it.delete()
         }
         forSubProjects(":common:addons") {
-            val jar = if (tasks.findByName("shadowJar") != null) {
-                (tasks.named("shadowJar").get() as ShadowJar)
-            } else {
-                (tasks.named("jar").get() as Jar)
-            }
+            val jar = tasks.named("shadowJar").get() as ShadowJar
             
             val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
             val target = File(dir, boot + jar.archiveFileName.get())

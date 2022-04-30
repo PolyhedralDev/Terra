@@ -8,14 +8,10 @@ plugins {
 }
 
 dependencies {
-    shadedApi("commons-io:commons-io:2.6")
-    shadedApi(project(":common:addons:manifest-addon-loader"))
+    api("commons-io:commons-io:2.7")
+    compileOnly(project(":common:addons:manifest-addon-loader"))
 }
 
 tasks.named<ShadowJar>("shadowJar") {
     relocate("org.apache.commons", "com.dfsek.terra.addons.terrascript.lib.commons")
-}
-
-tasks.named("build") {
-    finalizedBy(tasks.named("shadowJar"))
 }

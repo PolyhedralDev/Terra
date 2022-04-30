@@ -3,7 +3,7 @@ val platformOverrides = mapOf(
                              )
 
 dependencies {
-    shadedApi(project(":common:implementation"))
+    api(project(":common:implementation"))
 }
 
 val taskSet = HashSet<AbstractArchiveTask>()

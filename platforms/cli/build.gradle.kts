@@ -3,15 +3,15 @@ repositories {
 }
 
 dependencies {
-    shadedApi("commons-io:commons-io:2.6")
-    shadedApi("com.github.Querz:NBT:6.1")
-    shadedApi(project(":common:implementation:base"))
+    api("commons-io:commons-io:2.6")
+    api("com.github.Querz:NBT:6.1")
+    api(project(":common:implementation:base"))
     
-    shadedImplementation("com.google.guava:guava:31.0.1-jre")
+    implementation("com.google.guava:guava:31.0.1-jre")
     
-    shadedImplementation("ch.qos.logback:logback-classic:1.2.7")
+    implementation("ch.qos.logback:logback-classic:1.2.7")
     
-    shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
 
 tasks.withType<Jar>() {

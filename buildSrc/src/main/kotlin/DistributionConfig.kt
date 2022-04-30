@@ -122,14 +122,13 @@ fun Project.configureDistribution() {
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
         
-        configurations = listOf(project.configurations["shaded"])
-        
         archiveClassifier.set("shaded")
         setVersion(project.version)
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+        relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
     }
     
     configure<BasePluginExtension> {

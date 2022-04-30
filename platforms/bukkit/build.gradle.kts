@@ -14,21 +14,21 @@ val paperURL = "https://papermc.io/api/v2/projects/paper/versions/%version%/buil
 val purpurURL = "https://api.pl3x.net/v2/purpur/%version%/latest/download"
 
 dependencies {
-    shadedApi(project(":common:implementation:base"))
+    api(project(":common:implementation:base"))
     
-    shadedApi("org.slf4j:slf4j-api:1.8.0-beta4") {
+    api("org.slf4j:slf4j-api:1.8.0-beta4") {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
     }
-    shadedImplementation("org.apache.logging.log4j", "log4j-slf4j18-impl", Versions.Libraries.log4j_slf4j_impl) {
+    implementation("org.apache.logging.log4j", "log4j-slf4j18-impl", Versions.Libraries.log4j_slf4j_impl) {
         because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
     }
     
     compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
-    shadedImplementation("io.papermc", "paperlib", Versions.Bukkit.paperLib)
+    implementation("io.papermc", "paperlib", Versions.Bukkit.paperLib)
     
-    shadedApi("com.google.guava:guava:30.0-jre")
+    api("com.google.guava:guava:30.0-jre")
     
-    shadedApi("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
+    api("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
 }
 
 val jvmFlags = listOf(
