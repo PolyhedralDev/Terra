@@ -9,7 +9,5 @@ dependencies {
     
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
     
-    implementation("org.ow2.asm", "asm", Versions.Libraries.Internal.asm)
-    
     implementation("com.dfsek", "paralithic", Versions.Libraries.paralithic)
 }

@@ -1,7 +1,7 @@
 object Versions {
     object Libraries {
         const val tectonic = "4.2.0"
-        const val paralithic = "0.6.0"
+        const val paralithic = "0.6.1"
         const val strata = "1.1.1"
         
         const val cloud = "1.6.2"
@@ -13,7 +13,6 @@ object Versions {
             const val apacheText = "1.9"
             const val jafama = "2.3.2"
             const val apacheIO = "2.6"
-            const val asm = "9.2"
             const val fastutil = "8.5.6"
         }
     }
