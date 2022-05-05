@@ -24,11 +24,11 @@ dependencies {
     }
     
     compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
-    implementation("io.papermc", "paperlib", Versions.Bukkit.paperLib)
+    shadedApi("io.papermc", "paperlib", Versions.Bukkit.paperLib)
     
-    api("com.google.guava:guava:30.0-jre")
+    shadedApi("com.google.guava:guava:30.0-jre")
     
-    api("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
+    shadedApi("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
 }
 
 val jvmFlags = listOf(
