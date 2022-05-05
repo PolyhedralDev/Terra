@@ -43,6 +43,12 @@ afterEvaluate {
         configureDistribution()
     }
     forSubProjects(":common:addons") {
+        apply(plugin = "com.github.johnrengelman.shadow")
+        
+        tasks.named("build") {
+            finalizedBy(tasks.named("shadowJar"))
+        }
+        
         dependencies {
             "compileOnly"(project(":common:api"))
             "implementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
