@@ -9,6 +9,23 @@ fun Project.configureDependencies() {
     val testImplementation by configurations.getting
     val compileOnly by configurations.getting
     
+    val api by configurations.getting
+    val implementation by configurations.getting
+    
+    val shaded by configurations.creating
+    
+    @Suppress("UNUSED_VARIABLE")
+    val shadedApi by configurations.creating {
+        shaded.extendsFrom(this)
+        api.extendsFrom(this)
+    }
+    
+    @Suppress("UNUSED_VARIABLE")
+    val shadedImplementation by configurations.creating {
+        shaded.extendsFrom(this)
+        implementation.extendsFrom(this)
+    }
+    
     repositories {
         mavenCentral()
         gradlePluginPortal()

@@ -3,13 +3,13 @@ repositories {
 }
 
 dependencies {
-    api("commons-io:commons-io:2.7")
-    api("com.github.Querz:NBT:6.1")
-    api(project(":common:implementation:base"))
+    shadedApi("commons-io:commons-io:2.7")
+    shadedApi("com.github.Querz:NBT:6.1")
+    shadedApi(project(":common:implementation:base"))
     
-    implementation("com.google.guava:guava:31.0.1-jre")
+    shadedImplementation("com.google.guava:guava:31.0.1-jre")
     
-    implementation("ch.qos.logback:logback-classic:1.2.9")
+    shadedImplementation("ch.qos.logback:logback-classic:1.2.9")
     
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }

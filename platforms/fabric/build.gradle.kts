@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":common:implementation:base"))
+    shadedApi(project(":common:implementation:base"))
     
     minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
