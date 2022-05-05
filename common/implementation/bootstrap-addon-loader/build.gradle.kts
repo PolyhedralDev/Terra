@@ -1,3 +1,3 @@
 dependencies {
-    "shadedApi"(project(":common:api"))
+    compileOnlyApi(project(":common:api"))
 }

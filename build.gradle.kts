@@ -45,7 +45,7 @@ afterEvaluate {
     forSubProjects(":common:addons") {
         dependencies {
             "compileOnly"(project(":common:api"))
-            "shadedImplementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+            "implementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
             "testImplementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
             "testImplementation"(project(":common:api"))
         }

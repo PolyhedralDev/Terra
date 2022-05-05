@@ -1,13 +1,13 @@
 dependencies {
-    shadedApi(project(":common:api"))
-    shadedApi(project(":common:implementation:bootstrap-addon-loader"))
+    api(project(":common:api"))
+    api(project(":common:implementation:bootstrap-addon-loader"))
     
-    shadedImplementation("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
+    implementation("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
     
-    shadedImplementation("org.apache.commons", "commons-text", Versions.Libraries.Internal.apacheText)
-    shadedImplementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
+    implementation("org.apache.commons", "commons-text", Versions.Libraries.Internal.apacheText)
+    implementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
     
-    shadedImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
     
     implementation("org.ow2.asm", "asm", Versions.Libraries.Internal.asm)
 }
