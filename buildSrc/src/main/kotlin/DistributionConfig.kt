@@ -126,6 +126,7 @@ fun Project.configureDistribution() {
         setVersion(project.version)
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
+        relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
     }
