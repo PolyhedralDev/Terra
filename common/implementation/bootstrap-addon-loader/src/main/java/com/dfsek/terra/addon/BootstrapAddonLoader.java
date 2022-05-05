@@ -44,7 +44,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     
     public BootstrapAddonLoader() { }
     
-    private BootstrapBaseAddon<?> loadAddon(Path addonPath, ClassLoader parent) {
+    private BootstrapBaseAddon<?> loadAddon(Path addonPath, BootstrapAddonClassLoader parent) {
         logger.debug("Loading bootstrap addon from JAR {}", addonPath);
         try(JarFile jar = new JarFile(addonPath.toFile())) {
             String entry = jar.getManifest().getMainAttributes().getValue("Terra-Bootstrap-Addon-Entry-Point");
@@ -55,10 +55,8 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             
             //noinspection NestedTryStatement
             try {
-                @SuppressWarnings({ "resource", "IOResourceOpenedButNotSafelyClosed" })
-                AddonClassLoader loader = new AddonClassLoader(new URL[]{ addonPath.toUri().toURL() }, parent);
-                
-                Object addonObject = loader.loadClass(entry).getConstructor().newInstance();
+                parent.addURL(addonPath.toUri().toURL());
+                Object addonObject = parent.loadClass(entry).getConstructor().newInstance();
                 
                 if(!(addonObject instanceof BootstrapBaseAddon<?> addon)) {
                     throw new AddonLoadException(
