@@ -32,6 +32,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
@@ -90,6 +91,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("CLAMP"), ClampNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
+                  noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
             
                   noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
             
@@ -120,7 +122,6 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("KERNEL"), KernelTemplate::new);
             
                   noiseRegistry.register(addon.key("LINEAR_HEIGHTMAP"), LinearHeightmapSamplerTemplate::new);
-            
             
                   noiseRegistry.register(addon.key("ADD"), () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register(addon.key("SUB"), () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
