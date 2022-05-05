@@ -32,5 +32,5 @@ public interface BootstrapBaseAddon<T extends BaseAddon> extends BaseAddon {
      *
      * @return Loaded addons
      */
-    Iterable<T> loadAddons(Path addonsFolder, ClassLoader parent);
+    Iterable<T> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent);
 }

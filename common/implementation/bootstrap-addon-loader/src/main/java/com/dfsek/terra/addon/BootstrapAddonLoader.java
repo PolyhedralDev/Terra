@@ -19,6 +19,7 @@ package com.dfsek.terra.addon;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +82,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     }
     
     @Override
-    public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, ClassLoader parent) {
+    public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
         Path bootstrapFolder = addonsFolder.resolve("bootstrap");
         logger.debug("Loading bootstrap addons from {}", bootstrapFolder);
         

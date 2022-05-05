@@ -13,6 +13,9 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,13 +75,9 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                     throw new AddonException("Addon " + manifest.getID() + " has unknown schema version: " + manifest.getSchemaVersion());
                 }
                 
-                @SuppressWarnings({ "IOResourceOpenedButNotSafelyClosed", "resource" })
-                ManifestAddonClassLoader childLoader = new ManifestAddonClassLoader(new URL[]{ addonPath.toUri().toURL() },
-                                                                                    loader);
-                
                 List<AddonInitializer> initializers = manifest.getEntryPoints().stream().map(entryPoint -> {
                     try {
-                        Object in = childLoader.loadClass(entryPoint).getConstructor().newInstance();
+                        Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
                         if(!(in instanceof AddonInitializer)) {
                             throw new AddonException(in.getClass() + " does not extend " + AddonInitializer.class);
                         }
@@ -103,7 +102,7 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
     }
     
     @Override
-    public Iterable<ManifestAddon> loadAddons(Path addonsFolder, ClassLoader parent) {
+    public Iterable<ManifestAddon> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
         logger.debug("Loading addons...");
         
         try(Stream<Path> files = Files.walk(addonsFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
@@ -114,16 +113,16 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                     .filter(path -> path.toString().endsWith(".jar"))
                     .toList();
             
-            ManifestAddonClassLoader loader = new ManifestAddonClassLoader(addons.stream().map(path -> {
+            addons.stream().map(path -> {
                 try {
                     return path.toUri().toURL();
                 } catch(MalformedURLException e) {
                     throw new UncheckedIOException(e);
                 }
-            }).toArray(URL[]::new), getClass().getClassLoader());
+            }).forEach(parent::addURL);
             
             return addons.stream()
-                         .map(jar -> loadAddon(jar, loader))
+                         .map(jar -> loadAddon(jar, parent))
                          .collect(Collectors.toList());
         } catch(IOException e) {
             throw new UncheckedIOException(e);

@@ -18,6 +18,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -162,12 +166,14 @@ public abstract class AbstractPlatform implements Platform {
 
         Injector<Platform> platformInjector = new InjectorImpl<>(this);
         platformInjector.addExplicitTarget(Platform.class);
+    
+        BootstrapAddonClassLoader bootstrapAddonClassLoader = new BootstrapAddonClassLoader(new URL[] {}, getClass().getClassLoader());
 
-        bootstrapAddonLoader.loadAddons(addonsFolder, getClass().getClassLoader())
+        bootstrapAddonLoader.loadAddons(addonsFolder, bootstrapAddonClassLoader)
                             .forEach(bootstrapAddon -> {
                                 platformInjector.inject(bootstrapAddon);
 
-                                bootstrapAddon.loadAddons(addonsFolder, getClass().getClassLoader())
+                                bootstrapAddon.loadAddons(addonsFolder, bootstrapAddonClassLoader)
                                               .forEach(addonList::add);
                             });
         
