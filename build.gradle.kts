@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 preRelease(true)
 
 versionProjects(":common:api", version("6.0.0"))
@@ -46,18 +44,16 @@ afterEvaluate {
     }
     forSubProjects(":common:addons") {
         apply(plugin = "com.github.johnrengelman.shadow")
+        
+        tasks.named("build") {
+            finalizedBy(tasks.named("shadowJar"))
+        }
+        
         dependencies {
             "compileOnly"(project(":common:api"))
             "implementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
             "testImplementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
             "testImplementation"(project(":common:api"))
-        }
-        val libPackage = "com.dfsek.terra.addons.${this.name.replace('-', '_')}.lib"
-        tasks.named<ShadowJar>("shadowJar") {
-            relocate("net.jafama", "$libPackage.jafama")
-        }
-        tasks.named("build") {
-            finalizedBy(tasks.named("shadowJar"))
         }
     }
 }

@@ -13,7 +13,9 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 @Mixin(DataPackContents.class)
 public class DataPackContentsMixin {
-    
+    /*
+     * #refresh populates all tags in the registries
+     */
     @Inject(method = "refresh(Lnet/minecraft/util/registry/DynamicRegistryManager;)V", at = @At("RETURN"))
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
         FabricUtil.registerTags(dynamicRegistryManager.get(Registry.BIOME_KEY));

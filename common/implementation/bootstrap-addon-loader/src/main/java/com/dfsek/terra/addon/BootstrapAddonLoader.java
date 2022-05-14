@@ -19,6 +19,7 @@ package com.dfsek.terra.addon;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     
     public BootstrapAddonLoader() { }
     
-    private BootstrapBaseAddon<?> loadAddon(Path addonPath, ClassLoader parent) {
+    private BootstrapBaseAddon<?> loadAddon(Path addonPath, BootstrapAddonClassLoader parent) {
         logger.debug("Loading bootstrap addon from JAR {}", addonPath);
         try(JarFile jar = new JarFile(addonPath.toFile())) {
             String entry = jar.getManifest().getMainAttributes().getValue("Terra-Bootstrap-Addon-Entry-Point");
@@ -54,10 +55,8 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             
             //noinspection NestedTryStatement
             try {
-                @SuppressWarnings({ "resource", "IOResourceOpenedButNotSafelyClosed" })
-                AddonClassLoader loader = new AddonClassLoader(new URL[]{ addonPath.toUri().toURL() }, parent);
-                
-                Object addonObject = loader.loadClass(entry).getConstructor().newInstance();
+                parent.addURL(addonPath.toUri().toURL());
+                Object addonObject = parent.loadClass(entry).getConstructor().newInstance();
                 
                 if(!(addonObject instanceof BootstrapBaseAddon<?> addon)) {
                     throw new AddonLoadException(
@@ -81,7 +80,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     }
     
     @Override
-    public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, ClassLoader parent) {
+    public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
         Path bootstrapFolder = addonsFolder.resolve("bootstrap");
         logger.debug("Loading bootstrap addons from {}", bootstrapFolder);
         

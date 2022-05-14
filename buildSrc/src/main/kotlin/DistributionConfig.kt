@@ -121,14 +121,14 @@ fun Project.configureDistribution() {
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
-        
+        configurations = listOf(project.configurations["shaded"])
         archiveClassifier.set("shaded")
         setVersion(project.version)
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
+        relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
-        relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
     }
     
     configure<BasePluginExtension> {
@@ -147,10 +147,4 @@ fun downloadPack(packUrl: URL, project: Project) {
     file.outputStream().write(packUrl.readBytes())
 }
 
-fun Project.getJarTask(): Jar {
-    return if (tasks.findByName("shadowJar") != null) {
-        (tasks.named("shadowJar").get() as ShadowJar)
-    } else {
-        (tasks.named("jar").get() as Jar)
-    }
-}
+fun Project.getJarTask() = tasks.named("shadowJar").get() as ShadowJar

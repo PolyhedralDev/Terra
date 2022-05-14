@@ -1,3 +1,3 @@
 dependencies {
-    "api"(project(":common:api"))
+    compileOnlyApi(project(":common:api"))
 }
