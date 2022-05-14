@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
-public class SamplerFunctionBuilder implements FunctionBuilder<SamplerFunction> {
+public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number>> {
     private final Map<String, DimensionApplicableNoiseSampler> samplers2d;
     private final Map<String, DimensionApplicableNoiseSampler> samplers3d;
     
@@ -36,41 +36,44 @@ public class SamplerFunctionBuilder implements FunctionBuilder<SamplerFunction> 
     
     @SuppressWarnings("unchecked")
     @Override
-    public SamplerFunction build(List<Returnable<?>> argumentList, Position position) {
-        Function<Supplier<String>, NoiseSampler> function;
-        
+    public com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number> build(List<Returnable<?>> argumentList, Position position) {
         Returnable<String> arg = (Returnable<String>) argumentList.get(0);
         
         if(argumentList.size() == 3) { // 2D
             if(arg instanceof StringConstant constant) {
-                NoiseSampler sampler = Objects.requireNonNull(samplers2d.get(constant.getConstant()),
-                                                              "No such 2D noise function " + constant.getConstant()).getSampler();
-                function = s -> sampler;
+                return new ConstantSamplerFunction(Objects.requireNonNull(samplers2d.get(constant.getConstant()), "No such 2D noise function " + constant.getConstant()).getSampler(),
+                                           (Returnable<Number>) argumentList.get(1),
+                                           new NumericConstant(0, position),
+                                           (Returnable<Number>) argumentList.get(2),
+                                           true,
+                                           position);
             } else {
-                function = s -> Objects.requireNonNull(samplers2d.get(s.get()), "No such 2D noise function " + s.get()).getSampler();
+                return new SamplerFunction((Returnable<String>) argumentList.get(0),
+                                           (Returnable<Number>) argumentList.get(1),
+                                           new NumericConstant(0, position),
+                                           (Returnable<Number>) argumentList.get(2),
+                                           s -> Objects.requireNonNull(samplers2d.get(s.get()), "No such 2D noise function " + s.get()).getSampler(),
+                                           true,
+                                           position);
             }
-            return new SamplerFunction((Returnable<String>) argumentList.get(0),
-                                       (Returnable<Number>) argumentList.get(1),
-                                       new NumericConstant(0, position),
-                                       (Returnable<Number>) argumentList.get(2),
-                                       function,
-                                       true,
-                                       position);
+            
         } else { // 3D
             if(arg instanceof StringConstant constant) {
-                NoiseSampler sampler = Objects.requireNonNull(samplers3d.get(constant.getConstant()),
-                                                              "No such 3D noise function " + constant.getConstant()).getSampler();
-                function = s -> sampler;
+                return new ConstantSamplerFunction(Objects.requireNonNull(samplers3d.get(constant.getConstant()), "No such 2D noise function " + constant.getConstant()).getSampler(),
+                                                   (Returnable<Number>) argumentList.get(1),
+                                                   (Returnable<Number>) argumentList.get(2),
+                                                   (Returnable<Number>) argumentList.get(3),
+                                                   true,
+                                                   position);
             } else {
-                function = s -> Objects.requireNonNull(samplers3d.get(s.get()), "No such 3D noise function " + s.get()).getSampler();
+                return new SamplerFunction((Returnable<String>) argumentList.get(0),
+                                           (Returnable<Number>) argumentList.get(1),
+                                           (Returnable<Number>) argumentList.get(2),
+                                           (Returnable<Number>) argumentList.get(3),
+                                           s -> Objects.requireNonNull(samplers2d.get(s.get()), "No such 2D noise function " + s.get()).getSampler(),
+                                           true,
+                                           position);
             }
-            return new SamplerFunction((Returnable<String>) argumentList.get(0),
-                                       (Returnable<Number>) argumentList.get(1),
-                                       (Returnable<Number>) argumentList.get(2),
-                                       (Returnable<Number>) argumentList.get(3),
-                                       function,
-                                       false,
-                                       position);
         }
     }
     
