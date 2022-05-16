@@ -24,7 +24,8 @@
         "terra.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.7.4",
+        "fabricloader": ">=0.14.2",
+        "java": ">=17",
         "minecraft": "1.18.x"
     },
     "accessWidener": "terra.accesswidener"
