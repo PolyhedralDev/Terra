@@ -48,9 +48,6 @@ public abstract class ServerWorldMixin {
     @Final
     private ServerChunkManager chunkManager;
     
-    @Shadow
-    public abstract long getSeed();
-    
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
                 ((net.minecraft.server.world.ServerWorld) (Object) this));
@@ -67,7 +64,7 @@ public abstract class ServerWorldMixin {
     
     @Intrinsic
     public long terra$getSeed() {
-        return getSeed();
+        return ((net.minecraft.server.world.ServerWorld) (Object) this).getSeed();
     }
     
     public int terra$getMaxHeight() {
