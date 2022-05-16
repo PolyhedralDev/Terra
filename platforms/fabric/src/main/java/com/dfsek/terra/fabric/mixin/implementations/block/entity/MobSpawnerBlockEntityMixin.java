@@ -39,7 +39,7 @@ import com.dfsek.terra.fabric.mixin.access.MobSpawnerLogicAccessor;
 
 
 @Mixin(MobSpawnerBlockEntity.class)
-@Implements(@Interface(iface = MobSpawner.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = MobSpawner.class, prefix = "terra$"))
 public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     private MobSpawnerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

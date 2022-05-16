@@ -26,7 +26,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 
 @Mixin(net.minecraft.block.entity.BlockEntity.class)
-@Implements(@Interface(iface = BlockEntity.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = BlockEntity.class, prefix = "terra$"))
 public abstract class BlockEntityMixin {
     public boolean terra$update(boolean applyPhysics) {
         if(((net.minecraft.block.entity.BlockEntity) (Object) this).hasWorld()) //noinspection ConstantConditions

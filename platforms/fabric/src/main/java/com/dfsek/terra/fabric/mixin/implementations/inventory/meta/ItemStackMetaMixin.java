@@ -36,7 +36,7 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = ItemMeta.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = ItemMeta.class, prefix = "terra$"))
 public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract boolean hasEnchantments();

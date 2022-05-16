@@ -27,7 +27,7 @@ import com.dfsek.terra.api.inventory.Inventory;
 
 
 @Mixin(LootableContainerBlockEntity.class)
-@Implements(@Interface(iface = Container.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Container.class, prefix = "terra$"))
 public abstract class LootableContainerBlockEntityMixin extends BlockEntityMixin {
     public Inventory terra$getInventory() {
         return (Inventory) this;

@@ -42,7 +42,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
-@Implements(@Interface(iface = ServerWorld.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
 public abstract class ServerWorldMixin {
     @Shadow
     @Final

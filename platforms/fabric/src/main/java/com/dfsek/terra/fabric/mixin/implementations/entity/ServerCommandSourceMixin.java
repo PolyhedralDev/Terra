@@ -36,7 +36,7 @@ import com.dfsek.terra.api.entity.Player;
 
 
 @Mixin(ServerCommandSource.class)
-@Implements(@Interface(iface = CommandSender.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = CommandSender.class, prefix = "terra$"))
 public abstract class ServerCommandSourceMixin {
     @Shadow
     public abstract void sendFeedback(Text message, boolean broadcastToOps);

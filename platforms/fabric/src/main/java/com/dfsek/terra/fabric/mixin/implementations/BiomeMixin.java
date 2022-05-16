@@ -26,6 +26,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 @Mixin(Biome.class)
-@Implements(@Interface(iface = PlatformBiome.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = PlatformBiome.class, prefix = "terra$"))
 public abstract class BiomeMixin {
 }

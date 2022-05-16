@@ -32,7 +32,7 @@ import com.dfsek.terra.api.block.entity.Sign;
 
 
 @Mixin(SignBlockEntity.class)
-@Implements(@Interface(iface = Sign.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Sign.class, prefix = "terra$"))
 public abstract class SignBlockEntityMixin {
     @Shadow
     @Final

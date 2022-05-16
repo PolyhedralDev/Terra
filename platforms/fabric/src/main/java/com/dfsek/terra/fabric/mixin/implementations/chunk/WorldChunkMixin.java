@@ -34,7 +34,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 @Mixin(WorldChunk.class)
-@Implements(@Interface(iface = Chunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Chunk.class, prefix = "terra$"))
 public abstract class WorldChunkMixin {
     @Final
     @Shadow

@@ -30,7 +30,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 
 
 @Mixin(Enchantment.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.inventory.item.Enchantment.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.inventory.item.Enchantment.class, prefix = "terra$"))
 public abstract class EnchantmentMixin {
     @Shadow
     public abstract boolean isAcceptableItem(net.minecraft.item.ItemStack stack);

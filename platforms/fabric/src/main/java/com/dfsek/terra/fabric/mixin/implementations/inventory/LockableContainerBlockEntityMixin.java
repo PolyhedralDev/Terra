@@ -28,7 +28,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 
 
 @Mixin(LockableContainerBlockEntity.class)
-@Implements(@Interface(iface = Inventory.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Inventory.class, prefix = "terra$"))
 public class LockableContainerBlockEntityMixin {
     @SuppressWarnings("ConstantConditions")
     public void terra$setItem(int slot, ItemStack newStack) {

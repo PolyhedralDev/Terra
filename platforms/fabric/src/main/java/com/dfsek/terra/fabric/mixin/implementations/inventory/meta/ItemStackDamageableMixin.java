@@ -28,7 +28,7 @@ import com.dfsek.terra.api.inventory.item.Damageable;
 
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = Damageable.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Damageable.class, prefix = "terra$"))
 public abstract class ItemStackDamageableMixin {
     @Shadow
     public abstract boolean isDamaged();

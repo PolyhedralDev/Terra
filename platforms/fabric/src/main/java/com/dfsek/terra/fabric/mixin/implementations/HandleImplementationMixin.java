@@ -52,7 +52,7 @@ import com.dfsek.terra.api.Handle;
         
         Biome.class
 })
-@Implements(@Interface(iface = Handle.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Handle.class, prefix = "terra$"))
 public class HandleImplementationMixin {
     @Intrinsic
     public Object terra$getHandle() {

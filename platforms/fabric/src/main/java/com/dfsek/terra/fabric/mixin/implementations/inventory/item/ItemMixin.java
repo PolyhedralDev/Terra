@@ -27,7 +27,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 
 
 @Mixin(Item.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.inventory.Item.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.inventory.Item.class, prefix = "terra$"))
 public abstract class ItemMixin {
     @Shadow
     public abstract int getMaxDamage();

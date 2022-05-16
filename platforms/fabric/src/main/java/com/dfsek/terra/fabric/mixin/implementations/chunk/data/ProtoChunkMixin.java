@@ -29,7 +29,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 
 
 @Mixin(net.minecraft.world.chunk.ProtoChunk.class)
-@Implements(@Interface(iface = ProtoChunk.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = ProtoChunk.class, prefix = "terra$"))
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);

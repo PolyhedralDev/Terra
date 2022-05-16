@@ -33,7 +33,7 @@ import com.dfsek.terra.fabric.util.FabricAdapter;
 
 
 @Mixin(Entity.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$"))
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World world;

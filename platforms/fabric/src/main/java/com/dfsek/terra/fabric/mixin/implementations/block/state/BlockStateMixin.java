@@ -22,7 +22,7 @@ import com.dfsek.terra.fabric.mixin.access.StateAccessor;
 
 
 @Mixin(AbstractBlockState.class)
-@Implements(@Interface(iface = BlockState.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = BlockState.class, prefix = "terra$"))
 public abstract class BlockStateMixin extends State<Block, net.minecraft.block.BlockState> {
     private BlockStateMixin(Block owner, ImmutableMap<net.minecraft.state.property.Property<?>, Comparable<?>> entries,
                             MapCodec<net.minecraft.block.BlockState> codec) {

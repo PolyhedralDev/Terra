@@ -26,6 +26,6 @@ import com.dfsek.terra.api.entity.Player;
 
 
 @Mixin(PlayerEntity.class)
-@Implements(@Interface(iface = Player.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = Player.class, prefix = "terra$"))
 public abstract class PlayerEntityMixin extends EntityMixin {
 }

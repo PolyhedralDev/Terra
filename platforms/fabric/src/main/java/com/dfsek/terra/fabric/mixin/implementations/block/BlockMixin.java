@@ -27,7 +27,7 @@ import com.dfsek.terra.api.block.BlockType;
 
 
 @Mixin(Block.class)
-@Implements(@Interface(iface = BlockType.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = BlockType.class, prefix = "terra$"))
 public abstract class BlockMixin {
     public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
         return (com.dfsek.terra.api.block.state.BlockState) ((Block) (Object) this).getDefaultState();

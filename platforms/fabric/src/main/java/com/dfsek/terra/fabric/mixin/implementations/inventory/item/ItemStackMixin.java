@@ -31,7 +31,7 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 @Mixin(ItemStack.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.inventory.ItemStack.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.inventory.ItemStack.class, prefix = "terra$"))
 public abstract class ItemStackMixin {
     @Shadow
     public abstract int getCount();

@@ -24,6 +24,6 @@ import org.spongepowered.asm.mixin.Mixin;
 
 
 @Mixin(EntityType.class)
-@Implements(@Interface(iface = com.dfsek.terra.api.entity.EntityType.class, prefix = "terra$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = com.dfsek.terra.api.entity.EntityType.class, prefix = "terra$"))
 public abstract class EntityTypeMixin {
 }

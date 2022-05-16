@@ -54,7 +54,7 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 @Mixin(ChunkRegion.class)
-@Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$", remap = Interface.Remap.NONE))
+@Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$"))
 public abstract class ChunkRegionMixin {
     private ConfigPack config;
     
