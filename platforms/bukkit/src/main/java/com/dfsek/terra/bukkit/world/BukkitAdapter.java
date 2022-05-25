@@ -18,10 +18,13 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.Vector;
 
 import com.dfsek.terra.api.block.BlockType;
@@ -79,6 +82,14 @@ public final class BukkitAdapter {
             case Y -> Axis.Y;
             case Z -> Axis.Z;
         };
+    }
+    
+    public static WorldProperties adapt(WorldInfo worldInfo) {
+        return new BukkitWorldProperties(worldInfo);
+    }
+    
+    public static WorldInfo adapt(WorldProperties properties) {
+        return (WorldInfo) properties.getHandle();
     }
     
     public static Half adapt(org.bukkit.block.data.Bisected.Half half) {
