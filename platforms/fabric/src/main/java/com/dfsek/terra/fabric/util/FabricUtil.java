@@ -98,7 +98,7 @@ public final class FabricUtil {
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, registerKey(identifier).getValue(), minecraftBiome));
             }
-    
+            
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }
@@ -116,17 +116,26 @@ public final class FabricUtil {
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
         
-        TERRA_BIOME_MAP.forEach((vb, terraBiomes) -> {
-            RegistryEntry<net.minecraft.world.biome.Biome> vanilla = getEntry(registry, vb).orElseThrow();
-            terraBiomes.forEach(tb -> {
-                RegistryEntry<net.minecraft.world.biome.Biome> terra = getEntry(registry, tb).orElseThrow();
-                logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " + terra.getKey().orElseThrow().getValue() + ": " +
-                            vanilla.streamTags().toList());
-                vanilla.streamTags()
-                       .forEach(tag -> collect.computeIfAbsent(tag, t -> new ArrayList<>())
-                                              .add(getEntry(registry, terra.getKey().orElseThrow().getValue()).orElseThrow()));
-            });
-        });
+        TERRA_BIOME_MAP.forEach((vb, terraBiomes) -> getEntry(registry, vb)
+                .ifPresentOrElse(vanilla -> terraBiomes.forEach(tb -> getEntry(registry, tb)
+                                         .ifPresentOrElse(
+                                                 terra -> {
+                                                     logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
+                                                                  terra.getKey().orElseThrow().getValue() + ": " +
+                                                                  vanilla.streamTags().toList());
+                                    
+                                                     vanilla.streamTags()
+                                                            .forEach(
+                                                                    tag -> collect
+                                                                            .computeIfAbsent(tag, t -> new ArrayList<>())
+                                                                            .add(getEntry(registry,
+                                                                                    terra.getKey()
+                                                                                         .orElseThrow()
+                                                                                         .getValue()).orElseThrow()));
+                                    
+                                                 },
+                                                 () -> logger.error("No such biome: {}", tb))),
+                                 () -> logger.error("No vanilla biome: {}", vb)));
         
         registry.clearTags();
         registry.populateTags(ImmutableMap.copyOf(collect));
@@ -153,7 +162,8 @@ public final class FabricUtil {
                    .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
                    .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
                    .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-                   .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), vanilla.getEffects().getGrassColorModifier()));
+                   .grassColorModifier(
+                           Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), vanilla.getEffects().getGrassColorModifier()));
             
             
             if(vanillaBiomeProperties.getGrassColor() == null) {
