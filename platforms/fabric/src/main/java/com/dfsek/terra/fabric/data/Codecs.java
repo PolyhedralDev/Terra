@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.structure.StructureSet;
+import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryCodecs;
 import net.minecraft.world.biome.Biome;
@@ -38,10 +39,10 @@ public final class Codecs {
                                                                                                id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(RegistryCodecs.dynamicRegistry(Registry.BIOME_KEY, Lifecycle.stable(), Biome.CODEC)
-                                                             .fieldOf("biome_registry")
-                                                             .stable()
-                                                             .forGetter(TerraBiomeSource::getBiomeRegistry),
+            .create(instance -> instance.group(RegistryOps.createRegistryCodec(Registry.BIOME_KEY)
+                                                          .fieldOf("biome_registry")
+                                                          .stable()
+                                                          .forGetter(TerraBiomeSource::getBiomeRegistry),
                                                Codec.LONG.fieldOf("seed")
                                                          .stable()
                                                          .forGetter(TerraBiomeSource::getSeed),
