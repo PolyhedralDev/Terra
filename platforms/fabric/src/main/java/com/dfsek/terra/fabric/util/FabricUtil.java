@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
@@ -95,11 +96,15 @@ public final class FabricUtil {
             if(registry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow());
             } else {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, identifier, minecraftBiome));
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, registerKey(identifier).getValue(), minecraftBiome));
             }
     
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
         }
+    }
+    
+    private static RegistryKey<net.minecraft.world.biome.Biome> registerKey(Identifier identifier){
+        return RegistryKey.of(Registry.BIOME_KEY, identifier);
     }
     
     public static void registerTags(Registry<net.minecraft.world.biome.Biome> registry) {

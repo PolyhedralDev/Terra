@@ -17,16 +17,12 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.fabric.util.FabricUtil;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.config.ConfigPack;
