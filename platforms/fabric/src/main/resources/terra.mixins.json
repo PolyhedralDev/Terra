@@ -36,12 +36,10 @@
     "lifecycle.RegistryMixin"
   ],
   "client": [
-    "access.GeneratorTypeAccessor",
-    "lifecycle.client.MinecraftClientMixin"
+    "access.GeneratorTypeAccessor"
   ],
   "server": [
-    "lifecycle.server.GeneratorOptionsMixin",
-    "lifecycle.server.ServerMainMixin"
+    "lifecycle.server.GeneratorOptionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

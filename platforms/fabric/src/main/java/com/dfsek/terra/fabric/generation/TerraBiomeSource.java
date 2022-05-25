@@ -46,10 +46,7 @@ public class TerraBiomeSource extends BiomeSource {
                       .stream(pack.getBiomeProvider()
                                   .getBiomes()
                                   .spliterator(), false)
-                      .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate()));
-        biomes.streamEntries().forEach(biomeReference -> {
-            System.out.println(biomeReference.getKey().orElseThrow());
-        });
+                      .map(b -> biomes.entryOf(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate().getKey().orElseThrow())));
         /*
         A little (unfortunately, required) jank to watch out for:
         
@@ -77,17 +74,6 @@ public class TerraBiomeSource extends BiomeSource {
     
     @Override
     public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        /*return biomeRegistry
-                .getEntry(((ProtoPlatformBiome) pack
-                        .getBiomeProvider()
-                        .getBiome(biomeX << 2, biomeZ << 2, seed)
-                        .getPlatformBiome())
-                                  .getDelegate()
-                                  .getKey()
-                                  .orElseThrow())
-                .orElseThrow();
-                
-         */
         return biomeRegistry.entryOf(((ProtoPlatformBiome) pack
                 .getBiomeProvider()
                 .getBiome(biomeX << 2, biomeZ << 2, seed)

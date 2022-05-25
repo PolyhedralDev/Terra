@@ -19,8 +19,18 @@ package com.dfsek.terra.fabric;
 
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.fabric.FabricServerCommandManager;
+
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.fabric.generation.TerraGeneratorType;
+import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
+import com.dfsek.terra.fabric.util.FabricUtil;
+
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.world.GeneratorType;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
@@ -49,7 +59,20 @@ public class FabricEntryPoint implements ModInitializer {
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
-
+        
+        FabricEntryPoint.getPlatform().getEventManager().callEvent(new PlatformInitializationEvent());
+        
+        if(FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+            FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> {
+                final GeneratorType generatorType = new TerraGeneratorType(pack);
+                //noinspection ConstantConditions
+                ((GeneratorTypeAccessor) generatorType).setDisplayName(new LiteralText("Terra:" + pack.getID()));
+                GeneratorTypeAccessor.getValues().add(1, generatorType);
+            });
+        }
+        
+        FabricUtil.registerBiomes();
+        
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),
                 serverCommandSource -> (CommandSender) serverCommandSource,
