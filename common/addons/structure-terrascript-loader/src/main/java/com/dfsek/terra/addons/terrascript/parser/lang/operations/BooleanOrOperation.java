@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
 
 public class BooleanOrOperation extends BinaryOperation<Boolean, Boolean> {
     public BooleanOrOperation(Returnable<Boolean> left, Returnable<Boolean> right, Position start) {
@@ -17,8 +19,8 @@ public class BooleanOrOperation extends BinaryOperation<Boolean, Boolean> {
     }
     
     @Override
-    public Boolean apply(Boolean left, Boolean right) {
-        return left || right;
+    public Boolean apply(Supplier<Boolean> left, Supplier<Boolean> right) {
+        return left.get() || right.get();
     }
     
     @Override

@@ -11,6 +11,12 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import net.jafama.FastMath;
+
+import java.util.function.Supplier;
+
+import static com.dfsek.terra.api.util.MathUtil.EPSILON;
+
 
 public class NotEqualsStatement extends BinaryOperation<Object, Boolean> {
     public NotEqualsStatement(Returnable<Object> left, Returnable<Object> right, Position position) {
@@ -18,8 +24,14 @@ public class NotEqualsStatement extends BinaryOperation<Object, Boolean> {
     }
     
     @Override
-    public Boolean apply(Object left, Object right) {
-        return !left.equals(right);
+    public Boolean apply(Supplier<Object> left, Supplier<Object> right) {
+        Object leftUnwrapped = left.get();
+        Object rightUnwrapped = right.get();
+        if(leftUnwrapped instanceof Number l && rightUnwrapped instanceof Number r) {
+            return FastMath.abs(l.doubleValue() - r.doubleValue()) > EPSILON;
+        }
+    
+        return !left.equals(rightUnwrapped);
     }
     
     

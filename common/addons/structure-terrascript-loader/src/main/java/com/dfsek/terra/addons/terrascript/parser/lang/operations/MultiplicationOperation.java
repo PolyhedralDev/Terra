@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
 
 public class MultiplicationOperation extends BinaryOperation<Number, Number> {
     public MultiplicationOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
@@ -17,8 +19,8 @@ public class MultiplicationOperation extends BinaryOperation<Number, Number> {
     }
     
     @Override
-    public Number apply(Number left, Number right) {
-        return left.doubleValue() * right.doubleValue();
+    public Number apply(Supplier<Number> left, Supplier<Number> right) {
+        return left.get().doubleValue() * right.get().doubleValue();
     }
     
     @Override

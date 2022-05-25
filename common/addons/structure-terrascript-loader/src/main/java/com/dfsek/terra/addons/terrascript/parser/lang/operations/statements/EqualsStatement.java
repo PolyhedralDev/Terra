@@ -13,21 +13,26 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
+import static com.dfsek.terra.api.util.MathUtil.EPSILON;
+
 
 public class EqualsStatement extends BinaryOperation<Object, Boolean> {
-    private static final double EPSILON = 0.000000001D;
     
     public EqualsStatement(Returnable<Object> left, Returnable<Object> right, Position position) {
         super(left, right, position);
     }
     
     @Override
-    public Boolean apply(Object left, Object right) {
-        if(left instanceof Number && right instanceof Number) {
-            return FastMath.abs(((Number) left).doubleValue() - ((Number) right).doubleValue()) <= EPSILON;
+    public Boolean apply(Supplier<Object> left, Supplier<Object> right) {
+        Object leftUnwrapped = left.get();
+        Object rightUnwrapped = right.get();
+        if(leftUnwrapped instanceof Number l && rightUnwrapped instanceof Number r) {
+            return FastMath.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }
         
-        return left.equals(right);
+        return left.equals(rightUnwrapped);
     }
     
     

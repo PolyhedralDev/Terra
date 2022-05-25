@@ -12,6 +12,8 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
 
 public abstract class BinaryOperation<I, O> implements Returnable<O> {
     private final Returnable<I> left;
@@ -24,11 +26,11 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
         this.start = start;
     }
     
-    public abstract O apply(I left, I right);
+    public abstract O apply(Supplier<I> left, Supplier<I> right);
     
     @Override
     public O apply(ImplementationArguments implementationArguments, Scope scope) {
-        return apply(left.apply(implementationArguments, scope), right.apply(implementationArguments, scope));
+        return apply(() -> left.apply(implementationArguments, scope), () -> right.apply(implementationArguments, scope));
     }
     
     @Override

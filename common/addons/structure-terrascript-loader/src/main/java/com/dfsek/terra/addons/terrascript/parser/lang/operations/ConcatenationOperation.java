@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
 
 public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     public ConcatenationOperation(Returnable<Object> left, Returnable<Object> right, Position position) {
@@ -17,8 +19,8 @@ public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     }
     
     @Override
-    public String apply(Object left, Object right) {
-        return left.toString() + right.toString();
+    public String apply(Supplier<Object> left, Supplier<Object> right) {
+        return left.get().toString() + right.get().toString();
     }
     
     @Override

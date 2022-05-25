@@ -11,6 +11,8 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
+import java.util.function.Supplier;
+
 
 public class GreaterOrEqualsThanStatement extends BinaryOperation<Number, Boolean> {
     public GreaterOrEqualsThanStatement(Returnable<Number> left, Returnable<Number> right, Position position) {
@@ -18,8 +20,8 @@ public class GreaterOrEqualsThanStatement extends BinaryOperation<Number, Boolea
     }
     
     @Override
-    public Boolean apply(Number left, Number right) {
-        return left.doubleValue() >= right.doubleValue();
+    public Boolean apply(Supplier<Number> left, Supplier<Number> right) {
+        return left.get().doubleValue() >= right.get().doubleValue();
     }
     
     
