@@ -43,23 +43,6 @@ import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-    @Shadow
-    @Final
-    private static Logger LOGGER;
-    
-    @Redirect(method = "method_40187(Lnet/minecraft/util/registry/DynamicRegistryManager;Lnet/minecraft/world/gen/GeneratorOptions;" +
-                       "Lnet/minecraft/world/level/LevelInfo;Lnet/minecraft/resource/ResourceManager;" +
-                       "Lnet/minecraft/resource/DataPackSettings;)Lcom/mojang/datafixers/util/Pair;",
-              at = @At(value = "INVOKE",
-                       target = "net/minecraft/util/registry/DynamicRegistryManager.createAndLoad ()" +
-                                "Lnet/minecraft/util/registry/DynamicRegistryManager$Mutable;"))
-    private static Mutable injectBiomes() {
-        Mutable mutable = DynamicRegistryManager.createAndLoad();
-        LOGGER.info("Injecting Terra biomes...");
-        FabricUtil.registerBiomes(mutable.get(Registry.BIOME_KEY));
-        return mutable;
-    }
-    
     @Inject(method = "<init>", at = @At(value = "INVOKE",
                                         target = "Lnet/minecraft/client/util/WindowProvider;createWindow" +
                                                  "(Lnet/minecraft/client/WindowSettings;Ljava/lang/String;Ljava/lang/String;)" +
@@ -74,5 +57,6 @@ public class MinecraftClientMixin {
             ((GeneratorTypeAccessor) generatorType).setDisplayName(new LiteralText("Terra:" + pack.getID()));
             GeneratorTypeAccessor.getValues().add(1, generatorType);
         });
+        FabricUtil.registerBiomes();
     }
 }

@@ -24,6 +24,7 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.WorldAccess;
@@ -40,6 +41,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -60,13 +62,12 @@ public final class FabricUtil {
                    .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
     }
     
-    public static void registerBiomes(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
+    public static void registerBiomes() {
         logger.info("Registering biomes...");
         FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             pack.getCheckedRegistry(Biome.class)
-                .forEach((id, biome) -> registerBiome(biome, pack, biomeRegistry, id));
+                .forEach((id, biome) -> registerBiome(biome, pack, id));
         });
-        logger.info("Biomes registered.");
     }
     
     private static final Map<Identifier, List<Identifier>>
@@ -78,8 +79,9 @@ public final class FabricUtil {
      * @param biome The Terra BiomeBuilder.
      * @param pack  The ConfigPack this biome belongs to.
      */
-    public static void registerBiome(Biome biome, ConfigPack pack, Registry<net.minecraft.world.biome.Biome> registry,
+    public static void registerBiome(Biome biome, ConfigPack pack,
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
+        Registry<net.minecraft.world.biome.Biome> registry = BuiltinRegistries.BIOME;
         RegistryEntry<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
         
         
@@ -93,8 +95,7 @@ public final class FabricUtil {
             if(registry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow());
             } else {
-                Registry.register(registry, identifier, minecraftBiome);
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, identifier, minecraftBiome));
             }
     
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);

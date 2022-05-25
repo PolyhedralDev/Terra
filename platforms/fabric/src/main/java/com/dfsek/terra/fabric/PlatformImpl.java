@@ -83,7 +83,7 @@ public class PlatformImpl extends AbstractPlatform {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
-            FabricUtil.registerBiomes(server.getRegistryManager().get(Registry.BIOME_KEY));
+            FabricUtil.registerBiomes();
             server.getWorlds().forEach(world -> {
                 if(world.getChunkManager().getChunkGenerator() instanceof FabricChunkGeneratorWrapper chunkGeneratorWrapper) {
                     getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {

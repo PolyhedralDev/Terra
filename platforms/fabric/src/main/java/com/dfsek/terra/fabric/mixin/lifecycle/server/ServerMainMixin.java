@@ -38,10 +38,6 @@ import com.dfsek.terra.fabric.FabricEntryPoint;
 
 @Mixin(Main.class)
 public class ServerMainMixin {
-    @Shadow
-    @Final
-    private static Logger LOGGER;
-    
     @Inject(method = "main([Ljava/lang/String;)V",
             at = @At(value = "INVOKE",
                      target = "Lnet/minecraft/resource/ResourcePackManager;<init>(Lnet/minecraft/resource/ResourceType;[Lnet/minecraft/resource/ResourcePackProvider;)V") // after registry manager creation
@@ -50,19 +46,6 @@ public class ServerMainMixin {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
         // and stuff
-    }
-    
-    @Redirect(method = "method_40373(Lnet/minecraft/world/level/storage/LevelStorage$Session;Ljoptsimple/OptionSet;" +
-                       "Ljoptsimple/OptionSpec;Lnet/minecraft/server/dedicated/ServerPropertiesLoader;Ljoptsimple/OptionSpec;" +
-                       "Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/resource/DataPackSettings;)" +
-                       "Lcom/mojang/datafixers/util/Pair;",
-              at = @At(value = "INVOKE",
-                       target = "net/minecraft/util/registry/DynamicRegistryManager.createAndLoad ()" +
-                                "Lnet/minecraft/util/registry/DynamicRegistryManager$Mutable;"))
-    private static Mutable injectBiomes() {
-        Mutable mutable = DynamicRegistryManager.createAndLoad();
-        LOGGER.info("Injecting Terra biomes...");
-        FabricUtil.registerBiomes(mutable.get(Registry.BIOME_KEY));
-        return mutable;
+        FabricUtil.registerBiomes();
     }
 }
