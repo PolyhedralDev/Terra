@@ -121,7 +121,7 @@ public final class FabricUtil {
                 .ifPresentOrElse(vanilla -> terraBiomes.forEach(tb -> getEntry(registry, tb)
                                          .ifPresentOrElse(
                                                  terra -> {
-                                                     logger.info(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
+                                                     logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
                                                                   terra.getKey().orElseThrow().getValue() + ": " +
                                                                   vanilla.streamTags().toList());
                                     
