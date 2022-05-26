@@ -39,7 +39,6 @@ import com.dfsek.terra.addons.terrascript.script.builders.UnaryNumberFunctionBui
 import com.dfsek.terra.addons.terrascript.script.builders.UnaryStringFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.ZeroArgFunctionBuilder;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
@@ -54,6 +53,8 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     private final Block block;
     private final RegistryKey id;
+    
+    private final String profile;
     private final Platform platform;
     
     @SuppressWarnings("rawtypes")
@@ -67,7 +68,8 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             throw new RuntimeException(e);
         }
         this.id = id;
-
+        this.profile = "terrascript_direct:" + id;
+        
         //noinspection unchecked
         functionRegistry.forEach((key, function) -> parser.registerFunction(key.getID(), function)); // Register registry functions.
         
@@ -129,15 +131,17 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     @Override
     @SuppressWarnings("try")
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
-            return applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
-        }
+        platform.getProfiler().push(profile);
+        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
+        platform.getProfiler().pop(profile);
+        return result;
     }
     
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation, int recursions) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("terrascript_direct:" + id)) {
-            return applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
-        }
+        platform.getProfiler().push(profile);
+        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
+        platform.getProfiler().pop(profile);
+        return result;
     }
     
     private boolean applyBlock(TerraImplementationArguments arguments) {

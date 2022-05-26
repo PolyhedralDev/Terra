@@ -12,7 +12,6 @@ import java.util.Random;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
@@ -27,49 +26,52 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
     
     private final String id;
     
+    private final String profile;
+    
     public FeatureGenerationStage(Platform platform, String id) {
         this.platform = platform;
         this.id = id;
+        this.profile = "feature_stage:" + id;
     }
     
     @Override
     @SuppressWarnings("try")
     public void populate(ProtoWorld world) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("feature_stage:" + id)) {
-            int cx = world.centerChunkX() << 4;
-            int cz = world.centerChunkZ() << 4;
-            long seed = world.getSeed();
-            for(int x = 0; x < 16; x++) {
-                for(int z = 0; z < 16; z++) {
-                    int tx = cx + x;
-                    int tz = cz + z;
-                    Column<WritableWorld> column = world.column(tx, tz);
-                    long coordinateSeed = (seed * 31 + tx) * 31 + tz;
-                    
-                    world.getBiomeProvider()
-                         .getBiome(tx, tz, seed)
-                         .getContext()
-                         .get(BiomeFeatures.class)
-                         .getFeatures()
-                         .getOrDefault(this, Collections.emptyList())
-                         .forEach(feature -> {
-                             try(ProfileFrame ignored = platform.getProfiler().profile(feature.getID())) {
-                                 if(feature.getDistributor().matches(tx, tz, seed)) {
-                                     feature.getLocator()
-                                            .getSuitableCoordinates(column)
-                                            .forEach(y ->
-                                                             feature.getStructure(world, tx, y, tz)
-                                                                    .generate(Vector3Int.of(tx, y, tz),
-                                                                              world,
-                                                                              new Random(coordinateSeed * 31 + y),
-                                                                              Rotation.NONE)
-                                                    );
-                                 }
-                             }
-                         });
-                }
+        platform.getProfiler().push(profile);
+        int cx = world.centerChunkX() << 4;
+        int cz = world.centerChunkZ() << 4;
+        long seed = world.getSeed();
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                int tx = cx + x;
+                int tz = cz + z;
+                Column<WritableWorld> column = world.column(tx, tz);
+                long coordinateSeed = (seed * 31 + tx) * 31 + tz;
+                
+                world.getBiomeProvider()
+                     .getBiome(tx, tz, seed)
+                     .getContext()
+                     .get(BiomeFeatures.class)
+                     .getFeatures()
+                     .getOrDefault(this, Collections.emptyList())
+                     .forEach(feature -> {
+                         platform.getProfiler().push(feature.getID());
+                         if(feature.getDistributor().matches(tx, tz, seed)) {
+                             feature.getLocator()
+                                    .getSuitableCoordinates(column)
+                                    .forEach(y ->
+                                                     feature.getStructure(world, tx, y, tz)
+                                                            .generate(Vector3Int.of(tx, y, tz),
+                                                                      world,
+                                                                      new Random(coordinateSeed * 31 + y),
+                                                                      Rotation.NONE)
+                                            );
+                         }
+                         platform.getProfiler().pop(feature.getID());
+                     });
             }
         }
+        platform.getProfiler().pop(profile);
     }
     
     @Override

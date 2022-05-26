@@ -37,21 +37,6 @@ public interface Profiler {
     void stop();
     
     /**
-     * Return a {@link AutoCloseable} implementation that
-     * may be used in a try-with-resources statement for
-     * more intuitive profiling, with auto-push/pop.
-     *
-     * @param frame ID of frame.
-     *
-     * @return {@link AutoCloseable} implementation for use
-     *         in try-with-resources.
-     */
-    default ProfileFrame profile(String frame) {
-        push(frame);
-        return new ProfileFrame(() -> pop(frame));
-    }
-    
-    /**
      * Clear the profiler data.
      */
     void reset();

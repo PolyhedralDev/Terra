@@ -18,7 +18,6 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.profiler.ProfileFrame;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -51,56 +50,56 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
                                   @NotNull BiomeProvider biomeProvider,
                                   int chunkX, int chunkZ) {
-        try(ProfileFrame ignore = platform.getProfiler().profile("chunk_base_3d")) {
-            int xOrig = (chunkX << 4);
-            int zOrig = (chunkZ << 4);
-            
-            Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world, biomeProvider);
-            
-            long seed = world.getSeed();
-            
-            LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(biomeProvider,
-                                                                                 chunkX,
-                                                                                 chunkZ,
-                                                                                 world.getMaxHeight(),
-                                                                                 world.getMinHeight(),
-                                                                                 carverHorizontalResolution,
-                                                                                 carverVerticalResolution,
-                                                                                 seed);
-            for(int x = 0; x < 16; x++) {
-                for(int z = 0; z < 16; z++) {
-                    int paletteLevel = 0;
-                    
-                    int cx = xOrig + x;
-                    int cz = zOrig + z;
-                    
-                    Biome biome = biomeProvider.getBiome(cx, cz, seed);
-                    
-                    PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-                    
-                    int sea = paletteInfo.seaLevel();
-                    Palette seaPalette = paletteInfo.ocean();
-                    
-                    BlockState data;
-                    for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
-                        if(sampler.sample(x, y, z) > 0) {
-                            if(carver.sample(x, y, z) <= 0) {
-                                data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,
-                                                                                                               seed);
-                                chunk.setBlock(x, y, z, data);
-                            }
-                            
-                            paletteLevel++;
-                        } else if(y <= sea) {
-                            chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig, seed));
-                            paletteLevel = 0;
-                        } else {
-                            paletteLevel = 0;
+        platform.getProfiler().push("chunk_base_3d");
+        int xOrig = (chunkX << 4);
+        int zOrig = (chunkZ << 4);
+        
+        Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world, biomeProvider);
+        
+        long seed = world.getSeed();
+        
+        LazilyEvaluatedInterpolator carver = new LazilyEvaluatedInterpolator(biomeProvider,
+                                                                             chunkX,
+                                                                             chunkZ,
+                                                                             world.getMaxHeight(),
+                                                                             world.getMinHeight(),
+                                                                             carverHorizontalResolution,
+                                                                             carverVerticalResolution,
+                                                                             seed);
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                int paletteLevel = 0;
+                
+                int cx = xOrig + x;
+                int cz = zOrig + z;
+                
+                Biome biome = biomeProvider.getBiome(cx, cz, seed);
+                
+                PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
+                
+                int sea = paletteInfo.seaLevel();
+                Palette seaPalette = paletteInfo.ocean();
+                
+                BlockState data;
+                for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
+                    if(sampler.sample(x, y, z) > 0) {
+                        if(carver.sample(x, y, z) <= 0) {
+                            data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,
+                                                                                                           seed);
+                            chunk.setBlock(x, y, z, data);
                         }
+                        
+                        paletteLevel++;
+                    } else if(y <= sea) {
+                        chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig, seed));
+                        paletteLevel = 0;
+                    } else {
+                        paletteLevel = 0;
                     }
                 }
             }
         }
+        platform.getProfiler().pop("chunk_base_3d");
     }
     
     @Override
