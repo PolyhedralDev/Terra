@@ -44,10 +44,6 @@ import com.dfsek.terra.fabric.util.FabricUtil;
 @Mixin(net.minecraft.server.world.ServerWorld.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
 public abstract class ServerWorldMixin {
-    @Shadow
-    @Final
-    private ServerChunkManager chunkManager;
-    
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
                 ((net.minecraft.server.world.ServerWorld) (Object) this));
@@ -89,7 +85,7 @@ public abstract class ServerWorldMixin {
     }
     
     public ChunkGenerator terra$getGenerator() {
-        return ((FabricChunkGeneratorWrapper) chunkManager.getChunkGenerator()).getHandle();
+        return ((FabricChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager().getChunkGenerator()).getHandle();
     }
     
     public BiomeProvider terra$getBiomeProvider() {
@@ -99,7 +95,7 @@ public abstract class ServerWorldMixin {
     }
     
     public ConfigPack terra$getPack() {
-        net.minecraft.world.gen.chunk.ChunkGenerator generator = chunkManager.getChunkGenerator();
+        net.minecraft.world.gen.chunk.ChunkGenerator generator = (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
         if(generator instanceof FabricChunkGeneratorWrapper fabricChunkGeneratorWrapper) {
             return fabricChunkGeneratorWrapper.getPack();
         }

@@ -24,6 +24,7 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
+import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
 import net.minecraft.world.tick.QueryableTickScheduler;
 import org.spongepowered.asm.mixin.Final;
@@ -68,9 +69,10 @@ public abstract class ChunkRegionMixin {
     @Shadow
     @Final
     private Chunk centerPos;
-    
+
     @Shadow
-    public abstract QueryableTickScheduler<Fluid> getFluidTickScheduler();
+    @Final
+    private MultiTickScheduler<Fluid> fluidTickScheduler;
     
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
@@ -94,7 +96,7 @@ public abstract class ChunkRegionMixin {
         BlockPos pos = new BlockPos(x, y, z);
         ((ChunkRegion) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data, physics ? 3 : 1042);
         if(physics && ((net.minecraft.block.BlockState) data).getBlock() instanceof FluidBlock) {
-            getFluidTickScheduler().scheduleTick(
+            fluidTickScheduler.scheduleTick(
                     OrderedTick.create(((FluidBlock) ((net.minecraft.block.BlockState) data).getBlock()).getFluidState(
                             (net.minecraft.block.BlockState) data).getFluid(), pos));
         }
