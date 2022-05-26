@@ -23,12 +23,16 @@ import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class TerraBiomeSource extends BiomeSource {
@@ -37,25 +41,19 @@ public class TerraBiomeSource extends BiomeSource {
     private final long seed;
     private ConfigPack pack;
     
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerraBiomeSource.class);
+    
     public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
         super(StreamSupport
                       .stream(pack.getBiomeProvider()
                                   .getBiomes()
                                   .spliterator(), false)
                       .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate()));
-        /*
-        A little (unfortunately, required) jank to watch out for:
-        
-        The first time this BiomeSource gets created it passes a list of one null value to the superconstructor.
-        This is because the biomes haven't yet been made at that point in time. Once the client creates the world,
-        Minecraft *re-instantiates* the chunk generator, this is after the biomes have been created so it's populated with
-        real values.
-        
-        This code can therefore break pretty easily with changes to Minecraft, unfortunately Mojang gives us no other option.
-         */
         this.biomeRegistry = biomes;
         this.seed = seed;
         this.pack = pack;
+        
+        LOGGER.debug("Biomes: " + getBiomes());
     }
     
     @Override
