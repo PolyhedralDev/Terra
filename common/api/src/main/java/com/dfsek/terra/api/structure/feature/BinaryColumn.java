@@ -101,7 +101,12 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn and(BinaryColumn that) {
-        return bool(that, (a, b) -> a.getAsBoolean() && b.getAsBoolean());
+        int bigMinY = Math.max(this.minY, that.minY); // narrow new column, as areas outside will always be false.
+        int smallMaxY = Math.min(this.maxY, that.maxY);
+        
+        if(bigMinY >= smallMaxY) return getNull();
+    
+        return new BinaryColumn(bigMinY, smallMaxY, y -> this.get(y) && that.get(y));
     }
     
     /**
@@ -114,14 +119,14 @@ public class BinaryColumn {
      * @throws IllegalArgumentException if column heights do not match
      */
     public BinaryColumn or(BinaryColumn that) {
-        return bool(that, (a, b) -> a.getAsBoolean() || b.getAsBoolean());
+        return or(that, (a, b) -> a.getAsBoolean() || b.getAsBoolean());
     }
     
     public BinaryColumn xor(BinaryColumn that) {
-        return bool(that, (a, b) -> a.getAsBoolean() ^ b.getAsBoolean());
+        return or(that, (a, b) -> a.getAsBoolean() ^ b.getAsBoolean());
     }
     
-    private BinaryColumn bool(BinaryColumn that, BooleanBinaryOperator operator) {
+    private BinaryColumn or(BinaryColumn that, BooleanBinaryOperator operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
         
