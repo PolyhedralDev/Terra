@@ -21,8 +21,8 @@ assignees: ""
     - You must be on the LATEST version of Terra to receive any support. There is no support for older versions of Terra.
     - Make sure that this is not a *specific* compatibility issue with another terrain generation mod.
         Do not request *specific* compatibility with mods or plugins (e.g. "Compatibility with TechCraft v7").
-        That should be implemented in an addon, **not** in the platform project.
-        *General* compatibility (e.g. "Ability to pull Vanilla/Modded features from parent biomes") will be considered in the platform project.
+        That should be implemented in an addon, **not** in the main project.
+        *General* compatibility (e.g. "Ability to pull Vanilla/Modded features from parent biomes") will be considered in the main project.
     - Make sure that there are no already existing issues open with your problem. If you open a duplicate, it will be closed as such.
     - Make sure that it is actually Terra causing the issue, and not another mod/plugin.
         You can do this by testing to see if you can recreate the issue without Terra installed.
