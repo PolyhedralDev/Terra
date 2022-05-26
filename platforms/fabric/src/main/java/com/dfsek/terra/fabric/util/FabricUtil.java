@@ -74,6 +74,7 @@ public final class FabricUtil {
     private static final Map<Identifier, List<Identifier>>
             TERRA_BIOME_MAP = new HashMap<>();
     
+    
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
      *
@@ -83,23 +84,23 @@ public final class FabricUtil {
     public static void registerBiome(Biome biome, ConfigPack pack,
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
         Registry<net.minecraft.world.biome.Biome> registry = BuiltinRegistries.BIOME;
-        RegistryEntry<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
+        RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
         
         
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
-            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, vanilla.value());
+            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, registry.get(vanilla));
             
             Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
             
             if(registry.containsId(identifier)) {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow().getKey().orElseThrow());
             } else {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, registerKey(identifier).getValue(), minecraftBiome));
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, registerKey(identifier).getValue(), minecraftBiome).getKey().orElseThrow());
             }
             
-            TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
+            TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }
     
@@ -120,7 +121,7 @@ public final class FabricUtil {
                 .ifPresentOrElse(vanilla -> terraBiomes.forEach(tb -> getEntry(registry, tb)
                                          .ifPresentOrElse(
                                                  terra -> {
-                                                     logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
+                                                     logger.info(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
                                                                   terra.getKey().orElseThrow().getValue() + ": " +
                                                                   vanilla.streamTags().toList());
                                     
@@ -219,6 +220,6 @@ public final class FabricUtil {
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
         return registry.getOrEmpty(identifier)
                        .flatMap(registry::getKey)
-                       .flatMap(registry::getEntry);
+                       .map(registry::getOrCreateEntry);
     }
 }

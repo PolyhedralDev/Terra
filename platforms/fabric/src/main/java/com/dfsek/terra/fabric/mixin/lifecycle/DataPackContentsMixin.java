@@ -1,6 +1,7 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
 import net.minecraft.server.DataPackContents;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
