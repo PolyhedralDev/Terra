@@ -49,16 +49,16 @@ public class FabricEntryPoint implements ModInitializer {
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
-
+        
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),
                 serverCommandSource -> (CommandSender) serverCommandSource,
                 commandSender -> (ServerCommandSource) commandSender
         );
-
-
+        
+        
         manager.brigadierManager().setNativeNumberSuggestions(false);
-
+        
         TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(manager));
     }
 }

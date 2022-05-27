@@ -36,9 +36,9 @@ public class GetMarkFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-
+        
         String mark = arguments.getMark(Vector3.of(FastMath.floorToInt(xz.getX()), FastMath.floorToInt(
-                                                       y.apply(implementationArguments, scope).doubleValue()),
+                                                           y.apply(implementationArguments, scope).doubleValue()),
                                                    FastMath.floorToInt(xz.getZ()))
                                                .mutable()
                                                .add(arguments.getOrigin())

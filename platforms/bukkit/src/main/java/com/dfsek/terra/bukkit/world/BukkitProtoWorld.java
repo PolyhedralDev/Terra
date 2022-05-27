@@ -27,10 +27,9 @@ import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 public class BukkitProtoWorld implements ProtoWorld {
     private static final Logger LOGGER = LoggerFactory.getLogger(BukkitProtoWorld.class);
+    private static final AtomicBoolean warn = new AtomicBoolean(true);
     private final LimitedRegion delegate;
     private final BlockState air;
-    
-    private static final AtomicBoolean warn = new AtomicBoolean(true);
     
     public BukkitProtoWorld(LimitedRegion delegate, BlockState air) {
         this.delegate = delegate;
@@ -122,7 +121,7 @@ public class BukkitProtoWorld implements ProtoWorld {
                         delegate.getCenterChunkX(), delegate.getCenterChunkZ());
         } else {
             LOGGER.debug("Detected world access at coordinates out of bounds: ({}, {}, {}) accessed for region [{}, {}]", x, y, z,
-                        delegate.getCenterChunkX(), delegate.getCenterChunkZ());
+                         delegate.getCenterChunkX(), delegate.getCenterChunkZ());
         }
         return Optional.empty();
     }

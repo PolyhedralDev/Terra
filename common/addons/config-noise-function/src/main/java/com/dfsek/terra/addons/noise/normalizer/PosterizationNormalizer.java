@@ -7,9 +7,10 @@
 
 package com.dfsek.terra.addons.noise.normalizer;
 
+import net.jafama.FastMath;
+
 import com.dfsek.terra.api.noise.NoiseSampler;
 
-import net.jafama.FastMath;
 
 public class PosterizationNormalizer extends Normalizer {
     private final double stepSize;

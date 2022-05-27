@@ -198,7 +198,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 logger.warn("""
                             You are using Mohist, so we will not give you any support for issues that may arise.
                             Since you enabled the "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" flag, we won't disable Terra. But be warned.
-                            
+                                                        
                             > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
                             > I fear something terrible has happened.
                             > - Astrash

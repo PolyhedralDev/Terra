@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
-import java.util.function.Supplier;
 
 
 public class SubtractionOperation extends BinaryOperation<Number, Number> {

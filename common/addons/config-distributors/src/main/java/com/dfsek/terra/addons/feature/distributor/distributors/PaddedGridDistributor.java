@@ -34,12 +34,12 @@ public class PaddedGridDistributor implements Distributor {
     public boolean matches(int x, int z, long seed) {
         int cellX = FastMath.floorDiv(x, cellWidth);
         int cellZ = FastMath.floorDiv(z, cellWidth);
-
+        
         Random random = new Random((murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
-
+        
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;
-
+        
         return x == pointX && z == pointZ;
     }
 }

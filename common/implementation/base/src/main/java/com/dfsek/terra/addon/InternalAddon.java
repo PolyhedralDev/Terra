@@ -27,7 +27,7 @@ public class InternalAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     
     public InternalAddon() {
-
+    
     }
     
     @Override

@@ -13,9 +13,6 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +20,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,6 +37,7 @@ import com.dfsek.terra.addons.manifest.impl.config.loaders.VersionRangeLoader;
 import com.dfsek.terra.addons.manifest.impl.exception.AddonException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestException;
 import com.dfsek.terra.addons.manifest.impl.exception.ManifestNotPresentException;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 

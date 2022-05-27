@@ -67,7 +67,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                                         depthTracker);
                             }
                             newMap.putAll((Map<?, ?>) meta);
-
+                            
                             String configName;
                             if(pair.getLeft().getName() == null) {
                                 configName = "Anonymous Configuration";

@@ -12,7 +12,7 @@ public class Scope {
         public Variable<?> get(String id) {
             throw new IllegalStateException("Cannot get variable from null scope: " + id);
         }
-
+        
         @Override
         public void put(String id, Variable<?> variable) {
             throw new IllegalStateException("Cannot set variable in null scope: " + id);
@@ -38,7 +38,7 @@ public class Scope {
     public void put(String id, Variable<?> variable) {
         variableMap.put(id, variable);
     }
-
+    
     
     public Scope sub() {
         return new Scope(this);

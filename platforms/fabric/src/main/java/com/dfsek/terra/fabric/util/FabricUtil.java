@@ -42,7 +42,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -57,6 +56,8 @@ import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 
 public final class FabricUtil {
     private static final Logger logger = LoggerFactory.getLogger(FabricUtil.class);
+    private static final Map<Identifier, List<Identifier>>
+            TERRA_BIOME_MAP = new HashMap<>();
     
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID()
@@ -70,10 +71,6 @@ public final class FabricUtil {
                 .forEach((id, biome) -> registerBiome(biome, pack, id));
         });
     }
-    
-    private static final Map<Identifier, List<Identifier>>
-            TERRA_BIOME_MAP = new HashMap<>();
-    
     
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
@@ -95,16 +92,21 @@ public final class FabricUtil {
             Identifier identifier = new Identifier("terra", FabricUtil.createBiomeID(pack, id));
             
             if(registry.containsId(identifier)) {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier).orElseThrow().getKey().orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier)
+                                                                                      .orElseThrow()
+                                                                                      .getKey()
+                                                                                      .orElseThrow());
             } else {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry, registerKey(identifier).getValue(), minecraftBiome).getKey().orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry,
+                                                                                                  registerKey(identifier).getValue(),
+                                                                                                  minecraftBiome).getKey().orElseThrow());
             }
             
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }
     
-    private static RegistryKey<net.minecraft.world.biome.Biome> registerKey(Identifier identifier){
+    private static RegistryKey<net.minecraft.world.biome.Biome> registerKey(Identifier identifier) {
         return RegistryKey.of(Registry.BIOME_KEY, identifier);
     }
     
@@ -130,9 +132,9 @@ public final class FabricUtil {
                                                                     tag -> collect
                                                                             .computeIfAbsent(tag, t -> new ArrayList<>())
                                                                             .add(getEntry(registry,
-                                                                                    terra.getKey()
-                                                                                         .orElseThrow()
-                                                                                         .getValue()).orElseThrow()));
+                                                                                          terra.getKey()
+                                                                                               .orElseThrow()
+                                                                                               .getValue()).orElseThrow()));
                                     
                                                  },
                                                  () -> logger.error("No such biome: {}", tb))),

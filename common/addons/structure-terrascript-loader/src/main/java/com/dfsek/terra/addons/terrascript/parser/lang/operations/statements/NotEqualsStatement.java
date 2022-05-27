@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
 import net.jafama.FastMath;
 
 import java.util.function.Supplier;
+
+import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 import static com.dfsek.terra.api.util.MathUtil.EPSILON;
 
@@ -30,7 +30,7 @@ public class NotEqualsStatement extends BinaryOperation<Object, Boolean> {
         if(leftUnwrapped instanceof Number l && rightUnwrapped instanceof Number r) {
             return FastMath.abs(l.doubleValue() - r.doubleValue()) > EPSILON;
         }
-    
+
         return !leftUnwrapped.equals(rightUnwrapped);
     }
     

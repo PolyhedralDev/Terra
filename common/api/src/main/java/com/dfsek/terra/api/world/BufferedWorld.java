@@ -105,7 +105,7 @@ public class BufferedWorld implements WritableWorld {
         return delegate;
     }
     
-
+    
     public static final class Builder {
         private final WritableWorld delegate;
         private ReadInterceptor readInterceptor;

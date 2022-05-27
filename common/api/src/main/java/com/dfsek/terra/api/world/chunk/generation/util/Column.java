@@ -72,20 +72,20 @@ public class Column<T extends WritableWorld> {
         return (Column<T>) world.column(x + offsetX, z + offsetZ);
     }
     
-
+    
     public static class BinaryColumnBuilder {
         private final boolean[] arr;
         private final Column<?> column;
-
+        
         public BinaryColumnBuilder(Column<?> column) {
             this.column = column;
             arr = new boolean[column.getMaxY() - column.getMinY()];
         }
-
+        
         public BinaryColumn build() {
             return new BinaryColumn(column.getMinY(), column.getMaxY(), arr);
         }
-
+        
         public BinaryColumnBuilder set(int y) {
             arr[y - column.getMinY()] = true;
             return this;

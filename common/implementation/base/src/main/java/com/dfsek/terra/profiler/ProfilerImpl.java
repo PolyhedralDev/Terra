@@ -68,21 +68,21 @@ public class ProfilerImpl implements Profiler {
             if(SAFE.get()) {
                 long time = System.nanoTime();
                 Stack<Frame> stack = THREAD_STACK.get();
-        
+                
                 Map<String, List<Long>> timingsMap = TIMINGS.get();
-        
+                
                 if(timingsMap.isEmpty()) {
                     synchronized(accessibleThreadMaps) {
                         accessibleThreadMaps.add(timingsMap);
                     }
                 }
-        
+                
                 Frame top = stack.pop();
                 if(!stack.isEmpty() ? !top.getId().endsWith("." + frame) : !top.getId().equals(frame))
                     throw new MalformedStackException("Expected " + frame + ", found " + top);
-        
+                
                 List<Long> timings = timingsMap.computeIfAbsent(top.getId(), id -> new ArrayList<>());
-        
+                
                 timings.add(time - top.getStart());
             }
             if(size.get() == 0) SAFE.set(true);

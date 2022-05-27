@@ -38,11 +38,11 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
  */
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
-
+    
     public ConfigRegistry() {
         super(TypeKey.of(ConfigPack.class));
     }
-
+    
     public void load(File folder, Platform platform) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, platform);
         register(pack.getRegistryKey(), pack);

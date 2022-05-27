@@ -28,7 +28,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     @Description("""
                  The initial size of biome chunks. This value must be at least 2.
                  <b>This is not the final size of biome chunks. Final chunks will be much larger</b>.
-                 
+                                  
                  It is recommended to keep biome chunks' final size in the range of [50, 300]
                  to prevent performance issues. To calculate the size of biome chunks, simply
                  take initial-size and for each expand stage, multiply the running value by 2

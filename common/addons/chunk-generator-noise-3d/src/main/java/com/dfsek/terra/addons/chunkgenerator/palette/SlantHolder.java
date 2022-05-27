@@ -22,7 +22,7 @@ public class SlantHolder {
     }
     
     public static SlantHolder of(TreeMap<Double, PaletteHolder> layers, double minSlope) {
-        if(layers.size() == 1){
+        if(layers.size() == 1) {
             Entry<Double, PaletteHolder> firstEntry = layers.firstEntry();
             return new Single(firstEntry.getValue(), minSlope);
         }
@@ -42,9 +42,9 @@ public class SlantHolder {
     }
     
     private static final class Single extends SlantHolder {
-    
+        
         private final PaletteHolder layers;
-    
+        
         public Single(PaletteHolder layers, double minSlope) {
             super(of(minSlope, layers), minSlope);
             this.layers = layers;
@@ -55,7 +55,7 @@ public class SlantHolder {
             map.put(v, layer);
             return map;
         }
-    
+        
         @Override
         public PaletteHolder getPalette(double slope) {
             return layers;

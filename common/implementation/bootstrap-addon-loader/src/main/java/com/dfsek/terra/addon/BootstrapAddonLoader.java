@@ -19,14 +19,12 @@ package com.dfsek.terra.addon;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,6 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.addon.exception.AddonLoadException;
+import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 

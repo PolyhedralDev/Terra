@@ -26,7 +26,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
-import net.minecraft.world.tick.QueryableTickScheduler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -69,7 +68,7 @@ public abstract class ChunkRegionMixin {
     @Shadow
     @Final
     private Chunk centerPos;
-
+    
     @Shadow
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;

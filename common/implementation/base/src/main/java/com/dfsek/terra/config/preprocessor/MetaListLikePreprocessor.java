@@ -62,7 +62,7 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
                         if(!s.startsWith("<< ")) continue;
                         String meta = s.substring(3);
                         
-
+                        
                         Pair<Configuration, Object> pair = getMetaValue(meta, depthTracker);
                         Object metaValue = pair.getRight();
                         

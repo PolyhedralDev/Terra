@@ -44,7 +44,7 @@ public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
             if(value.startsWith("$") // it's a meta value.
                && !value.startsWith("${")) { // it's not a meta string template.
                 Pair<Configuration, Object> pair = getMetaValue(value.substring(1), depthTracker);
-
+                
                 String configName;
                 if(pair.getLeft().getName() == null) {
                     configName = "Anonymous Configuration";

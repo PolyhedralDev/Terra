@@ -43,8 +43,8 @@ public class StateFunction implements Function<Void> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-
-
+        
+        
         Vector3 origin = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).intValue(),
                                     FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
         try {

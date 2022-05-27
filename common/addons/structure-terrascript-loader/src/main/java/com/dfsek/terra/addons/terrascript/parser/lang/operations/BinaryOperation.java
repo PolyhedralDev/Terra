@@ -7,12 +7,12 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-
-import java.util.function.Supplier;
 
 
 public abstract class BinaryOperation<I, O> implements Returnable<O> {

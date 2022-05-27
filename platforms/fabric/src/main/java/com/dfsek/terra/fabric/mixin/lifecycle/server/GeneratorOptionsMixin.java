@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
-import com.dfsek.terra.api.registry.CheckedRegistry;
-
 import net.minecraft.server.dedicated.ServerPropertiesHandler;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.registry.DynamicRegistryManager;
@@ -38,6 +36,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.PlatformImpl;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;

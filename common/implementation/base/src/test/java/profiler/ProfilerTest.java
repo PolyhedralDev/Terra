@@ -60,11 +60,11 @@ public class ProfilerTest {
         for(int i = 0; i < 100; i++) {
             doThing();
         }
-
+        
         for(int i = 0; i < 100; i++) {
             doThirdOtherThing();
         }
-
+        
         for(int i = 0; i < 100; i++) {
             doOtherThing();
         }
@@ -76,7 +76,7 @@ public class ProfilerTest {
         PROFILER.pop("thing");
         PROFILER.push("thing4");
         PROFILER.pop("thing4");
-
+        
         PROFILER.getTimings().forEach((id, timings) -> System.out.println(id + ": " + timings.toString()));
     }
 }

@@ -105,7 +105,7 @@ public class BinaryColumn {
         int smallMaxY = Math.min(this.maxY, that.maxY);
         
         if(bigMinY >= smallMaxY) return getNull();
-    
+        
         return new BinaryColumn(bigMinY, smallMaxY, y -> this.get(y) && that.get(y));
     }
     

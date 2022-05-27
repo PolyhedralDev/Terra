@@ -7,7 +7,6 @@ import net.minecraft.structure.StructureSet;
 import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryCodecs;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 import com.dfsek.terra.api.config.ConfigPack;
