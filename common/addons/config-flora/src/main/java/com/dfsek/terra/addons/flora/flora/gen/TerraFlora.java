@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.properties.base.Properties;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.Structure;
@@ -90,12 +89,6 @@ public class TerraFlora implements Structure {
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
                         new Random(location.getX() ^ location.getZ()).nextInt(faces.size())); // Get random face.
-                
-                data = data.setIfPresent(Properties.DIRECTION, oneFace.opposite())
-                           .setIfPresent(Properties.NORTH, faces.contains(Direction.NORTH))
-                           .setIfPresent(Properties.SOUTH, faces.contains(Direction.SOUTH))
-                           .setIfPresent(Properties.EAST, faces.contains(Direction.EAST))
-                           .setIfPresent(Properties.WEST, faces.contains(Direction.WEST));
             }
             world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }

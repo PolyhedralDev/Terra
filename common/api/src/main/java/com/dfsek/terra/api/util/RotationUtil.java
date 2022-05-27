@@ -7,14 +7,6 @@
 
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.properties.base.BooleanProperty;
-import com.dfsek.terra.api.block.state.properties.base.EnumProperty;
-import com.dfsek.terra.api.block.state.properties.base.Properties;
-import com.dfsek.terra.api.block.state.properties.enums.Axis;
-import com.dfsek.terra.api.block.state.properties.enums.RailShape;
-import com.dfsek.terra.api.block.state.properties.enums.RedstoneConnection;
-import com.dfsek.terra.api.block.state.properties.enums.WallHeight;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector2.Mutable;
 
