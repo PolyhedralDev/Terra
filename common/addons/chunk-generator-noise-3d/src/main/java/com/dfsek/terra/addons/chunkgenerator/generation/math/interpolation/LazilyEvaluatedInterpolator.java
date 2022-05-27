@@ -48,7 +48,7 @@ public class LazilyEvaluatedInterpolator {
             
             NoiseSampler sampler = samplers[x][z];
             if(sampler == null) {
-                sampler = biomeProvider.getBiome(xi, zi, seed).getContext().get(BiomeNoiseProperties.class).carving();
+                sampler = biomeProvider.getBiome(xi, y, zi, seed).getContext().get(BiomeNoiseProperties.class).carving();
                 samplers[x][z] = sampler;
             }
             

@@ -37,7 +37,7 @@ public class ImageBiomeProvider implements BiomeProvider {
     }
     
     @Override
-    public Biome getBiome(int x, int z, long seed) {
+    public Biome getBiome(int x, int y, int z, long seed) {
         x /= resolution;
         z /= resolution;
         Color color = align.getColor(image, x, z);

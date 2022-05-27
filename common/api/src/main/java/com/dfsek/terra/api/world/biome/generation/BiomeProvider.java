@@ -7,9 +7,16 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
-import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.Biome;
+
+import com.dfsek.terra.api.world.info.WorldProperties;
+
+import org.jetbrains.annotations.Contract;
+
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 /**
@@ -20,23 +27,26 @@ public interface BiomeProvider {
      * Get the biome at a location.
      *
      * @param x    X coordinate
+     * @param y
      * @param z    Z coordinate
      * @param seed World seed
      *
      * @return Biome at the location
      */
-    Biome getBiome(int x, int z, long seed);
+    @Contract(pure = true)
+    Biome getBiome(int x, int y, int z, long seed);
     
     /**
      * Get the biome at a location.
      *
-     * @param vector2 Location
+     * @param vector3 Location
      * @param seed    World seed
      *
      * @return Biome at the location
      */
-    default Biome getBiome(Vector2 vector2, long seed) {
-        return getBiome(vector2.getBlockX(), vector2.getBlockZ(), seed);
+    @Contract(pure = true)
+    default Biome getBiome(Vector3 vector3, long seed) {
+        return getBiome(vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ(), seed);
     }
     
     /**
@@ -47,8 +57,9 @@ public interface BiomeProvider {
      *
      * @return Biome at the location
      */
-    default Biome getBiome(Vector3 vector3, long seed) {
-        return getBiome(vector3.getBlockX(), vector3.getBlockZ(), seed);
+    @Contract(pure = true)
+    default Biome getBiome(Vector3Int vector3, long seed) {
+        return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
     
     /**
@@ -58,9 +69,19 @@ public interface BiomeProvider {
      *
      * @return {@link Iterable} of all biomes this provider can generate.
      */
+    @Contract(pure = true)
     Iterable<Biome> getBiomes();
     
-    default BiomeProvider caching() {
-        return new CachingBiomeProvider(this);
+    @Contract(pure = true)
+    default Stream<Biome> stream() {
+        return StreamSupport.stream(getBiomes().spliterator(), false);
+    }
+    
+    default BiomeProvider caching(int minY, int maxY) {
+        return new CachingBiomeProvider(this, minY, maxY);
+    }
+    
+    default BiomeProvider caching(WorldProperties worldProperties) {
+        return caching(worldProperties.getMinHeight(), worldProperties.getMaxHeight());
     }
 }

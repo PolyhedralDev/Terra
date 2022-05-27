@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.structure.StructureSet;
@@ -128,7 +130,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender arg, StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
+            BiomeProvider biomeProvider = pack.getBiomeProvider().caching(world);
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
             
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
@@ -163,9 +165,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public int getHeight(int x, int z, Heightmap.Type heightmap, HeightLimitView height) {
         int y = height.getTopY();
-        BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
+        WorldProperties properties = FabricAdapter.adapt(height, seed);
+        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         while(y >= getMinimumY() && !heightmap.getBlockPredicate().test(
-                (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y - 1, z, biomeProvider))) {
+                (BlockState) delegate.getBlock(properties, x, y - 1, z, biomeProvider))) {
             y--;
         }
         return y;
@@ -174,9 +177,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height) {
         BlockState[] array = new BlockState[height.getHeight()];
-        BiomeProvider biomeProvider = pack.getBiomeProvider().caching();
+        WorldProperties properties = FabricAdapter.adapt(height, seed);
+        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
-            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(FabricAdapter.adapt(height, seed), x, y, z, biomeProvider);
+            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);
         }
         return new VerticalBlockSample(height.getBottomY(), array);
     }

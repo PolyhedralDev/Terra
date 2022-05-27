@@ -73,7 +73,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 
-                Biome biome = biomeProvider.getBiome(cx, cz, seed);
+                Biome biome = biomeProvider.getBiome(cx, 0, cz, seed);
                 
                 PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                 
@@ -104,7 +104,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     public BlockState getBlock(WorldProperties world, int x, int y, int z, BiomeProvider biomeProvider) {
-        Biome biome = biomeProvider.getBiome(x, z, world.getSeed());
+        Biome biome = biomeProvider.getBiome(x, y, z, world.getSeed());
         Sampler3D sampler = samplerCache.get(x, z, world, biomeProvider);
         
         PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
@@ -128,7 +128,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     public Palette getPalette(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
-        return biomeProvider.getBiome(x, z, world.getSeed()).getContext().get(PaletteInfo.class).paletteHolder().getPalette(y);
+        return biomeProvider.getBiome(x, y, z, world.getSeed()).getContext().get(PaletteInfo.class).paletteHolder().getPalette(y);
     }
     
     public SamplerProvider samplerProvider() {

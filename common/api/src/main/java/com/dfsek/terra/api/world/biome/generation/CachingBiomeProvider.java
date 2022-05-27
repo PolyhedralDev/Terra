@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.world.biome.generation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.Biome;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -15,10 +15,14 @@ import com.dfsek.terra.api.world.biome.Biome;
  */
 public class CachingBiomeProvider implements BiomeProvider, Handle {
     private final BiomeProvider delegate;
-    private final Map<Long, Biome> cache = new HashMap<>();
+    private final int minY;
+    private final int maxY;
+    private final Map<Long, Biome[]> cache = new HashMap<>();
     
-    protected CachingBiomeProvider(BiomeProvider delegate) {
+    protected CachingBiomeProvider(BiomeProvider delegate, int minY, int maxY) {
         this.delegate = delegate;
+        this.minY = minY;
+        this.maxY = maxY;
     }
     
     @Override
@@ -27,8 +31,14 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     }
     
     @Override
-    public Biome getBiome(int x, int z, long seed) {
-        return cache.computeIfAbsent(MathUtil.squash(x, z), key -> delegate.getBiome(x, z, seed));
+    public Biome getBiome(int x, int y, int z, long seed) {
+        if(y >= maxY || y < minY) throw new IllegalArgumentException("Y out of range: " + y + " (min: " + minY + ", max: " + maxY + ")");
+        Biome[] biomes = cache.computeIfAbsent(MathUtil.squash(x, z), key -> new Biome[maxY - minY]);
+        int yi = y - minY;
+        if(biomes[yi] == null) {
+            biomes[yi] = delegate.getBiome(x, y, z, seed);
+        }
+        return biomes[yi];
     }
     
     @Override

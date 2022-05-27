@@ -67,7 +67,7 @@ public class TerraBiomeSource extends BiomeSource {
     public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return biomeRegistry.getOrCreateEntry(((ProtoPlatformBiome) pack
                 .getBiomeProvider()
-                .getBiome(biomeX << 2, biomeZ << 2, seed)
+                .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, seed)
                 .getPlatformBiome())
                                                       .getDelegate());
     }

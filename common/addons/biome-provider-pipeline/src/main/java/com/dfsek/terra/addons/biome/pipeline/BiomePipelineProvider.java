@@ -81,7 +81,7 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     @Override
-    public Biome getBiome(int x, int z, long seed) {
+    public Biome getBiome(int x, int y, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
         

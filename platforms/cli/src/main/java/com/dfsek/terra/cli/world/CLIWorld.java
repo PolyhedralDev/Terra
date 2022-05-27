@@ -85,7 +85,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     try {
                         int num = amount.getAndIncrement();
                         CLIChunk chunk = getChunkAt(finalX, finalZ);
-                        chunkGenerator.generateChunkData(chunk, this, pack.getBiomeProvider().caching(), finalX, finalZ);
+                        chunkGenerator.generateChunkData(chunk, this, pack.getBiomeProvider().caching(this), finalX, finalZ);
                         CLIProtoWorld protoWorld = new CLIProtoWorld(this, finalX, finalZ);
                         pack.getStages().forEach(stage -> stage.populate(protoWorld));
                         if(num % 240 == 239) {

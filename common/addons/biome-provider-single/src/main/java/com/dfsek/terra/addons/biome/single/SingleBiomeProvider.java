@@ -21,7 +21,7 @@ public class SingleBiomeProvider implements BiomeProvider {
     }
     
     @Override
-    public Biome getBiome(int x, int z, long seed) {
+    public Biome getBiome(int x, int y, int z, long seed) {
         return biome;
     }
     

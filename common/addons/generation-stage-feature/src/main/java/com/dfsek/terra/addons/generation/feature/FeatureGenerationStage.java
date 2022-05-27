@@ -49,7 +49,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 long coordinateSeed = (seed * 31 + tx) * 31 + tz;
                 
                 world.getBiomeProvider()
-                     .getBiome(tx, tz, seed)
+                     .getBiome(tx, 0, tz, seed)
                      .getContext()
                      .get(BiomeFeatures.class)
                      .getFeatures()

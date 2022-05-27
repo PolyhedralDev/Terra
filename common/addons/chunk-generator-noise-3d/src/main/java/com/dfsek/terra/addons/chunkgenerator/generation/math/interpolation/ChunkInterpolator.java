@@ -55,7 +55,7 @@ public class ChunkInterpolator {
         
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), zOrigin + (z << 2), seed)
+                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), 0, zOrigin + (z << 2), seed)
                                                                   .getContext()
                                                                   .get(BiomeNoiseProperties.class);
                 Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class ChunkInterpolator {
                 for(int xi = -blend; xi <= blend; xi++) {
                     for(int zi = -blend; zi <= blend; zi++) {
                         genMap.computeIfAbsent(
-                                provider.getBiome(xOrigin + (x << 2) + (xi * step), zOrigin + (z << 2) + (zi * step), seed)
+                                provider.getBiome(xOrigin + (x << 2) + (xi * step), 0, zOrigin + (z << 2) + (zi * step), seed)
                                         .getContext()
                                         .get(BiomeNoiseProperties.class),
                                 g -> new MutableInteger(0)).increment(); // Increment by 1

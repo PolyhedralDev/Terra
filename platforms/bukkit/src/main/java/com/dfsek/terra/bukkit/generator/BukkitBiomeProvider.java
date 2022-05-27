@@ -19,7 +19,7 @@ public class BukkitBiomeProvider extends BiomeProvider implements Handle {
     
     @Override
     public @NotNull org.bukkit.block.Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
-        Biome biome = delegate.getBiome(x, z, worldInfo.getSeed());
+        Biome biome = delegate.getBiome(x, y, z, worldInfo.getSeed());
         return (org.bukkit.block.Biome) biome.getPlatformBiome().getHandle();
     }
     
