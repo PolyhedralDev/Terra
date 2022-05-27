@@ -71,18 +71,12 @@ public class BlockFunction implements Function<Void> {
                   TerraImplementationArguments arguments, BlockState rot) {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-
-
-        rot = RotationUtil.rotateBlockData(rot, arguments.getRotation().inverse());
         try {
             Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
                                              y.apply(implementationArguments, scope).doubleValue(),
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
-                if(arguments.isWaterlog() && current.has(Properties.WATERLOGGED) && current.getBlockType().isWater()) {
-                    current.set(Properties.WATERLOGGED, true);
-                }
                 arguments.getWorld().setBlockState(set, rot);
             }
         } catch(RuntimeException e) {

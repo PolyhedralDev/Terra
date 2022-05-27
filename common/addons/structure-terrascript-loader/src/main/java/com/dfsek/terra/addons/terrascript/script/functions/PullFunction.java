@@ -45,14 +45,12 @@ public class PullFunction implements Function<Void> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-
-        BlockState rot = RotationUtil.rotateBlockData(data, arguments.getRotation().inverse());
         
         Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).intValue(),
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {
-                arguments.getWorld().setBlockState(mutable, rot);
+                arguments.getWorld().setBlockState(mutable, data);
                 break;
             }
             mutable.subtract(0, 1, 0);
