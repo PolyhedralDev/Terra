@@ -47,17 +47,17 @@ public final class TagUtil {
                                                                                                .getValue()).orElseThrow()));
                                     
                                                  },
-                                                 () -> FabricUtil.logger.error("No such biome: {}", tb))),
-                                 () -> FabricUtil.logger.error("No vanilla biome: {}", vb)));
+                                                 () -> logger.error("No such biome: {}", tb))),
+                                 () -> logger.error("No vanilla biome: {}", vb)));
         
         registry.clearTags();
         registry.populateTags(ImmutableMap.copyOf(collect));
         
-        if(FabricUtil.logger.isDebugEnabled()) {
+        if(logger.isDebugEnabled()) {
             registry.streamEntries()
                     .map(e -> e.registryKey().getValue() + ": " +
                               e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
-                    .forEach(FabricUtil.logger::debug);
+                    .forEach(logger::debug);
         }
     }
 }
