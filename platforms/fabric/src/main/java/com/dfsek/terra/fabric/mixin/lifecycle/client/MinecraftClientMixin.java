@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.client;
 
+import com.dfsek.terra.fabric.util.BiomeUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.world.GeneratorType;
@@ -30,7 +31,6 @@ import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.generation.TerraGeneratorType;
 import com.dfsek.terra.fabric.mixin.access.GeneratorTypeAccessor;
-import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 @Mixin(MinecraftClient.class)
@@ -49,6 +49,6 @@ public class MinecraftClientMixin {
             ((GeneratorTypeAccessor) generatorType).setDisplayName(new LiteralText("Terra:" + pack.getID()));
             GeneratorTypeAccessor.getValues().add(1, generatorType);
         });
-        FabricUtil.registerBiomes();
+        BiomeUtil.registerBiomes();
     }
 }

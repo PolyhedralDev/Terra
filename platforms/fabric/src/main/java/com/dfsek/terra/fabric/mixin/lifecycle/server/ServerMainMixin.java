@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
+import com.dfsek.terra.fabric.util.BiomeUtil;
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.util.FabricUtil;
 
 
 @Mixin(Main.class)
@@ -40,6 +40,6 @@ public class ServerMainMixin {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
         // and stuff
-        FabricUtil.registerBiomes();
+        BiomeUtil.registerBiomes();
     }
 }
