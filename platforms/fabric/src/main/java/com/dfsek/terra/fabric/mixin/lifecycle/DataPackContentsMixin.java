@@ -1,9 +1,11 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
+import com.dfsek.terra.fabric.util.BiomeUtil;
 import com.dfsek.terra.fabric.util.TagUtil;
 import net.minecraft.server.DataPackContents;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,6 +19,7 @@ public class DataPackContentsMixin {
      */
     @Inject(method = "refresh(Lnet/minecraft/util/registry/DynamicRegistryManager;)V", at = @At("RETURN"))
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
-        TagUtil.registerTags(dynamicRegistryManager.get(Registry.BIOME_KEY));
+        Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
+        TagUtil.registerTags(biomeRegistry);
     }
 }

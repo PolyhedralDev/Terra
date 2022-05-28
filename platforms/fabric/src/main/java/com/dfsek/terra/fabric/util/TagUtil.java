@@ -16,6 +16,7 @@ import java.util.Map;
 
 public final class TagUtil {
     private static final Logger logger = LoggerFactory.getLogger(TagUtil.class);
+    
     private TagUtil() {
     
     }
@@ -29,26 +30,46 @@ public final class TagUtil {
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
         
-        BiomeUtil.getTerraBiomeMap().forEach((vb, terraBiomes) -> FabricUtil.getEntry(registry, vb)
-                                                                            .ifPresentOrElse(vanilla -> terraBiomes.forEach(tb -> FabricUtil.getEntry(registry, tb)
-                                                                                                                                            .ifPresentOrElse(
-                                                 terra -> {
-                                                     logger.debug(vanilla.getKey().orElseThrow().getValue() + " (vanilla for " +
-                                                                             terra.getKey().orElseThrow().getValue() + ": " +
-                                                                             vanilla.streamTags().toList());
-                                    
-                                                     vanilla.streamTags()
-                                                            .forEach(
-                                                                    tag -> collect
-                                                                            .computeIfAbsent(tag, t -> new ArrayList<>())
-                                                                            .add(FabricUtil.getEntry(registry,
-                                                                                                     terra.getKey()
-                                                                                               .orElseThrow()
-                                                                                               .getValue()).orElseThrow()));
-                                    
-                                                 },
-                                                 () -> logger.error("No such biome: {}", tb))),
-                                 () -> logger.error("No vanilla biome: {}", vb)));
+        BiomeUtil
+                .getTerraBiomeMap()
+                .forEach((vb, terraBiomes) ->
+                                 FabricUtil.getEntry(registry, vb)
+                                           .ifPresentOrElse(vanilla -> terraBiomes
+                                                                    .forEach(tb -> FabricUtil
+                                                                            .getEntry(registry, tb)
+                                                                            .ifPresentOrElse(
+                                                                                    terra -> {
+                                                                                        logger.debug(
+                                                                                                vanilla.getKey()
+                                                                                                       .orElseThrow()
+                                                                                                       .getValue() +
+                                                                                                " (vanilla for " +
+                                                                                                terra.getKey()
+                                                                                                     .orElseThrow()
+                                                                                                     .getValue() +
+                                                                                                ": " +
+                                                                                                vanilla.streamTags()
+                                                                                                       .toList());
+                                                    
+                                                                                        vanilla.streamTags()
+                                                                                               .forEach(
+                                                                                                       tag -> collect
+                                                                                                               .computeIfAbsent(
+                                                                                                                       tag,
+                                                                                                                       t -> new ArrayList<>())
+                                                                                                               .add(FabricUtil
+                                                                                                                            .getEntry(
+                                                                                                                                    registry,
+                                                                                                                                    terra.getKey()
+                                                                                                                                         .orElseThrow()
+                                                                                                                                         .getValue())
+                                                                                                                            .orElseThrow()));
+                                                    
+                                                                                    },
+                                                                                    () -> logger.error(
+                                                                                            "No such biome: {}",
+                                                                                            tb))),
+                                                            () -> logger.error("No vanilla biome: {}", vb)));
         
         registry.clearTags();
         registry.populateTags(ImmutableMap.copyOf(collect));

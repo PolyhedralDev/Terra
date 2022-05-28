@@ -5,6 +5,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
+import com.dfsek.terra.fabric.mixin.access.GenerationSettingsAccessor;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -16,12 +17,7 @@ import net.minecraft.world.biome.GenerationSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 public final class BiomeUtil {
@@ -136,13 +132,19 @@ public final class BiomeUtil {
             builder.precipitation(vanilla.getPrecipitation())
                    .category(vanilla.getCategory());
         }
+    
+        GenerationSettings settings = generationSettings.build();
+    
+        ((GenerationSettingsAccessor) settings)
+                .setFlowerFeatures(((GenerationSettingsAccessor) vanilla.getGenerationSettings())
+                                           .getFlowerFeaturesSupplier());
         
         return builder
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
                 .spawnSettings(vanilla.getSpawnSettings())
-                .generationSettings(generationSettings.build())
+                .generationSettings(settings)
                 .build();
     }
 }

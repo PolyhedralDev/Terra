@@ -4,6 +4,7 @@
   "package": "com.dfsek.terra.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "access.GenerationSettingsAccessor",
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
     "access.StructureAccessorAccessor",
