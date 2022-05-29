@@ -13,6 +13,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 import com.dfsek.terra.api.config.meta.Meta;
 
@@ -44,5 +45,18 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return functions;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        FunctionTemplate that = (FunctionTemplate) o;
+        return args.equals(that.args) && function.equals(that.function) && functions.equals(that.functions);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(args, function, functions);
     }
 }

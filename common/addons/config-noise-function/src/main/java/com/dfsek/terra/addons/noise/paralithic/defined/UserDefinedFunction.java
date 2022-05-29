@@ -15,6 +15,8 @@ import com.dfsek.paralithic.functions.dynamic.Context;
 import com.dfsek.paralithic.functions.dynamic.DynamicFunction;
 import com.dfsek.paralithic.node.Statefulness;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
@@ -24,26 +26,33 @@ public class UserDefinedFunction implements DynamicFunction {
     private final Expression expression;
     private final int args;
     
+    private static final Map<FunctionTemplate, UserDefinedFunction> CACHE = new HashMap<>();
+    
     protected UserDefinedFunction(Expression expression, int args) {
         this.expression = expression;
         this.args = args;
     }
     
     public static UserDefinedFunction newInstance(FunctionTemplate template) throws ParseException {
-        Parser parser = new Parser();
-        Scope parent = new Scope();
-        
-        Scope functionScope = new Scope().withParent(parent);
-        
-        template.getArgs().forEach(functionScope::addInvocationVariable);
-        
-        for(Entry<String, FunctionTemplate> entry : template.getFunctions().entrySet()) {
-            String id = entry.getKey();
-            FunctionTemplate nest = entry.getValue();
-            parser.registerFunction(id, newInstance(nest));
+        UserDefinedFunction function = CACHE.get(template);
+        if(function == null) {
+            Parser parser = new Parser();
+            Scope parent = new Scope();
+    
+            Scope functionScope = new Scope().withParent(parent);
+    
+            template.getArgs().forEach(functionScope::addInvocationVariable);
+    
+            for(Entry<String, FunctionTemplate> entry : template.getFunctions().entrySet()) {
+                String id = entry.getKey();
+                FunctionTemplate nest = entry.getValue();
+                parser.registerFunction(id, newInstance(nest));
+            }
+    
+            function = new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
+            CACHE.put(template, function);
         }
-        
-        return new UserDefinedFunction(parser.parse(template.getFunction(), functionScope), template.getArgs().size());
+        return function;
     }
     
     @Override
