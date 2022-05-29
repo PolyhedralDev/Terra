@@ -38,8 +38,6 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
-import com.dfsek.terra.bukkit.listeners.PaperListener;
-import com.dfsek.terra.bukkit.listeners.SpigotListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -92,51 +90,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
-        
-        try {
-            Class.forName("io.papermc.paper.event.world.StructureLocateEvent"); // Check if user is on Paper version with event.
-            Bukkit.getPluginManager().registerEvents(new PaperListener(platform), this); // Register Paper events.
-        } catch(ClassNotFoundException e) {
-            /*
-              The command
-              
-                  fmt -w 72 -g 72 -u text | \
-                  boxes -a cmd -p a1h3 -t 4e -d jstone -s82 | \
-                  sed -Ee 's/\+-+\*\//|------------------------------------------------------------------------------|/g' \
-                  -e 's/^\s*(.*)$/"\1\\n"/g' -e 's/\///g' -e 's/\*|\+/./g' -e 's/$/ +/g' -e '/^"\| {3}-{72} {3}\|\\n" \+$/d'
-              
-              was used to create these boxes. Leaving this here for if we want to create more/modify them.
-             */
-            if(VersionUtil.getSpigotVersionInfo().isPaper()) { // logging with stack trace to be annoying.
-                logger.warn("""
-                            .------------------------------------------------------------------------------.
-                            |                                                                              |
-                            |      You are using an outdated version of Paper. This version does not       |
-                            |       contain StructureLocateEvent. Terra will now fall back to Spigot       |
-                            |       events. This will prevent cartographer villagers from spawning,        |
-                            |       and cause structure location to not function. If you want these        |
-                            |      functionalities, update to the latest build of Paper. If you use a      |
-                            |      fork, update to the latest version, then if you still receive this      |
-                            |             message, ask the fork developer to update upstream.              |
-                            |                                                                              |
-                            |------------------------------------------------------------------------------|
-                            """.strip(), e);
-            } else {
-                logger.warn("""
-                            .------------------------------------------------------------------------------.
-                            |                                                                              |
-                            |    Paper is not in use. Falling back to Spigot events. This will prevent     |
-                            |    cartographer villagers from spawning, and cause structure location to     |
-                            |      not function. If you want these functionalities (and all the other      |
-                            |     benefits that Paper offers), upgrade your server to Paper. Find out      |
-                            |                         more at https://papermc.io/                          |
-                            |                                                                              |
-                            |------------------------------------------------------------------------------|
-                            """.strip(), e);
-                
-                Bukkit.getPluginManager().registerEvents(new SpigotListener(platform), this); // Register Spigot event listener
-            }
-        }
     }
     
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
