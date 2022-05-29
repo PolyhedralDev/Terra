@@ -9,7 +9,7 @@ val mcVersion = "1.18.2"
 val testDir = "target/server"
 val testMem = "3G"
 
-val paperBuild = 322
+val paperBuild = 350
 val paperURL = "https://papermc.io/api/v2/projects/paper/versions/%version%/builds/$paperBuild/downloads/paper-%version%-$paperBuild.jar"
 val purpurURL = "https://api.purpurmc.org/v2/purpur/%version%/latest/download"
 
