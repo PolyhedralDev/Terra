@@ -21,5 +21,6 @@ public class DataPackContentsMixin {
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
         Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
         TagUtil.registerTags(biomeRegistry);
+        BiomeUtil.registerFlora(biomeRegistry);
     }
 }

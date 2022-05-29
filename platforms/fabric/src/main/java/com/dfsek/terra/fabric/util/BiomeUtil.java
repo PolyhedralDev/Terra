@@ -5,7 +5,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
-import com.dfsek.terra.fabric.mixin.access.GenerationSettingsAccessor;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -14,6 +13,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +41,7 @@ public final class BiomeUtil {
             pack.getCheckedRegistry(Biome.class)
                 .forEach((id, biome) -> registerBiome(biome, pack, id));
         });
+        registerFlora(BuiltinRegistries.BIOME);
         logger.info("Terra biomes registered.");
     }
     
@@ -50,7 +51,7 @@ public final class BiomeUtil {
      * @param biome The Terra BiomeBuilder.
      * @param pack  The ConfigPack this biome belongs to.
      */
-    public static void registerBiome(Biome biome, ConfigPack pack,
+    private static void registerBiome(Biome biome, ConfigPack pack,
                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
         Registry<net.minecraft.world.biome.Biome> registry = BuiltinRegistries.BIOME;
         RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
@@ -76,6 +77,26 @@ public final class BiomeUtil {
             
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
+    }
+    
+    public static void registerFlora(Registry<net.minecraft.world.biome.Biome> biomes) {
+        logger.info("Injecting flora into Terra biomes...");
+        TERRA_BIOME_MAP
+                .forEach((vb, terraBiomes) ->
+                                 biomes.getOrEmpty(vb)
+                                           .ifPresentOrElse(vanilla -> terraBiomes
+                                                                    .forEach(tb -> biomes.getOrEmpty(tb)
+                                                                            .ifPresentOrElse(
+                                                                                    terra -> {
+                                                                                        List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(vanilla.getGenerationSettings().getFlowerFeatures());
+                                                                                        logger.debug("Injecting flora into biome {} : {}", tb, flowerFeatures);
+                                                                                        ((FloraFeatureHolder) terra.getGenerationSettings()).setFloraFeatures(flowerFeatures);
+                                                                                        },
+                                                                                    () -> logger.error(
+                                                                                            "No such biome: {}",
+                                                                                            tb))),
+                                                            () -> logger.error("No vanilla biome: {}", vb)));
+        
     }
     
     public static Map<Identifier, List<Identifier>> getTerraBiomeMap() {
@@ -133,18 +154,13 @@ public final class BiomeUtil {
                    .category(vanilla.getCategory());
         }
     
-        GenerationSettings settings = generationSettings.build();
     
-        ((GenerationSettingsAccessor) settings)
-                .setFlowerFeatures(((GenerationSettingsAccessor) vanilla.getGenerationSettings())
-                                           .getFlowerFeaturesSupplier());
-        
         return builder
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
                 .effects(effects.build())
                 .spawnSettings(vanilla.getSpawnSettings())
-                .generationSettings(settings)
+                .generationSettings(generationSettings.build())
                 .build();
     }
 }
