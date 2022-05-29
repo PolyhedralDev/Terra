@@ -11,7 +11,7 @@ val testMem = "3G"
 
 val paperBuild = 322
 val paperURL = "https://papermc.io/api/v2/projects/paper/versions/%version%/builds/$paperBuild/downloads/paper-%version%-$paperBuild.jar"
-val purpurURL = "https://api.pl3x.net/v2/purpur/%version%/latest/download"
+val purpurURL = "https://api.purpurmc.org/v2/purpur/%version%/latest/download"
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
