@@ -97,7 +97,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public boolean shouldGenerateStructures() {
-        return false;
+        return true;
         //return pack.vanillaStructures();
     }
     
