@@ -56,7 +56,7 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
         if(t.getType() instanceof Class && isNumber((Class<?>) t.getType()) && c instanceof String) {
             String expression = (String) loader.loadType(META_STRING_KEY.getAnnotatedType(), c, depthTracker);
             try {
-                return (Result<T>) Result.overwrite(new Parser().parse(expression).evaluate(), depthTracker);
+                return (Result<T>) Result.overwrite(new Parser().eval(expression), depthTracker);
             } catch(ParseException e) {
                 throw new LoadException("Invalid expression: ", e, depthTracker);
             }
