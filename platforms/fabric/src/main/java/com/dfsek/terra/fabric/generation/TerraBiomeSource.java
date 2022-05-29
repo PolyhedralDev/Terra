@@ -17,6 +17,11 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
@@ -26,11 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.stream.StreamSupport;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.fabric.data.Codecs;
-import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 
 public class TerraBiomeSource extends BiomeSource {
@@ -65,11 +65,12 @@ public class TerraBiomeSource extends BiomeSource {
     
     @Override
     public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        return biomeRegistry.getOrCreateEntry(((ProtoPlatformBiome) pack
-                .getBiomeProvider()
-                .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, seed)
-                .getPlatformBiome())
-                                                      .getDelegate());
+        return biomeRegistry
+                .entryOf(((ProtoPlatformBiome) pack
+                                 .getBiomeProvider()
+                                 .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, seed)
+                                 .getPlatformBiome()).getDelegate()
+                        );
     }
     
     public BiomeProvider getProvider() {

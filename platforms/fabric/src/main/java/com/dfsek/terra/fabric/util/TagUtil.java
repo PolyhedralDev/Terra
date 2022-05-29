@@ -57,14 +57,7 @@ public final class TagUtil {
                                                                                                                .computeIfAbsent(
                                                                                                                        tag,
                                                                                                                        t -> new ArrayList<>())
-                                                                                                               .add(FabricUtil
-                                                                                                                            .getEntry(
-                                                                                                                                    registry,
-                                                                                                                                    terra.getKey()
-                                                                                                                                         .orElseThrow()
-                                                                                                                                         .getValue())
-                                                                                                                            .orElseThrow()));
-                                                    
+                                                                                                               .add(terra));
                                                                                     },
                                                                                     () -> logger.error(
                                                                                             "No such biome: {}",
