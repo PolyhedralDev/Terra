@@ -38,7 +38,7 @@ public class ConstantRange implements Range {
     
     @Override
     public int get(Random r) {
-        return r.nextInt((max - min) + 1) + min;
+        return r.nextInt(min, max);
     }
     
     @Override
