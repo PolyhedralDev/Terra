@@ -79,7 +79,7 @@ public class NMSBiomeInjector {
     
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
                     
-                    LOGGER.info("Registered biome: " + delegateKey);
+                    LOGGER.debug("Registered biome: " + delegateKey);
                 } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
@@ -103,7 +103,7 @@ public class NMSBiomeInjector {
                                                                                 getEntry(biomeRegistry, tb)
                                                                                 .ifPresentOrElse(
                                                                                         terra -> {
-                                                                                            LOGGER.info(
+                                                                                            LOGGER.debug(
                                                                                                     vanilla.e()
                                                                                                            .orElseThrow()
                                                                                                             .a() +
