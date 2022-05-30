@@ -40,7 +40,7 @@ public class RangeLoader implements TypeLoader<Range> {
             return new ConstantRange(map.get("min"), map.get("max"));
         } else {
             int h = configLoader.loadType(Integer.class, o, depthTracker);
-            return new ConstantRange(h, h + 1);
+            return new ConstantRange(h, h);
         }
     }
 }
