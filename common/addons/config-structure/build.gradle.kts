@@ -1,4 +1,4 @@
-version = version("0.1.0")
+version = version("1.0.0")
 
 dependencies {
     api("com.googlecode.json-simple:json-simple:1.1.1")

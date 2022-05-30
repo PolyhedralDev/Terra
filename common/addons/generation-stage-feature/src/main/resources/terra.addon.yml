@@ -6,7 +6,7 @@ version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.generation.feature.FeatureGenerationAddon"
 website:
-  issues: https://github.com/PolyhedralDev/Terra-generation-stage-feature/issues
-  source: https://github.com/PolyhedralDev/Terra-generation-stage-feature
-  docs: https://github.com/PolyhedralDev/Terra/wiki
-license: GNU LGPL v3.0
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

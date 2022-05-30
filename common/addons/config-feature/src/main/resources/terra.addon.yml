@@ -6,9 +6,9 @@ version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.feature.FeatureAddon"
 website:
-  issues: https://github.com/PolyhedralDev/Terra-config-feature/issues
-  source: https://github.com/PolyhedralDev/Terra-config-feature
-  docs: https://github.com/PolyhedralDev/Terra/wiki
-license: GNU LGPL v3.0
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
 depends:
   generation-stage-feature: "0.1.+"

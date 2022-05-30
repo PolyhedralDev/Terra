@@ -1,6 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-version = version("0.1.0")
+version = version("1.0.0")
 
 dependencies {
     api("commons-io:commons-io:2.7")

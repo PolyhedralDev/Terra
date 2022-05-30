@@ -6,7 +6,7 @@ version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.ore.OreAddon"
 website:
-  issues: https://github.com/PolyhedralDev/Terra-config-ore/issues
-  source: https://github.com/PolyhedralDev/Terra-config-ore
-  docs: https://github.com/PolyhedralDev/Terra/wiki
-license: GNU LGPL v3.0
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

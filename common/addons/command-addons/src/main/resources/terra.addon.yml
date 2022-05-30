@@ -8,5 +8,5 @@ entrypoints:
 website:
   issues: https://github.com/PolyhedralDev/Terra/issues
   source: https://github.com/PolyhedralDev/Terra
-  docs: https://github.com/PolyhedralDev/Terra/wiki
+  docs: https://terra.polydev.org
 license: MIT License

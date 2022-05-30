@@ -6,10 +6,10 @@ version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.feature.distributor.DistributorAddon"
 website:
-  issues: https://github.com/PolyhedralDev/Terra-config-distributors/issues
-  source: https://github.com/PolyhedralDev/Terra-config-distributors
-  docs: https://github.com/PolyhedralDev/Terra/wiki
-license: GNU LGPL v3.0
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
 depends:
   config-feature: "0.1.+"
   generation-stage-feature: "0.1.+"

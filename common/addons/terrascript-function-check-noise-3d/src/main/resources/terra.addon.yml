@@ -6,10 +6,10 @@ version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addon.terrascript.check.TerraScriptCheckFunctionAddon"
 website:
-  issues: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader/issues
-  source: https://github.com/PolyhedralDev/Terra-structure-terrascript-loader
-  docs: https://github.com/PolyhedralDev/Terra/wiki
-license: GNU LGPL v3.0
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
 depends:
   structure-terrascript-loader: "0.1.+"
   chunk-generator-noise-3d: "0.1.+"
