@@ -45,7 +45,7 @@ public class BukkitBlockTypeAndItem implements BlockType, Item {
     
     @Override
     public boolean isSolid() {
-        return delegate.isSolid();
+        return delegate.isOccluding();
     }
     
     @Override
