@@ -19,7 +19,7 @@ public class ConstantRange implements Range {
     private int max;
     
     public ConstantRange(int min, int max) {
-        if(min > max) throw new IllegalArgumentException("Minimum must not be greater than maximum!");
+        if(min >= max) throw new IllegalArgumentException("Minimum must not be greater than or equal to maximum!");
         this.max = max;
         this.min = min;
     }
