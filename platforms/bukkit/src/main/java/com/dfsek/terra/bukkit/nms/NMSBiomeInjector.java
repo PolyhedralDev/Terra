@@ -182,12 +182,19 @@ public class NMSBiomeInjector {
         // sky
         effects.d(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.a()));
         
+        if(vanillaBiomeProperties.getFoliageColor() == null) {
+            vanilla.j().e().ifPresent(effects::e);
+        } else {
+            // foliage
+            effects.e(vanillaBiomeProperties.getFoliageColor());
+        }
         
-        // foliage
-        effects.e(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.g()));
-        
-        // grass
-        effects.f(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(), vanilla.j().g().a(0, 0, 0)));
+        if(vanillaBiomeProperties.getGrassColor() == null) {
+            vanilla.j().f().ifPresent(effects::f);
+        } else {
+            // grass
+            effects.f(vanillaBiomeProperties.getGrassColor());
+        }
         
         builder.a(effects.a()); // build()
         
