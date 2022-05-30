@@ -3,7 +3,6 @@ package com.dfsek.terra.bukkit.nms;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 
-import net.minecraft.server.level.PlayerChunkMap;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
@@ -28,8 +27,7 @@ public class NMSInjectListener implements Listener {
     
             ChunkGenerator vanilla = serverWorld.k().g();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), vanilla.e(), craftWorld.getSeed());
-            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider,
-                                                                                                craftWorld.getSeed(), craftWorld);
+            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld);
             
             custom.conf = vanilla.conf; // world config from Spigot
             

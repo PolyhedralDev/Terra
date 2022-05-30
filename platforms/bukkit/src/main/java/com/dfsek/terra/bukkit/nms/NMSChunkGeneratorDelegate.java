@@ -1,7 +1,6 @@
 package com.dfsek.terra.bukkit.nms;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.bukkit.generator.BukkitProtoChunk;
@@ -12,13 +11,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.server.level.RegionLimitedWorldAccess;
 import net.minecraft.world.level.BlockColumn;
-import net.minecraft.world.level.ChunkCoordIntPair;
 import net.minecraft.world.level.GeneratorAccessSeed;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.Climate.Sampler;
-import net.minecraft.world.level.block.state.IBlockData;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.IChunkAccess;
 import net.minecraft.world.level.levelgen.ChunkGeneratorAbstract;
@@ -29,9 +26,6 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.v1_18_R2.generator.CraftChunkData;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -47,14 +41,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     private final CraftWorld world;
     
     
-    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed,
-                                     CraftWorld world) {
-        super(
-                vanilla.b, // structure sets
-                vanilla.e, // structure overrides
-                biomeProvider);  //Last arg is WorldChunkManager
-        
-        
+    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, CraftWorld world) {
+        super(vanilla.b, vanilla.e, biomeProvider);
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         this.vanilla = vanilla;
         this.biomeSource = biomeProvider;
@@ -76,17 +64,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     @Override //fillFromNoise
     public CompletableFuture<IChunkAccess> a(Executor executor, Blender blender, StructureManager structuremanager,
                                              IChunkAccess ichunkaccess) {
-        return CompletableFuture.supplyAsync(() -> {
-            BukkitServerWorld serverWorld = new BukkitServerWorld(world);
-            BiomeProvider biomeProvider = pack.getBiomeProvider().caching(serverWorld);
-            CraftChunkData chunkData = new CraftChunkData(this.world, ichunkaccess);
-            
-            int x = ichunkaccess.f().c;
-            int z = ichunkaccess.f().d;
-            delegate.generateChunkData(new BukkitProtoChunk(chunkData), new BukkitServerWorld(world), biomeProvider, x, z);
-            
-            return ichunkaccess;
-        }, executor);
+        return vanilla.a(executor, blender, structuremanager, ichunkaccess);
     }
     
     
@@ -113,7 +91,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override // withSeed
     public ChunkGenerator a(long seed) {
-        return new NMSChunkGeneratorDelegate(vanilla, pack, biomeSource, seed, world);
+        return new NMSChunkGeneratorDelegate(vanilla, pack, biomeSource, world);
     }
     
     //spawnOriginalMobs
