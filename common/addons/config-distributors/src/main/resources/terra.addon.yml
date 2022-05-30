@@ -11,5 +11,5 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-  config-feature: "0.1.+"
-  generation-stage-feature: "0.1.+"
+  config-feature: "1.+"
+  generation-stage-feature: "1.+"

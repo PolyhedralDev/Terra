@@ -11,5 +11,5 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-  structure-terrascript-loader: "0.1.+"
-  config-noise-function: "0.1.+"
+  structure-terrascript-loader: "1.+"
+  config-noise-function: "1.+"
