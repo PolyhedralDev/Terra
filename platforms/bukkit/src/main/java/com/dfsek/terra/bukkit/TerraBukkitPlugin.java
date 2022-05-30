@@ -21,6 +21,10 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+
+import com.dfsek.terra.bukkit.nms.NMSBiomeInjector;
+import com.dfsek.terra.bukkit.nms.NMSInjectListener;
+
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,6 +60,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
+        NMSBiomeInjector.registerBiomes(platform.getRawConfigRegistry());
         
         
         try {
@@ -89,6 +94,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
+        Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
     }
     
