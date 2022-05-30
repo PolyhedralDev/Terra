@@ -17,7 +17,11 @@
 
 package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
+
+import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
@@ -36,8 +40,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BukkitChunkGeneratorWrapper.class);
     private final BlockState air;
     private ChunkGenerator delegate;
     private ConfigPack pack;
@@ -87,6 +95,31 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public boolean shouldGenerateDecorations() {
         return false;
         //return pack.vanillaFlora();
+    }
+    
+    @Override
+    public @Nullable Location getFixedSpawnLocation(@NotNull World world, @NotNull Random random) {
+        LOGGER.info("Getting spawn location...");
+        int x = random.nextInt(-500, 500);
+        int z = random.nextInt(-500, 500);
+        int y = world.getMaxHeight() - 1;
+    
+        int max = 500;
+        for(int i = 0; i < max; i++) { // 50 attempts.
+            BukkitWorldProperties properties = new BukkitWorldProperties(world);
+            while(y > world.getMinHeight() && delegate.getBlock(properties, x, y, z, pack.getBiomeProvider()).isAir()) y--;
+            
+            if(((BlockData) delegate.getBlock(properties, x, y, z, pack.getBiomeProvider()).getHandle()).getMaterial().isSolid()){
+                break;
+            } else {
+                x = random.nextInt(-500, 500);
+                z = random.nextInt(-500, 500);
+                y = world.getMaxHeight() - 1;
+                if(i % 25 == 0) LOGGER.info("Spawn finding attempt {}/{} failed. Retrying...", i, max);
+            }
+        }
+        
+        return new Location(world, x, y, z);
     }
     
     @Override

@@ -15,6 +15,7 @@ import net.minecraft.world.level.GeneratorAccessSeed;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.Climate.Sampler;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.IChunkAccess;
@@ -68,7 +69,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     
-    //  	@SuppressWarnings("unchecked")
     @Override //buildSurface. Used to be buildBase
     public void a(RegionLimitedWorldAccess regionlimitedworldaccess, StructureManager structuremanager, IChunkAccess ichunkaccess) {
     
@@ -106,7 +106,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     // climateSampler
     public Sampler d() {
-        return vanilla.d();
+        return Climate.a();
     }
     
     //getMinY
