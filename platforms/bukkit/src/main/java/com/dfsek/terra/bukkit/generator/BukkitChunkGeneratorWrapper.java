@@ -105,11 +105,12 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         int y = world.getMaxHeight() - 1;
     
         int max = 500;
-        for(int i = 0; i < max; i++) { // 50 attempts.
+        for(int i = 0; i < max; i++) {
             BukkitWorldProperties properties = new BukkitWorldProperties(world);
             while(y > world.getMinHeight() && delegate.getBlock(properties, x, y, z, pack.getBiomeProvider()).isAir()) y--;
             
-            if(((BlockData) delegate.getBlock(properties, x, y, z, pack.getBiomeProvider()).getHandle()).getMaterial().isSolid()){
+            if(((BlockData) delegate.getBlock(properties, x, y, z, pack.getBiomeProvider()).getHandle()).getMaterial().isSolid()) {
+                LOGGER.info("Found spawn on attempt {}", i + 1);
                 break;
             } else {
                 x = random.nextInt(-500, 500);
