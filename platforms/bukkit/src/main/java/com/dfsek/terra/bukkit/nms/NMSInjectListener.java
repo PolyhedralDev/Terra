@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,8 @@ public class NMSInjectListener implements Listener {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSInjectListener.class);
     private static final Set<World> INJECTED = new HashSet<>();
     private static final ReentrantLock INJECT_LOCK = new ReentrantLock();
+    
+    private volatile boolean tags = false;
     
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
@@ -45,6 +48,15 @@ public class NMSInjectListener implements Listener {
 
             LOGGER.info("Successfully injected into world.");
             INJECT_LOCK.unlock();
+        }
+    }
+    
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent load) {
+        if(!tags) {
+            System.out.println("Injecting tags late to prevent deadlock. Thank you Bukkit.");
+            tags = true;
+            NMSBiomeInjector.injectTags();
         }
     }
 }
