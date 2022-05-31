@@ -7,6 +7,7 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,18 @@ public class NMSInjectListener implements Listener {
 
             LOGGER.info("Successfully injected into world.");
             INJECT_LOCK.unlock();
+        }
+    }
+    
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        if (INJECTED.contains(event.getWorld()) && event.getWorld().getGenerator() instanceof BukkitChunkGeneratorWrapper bukkitChunkGeneratorWrapper) {
+            LOGGER.info("Enabling structure deadlock workaround on world {}.", event.getWorld().getName());
+            CraftWorld craftWorld = (CraftWorld) event.getWorld();
+            WorldServer serverWorld = craftWorld.getHandle();
+            
+            ((NMSChunkGeneratorDelegate) serverWorld.k().a.u).enableStructures();
+            LOGGER.info("Thank you Bukkit.");
         }
     }
 }
