@@ -51,8 +51,6 @@ afterEvaluate {
         
         dependencies {
             "compileOnly"(project(":common:api"))
-            "implementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
-            "testImplementation"("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
             "testImplementation"(project(":common:api"))
         }
     }

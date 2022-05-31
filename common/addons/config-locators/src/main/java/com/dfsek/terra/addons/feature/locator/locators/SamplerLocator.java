@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import net.jafama.FastMath;
-
 import java.util.List;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -31,11 +29,24 @@ public class SamplerLocator implements Locator {
         
         long seed = column.getWorld().getSeed();
         samplers.forEach(sampler -> {
-            int y = FastMath.floorToInt(sampler.noise(seed, column.getX(), column.getZ()));
+            int y = floorToInt(sampler.noise(seed, column.getX(), column.getZ()));
             if(y >= column.getMaxY() || y < column.getMinY()) return;
             results.set(y);
         });
         
         return results.build();
+    }
+    
+    private static int floorToInt(double value) {
+        int valueInt = (int)value;
+        if (value < 0.0) {
+            if (value == (double)valueInt) {
+                return valueInt;
+            } else {
+                return valueInt == Integer.MIN_VALUE ? valueInt : valueInt - 1;
+            }
+        } else {
+            return valueInt;
+        }
     }
 }

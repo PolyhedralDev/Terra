@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.biome.holder;
 
-import net.jafama.FastMath;
-
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -25,11 +23,11 @@ public class PaletteHolderBuilder {
     
     public PaletteHolder build() {
         
-        int min = FastMath.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
-        int max = FastMath.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
+        int min = Math.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
+        int max = Math.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
         
         Palette[] palettes = new Palette[paletteMap.lastKey() + 1 - min];
-        for(int y = min; y <= FastMath.max(paletteMap.lastKey(), max); y++) {
+        for(int y = min; y <= Math.max(paletteMap.lastKey(), max); y++) {
             Palette d = null;
             for(Map.Entry<Integer, Palette> e : paletteMap.entrySet()) {
                 if(e.getKey() >= y) {
