@@ -113,7 +113,7 @@ public class BeardGenerator {
         int l = z + 12;
         if (isInRange(j) && isInRange(k) && isInRange(l)) {
             double d = (double)i + 0.5;
-            double e = MathHelper.squaredMagnitude((double)x, d, (double)z);
+            double e = MathHelper.squaredMagnitude(x, d, z);
             double f = -d * MathHelper.fastInverseSqrt(e / 2.0) / 2.0;
             return f * (double)STRUCTURE_WEIGHT_TABLE[l * 24 * 24 + j * 24 + k];
         } else {
