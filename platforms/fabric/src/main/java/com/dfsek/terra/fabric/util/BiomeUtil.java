@@ -137,12 +137,9 @@ public final class BiomeUtil {
                 effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
             }
             
-            
-            builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()))
-                   .category(Objects.requireNonNullElse(vanillaBiomeProperties.getCategory(), vanilla.getCategory()));
+            builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()));
             
         } else {
-            
             effects.waterColor(vanilla.getWaterColor())
                    .waterFogColor(vanilla.getWaterFogColor())
                    .fogColor(vanilla.getFogColor())
@@ -150,11 +147,9 @@ public final class BiomeUtil {
             vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
             vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
             
-            builder.precipitation(vanilla.getPrecipitation())
-                   .category(vanilla.getCategory());
+            builder.precipitation(vanilla.getPrecipitation());
         }
-    
-    
+        
         return builder
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())

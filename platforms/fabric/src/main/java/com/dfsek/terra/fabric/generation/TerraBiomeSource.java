@@ -59,11 +59,6 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public BiomeSource withSeed(long seed) {
-        return new TerraBiomeSource(this.biomeRegistry, seed, pack);
-    }
-    
-    @Override
     public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return biomeRegistry
                 .entryOf(((ProtoPlatformBiome) pack

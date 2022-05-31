@@ -13,11 +13,12 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockBox;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.StructureWeightType;
+import net.minecraft.world.gen.StructureTerrainAdaptation;
+import net.minecraft.world.gen.StructureWeightSampler;
+import net.minecraft.world.gen.StructureWeightSampler.class_7301;
 
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -30,14 +31,13 @@ public class BeardGenerator {
         for(int i = 0; i < 24; ++i) {
             for(int j = 0; j < 24; ++j) {
                 for(int k = 0; k < 24; ++k) {
-                    array[i * 24 * 24 + j * 24 + k] = (float) calculateStructureWeight(j - 12, k - 12, i - 12);
+                    array[i * 24 * 24 + j * 24 + k] = (float)calculateStructureWeight(j - 12, k - 12, i - 12);
                 }
             }
         }
     });
-    private final ObjectList<StructurePiece> pieces;
-    private final ObjectList<JigsawJunction> junctions;
-    private final ObjectListIterator<StructurePiece> pieceIterator;
+    
+    private final ObjectListIterator<StructureWeightSampler.class_7301> pieceIterator;
     private final ObjectListIterator<JigsawJunction> junctionIterator;
     private final Chunk chunk;
     private final int minY;
@@ -51,36 +51,50 @@ public class BeardGenerator {
         ChunkPos chunkPos = chunk.getPos();
         int i = chunkPos.getStartX();
         int j = chunkPos.getStartZ();
-        this.junctions = new ObjectArrayList<>(32);
-        this.pieces = new ObjectArrayList<>(10);
+        ObjectList<JigsawJunction> junctions = new ObjectArrayList<>(32);
+        ObjectList<class_7301> pieces = new ObjectArrayList<>(10);
         int minY = chunk.getBottomY();
         int maxY = chunk.getTopY();
-        for(StructureStart start : structureAccessor.method_41035(ChunkSectionPos.from(chunk),
-                                                                  configuredStructureFeature -> configuredStructureFeature.field_37144)) {
-            for(StructurePiece structurePiece : start.getChildren()) {
-                if(!structurePiece.intersectsChunk(chunkPos, 12)) continue;
-                if(structurePiece instanceof PoolStructurePiece poolStructurePiece) {
-                    Projection projection = poolStructurePiece.getPoolElement().getProjection();
-                    if(projection == Projection.RIGID) {
-                        this.pieces.add(poolStructurePiece);
+        for(StructureStart structureStart : structureAccessor.method_41035(chunkPos,
+                                                                           structureType -> structureType.getTerrainAdaptation() !=
+                                                                                            StructureTerrainAdaptation.NONE)) {
+            StructureTerrainAdaptation structureTerrainAdaptation = structureStart.getFeature().getTerrainAdaptation();
+        
+            for(StructurePiece structurePiece : structureStart.getChildren()) {
+                if(structurePiece.intersectsChunk(chunkPos, 12)) {
+                    if(structurePiece instanceof PoolStructurePiece poolStructurePiece) {
+                        Projection projection = poolStructurePiece.getPoolElement().getProjection();
+                        if(projection == Projection.RIGID) {
+                            pieces.add(
+                                    new class_7301(
+                                            poolStructurePiece.getBoundingBox(), structureTerrainAdaptation,
+                                            poolStructurePiece.getGroundLevelDelta()
+                                    )
+                                      );
+                            maxY = Math.max(maxY, poolStructurePiece.getCenter().getY());
+                            minY = Math.min(minY, poolStructurePiece.getCenter().getY());
+                        }
+                    
+                        for(JigsawJunction jigsawJunction : poolStructurePiece.getJunctions()) {
+                            int k = jigsawJunction.getSourceX();
+                            int l = jigsawJunction.getSourceZ();
+                            if(k > i - 12 && l > j - 12 && k < i + 15 + 12 && l < j + 15 + 12) {
+                                junctions.add(jigsawJunction);
+                                maxY = Math.max(maxY, jigsawJunction.getSourceGroundY());
+                                minY = Math.min(minY, jigsawJunction.getSourceGroundY());
+                            }
+                        }
+                    } else {
+                        pieces.add(new class_7301(structurePiece.getBoundingBox(), structureTerrainAdaptation, 0));
+                        maxY = Math.max(maxY, structurePiece.getCenter().getY());
+                        minY = Math.min(minY, structurePiece.getCenter().getY());
                     }
-                    for(JigsawJunction jigsawJunction : poolStructurePiece.getJunctions()) {
-                        int k = jigsawJunction.getSourceX();
-                        int l = jigsawJunction.getSourceZ();
-                        if(k <= i - 12 || l <= j - 12 || k >= i + 15 + 12 || l >= j + 15 + 12) continue;
-                        maxY = Math.max(maxY, jigsawJunction.getSourceGroundY());
-                        minY = Math.min(minY, jigsawJunction.getSourceGroundY());
-                        this.junctions.add(jigsawJunction);
-                    }
-                    continue;
                 }
-                maxY = Math.max(maxY, structurePiece.getCenter().getY());
-                minY = Math.min(minY, structurePiece.getCenter().getY());
-                this.pieces.add(structurePiece);
             }
+        
         }
-        this.pieceIterator = this.pieces.iterator();
-        this.junctionIterator = this.junctions.iterator();
+        this.pieceIterator = pieces.iterator();
+        this.junctionIterator = junctions.iterator();
         this.minY = minY;
         this.maxY = maxY;
     }
@@ -93,20 +107,22 @@ public class BeardGenerator {
     /**
      * Gets the structure weight from the array from the given position, or 0 if the position is out of bounds.
      */
-    private static double getStructureWeight(int x, int y, int z) {
-        int xOffset = x + 12;
-        int yOffset = y + 12;
-        int zOffset = z + 12;
-        if(xOffset < 0 || xOffset >= 24) {
+    private static double getStructureWeight(int x, int y, int z, int i) {
+        int j = x + 12;
+        int k = y + 12;
+        int l = z + 12;
+        if (isInRange(j) && isInRange(k) && isInRange(l)) {
+            double d = (double)i + 0.5;
+            double e = MathHelper.squaredMagnitude((double)x, d, (double)z);
+            double f = -d * MathHelper.fastInverseSqrt(e / 2.0) / 2.0;
+            return f * (double)STRUCTURE_WEIGHT_TABLE[l * 24 * 24 + j * 24 + k];
+        } else {
             return 0.0;
         }
-        if(yOffset < 0 || yOffset >= 24) {
-            return 0.0;
-        }
-        if(zOffset < 0 || zOffset >= 24) {
-            return 0.0;
-        }
-        return STRUCTURE_WEIGHT_TABLE[zOffset * 24 * 24 + xOffset * 24 + yOffset];
+    }
+    
+    private static boolean isInRange(int i) {
+        return i >= 0 && i < 24;
     }
     
     /**
@@ -145,34 +161,40 @@ public class BeardGenerator {
     }
     
     public double calculateNoise(int x, int y, int z) {
-        double noise = 0.0;
+        double d;
+        double var10001;
+        for(d = 0.0; this.pieceIterator.hasNext(); d += var10001) {
+            StructureWeightSampler.class_7301 lv = this.pieceIterator.next();
+            BlockBox blockBox = lv.box();
+            int l = lv.groundLevelDelta();
+            int m = Math.max(0, Math.max(blockBox.getMinX() - x, x - blockBox.getMaxX()));
+            int n = Math.max(0, Math.max(blockBox.getMinZ() - z, z - blockBox.getMaxZ()));
+            int o = blockBox.getMinY() + l;
+            int p = y - o;
         
-        while(this.pieceIterator.hasNext()) {
-            StructurePiece structurePiece = this.pieceIterator.next();
-            BlockBox blockBox = structurePiece.getBoundingBox();
-            int structureX = Math.max(0, Math.max(blockBox.getMinX() - x, x - blockBox.getMaxX()));
-            int structureY = y - (blockBox.getMinY() + (structurePiece instanceof PoolStructurePiece
-                                                        ? ((PoolStructurePiece) structurePiece).getGroundLevelDelta()
-                                                        : 0));
-            int structureZ = Math.max(0, Math.max(blockBox.getMinZ() - z, z - blockBox.getMaxZ()));
-            StructureWeightType structureWeightType = structurePiece.getWeightType();
-            if(structureWeightType == StructureWeightType.BURY) {
-                noise += getMagnitudeWeight(structureX, structureY, structureZ);
-                continue;
-            }
-            if(structureWeightType != StructureWeightType.BEARD) continue;
-            
-            noise += getStructureWeight(structureX, structureY, structureZ) * 0.8;
+            int q = switch(lv.terrainAdjustment()) {
+                case NONE -> 0;
+                case BURY, BEARD_THIN -> p;
+                case BEARD_BOX -> Math.max(0, Math.max(o - y, y - blockBox.getMaxY()));
+            };
+            var10001 = switch(lv.terrainAdjustment()) {
+                case NONE -> 0.0;
+                case BURY -> getMagnitudeWeight(m, q, n);
+                case BEARD_THIN, BEARD_BOX -> getStructureWeight(m, q, n, p) * 0.8;
+            };
         }
-        this.pieceIterator.back(this.pieces.size());
+    
+        this.pieceIterator.back(Integer.MAX_VALUE);
+    
         while(this.junctionIterator.hasNext()) {
-            JigsawJunction structurePiece = this.junctionIterator.next();
-            int structureX = x - structurePiece.getSourceX();
-            int structureY = y - structurePiece.getSourceGroundY();
-            int structureZ = z - structurePiece.getSourceZ();
-            noise += getStructureWeight(structureX, structureY, structureZ) * 0.4;
+            JigsawJunction jigsawJunction = this.junctionIterator.next();
+            int r = x - jigsawJunction.getSourceX();
+            int l = y - jigsawJunction.getSourceGroundY();
+            int m = z - jigsawJunction.getSourceZ();
+            d += getStructureWeight(r, l, m, l) * 0.4;
         }
-        this.junctionIterator.back(this.junctions.size());
-        return noise;
+    
+        this.junctionIterator.back(Integer.MAX_VALUE);
+        return d;
     }
 }

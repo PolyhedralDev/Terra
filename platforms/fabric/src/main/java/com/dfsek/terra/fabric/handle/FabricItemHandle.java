@@ -17,8 +17,11 @@
 
 package com.dfsek.terra.fabric.handle;
 
+import com.dfsek.terra.fabric.FabricEntryPoint;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -36,7 +39,7 @@ public class FabricItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
         try {
-            return (Item) new ItemStackArgumentType().parse(new StringReader(data)).getItem();
+            return (Item) new ItemStackArgumentType(new CommandRegistryAccess(FabricEntryPoint.getPlatform().getServer().getRegistryManager())).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }

@@ -1,5 +1,1 @@
 accessWidener v1 named
-
-extendable method net/minecraft/client/world/GeneratorType <init> (Ljava/lang/String;)V
-
-accessible method net/minecraft/world/biome/Biome getCategory ()Lnet/minecraft/world/biome/Biome$Category;
