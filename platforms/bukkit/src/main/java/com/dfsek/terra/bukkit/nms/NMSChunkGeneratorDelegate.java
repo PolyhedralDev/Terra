@@ -3,7 +3,9 @@ package com.dfsek.terra.bukkit.nms;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.bukkit.generator.BukkitProtoChunk;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.dfsek.terra.bukkit.world.BukkitServerWorld;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPosition;
@@ -23,8 +25,7 @@ import net.minecraft.world.level.levelgen.WorldGenStage;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.bukkit.craftbukkit.v1_18_R2.generator.CraftChunkData;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -32,15 +33,13 @@ import java.util.concurrent.Executor;
 
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChunkGenerator.class);
+    
     private final NMSBiomeProvider biomeSource;
     private final com.dfsek.terra.api.world.chunk.generation.ChunkGenerator delegate;
     
     private final ChunkGenerator vanilla;
     private final ConfigPack pack;
     private final CraftWorld world;
-    
-    private volatile boolean structures = false;
     
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, CraftWorld world) {
@@ -50,14 +49,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         this.biomeSource = biomeProvider;
         this.pack = pack;
         this.world = world;
-    }
-    
-    public void enableStructures() {
-        if(structures) {
-            throw new IllegalStateException("Structures have already been enabled!");
-        }
-        LOGGER.info("Enabling structure generation...");
-        this.structures = true;
     }
     
     @Override //applyCarvers
@@ -85,9 +76,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override
     public void a(GeneratorAccessSeed gas, StructureManager manager, IChunkAccess ica) {
-        if(structures) {
-            vanilla.a(gas, manager, ica);
-        }
+        vanilla.a(gas, manager, ica);
     }
     
     @Override
