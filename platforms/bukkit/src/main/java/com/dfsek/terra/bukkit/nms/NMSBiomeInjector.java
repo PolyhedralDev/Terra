@@ -167,10 +167,9 @@ public class NMSBiomeInjector {
         BiomeSettingsMobs biomeSettingMobs = (BiomeSettingsMobs) biomeSettingMobsField.get(vanilla);
         builder.a(biomeSettingMobs);
         
-        Field biomeSettingGenField = BiomeBase.class.getDeclaredField("j");
-        biomeSettingGenField.setAccessible(true);
-        BiomeSettingsGeneration biomeSettingGen = (BiomeSettingsGeneration) biomeSettingGenField.get(vanilla);
-        builder.a(biomeSettingGen)
+        
+        BiomeSettingsGeneration.a generationBuilder = new BiomeSettingsGeneration.a(); // builder
+        builder.a(generationBuilder.a())
                 .a(vanilla.c())
                 .b(vanilla.h()) // precipitation
                 .a(vanilla.i()); // temp
