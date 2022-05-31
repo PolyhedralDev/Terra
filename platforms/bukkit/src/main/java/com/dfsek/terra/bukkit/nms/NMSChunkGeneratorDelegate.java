@@ -43,7 +43,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, CraftWorld world) {
-        super(vanilla.b, vanilla.e, biomeProvider);
+        super(vanilla.b, vanilla.e, biomeProvider, biomeProvider, world.getSeed());
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         this.vanilla = vanilla;
         this.biomeSource = biomeProvider;
