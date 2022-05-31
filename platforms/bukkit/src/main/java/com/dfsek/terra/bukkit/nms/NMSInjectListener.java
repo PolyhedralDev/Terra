@@ -1,12 +1,5 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
-
-import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
-
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import org.bukkit.World;
@@ -14,13 +7,15 @@ import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 
 
 public class NMSInjectListener implements Listener {
