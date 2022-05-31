@@ -115,17 +115,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         return vanilla.h();
     }
     
-    @Override //getFirstFreeHeight
-    public int b(int i, int j, HeightMap.Type heightmap_type, LevelHeightAccessor levelheightaccessor) {
-        return this.a(i, j, heightmap_type, levelheightaccessor);
-    }
-    
-    
-    @Override //getFirstOccupiedHeight
-    public int c(int i, int j, HeightMap.Type heightmap_type, LevelHeightAccessor levelheightaccessor) {
-        return this.a(i, j, heightmap_type, levelheightaccessor) - 1;
-    }
-    
     @Override // getBaseHeight
     public int a(int x, int z, HeightMap.Type heightmap, LevelHeightAccessor height) {
         int y = world.getMaxHeight();
