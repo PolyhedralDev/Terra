@@ -41,6 +41,7 @@ public class NMSInjectListener implements Listener {
             custom.conf = vanilla.conf; // world config from Spigot
             
             serverWorld.k().a.u = custom;
+            serverWorld.generator = null;
 
             LOGGER.info("Successfully injected into world.");
             INJECT_LOCK.unlock();

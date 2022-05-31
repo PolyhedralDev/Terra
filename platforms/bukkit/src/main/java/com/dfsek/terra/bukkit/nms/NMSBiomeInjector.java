@@ -74,8 +74,8 @@ public class NMSBiomeInjector {
                     ResourceKey<BiomeBase> delegateKey = ResourceKey.a(IRegistry.aP, new MinecraftKey("terra", createBiomeID(pack, key)));
                     
                     RegistryGeneration.a(RegistryGeneration.i, delegateKey, platform);
-                    Holder<BiomeBase> resourceKey = biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
-                    platformBiome.setResourceKey(resourceKey);
+                    biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
+                    platformBiome.setResourceKey(delegateKey);
     
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
                     
@@ -87,6 +87,7 @@ public class NMSBiomeInjector {
             
             frozen.set(biomeRegistry, true); // freeze registry again :)
     
+            /*
             LOGGER.info("Doing tag garbage....");
             Map<TagKey<BiomeBase>, List<Holder<BiomeBase>>> collect = biomeRegistry
                     .g() // streamKeysAndEntries
@@ -130,6 +131,8 @@ public class NMSBiomeInjector {
     
             biomeRegistry.k(); // clearTags
             biomeRegistry.a(ImmutableMap.copyOf(collect)); // populateTags
+            
+             */
         } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {
             throw new RuntimeException(exception);
         }

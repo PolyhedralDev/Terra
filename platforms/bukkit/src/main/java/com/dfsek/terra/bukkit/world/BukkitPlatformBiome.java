@@ -20,22 +20,23 @@ package com.dfsek.terra.bukkit.world;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.BiomeBase;
 
 
 public class BukkitPlatformBiome implements PlatformBiome {
     private final org.bukkit.block.Biome biome;
-    private Holder<BiomeBase> resourceKey;
+    private ResourceKey<BiomeBase> resourceKey;
     
     public BukkitPlatformBiome(org.bukkit.block.Biome biome) {
         this.biome = biome;
     }
     
-    public void setResourceKey(Holder<BiomeBase> resourceKey) {
+    public void setResourceKey(ResourceKey<BiomeBase> resourceKey) {
         this.resourceKey = resourceKey;
     }
     
-    public Holder<BiomeBase> getResourceKey() {
+    public ResourceKey<BiomeBase> getResourceKey() {
         return resourceKey;
     }
     
