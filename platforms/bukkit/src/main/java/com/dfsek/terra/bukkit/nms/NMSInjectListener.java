@@ -36,7 +36,7 @@ public class NMSInjectListener implements Listener {
     
             ChunkGenerator vanilla = serverWorld.k().g();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), vanilla.e(), craftWorld.getSeed());
-            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld);
+            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());
             
             custom.conf = vanilla.conf; // world config from Spigot
             

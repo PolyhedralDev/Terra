@@ -3,9 +3,9 @@ package com.dfsek.terra.bukkit.nms;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.bukkit.generator.BukkitProtoChunk;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.dfsek.terra.bukkit.world.BukkitServerWorld;
+
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPosition;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.Climate.Sampler;
+import net.minecraft.world.level.block.state.IBlockData;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.IChunkAccess;
 import net.minecraft.world.level.levelgen.ChunkGeneratorAbstract;
@@ -25,7 +26,6 @@ import net.minecraft.world.level.levelgen.WorldGenStage;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_18_R2.generator.CraftChunkData;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -39,16 +39,17 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     private final ChunkGenerator vanilla;
     private final ConfigPack pack;
-    private final CraftWorld world;
+    
+    private final long seed;
     
     
-    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, CraftWorld world) {
-        super(vanilla.b, vanilla.e, biomeProvider, biomeProvider, world.getSeed());
+    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
+        super(vanilla.b, vanilla.e, biomeProvider, biomeProvider, seed);
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         this.vanilla = vanilla;
         this.biomeSource = biomeProvider;
         this.pack = pack;
-        this.world = world;
+        this.seed = seed;
     }
     
     @Override //applyCarvers
@@ -85,13 +86,19 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override // getColumn
-    public BlockColumn a(int var0, int var1, LevelHeightAccessor var2) {
-        return vanilla.a(var0, var1, var2);
+    public BlockColumn a(int x, int z, LevelHeightAccessor height) {
+        IBlockData[] array = new IBlockData[height.v_()];
+        WorldProperties properties = new NMSWorldProperties(seed, height);
+        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
+        for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
+            array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider).getHandle()).getState();
+        }
+        return new BlockColumn(getMinimumY(), array);
     }
     
     @Override // withSeed
     public ChunkGenerator a(long seed) {
-        return new NMSChunkGeneratorDelegate(vanilla, pack, biomeSource, world);
+        return new NMSChunkGeneratorDelegate(vanilla, pack, biomeSource, seed);
     }
     
     //spawnOriginalMobs
@@ -117,8 +124,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override // getBaseHeight
     public int a(int x, int z, HeightMap.Type heightmap, LevelHeightAccessor height) {
-        int y = world.getMaxHeight();
-        WorldProperties properties = BukkitAdapter.adapt(world);
+        WorldProperties properties = new NMSWorldProperties(seed, height);
+        int y = properties.getMaxHeight();
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         while(y >= getMinimumY() && !heightmap.e().test(
                 ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
