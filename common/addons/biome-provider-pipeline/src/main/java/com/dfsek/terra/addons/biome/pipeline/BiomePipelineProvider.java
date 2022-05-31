@@ -7,11 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
 import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -40,16 +38,9 @@ public class BiomePipelineProvider implements BiomeProvider {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
-        holderCache = CacheBuilder.newBuilder()
-                                  .maximumSize(1024)
-                                  .build(
-                                          new CacheLoader<>() {
-                                              @Override
-                                              public BiomeHolder load(@NotNull SeededVector key) {
-                                                  return pipeline.getBiomes(key.x, key.z, key.seed);
-                                              }
-                                          }
-                                        );
+        holderCache = Caffeine.newBuilder()
+                              .maximumSize(1024)
+                              .build(key -> pipeline.getBiomes(key.x, key.z, key.seed));
         this.pipeline = pipeline;
         
         Set<BiomeDelegate> biomeSet = new HashSet<>();
@@ -92,7 +83,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
-        return holderCache.getUnchecked(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
+        return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
                                                                                    z - fdZ * pipeline.getSize()).getBiome();
     }
     
