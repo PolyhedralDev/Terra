@@ -93,7 +93,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public boolean shouldGenerateDecorations() {
-        return false;
+        return true;
     }
 
     

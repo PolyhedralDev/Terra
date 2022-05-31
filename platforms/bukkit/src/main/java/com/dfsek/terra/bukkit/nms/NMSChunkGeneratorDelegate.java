@@ -1,23 +1,13 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.core.IRegistry;
-import net.minecraft.core.IRegistryWritable;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.RegionLimitedWorldAccess;
 import net.minecraft.world.level.BlockColumn;
-import net.minecraft.world.level.GeneratorAccessSeed;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.BiomeBase;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.Climate.Sampler;
@@ -31,7 +21,6 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
 
 import java.util.List;
@@ -39,9 +28,12 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
-    
     private final NMSBiomeProvider biomeSource;
     private final com.dfsek.terra.api.world.chunk.generation.ChunkGenerator delegate;
     
@@ -54,7 +46,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         CraftServer craftserver = (CraftServer) Bukkit.getServer();
         DedicatedServer dedicatedserver = craftserver.getServer();
         
-        return  dedicatedserver
+        return dedicatedserver
                 .aU() // getRegistryManager
                 .b( // getRegistry
                     IRegistry.aM // biome registry key
@@ -95,11 +87,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public void a(GeneratorAccessSeed gas, StructureManager manager, IChunkAccess ica) {
-        vanilla.a(gas, manager, ica);
-    }
-    
-    @Override
     protected Codec<? extends ChunkGenerator> b() {
         return ChunkGeneratorAbstract.a;
     }
@@ -110,7 +97,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         WorldProperties properties = new NMSWorldProperties(seed, height);
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
-            array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider).getHandle()).getState();
+            array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider)
+                                                                             .getHandle()).getState();
         }
         return new BlockColumn(getMinimumY(), array);
     }

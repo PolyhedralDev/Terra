@@ -45,8 +45,8 @@ public class NMSBiomeInjector {
     public static IRegistryWritable<BiomeBase> getBiomeRegistry() {
         CraftServer craftserver = (CraftServer) Bukkit.getServer();
         DedicatedServer dedicatedserver = craftserver.getServer();
-    
-        return  (IRegistryWritable<BiomeBase>) dedicatedserver
+        
+        return (IRegistryWritable<BiomeBase>) dedicatedserver
                 .aU() // getRegistryManager
                 .b( // getRegistry
                     IRegistry.aP // biome registry key
@@ -62,7 +62,6 @@ public class NMSBiomeInjector {
             Field frozen = RegistryMaterials.class.getDeclaredField("bL"); // registry frozen field
             frozen.setAccessible(true);
             frozen.set(biomeRegistry, false);
-    
             
             
             configRegistry.forEach(pack -> pack.getRegistry(Biome.class).forEach((key, biome) -> {
@@ -80,7 +79,7 @@ public class NMSBiomeInjector {
                     RegistryGeneration.a(RegistryGeneration.i, delegateKey, platform);
                     biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
                     platformBiome.setResourceKey(delegateKey);
-    
+                    
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
                     
                     LOGGER.debug("Registered biome: " + delegateKey);
@@ -90,7 +89,6 @@ public class NMSBiomeInjector {
             }));
             
             frozen.set(biomeRegistry, true); // freeze registry again :)
-    
             
             
         } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {
@@ -107,43 +105,36 @@ public class NMSBiomeInjector {
                          (map, pair) ->
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().a().toList())),
                          HashMap::putAll);
-    
+        
         terraBiomeMap
                 .forEach((vb, terraBiomes) ->
                                  getEntry(biomeRegistry, vb)
-                                         .ifPresentOrElse(vanilla -> terraBiomes
-                                                                  .forEach(tb ->
-                                                                                   getEntry(biomeRegistry, tb)
-                                                                                           .ifPresentOrElse(
-                                                                                                   terra -> {
-                                                                                                       LOGGER.debug(
-                                                                                                               vanilla.e()
-                                                                                                                      .orElseThrow()
-                                                                                                                      .a() +
-                                                                                                               " (vanilla for " +
-                                                                                                               terra.e()
-                                                                                                                    .orElseThrow()
-                                                                                                                    .a() +
-                                                                                                               ": " +
-                                                                                                               vanilla.c()
-                                                                                                                      .toList());
-                                                                
-                                                                                                       vanilla.c()
-                                                                                                              .forEach(
-                                                                                                                      tag -> collect
-                                                                                                                              .computeIfAbsent(
-                                                                                                                                      tag,
-                                                                                                                                      t -> new ArrayList<>())
-                                                                                                                              .add(terra));
-                                                                                                   },
-                                                                                                   () -> LOGGER.error(
-                                                                                                           "No such biome: {}",
-                                                                                                           tb))),
-                                                          () -> LOGGER.error("No vanilla biome: {}", vb)));
-    
+                                         .ifPresentOrElse(
+                                                 vanilla -> terraBiomes
+                                                         .forEach(tb -> getEntry(biomeRegistry, tb)
+                                                                 .ifPresentOrElse(
+                                                                         terra -> {
+                                                                             LOGGER.debug(vanilla.e().orElseThrow().a() +
+                                                                                          " (vanilla for " +
+                                                                                          terra.e().orElseThrow().a() +
+                                                                                          ": " +
+                                                                                          vanilla.c().toList());
+                                                                    
+                                                                             vanilla.c()
+                                                                                    .forEach(
+                                                                                            tag -> collect
+                                                                                                    .computeIfAbsent(tag,
+                                                                                                                     t -> new ArrayList<>())
+                                                                                                    .add(terra));
+                                                                         },
+                                                                         () -> LOGGER.error(
+                                                                                 "No such biome: {}",
+                                                                                 tb))),
+                                                 () -> LOGGER.error("No vanilla biome: {}", vb)));
+        
         biomeRegistry.k(); // clearTags
         biomeRegistry.a(ImmutableMap.copyOf(collect)); // populateTags
-    
+        
     }
     
     public static <T> Optional<Holder<T>> getEntry(IRegistry<T> registry, MinecraftKey identifier) {
@@ -170,9 +161,9 @@ public class NMSBiomeInjector {
         
         BiomeSettingsGeneration.a generationBuilder = new BiomeSettingsGeneration.a(); // builder
         builder.a(generationBuilder.a())
-                .a(vanilla.c())
-                .b(vanilla.h()) // precipitation
-                .a(vanilla.i()); // temp
+               .a(vanilla.c())
+               .b(vanilla.h()) // precipitation
+               .a(vanilla.i()); // temp
         
         
         BiomeFog.a effects = new BiomeFog.a(); // Builder
