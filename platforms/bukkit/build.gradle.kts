@@ -32,7 +32,9 @@ dependencies {
     shadedApi("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
 }
 
-val jvmFlags = listOf(
+val throttleCoreCount = 0
+
+val jvmFlags = mutableListOf(
     "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:MaxGCPauseMillis=200",
     "-XX:+UnlockExperimentalVMOptions", "-XX:+DisableExplicitGC", "-XX:+AlwaysPreTouch",
     "-XX:G1NewSizePercent=30", "-XX:G1MaxNewSizePercent=40", "-XX:G1HeapRegionSize=8M",
@@ -42,6 +44,10 @@ val jvmFlags = listOf(
     "-XX:MaxTenuringThreshold=1", "-Dusing.aikars.flags=https://mcflags.emc.gs",
     "-Daikars.new.flags=true", "-DIReallyKnowWhatIAmDoingISwear", /*"-javaagent:paperclip.jar"*/
                      )
+if(throttleCoreCount > 0) {
+    jvmFlags.add("-XX:ActiveProcessorCount=$throttleCoreCount")
+}
+
 
 fun downloadPaperclip(url: String, dir: String) {
     val clip = URL(url.replace("%version%", mcVersion))
