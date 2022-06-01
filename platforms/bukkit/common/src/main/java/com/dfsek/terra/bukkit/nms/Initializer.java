@@ -27,7 +27,17 @@ public interface Initializer {
                 throw new RuntimeException("Error initializing NMS bindings. Report this to Terra.", e);
             }
         } catch(ClassNotFoundException e) {
-            logger.warn("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
+            logger.error("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
+            logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
+            logger.error("");
+            logger.error("");
+            for(int i = 0; i < 20; i++) {
+                logger.error("PROCEEDING WITH AN EXISTING TERRA WORLD WILL RESULT IN CORRUPTION!!!");
+            }
+            logger.error("");
+            logger.error("");
+            logger.error("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
+            logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
         }
     }
 }
