@@ -234,7 +234,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                 d0 += random.nextDouble() * Math.PI * 2.0;
             }
         }
-        System.out.println(list);
         return list;
         
     }
