@@ -1,8 +1,8 @@
-package com.dfsek.terra.bukkit.nms;
-
-import com.dfsek.terra.api.world.info.WorldProperties;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
 import net.minecraft.world.level.LevelHeightAccessor;
+
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class NMSWorldProperties implements WorldProperties {

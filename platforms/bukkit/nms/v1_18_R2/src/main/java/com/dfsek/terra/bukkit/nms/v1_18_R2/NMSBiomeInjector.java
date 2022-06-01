@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
@@ -9,16 +9,13 @@ import net.minecraft.core.RegistryMaterials;
 import net.minecraft.data.RegistryGeneration;
 import net.minecraft.resources.MinecraftKey;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.BiomeBase;
 import net.minecraft.world.level.biome.BiomeFog;
 import net.minecraft.world.level.biome.BiomeFog.GrassColor;
 import net.minecraft.world.level.biome.BiomeSettingsGeneration;
 import net.minecraft.world.level.biome.BiomeSettingsMobs;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +62,7 @@ public class NMSBiomeInjector {
                     
                     RegistryGeneration.a(RegistryGeneration.i, delegateKey, platform);
                     biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
-                    platformBiome.setResourceKey(delegateKey);
+                    platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
                     
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
                     

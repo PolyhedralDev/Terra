@@ -18,6 +18,10 @@ includeImmediateChildren(file("common/addons"), "addon")
 
 includeImmediateChildren(file("platforms"), "platform")
 
+includeImmediateChildren(file("platforms/bukkit/nms"), "Bukkit NMS")
+
+include(":platforms:bukkit:common")
+
 pluginManagement {
     repositories {
         maven(url = "https://maven.fabricmc.net") {

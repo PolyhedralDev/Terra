@@ -1,7 +1,6 @@
-package com.dfsek.terra.bukkit.nms;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
 import net.minecraft.core.IRegistry;
-import net.minecraft.core.IRegistryWritable;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.level.biome.BiomeBase;

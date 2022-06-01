@@ -1,14 +1,17 @@
-package com.dfsek.terra.bukkit.nms;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.core.Holder;
-import net.minecraft.core.IRegistry;
 import net.minecraft.core.IRegistryCustom;
 import net.minecraft.core.SectionPosition;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.RegionLimitedWorldAccess;
 import net.minecraft.world.level.BlockColumn;
 import net.minecraft.world.level.ChunkCoordIntPair;
@@ -29,28 +32,15 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.DefinedStructureManager;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.generic.Lazy;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
