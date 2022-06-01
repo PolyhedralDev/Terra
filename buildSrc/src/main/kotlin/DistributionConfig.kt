@@ -1,11 +1,10 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.FileWriter
 import java.net.URL
-import java.util.zip.ZipEntry
-import java.util.zip.ZipOutputStream
+import java.nio.file.FileSystems
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
@@ -39,41 +38,32 @@ fun Project.configureDistribution() {
         }
         
         doLast {
-            // The addons are copied into a JAR because of a ShadowJar bug
-            // which expands *all* JARs, even resource ones, into the fat JAR.
-            // To get around this, we copy all addon JARs into a *new* JAR,
-            // then, ShadowJar expands the newly created JAR, putting the original
-            // JARs where they should go.
-            //
             // https://github.com/johnrengelman/shadow/issues/111
-            val dest = File(buildDir, "/resources/main/addons.jar")
-            dest.parentFile.mkdirs()
+            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toPath()
             
-            val zip = ZipOutputStream(FileOutputStream(dest))
-            
-            forSubProjects(":common:addons") {
-                val jar = getJarTask()
-                
-                println("Packaging addon ${jar.archiveFileName.get()} to ${dest.absolutePath}. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
-                
-                val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
-                
-                val entry = ZipEntry("addons/$boot${jar.archiveFileName.get()}")
-                zip.putNextEntry(entry)
-                FileInputStream(jar.archiveFile.get().asFile).run {
-                    copyTo(zip)
-                    close()
+            FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
+                forSubProjects(":common:addons") {
+                    val jar = getJarTask()
+        
+                    println("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
+        
+                    val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+                    val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}");
+        
+                    if(!Files.exists(addonPath)) {
+                        Files.createDirectories(addonPath.parent)
+                        Files.createFile(addonPath)
+                        Files.copy(jar.archiveFile.get().asFile.toPath(), addonPath, StandardCopyOption.REPLACE_EXISTING)
+                    }
+        
                 }
-                zip.closeEntry()
             }
-            zip.close()
         }
     }
     
     val generateResourceManifest = tasks.create("generateResourceManifest") {
         group = "terra"
         dependsOn(downloadDefaultPacks)
-        dependsOn(installAddons)
         doLast {
             val resources = HashMap<String, MutableList<String>>()
             val packsDir = File("${project.buildDir}/resources/main/packs/")
@@ -118,6 +108,7 @@ fun Project.configureDistribution() {
     
     tasks["processResources"].dependsOn(generateResourceManifest)
     
+    
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
@@ -129,6 +120,8 @@ fun Project.configureDistribution() {
         relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+    
+        finalizedBy(installAddons)
     }
     
     configure<BasePluginExtension> {
