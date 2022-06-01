@@ -1,0 +1,15 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: terrascript-function-sampler
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.terrascript.sampler.TerraScriptSamplerFunctionAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
+depends:
+  structure-terrascript-loader: "1.+"
+  config-noise-function: "1.+"

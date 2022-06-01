@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: language-yaml
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.yaml.YamlAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

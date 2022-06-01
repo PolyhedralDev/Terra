@@ -1,64 +1,71 @@
-import com.dfsek.terra.configureCommon
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.modrinth.minotaur.TaskModrinthUpload
-import net.fabricmc.loom.LoomGradleExtension
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    `java-library`
-    `maven-publish`
-    id("fabric-loom").version("0.8-SNAPSHOT")
+    id("fabric-loom").version("0.11-SNAPSHOT")
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
-configureCommon()
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+dependencies {
+    shadedApi(project(":common:implementation:base"))
+    
+    minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
+    mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
+    
+    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
+    
+    setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base").forEach { apiModule ->
+        val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
+        modImplementation(module)
+        include(module)
+    }
+    
+    include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
+    include("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI)
+    
+    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
 }
 
-group = "com.dfsek.terra.fabric"
-
-dependencies {
-    "shadedApi"(project(":common"))
-
-    "minecraft"("com.mojang:minecraft:1.17.1")
-    "mappings"("net.fabricmc:yarn:1.17.1+build.1:v2")
-    "modImplementation"("net.fabricmc:fabric-loader:0.11.3")
-
-    "modCompileOnly"("com.sk89q.worldedit:worldedit-fabric-mc1.16:7.2.0-SNAPSHOT") {
-        exclude(group = "com.google.guava", module = "guava")
-        exclude(group = "com.google.code.gson", module = "gson")
-        exclude(group = "it.unimi.dsi", module = "fastutil")
-        exclude(group = "org.apache.logging.log4j", module = "log4j-api")
-        exclude(group = "org.apache.logging.log4j", module = "log4j-core")
+loom {
+    accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
+    mixin {
+        defaultRefmapName.set("terra-refmap.json")
     }
 }
 
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.json", "com.dfsek.terra.lib.json")
-    relocate("org.yaml", "com.dfsek.terra.lib.yaml")
+
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
+addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(17)
 }
 
-
-configure<LoomGradleExtension> {
-    accessWidener("src/main/resources/terra.accesswidener")
-    refmapName = "terra-refmap.json"
+tasks.getByName<ShadowJar>("shadowJar") {
+    exclude("org/slf4j/**")
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
+    dependsOn("installAddons")
     group = "fabric"
     val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
     dependsOn(shadowJar)
-    input.set(shadowJar.archiveFile)
+    inputFile.set(shadowJar.archiveFile)
     archiveFileName.set(shadowJar.archiveFileName.get().replace(Regex("-shaded\\.jar$"), "-shaded-mapped.jar"))
     addNestedDependencies.set(true)
-    remapAccessWidener.set(true)
 }
 
+tasks.named("assemble").configure {
+    dependsOn("remapShadedJar")
+}
 
-tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
+tasks.withType<Jar> {
+    finalizedBy(remapped)
+}
+
+tasks.register<TaskModrinthUpload>("publishModrinth") {
     dependsOn("remapShadedJar")
     group = "fabric"
     token = System.getenv("MODRINTH_SECRET")
@@ -66,31 +73,6 @@ tasks.register<TaskModrinthUpload>("publishModrinthFabric") {
     versionNumber = "${project.version}-fabric"
     uploadFile = remapped.get().archiveFile.get().asFile
     releaseType = "beta"
-    addGameVersion("1.16.4")
-    addGameVersion("1.16.5")
+    addGameVersion(Versions.Fabric.minecraft)
     addLoader("fabric")
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["jar"])
-        }
-    }
-
-    repositories {
-        val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
-
-        maven(mavenUrl) {
-            val mavenUsername: String? by project
-            val mavenPassword: String? by project
-            if (mavenUsername != null && mavenPassword != null) {
-                credentials {
-                    username = mavenUsername
-                    password = mavenPassword
-                }
-            }
-        }
-    }
 }

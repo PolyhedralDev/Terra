@@ -1,0 +1,20 @@
+# This file contains core configuration options for Terra
+#
+# As you can see, there is not that much to configure here.
+# For advanced configuration, use config packs. Config
+# packs are loaded from the packs directory. Check the
+# wiki for information regarding config pack development.
+
+debug:
+  commands: false
+  log: false
+  profiler: false
+  script: false
+dump-default: true
+biome-search-resolution: 4
+cache:
+  structure: 32
+  sampler: 128
+  biome-provider: 32
+script:
+  max-recursion: 1000

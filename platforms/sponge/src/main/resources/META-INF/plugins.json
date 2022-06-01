@@ -1,0 +1,24 @@
+{
+    "plugins": [
+        {
+            "loader": "java_plain",
+            "id": "terra",
+            "name": "Terra",
+            "version": "@VERSION@",
+            "main-class": "com.dfsek.terra.sponge.TerraSpongePlugin",
+            "description": "@DESCRIPTION@",
+            "links": {
+                "source": "@SOURCE@",
+                "issues": "@ISSUES@"
+            },
+            "contributors": [
+            ],
+            "dependencies": [
+                {
+                    "id": "spongeapi",
+                    "version": "9.0.0"
+                }
+            ]
+        }
+    ]
+}

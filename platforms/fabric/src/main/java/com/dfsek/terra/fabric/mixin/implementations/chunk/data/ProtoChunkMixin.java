@@ -1,37 +1,48 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations.chunk.data;
 
-import com.dfsek.terra.api.platform.block.BlockData;
-import com.dfsek.terra.api.platform.world.generator.ChunkData;
-import com.dfsek.terra.fabric.block.FabricBlockData;
-import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.ProtoChunk;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ProtoChunk.class)
-@Implements(@Interface(iface = ChunkData.class, prefix = "terra$", remap = Interface.Remap.NONE))
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+
+
+@Mixin(net.minecraft.world.chunk.ProtoChunk.class)
+@Implements(@Interface(iface = ProtoChunk.class, prefix = "terra$"))
 public abstract class ProtoChunkMixin {
     @Shadow
-    public abstract BlockState getBlockState(BlockPos pos);
-
-    public @NotNull BlockData terra$getBlockData(int x, int y, int z) {
-        return new FabricBlockData(getBlockState(new BlockPos(x, y, z)));
+    public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
+    
+    public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
+                                                                        false);
     }
-
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockData blockData) {
-        ((net.minecraft.world.chunk.Chunk) this).setBlockState(new BlockPos(x, y, z), ((FabricBlockData) blockData).getHandle(), false);
+    
+    public @NotNull BlockState terra$getBlock(int x, int y, int z) {
+        return (BlockState) getBlockState(new BlockPos(x, y, z));
     }
-
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
-    }
-
+    
     public int terra$getMaxHeight() {
         return 255; // TODO: 1.17 - Implement dynamic height.
     }

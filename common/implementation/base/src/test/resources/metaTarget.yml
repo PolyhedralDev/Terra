@@ -1,0 +1,17 @@
+list:
+  - TWO
+  - THREE
+list2:
+  - SEVEN
+  - EIGHT
+map1:
+  three: THREE
+  four: FOUR
+  five: FIVE
+map2:
+  six: SIX
+string:
+  two: two
+  three: three
+  six: six
+double: 1

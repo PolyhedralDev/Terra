@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: command-profiler
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.commands.profiler.ProfilerCommandAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

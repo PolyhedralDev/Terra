@@ -1,88 +1,103 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.mixin.implementations.world;
 
-import com.dfsek.terra.api.math.vector.Location;
-import com.dfsek.terra.api.platform.block.Block;
-import com.dfsek.terra.api.platform.entity.Entity;
-import com.dfsek.terra.api.platform.entity.EntityType;
-import com.dfsek.terra.api.platform.world.Chunk;
-import com.dfsek.terra.api.platform.world.World;
-import com.dfsek.terra.api.platform.world.generator.ChunkGenerator;
-import com.dfsek.terra.api.platform.world.generator.GeneratorWrapper;
-import com.dfsek.terra.api.world.generation.TerraChunkGenerator;
-import com.dfsek.terra.fabric.block.FabricBlock;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.ServerWorldAccess;
+import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(ServerWorld.class)
-@Implements(@Interface(iface = World.class, prefix = "terra$", remap = Interface.Remap.NONE))
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.fabric.generation.TerraBiomeSource;
+import com.dfsek.terra.fabric.util.FabricUtil;
+
+
+@Mixin(net.minecraft.server.world.ServerWorld.class)
+@Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
 public abstract class ServerWorldMixin {
-    @Shadow
-    public abstract long getSeed();
-
-    public int terra$getMaxHeight() {
-        return (((ServerWorld) (Object) this).getBottomY()) + ((ServerWorld) (Object) this).getHeight();
-    }
-
-    public ChunkGenerator terra$getGenerator() {
-        return (ChunkGenerator) ((ServerWorld) (Object) this).getChunkManager().getChunkGenerator();
-    }
-
-    public Chunk terra$getChunkAt(int x, int z) {
-        return (Chunk) ((ServerWorld) (Object) this).getChunk(x, z);
-    }
-
-    public Block terra$getBlockAt(int x, int y, int z) {
-        return new FabricBlock(new BlockPos(x, y, z), ((ServerWorld) (Object) this));
-    }
-
-    public Entity terra$spawnEntity(Location location, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(((ServerWorld) (Object) this));
-        entity.setPos(location.getX(), location.getY(), location.getZ());
-        ((ServerWorld) (Object) this).spawnEntity(entity);
+    public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
+                ((net.minecraft.server.world.ServerWorld) (Object) this));
+        entity.setPos(x, y, z);
+        ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
     }
-
+    
+    public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
+        BlockPos pos = new BlockPos(x, y, z);
+        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data,
+                                                                               physics ? 3 : 1042);
+    }
+    
     @Intrinsic
     public long terra$getSeed() {
-        return getSeed();
+        return ((net.minecraft.server.world.ServerWorld) (Object) this).getSeed();
     }
-
+    
+    public int terra$getMaxHeight() {
+        return (((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY()) +
+               ((net.minecraft.server.world.ServerWorld) (Object) this).getHeight();
+    }
+    
+    public Chunk terra$getChunkAt(int x, int z) {
+        return (Chunk) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunk(x, z);
+    }
+    
+    public BlockState terra$getBlockState(int x, int y, int z) {
+        return (BlockState) ((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z));
+    }
+    
+    public BlockEntity terra$getBlockEntity(int x, int y, int z) {
+        return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
+    }
+    
     public int terra$getMinHeight() {
-        return ((ServerWorld) (Object) this).getBottomY();
+        return ((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY();
     }
-
-    @Intrinsic
-    public Object terra$getHandle() {
-        return this;
+    
+    public ChunkGenerator terra$getGenerator() {
+        return ((FabricChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
+                                                                                                      .getChunkGenerator()).getHandle();
     }
-
-    public boolean terra$isTerraWorld() {
-        return terra$getGenerator() instanceof GeneratorWrapper;
+    
+    public BiomeProvider terra$getBiomeProvider() {
+        return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
+                                                                                           .getChunkGenerator()
+                                                                                           .getBiomeSource()).getProvider();
     }
-
-    public TerraChunkGenerator terra$getTerraGenerator() {
-        return ((FabricChunkGeneratorWrapper) terra$getGenerator()).getHandle();
-    }
-
-    /**
-     * Overridden in the same manner as {@link ChunkRegionMixin#hashCode()}
-     *
-     * @param other Another object
-     * @return Whether this world is the same as other.
-     * @see ChunkRegionMixin#hashCode()
-     */
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public boolean equals(Object other) {
-        if(!(other instanceof ServerWorldAccess)) return false;
-        return (ServerWorldAccess) this == (((ServerWorldAccess) other).toServerWorld());
+    
+    public ConfigPack terra$getPack() {
+        net.minecraft.world.gen.chunk.ChunkGenerator generator =
+                (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
+        if(generator instanceof FabricChunkGeneratorWrapper fabricChunkGeneratorWrapper) {
+            return fabricChunkGeneratorWrapper.getPack();
+        }
+        return null;
     }
 }

@@ -1,28 +1,40 @@
-import com.dfsek.terra.configureCommon
-
 plugins {
-    java
-    id("org.spongepowered.plugin").version("0.9.0")
+    id("org.spongepowered.gradle.vanilla").version("0.2")
 }
 
-configureCommon()
-
-group = "com.dfsek.terra"
-
 repositories {
-    mavenCentral()
-    jcenter()
+    maven {
+        url = uri("https://repo-new.spongepowered.org/repository/maven-public/")
+    }
 }
 
 dependencies {
-    "compileOnly"("org.spongepowered:spongeapi:7.2.0")
-    "shadedApi"(project(":common"))
-    "shadedImplementation"("org.yaml:snakeyaml:1.27")
-    "shadedImplementation"("com.googlecode.json-simple:json-simple:1.1.1")
+    api(project(":common:implementation:base"))
+    
+    api("org.slf4j:slf4j-api:1.8.0-beta4") {
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+    }
+    implementation("org.apache.logging.log4j", "log4j-slf4j18-impl", Versions.Libraries.log4j_slf4j_impl) {
+        because("Minecraft 1.17+ includes slf4j 1.8.0-beta4, so we need to shade it for other versions.")
+    }
+    
+    annotationProcessor("org.spongepowered", "spongeapi", Versions.Sponge.sponge)
+    implementation("org.spongepowered", "spongeapi", Versions.Sponge.sponge)
+    annotationProcessor("org.spongepowered:mixin:${Versions.Sponge.mixin}:processor")
 }
 
-sponge {
-    plugin {
-        id = "terra"
+minecraft {
+    version(Versions.Sponge.minecraft)
+    runs {
+        server()
+        client()
+    }
+}
+
+tasks.named<Jar>("jar") {
+    manifest {
+        //attributes(
+        //        mapOf("MixinConfigs" to "terra.mixins.json")
+        //)
     }
 }

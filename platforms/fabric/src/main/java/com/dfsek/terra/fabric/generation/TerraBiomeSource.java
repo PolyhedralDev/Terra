@@ -1,59 +1,95 @@
+/*
+ * This file is part of Terra.
+ *
+ * Terra is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Terra is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.world.biome.UserDefinedBiome;
-import com.dfsek.terra.api.world.biome.provider.BiomeProvider;
-import com.dfsek.terra.config.pack.ConfigPack;
-import com.dfsek.terra.fabric.TerraFabricPlugin;
-import com.dfsek.terra.fabric.util.FabricUtil;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.RegistryLookupCodec;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeSource;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
-import java.util.Objects;
-import java.util.stream.Collectors;
+import com.mojang.serialization.Codec;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.world.biome.source.BiomeSource;
+import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.stream.StreamSupport;
+
 
 public class TerraBiomeSource extends BiomeSource {
-    public static final Codec<ConfigPack> PACK_CODEC = (RecordCodecBuilder.create(config -> config.group(
-            Codec.STRING.fieldOf("pack").forGetter(pack -> pack.getTemplate().getID())
-    ).apply(config, config.stable(TerraFabricPlugin.getInstance().getConfigRegistry()::get))));
-    public static final Codec<TerraBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            RegistryLookupCodec.of(Registry.BIOME_KEY).forGetter(source -> source.biomeRegistry),
-            Codec.LONG.fieldOf("seed").stable().forGetter(source -> source.seed),
-            PACK_CODEC.fieldOf("pack").stable().forGetter(source -> source.pack))
-            .apply(instance, instance.stable(TerraBiomeSource::new)));
-
-    private final Registry<Biome> biomeRegistry;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerraBiomeSource.class);
+    private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private final long seed;
-    private final BiomeProvider grid;
-    private final ConfigPack pack;
-
-    public TerraBiomeSource(Registry<Biome> biomes, long seed, ConfigPack pack) {
-        super(biomes.stream()
-                .filter(biome -> Objects.requireNonNull(biomes.getId(biome)).getNamespace().equals("terra")) // Filter out non-Terra biomes.
-                .collect(Collectors.toList()));
+    private ConfigPack pack;
+    
+    public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, long seed, ConfigPack pack) {
+        super(StreamSupport
+                      .stream(pack.getBiomeProvider()
+                                  .getBiomes()
+                                  .spliterator(), false)
+                      .map(b -> biomes.getOrCreateEntry(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate())));
         this.biomeRegistry = biomes;
         this.seed = seed;
-        this.grid = pack.getBiomeProviderBuilder().build(seed);
         this.pack = pack;
+        
+        LOGGER.debug("Biomes: " + getBiomes());
     }
-
+    
     @Override
     protected Codec<? extends BiomeSource> getCodec() {
-        return CODEC;
+        return Codecs.TERRA_BIOME_SOURCE;
     }
-
+    
     @Override
     public BiomeSource withSeed(long seed) {
         return new TerraBiomeSource(this.biomeRegistry, seed, pack);
     }
-
+    
     @Override
-    public Biome getBiomeForNoiseGen(int biomeX, int biomeY, int biomeZ) {
-        UserDefinedBiome biome = (UserDefinedBiome) grid.getBiome(biomeX << 2, biomeZ << 2);
-        return biomeRegistry.get(new Identifier("terra", FabricUtil.createBiomeID(pack, biome.getID())));
+    public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
+        return biomeRegistry
+                .entryOf(((ProtoPlatformBiome) pack
+                                 .getBiomeProvider()
+                                 .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, seed)
+                                 .getPlatformBiome()).getDelegate()
+                        );
+    }
+    
+    public BiomeProvider getProvider() {
+        return pack.getBiomeProvider();
+    }
+    
+    public Registry<net.minecraft.world.biome.Biome> getBiomeRegistry() {
+        return biomeRegistry;
+    }
+    
+    public ConfigPack getPack() {
+        return pack;
+    }
+    
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+    }
+    
+    public long getSeed() {
+        return seed;
     }
 }

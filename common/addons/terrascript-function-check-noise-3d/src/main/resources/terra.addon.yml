@@ -1,0 +1,15 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: structure-function-check-noise-3d
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addon.terrascript.check.TerraScriptCheckFunctionAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
+depends:
+  structure-terrascript-loader: "1.+"
+  chunk-generator-noise-3d: "1.+"

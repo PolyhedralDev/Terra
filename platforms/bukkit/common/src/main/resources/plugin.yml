@@ -1,0 +1,8 @@
+name: "Terra"
+main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
+version: "@VERSION@"
+load: "STARTUP"
+author: dfsek
+website: "@WIKI@"
+api-version: "1.13"
+description: "@DESCRIPTION@"

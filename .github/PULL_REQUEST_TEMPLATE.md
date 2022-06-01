@@ -33,9 +33,11 @@
 
 <!-- In order to be accepted, your changes must be under the GPLv3 license. Please check one of the following: -->
 
-- [ ] I am the original author of this code, and I am willing to release it under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
-- [ ] I am not the original author of this code, but it is in public domain or released
-  under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or a compatible license.
+- [ ] I am the original author of this code, and I am willing to release it
+  under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
+- [ ] I am not the original author of this code, but it is in public domain or
+  released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or a
+  compatible license.
     <!--
       Please provide reliable evidence of this.
       NOTE: for compatible licenses, you must make sure to add the included license somewhere in the program, if so required.
@@ -70,19 +72,24 @@
 
 - [ ] Bug Fix <!-- Anything which fixes an issue in Terra. -->
 - [ ] Build system <!-- Anything which pretain to the build system. -->
-- [ ] Documentation <!-- Anything which adds or improves documentation for existing features. -->
+- [ ] 
+  Documentation <!-- Anything which adds or improves documentation for existing features. -->
 - [ ] New Feature <!-- Anything which adds new functionality to Terra. -->
 - [ ] Performance <!-- Anything which is imrpoves the performance of Terra. -->
-- [ ] Refactoring <!-- Anything which does not add any new code, only moves code around. -->
-- [ ] Repository <!-- Anything which affects the repository. Eg. changes to the `README.md` file. -->
+- [ ] 
+  Refactoring <!-- Anything which does not add any new code, only moves code around. -->
+- [ ] 
+  Repository <!-- Anything which affects the repository. Eg. changes to the `README.md` file. -->
 - [ ] Revert <!-- Anything which reverts previous commits. -->
 - [ ] Style <!-- Anything which updates style. -->
 - [ ] Tests <!-- Anything which adds or updates tests. -->
-- [ ] Translation <!-- Anything which is internationalizing the Terra program to other languages. -->
+- [ ] 
+  Translation <!-- Anything which is internationalizing the Terra program to other languages. -->
 
 #### Compatiblity
 
-- [ ] Breaking change <!-- A fix, or a feature, that breaks some previous functionality to Terra. -->
+- [ ] Breaking
+  change <!-- A fix, or a feature, that breaks some previous functionality to Terra. -->
 - [ ] Non-Breaking change.
     <!--
         A change which does not break *any* previous functionality of Terra.
@@ -94,8 +101,9 @@
 
 #### Contribution Guidelines.
 
-- [ ] I have read the [`CONTRIBUTING.md`](https://github.com/PolyhedralDev/Terra/blob/master/CONTRIBUTING.md) document in the root of the
-  git repository.
+- [ ] I have read
+  the [`CONTRIBUTING.md`](https://github.com/PolyhedralDev/Terra/blob/master/CONTRIBUTING.md)
+  document in the root of the git repository.
 - [ ] My code follows the code style for this
   project. <!-- There is an included `.editorconfig` file in the base of the repo. Please use a plugin for your IDE of choice that follows those settings. -->
 

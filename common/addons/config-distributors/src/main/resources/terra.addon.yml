@@ -1,0 +1,15 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: config-distributors
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.feature.distributor.DistributorAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License
+depends:
+  config-feature: "1.+"
+  generation-stage-feature: "1.+"

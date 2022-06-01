@@ -1,0 +1,12 @@
+schema-version: 1
+contributors:
+  - Terra contributors
+id: generation-stage-feature
+version: @VERSION@
+entrypoints:
+  - "com.dfsek.terra.addons.generation.feature.FeatureGenerationAddon"
+website:
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
+license: MIT License

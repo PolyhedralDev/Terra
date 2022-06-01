@@ -1,11 +1,11 @@
 blank_issues_enabled: false
 contact_links:
-  - name:  Which Issue Template do I Choose?
-    url:   https://github.com/PolyhedralDev/Terra/wiki/How-To-Choose-An-Issue-Template
+  - name: Which Issue Template do I Choose?
+    url: https://github.com/PolyhedralDev/Terra/wiki/How-To-Choose-An-Issue-Template
     about: Click this if you don't know which issue template to select. This will help you make sure you choose the right one and provide enough information for us to help you.
-  - name:  Terra Wiki
-    url:   https://github.com/PolyhedralDev/Terra/wiki
+  - name: Terra Wiki
+    url: https://github.com/PolyhedralDev/Terra/wiki
     about: Documentation for all things Terra.
-  - name:  Join the Support Discord
-    url:   https://discord.dfsek.com
+  - name: Join the Support Discord
+    url: https://discord.dfsek.com
     about: If you have a basic support question, join the Discord instead.
