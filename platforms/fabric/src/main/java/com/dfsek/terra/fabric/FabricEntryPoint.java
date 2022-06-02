@@ -17,17 +17,12 @@
 
 package com.dfsek.terra.fabric;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.fabric.FabricServerCommandManager;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.fabric.data.Codecs;
 
 

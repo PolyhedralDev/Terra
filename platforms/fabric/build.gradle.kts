@@ -24,8 +24,8 @@ dependencies {
     include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
     include("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI)
     
-    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    //include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    //include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
 }
 
 loom {
