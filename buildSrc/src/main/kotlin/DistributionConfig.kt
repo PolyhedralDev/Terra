@@ -7,15 +7,18 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.extra
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.named
 import org.yaml.snakeyaml.DumperOptions
 import org.yaml.snakeyaml.Yaml
+
 
 fun Project.configureDistribution() {
     apply(plugin = "com.github.johnrengelman.shadow")
@@ -29,13 +32,17 @@ fun Project.configureDistribution() {
         }
     }
     
-    val installAddons = tasks.create("installAddons") {
-        group = "terra"
+    val compileAddons = tasks.create("compileAddons") {
         forSubProjects(":common:addons") {
             afterEvaluate {
                 dependsOn(getJarTask())
             }
         }
+    }
+    
+    val installAddons = tasks.create("installAddons") {
+        group = "terra"
+        dependsOn(compileAddons)
         
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
@@ -44,18 +51,18 @@ fun Project.configureDistribution() {
             FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
                 forSubProjects(":common:addons") {
                     val jar = getJarTask()
-        
+                    
                     println("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
-        
+                    
                     val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
                     val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}");
-        
-                    if(!Files.exists(addonPath)) {
+                    
+                    if (!Files.exists(addonPath)) {
                         Files.createDirectories(addonPath.parent)
                         Files.createFile(addonPath)
                         Files.copy(jar.archiveFile.get().asFile.toPath(), addonPath, StandardCopyOption.REPLACE_EXISTING)
                     }
-        
+                    
                 }
             }
         }
@@ -120,7 +127,7 @@ fun Project.configureDistribution() {
         relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
-    
+        
         finalizedBy(installAddons)
     }
     
