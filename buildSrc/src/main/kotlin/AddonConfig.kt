@@ -12,6 +12,7 @@ import kotlin.streams.asStream
  * Configures a directory where addons will be put.
  */
 fun Project.addonDir(dir: File, task: Task) {
+    task.dependsOn("compileAddons")
     task.doFirst {
         dir.parentFile.mkdirs()
         matchingAddons(dir) {
