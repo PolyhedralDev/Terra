@@ -21,10 +21,6 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
-
-import com.dfsek.terra.bukkit.nms.NMSBiomeInjector;
-import com.dfsek.terra.bukkit.nms.NMSInjectListener;
-
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,6 +38,7 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
+import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -60,7 +57,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
-        NMSBiomeInjector.registerBiomes(platform.getRawConfigRegistry());
         
         
         try {
@@ -94,8 +90,13 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
-        Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
+    
+        Initializer.init(platform);
+    }
+    
+    public PlatformImpl getPlatform() {
+        return platform;
     }
     
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })

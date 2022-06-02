@@ -39,7 +39,7 @@ allprojects {
 }
 
 afterEvaluate {
-    forSubProjects(":platforms") {
+    forImmediateSubProjects(":platforms") {
         configureDistribution()
     }
     forSubProjects(":common:addons") {

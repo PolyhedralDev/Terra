@@ -29,6 +29,12 @@ fun Project.forSubProjects(project: String, action: Action<Project>) {
     }
 }
 
+fun Project.forImmediateSubProjects(project: String, action: Action<Project>) {
+    project(project).childProjects.forEach {
+        action.execute(it.value)
+    }
+}
+
 fun preRelease(preRelease: Boolean) {
     isPrerelease = preRelease
 }

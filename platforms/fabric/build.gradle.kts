@@ -48,6 +48,7 @@ tasks.getByName<ShadowJar>("shadowJar") {
 }
 
 val remapped = tasks.register<RemapJarTask>("remapShadedJar") {
+    dependsOn("installAddons")
     group = "fabric"
     val shadowJar = tasks.getByName<ShadowJar>("shadowJar")
     dependsOn(shadowJar)

@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -36,13 +36,16 @@ public class NMSInjectListener implements Listener {
     
             ChunkGenerator vanilla = serverWorld.k().g();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), vanilla.e(), craftWorld.getSeed());
-            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld);
+            NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());
             
             custom.conf = vanilla.conf; // world config from Spigot
             
             serverWorld.k().a.u = custom;
-
+            
             LOGGER.info("Successfully injected into world.");
+            
+            serverWorld.k().a.u.i(); // generate stronghold data now
+            
             INJECT_LOCK.unlock();
         }
     }

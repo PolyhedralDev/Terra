@@ -1,32 +1,21 @@
-package com.dfsek.terra.bukkit.nms;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-import com.dfsek.terra.registry.master.ConfigRegistry;
+package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
-import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.IRegistry;
 import net.minecraft.core.IRegistryWritable;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryMaterials;
 import net.minecraft.data.RegistryGeneration;
 import net.minecraft.resources.MinecraftKey;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.BiomeBase;
 import net.minecraft.world.level.biome.BiomeFog;
 import net.minecraft.world.level.biome.BiomeFog.GrassColor;
 import net.minecraft.world.level.biome.BiomeSettingsGeneration;
 import net.minecraft.world.level.biome.BiomeSettingsMobs;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,27 +28,25 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.registry.master.ConfigRegistry;
+
 
 public class NMSBiomeInjector {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSBiomeInjector.class);
+    private static final Map<MinecraftKey, List<MinecraftKey>> terraBiomeMap = new HashMap<>();
+    
     
     public static void registerBiomes(ConfigRegistry configRegistry) {
-        CraftServer craftserver = (CraftServer) Bukkit.getServer();
-        DedicatedServer dedicatedserver = craftserver.getServer();
-        
-        IRegistryWritable<BiomeBase> biomeRegistry = (IRegistryWritable<BiomeBase>) dedicatedserver
-                .aU() // getRegistryManager
-                .b( // getRegistry
-                    IRegistry.aP // biome registry key
-                  );
-        
         try {
             LOGGER.info("Hacking biome registry...");
+            IRegistryWritable<BiomeBase> biomeRegistry = (IRegistryWritable<BiomeBase>) Registries.biomeRegistry();
             Field frozen = RegistryMaterials.class.getDeclaredField("bL"); // registry frozen field
             frozen.setAccessible(true);
             frozen.set(biomeRegistry, false);
-    
-            Map<MinecraftKey, List<MinecraftKey>> terraBiomeMap = new HashMap<>();
             
             configRegistry.forEach(pack -> pack.getRegistry(Biome.class).forEach((key, biome) -> {
                 try {
@@ -74,9 +61,9 @@ public class NMSBiomeInjector {
                     ResourceKey<BiomeBase> delegateKey = ResourceKey.a(IRegistry.aP, new MinecraftKey("terra", createBiomeID(pack, key)));
                     
                     RegistryGeneration.a(RegistryGeneration.i, delegateKey, platform);
-                    Holder<BiomeBase> resourceKey = biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
-                    platformBiome.setResourceKey(resourceKey);
-    
+                    biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
+                    platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
+                    
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
                     
                     LOGGER.debug("Registered biome: " + delegateKey);
@@ -86,7 +73,7 @@ public class NMSBiomeInjector {
             }));
             
             frozen.set(biomeRegistry, true); // freeze registry again :)
-    
+            
             LOGGER.info("Doing tag garbage....");
             Map<TagKey<BiomeBase>, List<Holder<BiomeBase>>> collect = biomeRegistry
                     .g() // streamKeysAndEntries
@@ -98,38 +85,32 @@ public class NMSBiomeInjector {
             terraBiomeMap
                     .forEach((vb, terraBiomes) ->
                                      getEntry(biomeRegistry, vb)
-                                               .ifPresentOrElse(vanilla -> terraBiomes
-                                                                        .forEach(tb ->
-                                                                                getEntry(biomeRegistry, tb)
-                                                                                .ifPresentOrElse(
-                                                                                        terra -> {
-                                                                                            LOGGER.debug(
-                                                                                                    vanilla.e()
-                                                                                                           .orElseThrow()
-                                                                                                            .a() +
-                                                                                                    " (vanilla for " +
-                                                                                                    terra.e()
-                                                                                                         .orElseThrow()
-                                                                                                         .a() +
-                                                                                                    ": " +
-                                                                                                    vanilla.c()
-                                                                                                           .toList());
-                                                
-                                                                                            vanilla.c()
-                                                                                                   .forEach(
-                                                                                                           tag -> collect
-                                                                                                                   .computeIfAbsent(
-                                                                                                                           tag,
-                                                                                                                           t -> new ArrayList<>())
-                                                                                                                   .add(terra));
-                                                                                        },
-                                                                                        () -> LOGGER.error(
-                                                                                                "No such biome: {}",
-                                                                                                tb))),
-                                                                () -> LOGGER.error("No vanilla biome: {}", vb)));
+                                             .ifPresentOrElse(
+                                                     vanilla -> terraBiomes
+                                                             .forEach(tb -> getEntry(biomeRegistry, tb)
+                                                                     .ifPresentOrElse(
+                                                                             terra -> {
+                                                                                 LOGGER.debug(vanilla.e().orElseThrow().a() +
+                                                                                              " (vanilla for " +
+                                                                                              terra.e().orElseThrow().a() +
+                                                                                              ": " +
+                                                                                              vanilla.c().toList());
+                                                                
+                                                                                 vanilla.c()
+                                                                                        .forEach(
+                                                                                                tag -> collect
+                                                                                                        .computeIfAbsent(tag,
+                                                                                                                         t -> new ArrayList<>())
+                                                                                                        .add(terra));
+                                                                             },
+                                                                             () -> LOGGER.error(
+                                                                                     "No such biome: {}",
+                                                                                     tb))),
+                                                     () -> LOGGER.error("No vanilla biome: {}", vb)));
     
             biomeRegistry.k(); // clearTags
             biomeRegistry.a(ImmutableMap.copyOf(collect)); // populateTags
+            
         } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {
             throw new RuntimeException(exception);
         }
@@ -156,13 +137,12 @@ public class NMSBiomeInjector {
         BiomeSettingsMobs biomeSettingMobs = (BiomeSettingsMobs) biomeSettingMobsField.get(vanilla);
         builder.a(biomeSettingMobs);
         
-        Field biomeSettingGenField = BiomeBase.class.getDeclaredField("j");
-        biomeSettingGenField.setAccessible(true);
-        BiomeSettingsGeneration biomeSettingGen = (BiomeSettingsGeneration) biomeSettingGenField.get(vanilla);
-        builder.a(biomeSettingGen)
-                .a(vanilla.c())
-                .b(vanilla.h()) // precipitation
-                .a(vanilla.i()); // temp
+        
+        BiomeSettingsGeneration.a generationBuilder = new BiomeSettingsGeneration.a(); // builder
+        builder.a(generationBuilder.a())
+               .a(vanilla.c())
+               .b(vanilla.h()) // precipitation
+               .a(vanilla.i()); // temp
         
         
         BiomeFog.a effects = new BiomeFog.a(); // Builder
