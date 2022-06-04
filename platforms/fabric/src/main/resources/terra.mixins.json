@@ -35,8 +35,7 @@
     "lifecycle.DataPackContentsMixin",
     "lifecycle.MinecraftServerMixin",
     "lifecycle.NoiseConfigMixin",
-    "lifecycle.RegistryMixin",
-    "lifecycle.WorldPresetsRegistrarMixin"
+    "lifecycle.RegistryMixin"
   ],
   "client": [
     "lifecycle.client.MinecraftClientMixin"

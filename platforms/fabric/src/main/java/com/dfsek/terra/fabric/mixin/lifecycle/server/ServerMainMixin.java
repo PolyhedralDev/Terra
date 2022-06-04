@@ -18,6 +18,8 @@
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
 import com.dfsek.terra.fabric.util.BiomeUtil;
+import com.dfsek.terra.fabric.util.LifecycleUtil;
+
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,9 +39,6 @@ public class ServerMainMixin {
             // after registry manager creation
             )
     private static void injectConstructor(String[] args, CallbackInfo ci) {
-        FabricEntryPoint.getPlatform().getEventManager().callEvent(
-                new PlatformInitializationEvent()); // Load during MinecraftServer construction, after other mods have registered blocks
-        // and stuff
-        BiomeUtil.registerBiomes();
+        LifecycleUtil.initialize();
     }
 }
