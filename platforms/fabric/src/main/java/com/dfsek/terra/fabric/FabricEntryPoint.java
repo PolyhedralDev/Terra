@@ -20,6 +20,7 @@ package com.dfsek.terra.fabric;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.gen.WorldPresets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

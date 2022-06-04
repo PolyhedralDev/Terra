@@ -20,6 +20,7 @@ package com.dfsek.terra.fabric.generation;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.structure.StructureSet;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.CheckedRandom;
@@ -66,14 +67,13 @@ import com.dfsek.terra.fabric.util.FabricAdapter;
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
     private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
     
-    private final long seed;
     private final TerraBiomeSource biomeSource;
     private final Registry<StructureSet> noiseRegistry;
     private final RegistryEntry<ChunkGeneratorSettings> settings;
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
-    public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, long seed, ConfigPack configPack,
+    public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, ConfigPack configPack,
                                        RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
         super(noiseRegistry, Optional.empty(), biomeSource);
         this.noiseRegistry = noiseRegistry;
@@ -83,8 +83,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
-        
-        this.seed = seed;
     }
     
     public Registry<StructureSet> getNoiseRegistry() {
@@ -158,7 +156,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
         int y = height.getTopY();
-        WorldProperties properties = FabricAdapter.adapt(height, seed);
+        WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         while(y >= getMinimumY() && !heightmap.getBlockPredicate().test(
                 (BlockState) delegate.getBlock(properties, x, y - 1, z, biomeProvider))) {
@@ -170,7 +168,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height, NoiseConfig noiseConfig) {
         BlockState[] array = new BlockState[height.getHeight()];
-        WorldProperties properties = FabricAdapter.adapt(height, seed);
+        WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
             array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);
@@ -204,10 +202,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public ChunkGenerator getHandle() {
         return delegate;
-    }
-    
-    public long getSeed() {
-        return seed;
     }
     
     public RegistryEntry<ChunkGeneratorSettings> getSettings() {
