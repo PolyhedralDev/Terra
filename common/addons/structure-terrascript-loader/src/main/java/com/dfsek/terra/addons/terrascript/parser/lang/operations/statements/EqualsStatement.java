@@ -32,7 +32,7 @@ public class EqualsStatement extends BinaryOperation<Object, Boolean> {
             return FastMath.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }
         
-        return left.equals(rightUnwrapped);
+        return leftUnwrapped.equals(rightUnwrapped);
     }
     
     

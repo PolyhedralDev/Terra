@@ -54,7 +54,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     private final long seed;
     
     private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkCoordIntPair>>> h = new Object2ObjectArrayMap<>();
-    
+    private static final Lazy<List<ChunkCoordIntPair>> EMPTY = Lazy.lazy(List::of);
     
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
@@ -154,7 +154,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     @Override
     public List<ChunkCoordIntPair> a(ConcentricRingsStructurePlacement concentricringsstructureplacement) {
         this.i();
-        return this.h.get(concentricringsstructureplacement).value();
+        return this.h.getOrDefault(concentricringsstructureplacement, EMPTY).value();
     }
     
     private volatile boolean rings = false;
