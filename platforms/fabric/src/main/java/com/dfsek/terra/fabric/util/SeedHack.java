@@ -23,7 +23,7 @@ public class SeedHack {
     }
     
     public static void register(MultiNoiseSampler sampler, long seed) {
-        LOGGER.info("Registered seed {} to sampler {}", seed, sampler);
+        LOGGER.info("Registered seed {} to sampler {}", seed, sampler.hashCode());
         seedMap.put(sampler, seed);
     }
 }
