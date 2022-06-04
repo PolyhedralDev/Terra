@@ -58,7 +58,7 @@ public class BeardGenerator {
         for(StructureStart structureStart : structureAccessor.method_41035(chunkPos,
                                                                            structureType -> structureType.getTerrainAdaptation() !=
                                                                                             StructureTerrainAdaptation.NONE)) {
-            StructureTerrainAdaptation structureTerrainAdaptation = structureStart.getFeature().getTerrainAdaptation();
+            StructureTerrainAdaptation structureTerrainAdaptation = structureStart.getStructure().getTerrainAdaptation();
         
             for(StructurePiece structurePiece : structureStart.getChildren()) {
                 if(structurePiece.intersectsChunk(chunkPos, 12)) {
