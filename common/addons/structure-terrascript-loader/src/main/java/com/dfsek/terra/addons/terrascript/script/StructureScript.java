@@ -99,7 +99,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
                                                                                   Returnable.ReturnType.NUMBER))
                 .registerFunction("print",
-                                  new UnaryStringFunctionBuilder(string -> LOGGER.debug("[TerraScript:{}] {}", id, string)))
+                                  new UnaryStringFunctionBuilder(string -> LOGGER.info("[TerraScript:{}] {}", id, string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
                 .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> FastMath.pow2(number.doubleValue())))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
