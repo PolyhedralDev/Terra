@@ -21,14 +21,18 @@ public final class TagUtil {
     
     }
     
-    public static void registerBiomeTags(Registry<Biome> registry) {
-        logger.info("Doing tag garbage....");
-        Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = registry
+    private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {
+        return registry
                 .streamTagsAndEntries()
                 .collect(HashMap::new,
                          (map, pair) ->
                                  map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                          HashMap::putAll);
+    }
+    
+    public static void registerBiomeTags(Registry<Biome> registry) {
+        logger.info("Doing tag garbage....");
+        Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = tagsToMutableMap(registry);
         
         BiomeUtil
                 .getTerraBiomeMap()
