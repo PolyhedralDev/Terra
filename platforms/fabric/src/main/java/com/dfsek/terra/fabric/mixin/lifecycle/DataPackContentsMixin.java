@@ -20,7 +20,7 @@ public class DataPackContentsMixin {
     @Inject(method = "refresh(Lnet/minecraft/util/registry/DynamicRegistryManager;)V", at = @At("RETURN"))
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
         Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
-        TagUtil.registerTags(biomeRegistry);
+        TagUtil.registerBiomeTags(biomeRegistry);
         BiomeUtil.registerFlora(biomeRegistry);
     }
 }

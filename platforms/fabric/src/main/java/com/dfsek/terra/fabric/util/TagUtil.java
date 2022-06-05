@@ -21,7 +21,7 @@ public final class TagUtil {
     
     }
     
-    public static void registerTags(Registry<Biome> registry) {
+    public static void registerBiomeTags(Registry<Biome> registry) {
         logger.info("Doing tag garbage....");
         Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = registry
                 .streamTagsAndEntries()
