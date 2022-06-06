@@ -21,6 +21,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructureSet;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.CheckedRandom;
@@ -42,7 +43,6 @@ import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.densityfunction.DensityFunction.NoisePos;
 import net.minecraft.world.gen.densityfunction.DensityFunction.UnblendedNoisePos;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.slf4j.Logger;
@@ -133,7 +133,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                 beard(structureAccessor, chunk, world, biomeProvider, compatibilityOptions);
             }
             return chunk;
-        }, executor);
+        }, Util.getMainWorkerExecutor());
     }
     
     private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
