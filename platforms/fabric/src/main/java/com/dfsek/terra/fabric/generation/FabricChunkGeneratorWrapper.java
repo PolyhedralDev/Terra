@@ -19,8 +19,8 @@ package com.dfsek.terra.fabric.generation;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructureSet;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.CheckedRandom;
@@ -38,9 +38,12 @@ import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
+import net.minecraft.world.gen.densityfunction.DensityFunction.NoisePos;
+import net.minecraft.world.gen.densityfunction.DensityFunction.UnblendedNoisePos;
 import net.minecraft.world.gen.noise.NoiseConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,6 +118,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return settings.value().generationShapeConfig().height();
     }
     
+    
+    
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
                                                   StructureAccessor structureAccessor, Chunk chunk) {
@@ -125,11 +130,37 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
             if(compatibilityOptions.isBeard()) {
-                new BeardGenerator(structureAccessor, chunk, compatibilityOptions.getBeardThreshold()).generate(delegate, world,
-                                                                                                                biomeProvider);
+                beard(structureAccessor, chunk, world, biomeProvider, compatibilityOptions);
             }
             return chunk;
         }, executor);
+    }
+    
+    private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
+                           PreLoadCompatibilityOptions compatibilityOptions) {
+        StructureWeightSampler structureWeightSampler = StructureWeightSampler.method_42695(structureAccessor, chunk.getPos());
+        double threshold = compatibilityOptions.getBeardThreshold();
+        double airThreshold = compatibilityOptions.getAirThreshold();
+        int xi = chunk.getPos().x << 4;
+        int zi = chunk.getPos().z << 4;
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                int depth = 0;
+                for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
+                    double noise = structureWeightSampler.sample(new UnblendedNoisePos(x + xi, y, z + zi));
+                    if(noise > threshold) {
+                        chunk.setBlockState(new BlockPos(x, y, z), (BlockState) delegate
+                                .getPalette(x + xi, y, z + zi, world, biomeProvider)
+                                .get(depth, x + xi, y, z + zi, world.getSeed()), false);
+                        depth++;
+                    } else if(noise > 0 && noise < airThreshold) {
+                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), false);
+                    } else {
+                        depth = 0;
+                    }
+                }
+            }
+        }
     }
     
     @Override
