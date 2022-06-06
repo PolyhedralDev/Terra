@@ -24,6 +24,8 @@ import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ import java.util.Map;
 public class LifecycleUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifecycleUtil.class);
     
+    private static final List<Identifier> PRESETS = new ArrayList<>();
     public static void initialize() {
         FabricEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent());
@@ -71,6 +74,8 @@ public class LifecycleUtil {
                 .forEach((id, pack) -> {
                              Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
                                      Locale.ROOT));
+                             
+                             PRESETS.add(generatorID);
                     
                              TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
                              ChunkGenerator generator = new FabricChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
@@ -87,5 +92,9 @@ public class LifecycleUtil {
                              LOGGER.info("Registered world type \"{}\"", generatorID);
                          }
                         );
+    }
+    
+    public static List<Identifier> getPresets() {
+        return PRESETS;
     }
 }
