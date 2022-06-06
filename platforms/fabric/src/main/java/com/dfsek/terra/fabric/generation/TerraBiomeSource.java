@@ -44,8 +44,6 @@ public class TerraBiomeSource extends BiomeSource {
     private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private ConfigPack pack;
     
-    private final Object2LongMap<MultiNoiseSampler> noiseToSeed = new Object2LongOpenHashMap<>();
-    
     public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, ConfigPack pack) {
         super(StreamSupport
                       .stream(pack.getBiomeProvider()
