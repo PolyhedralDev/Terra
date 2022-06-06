@@ -153,7 +153,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                 .getPalette(x + xi, y, z + zi, world, biomeProvider)
                                 .get(depth, x + xi, y, z + zi, world.getSeed()), false);
                         depth++;
-                    } else if(noise > 0 && noise < airThreshold) {
+                    } else if(noise < airThreshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), false);
                     } else {
                         depth = 0;
