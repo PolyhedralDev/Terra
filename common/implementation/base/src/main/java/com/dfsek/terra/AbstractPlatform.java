@@ -220,6 +220,7 @@ public abstract class AbstractPlatform implements Platform {
             Path data = getDataFolder().toPath();
             
             Path addonsPath = data.resolve("addons");
+            Files.createDirectories(addonsPath);
             Set<Pair<Path, String>> paths = Files
                     .walk(addonsPath)
                     .map(path -> Pair.of(path, data.relativize(path).toString()))
