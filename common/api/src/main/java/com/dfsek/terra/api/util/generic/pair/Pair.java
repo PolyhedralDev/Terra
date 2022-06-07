@@ -11,12 +11,48 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
 
 public final class Pair<L, R> {
     private static final Pair<?, ?> NULL = new Pair<>(null, null);
     private final L left;
     private final R right;
+    
+    public static <L, R, T> Function<Pair<L, R>, Pair<T, R>> mapLeft(Function<L, T> function) {
+        return pair -> of(function.apply(pair.left), pair.right);
+    }
+    
+    public static <L, R, T> Function<Pair<L, R>, Pair<L, T>> mapRight(Function<R, T> function) {
+        return pair -> of(pair.left, function.apply(pair.right));
+    }
+    
+    public static <L> Predicate<Pair<L, ?>> testLeft(Predicate<L> predicate) {
+        return pair -> predicate.test(pair.left);
+    }
+    
+    public static <R> Predicate<Pair<?, R>> testRight(Predicate<R> predicate) {
+        return pair -> predicate.test(pair.right);
+    }
+    
+    public static <L> Consumer<Pair<L, ?>> consumeLeft(Consumer<L> consumer) {
+        return pair -> consumer.accept(pair.left);
+    }
+    
+    public static <R> Consumer<Pair<?, R>> consumeRight(Consumer<R> consumer) {
+        return pair -> consumer.accept(pair.right);
+    }
+    
+    public static <R> Function<Pair<?, R>, R> unwrapRight() {
+        return pair -> pair.right;
+    }
+    
+    public static <L> Function<Pair<L, ?>, L> unwrapLeft() {
+        return pair -> pair.left;
+    }
     
     private Pair(L left, R right) {
         this.left = left;
@@ -107,5 +143,10 @@ public final class Pair<L, R> {
             
             return Objects.equals(this.left, that.left) && Objects.equals(this.right, that.right);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("{%s,%s}", left, right);
     }
 }
