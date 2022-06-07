@@ -18,6 +18,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+
+import com.dfsek.terra.api.util.generic.pair.Pair;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -33,12 +36,15 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.addon.DependencySorter;
@@ -212,13 +218,71 @@ public abstract class AbstractPlatform implements Platform {
                 logger.info("No resources config found. Skipping resource dumping.");
                 return;
             }
+            
+            Path data = getDataFolder().toPath();
+            
+            Path addonsPath = data.resolve("addons");
+            Set<Pair<Path, String>> paths = Files
+                    .walk(addonsPath)
+                    .map(path -> Pair.of(path, data.relativize(path).toString()))
+                    
+                    .map(Pair.mapRight(s -> {
+                        if(s.contains("+")) { // remove commit hash
+                            return s.substring(0, s.lastIndexOf('+'));
+                        }
+                        return s;
+                    }))
+                    
+                    .filter(Pair.testRight(s -> s.contains("."))) // remove patch version
+                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+                    
+                    .filter(Pair.testRight(s -> s.contains("."))) // remove minor version
+                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+                    
+                    .collect(Collectors.toSet());
+            
+            Set<String> pathsNoMajor = paths
+                    .stream()
+                    .filter(Pair.testRight(s -> s.contains(".")))
+                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.')))) // remove major version
+                    .map(Pair.unwrapRight())
+                    .collect(Collectors.toSet());
+            
+            
+            // Terra-aaa-aaa-1.2.3-BETA+1e6af8923d.jar
             String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                String resourcePath = String.format("%s/%s", dir, entry);
+                String resourcePath = dir + File.separatorChar + entry;
                 File resource = new File(getDataFolder(), resourcePath);
                 if(resource.exists())
                     return; // dont overwrite
+                
+                paths
+                        .stream()
+                        .filter(Pair.testRight(resourcePath::startsWith))
+                        .forEach(Pair.consumeLeft(path -> {
+                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                            try {
+                                Files.delete(path);
+                            } catch(IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        }));
+                
+                if(pathsNoMajor
+                           .stream()
+                           .anyMatch(resourcePath::startsWith) && // if any share name
+                   paths
+                           .stream()
+                           .map(Pair.unwrapRight())
+                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                    logger.warn(
+                            "Addon {} has a new major version available. It will not be automatically updated; you will need to ensure " +
+                            "compatibility and update manually.",
+                            resourcePath);
+                }
+                
                 logger.info("Dumping resource {}...", resource.getAbsolutePath());
                 try {
                     resource.getParentFile().mkdirs();
