@@ -108,8 +108,10 @@ public abstract class AbstractPlatform implements Platform {
         logger.info("Initializing Terra...");
         
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
+            logger.info("Loading config.yml");
             File configFile = new File(getDataFolder(), "config.yml");
             if(!configFile.exists()) {
+                logger.info("Writing new config.yml...");
                 FileUtils.copyInputStreamToFile(stream, configFile);
             }
         } catch(IOException e) {
@@ -247,8 +249,7 @@ public abstract class AbstractPlatform implements Platform {
                 if(resource.exists())
                     return; // dont overwrite
                 
-                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
-                    OutputStream os = new FileOutputStream(resource)) {
+                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath)) {
                     if(is == null) {
                         logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
                         return;
@@ -283,8 +284,9 @@ public abstract class AbstractPlatform implements Platform {
                     logger.info("Dumping resource {}...", resource.getAbsolutePath());
                     resource.getParentFile().mkdirs();
                     resource.createNewFile();
-                    
-                    IOUtils.copy(is, os);
+                    try(OutputStream os = new FileOutputStream(resource)) {
+                        IOUtils.copy(is, os);
+                    }
                 } catch(IOException e) {
                     throw new UncheckedIOException(e);
                 }
