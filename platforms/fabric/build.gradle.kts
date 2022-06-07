@@ -3,7 +3,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id("fabric-loom").version("0.12-SNAPSHOT")
+    id("fabric-loom").version(Versions.Fabric.loom)
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -23,6 +23,10 @@ dependencies {
     
     include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
     include("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI)
+    
+    "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
     
     //include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
     //include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
