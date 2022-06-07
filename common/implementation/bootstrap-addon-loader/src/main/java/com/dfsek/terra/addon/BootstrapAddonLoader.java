@@ -74,7 +74,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             }
             
         } catch(IOException e) {
-            throw new UncheckedIOException(e);
+            throw new AddonLoadException("Failed to load addon from path " + addonPath, e);
         }
     }
     

@@ -18,9 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +61,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.GenericLoaders;
@@ -249,7 +247,6 @@ public abstract class AbstractPlatform implements Platform {
                     .collect(Collectors.toSet());
             
             
-            // Terra-aaa-aaa-1.2.3-BETA+1e6af8923d.jar
             String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
