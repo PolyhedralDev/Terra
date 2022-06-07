@@ -74,21 +74,24 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             }
             
         } catch(IOException e) {
-            throw new UncheckedIOException(e);
+            throw new AddonLoadException("Failed to load addon from path " + addonPath, e);
         }
     }
     
     @Override
     public Iterable<BootstrapBaseAddon<?>> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
-        Path bootstrapFolder = addonsFolder.resolve("bootstrap");
-        logger.debug("Loading bootstrap addons from {}", bootstrapFolder);
-        
-        try(Stream<Path> bootstrapAddons = Files.walk(bootstrapFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
-            return bootstrapAddons.filter(path -> path.toFile().isFile())
-                                  .filter(path -> path.toFile().canRead())
-                                  .filter(path -> path.toString().endsWith(".jar"))
-                                  .map(path -> loadAddon(path, parent))
-                                  .collect(Collectors.toList());
+        try {
+            Path bootstrapFolder = addonsFolder.resolve("bootstrap");
+            Files.createDirectories(bootstrapFolder);
+            logger.debug("Loading bootstrap addons from {}", bootstrapFolder);
+    
+            try(Stream<Path> bootstrapAddons = Files.walk(bootstrapFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
+                return bootstrapAddons.filter(path -> path.toFile().isFile())
+                                      .filter(path -> path.toFile().canRead())
+                                      .filter(path -> path.toString().endsWith(".jar"))
+                                      .map(path -> loadAddon(path, parent))
+                                      .collect(Collectors.toList());
+            }
         } catch(IOException e) {
             throw new UncheckedIOException(e);
         }

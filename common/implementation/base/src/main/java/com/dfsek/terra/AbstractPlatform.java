@@ -19,33 +19,6 @@ package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.addon.DependencySorter;
 import com.dfsek.terra.addon.EphemeralAddon;
@@ -64,6 +37,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.GenericLoaders;
@@ -74,6 +48,21 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -119,8 +108,10 @@ public abstract class AbstractPlatform implements Platform {
         logger.info("Initializing Terra...");
         
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
+            logger.info("Loading config.yml");
             File configFile = new File(getDataFolder(), "config.yml");
             if(!configFile.exists()) {
+                logger.info("Writing new config.yml...");
                 FileUtils.copyInputStreamToFile(stream, configFile);
             }
         } catch(IOException e) {
@@ -222,6 +213,7 @@ public abstract class AbstractPlatform implements Platform {
             Path data = getDataFolder().toPath();
             
             Path addonsPath = data.resolve("addons");
+            Files.createDirectories(addonsPath);
             Set<Pair<Path, String>> paths = Files
                     .walk(addonsPath)
                     .map(path -> Pair.of(path, data.relativize(path).toString()))
@@ -249,7 +241,6 @@ public abstract class AbstractPlatform implements Platform {
                     .collect(Collectors.toSet());
             
             
-            // Terra-aaa-aaa-1.2.3-BETA+1e6af8923d.jar
             String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
@@ -258,42 +249,44 @@ public abstract class AbstractPlatform implements Platform {
                 if(resource.exists())
                     return; // dont overwrite
                 
-                paths
-                        .stream()
-                        .filter(Pair.testRight(resourcePath::startsWith))
-                        .forEach(Pair.consumeLeft(path -> {
-                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
-                            try {
-                                Files.delete(path);
-                            } catch(IOException e) {
-                                throw new UncheckedIOException(e);
-                            }
-                        }));
-                
-                if(pathsNoMajor
-                           .stream()
-                           .anyMatch(resourcePath::startsWith) && // if any share name
-                   paths
-                           .stream()
-                           .map(Pair.unwrapRight())
-                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
-                    logger.warn(
-                            "Addon {} has a new major version available. It will not be automatically updated; you will need to ensure " +
-                            "compatibility and update manually.",
-                            resourcePath);
-                }
-                
-                logger.info("Dumping resource {}...", resource.getAbsolutePath());
-                try {
+                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath)) {
+                    if(is == null) {
+                        logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
+                        return;
+                    }
+                    
+                    paths
+                            .stream()
+                            .filter(Pair.testRight(resourcePath::startsWith))
+                            .forEach(Pair.consumeLeft(path -> {
+                                logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                                try {
+                                    Files.delete(path);
+                                } catch(IOException e) {
+                                    throw new UncheckedIOException(e);
+                                }
+                            }));
+                    
+                    if(pathsNoMajor
+                               .stream()
+                               .anyMatch(resourcePath::startsWith) && // if any share name
+                       paths
+                               .stream()
+                               .map(Pair.unwrapRight())
+                               .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                        logger.warn(
+                                "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
+                                "ensure " +
+                                "compatibility and update manually.",
+                                resourcePath);
+                    }
+                    
+                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
                     resource.getParentFile().mkdirs();
                     resource.createNewFile();
-                } catch(IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-                logger.debug("Copying resource {}", resourcePath);
-                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
-                    OutputStream os = new FileOutputStream(resource)) {
-                    IOUtils.copy(is, os);
+                    try(OutputStream os = new FileOutputStream(resource)) {
+                        IOUtils.copy(is, os);
+                    }
                 } catch(IOException e) {
                     throw new UncheckedIOException(e);
                 }

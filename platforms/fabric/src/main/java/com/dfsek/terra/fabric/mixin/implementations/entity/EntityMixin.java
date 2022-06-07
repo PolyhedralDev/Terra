@@ -44,9 +44,6 @@ public abstract class EntityMixin {
     @Shadow
     public abstract void teleport(double destX, double destY, double destZ);
     
-    @Shadow
-    public abstract void sendSystemMessage(Text message, UUID senderUuid);
-    
     public Vector3 terra$position() {
         return FabricAdapter.adapt(blockPos);
     }

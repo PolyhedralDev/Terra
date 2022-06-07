@@ -81,10 +81,8 @@ public abstract class ChunkRegionMixin {
         this.config = ((ServerWorld) world).getPack();
     }
     
-    @SuppressWarnings("deprecation")
     public Entity terraWorld$spawnEntity(Vector3 location, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(
-                ((ChunkRegion) (Object) this).toServerWorld());
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null);
         entity.setPos(location.getX(), location.getY(), location.getZ());
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;

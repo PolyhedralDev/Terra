@@ -17,11 +17,14 @@
 
 package com.dfsek.terra.fabric.handle;
 
+import com.dfsek.terra.fabric.FabricEntryPoint;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +39,8 @@ public class FabricWorldHandle implements WorldHandle {
     
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
-        BlockArgumentParser parser = new BlockArgumentParser(new StringReader(data), true);
         try {
-            net.minecraft.block.BlockState state = parser.parse(true).getBlockState();
+            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registry.BLOCK, data, true).blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             return (BlockState) state;
         } catch(CommandSyntaxException e) {

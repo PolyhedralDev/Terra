@@ -3,7 +3,6 @@ package com.dfsek.terra.fabric.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 
@@ -43,10 +42,6 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private Precipitation precipitation = null;
     
-    @Value("climate.category")
-    @Default
-    private Category category = null;
-    
     public Integer getFogColor() {
         return fogColor;
     }
@@ -69,10 +64,6 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     public Integer getSkyColor() {
         return skyColor;
-    }
-    
-    public Category getCategory() {
-        return category;
     }
     
     public Precipitation getPrecipitation() {

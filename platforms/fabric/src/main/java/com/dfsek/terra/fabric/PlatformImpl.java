@@ -29,7 +29,6 @@ import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.addon.EphemeralAddon;
@@ -66,6 +66,10 @@ public class PlatformImpl extends AbstractPlatform {
     
     public void setServer(MinecraftServer server) {
         this.server = server;
+    }
+    
+    public MinecraftServer getServer() {
+        return server;
     }
     
     @Override
@@ -157,9 +161,10 @@ public class PlatformImpl extends AbstractPlatform {
                         throw new LoadException("Invalid identifier: " + o, depthTracker);
                     return identifier;
                 })
-                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.byName((String) o))
-                .registerLoader(Category.class, (type, o, loader, depthTracker) -> Category.byName((String) o))
-                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> GrassColorModifier.byName((String) o));
+                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
+                        Locale.ROOT)))
+                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
+                        Locale.ROOT)));
     }
     
     

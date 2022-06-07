@@ -19,10 +19,12 @@ object Versions {
     
     object Fabric {
         const val fabricLoader = "0.14.2"
-        const val fabricAPI = "0.53.4+1.18.2"
-        const val minecraft = "1.18.2"
-        const val yarn = "$minecraft+build.3"
+        const val fabricAPI = "0.55.1+1.19"
+        const val minecraft = "1.19"
+        const val yarn = "$minecraft+build.1"
         const val permissionsAPI = "0.1-SNAPSHOT"
+        const val mixin = "0.11.2+mixin.0.8.5"
+        const val loom = "0.11-SNAPSHOT"
     }
     
     object Bukkit {

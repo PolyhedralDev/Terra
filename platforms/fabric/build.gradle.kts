@@ -3,7 +3,7 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id("fabric-loom").version("0.11-SNAPSHOT")
+    id("fabric-loom").version(Versions.Fabric.loom)
     id("com.modrinth.minotaur").version("1.1.0")
 }
 
@@ -15,7 +15,7 @@ dependencies {
     
     modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
-    setOf("fabric-command-api-v1", "fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base").forEach { apiModule ->
+    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base").forEach { apiModule ->
         val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
         modImplementation(module)
         include(module)
@@ -24,8 +24,12 @@ dependencies {
     include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
     include("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI)
     
-    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
+    
+    //include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    //include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
 }
 
 loom {

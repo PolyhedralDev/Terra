@@ -38,6 +38,10 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Default
     private double beardThreshold = 0.5;
     
+    @Value("fabric.beard.air-threshold")
+    @Default
+    private double airThreshold = -0.5;
+    
     public boolean useVanillaBiomes() {
         return vanillaBiomes;
     }
@@ -48,5 +52,9 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     
     public double getBeardThreshold() {
         return beardThreshold;
+    }
+    
+    public double getAirThreshold() {
+        return airThreshold;
     }
 }
