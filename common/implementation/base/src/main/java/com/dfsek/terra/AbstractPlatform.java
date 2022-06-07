@@ -18,30 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UncheckedIOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.dfsek.terra.addon.BootstrapAddonLoader;
 import com.dfsek.terra.addon.DependencySorter;
@@ -72,6 +48,21 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -256,45 +247,43 @@ public abstract class AbstractPlatform implements Platform {
                 if(resource.exists())
                     return; // dont overwrite
                 
-                paths
-                        .stream()
-                        .filter(Pair.testRight(resourcePath::startsWith))
-                        .forEach(Pair.consumeLeft(path -> {
-                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
-                            try {
-                                Files.delete(path);
-                            } catch(IOException e) {
-                                throw new UncheckedIOException(e);
-                            }
-                        }));
-                
-                if(pathsNoMajor
-                           .stream()
-                           .anyMatch(resourcePath::startsWith) && // if any share name
-                   paths
-                           .stream()
-                           .map(Pair.unwrapRight())
-                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
-                    logger.warn(
-                            "Addon {} has a new major version available. It will not be automatically updated; you will need to ensure " +
-                            "compatibility and update manually.",
-                            resourcePath);
-                }
-                
-                logger.info("Dumping resource {}...", resource.getAbsolutePath());
-                try {
-                    resource.getParentFile().mkdirs();
-                    resource.createNewFile();
-                } catch(IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-                logger.debug("Copying resource {}", resourcePath);
                 try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
                     OutputStream os = new FileOutputStream(resource)) {
                     if(is == null) {
                         logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
                         return;
                     }
+                    
+                    paths
+                            .stream()
+                            .filter(Pair.testRight(resourcePath::startsWith))
+                            .forEach(Pair.consumeLeft(path -> {
+                                logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                                try {
+                                    Files.delete(path);
+                                } catch(IOException e) {
+                                    throw new UncheckedIOException(e);
+                                }
+                            }));
+                    
+                    if(pathsNoMajor
+                               .stream()
+                               .anyMatch(resourcePath::startsWith) && // if any share name
+                       paths
+                               .stream()
+                               .map(Pair.unwrapRight())
+                               .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                        logger.warn(
+                                "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
+                                "ensure " +
+                                "compatibility and update manually.",
+                                resourcePath);
+                    }
+                    
+                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
+                    resource.getParentFile().mkdirs();
+                    resource.createNewFile();
+                    
                     IOUtils.copy(is, os);
                 } catch(IOException e) {
                     throw new UncheckedIOException(e);
