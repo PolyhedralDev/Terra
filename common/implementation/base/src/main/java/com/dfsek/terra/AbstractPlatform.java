@@ -291,6 +291,10 @@ public abstract class AbstractPlatform implements Platform {
                 logger.debug("Copying resource {}", resourcePath);
                 try(InputStream is = getClass().getResourceAsStream("/" + resourcePath);
                     OutputStream os = new FileOutputStream(resource)) {
+                    if(is == null) {
+                        logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
+                        return;
+                    }
                     IOUtils.copy(is, os);
                 } catch(IOException e) {
                     throw new UncheckedIOException(e);
