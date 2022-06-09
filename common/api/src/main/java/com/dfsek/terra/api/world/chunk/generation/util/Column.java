@@ -28,11 +28,7 @@ public class Column<T extends WritableWorld> {
     private final T world;
     
     public Column(int x, int z, T world) {
-        this.x = x;
-        this.z = z;
-        this.world = world;
-        this.max = world.getMaxHeight();
-        this.min = world.getMinHeight();
+        this(x, z, world, world.getMinHeight(), world.getMaxHeight());
     }
     
     public Column(int x, int z, T world, int min, int max) {
