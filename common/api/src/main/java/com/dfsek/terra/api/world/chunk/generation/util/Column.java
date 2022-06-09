@@ -70,6 +70,7 @@ public class Column<T extends WritableWorld> {
     }
     
     public Column<T> clamp(int min, int max) {
+        if(min >= max) throw new IllegalArgumentException("Min greater than or equal to max: " + min + ", " + max);
         return new Column<>(x, z, world, min, max);
     }
     
