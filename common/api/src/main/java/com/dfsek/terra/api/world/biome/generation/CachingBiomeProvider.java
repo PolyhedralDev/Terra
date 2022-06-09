@@ -1,8 +1,11 @@
 package com.dfsek.terra.api.world.biome.generation;
 
 import com.dfsek.terra.api.Handle;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.MathUtil;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +21,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     private final int minY;
     private final int maxY;
     private final Map<Long, Biome[]> cache = new HashMap<>();
+    private final Map<Long, Column<Biome>> columns = new HashMap<>();
     
     protected CachingBiomeProvider(BiomeProvider delegate, int minY, int maxY) {
         this.delegate = delegate;
@@ -39,6 +43,11 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
             biomes[yi] = delegate.getBiome(x, y, z, seed);
         }
         return biomes[yi];
+    }
+    
+    @Override
+    public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
+        return columns.computeIfAbsent(MathUtil.squash(x, z), k -> BiomeProvider.super.getColumn(x, z, properties));
     }
     
     @Override
