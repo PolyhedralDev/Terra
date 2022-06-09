@@ -13,6 +13,8 @@ import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
 
+import net.jafama.FastMath;
+
 
 public class SurfaceLocator implements Locator {
     private final Range search;
@@ -24,9 +26,10 @@ public class SurfaceLocator implements Locator {
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder builder = column.newBinaryColumn();
-        for(int y : search) {
-            if(y < column.getMinY()) continue;
-            if(y >= column.getMaxY()) break;
+        int max = FastMath.min(search.getMax(), column.getMaxY());
+        int min = FastMath.max(search.getMin(), column.getMinY());
+        if(min >= max) return builder.build();
+        for(int y = min; y < max; y++) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
                 builder.set(y);
             }
