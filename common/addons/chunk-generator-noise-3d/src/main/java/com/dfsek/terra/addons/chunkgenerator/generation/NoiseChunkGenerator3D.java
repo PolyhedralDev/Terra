@@ -73,15 +73,17 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 
-                Biome biome = biomeProvider.getBiome(cx, 0, cz, seed);
                 
-                PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-                
-                int sea = paletteInfo.seaLevel();
-                Palette seaPalette = paletteInfo.ocean();
                 
                 BlockState data;
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
+                    Biome biome = biomeProvider.getBiome(cx, y, cz, seed);
+    
+                    PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
+    
+                    int sea = paletteInfo.seaLevel();
+                    Palette seaPalette = paletteInfo.ocean();
+                    
                     if(sampler.sample(x, y, z) > 0) {
                         if(carver.sample(x, y, z) <= 0) {
                             data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,

@@ -244,12 +244,13 @@ public abstract class AbstractPlatform implements Platform {
             String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
-                String resourcePath = dir + File.separatorChar + entry;
+                String resourceClassPath = dir + "/" + entry;
+                String resourcePath = resourceClassPath.replace('/', File.separatorChar);
                 File resource = new File(getDataFolder(), resourcePath);
                 if(resource.exists())
                     return; // dont overwrite
                 
-                try(InputStream is = getClass().getResourceAsStream("/" + resourcePath)) {
+                try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
                     if(is == null) {
                         logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
                         return;

@@ -7,14 +7,14 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.util.mutable.MutableInteger;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
 import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 /**
@@ -55,25 +55,24 @@ public class ChunkInterpolator {
         
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
-                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), 0, zOrigin + (z << 2), seed)
-                                                                  .getContext()
-                                                                  .get(BiomeNoiseProperties.class);
-                Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
-                
-                int step = generationSettings.blendStep();
-                int blend = generationSettings.blendDistance();
-                
-                for(int xi = -blend; xi <= blend; xi++) {
-                    for(int zi = -blend; zi <= blend; zi++) {
-                        genMap.computeIfAbsent(
-                                provider.getBiome(xOrigin + (x << 2) + (xi * step), 0, zOrigin + (z << 2) + (zi * step), seed)
-                                        .getContext()
-                                        .get(BiomeNoiseProperties.class),
-                                g -> new MutableInteger(0)).increment(); // Increment by 1
-                    }
-                }
-                
                 for(int y = 0; y < size + 1; y++) {
+                    BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), (y << 2) + min, zOrigin + (z << 2), seed)
+                                                                      .getContext()
+                                                                      .get(BiomeNoiseProperties.class);
+                    Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
+                    
+                    int step = generationSettings.blendStep();
+                    int blend = generationSettings.blendDistance();
+                    
+                    for(int xi = -blend; xi <= blend; xi++) {
+                        for(int zi = -blend; zi <= blend; zi++) {
+                            genMap.computeIfAbsent(
+                                    provider.getBiome(xOrigin + (x << 2) + (xi * step), 0, zOrigin + (z << 2) + (zi * step), seed)
+                                            .getContext()
+                                            .get(BiomeNoiseProperties.class),
+                                    g -> new MutableInteger(0)).increment(); // Increment by 1
+                        }
+                    }
                     noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + this.min, (z << 2) + zOrigin);
                 }
             }

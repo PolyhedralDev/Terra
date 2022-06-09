@@ -72,19 +72,15 @@
 
 - [ ] Bug Fix <!-- Anything which fixes an issue in Terra. -->
 - [ ] Build system <!-- Anything which pretain to the build system. -->
-- [ ] 
-  Documentation <!-- Anything which adds or improves documentation for existing features. -->
+- [ ] Documentation <!-- Anything which adds or improves documentation for existing features. -->
 - [ ] New Feature <!-- Anything which adds new functionality to Terra. -->
 - [ ] Performance <!-- Anything which is imrpoves the performance of Terra. -->
-- [ ] 
-  Refactoring <!-- Anything which does not add any new code, only moves code around. -->
-- [ ] 
-  Repository <!-- Anything which affects the repository. Eg. changes to the `README.md` file. -->
+- [ ] Refactoring <!-- Anything which does not add any new code, only moves code around. -->
+- [ ] Repository <!-- Anything which affects the repository. Eg. changes to the `README.md` file. -->
 - [ ] Revert <!-- Anything which reverts previous commits. -->
 - [ ] Style <!-- Anything which updates style. -->
 - [ ] Tests <!-- Anything which adds or updates tests. -->
-- [ ] 
-  Translation <!-- Anything which is internationalizing the Terra program to other languages. -->
+- [ ] Translation <!-- Anything which is internationalizing the Terra program to other languages. -->
 
 #### Compatiblity
 
