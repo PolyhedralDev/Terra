@@ -1,5 +1,7 @@
 package com.dfsek.terra.api.util;
 
+import com.dfsek.terra.api.util.function.IntObjConsumer;
+
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
@@ -20,9 +22,15 @@ public interface Column<T> {
         }
     }
     
+    default void forEach(IntObjConsumer<T> consumer) {
+        for(int y = getMinY(); y < getMaxY(); y++) {
+            consumer.accept(y, get(y));
+        }
+    }
+    
     default List<? extends T> asList() {
         List<T> list = new ArrayList<>();
-        forEach(list::add);
+        forEach((Consumer<T>) list::add);
         return list;
     }
 }
