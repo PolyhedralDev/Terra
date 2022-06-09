@@ -25,6 +25,8 @@ public class SurfaceLocator implements Locator {
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder builder = column.newBinaryColumn();
         for(int y : search) {
+            if(y < column.getMinY()) continue;
+            if(y >= column.getMaxY()) break;
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
                 builder.set(y);
             }
