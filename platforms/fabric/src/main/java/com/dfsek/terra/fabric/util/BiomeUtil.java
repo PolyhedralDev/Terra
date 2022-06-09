@@ -113,46 +113,69 @@ public final class BiomeUtil {
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
         
         net.minecraft.world.biome.Biome.Builder builder = new Builder();
-        
-        if(biome.getContext().has(VanillaBiomeProperties.class)) {
-            VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-            
-            effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-                   .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-                   .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-                   .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-                   .grassColorModifier(
-                           Objects.requireNonNullElse(vanillaBiomeProperties.getModifier(), vanilla.getEffects().getGrassColorModifier()));
-            
-            
-            if(vanillaBiomeProperties.getGrassColor() == null) {
-                vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
-            } else {
-                effects.grassColor(vanillaBiomeProperties.getGrassColor());
-            }
-            
-            if(vanillaBiomeProperties.getFoliageColor() == null) {
-                vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
-            } else {
-                effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
-            }
-            
-            builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()));
-            
-        } else {
-            effects.waterColor(vanilla.getWaterColor())
-                   .waterFogColor(vanilla.getWaterFogColor())
-                   .fogColor(vanilla.getFogColor())
-                   .skyColor(vanilla.getSkyColor());
+    
+        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+
+        effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
+               .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
+               .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
+               .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
+               .grassColorModifier(
+                       Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getEffects().getGrassColorModifier()));
+    
+        if (vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
+        } else {
+            effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
+        }
+        
+        if (vanillaBiomeProperties.getGrassColor() == null) {
             vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
-            
-            builder.precipitation(vanilla.getPrecipitation());
+        } else {
+            effects.grassColor(vanillaBiomeProperties.getGrassColor());
+        }
+        
+        if (vanillaBiomeProperties.getParticleConfig() == null) {
+            vanilla.getEffects().getParticleConfig().ifPresent(effects::particleConfig);
+        } else {
+            effects.particleConfig(vanillaBiomeProperties.getParticleConfig());
+        }
+        
+        if (vanillaBiomeProperties.getLoopSound() == null) {
+            vanilla.getEffects().getLoopSound().ifPresent(effects::loopSound);
+        } else {
+            effects.loopSound(vanillaBiomeProperties.getLoopSound());
+        }
+        
+        if (vanillaBiomeProperties.getMoodSound() == null) {
+            vanilla.getEffects().getMoodSound().ifPresent(effects::moodSound);
+        } else {
+            effects.moodSound(vanillaBiomeProperties.getMoodSound());
+        }
+        
+        if (vanillaBiomeProperties.getAdditionsSound() == null) {
+            vanilla.getEffects().getAdditionsSound().ifPresent(effects::additionsSound);
+        } else {
+            effects.additionsSound(vanillaBiomeProperties.getAdditionsSound());
+        }
+        
+        if (vanillaBiomeProperties.getMusic() == null) {
+            vanilla.getEffects().getMusic().ifPresent(effects::music);
+        } else {
+            effects.music(vanillaBiomeProperties.getMusic());
+        }
+    
+        builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()));
+        
+        builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getTemperature()));
+    
+        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), vanilla.getDownfall()));
+        
+        if (vanillaBiomeProperties.getTemperatureModifier() != null) {
+            builder.temperatureModifier(vanillaBiomeProperties.getTemperatureModifier());
         }
         
         return builder
-                .temperature(vanilla.getTemperature())
-                .downfall(vanilla.getDownfall())
                 .effects(effects.build())
                 .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())

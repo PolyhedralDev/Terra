@@ -23,14 +23,26 @@ import ca.solostudios.strata.version.Version;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.fabric.config.BiomeAdditionsSoundTemplate;
+import com.dfsek.terra.fabric.config.BiomeMoodSoundTemplate;
+import com.dfsek.terra.fabric.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.fabric.config.MusicSoundTemplate;
+import com.dfsek.terra.fabric.config.SoundEventTemplate;
 import com.dfsek.terra.fabric.util.BiomeUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.sound.BiomeAdditionsSound;
+import net.minecraft.sound.BiomeMoodSound;
+import net.minecraft.sound.MusicSound;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome.Precipitation;
+import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
+import net.minecraft.world.biome.BiomeParticleConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +176,14 @@ public class PlatformImpl extends AbstractPlatform {
                 .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
                         Locale.ROOT)))
                 .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                        Locale.ROOT)));
+                        Locale.ROOT)))
+                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
+                        Locale.ROOT)))
+                .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
+                .registerLoader(SoundEvent.class, SoundEventTemplate::new)
+                .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
+                .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
+                .registerLoader(MusicSound.class, MusicSoundTemplate::new);
     }
     
     
