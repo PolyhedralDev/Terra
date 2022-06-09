@@ -33,7 +33,7 @@ public interface Column<T> {
         int y = getMinY();
         int runningMin = y;
         T runningObj = get(runningMin);
-        do {
+        while(y < getMaxY()) {
             y++;
             T current = get(y);
             
@@ -42,8 +42,8 @@ public interface Column<T> {
                 runningMin = y;
                 runningObj = current;
             }
-        } while(y < getMaxY());
-        consumer.accept(runningMin, y, runningObj);
+        }
+        consumer.accept(runningMin, ++y, runningObj);
     }
     
     default List<? extends T> asList() {
