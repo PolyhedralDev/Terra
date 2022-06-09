@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -60,6 +61,14 @@ public interface BiomeProvider {
     @Contract(pure = true)
     default Biome getBiome(Vector3Int vector3, long seed) {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
+    }
+    
+    default Column<Biome> getColumn(int x, int z, int min, int max, long seed) {
+        return new BiomeColumn(this, min, max, x, z, seed);
+    }
+    
+    default Column<Biome> getColumn(int x, int z, WorldProperties properties) {
+        return getColumn(x, z, properties.getMinHeight(), properties.getMaxHeight(), properties.getSeed());
     }
     
     /**
