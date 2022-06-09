@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
-import java.util.Collections;
-import java.util.Random;
-
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
@@ -19,6 +16,9 @@ import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+
+import java.util.Collections;
+import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -49,26 +49,26 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 long coordinateSeed = (seed * 31 + tx) * 31 + tz;
                 
                 world.getBiomeProvider()
-                     .getBiome(tx, 0, tz, seed)
-                     .getContext()
-                     .get(BiomeFeatures.class)
-                     .getFeatures()
-                     .getOrDefault(this, Collections.emptyList())
-                     .forEach(feature -> {
-                         platform.getProfiler().push(feature.getID());
-                         if(feature.getDistributor().matches(tx, tz, seed)) {
-                             feature.getLocator()
-                                    .getSuitableCoordinates(column)
-                                    .forEach(y ->
-                                                     feature.getStructure(world, tx, y, tz)
-                                                            .generate(Vector3Int.of(tx, y, tz),
-                                                                      world,
-                                                                      new Random(coordinateSeed * 31 + y),
-                                                                      Rotation.NONE)
-                                            );
-                         }
-                         platform.getProfiler().pop(feature.getID());
-                     });
+                     .getColumn(tx, tz, world)
+                     .forRanges((min, max, biome) ->
+                                        biome.getContext()
+                                             .get(BiomeFeatures.class)
+                                             .getFeatures()
+                                             .getOrDefault(this, Collections.emptyList())
+                                             .forEach(feature -> {
+                                                 platform.getProfiler().push(feature.getID());
+                                                 if(feature.getDistributor().matches(tx, tz, seed)) {
+                                                     feature.getLocator()
+                                                            .getSuitableCoordinates(column.clamp(min, max))
+                                                            .forEach(y -> feature.getStructure(world, tx, y, tz)
+                                                                                 .generate(Vector3Int.of(tx, y, tz),
+                                                                                           world,
+                                                                                           new Random(coordinateSeed * 31 + y),
+                                                                                           Rotation.NONE)
+                                                                    );
+                                                 }
+                                                 platform.getProfiler().pop(feature.getID());
+                                             }));
             }
         }
         platform.getProfiler().pop(profile);
