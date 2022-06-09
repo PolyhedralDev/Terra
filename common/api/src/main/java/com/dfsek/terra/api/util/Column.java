@@ -43,6 +43,7 @@ public interface Column<T> {
                 runningObj = current;
             }
         } while(y < getMaxY());
+        consumer.accept(runningMin, y, runningObj);
     }
     
     default List<? extends T> asList() {
