@@ -21,6 +21,8 @@ public class ColumnTest {
     private final Column<Integer> returnY = new ColumnImpl<>(-10, 10, Function.identity());
     private final Column<Boolean> returnPositive = new ColumnImpl<>(-10, 10, i -> i >= 0);
     
+    private final Column<Boolean> returnTrue = new ColumnImpl<>(-10, 10, i -> true);
+    
     @Test
     public void testForEach() {
         returnY.forEach(Assertions::assertEquals);
@@ -54,6 +56,17 @@ public class ColumnTest {
         assertEquals(IntStream.range(-10, 10).mapToObj(i -> Pair.of(Pair.of(i, i + 1), i)).collect(Collectors.toList()),
                      list);
     }
+    
+    @Test
+    public void testForRangesContiguous() {
+        List<Pair<Pair<Integer, Integer>, Boolean>> list = new ArrayList<>();
+        
+        returnTrue.forRanges((min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
+        
+        assertEquals(List.of(Pair.of(Pair.of(-10, 10), true)),
+                     list);
+    }
+    
     static class ColumnImpl<T> implements Column<T> {
         private final int min;
         private final int max;
