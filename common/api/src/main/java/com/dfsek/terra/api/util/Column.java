@@ -1,5 +1,6 @@
 package com.dfsek.terra.api.util;
 
+import com.dfsek.terra.api.util.function.IntIntObjConsumer;
 import com.dfsek.terra.api.util.function.IntObjConsumer;
 
 import com.google.common.collect.ImmutableList;
@@ -26,6 +27,22 @@ public interface Column<T> {
         for(int y = getMinY(); y < getMaxY(); y++) {
             consumer.accept(y, get(y));
         }
+    }
+    
+    default void forRanges(IntIntObjConsumer<T> consumer) {
+        int y = getMinY();
+        int runningMin = y;
+        T runningObj = get(runningMin);
+        do {
+            y++;
+            T current = get(y);
+            
+            if(!current.equals(runningObj)) {
+                consumer.accept(runningMin, y, runningObj);
+                runningMin = y;
+                runningObj = current;
+            }
+        } while(y < getMaxY());
     }
     
     default List<? extends T> asList() {
