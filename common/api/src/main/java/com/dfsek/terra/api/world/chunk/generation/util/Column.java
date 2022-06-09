@@ -53,7 +53,7 @@ public class Column<T extends WritableWorld> {
     
     public BlockState getBlock(int y) {
         if(y >= max || y < min) {
-            throw new IllegalArgumentException("Y out of range [" + min + ", " + max + ")");
+            throw new IllegalArgumentException("Y " + y + " out of range [" + min + ", " + max + ")");
         }
         return world.getBlockState(x, y, z);
     }
