@@ -51,7 +51,7 @@ public class ColumnTest {
         
         returnY.forRanges((min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
         
-        assertEquals(IntStream.range(-10, 11).mapToObj(i -> Pair.of(Pair.of(i, i + 1), i)).collect(Collectors.toList()),
+        assertEquals(IntStream.range(-10, 10).mapToObj(i -> Pair.of(Pair.of(i, i + 1), i)).collect(Collectors.toList()),
                      list);
     }
     static class ColumnImpl<T> implements Column<T> {

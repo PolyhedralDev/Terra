@@ -33,15 +33,16 @@ public interface Column<T> {
     default void forRanges(IntIntObjConsumer<T> consumer) {
         int min = getMinY();
         
-        int y = min + 1;
+        int y = min;
         
-        T runningObj = get(min);
-    
-    
+        T runningObj = get(y);
+        
         int runningMin = min;
-        int max = (getMaxY() - 1);
+        
+        int max = getMaxY() - 1;
         
         while(y < max) {
+            y++;
             T current = get(y);
             
             if(!current.equals(runningObj)) {
@@ -49,7 +50,6 @@ public interface Column<T> {
                 runningMin = y;
                 runningObj = current;
             }
-            y++;
         }
         consumer.accept(runningMin, ++y, runningObj);
     }
