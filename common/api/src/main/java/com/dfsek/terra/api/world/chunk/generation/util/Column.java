@@ -39,8 +39,8 @@ public class Column<T extends WritableWorld> {
         this.x = x;
         this.z = z;
         this.world = world;
-        this.max = min;
-        this.min = max;
+        this.max = max;
+        this.min = min;
     }
     
     public int getX() {
