@@ -134,7 +134,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world);
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null);
         entity.setPos(x, y, z);
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
