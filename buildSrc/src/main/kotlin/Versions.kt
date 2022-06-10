@@ -24,7 +24,7 @@ object Versions {
         const val yarn = "$minecraft+build.1"
         const val permissionsAPI = "0.1-SNAPSHOT"
         const val mixin = "0.11.2+mixin.0.8.5"
-        const val loom = "0.11-SNAPSHOT"
+        const val loom = "0.12-SNAPSHOT"
     }
     
     object Bukkit {
