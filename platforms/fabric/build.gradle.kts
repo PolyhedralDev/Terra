@@ -40,8 +40,9 @@ loom {
 }
 
 
-addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runClient").get())
-addonDir(project.rootProject.file("./run/config/Terra/addons"), tasks.named("runServer").get())
+
+addonDir(project.file("./run/config/Terra/addons"), tasks.named("runClient").get())
+addonDir(project.file("./run/config/Terra/addons"), tasks.named("runServer").get())
 
 tasks.withType<JavaCompile>().configureEach {
     options.release.set(17)
