@@ -45,7 +45,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     
     public void load(File folder, Platform platform) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, platform);
-        register(pack.getRegistryKey(), pack);
+        registerChecked(pack.getRegistryKey(), pack);
     }
     
     public boolean loadAll(Platform platform) {
@@ -75,6 +75,6 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     
     public void load(ZipFile file, Platform platform) throws ConfigException {
         ConfigPackImpl pack = new ConfigPackImpl(file, platform);
-        register(pack.getRegistryKey(), pack);
+        registerChecked(pack.getRegistryKey(), pack);
     }
 }
