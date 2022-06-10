@@ -33,6 +33,16 @@ class BiomeColumn implements Column<Biome> {
     }
     
     @Override
+    public int getX() {
+        return x;
+    }
+    
+    @Override
+    public int getZ() {
+        return z;
+    }
+    
+    @Override
     public Biome get(int y) {
         return biomeProvider.getBiome(x, y, z, seed);
     }

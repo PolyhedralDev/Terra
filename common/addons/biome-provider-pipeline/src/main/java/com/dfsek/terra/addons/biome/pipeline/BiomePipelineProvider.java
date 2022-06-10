@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.world.info.WorldProperties;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import net.jafama.FastMath;
@@ -90,6 +93,11 @@ public class BiomePipelineProvider implements BiomeProvider {
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
+    }
+    
+    @Override
+    public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
+        return new BiomePipelineColumn(this, properties.getMinHeight(), properties.getMaxHeight(), x, z, properties.getSeed());
     }
     
     private record SeededVector(int x, int z, long seed) {

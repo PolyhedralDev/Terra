@@ -17,6 +17,9 @@ public interface Column<T> {
     
     int getMaxY();
     
+    int getX();
+    int getZ();
+    
     T get(int y);
     
     default void forEach(Consumer<T> consumer) {

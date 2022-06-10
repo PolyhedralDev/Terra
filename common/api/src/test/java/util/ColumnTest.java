@@ -87,7 +87,17 @@ public class ColumnTest {
         public int getMaxY() {
             return max;
         }
-        
+    
+        @Override
+        public int getX() {
+            return 0;
+        }
+    
+        @Override
+        public int getZ() {
+            return 0;
+        }
+    
         @Override
         public T get(int y) {
             return p.apply(y);

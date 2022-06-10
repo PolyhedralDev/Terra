@@ -21,7 +21,6 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     private final int minY;
     private final int maxY;
     private final Map<Long, Biome[]> cache = new HashMap<>();
-    private final Map<Long, Column<Biome>> columns = new HashMap<>();
     
     protected CachingBiomeProvider(BiomeProvider delegate, int minY, int maxY) {
         this.delegate = delegate;
@@ -47,7 +46,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     
     @Override
     public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
-        return columns.computeIfAbsent(MathUtil.squash(x, z), k -> BiomeProvider.super.getColumn(x, z, properties));
+        return delegate.getColumn(x, z, properties);
     }
     
     @Override
