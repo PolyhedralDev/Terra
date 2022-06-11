@@ -17,6 +17,19 @@
 
 package com.dfsek.terra.fabric.generation;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
+import com.dfsek.terra.fabric.util.FabricAdapter;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -53,19 +66,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
-import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.data.Codecs;
-import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
-import com.dfsek.terra.fabric.util.FabricAdapter;
-
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
     private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
@@ -96,7 +96,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
         return Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER;
     }
-
+    
     @Override
     public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
         // no op
@@ -104,7 +104,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public void populateEntities(ChunkRegion region) {
-        if (!this.settings.value().mobGenerationDisabled()) {
+        if(!this.settings.value().mobGenerationDisabled()) {
             ChunkPos chunkPos = region.getCenterPos();
             RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
             ChunkRandom chunkRandom = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
@@ -119,7 +119,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     
-    
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
                                                   StructureAccessor structureAccessor, Chunk chunk) {
@@ -127,7 +126,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider = pack.getBiomeProvider().caching(world);
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
-        
+            
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
             if(compatibilityOptions.isBeard()) {
                 beard(structureAccessor, chunk, world, biomeProvider, compatibilityOptions);
@@ -137,7 +136,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     }
     
     private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
-                           PreLoadCompatibilityOptions compatibilityOptions) {
+                       PreLoadCompatibilityOptions compatibilityOptions) {
         StructureWeightSampler structureWeightSampler = StructureWeightSampler.method_42695(structureAccessor, chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
@@ -186,14 +185,15 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
-        int y = height.getTopY();
         WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
-        while(y > getMinimumY() && !heightmap.getBlockPredicate().test(
-                (BlockState) delegate.getBlock(properties, x, y - 1, z, biomeProvider))) {
-            y--;
+        int min = height.getBottomY();
+        for(int y = height.getTopY() - 1; y >= min; y--) {
+            if(heightmap
+                    .getBlockPredicate()
+                    .test((BlockState) delegate.getBlock(properties, x, y, z, biomeProvider))) return y + 1;
         }
-        return y;
+        return min;
     }
     
     @Override
