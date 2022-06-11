@@ -16,6 +16,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 import org.jetbrains.annotations.Contract;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -62,6 +63,11 @@ public interface BiomeProvider {
     default Biome getBiome(Vector3Int vector3, long seed) {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
+    
+    default Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.empty();
+    }
+    
     
     default Column<Biome> getColumn(int x, int z, WorldProperties properties) {
         return new BiomeColumn(this, properties.getMinHeight(), properties.getMaxHeight(), x, z, properties.getSeed());
