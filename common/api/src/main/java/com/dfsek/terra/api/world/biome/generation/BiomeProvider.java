@@ -70,7 +70,11 @@ public interface BiomeProvider {
     
     
     default Column<Biome> getColumn(int x, int z, WorldProperties properties) {
-        return new BiomeColumn(this, properties.getMinHeight(), properties.getMaxHeight(), x, z, properties.getSeed());
+        return getColumn(x, z, properties.getSeed(), properties.getMinHeight(), properties.getMaxHeight());
+    }
+    
+    default Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return new BiomeColumn(this, min, max, x, z, seed);
     }
     
     /**

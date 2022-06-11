@@ -12,14 +12,16 @@ public class ExtrusionColumn implements Column<Biome> {
     private final BiomeExtrusionProvider provider;
     private final int x, z;
     private final long seed;
+    private final Column<Biome> delegate;
     
-    public ExtrusionColumn(WorldProperties worldProperties, BiomeExtrusionProvider provider, int x, int z) {
+    public ExtrusionColumn(WorldProperties worldProperties, BiomeExtrusionProvider provider, int x, int z, long seed) {
         this.min = worldProperties.getMinHeight();
         this.max = worldProperties.getMaxHeight();
         this.provider = provider;
         this.x = x;
         this.z = z;
         this.seed = worldProperties.getSeed();
+        this.delegate = provider.getDelegate().getColumn(x, z, seed, min, max);
     }
     
     @Override
@@ -44,7 +46,7 @@ public class ExtrusionColumn implements Column<Biome> {
     
     @Override
     public Biome get(int y) {
-        return provider.getBiome(x, y, z, seed);
+        return provider.getBiome(x, y, z, seed, delegate.get(y));
     }
     
     @Override

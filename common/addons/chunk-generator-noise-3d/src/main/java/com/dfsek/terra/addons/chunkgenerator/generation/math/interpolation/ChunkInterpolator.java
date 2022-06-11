@@ -8,7 +8,9 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import net.jafama.FastMath;
@@ -54,12 +56,15 @@ public class ChunkInterpolator {
         double[][][] noiseStorage = new double[5][5][size + 1];
         
         for(int x = 0; x < 5; x++) {
+            int scaledX = x << 2;
+            int absoluteX = xOrigin + scaledX;
             for(int z = 0; z < 5; z++) {
+                int scaledZ = z << 2;
+                int absoluteZ = zOrigin + scaledZ;
+                Column<Biome> column = provider.getColumn(absoluteX, absoluteZ, seed, min, max);
                 for(int y = 0; y < size; y++) {
-                    int scaledX = x << 2;
                     int scaledY = (y << 2) + min;
-                    int scaledZ = z << 2;
-                    BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + scaledX, scaledY, zOrigin + scaledZ, seed)
+                    BiomeNoiseProperties generationSettings = column.get(scaledY)
                                                                       .getContext()
                                                                       .get(BiomeNoiseProperties.class);
                     Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
@@ -70,13 +75,13 @@ public class ChunkInterpolator {
                     for(int xi = -blend; xi <= blend; xi++) {
                         for(int zi = -blend; zi <= blend; zi++) {
                             genMap.computeIfAbsent(
-                                    provider.getBiome(xOrigin + scaledX + (xi * step), scaledY, zOrigin + scaledZ + (zi * step), seed)
+                                    provider.getBiome(absoluteX + (xi * step), scaledY, absoluteZ + (zi * step), seed)
                                             .getContext()
                                             .get(BiomeNoiseProperties.class),
                                     g -> new MutableInteger(0)).increment(); // Increment by 1
                         }
                     }
-                    double noise = computeNoise(genMap, scaledX + xOrigin, scaledY, scaledZ + zOrigin);
+                    double noise = computeNoise(genMap, absoluteX, scaledY, absoluteZ);
                     noiseStorage[x][z][y] = noise;
                     if(y == size - 1) {
                         noiseStorage[x][z][size] = noise;

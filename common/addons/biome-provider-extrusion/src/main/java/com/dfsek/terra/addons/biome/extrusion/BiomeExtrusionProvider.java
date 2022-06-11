@@ -42,6 +42,13 @@ public class BiomeExtrusionProvider implements BiomeProvider {
         return delegate.getBaseBiome(x, z, seed);
     }
     
+    public Biome getBiome(int x, int y, int z, long seed, Biome biome) {
+        for(Extrusion extrusion : extrusions) {
+            biome = extrusion.extrude(biome, x, y, z, seed);
+        }
+        return biome;
+    }
+    
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
@@ -51,8 +58,12 @@ public class BiomeExtrusionProvider implements BiomeProvider {
         return resolution;
     }
     
+    public BiomeProvider getDelegate() {
+        return delegate;
+    }
+    
     @Override
     public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
-        return new ExtrusionColumn(properties, this, x, z);
+        return new ExtrusionColumn(properties, this, x, z, properties.getSeed());
     }
 }
