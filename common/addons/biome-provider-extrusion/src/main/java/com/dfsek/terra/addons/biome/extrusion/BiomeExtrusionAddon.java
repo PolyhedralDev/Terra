@@ -46,7 +46,7 @@ public class BiomeExtrusionAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
                             event.getPack()
                                  .getOrCreateRegistry(PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register(addon.key("PIPELINE"), BiomeExtrusionTemplate::new);
+                    providerRegistry.register(addon.key("EXTRUSION"), BiomeExtrusionTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<Extrusion>>> sourceRegistry = event.getPack().getOrCreateRegistry(
