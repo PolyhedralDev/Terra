@@ -6,6 +6,8 @@ import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.api.ReplaceableBiome;
 import com.dfsek.terra.addons.biome.extrusion.config.BiomeExtrusionTemplate;
 import com.dfsek.terra.addons.biome.extrusion.config.ReplaceableBiomeLoader;
+import com.dfsek.terra.addons.biome.extrusion.config.extrusions.SetExtrusionTemplate;
+import com.dfsek.terra.addons.biome.extrusion.extrusions.SetExtrusion;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -45,6 +47,11 @@ public class BiomeExtrusionAddon implements AddonInitializer {
                             event.getPack()
                                  .getOrCreateRegistry(PROVIDER_REGISTRY_KEY);
                     providerRegistry.register(addon.key("PIPELINE"), BiomeExtrusionTemplate::new);
+                })
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<Extrusion>>> sourceRegistry = event.getPack().getOrCreateRegistry(
+                            EXTRUSION_REGISTRY_KEY);
+                    sourceRegistry.register(addon.key("SET"), SetExtrusionTemplate::new);
                 })
                 .failThrough();
         
