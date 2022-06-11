@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
+import com.dfsek.terra.api.util.Column;
+
 import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,11 +75,10 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 
-                
-                
+                Column<Biome> biomeColumn = biomeProvider.getColumn(cx, cz, world);
                 BlockState data;
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
-                    Biome biome = biomeProvider.getBiome(cx, y, cz, seed);
+                    Biome biome = biomeColumn.get(y);
     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
     
