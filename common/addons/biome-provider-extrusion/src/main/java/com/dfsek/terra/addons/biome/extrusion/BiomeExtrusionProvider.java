@@ -1,21 +1,25 @@
 package com.dfsek.terra.addons.biome.extrusion;
 
+import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 public class BiomeExtrusionProvider implements BiomeProvider {
     private final BiomeProvider delegate;
     private final Set<Biome> biomes;
+    private final List<Extrusion> extrusions;
+    private final int resolution;
     
-    public BiomeExtrusionProvider(BiomeProvider delegate) {
+    public BiomeExtrusionProvider(BiomeProvider delegate, List<Extrusion> extrusions, int resolution) {
         this.delegate = delegate;
         this.biomes = delegate.stream().collect(Collectors.toSet());
+        this.extrusions = extrusions;
+        this.resolution = resolution;
     }
     
     @Override

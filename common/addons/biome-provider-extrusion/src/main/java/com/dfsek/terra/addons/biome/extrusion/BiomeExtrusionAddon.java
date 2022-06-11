@@ -4,6 +4,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.api.ReplaceableBiome;
+import com.dfsek.terra.addons.biome.extrusion.config.BiomeExtrusionTemplate;
 import com.dfsek.terra.addons.biome.extrusion.config.ReplaceableBiomeLoader;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -25,6 +26,9 @@ public class BiomeExtrusionAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<Extrusion>>> EXTRUSION_REGISTRY_KEY = new TypeKey<>() {
     };
     
+    public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
+    };
+    
     @Inject
     private Platform platform;
     
@@ -37,10 +41,13 @@ public class BiomeExtrusionAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> {
-                
+                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
+                            event.getPack()
+                                 .getOrCreateRegistry(PROVIDER_REGISTRY_KEY);
+                    providerRegistry.register(addon.key("PIPELINE"), BiomeExtrusionTemplate::new);
                 })
                 .failThrough();
-    
+        
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPostLoadEvent.class)
