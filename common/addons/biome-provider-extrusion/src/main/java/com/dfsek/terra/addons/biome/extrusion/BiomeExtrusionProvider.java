@@ -1,8 +1,10 @@
 package com.dfsek.terra.addons.biome.extrusion;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 import java.util.List;
 import java.util.Set;
@@ -36,5 +38,14 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
+    }
+    
+    public int getResolution() {
+        return resolution;
+    }
+    
+    @Override
+    public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
+        return new ExtrusionColumn(properties, this, x, z);
     }
 }
