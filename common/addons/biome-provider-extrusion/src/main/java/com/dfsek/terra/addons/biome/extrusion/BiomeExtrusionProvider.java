@@ -7,6 +7,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,11 @@ public class BiomeExtrusionProvider implements BiomeProvider {
         }
         
         return delegated;
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return delegate.getBaseBiome(x, z, seed);
     }
     
     @Override

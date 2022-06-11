@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -42,6 +43,11 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
             biomes[yi] = delegate.getBiome(x, y, z, seed);
         }
         return biomes[yi];
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return delegate.getBaseBiome(x, z, seed);
     }
     
     @Override

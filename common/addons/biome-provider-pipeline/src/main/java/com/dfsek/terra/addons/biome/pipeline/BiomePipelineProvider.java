@@ -16,6 +16,7 @@ import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -76,18 +77,27 @@ public class BiomePipelineProvider implements BiomeProvider {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
+        return getBiome(x, z, seed);
+    }
+    
+    public Biome getBiome(int x, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
-        
-        
+    
+    
         x = FastMath.floorToInt(FastMath.floorDiv(x, resolution));
-        
+    
         z = FastMath.floorToInt(FastMath.floorDiv(z, resolution));
-        
+    
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
-                                                                                   z - fdZ * pipeline.getSize()).getBiome();
+                                                                          z - fdZ * pipeline.getSize()).getBiome();
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.of(getBiome(x, z, seed));
     }
     
     @Override
