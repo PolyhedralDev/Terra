@@ -28,10 +28,13 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
     
     private final String profile;
     
-    public FeatureGenerationStage(Platform platform, String id) {
+    private final int resolution;
+    
+    public FeatureGenerationStage(Platform platform, String id, int resolution) {
         this.platform = platform;
         this.id = id;
         this.profile = "feature_stage:" + id;
+        this.resolution = resolution;
     }
     
     @Override
@@ -41,34 +44,40 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
         int cx = world.centerChunkX() << 4;
         int cz = world.centerChunkZ() << 4;
         long seed = world.getSeed();
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                int tx = cx + x;
-                int tz = cz + z;
-                Column<WritableWorld> column = world.column(tx, tz);
-                long coordinateSeed = (seed * 31 + tx) * 31 + tz;
-                
+        for(int chunkX = 0; chunkX < 16; chunkX += resolution) {
+            for(int chunkZ = 0; chunkZ < 16; chunkZ += resolution) {
+                int tx = cx + chunkX;
+                int tz = cz + chunkZ;
                 world.getBiomeProvider()
                      .getColumn(tx, tz, world)
-                     .forRanges((min, max, biome) ->
-                                        biome.getContext()
-                                             .get(BiomeFeatures.class)
-                                             .getFeatures()
-                                             .getOrDefault(this, Collections.emptyList())
-                                             .forEach(feature -> {
-                                                 platform.getProfiler().push(feature.getID());
-                                                 if(feature.getDistributor().matches(tx, tz, seed)) {
-                                                     feature.getLocator()
-                                                            .getSuitableCoordinates(column.clamp(min, max))
-                                                            .forEach(y -> feature.getStructure(world, tx, y, tz)
-                                                                                 .generate(Vector3Int.of(tx, y, tz),
-                                                                                           world,
-                                                                                           new Random(coordinateSeed * 31 + y),
-                                                                                           Rotation.NONE)
-                                                                    );
-                                                 }
-                                                 platform.getProfiler().pop(feature.getID());
-                                             }));
+                     .forRanges((min, max, biome) -> {
+                         for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
+                             for(int subChunkZ = 0; subChunkZ < resolution; subChunkZ++) {
+                                 int x = subChunkX + tx;
+                                 int z = subChunkZ + tz;
+                                 long coordinateSeed = (seed * 31 + x) * 31 + z;
+                                 Column<WritableWorld> column = world.column(x, z);
+                                 biome.getContext()
+                                      .get(BiomeFeatures.class)
+                                      .getFeatures()
+                                      .getOrDefault(this, Collections.emptyList())
+                                      .forEach(feature -> {
+                                          platform.getProfiler().push(feature.getID());
+                                          if(feature.getDistributor().matches(x, z, seed)) {
+                                              feature.getLocator()
+                                                     .getSuitableCoordinates(column.clamp(min, max))
+                                                     .forEach(y -> feature.getStructure(world, x, y, z)
+                                                                          .generate(Vector3Int.of(x, y, z),
+                                                                                    world,
+                                                                                    new Random(coordinateSeed * 31 + y),
+                                                                                    Rotation.NONE)
+                                                             );
+                                          }
+                                          platform.getProfiler().pop(feature.getID());
+                                      });
+                             }
+                         }
+                     });
             }
         }
         platform.getProfiler().pop(profile);
