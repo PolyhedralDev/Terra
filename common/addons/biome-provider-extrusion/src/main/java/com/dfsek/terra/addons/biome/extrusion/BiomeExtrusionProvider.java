@@ -24,7 +24,13 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
-        return delegate.getBiome(x, y, z, seed);
+        Biome delegated = delegate.getBiome(x, y, z, seed);
+    
+        for(Extrusion extrusion : extrusions) {
+            delegated = extrusion.extrude(delegated, x, y, z, seed);
+        }
+        
+        return delegated;
     }
     
     @Override
