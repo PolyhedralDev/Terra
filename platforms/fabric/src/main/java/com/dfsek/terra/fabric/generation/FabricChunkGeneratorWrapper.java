@@ -189,7 +189,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         int y = height.getTopY();
         WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
-        while(y >= getMinimumY() && !heightmap.getBlockPredicate().test(
+        while(y > getMinimumY() && !heightmap.getBlockPredicate().test(
                 (BlockState) delegate.getBlock(properties, x, y - 1, z, biomeProvider))) {
             y--;
         }
