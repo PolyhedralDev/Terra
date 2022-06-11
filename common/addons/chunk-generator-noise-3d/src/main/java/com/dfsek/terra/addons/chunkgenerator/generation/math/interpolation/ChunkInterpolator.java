@@ -56,7 +56,10 @@ public class ChunkInterpolator {
         for(int x = 0; x < 5; x++) {
             for(int z = 0; z < 5; z++) {
                 for(int y = 0; y < size; y++) {
-                    BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), (y << 2) + min, zOrigin + (z << 2), seed)
+                    int scaledX = x << 2;
+                    int scaledY = (y << 2) + min;
+                    int scaledZ = z << 2;
+                    BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + scaledX, scaledY, zOrigin + scaledZ, seed)
                                                                       .getContext()
                                                                       .get(BiomeNoiseProperties.class);
                     Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
@@ -67,13 +70,13 @@ public class ChunkInterpolator {
                     for(int xi = -blend; xi <= blend; xi++) {
                         for(int zi = -blend; zi <= blend; zi++) {
                             genMap.computeIfAbsent(
-                                    provider.getBiome(xOrigin + (x << 2) + (xi * step), 0, zOrigin + (z << 2) + (zi * step), seed)
+                                    provider.getBiome(xOrigin + scaledX + (xi * step), scaledY, zOrigin + scaledZ + (zi * step), seed)
                                             .getContext()
                                             .get(BiomeNoiseProperties.class),
                                     g -> new MutableInteger(0)).increment(); // Increment by 1
                         }
                     }
-                    double noise = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + this.min, (z << 2) + zOrigin);
+                    double noise = computeNoise(genMap, scaledX + xOrigin, scaledY, scaledZ + zOrigin);
                     noiseStorage[x][z][y] = noise;
                     if(y == size - 1) {
                         noiseStorage[x][z][size] = noise;
