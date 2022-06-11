@@ -7,6 +7,7 @@ import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class SetExtrusion implements Extrusion {
     }
     
     @Override
-    public Iterable<Biome> getBiomes() {
+    public Collection<Biome> getBiomes() {
         return biomes
                 .getContents()
                 .stream()
