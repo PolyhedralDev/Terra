@@ -61,7 +61,7 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     
     @Value("carving.update-palette")
     @Default
-    private boolean updatePalette = false;
+    private @Meta boolean updatePalette = false;
     
     public BiomePaletteTemplate(Platform platform) { this.platform = platform; }
     
