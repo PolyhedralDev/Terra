@@ -8,11 +8,6 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
-import com.dfsek.terra.api.util.Column;
-
-import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
-
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
@@ -20,12 +15,16 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 import com.dfsek.terra.api.world.info.WorldProperties;
+
+import net.jafama.FastMath;
+import org.jetbrains.annotations.NotNull;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
@@ -79,23 +78,24 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 BlockState data;
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                     Biome biome = biomeColumn.get(y);
-    
+                    
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
-    
+                    
                     int sea = paletteInfo.seaLevel();
                     Palette seaPalette = paletteInfo.ocean();
                     
                     if(sampler.sample(x, y, z) > 0) {
                         if(carver.sample(x, y, z) <= 0) {
-                            data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,
-                                                                                                           seed);
+                            data = PaletteUtil
+                                    .getPalette(x, y, z, sampler, paletteInfo, paletteLevel)
+                                    .get(paletteLevel, cx, y, cz, seed);
                             chunk.setBlock(x, y, z, data);
+                            paletteLevel++;
                         } else if(paletteInfo.updatePaletteWhenCarving()) {
                             paletteLevel = 0;
-                            continue;
+                        } else {
+                            paletteLevel++;
                         }
-                        
-                        paletteLevel++;
                     } else if(y <= sea) {
                         chunk.setBlock(x, y, z, seaPalette.get(sea - y, x + xOrig, y, z + zOrig, seed));
                         paletteLevel = 0;
