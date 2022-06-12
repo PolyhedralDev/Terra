@@ -138,6 +138,9 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             BiomeProvider biomeProvider;
             if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
                 biomeProvider = ((BiomeProviderHolder) chunk).getBiomeProvider();
+                if(biomeProvider == null) {
+                    biomeProvider = pack.getBiomeProvider().caching(world);
+                }
             } else {
                 biomeProvider = pack.getBiomeProvider().caching(world);
             }
