@@ -63,7 +63,7 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     }
     
     @Override
-    public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
-        return new ExtrusionColumn(properties, this, x, z, properties.getSeed());
+    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return new ExtrusionColumn(min, max, this, x, z, seed);
     }
 }

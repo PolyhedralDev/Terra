@@ -14,13 +14,13 @@ public class ExtrusionColumn implements Column<Biome> {
     private final long seed;
     private final Column<Biome> delegate;
     
-    public ExtrusionColumn(WorldProperties worldProperties, BiomeExtrusionProvider provider, int x, int z, long seed) {
-        this.min = worldProperties.getMinHeight();
-        this.max = worldProperties.getMaxHeight();
+    public ExtrusionColumn(int min, int max, BiomeExtrusionProvider provider, int x, int z, long seed) {
+        this.min = min;
+        this.max = max;
         this.provider = provider;
         this.x = x;
         this.z = z;
-        this.seed = worldProperties.getSeed();
+        this.seed = seed;
         this.delegate = provider.getDelegate().getColumn(x, z, seed, min, max);
     }
     

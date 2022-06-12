@@ -106,8 +106,8 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     @Override
-    public Column<Biome> getColumn(int x, int z, WorldProperties properties) {
-        return new BiomePipelineColumn(this, properties.getMinHeight(), properties.getMaxHeight(), x, z, properties.getSeed());
+    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return new BiomePipelineColumn(this, min, max, x, z, seed);
     }
     
     private record SeededVector(int x, int z, long seed) {
