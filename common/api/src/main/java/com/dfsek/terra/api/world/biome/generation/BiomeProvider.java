@@ -92,11 +92,11 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
     
-    default BiomeProvider caching(int minY, int maxY) {
+    default CachingBiomeProvider caching(int minY, int maxY) {
         return new CachingBiomeProvider(this, minY, maxY);
     }
     
-    default BiomeProvider caching(WorldProperties worldProperties) {
+    default CachingBiomeProvider caching(WorldProperties worldProperties) {
         return caching(worldProperties.getMinHeight(), worldProperties.getMaxHeight());
     }
 }

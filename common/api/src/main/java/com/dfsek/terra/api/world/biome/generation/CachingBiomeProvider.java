@@ -18,9 +18,9 @@ import java.util.Optional;
  * This is for use in chunk generators, it makes the assumption that <b>the seed remains the same for the duration of its use!</b>
  */
 public class CachingBiomeProvider implements BiomeProvider, Handle {
-    private final BiomeProvider delegate;
-    private final int minY;
-    private final int maxY;
+    protected final BiomeProvider delegate;
+    protected final int minY;
+    protected final int maxY;
     private final Map<Long, Biome[]> cache = new HashMap<>();
     private final Map<Long, Column<Biome>> columnCache = new HashMap<>();
     
