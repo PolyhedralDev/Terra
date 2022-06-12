@@ -59,6 +59,10 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
         }
     };
     
+    @Value("carving.update-palette")
+    @Default
+    private boolean updatePalette = false;
+    
     public BiomePaletteTemplate(Platform platform) { this.platform = platform; }
     
     @Override
@@ -79,6 +83,6 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
             slantLayers.put(threshold, layer.getPalette());
         }
         
-        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth);
+        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth, updatePalette);
     }
 }

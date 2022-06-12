@@ -90,6 +90,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                             data = PaletteUtil.getPalette(x, y, z, sampler, paletteInfo, paletteLevel).get(paletteLevel, cx, y, cz,
                                                                                                            seed);
                             chunk.setBlock(x, y, z, data);
+                        } else if(paletteInfo.updatePaletteWhenCarving()) {
+                            paletteLevel = 0;
                         }
                         
                         paletteLevel++;
