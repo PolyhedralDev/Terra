@@ -4,6 +4,9 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
+plugins {
+    id("xyz.jpenilla.run-paper") version "1.0.6"
+}
 
 val mcVersion = "1.18.2"
 val testDir = "target/server"
