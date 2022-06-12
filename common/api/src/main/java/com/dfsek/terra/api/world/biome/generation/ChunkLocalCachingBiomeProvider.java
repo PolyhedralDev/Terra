@@ -19,7 +19,7 @@ import java.util.Optional;
  */
 public class ChunkLocalCachingBiomeProvider extends CachingBiomeProvider {
     private final Biome[][][] cache;
-    private final Column<Biome>[][] columnCache = new Column<>[16][16];
+    private final Column<Biome>[][] columnCache = new Column[16][16];
     
     private final int chunkX;
     private final int chunkZ;

@@ -92,9 +92,10 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     public CompletableFuture<Chunk> populateBiomes(Registry<Biome> biomeRegistry, Executor executor, NoiseConfig noiseConfig,
                                                    Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
         if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
+            ChunkPos pos = chunk.getPos();
             ((BiomeProviderHolder) chunk)
                     .setBiomeProvider(pack.getBiomeProvider()
-                                          .caching((ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld()));
+                                          .caching((ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld(), pos.x, pos.z));
         }
         return super.populateBiomes(biomeRegistry, executor, noiseConfig, blender, structureAccessor, chunk);
     }
