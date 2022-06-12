@@ -32,18 +32,13 @@ import org.spongepowered.asm.mixin.Shadow;
 
 
 @Mixin(net.minecraft.world.chunk.ProtoChunk.class)
-@Implements(value = {
-        @Interface(iface = ProtoChunk.class, prefix = "terra$"),
-        @Interface(iface = BiomeProviderHolder.class, prefix = "provider$")
-})
+@Implements(@Interface(iface = ProtoChunk.class, prefix = "terra$"))
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
     
     @Shadow
     public abstract HeightLimitView getHeightLimitView();
-    
-    private BiomeProvider biomeProvider;
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
@@ -56,16 +51,5 @@ public abstract class ProtoChunkMixin {
     
     public int terra$getMaxHeight() {
         return getHeightLimitView().getTopY();
-    }
-    
-    public void provider$setBiomeProvider(BiomeProvider provider) {
-        if(this.biomeProvider != null) {
-            throw new IllegalStateException("Already set biome provider for chunk " + this);
-        }
-        this.biomeProvider = provider;
-    }
-    
-    public BiomeProvider provider$getBiomeProvider() {
-        return biomeProvider;
     }
 }

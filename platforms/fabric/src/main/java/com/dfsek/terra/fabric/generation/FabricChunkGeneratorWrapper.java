@@ -136,8 +136,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider;
-            if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
-                biomeProvider = ((BiomeProviderHolder) chunk).getBiomeProvider();
+            if(chunk instanceof BiomeProviderHolder providerHolder) {
+                biomeProvider = providerHolder.getBiomeProvider();
                 if(biomeProvider == null) {
                     biomeProvider = pack.getBiomeProvider().caching(world);
                 }

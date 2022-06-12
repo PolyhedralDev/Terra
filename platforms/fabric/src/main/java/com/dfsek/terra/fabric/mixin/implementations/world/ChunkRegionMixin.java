@@ -28,6 +28,7 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.fabric.generation.BiomeProviderHolder;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
 import com.dfsek.terra.fabric.util.FabricUtil;
@@ -130,6 +131,10 @@ public abstract class ChunkRegionMixin {
     }
     
     public BiomeProvider terraWorld$getBiomeProvider() {
+        BiomeProvider provider = ((BiomeProviderHolder) this).getBiomeProvider();
+        if(provider != null) {
+            return provider;
+        }
         return caching.value();
     }
     
