@@ -17,22 +17,33 @@
 
 package com.dfsek.terra.fabric.mixin.implementations.chunk.data;
 
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.fabric.generation.BiomeProviderHolder;
+
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.HeightLimitView;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-
 
 @Mixin(net.minecraft.world.chunk.ProtoChunk.class)
-@Implements(@Interface(iface = ProtoChunk.class, prefix = "terra$"))
+@Implements(value = {
+        @Interface(iface = ProtoChunk.class, prefix = "terra$"),
+        @Interface(iface = BiomeProviderHolder.class, prefix = "provider$")
+})
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
+    
+    @Shadow
+    public abstract HeightLimitView getHeightLimitView();
+    
+    private BiomeProvider biomeProvider;
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
@@ -44,6 +55,17 @@ public abstract class ProtoChunkMixin {
     }
     
     public int terra$getMaxHeight() {
-        return 255; // TODO: 1.17 - Implement dynamic height.
+        return getHeightLimitView().getTopY();
+    }
+    
+    public void provider$setBiomeProvider(BiomeProvider provider) {
+        if(this.biomeProvider != null) {
+            throw new IllegalStateException("Already set biome provider for chunk " + this);
+        }
+        this.biomeProvider = provider;
+    }
+    
+    public BiomeProvider provider$getBiomeProvider() {
+        return biomeProvider;
     }
 }

@@ -88,6 +88,17 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.biomeSource = biomeSource;
     }
     
+    @Override
+    public CompletableFuture<Chunk> populateBiomes(Registry<Biome> biomeRegistry, Executor executor, NoiseConfig noiseConfig,
+                                                   Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
+        if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
+            ((BiomeProviderHolder) chunk)
+                    .setBiomeProvider(pack.getBiomeProvider()
+                                          .caching((ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld()));
+        }
+        return super.populateBiomes(biomeRegistry, executor, noiseConfig, blender, structureAccessor, chunk);
+    }
+    
     public Registry<StructureSet> getNoiseRegistry() {
         return noiseRegistry;
     }
@@ -124,7 +135,12 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                                   StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            BiomeProvider biomeProvider = pack.getBiomeProvider().caching(world);
+            BiomeProvider biomeProvider;
+            if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
+                biomeProvider = ((BiomeProviderHolder) chunk).getBiomeProvider();
+            } else {
+                biomeProvider = pack.getBiomeProvider().caching(world);
+            }
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
             
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
