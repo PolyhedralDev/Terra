@@ -131,7 +131,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public BiomeProvider terraWorld$getBiomeProvider() {
-        BiomeProvider provider = ((BiomeProviderHolder) this).getBiomeProvider();
+        BiomeProvider provider = ((BiomeProviderHolder) this).terra$getHeldBiomeProvider();
         if(provider != null) {
             return provider;
         }

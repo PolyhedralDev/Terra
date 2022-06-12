@@ -4,7 +4,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public interface BiomeProviderHolder {
-    void setBiomeProvider(BiomeProvider biomeProvider);
+    void terra$setHeldBiomeProvider(BiomeProvider biomeProvider);
     
-    BiomeProvider getBiomeProvider();
+    BiomeProvider terra$getHeldBiomeProvider();
 }

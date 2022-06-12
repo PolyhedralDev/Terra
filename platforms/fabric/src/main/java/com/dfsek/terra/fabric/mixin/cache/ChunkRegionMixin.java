@@ -7,7 +7,6 @@ import com.dfsek.terra.fabric.generation.BiomeProviderHolder;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.chunk.ProtoChunk;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -31,18 +30,18 @@ public class ChunkRegionMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     public void addProvider(ServerWorld world, List<Chunk> chunks, ChunkStatus status, int placementRadius, CallbackInfo ci) {
         if(centerPos instanceof BiomeProviderHolder providerHolder) {
-            biomeProvider = providerHolder.getBiomeProvider();
+            biomeProvider = providerHolder.terra$getHeldBiomeProvider();
         }
     }
     
-    public void provider$setBiomeProvider(BiomeProvider provider) {
+    public void provider$terra$setHeldBiomeProvider(BiomeProvider provider) {
         if(this.biomeProvider != null) {
             throw new IllegalStateException("Already set biome provider for chunk " + this);
         }
         this.biomeProvider = provider;
     }
     
-    public BiomeProvider provider$getBiomeProvider() {
+    public BiomeProvider provider$terra$getHeldBiomeProvider() {
         return biomeProvider;
     }
 }

@@ -14,14 +14,14 @@ import org.spongepowered.asm.mixin.Mixin;
 public class ProtoChunkMixin {
     private BiomeProvider biomeProvider;
     
-    public void provider$setBiomeProvider(BiomeProvider provider) {
+    public void provider$terra$setHeldBiomeProvider(BiomeProvider provider) {
         if(this.biomeProvider != null) {
             throw new IllegalStateException("Already set biome provider for chunk " + this);
         }
         this.biomeProvider = provider;
     }
     
-    public BiomeProvider provider$getBiomeProvider() {
+    public BiomeProvider provider$terra$getHeldBiomeProvider() {
         return biomeProvider;
     }
 }
