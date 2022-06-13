@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_18_R2;
+package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;

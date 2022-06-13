@@ -17,7 +17,15 @@
 
 package com.dfsek.terra.fabric;
 
+import cloud.commandframework.execution.CommandExecutionCoordinator;
+
+import cloud.commandframework.fabric.FabricServerCommandManager;
+
+import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.WorldPresets;
@@ -45,7 +53,7 @@ public class FabricEntryPoint implements ModInitializer {
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");
-        /*
+        
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),
                 serverCommandSource -> (CommandSender) serverCommandSource,
@@ -56,7 +64,5 @@ public class FabricEntryPoint implements ModInitializer {
         manager.brigadierManager().setNativeNumberSuggestions(false);
         
         TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(manager));
-        TODO: re-enable when Cloud updates
-         */
     }
 }

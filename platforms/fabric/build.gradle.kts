@@ -16,7 +16,7 @@ dependencies {
     
     modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
-    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base").forEach { apiModule ->
+    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base", "fabric-command-api-v2").forEach { apiModule ->
         val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
         modImplementation(module)
         include(module)
@@ -29,8 +29,8 @@ dependencies {
     "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
     "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
     
-    //include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
-    //include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
 }
 
 loom {
