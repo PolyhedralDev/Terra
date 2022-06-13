@@ -4,7 +4,7 @@ object Versions {
         const val paralithic = "0.7.0"
         const val strata = "1.1.1"
         
-        const val cloud = "1.6.2"
+        const val cloud = "1.7.0-SNAPSHOT"
         
         const val slf4j = "1.7.36"
         const val log4j_slf4j_impl = "2.14.1"
