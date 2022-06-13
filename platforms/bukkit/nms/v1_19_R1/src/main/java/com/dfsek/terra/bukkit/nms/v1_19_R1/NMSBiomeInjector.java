@@ -110,11 +110,10 @@ public class NMSBiomeInjector {
         }
     }
     
-    @SuppressWarnings("unchecked, rawtypes")
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
-        return (Optional) registry.getOptional(identifier)
-                                             .flatMap(registry::getResourceKey)
-                                             .map(registry::getHolder);
+        return registry.getOptional(identifier)
+                       .flatMap(registry::getResourceKey)
+                       .map(registry::getOrCreateHolderOrThrow);
     }
     
     private static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)

@@ -3,23 +3,19 @@ package com.dfsek.terra.bukkit.nms.v1_18_R2;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
-import net.minecraft.core.IRegistry;
-import net.minecraft.core.IRegistryWritable;
-import net.minecraft.core.RegistryMaterials;
-import net.minecraft.data.RegistryGeneration;
-import net.minecraft.resources.MinecraftKey;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.biome.BiomeBase;
-import net.minecraft.world.level.biome.BiomeFog;
-import net.minecraft.world.level.biome.BiomeFog.GrassColor;
-import net.minecraft.world.level.biome.BiomeSettingsGeneration;
-import net.minecraft.world.level.biome.BiomeSettingsMobs;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +25,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -37,49 +32,48 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 
 public class NMSBiomeInjector {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSBiomeInjector.class);
-    private static final Map<MinecraftKey, List<MinecraftKey>> terraBiomeMap = new HashMap<>();
+    private static final Map<ResourceLocation, List<ResourceLocation>> terraBiomeMap = new HashMap<>();
     
     
     public static void registerBiomes(ConfigRegistry configRegistry) {
         try {
             LOGGER.info("Hacking biome registry...");
-            IRegistryWritable<BiomeBase> biomeRegistry = (IRegistryWritable<BiomeBase>) Registries.biomeRegistry();
-            Field frozen = RegistryMaterials.class.getDeclaredField("bL"); // registry frozen field
-            frozen.setAccessible(true);
-            frozen.set(biomeRegistry, false);
+            WritableRegistry<Biome> biomeRegistry = (WritableRegistry<Biome>) Registries.biomeRegistry();
             
-            configRegistry.forEach(pack -> pack.getRegistry(Biome.class).forEach((key, biome) -> {
+            Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, false);
+            
+            configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
-                    MinecraftKey vanillaMinecraftKey = new MinecraftKey(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
-                    BiomeBase platform = createBiome(
+                    ResourceLocation vanillaMinecraftKey = new ResourceLocation(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
+                    Biome platform = createBiome(
                             biome,
-                            biomeRegistry.a(vanillaMinecraftKey) // get
+                            biomeRegistry.get(vanillaMinecraftKey) // get
                                                     );
                     
-                    ResourceKey<BiomeBase> delegateKey = ResourceKey.a(IRegistry.aP, new MinecraftKey("terra", createBiomeID(pack, key)));
+                    ResourceKey<Biome> delegateKey = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("terra", createBiomeID(pack, key)));
                     
-                    RegistryGeneration.a(RegistryGeneration.i, delegateKey, platform);
-                    biomeRegistry.a(delegateKey, platform, Lifecycle.stable());
+                    BuiltinRegistries.register(BuiltinRegistries.BIOME, delegateKey, platform);
+                    biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
                     
-                    terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.a());
+                    terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.location());
                     
                     LOGGER.debug("Registered biome: " + delegateKey);
                 } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }));
-            
-            frozen.set(biomeRegistry, true); // freeze registry again :)
+    
+            Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, true); // freeze registry again :)
             
             LOGGER.info("Doing tag garbage....");
-            Map<TagKey<BiomeBase>, List<Holder<BiomeBase>>> collect = biomeRegistry
-                    .g() // streamKeysAndEntries
+            Map<TagKey<Biome>, List<Holder<Biome>>> collect = biomeRegistry
+                    .getTags() // streamKeysAndEntries
                     .collect(HashMap::new,
                              (map, pair) ->
-                                     map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().a().toList())),
+                                     map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                              HashMap::putAll);
     
             terraBiomeMap
@@ -90,13 +84,13 @@ public class NMSBiomeInjector {
                                                              .forEach(tb -> getEntry(biomeRegistry, tb)
                                                                      .ifPresentOrElse(
                                                                              terra -> {
-                                                                                 LOGGER.debug(vanilla.e().orElseThrow().a() +
+                                                                                 LOGGER.debug(vanilla.unwrapKey().orElseThrow().location() +
                                                                                               " (vanilla for " +
-                                                                                              terra.e().orElseThrow().a() +
+                                                                                              terra.unwrapKey().orElseThrow().location() +
                                                                                               ": " +
-                                                                                              vanilla.c().toList());
+                                                                                              vanilla.tags().toList());
                                                                 
-                                                                                 vanilla.c()
+                                                                                 vanilla.tags()
                                                                                         .forEach(
                                                                                                 tag -> collect
                                                                                                         .computeIfAbsent(tag,
@@ -108,77 +102,63 @@ public class NMSBiomeInjector {
                                                                                      tb))),
                                                      () -> LOGGER.error("No vanilla biome: {}", vb)));
     
-            biomeRegistry.k(); // clearTags
-            biomeRegistry.a(ImmutableMap.copyOf(collect)); // populateTags
+            biomeRegistry.resetTags(); // clearTags
+            biomeRegistry.bindTags(ImmutableMap.copyOf(collect)); // populateTags
             
-        } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {
+        } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
         }
     }
     
-    public static <T> Optional<Holder<T>> getEntry(IRegistry<T> registry, MinecraftKey identifier) {
-        return registry.b(identifier)
-                       .flatMap(registry::c)
-                       .map(registry::c);
+    public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
+        return registry.getOptional(identifier)
+                       .flatMap(registry::getResourceKey)
+                       .map(registry::getOrCreateHolder);
     }
     
-    private static BiomeBase createBiome(Biome biome, BiomeBase vanilla)
+    private static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        BiomeBase.a builder = new BiomeBase.a(); // Builder
-        
-        Field f = BiomeBase.class.getDeclaredField("l"); // category
-        f.setAccessible(true);
-        builder.a((BiomeBase.Geography) f.get(vanilla))
-               .a(vanilla.c()); // getPrecipitation
+        Biome.BiomeBuilder builder = new Biome.BiomeBuilder(); // Builder
         
         
-        Field biomeSettingMobsField = BiomeBase.class.getDeclaredField("k"); // spawn settings
-        biomeSettingMobsField.setAccessible(true);
-        BiomeSettingsMobs biomeSettingMobs = (BiomeSettingsMobs) biomeSettingMobsField.get(vanilla);
-        builder.a(biomeSettingMobs);
+        builder.biomeCategory(Reflection.BIOME.getCategory(vanilla))
+               .precipitation(vanilla.getPrecipitation()) // getPrecipitation
+                .mobSpawnSettings(vanilla.getMobSettings())
+                .generationSettings(vanilla.getGenerationSettings())
+                .temperature(vanilla.getBaseTemperature())
+                .downfall(vanilla.getDownfall());
+    
+    
         
-        
-        BiomeSettingsGeneration.a generationBuilder = new BiomeSettingsGeneration.a(); // builder
-        builder.a(generationBuilder.a())
-               .a(vanilla.c())
-               .b(vanilla.h()) // precipitation
-               .a(vanilla.i()); // temp
-        
-        
-        BiomeFog.a effects = new BiomeFog.a(); // Builder
-        effects.a(GrassColor.a); // magic
-        
+        BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
+    
+        effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
+    
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-        
-        // fog
-        effects.a(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.f()));
-        
-        // water
-        effects.b(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.k()));
-        
-        // water fog
-        effects.c(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.l()));
-        
-        // sky
-        effects.d(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.a()));
-        
+    
+        effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
+    
+               .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
+    
+               .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
+    
+               .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
+    
         if(vanillaBiomeProperties.getFoliageColor() == null) {
-            vanilla.j().e().ifPresent(effects::e);
+            vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         } else {
-            // foliage
-            effects.e(vanillaBiomeProperties.getFoliageColor());
+            effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
         }
-        
+    
         if(vanillaBiomeProperties.getGrassColor() == null) {
-            vanilla.j().f().ifPresent(effects::f);
+            vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
         } else {
-            // grass
-            effects.f(vanillaBiomeProperties.getGrassColor());
+            effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
         }
+    
+        builder.specialEffects(effects.build());
         
-        builder.a(effects.a()); // build()
-        
-        return builder.a(); // build()
+        return builder.build(); // build()
     }
     
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
