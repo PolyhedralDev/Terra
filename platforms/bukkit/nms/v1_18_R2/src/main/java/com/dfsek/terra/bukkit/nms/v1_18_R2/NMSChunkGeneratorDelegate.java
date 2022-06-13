@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.Climate;
@@ -68,6 +69,11 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull BiomeManager biomeAccess, @NotNull StructureFeatureManager structureAccessor,
                              @NotNull ChunkAccess chunk, GenerationStep.@NotNull Carving generationStep) {
         // no-op
+    }
+    
+    @Override
+    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk, @NotNull StructureFeatureManager structureAccessor) {
+        vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
     
     @Override

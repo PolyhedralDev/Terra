@@ -6,6 +6,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -57,6 +58,11 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     @Override
     public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures, @NotNull RandomState noiseConfig, @NotNull ChunkAccess chunk) {
         // no-op
+    }
+    
+    @Override
+    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk, @NotNull StructureManager structureAccessor) {
+        vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
     
     @Override
