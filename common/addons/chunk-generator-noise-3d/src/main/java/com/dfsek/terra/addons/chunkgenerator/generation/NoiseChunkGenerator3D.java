@@ -57,6 +57,15 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.samplerCache = new SamplerProvider(platform, elevationBlend);
     }
     
+    private Biome getBiome(BiomeProvider biomeProvider, int x, int y, int z, long seed) {
+        long ms = seed;
+        int mx = FastMath.floorDiv(x + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
+        int my = FastMath.floorDiv(y + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
+        int mz = FastMath.floorDiv(z + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed, x, y, z)), paletteRes) * paletteRes;
+        
+        return biomeProvider.getBiome(mx, my, mz, ms);
+    }
+    
     @Override
     @SuppressWarnings("try")
     public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
@@ -85,10 +94,9 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 
-                Column<Biome> biomeColumn = biomeProvider.getColumn(cx, cz, world);
                 BlockState data;
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
-                    Biome biome = biomeColumn.get(y);
+                    Biome biome = getBiome(biomeProvider, cx, y, cz, seed);
                     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                     
