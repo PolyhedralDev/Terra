@@ -17,7 +17,7 @@ public class Reflection {
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
     }
     
-    @Proxies
+    @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);

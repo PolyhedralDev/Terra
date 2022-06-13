@@ -21,15 +21,15 @@ public class Reflection {
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
     
-    @Proxies
+    @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
     
-    @Proxies
+    @Proxies(Biome.class)
     public interface BiomeProxy {
-        @FieldGetter("category")
-        Biome.BiomeCategory getCategory(Biome instance);
+        @FieldGetter("biomeCategory")
+        Biome.BiomeCategory getBiomeCategory(Biome instance);
     }
 }

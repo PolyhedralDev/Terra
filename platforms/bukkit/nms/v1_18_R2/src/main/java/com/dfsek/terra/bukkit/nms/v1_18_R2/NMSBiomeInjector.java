@@ -121,7 +121,7 @@ public class NMSBiomeInjector {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder(); // Builder
         
         
-        builder.biomeCategory(Reflection.BIOME.getCategory(vanilla))
+        builder.biomeCategory(Reflection.BIOME.getBiomeCategory(vanilla))
                .precipitation(vanilla.getPrecipitation()) // getPrecipitation
                 .mobSpawnSettings(vanilla.getMobSettings())
                 .generationSettings(vanilla.getGenerationSettings())
