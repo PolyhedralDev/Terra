@@ -27,9 +27,6 @@ pluginManagement {
         maven("https://maven.fabricmc.net") {
             name = "Fabric"
         }
-        maven("https://papermc.io/repo/repository/maven-public/") {
-            name = "PaperMC"
-        }
         gradlePluginPortal()
     }
 }
