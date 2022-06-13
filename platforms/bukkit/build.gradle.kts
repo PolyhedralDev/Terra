@@ -4,6 +4,9 @@ import java.nio.channels.Channels
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
+plugins {
+    id("xyz.jpenilla.run-paper") version "1.0.6"
+}
 
 val mcVersion = "1.18.2"
 val testDir = "target/server"
@@ -13,9 +16,15 @@ val paperBuild = 350
 val paperURL = "https://papermc.io/api/v2/projects/paper/versions/%version%/builds/$paperBuild/downloads/paper-%version%-$paperBuild.jar"
 val purpurURL = "https://api.purpurmc.org/v2/purpur/%version%/latest/download"
 
+repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+
 dependencies {
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_18_R2"))
+    shaded(project(":platforms:bukkit:nms:v1_18_R2", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_19_R1", configuration = "reobf"))
+    shaded("xyz.jpenilla", "reflection-remapper", "0.1.0-SNAPSHOT")
 }
 
 val throttleCoreCount = 0

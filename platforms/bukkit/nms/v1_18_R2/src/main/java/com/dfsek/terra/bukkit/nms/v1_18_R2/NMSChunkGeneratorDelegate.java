@@ -8,31 +8,30 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
-import net.minecraft.core.BlockPosition;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.IRegistryCustom;
-import net.minecraft.core.SectionPosition;
-import net.minecraft.server.level.RegionLimitedWorldAccess;
-import net.minecraft.world.level.BlockColumn;
-import net.minecraft.world.level.ChunkCoordIntPair;
+import net.minecraft.core.SectionPos;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelHeightAccessor;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.biome.BiomeBase;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.Climate.Sampler;
-import net.minecraft.world.level.block.state.IBlockData;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.chunk.IChunkAccess;
-import net.minecraft.world.level.levelgen.ChunkGeneratorAbstract;
-import net.minecraft.world.level.levelgen.HeightMap;
-import net.minecraft.world.level.levelgen.WorldGenStage;
+import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.templatesystem.DefinedStructureManager;
 import org.bukkit.craftbukkit.v1_18_R2.block.data.CraftBlockData;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,8 +52,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     private final long seed;
     
-    private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkCoordIntPair>>> h = new Object2ObjectArrayMap<>();
-    private static final Lazy<List<ChunkCoordIntPair>> EMPTY = Lazy.lazy(List::of);
+    private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkPos>>> ringPositions = new Object2ObjectArrayMap<>();
+    private static final Lazy<List<ChunkPos>> EMPTY = Lazy.lazy(List::of);
     
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
@@ -66,103 +65,100 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         this.seed = seed;
     }
     
-    @Override //applyCarvers
-    public void a(RegionLimitedWorldAccess regionlimitedworldaccess, long var2, BiomeManager var4, StructureManager var5,
-                  IChunkAccess ichunkaccess, WorldGenStage.Features var7) {
+    @Override
+    public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull BiomeManager biomeAccess, @NotNull StructureFeatureManager structureAccessor,
+                             @NotNull ChunkAccess chunk, GenerationStep.@NotNull Carving generationStep) {
         // no-op
     }
     
-    @Override // getSeaLevel
-    public int g() {
-        return vanilla.g();
-    }
-    
-    @Override //fillFromNoise
-    public CompletableFuture<IChunkAccess> a(Executor executor, Blender blender, StructureManager structuremanager,
-                                             IChunkAccess ichunkaccess) {
-        return vanilla.a(executor, blender, structuremanager, ichunkaccess);
-    }
-    
-    
-    @Override //buildSurface. Used to be buildBase
-    public void a(RegionLimitedWorldAccess regionlimitedworldaccess, StructureManager structuremanager, IChunkAccess ichunkaccess) {
-    
+    @Override
+    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk, @NotNull StructureFeatureManager structureAccessor) {
+        vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
     
     @Override
-    protected Codec<? extends ChunkGenerator> b() {
-        return ChunkGeneratorAbstract.a;
+    public int getSeaLevel() {
+        return vanilla.getSeaLevel();
+    }
+    
+    @Override //fillFromNoise
+    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender, @NotNull StructureFeatureManager structureAccessor,
+                                                                 @NotNull ChunkAccess chunk) {
+        return vanilla.fillFromNoise(executor, blender, structureAccessor, chunk);
+    }
+    
+    @Override
+    public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureFeatureManager structures, @NotNull ChunkAccess chunk) {
+        // no-op
+    }
+    
+    @Override
+    protected @NotNull Codec<? extends ChunkGenerator> codec() {
+        return ChunkGenerator.CODEC;
     }
     
     @Override // getColumn
-    public BlockColumn a(int x, int z, LevelHeightAccessor height) {
-        IBlockData[] array = new IBlockData[height.v_()];
+    public @NotNull NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height) {
+        BlockState[] array = new BlockState[height.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, height);
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
         for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
             array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider)
                                                                              .getHandle()).getState();
         }
-        return new BlockColumn(getMinimumY(), array);
+        return new NoiseColumn(getMinY(), array);
     }
     
     @Override // withSeed
-    public ChunkGenerator a(long seed) {
+    public @NotNull ChunkGenerator withSeed(long seed) {
         return new NMSChunkGeneratorDelegate(vanilla, pack, biomeSource, seed);
     }
     
-    //spawnOriginalMobs
-    public void a(RegionLimitedWorldAccess regionlimitedworldaccess) {
-        vanilla.a(regionlimitedworldaccess);
-    }
-    
-    // getGenDepth
-    public int f() {
-        return vanilla.f();
-    }
-    
-    // climateSampler
-    public Sampler d() {
-        return Climate.a();
-    }
-    
-    //getMinY
     @Override
-    public int h() {
-        return vanilla.h();
+    public void spawnOriginalMobs(@NotNull WorldGenRegion regionlimitedworldaccess) {
+        vanilla.spawnOriginalMobs(regionlimitedworldaccess);
     }
     
-    @Override // getBaseHeight
-    public int a(int x, int z, HeightMap.Type heightmap, LevelHeightAccessor height) {
-        WorldProperties properties = new NMSWorldProperties(seed, height);
+    @Override
+    public int getGenDepth() {
+        return vanilla.getGenDepth();
+    }
+    
+    @Override
+    public @NotNull Sampler climateSampler() {
+        return Climate.empty();
+    }
+    
+    @Override
+    public int getMinY() {
+        return vanilla.getMinY();
+    }
+    
+    @Override
+    public int getBaseHeight(int x, int z, Heightmap.@NotNull Types heightmap, @NotNull LevelHeightAccessor world) {
+        WorldProperties properties = new NMSWorldProperties(seed, world);
         int y = properties.getMaxHeight();
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
-        while(y >= getMinimumY() && !heightmap.e().test(
+        while(y >= getMinY() && !heightmap.isOpaque().test(
                 ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
             y--;
         }
         return y;
     }
     
-    @Override
-    public void a(IRegistryCustom iregistrycustom, StructureManager structuremanager, IChunkAccess ichunkaccess,
-                  DefinedStructureManager definedstructuremanager, long i) {
-        super.a(iregistrycustom, structuremanager, ichunkaccess, definedstructuremanager, i);
-    }
-    
     @Nullable
     @Override
-    public List<ChunkCoordIntPair> a(ConcentricRingsStructurePlacement concentricringsstructureplacement) {
-        this.i();
-        return this.h.getOrDefault(concentricringsstructureplacement, EMPTY).value();
+    public List<ChunkPos> getRingPositionsFor(@NotNull ConcentricRingsStructurePlacement concentricringsstructureplacement) {
+        ensureStructuresGenerated();
+        return ringPositions.getOrDefault(concentricringsstructureplacement, EMPTY).value();
     }
     
     private volatile boolean rings = false;
     
     @Override
-    public synchronized void i() {
+    public synchronized void ensureStructuresGenerated() {
         if(!this.rings) {
-            super.i();
+            super.ensureStructuresGenerated();
             this.populateStrongholdData();
             this.rings = true;
         }
@@ -170,70 +166,82 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     private void populateStrongholdData() {
         LOGGER.info("Generating safe stronghold data. This may take up to a minute.");
-        Set<Holder<BiomeBase>> set = this.d.b();
-        a().map(h -> h.a()).forEach((holder) -> { // we dont need the spigot crap because it doesnt touch concentric.
-            StructurePlacement structureplacement = holder.b();
+        Set<Holder<Biome>> set = this.runtimeBiomeSource.possibleBiomes();
+        possibleStructureSets().map(Holder::value).forEach((holder) -> { // we dont need the spigot crap because it doesnt touch concentric.
+            StructurePlacement structureplacement = holder.placement();
             if(structureplacement instanceof ConcentricRingsStructurePlacement concentricringsstructureplacement) {
-                if(holder.a().stream().anyMatch((structureset_a1) -> structureset_a1.a(set::contains))) {
-                    this.h.put(concentricringsstructureplacement,
-                               Lazy.lazy(() -> this.generateRingPositions(holder, concentricringsstructureplacement)));
+                if(holder.structures().stream().anyMatch((structureset_a1) -> structureset_a1.generatesInMatchingBiome(set::contains))) {
+                    this.ringPositions.put(concentricringsstructureplacement,
+                                           Lazy.lazy(() -> this.generateRingPositions(holder, concentricringsstructureplacement)));
                 }
             }
         });
     }
     
-    private List<ChunkCoordIntPair> generateRingPositions(StructureSet holder,
-                                                          ConcentricRingsStructurePlacement concentricringsstructureplacement) {
-        if(concentricringsstructureplacement.d() == 0) {
+    private List<ChunkPos> generateRingPositions(StructureSet holder,
+                                                 ConcentricRingsStructurePlacement concentricringsstructureplacement) { // Spigot
+        if(concentricringsstructureplacement.count() == 0) {
             return List.of();
         }
-        List<ChunkCoordIntPair> list = new ArrayList<>();
-        Set<Holder<BiomeBase>> set = holder.a().stream().flatMap((structureset_a) -> (structureset_a.a().a()).a().a()).collect(
-                Collectors.toSet());
-        int i = concentricringsstructureplacement.b();
-        int j = concentricringsstructureplacement.d();
-        int k = concentricringsstructureplacement.c();
+        
+        List<ChunkPos> list = new ArrayList<>();
+        Set<Holder<Biome>> set = holder
+                .structures()
+                .stream()
+                .flatMap((structureset_a) -> structureset_a.structure().value().biomes().stream())
+                .collect(Collectors.toSet());
+        int i = concentricringsstructureplacement.distance();
+        int j = concentricringsstructureplacement.count();
+        int k = concentricringsstructureplacement.spread();
         Random random = new Random();
-        random.setSeed(this.j);
-        double d0 = random.nextDouble() * Math.PI * 2.0;
+        
+        // Paper start
+        if(this.conf.strongholdSeed != null && this.structureSets.getResourceKey(holder).orElse(null) ==
+                                               net.minecraft.world.level.levelgen.structure.BuiltinStructureSets.STRONGHOLDS) {
+            random.setSeed(this.conf.strongholdSeed);
+        } else {
+            // Paper end
+            random.setSeed(this.ringPlacementSeed);
+        } // Paper
+        double d0 = random.nextDouble() * 3.141592653589793D * 2.0D;
         int l = 0;
         int i1 = 0;
         
         for(int j1 = 0; j1 < j; ++j1) {
-            double d1 = (double) (4 * i + i * i1 * 6) + (random.nextDouble() - 0.5) * (double) i * 2.5;
+            double d1 = (double) (4 * i + i * i1 * 6) + (random.nextDouble() - 0.5D) * (double) i * 2.5D;
             int k1 = (int) Math.round(Math.cos(d0) * d1);
             int l1 = (int) Math.round(Math.sin(d0) * d1);
-            int i2 = SectionPosition.a(k1, 8);
-            int j2 = SectionPosition.a(l1, 8);
+            int i2 = SectionPos.sectionToBlockCoord(k1, 8);
+            int j2 = SectionPos.sectionToBlockCoord(l1, 8);
+            
             Objects.requireNonNull(set);
-            Pair<BlockPosition, Holder<BiomeBase>> pair = this.c.a(i2, 0, j2, 112, set::contains, random, this.d());
+            Pair<BlockPos, Holder<Biome>> pair = this.biomeSource.findBiomeHorizontal(i2, 0, j2, 112, set::contains, random,
+                                                                                      this.climateSampler());
+            
             if(pair != null) {
-                BlockPosition blockposition = pair.getFirst();
-                k1 = SectionPosition.a(blockposition.u());
-                l1 = SectionPosition.a(blockposition.w());
+                BlockPos blockposition = (BlockPos) pair.getFirst();
+                
+                k1 = SectionPos.blockToSectionCoord(blockposition.getX());
+                l1 = SectionPos.blockToSectionCoord(blockposition.getZ());
             }
             
-            list.add(new ChunkCoordIntPair(k1, l1));
-            d0 += 6.283185307179586 / (double) k;
+            list.add(new ChunkPos(k1, l1));
+            d0 += 6.283185307179586D / (double) k;
             ++l;
             if(l == k) {
                 ++i1;
                 l = 0;
                 k += 2 * k / (i1 + 1);
                 k = Math.min(k, j - j1);
-                d0 += random.nextDouble() * Math.PI * 2.0;
+                d0 += random.nextDouble() * 3.141592653589793D * 2.0D;
             }
         }
-        return list;
         
+        return list;
     }
     
-    public int getMinimumY() {
-        return h();
-    }
-    
-    @Override //addDebugScreenInfo
-    public void a(List<String> arg0, BlockPosition arg1) {
+    @Override
+    public void addDebugScreenInfo(@NotNull List<String> arg0, @NotNull BlockPos arg1) {
     
     }
 }

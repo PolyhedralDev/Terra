@@ -1,4 +1,9 @@
-package com.dfsek.terra.bukkit.nms.v1_18_R2;
+package com.dfsek.terra.bukkit.nms.v1_19_R1;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
@@ -16,18 +21,7 @@ import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-import com.dfsek.terra.registry.master.ConfigRegistry;
+import java.util.*;
 
 
 public class NMSBiomeInjector {
@@ -49,10 +43,11 @@ public class NMSBiomeInjector {
                     ResourceLocation vanillaMinecraftKey = new ResourceLocation(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
                     Biome platform = createBiome(
                             biome,
-                            biomeRegistry.get(vanillaMinecraftKey) // get
-                                                    );
+                            Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)) // get
+                                                );
                     
-                    ResourceKey<Biome> delegateKey = ResourceKey.create(Registry.BIOME_REGISTRY, new ResourceLocation("terra", createBiomeID(pack, key)));
+                    ResourceKey<Biome> delegateKey = ResourceKey.create(Registry.BIOME_REGISTRY,
+                                                                        new ResourceLocation("terra", createBiomeID(pack, key)));
                     
                     BuiltinRegistries.register(BuiltinRegistries.BIOME, delegateKey, platform);
                     biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
@@ -65,7 +60,7 @@ public class NMSBiomeInjector {
                     throw new RuntimeException(e);
                 }
             }));
-    
+            
             Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, true); // freeze registry again :)
             
             LOGGER.info("Doing tag garbage....");
@@ -75,7 +70,7 @@ public class NMSBiomeInjector {
                              (map, pair) ->
                                      map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
                              HashMap::putAll);
-    
+            
             terraBiomeMap
                     .forEach((vb, terraBiomes) ->
                                      getEntry(biomeRegistry, vb)
@@ -89,7 +84,7 @@ public class NMSBiomeInjector {
                                                                                               terra.unwrapKey().orElseThrow().location() +
                                                                                               ": " +
                                                                                               vanilla.tags().toList());
-                                                                
+                                                                        
                                                                                  vanilla.tags()
                                                                                         .forEach(
                                                                                                 tag -> collect
@@ -101,9 +96,9 @@ public class NMSBiomeInjector {
                                                                                      "No such biome: {}",
                                                                                      tb))),
                                                      () -> LOGGER.error("No vanilla biome: {}", vb)));
-    
-            biomeRegistry.resetTags(); // clearTags
-            biomeRegistry.bindTags(ImmutableMap.copyOf(collect)); // populateTags
+            
+            biomeRegistry.resetTags();
+            biomeRegistry.bindTags(ImmutableMap.copyOf(collect));
             
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
@@ -113,52 +108,51 @@ public class NMSBiomeInjector {
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
         return registry.getOptional(identifier)
                        .flatMap(registry::getResourceKey)
-                       .map(registry::getOrCreateHolder);
+                       .map(registry::getOrCreateHolderOrThrow);
     }
     
     private static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-        Biome.BiomeBuilder builder = new Biome.BiomeBuilder(); // Builder
+        Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
         
-        
-        builder.biomeCategory(Reflection.BIOME.getBiomeCategory(vanilla))
-               .precipitation(vanilla.getPrecipitation()) // getPrecipitation
-                .mobSpawnSettings(vanilla.getMobSettings())
-                .generationSettings(vanilla.getGenerationSettings())
+        builder
+                .precipitation(vanilla.getPrecipitation())
+                .downfall(vanilla.getDownfall())
                 .temperature(vanilla.getBaseTemperature())
-                .downfall(vanilla.getDownfall());
-    
-    
+                .mobSpawnSettings(vanilla.getMobSettings())
+                .generationSettings(vanilla.getGenerationSettings());
+        
         
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-    
+        
         effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
-    
+        
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-    
+        
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-    
+        
                .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-    
+        
                .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-    
+        
                .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
-    
+        
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         } else {
             effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
         }
-    
+        
         if(vanillaBiomeProperties.getGrassColor() == null) {
             vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
         } else {
+            // grass
             effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
         }
-    
+        
         builder.specialEffects(effects.build());
         
-        return builder.build(); // build()
+        return builder.build();
     }
     
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {

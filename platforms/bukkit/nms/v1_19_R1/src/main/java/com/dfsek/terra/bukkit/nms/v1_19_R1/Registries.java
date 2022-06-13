@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_18_R2;
+package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -6,7 +6,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 
 
 public class Registries {
@@ -16,8 +16,8 @@ public class Registries {
         return dedicatedserver
                 .registryAccess()
                 .registryOrThrow( // getRegistry
-                                  key
-                                );
+                    key
+                  );
     }
     
     public static Registry<Biome> biomeRegistry() {
