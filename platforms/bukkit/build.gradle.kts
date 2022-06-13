@@ -19,6 +19,7 @@ val purpurURL = "https://api.purpurmc.org/v2/purpur/%version%/latest/download"
 dependencies {
     shaded(project(":platforms:bukkit:common"))
     shaded(project(":platforms:bukkit:nms:v1_18_R2"))
+    shaded(project(":platforms:bukkit:nms:v1_19_R1"))
 }
 
 val throttleCoreCount = 0

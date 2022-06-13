@@ -1,6 +1,19 @@
+plugins {
+    id("io.papermc.paperweight.userdev") version "1.3.3"
+}
+
+repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+}
+
 dependencies {
     api(project(":platforms:bukkit:common"))
-    
-    compileOnly("io.papermc.paper:paper-api:1.18.2-R0.1-20220519.005047-123")
-    compileOnly(group = "org.spigotmc", name = "spigot", version = "1.18.2-R0.1-SNAPSHOT")
+    paperDevBundle("1.18.2-R0.1-SNAPSHOT")
+    implementation("xyz.jpenilla", "reflection-remapper", "0.1.0-SNAPSHOT")
+}
+
+tasks {
+    assemble {
+        dependsOn(reobfJar)
+    }
 }

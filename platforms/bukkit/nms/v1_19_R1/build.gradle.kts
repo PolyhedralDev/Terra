@@ -1,6 +1,7 @@
 plugins {
     id("io.papermc.paperweight.userdev") version "1.3.3"
 }
+
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
