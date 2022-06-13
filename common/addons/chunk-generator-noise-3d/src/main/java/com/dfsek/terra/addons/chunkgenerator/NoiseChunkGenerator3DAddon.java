@@ -42,7 +42,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                          .getOrCreateRegistry(ChunkGeneratorProvider.class)
                          .register(addon.key("NOISE_3D"),
                                    pack -> new NoiseChunkGenerator3D(platform, config.getElevationBlend(), config.getHorizontalRes(),
-                                                                     config.getVerticalRes()));
+                                                                     config.getVerticalRes(), config.getPaletteRes(), config.getPaletteBlendSampler(), config.getPaletteBlendAmplitude()));
                     event.getPack()
                          .applyLoader(SlantLayer.class, SlantLayer::new);
                 })

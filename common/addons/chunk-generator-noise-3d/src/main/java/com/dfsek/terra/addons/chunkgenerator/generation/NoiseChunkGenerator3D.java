@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -37,12 +38,22 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final int carverHorizontalResolution;
     private final int carverVerticalResolution;
     
+    private final int paletteRes;
+    
+    private final NoiseSampler paletteBlendSampler;
+    
+    private final double paletteBlendAmplitude;
+    
     public NoiseChunkGenerator3D(Platform platform, int elevationBlend, int carverHorizontalResolution,
-                                 int carverVerticalResolution) {
+                                 int carverVerticalResolution, int paletteRes, NoiseSampler paletteBlendSampler,
+                                 double paletteBlendAmplitude) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
         this.carverVerticalResolution = carverVerticalResolution;
+        this.paletteRes = paletteRes;
+        this.paletteBlendSampler = paletteBlendSampler;
+        this.paletteBlendAmplitude = paletteBlendAmplitude;
         this.samplerCache = new SamplerProvider(platform, elevationBlend);
     }
     
