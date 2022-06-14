@@ -15,7 +15,7 @@ public class NoiseChunkGeneratorPackConfigTemplate implements ConfigTemplate {
     
     @Value("blend.palette.resolution")
     @Default
-    private @Meta int paletteRes = 4;
+    private @Meta int paletteRes = 1;
     
     @Value("blend.palette.sampler")
     @Default
