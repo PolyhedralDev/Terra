@@ -16,6 +16,7 @@ import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -111,5 +112,19 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     private record SeededVector(int x, int z, long seed) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector that) {
+                return this.z == that.z && this.x == that.x && this.seed == that.seed;
+            }
+            return false;
+        }
+    
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+        }
     }
 }
