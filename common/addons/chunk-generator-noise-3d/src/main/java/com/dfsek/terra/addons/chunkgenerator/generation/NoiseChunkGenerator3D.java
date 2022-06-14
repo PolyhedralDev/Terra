@@ -58,6 +58,9 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     private Biome getBiome(BiomeProvider biomeProvider, int x, int y, int z, long seed) {
+        if(paletteBlendAmplitude == 1) {
+            return biomeProvider.getBiome(x, y, z, seed);
+        }
         long ms = seed;
         int mx = FastMath.floorDiv(x + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
         int my = FastMath.floorDiv(y + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
