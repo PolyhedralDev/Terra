@@ -25,7 +25,6 @@ import java.util.Map;
  */
 public class ChunkInterpolator {
     private final Interpolator3[][][] interpGrid;
-    private final long seed;
     
     private final int min;
     private final int max;
@@ -42,8 +41,7 @@ public class ChunkInterpolator {
     public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max) {
         this.min = min;
         this.max = max;
-        this.seed = seed;
-        
+    
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
@@ -65,23 +63,29 @@ public class ChunkInterpolator {
                 for(int y = 0; y < size; y++) {
                     int scaledY = (y << 2) + min;
                     BiomeNoiseProperties generationSettings = column.get(scaledY)
-                                                                      .getContext()
-                                                                      .get(BiomeNoiseProperties.class);
-                    Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
+                                                                    .getContext()
+                                                                    .get(BiomeNoiseProperties.class);
                     
                     int step = generationSettings.blendStep();
                     int blend = generationSettings.blendDistance();
                     
+                    double runningNoise = 0;
+                    double runningDiv = 0;
+                    
                     for(int xi = -blend; xi <= blend; xi++) {
                         for(int zi = -blend; zi <= blend; zi++) {
-                            genMap.computeIfAbsent(
-                                    provider.getBiome(absoluteX + (xi * step), scaledY, absoluteZ + (zi * step), seed)
-                                            .getContext()
-                                            .get(BiomeNoiseProperties.class),
-                                    g -> new MutableInteger(0)).increment(); // Increment by 1
+                            BiomeNoiseProperties properties = provider
+                                    .getBiome(absoluteX + (xi * step), scaledY, absoluteZ + (zi * step), seed)
+                                    .getContext()
+                                    .get(BiomeNoiseProperties.class);
+                            double sample = properties.noiseHolder().getNoise(properties.base(), absoluteX, scaledY, absoluteZ, seed);
+                            runningNoise += sample * properties.blendWeight();
+                            runningDiv += properties.blendWeight();
                         }
                     }
-                    double noise = computeNoise(genMap, absoluteX, scaledY, absoluteZ);
+                    
+                    double noise = runningNoise / runningDiv;
+                    
                     noiseStorage[x][z][y] = noise;
                     if(y == size - 1) {
                         noiseStorage[x][z][size] = noise;
@@ -109,24 +113,6 @@ public class ChunkInterpolator {
     
     private static int reRange(int value, int high) {
         return FastMath.max(FastMath.min(value, high), 0);
-    }
-    
-    public double computeNoise(BiomeNoiseProperties generationSettings, double x, double y, double z) {
-        return generationSettings.base().noise(seed, x, y, z);
-    }
-    
-    public double computeNoise(Map<BiomeNoiseProperties, MutableInteger> gens, double x, double y, double z) {
-        double n = 0;
-        double div = 0;
-        for(Map.Entry<BiomeNoiseProperties, MutableInteger> entry : gens.entrySet()) {
-            BiomeNoiseProperties gen = entry.getKey();
-            int weight = entry.getValue().get();
-            double noise = computeNoise(gen, x, y, z);
-            
-            n += noise * weight;
-            div += gen.blendWeight() * weight;
-        }
-        return n / div;
     }
     
     /**
