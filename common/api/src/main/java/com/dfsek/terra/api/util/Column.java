@@ -3,10 +3,6 @@ package com.dfsek.terra.api.util;
 import com.dfsek.terra.api.util.function.IntIntObjConsumer;
 import com.dfsek.terra.api.util.function.IntObjConsumer;
 
-import com.google.common.collect.ImmutableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -18,6 +14,7 @@ public interface Column<T> {
     int getMaxY();
     
     int getX();
+    
     int getZ();
     
     T get(int y);
@@ -33,7 +30,8 @@ public interface Column<T> {
             consumer.accept(y, get(y));
         }
     }
-    default void forRanges(IntIntObjConsumer<T> consumer) {
+    
+    default void forRanges(int resolution, IntIntObjConsumer<T> consumer) {
         int min = getMinY();
         
         int y = min;
@@ -45,7 +43,7 @@ public interface Column<T> {
         int max = getMaxY() - 1;
         
         while(y < max) {
-            y++;
+            y += resolution;
             T current = get(y);
             
             if(!current.equals(runningObj)) {

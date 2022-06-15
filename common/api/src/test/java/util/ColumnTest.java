@@ -38,7 +38,7 @@ public class ColumnTest {
     public void testForRanges() {
         List<Pair<Pair<Integer, Integer>, Boolean>> list = new ArrayList<>();
         
-        returnPositive.forRanges((min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
+        returnPositive.forRanges(1, (min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
         
         assertEquals(List.of(
                              Pair.of(Pair.of(-10, 0), false),
@@ -51,7 +51,7 @@ public class ColumnTest {
     public void testForRangesIndividual() {
         List<Pair<Pair<Integer, Integer>, Integer>> list = new ArrayList<>();
         
-        returnY.forRanges((min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
+        returnY.forRanges(1, (min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
         
         assertEquals(IntStream.range(-10, 10).mapToObj(i -> Pair.of(Pair.of(i, i + 1), i)).collect(Collectors.toList()),
                      list);
@@ -61,7 +61,7 @@ public class ColumnTest {
     public void testForRangesContiguous() {
         List<Pair<Pair<Integer, Integer>, Boolean>> list = new ArrayList<>();
         
-        returnTrue.forRanges((min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
+        returnTrue.forRanges(1, (min, max, p) -> list.add(Pair.of(Pair.of(min, max), p)));
         
         assertEquals(List.of(Pair.of(Pair.of(-10, 10), true)),
                      list);

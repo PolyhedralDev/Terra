@@ -51,7 +51,7 @@ class BiomePipelineColumn implements Column<Biome> {
     }
     
     @Override
-    public void forRanges(IntIntObjConsumer<Biome> consumer) {
+    public void forRanges(int resolution, IntIntObjConsumer<Biome> consumer) {
         consumer.accept(min, max, biome);
     }
     
