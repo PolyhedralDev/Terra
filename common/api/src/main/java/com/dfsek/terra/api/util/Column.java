@@ -44,7 +44,7 @@ public interface Column<T> {
         
         while(true) {
             y += resolution;
-            if(y >= max) {
+            if(y > max) {
                 break;
             }
             T current = get(y);
@@ -55,7 +55,7 @@ public interface Column<T> {
                 runningObj = current;
             }
         }
-        consumer.accept(runningMin, ++y, runningObj);
+        consumer.accept(runningMin, getMaxY(), runningObj);
     }
     
     default List<? extends T> asList() {
