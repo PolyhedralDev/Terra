@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import java.util.function.Supplier;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -27,6 +25,17 @@ public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     
     @Override
     public Object apply(ImplementationArguments implementationArguments, Scope scope) {
-        return left.apply(implementationArguments, scope).toString() + right.apply(implementationArguments, scope).toString();
+        return toString(left.apply(implementationArguments, scope)) + toString(right.apply(implementationArguments, scope));
+    }
+    
+    private static String toString(Object object) {
+        String s = object.toString();
+        if(object instanceof Double) {
+            int l = s.length();
+            if(s.charAt(l - 2) == '.' && s.charAt(l - 1) == '0') {
+                s = s.substring(0, s.length() - 2);
+            }
+        }
+        return s;
     }
 }
