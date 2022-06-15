@@ -33,11 +33,10 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     
     @Override
     public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
-        Scope sub = scope.sub();
-        for(initializer.apply(implementationArguments, sub);
-            statement.apply(implementationArguments, sub);
-            incrementer.apply(implementationArguments, sub)) {
-            Block.ReturnInfo<?> level = conditional.applyNoNewScope(implementationArguments, sub);
+        for(initializer.apply(implementationArguments, scope);
+            statement.apply(implementationArguments, scope);
+            incrementer.apply(implementationArguments, scope)) {
+            Block.ReturnInfo<?> level = conditional.apply(implementationArguments, scope);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

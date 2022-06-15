@@ -5,33 +5,26 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.parser.lang.variables;
+package com.dfsek.terra.addons.terrascript.parser.lang.variables.reference;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
-public class VariableReferenceNode implements Returnable<Object> {
-    private final String identifier;
+public abstract class VariableReferenceNode<T> implements Returnable<T> {
     private final Position position;
     private final ReturnType type;
+    protected final int index;
     
-    public VariableReferenceNode(String identifier, Position position, ReturnType type) {
-        this.identifier = identifier;
+    public VariableReferenceNode(Position position, ReturnType type, int index) {
         this.position = position;
         this.type = type;
+        this.index = index;
     }
     
     @Override
     public ReturnType returnType() {
         return type;
-    }
-    
-    @Override
-    public synchronized Object apply(ImplementationArguments implementationArguments, Scope scope) {
-        return scope.get(identifier).getValue();
     }
     
     @Override

@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
+import com.dfsek.terra.api.util.generic.pair.Pair;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -57,24 +59,5 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;
-    }
-    
-    
-    public static class Pair<L, R> {
-        private final L left;
-        private final R right;
-        
-        public Pair(L left, R right) {
-            this.left = left;
-            this.right = right;
-        }
-        
-        public L getLeft() {
-            return left;
-        }
-        
-        public R getRight() {
-            return right;
-        }
     }
 }
