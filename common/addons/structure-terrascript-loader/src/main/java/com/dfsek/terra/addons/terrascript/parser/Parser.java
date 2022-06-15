@@ -341,11 +341,11 @@ public class Parser {
     
         String id = identifier.getContent();
     
-        return switch(type.getType()) {
+        return switch(value.returnType()) {
             case NUMBER -> new NumAssignmentNode((Returnable<Number>) value, identifier.getPosition(), scopeBuilder.num(id));
             case STRING -> new StrAssignmentNode((Returnable<String>) value, identifier.getPosition(), scopeBuilder.str(id));
             case BOOLEAN -> new BoolAssignmentNode((Returnable<Boolean>) value, identifier.getPosition(), scopeBuilder.bool(id));
-            default -> throw new ParseException("Illegal type for variable assignment: " + type, value.getPosition());
+            default -> throw new ParseException("Illegal type for variable declaration: " + type, value.getPosition());
         };
     }
     

@@ -16,21 +16,14 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public abstract class BinaryOperation<I, O> implements Returnable<O> {
-    private final Returnable<I> left;
-    private final Returnable<I> right;
+    protected final Returnable<I> left;
+    protected final Returnable<I> right;
     private final Position start;
     
     public BinaryOperation(Returnable<I> left, Returnable<I> right, Position start) {
         this.left = left;
         this.right = right;
         this.start = start;
-    }
-    
-    public abstract O apply(Supplier<I> left, Supplier<I> right);
-    
-    @Override
-    public O apply(ImplementationArguments implementationArguments, Scope scope) {
-        return apply(() -> left.apply(implementationArguments, scope), () -> right.apply(implementationArguments, scope));
     }
     
     @Override

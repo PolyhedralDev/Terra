@@ -9,7 +9,9 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -19,12 +21,12 @@ public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     }
     
     @Override
-    public String apply(Supplier<Object> left, Supplier<Object> right) {
-        return left.get().toString() + right.get().toString();
+    public Returnable.ReturnType returnType() {
+        return Returnable.ReturnType.STRING;
     }
     
     @Override
-    public Returnable.ReturnType returnType() {
-        return Returnable.ReturnType.STRING;
+    public Object apply(ImplementationArguments implementationArguments, Scope scope) {
+        return left.apply(implementationArguments, scope).toString() + right.apply(implementationArguments, scope).toString();
     }
 }

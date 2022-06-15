@@ -14,6 +14,16 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public interface Function<T> extends Returnable<T> {
+    @Override
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        return (Double) apply(implementationArguments, scope);
+    }
+    
+    @Override
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        return (Boolean) apply(implementationArguments, scope);
+    }
+    
     Function<?> NULL = new Function<>() {
         @Override
         public ReturnType returnType() {
