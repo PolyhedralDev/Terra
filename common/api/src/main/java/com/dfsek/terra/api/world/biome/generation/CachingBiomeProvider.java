@@ -53,7 +53,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     
     @Override
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
-        return columnCache.computeIfAbsent(MathUtil.squash(x, z), k -> delegate.getColumn(x, z, seed, min, max));
+        return columnCache.computeIfAbsent(MathUtil.squash(x, z), k -> new BiomeColumn(this, min, max, x, z, seed));
     }
     
     @Override

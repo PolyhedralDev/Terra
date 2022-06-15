@@ -61,9 +61,4 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     public BiomeProvider getDelegate() {
         return delegate;
     }
-    
-    @Override
-    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
-        return new ExtrusionColumn(min, max, this, x, z, seed);
-    }
 }

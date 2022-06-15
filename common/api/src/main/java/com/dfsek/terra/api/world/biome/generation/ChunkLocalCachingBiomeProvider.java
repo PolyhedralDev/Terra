@@ -75,7 +75,7 @@ public class ChunkLocalCachingBiomeProvider extends CachingBiomeProvider {
             int index = (x & 15) + (16 * (z & 15));
             Column<Biome> column = columnCache[index];
             if(column == null) {
-                column = delegate.getColumn(x, z, seed, min, max);
+                column = new BiomeColumn(this, min, max, x, z, seed);
                 columnCache[index] = column;
             }
             return column;
