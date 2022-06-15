@@ -42,8 +42,11 @@ public interface Column<T> {
         
         int max = getMaxY() - 1;
         
-        while(y < max) {
+        while(true) {
             y += resolution;
+            if(y >= max) {
+                break;
+            }
             T current = get(y);
             
             if(!current.equals(runningObj)) {
