@@ -82,9 +82,7 @@ public class Scope {
             int num = numSize;
             indices.put(check(id), Pair.of(num, ReturnType.NUMBER));
             numSize++;
-            if(parent != null) {
-                parent.numSize = FastMath.max(parent.numSize, numSize);
-            }
+            updateNumSize(numSize);
             return num;
         }
         
@@ -92,9 +90,7 @@ public class Scope {
             int str = strSize;
             indices.put(check(id), Pair.of(str, ReturnType.STRING));
             strSize++;
-            if(parent != null) {
-                parent.strSize = FastMath.max(parent.strSize, strSize);
-            }
+            updateStrSize(strSize);
             return str;
         }
         
@@ -102,10 +98,29 @@ public class Scope {
             int bool = boolSize;
             indices.put(check(id), Pair.of(bool, ReturnType.BOOLEAN));
             boolSize++;
-            if(parent != null) {
-                parent.boolSize = FastMath.max(parent.boolSize, boolSize);
-            }
+            updateBoolSize(boolSize);
             return bool;
+        }
+        
+        private void updateBoolSize(int size) {
+            this.boolSize = FastMath.max(boolSize, size);
+            if(parent != null) {
+                parent.updateBoolSize(size);
+            }
+        }
+    
+        private void updateNumSize(int size) {
+            this.numSize = FastMath.max(numSize, size);
+            if(parent != null) {
+                parent.updateNumSize(size);
+            }
+        }
+    
+        private void updateStrSize(int size) {
+            this.strSize = FastMath.max(strSize, size);
+            if(parent != null) {
+                parent.updateStrSize(size);
+            }
         }
         
         public int getIndex(String id) {
