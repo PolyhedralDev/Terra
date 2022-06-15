@@ -25,7 +25,7 @@ public class MatchPattern implements Pattern {
     
     @Override
     public boolean matches(int y, Column<?> column) {
-        for(int i : range) {
+        for(int i = range.getMin(); i < range.getMax(); i++) {
             if(!matches.test(column.getBlock(y + i))) return false;
         }
         return true;
