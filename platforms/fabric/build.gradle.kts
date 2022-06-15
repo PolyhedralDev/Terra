@@ -11,6 +11,10 @@ plugins {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
+    "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
+    
     minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
     
@@ -22,14 +26,7 @@ dependencies {
         include(module)
     }
     
-    include(modImplementation("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI))
-    include("me.lucko", "fabric-permissions-api", Versions.Fabric.permissionsAPI)
-    
-    "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
-    
-    include(modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud))
+    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
     include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
 }
 
