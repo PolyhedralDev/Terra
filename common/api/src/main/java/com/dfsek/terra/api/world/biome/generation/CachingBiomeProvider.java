@@ -60,4 +60,9 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     public Iterable<Biome> getBiomes() {
         return delegate.getBiomes();
     }
+    
+    @Override
+    public int resolution() {
+        return delegate.resolution();
+    }
 }
