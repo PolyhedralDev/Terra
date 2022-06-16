@@ -6,6 +6,7 @@ import com.dfsek.terra.fabric.FabricEntryPoint;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
 
+import com.dfsek.terra.fabric.mixin_ifaces.FloraFeatureHolder;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
