@@ -86,9 +86,9 @@ public class BiomePipelineProvider implements BiomeProvider {
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
     
     
-        x = FastMath.floorToInt(FastMath.floorDiv(x, resolution));
+        x = FastMath.floorDiv(x, resolution);
     
-        z = FastMath.floorToInt(FastMath.floorDiv(z, resolution));
+        z = FastMath.floorDiv(z, resolution);
     
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
@@ -109,6 +109,11 @@ public class BiomePipelineProvider implements BiomeProvider {
     @Override
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return new BiomePipelineColumn(this, min, max, x, z, seed);
+    }
+    
+    @Override
+    public int resolution() {
+        return resolution;
     }
     
     private record SeededVector(int x, int z, long seed) {
