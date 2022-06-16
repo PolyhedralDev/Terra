@@ -27,6 +27,8 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.entity.DelegateEntityHolder;
+import com.dfsek.terra.fabric.mixin.access.ChunkRegionAccessor;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
@@ -95,7 +97,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
             ChunkPos pos = chunk.getPos();
             ((BiomeProviderHolder) chunk)
                     .terra$setHeldBiomeProvider(pack.getBiomeProvider()
-                                          .caching((ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld(), pos.x, pos.z));
+                                                    .caching((ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld(), pos.x,
+                                                             pos.z));
         }
         return super.populateBiomes(biomeRegistry, executor, noiseConfig, blender, structureAccessor, chunk);
     }
@@ -116,6 +119,13 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public void populateEntities(ChunkRegion region) {
+        ((ChunkRegionAccessor) region)
+                .getChunks()
+                .forEach(
+                        chunk -> ((DelegateEntityHolder) chunk)
+                                .getAndClearTerraEntities()
+                                .forEach(entity -> chunk.addEntity(entity.createMinecraftEntity(region)))
+                        );
         if(!this.settings.value().mobGenerationDisabled()) {
             ChunkPos chunkPos = region.getCenterPos();
             RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));

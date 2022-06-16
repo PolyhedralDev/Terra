@@ -28,6 +28,8 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.fabric.entity.DelegateEntity;
+import com.dfsek.terra.fabric.entity.DelegateEntityHolder;
 import com.dfsek.terra.fabric.generation.BiomeProviderHolder;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.generation.TerraBiomeSource;
@@ -47,13 +49,15 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$"))
 public abstract class ChunkRegionMixin {
-    private ConfigPack config;
+    private ConfigPack terra$config;
+    
     
     @Shadow
     @Final
@@ -70,27 +74,28 @@ public abstract class ChunkRegionMixin {
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;
     
-    @SuppressWarnings("deprecation")
-    private final Lazy<BiomeProvider> caching = Lazy.lazy(() -> ((TerraBiomeSource) ((ChunkRegion) (Object) this)
-            .toServerWorld()
-            .getChunkManager()
-            .getChunkGenerator()
-            .getBiomeSource()).getProvider().caching((ProtoWorld) this));
+    @Shadow
+    public abstract net.minecraft.server.world.ServerWorld toServerWorld();
     
+    @Shadow
+    public abstract Chunk getChunk(int chunkX, int chunkZ);
+    
+    private Lazy<BiomeProvider> caching;
+    
+    @SuppressWarnings("deprecation")
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
     public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list,
                                   ChunkStatus chunkStatus, int i,
                                   CallbackInfo ci) {
-        this.config = ((ServerWorld) world).getPack();
+        this.terra$config = ((ServerWorld) world).getPack();
+        this.caching = Lazy.lazy(() -> ((TerraBiomeSource) ((ChunkRegion) (Object) this)
+                .toServerWorld()
+                .getChunkManager()
+                .getChunkGenerator()
+                .getBiomeSource()).getProvider().caching((ProtoWorld) this));
     }
     
-    public Entity terraWorld$spawnEntity(Vector3 location, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null);
-        entity.setPos(location.getX(), location.getY(), location.getZ());
-        ((ChunkRegion) (Object) this).spawnEntity(entity);
-        return (Entity) entity;
-    }
     
     @Intrinsic(displace = true)
     public void terraWorld$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
@@ -139,10 +144,9 @@ public abstract class ChunkRegionMixin {
     }
     
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null);
-        entity.setPos(x, y, z);
-        ((ChunkRegion) (Object) this).spawnEntity(entity);
-        return (Entity) entity;
+        DelegateEntity entity = new DelegateEntity(Vector3.of(x, y, z), (ServerWorld) this.toServerWorld(), entityType);
+        ((DelegateEntityHolder) getChunk((int) x / 16, (int) z / 16)).addTerraEntity(entity);
+        return entity;
     }
     
     public int terraWorld$centerChunkX() {
@@ -158,6 +162,6 @@ public abstract class ChunkRegionMixin {
     }
     
     public ConfigPack terraWorld$getPack() {
-        return config;
+        return terra$config;
     }
 }
