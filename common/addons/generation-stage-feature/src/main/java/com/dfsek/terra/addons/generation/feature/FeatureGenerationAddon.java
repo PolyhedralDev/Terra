@@ -87,7 +87,7 @@ public class FeatureGenerationAddon implements AddonInitializer {
                 
                         featureGenerationStages.forEach(stage -> features.put(stage, template.get(stage.getID(), List.class)));
                 
-                        event.getLoadedObject(Biome.class).getContext().put(new BiomeFeatures(features));
+                        event.getLoadedObject(Biome.class).getContext().put(biomeFeaturesKey, new BiomeFeatures(features));
                     }
                 })
                 .failThrough();
