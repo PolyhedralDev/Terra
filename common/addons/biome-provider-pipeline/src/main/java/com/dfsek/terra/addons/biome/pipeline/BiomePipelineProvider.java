@@ -86,9 +86,8 @@ public class BiomePipelineProvider implements BiomeProvider {
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
     
     
-        x = FastMath.floorDiv(x, resolution);
-    
-        z = FastMath.floorDiv(z, resolution);
+        x /= resolution;
+        z /= resolution;
     
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());

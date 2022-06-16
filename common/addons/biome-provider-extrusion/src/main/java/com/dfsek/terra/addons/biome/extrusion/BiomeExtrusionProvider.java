@@ -1,15 +1,13 @@
 package com.dfsek.terra.addons.biome.extrusion;
 
-import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
-import com.dfsek.terra.api.util.Column;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.info.WorldProperties;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomeExtrusionProvider implements BiomeProvider {
@@ -28,6 +26,14 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
+        x /= resolution;
+        y /= resolution;
+        z /= resolution;
+    
+        x *= resolution;
+        y *= resolution;
+        z *= resolution;
+        
         Biome delegated = delegate.getBiome(x, y, z, seed);
     
         for(Extrusion extrusion : extrusions) {
@@ -42,19 +48,13 @@ public class BiomeExtrusionProvider implements BiomeProvider {
         return delegate.getBaseBiome(x, z, seed);
     }
     
-    public Biome getBiome(int x, int y, int z, long seed, Biome biome) {
-        for(Extrusion extrusion : extrusions) {
-            biome = extrusion.extrude(biome, x, y, z, seed);
-        }
-        return biome;
-    }
-    
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
     }
     
-    public int getResolution() {
+    @Override
+    public int resolution() {
         return resolution;
     }
     
