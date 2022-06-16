@@ -87,6 +87,10 @@ public final class MathUtil {
         return FastMath.min(FastMath.max(in, -1), 1);
     }
     
+    public static int clamp(int min, int i, int max) {
+        return FastMath.max(FastMath.min(i, max), min);
+    }
+    
     /**
      * Compute the value in a normally distributed data set that has probability p.
      *
