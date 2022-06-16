@@ -13,6 +13,8 @@ import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
+import net.jafama.FastMath;
+
 
 public class PatternLocator implements Locator {
     private final Pattern pattern;
@@ -25,6 +27,9 @@ public class PatternLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        return new BinaryColumn(search, y -> pattern.matches(y, column));
+        int min = FastMath.max(column.getMinY(), search.getMin());
+        int max = FastMath.min(column.getMaxY(), search.getMax());
+        if(min >= max) return BinaryColumn.getNull();
+        return new BinaryColumn(min, max, y -> pattern.matches(y, column));
     }
 }

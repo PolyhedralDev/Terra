@@ -13,6 +13,8 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
+import net.jafama.FastMath;
+
 
 public class MatchPattern implements Pattern {
     private final Range range;
@@ -25,8 +27,10 @@ public class MatchPattern implements Pattern {
     
     @Override
     public boolean matches(int y, Column<?> column) {
-        for(int i = range.getMin(); i < range.getMax(); i++) {
-            if(!matches.test(column.getBlock(y + i))) return false;
+        int min = FastMath.max(column.getMinY(), range.getMin() + y);
+        int max = FastMath.min(column.getMaxY(), range.getMax() + y);
+        for(int i = min; i < max; i++) {
+            if(!matches.test(column.getBlock(i))) return false;
         }
         return true;
     }

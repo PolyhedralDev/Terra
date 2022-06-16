@@ -27,6 +27,8 @@ public class Column<T extends WritableWorld> {
     private final int max;
     private final T world;
     
+    private final BlockState[] cache;
+    
     public Column(int x, int z, T world) {
         this(x, z, world, world.getMinHeight(), world.getMaxHeight());
     }
@@ -37,6 +39,7 @@ public class Column<T extends WritableWorld> {
         this.world = world;
         this.max = max;
         this.min = min;
+        this.cache = new BlockState[world.getMaxHeight() - world.getMinHeight()];
     }
     
     public int getX() {
@@ -48,7 +51,13 @@ public class Column<T extends WritableWorld> {
     }
     
     public BlockState getBlock(int y) {
-        return world.getBlockState(x, y, z);
+        int i = y - world.getMinHeight();
+        BlockState state = cache[i];
+        if(state == null) {
+            state = world.getBlockState(x, y, z);
+            cache[i] = state;
+        }
+        return state;
     }
     
     public T getWorld() {
