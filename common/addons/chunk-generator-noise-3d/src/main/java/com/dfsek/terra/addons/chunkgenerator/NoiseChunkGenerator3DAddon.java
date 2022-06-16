@@ -35,6 +35,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
+                .priority(1000)
                 .then(event -> {
                     NoiseChunkGeneratorPackConfigTemplate config = event.loadTemplate(new NoiseChunkGeneratorPackConfigTemplate());
             

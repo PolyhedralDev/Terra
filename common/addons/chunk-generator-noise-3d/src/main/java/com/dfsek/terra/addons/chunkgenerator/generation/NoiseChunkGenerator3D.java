@@ -57,16 +57,15 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.samplerCache = new SamplerProvider(platform, elevationBlend);
     }
     
-    private Biome getBiome(BiomeProvider biomeProvider, int x, int y, int z, long seed) {
+    private Biome getBiome(double noiseX, double noiseZ, BiomeProvider biomeProvider, int x, int y, int z, long seed) {
         if(paletteBlendAmplitude == 1) {
             return biomeProvider.getBiome(x, y, z, seed);
         }
-        long ms = seed;
-        int mx = FastMath.floorDiv(x + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
-        int my = FastMath.floorDiv(y + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed++, x, y, z)), paletteRes) * paletteRes;
-        int mz = FastMath.floorDiv(z + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed, x, y, z)), paletteRes) * paletteRes;
+        int mx = FastMath.floorDiv(x + (int) (paletteBlendAmplitude * noiseX), paletteRes) * paletteRes;
+        int my = FastMath.floorDiv(y + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed + 2, x, y, z)), paletteRes) * paletteRes;
+        int mz = FastMath.floorDiv(z + (int) (paletteBlendAmplitude * noiseZ), paletteRes) * paletteRes;
         
-        return biomeProvider.getBiome(mx, my, mz, ms);
+        return biomeProvider.getBiome(mx, my, mz, seed);
     }
     
     @Override
@@ -92,6 +91,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                                                                              seed);
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
+                double paletteNoiseX = paletteBlendSampler.noise(seed, x, z);
+                double paletteNoiseZ = paletteBlendSampler.noise(seed + 1, x, z);
                 int paletteLevel = 0;
                 
                 int cx = xOrig + x;
@@ -99,7 +100,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 
                 BlockState data;
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
-                    Biome biome = getBiome(biomeProvider, cx, y, cz, seed);
+                    Biome biome = getBiome(paletteNoiseX, paletteNoiseZ, biomeProvider, cx, y, cz, seed);
                     
                     PaletteInfo paletteInfo = biome.getContext().get(PaletteInfo.class);
                     
