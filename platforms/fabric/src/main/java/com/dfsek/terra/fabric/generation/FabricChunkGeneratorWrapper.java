@@ -17,22 +17,6 @@
 
 package com.dfsek.terra.fabric.generation;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
-import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
-import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.data.Codecs;
-import com.dfsek.terra.fabric.mixin_ifaces.BiomeProviderHolder;
-import com.dfsek.terra.fabric.mixin_ifaces.entity.DelegateEntityHolder;
-import com.dfsek.terra.fabric.mixin.access.ChunkRegionAccessor;
-import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
-import com.dfsek.terra.fabric.util.FabricAdapter;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -68,6 +52,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
+import com.dfsek.terra.fabric.mixin_ifaces.BiomeProviderHolder;
+import com.dfsek.terra.fabric.util.FabricAdapter;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -120,13 +118,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public void populateEntities(ChunkRegion region) {
-        ((ChunkRegionAccessor) region)
-                .getChunks()
-                .forEach(
-                        chunk -> ((DelegateEntityHolder) chunk)
-                                .getAndClearTerraEntities()
-                                .forEach(entity -> chunk.addEntity(entity.createMinecraftEntity(region)))
-                        );
         if(!this.settings.value().mobGenerationDisabled()) {
             ChunkPos chunkPos = region.getCenterPos();
             RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));

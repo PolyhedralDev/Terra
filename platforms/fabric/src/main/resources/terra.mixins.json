@@ -13,7 +13,6 @@
         "implementations.cache.ChunkRegionMixin",
         "implementations.cache.ProtoChunkMixin",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
-        "implementations.entity_holder.ProtoChunkMixin",
         "implementations.terra.BiomeMixin",
         "implementations.terra.HandleImplementationMixin",
         "implementations.terra.block.BlockMixin",
