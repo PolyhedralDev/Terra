@@ -103,4 +103,8 @@ public interface BiomeProvider {
     default ChunkLocalCachingBiomeProvider caching(WorldProperties worldProperties, int chunkX, int chunkZ) {
         return new ChunkLocalCachingBiomeProvider(this, worldProperties, chunkX, chunkZ);
     }
+    
+    default int resolution() {
+        return 1;
+    }
 }
