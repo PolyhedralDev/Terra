@@ -109,7 +109,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public int terraWorld$getMaxHeight() {
-        return (((ChunkRegion) (Object) this).getBottomY()) + ((ChunkRegion) (Object) this).getHeight();
+        return world.getTopY();
     }
     
     @Intrinsic(displace = true)
@@ -123,7 +123,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public int terraWorld$getMinHeight() {
-        return ((ChunkRegion) (Object) this).getBottomY();
+        return world.getBottomY();
     }
     
     public ChunkGenerator terraWorld$getGenerator() {
