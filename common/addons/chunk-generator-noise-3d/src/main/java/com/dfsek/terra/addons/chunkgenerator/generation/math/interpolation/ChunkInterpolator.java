@@ -8,15 +8,9 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.util.Column;
-import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import net.jafama.FastMath;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -41,7 +35,7 @@ public class ChunkInterpolator {
     public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max) {
         this.min = min;
         this.max = max;
-    
+        
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
@@ -59,12 +53,11 @@ public class ChunkInterpolator {
             for(int z = 0; z < 5; z++) {
                 int scaledZ = z << 2;
                 int absoluteZ = zOrigin + scaledZ;
-                Column<Biome> column = provider.getColumn(absoluteX, absoluteZ, seed, min, max);
                 for(int y = 0; y < size; y++) {
                     int scaledY = (y << 2) + min;
-                    BiomeNoiseProperties generationSettings = column.get(scaledY)
-                                                                    .getContext()
-                                                                    .get(BiomeNoiseProperties.class);
+                    BiomeNoiseProperties generationSettings = provider.getBiome(absoluteX, scaledY, absoluteZ, seed)
+                                                                      .getContext()
+                                                                      .get(BiomeNoiseProperties.class);
                     
                     int step = generationSettings.blendStep();
                     int blend = generationSettings.blendDistance();
