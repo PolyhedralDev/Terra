@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import com.dfsek.terra.api.properties.PropertyKey;
+
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
@@ -18,13 +20,16 @@ public class LazilyEvaluatedInterpolator {
     private final int verticalRes;
     
     private final BiomeProvider biomeProvider;
+    private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
     private final long seed;
     private final int min;
     
     private final int zMul, yMul;
-    public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max, int min, int horizontalRes, int verticalRes,
+    public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max,
+                                       PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {
+        this.noisePropertiesKey = noisePropertiesKey;
         int hSamples = FastMath.ceilToInt(16.0 / horizontalRes);
         int vSamples = FastMath.ceilToInt((double) (max - min) / verticalRes);
         this.zMul = (hSamples + 1);
@@ -49,7 +54,7 @@ public class LazilyEvaluatedInterpolator {
             sample = biomeProvider
                     .getBiome(xi, y, zi, seed)
                     .getContext()
-                    .get(BiomeNoiseProperties.class)
+                    .get(noisePropertiesKey)
                     .carving()
                     .noise(seed, xi, oy, zi);
             samples[index] = sample;

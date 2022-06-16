@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import net.jafama.FastMath;
@@ -32,7 +33,7 @@ public class ChunkInterpolator {
      * @param min
      * @param max
      */
-    public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max) {
+    public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max, PropertyKey<BiomeNoiseProperties> noisePropertiesKey) {
         this.min = min;
         this.max = max;
         
@@ -57,7 +58,7 @@ public class ChunkInterpolator {
                     int scaledY = (y << 2) + min;
                     BiomeNoiseProperties generationSettings = provider.getBiome(absoluteX, scaledY, absoluteZ, seed)
                                                                       .getContext()
-                                                                      .get(BiomeNoiseProperties.class);
+                                                                      .get(noisePropertiesKey);
                     
                     int step = generationSettings.blendStep();
                     int blend = generationSettings.blendDistance();
@@ -70,7 +71,7 @@ public class ChunkInterpolator {
                             BiomeNoiseProperties properties = provider
                                     .getBiome(absoluteX + (xi * step), scaledY, absoluteZ + (zi * step), seed)
                                     .getContext()
-                                    .get(BiomeNoiseProperties.class);
+                                    .get(noisePropertiesKey);
                             double sample = properties.noiseHolder().getNoise(properties.base(), absoluteX, scaledY, absoluteZ, seed);
                             runningNoise += sample * properties.blendWeight();
                             runningDiv += properties.blendWeight();

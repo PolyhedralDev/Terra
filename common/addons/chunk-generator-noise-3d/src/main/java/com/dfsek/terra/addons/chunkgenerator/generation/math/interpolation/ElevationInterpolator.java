@@ -8,13 +8,15 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class ElevationInterpolator {
     private final double[][] values = new double[18][18];
     
-    public ElevationInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int smooth) {
+    public ElevationInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int smooth,
+                                 PropertyKey<BiomeNoiseProperties> noisePropertiesKey) {
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
         
@@ -30,7 +32,7 @@ public class ElevationInterpolator {
                                 .getBaseBiome(bx, bz, seed)
                                 .orElseGet(() -> provider.getBiome(bx, 0, bz, seed)) // kind of a hack
                                 .getContext()
-                                .get(BiomeNoiseProperties.class);
+                                .get(noisePropertiesKey);
             }
         }
         

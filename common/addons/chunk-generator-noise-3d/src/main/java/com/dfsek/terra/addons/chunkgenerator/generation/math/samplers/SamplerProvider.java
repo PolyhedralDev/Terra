@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.properties.PropertyKey;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.jafama.FastMath;
@@ -31,10 +34,12 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 public class SamplerProvider {
     private final Cache<WorldContext, Sampler3D> cache;
     private final int elevationSmooth;
+    private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
-    public SamplerProvider(Platform platform, int elevationSmooth) {
+    public SamplerProvider(Platform platform, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey) {
         this.elevationSmooth = elevationSmooth;
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache()).build();
+        this.noisePropertiesKey = noisePropertiesKey;
     }
     
     public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
@@ -48,7 +53,7 @@ public class SamplerProvider {
         try {
             return cache.get(context,
                              () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
-                                                 elevationSmooth));
+                                                 elevationSmooth, noisePropertiesKey));
         } catch(ExecutionException e) {
             throw new RuntimeException(e);
         }
