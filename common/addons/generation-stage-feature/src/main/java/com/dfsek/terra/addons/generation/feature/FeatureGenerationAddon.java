@@ -28,6 +28,8 @@ import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.properties.Context;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.structure.feature.Feature;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -49,12 +51,13 @@ public class FeatureGenerationAddon implements AddonInitializer {
     @SuppressWarnings("unchecked")
     @Override
     public void initialize() {
+        PropertyKey<BiomeFeatures> biomeFeaturesKey = Context.create(BiomeFeatures.class);
         platform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack()
                                     .getOrCreateRegistry(STAGE_TYPE_KEY)
-                                    .register(addon.key("FEATURE"), () -> new FeatureStageTemplate(platform)))
+                                    .register(addon.key("FEATURE"), () -> new FeatureStageTemplate(platform, biomeFeaturesKey)))
                 .failThrough();
         
         platform.getEventManager()

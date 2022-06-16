@@ -9,6 +9,7 @@ package com.dfsek.terra.addons.generation.feature;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
@@ -29,12 +30,14 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
     private final String profile;
     
     private final int resolution;
+    private final PropertyKey<BiomeFeatures> biomeFeaturesKey;
     
-    public FeatureGenerationStage(Platform platform, String id, int resolution) {
+    public FeatureGenerationStage(Platform platform, String id, int resolution, PropertyKey<BiomeFeatures> biomeFeaturesKey) {
         this.platform = platform;
         this.id = id;
         this.profile = "feature_stage:" + id;
         this.resolution = resolution;
+        this.biomeFeaturesKey = biomeFeaturesKey;
     }
     
     @Override
@@ -58,7 +61,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                  long coordinateSeed = (seed * 31 + x) * 31 + z;
                                  Column<WritableWorld> column = world.column(x, z);
                                  biome.getContext()
-                                      .get(BiomeFeatures.class)
+                                      .get(biomeFeaturesKey)
                                       .getFeatures()
                                       .getOrDefault(this, Collections.emptyList())
                                       .forEach(feature -> {
