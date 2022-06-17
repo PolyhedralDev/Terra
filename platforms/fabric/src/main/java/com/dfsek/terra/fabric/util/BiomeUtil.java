@@ -151,6 +151,8 @@ public final class BiomeUtil {
             builder.precipitation(vanilla.getPrecipitation());
         }
         
+        vanilla.getParticleConfig().ifPresent(effects::particleConfig);
+        
         return builder
                 .temperature(vanilla.getTemperature())
                 .downfall(vanilla.getDownfall())
