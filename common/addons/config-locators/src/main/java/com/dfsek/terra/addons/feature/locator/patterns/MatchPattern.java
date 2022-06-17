@@ -29,6 +29,7 @@ public class MatchPattern implements Pattern {
     public boolean matches(int y, Column<?> column) {
         int min = FastMath.max(column.getMinY(), range.getMin() + y);
         int max = FastMath.min(column.getMaxY(), range.getMax() + y);
+        if(max <= min) return false;
         for(int i = min; i < max; i++) {
             if(!matches.test(column.getBlock(i))) return false;
         }
