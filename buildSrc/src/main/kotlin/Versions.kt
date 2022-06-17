@@ -19,7 +19,7 @@ object Versions {
     
     object Fabric {
         const val fabricLoader = "0.14.2"
-        const val fabricAPI = "0.55.1+1.19"
+        const val fabricAPI = "0.56.0+1.19"
         const val minecraft = "1.19"
         const val yarn = "$minecraft+build.1"
         const val mixin = "0.11.2+mixin.0.8.5"
