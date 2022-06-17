@@ -3,9 +3,9 @@ import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id("fabric-loom").version(Versions.Fabric.loom)
-    id("com.modrinth.minotaur").version("1.1.0")
-    id("io.github.juuxel.loom-quiltflower") version "1.7.1"
+    id("fabric-loom") version Versions.Fabric.loom
+    id("com.modrinth.minotaur") version Versions.Fabric.minotaur
+    id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
 }
 
 dependencies {

@@ -24,6 +24,8 @@ object Versions {
         const val yarn = "$minecraft+build.1"
         const val mixin = "0.11.2+mixin.0.8.5"
         const val loom = "0.12-SNAPSHOT"
+        const val loomQuiltflower = "1.7.1"
+        const val minotaur = "1.1.0"
     }
     
     object Bukkit {
