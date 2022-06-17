@@ -44,15 +44,15 @@ public class LazilyEvaluatedInterpolator {
         this.min = min;
     }
     
-    private double sample(int x, int y, int z, int ox, int oy, int oz) {
-        int index = x + (z * zMul) + (y * yMul);
+    private double sample(int xIndex, int yIndex, int zIndex, int ox, int oy, int oz) {
+        int index = xIndex + (zIndex * zMul) + (yIndex * yMul);
         Double sample = samples[index];
         if(sample == null) {
             int xi = ox + chunkX;
             int zi = oz + chunkZ;
             
             sample = biomeProvider
-                    .getBiome(xi, y, zi, seed)
+                    .getBiome(xi, oy, zi, seed)
                     .getContext()
                     .get(noisePropertiesKey)
                     .carving()
