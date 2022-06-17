@@ -7,11 +7,20 @@
 
 package com.dfsek.terra.addons.feature.locator.patterns;
 
+import com.dfsek.terra.api.world.ReadableWorld;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.World;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public interface Pattern {
     boolean matches(int y, Column<?> column);
+    
+    default boolean matches(WritableWorld world, int x, int y, int z) {
+        return matches(y, world.column(x, z));
+    }
+    
     
     default Pattern and(Pattern that) {
         return (y, column) -> this.matches(y, column) && that.matches(y, column);
