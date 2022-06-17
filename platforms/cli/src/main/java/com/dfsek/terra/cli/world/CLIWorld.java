@@ -1,5 +1,7 @@
 package com.dfsek.terra.cli.world;
 
+import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
+
 import com.google.common.collect.Streams;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
@@ -85,8 +87,9 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     try {
                         int num = amount.getAndIncrement();
                         CLIChunk chunk = getChunkAt(finalX, finalZ);
-                        chunkGenerator.generateChunkData(chunk, this, pack.getBiomeProvider().caching(this), finalX, finalZ);
-                        CLIProtoWorld protoWorld = new CLIProtoWorld(this, finalX, finalZ);
+                        ChunkLocalCachingBiomeProvider cachingBiomeProvider = pack.getBiomeProvider().caching(this, finalX, finalZ);
+                        chunkGenerator.generateChunkData(chunk, this, cachingBiomeProvider, finalX, finalZ);
+                        CLIProtoWorld protoWorld = new CLIProtoWorld(this, cachingBiomeProvider, finalX, finalZ);
                         pack.getStages().forEach(stage -> stage.populate(protoWorld));
                         if(num % 240 == 239) {
                             long time = System.nanoTime();
@@ -224,10 +227,12 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     private static final class CLIProtoWorld implements ProtoWorld {
         private final CLIWorld delegate;
+        private final BiomeProvider biomeProvider;
         private final int x, z;
         
-        private CLIProtoWorld(CLIWorld delegate, int x, int z) {
+        private CLIProtoWorld(CLIWorld delegate, BiomeProvider biomeProvider, int x, int z) {
             this.delegate = delegate;
+            this.biomeProvider = biomeProvider;
             this.x = x;
             this.z = z;
         }
@@ -269,7 +274,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         
         @Override
         public BiomeProvider getBiomeProvider() {
-            return delegate.biomeProvider;
+            return biomeProvider;
         }
         
         @Override
