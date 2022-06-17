@@ -149,6 +149,8 @@ public class NMSBiomeInjector {
             // grass
             effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
         }
+    
+        vanilla.getAmbientParticle().ifPresent(effects::ambientParticle);
         
         builder.specialEffects(effects.build());
         
