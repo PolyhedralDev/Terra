@@ -150,7 +150,11 @@ public final class BiomeUtil {
             
             builder.precipitation(vanilla.getPrecipitation());
         }
-        
+    
+        vanilla.getLoopSound().ifPresent(effects::loopSound);
+        vanilla.getAdditionsSound().ifPresent(effects::additionsSound);
+        vanilla.getMoodSound().ifPresent(effects::moodSound);
+        vanilla.getMusic().ifPresent(effects::music);
         vanilla.getParticleConfig().ifPresent(effects::particleConfig);
         
         return builder
