@@ -8,7 +8,6 @@ plugins {
     id("xyz.jpenilla.run-paper") version "1.0.6"
 }
 
-val mcVersion = "1.18.2"
 val testDir = "target/server"
 val testMem = "3G"
 
@@ -24,7 +23,7 @@ dependencies {
     shaded(project(":platforms:bukkit:common"))
     shaded(project(":platforms:bukkit:nms:v1_18_R2", configuration = "reobf"))
     shaded(project(":platforms:bukkit:nms:v1_19_R1", configuration = "reobf"))
-    shaded("xyz.jpenilla", "reflection-remapper", "0.1.0-SNAPSHOT")
+    shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
 val throttleCoreCount = 0
@@ -45,7 +44,7 @@ if(throttleCoreCount > 0) {
 
 
 fun downloadPaperclip(url: String, dir: String) {
-    val clip = URL(url.replace("%version%", mcVersion))
+    val clip = URL(url.replace("%version%", Versions.Bukkit.minecraft))
     val clipReadableByteChannel = Channels.newChannel(clip.openStream())
     val clipFile = file("$testDir/$dir/paperclip.jar")
     val clipOutputStream = clipFile.outputStream()
