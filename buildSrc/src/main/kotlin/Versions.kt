@@ -40,4 +40,10 @@ object Versions {
         const val mixin = "0.8.2"
         const val minecraft = "1.17.1"
     }
+    
+    object CLI {
+        const val nbt = "6.1"
+        const val logback = "1.2.9"
+        const val commonsIO = "2.7"
+    }
 }
