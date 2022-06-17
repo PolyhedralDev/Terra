@@ -1,6 +1,12 @@
+plugins {
+    application
+}
+
 repositories {
     maven { url = uri("https://jitpack.io/") }
 }
+
+val javaMainClass = "com.dfsek.terra.cli.TerraCLI"
 
 dependencies {
     shadedApi("commons-io:commons-io:${Versions.CLI.commonsIO}")
@@ -18,7 +24,15 @@ tasks.withType<Jar>() {
     entryCompression = ZipEntryCompression.STORED
     manifest {
         attributes(
-            "Main-Class" to "com.dfsek.terra.cli.TerraCLI",
+            "Main-Class" to javaMainClass,
                   )
     }
 }
+
+application {
+    mainClass.set(javaMainClass)
+}
+
+tasks.getByName("run").setProperty("workingDir", file("./run"))
+
+addonDir(project.file("./run/addons"), tasks.named("run").get())
