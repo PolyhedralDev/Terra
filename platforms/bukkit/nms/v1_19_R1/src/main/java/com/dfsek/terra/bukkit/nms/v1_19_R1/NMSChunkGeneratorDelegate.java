@@ -16,6 +16,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -33,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -129,6 +131,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
+        /*
         BlockState[] array = new BlockState[world.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, world);
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
@@ -137,6 +140,9 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                                                                              .getHandle()).getState();
         }
         return new NoiseColumn(getMinY(), array);
+        
+         */
+        return vanilla.getBaseColumn(x, z, world, noiseConfig);
     }
     
     @Override

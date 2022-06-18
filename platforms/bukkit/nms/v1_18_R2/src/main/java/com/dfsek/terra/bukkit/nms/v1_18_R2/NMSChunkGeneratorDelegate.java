@@ -81,7 +81,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         return vanilla.getSeaLevel();
     }
     
-    @Override //fillFromNoise
+    @Override
     public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender, @NotNull StructureFeatureManager structureAccessor,
                                                                  @NotNull ChunkAccess chunk) {
         return vanilla.fillFromNoise(executor, blender, structureAccessor, chunk);
@@ -97,8 +97,9 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         return ChunkGenerator.CODEC;
     }
     
-    @Override // getColumn
+    @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height) {
+        /*
         BlockState[] array = new BlockState[height.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, height);
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
@@ -107,6 +108,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                                                                              .getHandle()).getState();
         }
         return new NoiseColumn(getMinY(), array);
+         */
+        return vanilla.getBaseColumn(x, z, height);
     }
     
     @Override // withSeed
