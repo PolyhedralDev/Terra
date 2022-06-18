@@ -5,6 +5,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Scheduler;
 
 import java.util.Optional;
 
@@ -25,6 +26,8 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
         this.res = delegate.resolution();
         this.cache = Caffeine
                 .newBuilder()
+                .scheduler(Scheduler.disabledScheduler())
+                .initialCapacity(98304)
                 .maximumSize(98304) // 1 full chunk (high res)
                 .build(vec -> delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed));
     
