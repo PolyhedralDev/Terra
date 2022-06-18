@@ -42,7 +42,7 @@ public class LazilyEvaluatedInterpolator {
         this.biomeProvider = biomeProvider;
         this.seed = seed;
         this.min = min;
-        this.max = max;
+        this.max = max - 1;
     }
     
     private double sample(int xIndex, int yIndex, int zIndex, int ox, int oy, int oz) {
