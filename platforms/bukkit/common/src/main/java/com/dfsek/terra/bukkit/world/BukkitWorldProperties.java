@@ -31,4 +31,17 @@ public class BukkitWorldProperties implements WorldProperties {
     public int getMinHeight() {
         return delegate.getMinHeight();
     }
+    
+    @Override
+    public int hashCode() {
+        return delegate.hashCode();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof WorldProperties that) {
+            return this.delegate.equals(that.getHandle());
+        }
+        return false;
+    }
 }

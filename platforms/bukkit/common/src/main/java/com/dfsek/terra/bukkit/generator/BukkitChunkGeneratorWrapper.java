@@ -17,11 +17,13 @@
 
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
+import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
-import org.bukkit.Location;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
@@ -49,6 +51,31 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final BlockState air;
     private ChunkGenerator delegate;
     private ConfigPack pack;
+    private final LoadingCache<SeededVector, ChunkLocalCachingBiomeProvider> biomeProviderCache = CacheBuilder.newBuilder()
+            .maximumSize(128)
+            .build(new CacheLoader<>() {
+                @Override
+                public @NotNull ChunkLocalCachingBiomeProvider load(@NotNull SeededVector key) {
+                    return pack.getBiomeProvider().caching(key.worldProperties, key.x, key.z);
+                }
+            });
+    
+    private record SeededVector(int x, int z, WorldProperties worldProperties) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector that) {
+                return this.z == that.z && this.x == that.x && this.worldProperties.equals(that.worldProperties);
+            }
+            return false;
+        }
+        
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + worldProperties.hashCode();
+        }
+    }
     
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
@@ -68,7 +95,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider().caching(properties), x, z);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, biomeProviderCache.getUnchecked(new SeededVector(x, z, new BukkitWorldProperties(worldInfo))), x, z);
     }
     
     @Override
@@ -79,7 +106,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
                        @Override
                        public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
                                             @NotNull LimitedRegion limitedRegion) {
-                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air));
+                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air, biomeProviderCache.getUnchecked(new SeededVector(x, z, new BukkitWorldProperties(worldInfo)))));
                        }
                    })
                    .collect(Collectors.toList());

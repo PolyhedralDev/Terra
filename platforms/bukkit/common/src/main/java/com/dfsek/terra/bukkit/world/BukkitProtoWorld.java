@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.util.generic.Lazy;
-
 import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
 
 import org.bukkit.Location;
@@ -35,13 +33,12 @@ public class BukkitProtoWorld implements ProtoWorld {
     private final LimitedRegion delegate;
     private final BlockState air;
     
-    private final ChunkLocalCachingBiomeProvider biomeProvider;
+    private final BiomeProvider biomeProvider;
     
-    public BukkitProtoWorld(LimitedRegion delegate, BlockState air) {
+    public BukkitProtoWorld(LimitedRegion delegate, BlockState air, BiomeProvider provider) {
         this.delegate = delegate;
         this.air = air;
-        this.biomeProvider = ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getPack().getBiomeProvider().caching(new BukkitWorldProperties(
-                delegate.getWorld()), delegate.getCenterChunkX(), delegate.getCenterChunkZ());
+        this.biomeProvider = provider;
     }
     
     @Override
