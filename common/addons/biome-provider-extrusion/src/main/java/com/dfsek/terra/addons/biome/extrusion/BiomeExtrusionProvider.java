@@ -6,8 +6,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import com.github.benmanes.caffeine.cache.LoadingCache;
 
 
 public class BiomeExtrusionProvider implements BiomeProvider {
@@ -27,12 +30,22 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         Biome delegated = delegate.getBiome(x, y, z, seed);
+
+        return extrude(delegated, x, y, z, seed);
+    }
     
+    public Biome extrude(Biome original, int x, int y, int z, long seed) {
         for(Extrusion extrusion : extrusions) {
-            delegated = extrusion.extrude(delegated, x, y, z, seed);
+            original = extrusion.extrude(original, x, y, z, seed);
         }
-        
-        return delegated;
+        return original;
+    }
+    
+    @Override
+    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return delegate.getBaseBiome(x, z, seed)
+                .map(base -> (Column<Biome>) new BaseBiomeColumn(this, base, min, max, x, z, seed))
+                .orElseGet(() -> BiomeProvider.super.getColumn(x, z, seed, min, max));
     }
     
     @Override
