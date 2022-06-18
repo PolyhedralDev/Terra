@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import net.jafama.FastMath;
@@ -54,9 +56,11 @@ public class ChunkInterpolator {
             for(int z = 0; z < 5; z++) {
                 int scaledZ = z << 2;
                 int absoluteZ = zOrigin + scaledZ;
+    
+                Column<Biome> biomeColumn = provider.getColumn(absoluteX, absoluteZ, seed, min, max);
                 for(int y = 0; y < size; y++) {
                     int scaledY = (y << 2) + min;
-                    BiomeNoiseProperties generationSettings = provider.getBiome(absoluteX, scaledY, absoluteZ, seed)
+                    BiomeNoiseProperties generationSettings = biomeColumn.get(scaledY)
                                                                       .getContext()
                                                                       .get(noisePropertiesKey);
                     

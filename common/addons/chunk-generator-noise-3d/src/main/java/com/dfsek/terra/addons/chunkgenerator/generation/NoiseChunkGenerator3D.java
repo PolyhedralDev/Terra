@@ -18,6 +18,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.properties.PropertyKey;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -40,39 +41,20 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final int carverHorizontalResolution;
     private final int carverVerticalResolution;
     
-    private final int paletteRes;
-    
-    private final NoiseSampler paletteBlendSampler;
-    
-    private final double paletteBlendAmplitude;
     private final PropertyKey<PaletteInfo> paletteInfoPropertyKey;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
     public NoiseChunkGenerator3D(Platform platform, int elevationBlend, int carverHorizontalResolution,
-                                 int carverVerticalResolution, int paletteRes, NoiseSampler paletteBlendSampler,
-                                 double paletteBlendAmplitude, PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
+                                 int carverVerticalResolution,
+                                 PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
                                  PropertyKey<PaletteInfo> paletteInfoPropertyKey) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
         this.carverVerticalResolution = carverVerticalResolution;
-        this.paletteRes = paletteRes;
-        this.paletteBlendSampler = paletteBlendSampler;
-        this.paletteBlendAmplitude = paletteBlendAmplitude;
         this.paletteInfoPropertyKey = paletteInfoPropertyKey;
         this.noisePropertiesKey = noisePropertiesKey;
         this.samplerCache = new SamplerProvider(platform, elevationBlend, noisePropertiesKey);
-    }
-    
-    private Biome getBiome(int min, int max, double noiseX, double noiseZ, BiomeProvider biomeProvider, int x, int y, int z, long seed) {
-        if(paletteBlendAmplitude == 1) {
-            return biomeProvider.getBiome(x, y, z, seed);
-        }
-        int mx = ((x + (int) (paletteBlendAmplitude * noiseX)) / paletteRes) * paletteRes;
-        int my = ((y + (int) (paletteBlendAmplitude * paletteBlendSampler.noise(seed + 2, x, y, z))) / paletteRes) * paletteRes;
-        int mz = ((z + (int) (paletteBlendAmplitude * noiseZ)) / paletteRes) * paletteRes;
-        
-        return biomeProvider.getBiome(mx, MathUtil.clamp(min, my, max), mz, seed);
     }
     
     @Override
@@ -83,8 +65,6 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         platform.getProfiler().push("chunk_base_3d");
         int xOrig = (chunkX << 4);
         int zOrig = (chunkZ << 4);
-        int min = world.getMinHeight();
-        int max = world.getMaxHeight() - 1;
         
         Sampler3D sampler = samplerCache.getChunk(chunkX, chunkZ, world, biomeProvider);
         
@@ -100,16 +80,15 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                                                                              seed);
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
-                double paletteNoiseX = paletteBlendSampler.noise(seed, x, z);
-                double paletteNoiseZ = paletteBlendSampler.noise(seed + 1, x, z);
                 int paletteLevel = 0;
                 
                 int cx = xOrig + x;
                 int cz = zOrig + z;
                 
                 BlockState data;
+                Column<Biome> biomeColumn = biomeProvider.getColumn(cx, cz, world);
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
-                    Biome biome = getBiome(min, max, paletteNoiseX, paletteNoiseZ, biomeProvider, cx, y, cz, seed);
+                    Biome biome = biomeColumn.get(y);
                     
                     PaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
                     
