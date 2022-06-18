@@ -1,7 +1,5 @@
 package com.dfsek.terra.cli.world;
 
-import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
-
 import com.google.common.collect.Streams;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
@@ -87,7 +85,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     try {
                         int num = amount.getAndIncrement();
                         CLIChunk chunk = getChunkAt(finalX, finalZ);
-                        ChunkLocalCachingBiomeProvider cachingBiomeProvider = pack.getBiomeProvider().caching(this, finalX, finalZ);
+                        BiomeProvider cachingBiomeProvider = pack.getBiomeProvider();
                         chunkGenerator.generateChunkData(chunk, this, cachingBiomeProvider, finalX, finalZ);
                         CLIProtoWorld protoWorld = new CLIProtoWorld(this, cachingBiomeProvider, finalX, finalZ);
                         pack.getStages().forEach(stage -> stage.populate(protoWorld));

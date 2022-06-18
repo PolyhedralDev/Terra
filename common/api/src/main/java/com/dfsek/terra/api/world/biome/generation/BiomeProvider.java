@@ -92,17 +92,13 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
     
-    default CachingBiomeProvider caching(int minY, int maxY) {
-        return new CachingBiomeProvider(this, minY, maxY);
+    default CachingBiomeProvider caching() {
+        if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
+            return cachingBiomeProvider;
+        }
+        return new CachingBiomeProvider(this);
     }
-    
-    default CachingBiomeProvider caching(WorldProperties worldProperties) {
-        return caching(worldProperties.getMinHeight(), worldProperties.getMaxHeight());
-    }
-    
-    default ChunkLocalCachingBiomeProvider caching(WorldProperties worldProperties, int chunkX, int chunkZ) {
-        return new ChunkLocalCachingBiomeProvider(this, worldProperties, chunkX, chunkZ);
-    }
+
     
     default int resolution() {
         return 1;

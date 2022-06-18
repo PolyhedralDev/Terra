@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
-
 import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
 import org.slf4j.Logger;

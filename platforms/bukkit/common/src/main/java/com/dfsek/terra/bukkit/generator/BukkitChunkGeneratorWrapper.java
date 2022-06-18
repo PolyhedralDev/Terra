@@ -17,12 +17,8 @@
 
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.api.world.biome.generation.ChunkLocalCachingBiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
@@ -51,14 +47,6 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final BlockState air;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    private final LoadingCache<SeededVector, ChunkLocalCachingBiomeProvider> biomeProviderCache = CacheBuilder.newBuilder()
-            .maximumSize(128)
-            .build(new CacheLoader<>() {
-                @Override
-                public @NotNull ChunkLocalCachingBiomeProvider load(@NotNull SeededVector key) {
-                    return pack.getBiomeProvider().caching(key.worldProperties, key.x, key.z);
-                }
-            });
     
     private record SeededVector(int x, int z, WorldProperties worldProperties) {
         @Override
@@ -95,7 +83,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, biomeProviderCache.getUnchecked(new SeededVector(x, z, new BukkitWorldProperties(worldInfo))), x, z);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }
     
     @Override
@@ -106,7 +94,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
                        @Override
                        public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
                                             @NotNull LimitedRegion limitedRegion) {
-                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air, biomeProviderCache.getUnchecked(new SeededVector(x, z, new BukkitWorldProperties(worldInfo)))));
+                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider()));
                        }
                    })
                    .collect(Collectors.toList());

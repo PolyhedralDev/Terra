@@ -1,14 +1,11 @@
 package com.dfsek.terra.api.world.biome.generation;
 
 import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.util.Column;
-import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.info.WorldProperties;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+
 import java.util.Optional;
 
 
@@ -19,15 +16,23 @@ import java.util.Optional;
  */
 public class CachingBiomeProvider implements BiomeProvider, Handle {
     protected final BiomeProvider delegate;
-    protected final int minY;
-    protected final int maxY;
-    private final Map<Long, Biome[]> cache = new HashMap<>();
-    private final Map<Long, Column<Biome>> columnCache = new HashMap<>();
+    private final int res;
+    private final LoadingCache<SeededVector3, Biome> cache;
+    private final LoadingCache<SeededVector2, Optional<Biome>> baseCache;
     
-    protected CachingBiomeProvider(BiomeProvider delegate, int minY, int maxY) {
+    protected CachingBiomeProvider(BiomeProvider delegate) {
         this.delegate = delegate;
-        this.minY = minY;
-        this.maxY = maxY;
+        this.res = delegate.resolution();
+        this.cache = Caffeine
+                .newBuilder()
+                .maximumSize(98304) // 1 full chunk (high res)
+                .build(vec -> delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed));
+    
+        this.baseCache = Caffeine
+                .newBuilder()
+                .maximumSize(256) // 1 full chunk (high res)
+                .build(vec -> delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed));
+    
     }
     
     @Override
@@ -37,23 +42,12 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
-        if(y >= maxY || y < minY) throw new IllegalArgumentException("Y out of range: " + y + " (min: " + minY + ", max: " + maxY + ")");
-        Biome[] biomes = cache.computeIfAbsent(MathUtil.squash(x, z), key -> new Biome[maxY - minY]);
-        int yi = y - minY;
-        if(biomes[yi] == null) {
-            biomes[yi] = delegate.getBiome(x, y, z, seed);
-        }
-        return biomes[yi];
+        return cache.get(new SeededVector3(x / res, y / res, z / res, seed));
     }
     
     @Override
     public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return delegate.getBaseBiome(x, z, seed);
-    }
-    
-    @Override
-    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
-        return columnCache.computeIfAbsent(MathUtil.squash(x, z), k -> new BiomeColumn(this, min, max, x, z, seed));
+        return baseCache.get(new SeededVector2(x / res, z / res, seed));
     }
     
     @Override
@@ -64,5 +58,39 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     @Override
     public int resolution() {
         return delegate.resolution();
+    }
+    
+    private record SeededVector3(int x, int y, int z, long seed) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector3 that) {
+                return this.y == that.y && this.z == that.z && this.x == that.x && this.seed == that.seed;
+            }
+            return false;
+        }
+        
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + y;
+            code = 31 * code + z;
+            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+        }
+    }
+    private record SeededVector2(int x, int z, long seed) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector2 that) {
+                return this.z == that.z && this.x == that.x && this.seed == that.seed;
+            }
+            return false;
+        }
+        
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+        }
     }
 }

@@ -75,26 +75,13 @@ public abstract class ChunkRegionMixin {
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;
     
-    @Shadow
-    public abstract net.minecraft.server.world.ServerWorld toServerWorld();
     
-    @Shadow
-    public abstract Chunk getChunk(int chunkX, int chunkZ);
-    
-    private Lazy<BiomeProvider> caching;
-    
-    @SuppressWarnings("deprecation")
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
     public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list,
                                   ChunkStatus chunkStatus, int i,
                                   CallbackInfo ci) {
         this.terra$config = ((ServerWorld) world).getPack();
-        this.caching = Lazy.lazy(() -> ((TerraBiomeSource) ((ChunkRegion) (Object) this)
-                .toServerWorld()
-                .getChunkManager()
-                .getChunkGenerator()
-                .getBiomeSource()).getProvider().caching((ProtoWorld) this));
     }
     
     
@@ -137,11 +124,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public BiomeProvider terraWorld$getBiomeProvider() {
-        BiomeProvider provider = ((BiomeProviderHolder) this).terra$getHeldBiomeProvider();
-        if(provider != null) {
-            return provider;
-        }
-        return caching.value();
+        return terra$config.getBiomeProvider();
     }
     
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {

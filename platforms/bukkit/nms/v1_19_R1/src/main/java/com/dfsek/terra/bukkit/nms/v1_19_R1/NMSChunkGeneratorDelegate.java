@@ -121,7 +121,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     public int getBaseHeight(int x, int z, @NotNull Types heightmap, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
         WorldProperties properties = new NMSWorldProperties(seed, world);
         int y = properties.getMaxHeight();
-        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
+        BiomeProvider biomeProvider = pack.getBiomeProvider();
         while(y >= getMinY() && !heightmap.isOpaque().test(
                 ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
             y--;
