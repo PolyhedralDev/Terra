@@ -64,7 +64,6 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.mixin.access.StructureAccessorAccessor;
-import com.dfsek.terra.fabric.mixin_ifaces.BiomeProviderHolder;
 import com.dfsek.terra.fabric.util.FabricAdapter;
 
 
@@ -87,17 +86,6 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
-    }
-    
-    @Override
-    public CompletableFuture<Chunk> populateBiomes(Registry<Biome> biomeRegistry, Executor executor, NoiseConfig noiseConfig,
-                                                   Blender blender, StructureAccessor structureAccessor, Chunk chunk) {
-        if(chunk instanceof net.minecraft.world.chunk.ProtoChunk) {
-            ChunkPos pos = chunk.getPos();
-            ((BiomeProviderHolder) chunk)
-                    .terra$setHeldBiomeProvider(pack.getBiomeProvider());
-        }
-        return super.populateBiomes(biomeRegistry, executor, noiseConfig, blender, structureAccessor, chunk);
     }
     
     public Registry<StructureSet> getNoiseRegistry() {
@@ -136,15 +124,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
                                                   StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
-            BiomeProvider biomeProvider;
-            if(chunk instanceof BiomeProviderHolder providerHolder) {
-                biomeProvider = providerHolder.terra$getHeldBiomeProvider();
-                if(biomeProvider == null) {
-                    biomeProvider = pack.getBiomeProvider();
-                }
-            } else {
-                biomeProvider = pack.getBiomeProvider();
-            }
+            BiomeProvider biomeProvider = pack.getBiomeProvider();
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
             
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
