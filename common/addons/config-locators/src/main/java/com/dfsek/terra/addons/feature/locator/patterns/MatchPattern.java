@@ -43,10 +43,10 @@ public class MatchPattern implements Pattern {
     @Override
     public boolean matches(WritableWorld world, int x, int y, int z) {
         int min = FastMath.max(world.getMinHeight(), range.getMin() + y);
-        int max = FastMath.min(world.getMinHeight(), range.getMax() + y);
+        int max = FastMath.min(world.getMaxHeight(), range.getMax() + y);
         if(max <= min) return false;
         for(int i = min; i < max; i++) {
-            if(!matches.test(world.getBlockState(x, y, z))) return false;
+            if(!matches.test(world.getBlockState(x, i, z))) return false;
         }
         return true;
     }
