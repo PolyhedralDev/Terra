@@ -23,7 +23,7 @@ public class LazilyEvaluatedInterpolator {
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
     private final long seed;
-    private final int min;
+    private final int min, max;
     
     private final int zMul, yMul;
     public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max,
@@ -42,6 +42,7 @@ public class LazilyEvaluatedInterpolator {
         this.biomeProvider = biomeProvider;
         this.seed = seed;
         this.min = min;
+        this.max = max;
     }
     
     private double sample(int xIndex, int yIndex, int zIndex, int ox, int oy, int oz) {
@@ -51,12 +52,14 @@ public class LazilyEvaluatedInterpolator {
             int xi = ox + chunkX;
             int zi = oz + chunkZ;
             
+            int y = FastMath.min(max, oy);
+            
             sample = biomeProvider
-                    .getBiome(xi, oy, zi, seed)
+                    .getBiome(xi, y, zi, seed)
                     .getContext()
                     .get(noisePropertiesKey)
                     .carving()
-                    .noise(seed, xi, oy, zi);
+                    .noise(seed, xi, y, zi);
             samples[index] = sample;
         }
         return sample;
