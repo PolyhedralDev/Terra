@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.biome.tag.impl;
 
-import com.dfsek.terra.addons.biome.tag.BiomeTagAPIAddon;
+import com.dfsek.terra.addons.biome.tag.BiomeQueryAPIAddon;
 import com.dfsek.terra.api.world.biome.Biome;
 
 import java.util.function.Predicate;
@@ -19,13 +19,13 @@ public class SingleTagQuery implements Predicate<Biome> {
         if(tagIndex < 0) {
             tagIndex = biome
                     .getContext()
-                    .get(BiomeTagAPIAddon.BIOME_TAG_KEY)
+                    .get(BiomeQueryAPIAddon.BIOME_TAG_KEY)
                     .getFlattener()
                     .index(tag);
         }
         return biome
                 .getContext()
-                .get(BiomeTagAPIAddon.BIOME_TAG_KEY)
+                .get(BiomeQueryAPIAddon.BIOME_TAG_KEY)
                 .get(tagIndex);
     }
 }

@@ -15,7 +15,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import java.util.Collection;
 
 
-public class BiomeTagAPIAddon implements AddonInitializer {
+public class BiomeQueryAPIAddon implements AddonInitializer {
     @Inject
     private Platform platform;
     
