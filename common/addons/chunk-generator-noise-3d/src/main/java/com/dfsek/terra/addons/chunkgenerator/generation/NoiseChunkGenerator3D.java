@@ -16,10 +16,9 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.Column;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -44,7 +43,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final PropertyKey<PaletteInfo> paletteInfoPropertyKey;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
-    public NoiseChunkGenerator3D(Platform platform, int elevationBlend, int carverHorizontalResolution,
+    public NoiseChunkGenerator3D(ConfigPack pack, Platform platform, int elevationBlend, int carverHorizontalResolution,
                                  int carverVerticalResolution,
                                  PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
                                  PropertyKey<PaletteInfo> paletteInfoPropertyKey) {
@@ -54,7 +53,15 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.carverVerticalResolution = carverVerticalResolution;
         this.paletteInfoPropertyKey = paletteInfoPropertyKey;
         this.noisePropertiesKey = noisePropertiesKey;
-        this.samplerCache = new SamplerProvider(platform, elevationBlend, noisePropertiesKey);
+        int maxBlend = pack
+                .getBiomeProvider()
+                .stream()
+                .map(biome -> biome.getContext().get(noisePropertiesKey))
+                .mapToInt(properties -> properties.blendDistance() * properties.blendStep())
+                .max()
+                .orElse(0);
+        
+        this.samplerCache = new SamplerProvider(platform, elevationBlend, noisePropertiesKey, maxBlend);
     }
     
     @Override

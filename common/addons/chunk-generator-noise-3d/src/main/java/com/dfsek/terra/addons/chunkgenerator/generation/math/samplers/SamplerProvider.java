@@ -35,11 +35,13 @@ public class SamplerProvider {
     private final Cache<WorldContext, Sampler3D> cache;
     private final int elevationSmooth;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
+    private final int maxBlend;
     
-    public SamplerProvider(Platform platform, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey) {
+    public SamplerProvider(Platform platform, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
         this.elevationSmooth = elevationSmooth;
         cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache()).build();
         this.noisePropertiesKey = noisePropertiesKey;
+        this.maxBlend = maxBlend;
     }
     
     public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
@@ -53,7 +55,7 @@ public class SamplerProvider {
         try {
             return cache.get(context,
                              () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
-                                                 elevationSmooth, noisePropertiesKey));
+                                                 elevationSmooth, noisePropertiesKey, maxBlend));
         } catch(ExecutionException e) {
             throw new RuntimeException(e);
         }

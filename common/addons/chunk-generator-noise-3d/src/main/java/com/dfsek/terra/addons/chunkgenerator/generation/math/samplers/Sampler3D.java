@@ -7,13 +7,12 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.properties.PropertyKey;
-
 import net.jafama.FastMath;
 
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ElevationInterpolator;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -21,9 +20,10 @@ public class Sampler3D {
     private final ChunkInterpolator interpolator;
     private final ElevationInterpolator elevationInterpolator;
     
-    public Sampler3D(int x, int z, long seed, int minHeight, int maxHeight, BiomeProvider provider, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey) {
+    public Sampler3D(int x, int z, long seed, int minHeight, int maxHeight, BiomeProvider provider, int elevationSmooth,
+                     PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
         this.interpolator = new ChunkInterpolator(seed, x, z, provider,
-                                                  minHeight, maxHeight, noisePropertiesKey);
+                                                  minHeight, maxHeight, noisePropertiesKey, maxBlend);
         this.elevationInterpolator = new ElevationInterpolator(seed, x, z, provider, elevationSmooth, noisePropertiesKey);
     }
     
