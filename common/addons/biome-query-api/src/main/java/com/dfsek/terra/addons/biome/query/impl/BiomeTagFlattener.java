@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.biome.tag.impl;
+package com.dfsek.terra.addons.biome.query.impl;
 
 import java.util.List;
 

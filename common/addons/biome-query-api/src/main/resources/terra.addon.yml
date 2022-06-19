@@ -1,10 +1,10 @@
 schema-version: 1
 contributors:
   - Terra contributors
-id: biome-tag-api
+id: biome-query-api
 version: @VERSION@
 entrypoints:
-  - "com.dfsek.terra.addons.biome.tag.BiomeTagAPIAddon"
+  - "com.dfsek.terra.addons.biome.query.BiomeQueryAPIAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra/issues
   source: https://github.com/PolyhedralDev/Terra

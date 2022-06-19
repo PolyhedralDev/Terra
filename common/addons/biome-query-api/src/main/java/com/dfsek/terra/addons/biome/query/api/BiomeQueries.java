@@ -1,6 +1,6 @@
-package com.dfsek.terra.addons.biome.tag.api;
+package com.dfsek.terra.addons.biome.query.api;
 
-import com.dfsek.terra.addons.biome.tag.impl.SingleTagQuery;
+import com.dfsek.terra.addons.biome.query.impl.SingleTagQuery;
 import com.dfsek.terra.api.world.biome.Biome;
 
 import java.util.function.Predicate;

@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.biome.tag.impl;
+package com.dfsek.terra.addons.biome.query.impl;
 
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.world.biome.Biome;

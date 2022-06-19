@@ -1,7 +1,7 @@
-package com.dfsek.terra.addons.biome.tag;
+package com.dfsek.terra.addons.biome.query;
 
-import com.dfsek.terra.addons.biome.tag.impl.BiomeTagFlattener;
-import com.dfsek.terra.addons.biome.tag.impl.BiomeTagHolder;
+import com.dfsek.terra.addons.biome.query.impl.BiomeTagFlattener;
+import com.dfsek.terra.addons.biome.query.impl.BiomeTagHolder;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
