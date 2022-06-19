@@ -27,24 +27,18 @@ public class Column<T extends WritableWorld> {
     private final int max;
     private final T world;
     
-    private final BlockState[] cache;
-    
     public Column(int x, int z, T world) {
-        this(x, z, world, world.getMinHeight(), world.getMaxHeight(), new BlockState[world.getMaxHeight() - world.getMinHeight()]);
+        this(x, z, world, world.getMinHeight(), world.getMaxHeight());
     }
     
     public Column(int x, int z, T world, int min, int max) {
-        this(x, z, world, min, max, new BlockState[world.getMaxHeight() - world.getMinHeight()]);
-    }
-    
-    private Column(int x, int z, T world, int min, int max, BlockState[] cache) {
         this.x = x;
         this.z = z;
         this.world = world;
         this.max = max;
         this.min = min;
-        this.cache = cache;
     }
+
     
     public int getX() {
         return x;
@@ -55,13 +49,7 @@ public class Column<T extends WritableWorld> {
     }
     
     public BlockState getBlock(int y) {
-        int i = y - world.getMinHeight();
-        BlockState state = cache[i];
-        if(state == null) {
-            state = world.getBlockState(x, y, z);
-            cache[i] = state;
-        }
-        return state;
+        return world.getBlockState(x, y, z);
     }
     
     public T getWorld() {
@@ -84,7 +72,7 @@ public class Column<T extends WritableWorld> {
     
     public Column<T> clamp(int min, int max) {
         if(min >= max) throw new IllegalArgumentException("Min greater than or equal to max: " + min + ", " + max);
-        return new Column<>(x, z, world, min, max, cache);
+        return new Column<>(x, z, world, min, max);
     }
     
     public BinaryColumn newBinaryColumn(IntToBooleanFunction function) {
