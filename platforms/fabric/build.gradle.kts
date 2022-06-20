@@ -41,10 +41,6 @@ tasks {
     compileJava {
         options.release.set(17)
     }
-
-    shadowJar {
-        exclude("org/slf4j/**")
-    }
     
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
