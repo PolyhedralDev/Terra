@@ -1,14 +1,9 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.util.*
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
     id("dev.architectury.loom") version Versions.Forge.architecuryLoom
 }
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
-    forgeRuntimeLibrary(project(":common:implementation:base"))
     
     forge(group = "net.minecraftforge", name = "forge", version = Versions.Forge.forge)
     
@@ -23,9 +18,10 @@ loom {
     
     forge {
         mixinConfigs.set(listOf("terra.mixins.json"))
-        
     }
 }
+
+
 
 tasks {
     jar {
