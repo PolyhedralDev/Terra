@@ -6,6 +6,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.biome.extrusion.BiomeExtrusionProvider;
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import java.util.List;
@@ -13,14 +14,14 @@ import java.util.List;
 
 public class BiomeExtrusionTemplate implements ObjectTemplate<BiomeProvider> {
     @Value("provider")
-    private BiomeProvider provider;
+    private @Meta BiomeProvider provider;
     
     @Value("resolution")
     @Default
-    private int resolution = 4;
+    private @Meta int resolution = 4;
     
     @Value("extrusions")
-    private List<Extrusion> extrusions;
+    private @Meta List<@Meta Extrusion> extrusions;
     
     @Override
     public BiomeProvider get() {
