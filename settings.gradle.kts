@@ -24,11 +24,15 @@ include(":platforms:bukkit:common")
 
 pluginManagement {
     repositories {
-        maven("https://maven.fabricmc.net") {
-            name = "Fabric"
-        }
-        maven ( "https://maven.architectury.dev/" )
-        maven ( "https://files.minecraftforge.net/maven/" )
         gradlePluginPortal()
+        maven("https://maven.fabricmc.net") {
+            name = "Fabric Maven"
+        }
+        maven ( "https://maven.architectury.dev/" ) {
+            name = "Architectury Maven"
+        }
+        maven ( "https://files.minecraftforge.net/maven/" ) {
+            name = "Forge Maven"
+        }
     }
 }
