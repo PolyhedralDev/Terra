@@ -28,6 +28,13 @@ object Versions {
         const val minotaur = "1.1.0"
     }
     
+    object Forge {
+        const val minecraft = "1.19"
+        const val forge = "$minecraft-41.0.38"
+        const val yarn = "$minecraft+build.1"
+        const val architecuryLoom = "0.12.0-SNAPSHOT"
+    }
+    
     object Bukkit {
         const val paper = "1.18.2-R0.1-SNAPSHOT"
         const val paperLib = "1.0.5"
