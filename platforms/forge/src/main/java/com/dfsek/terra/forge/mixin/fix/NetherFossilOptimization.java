@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * Disable fossil generation in Terra worlds, as they are very expensive due to consistently triggering cache misses.
  *
- * Currently, on Fabric, Terra cannot be specified as a Nether generator. TODO: logic to turn fossils back on if chunk generator is in nether.
+ * Currently, on Forge, Terra cannot be specified as a Nether generator. TODO: logic to turn fossils back on if chunk generator is in nether.
  */
 @Mixin(NetherFossilStructure.class)
 public class NetherFossilOptimization {

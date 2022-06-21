@@ -122,7 +122,7 @@ public class PlatformImpl extends AbstractPlatform {
     
     @Override
     public @NotNull String platformName() {
-        return "Fabric";
+        return "Forge";
     }
     
     @Override

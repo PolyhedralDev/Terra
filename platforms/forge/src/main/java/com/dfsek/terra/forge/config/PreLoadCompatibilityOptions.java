@@ -26,19 +26,19 @@ import com.dfsek.terra.api.properties.Properties;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
-    @Value("fabric.use-vanilla-biomes")
+    @Value("forge.use-vanilla-biomes")
     @Default
     private boolean vanillaBiomes = false;
     
-    @Value("fabric.beard.enable")
+    @Value("forge.beard.enable")
     @Default
     private boolean beard = true;
     
-    @Value("fabric.beard.threshold")
+    @Value("forge.beard.threshold")
     @Default
     private double beardThreshold = 0.5;
     
-    @Value("fabric.beard.air-threshold")
+    @Value("forge.beard.air-threshold")
     @Default
     private double airThreshold = -0.5;
     
