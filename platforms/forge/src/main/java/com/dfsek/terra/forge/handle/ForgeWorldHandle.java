@@ -30,7 +30,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 
 
-public class FabricWorldHandle implements WorldHandle {
+public class ForgeWorldHandle implements WorldHandle {
     
     private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
     

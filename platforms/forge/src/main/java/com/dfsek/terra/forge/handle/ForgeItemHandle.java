@@ -34,7 +34,7 @@ import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 
 
-public class FabricItemHandle implements ItemHandle {
+public class ForgeItemHandle implements ItemHandle {
     
     @Override
     public Item createItem(String data) {
