@@ -94,7 +94,7 @@ public class ForgeChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.Ch
     
     @Override
     protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
-        return Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER;
+        return Codecs.FORGE_CHUNK_GENERATOR_WRAPPER;
     }
     
     @Override

@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 import com.dfsek.terra.forge.data.Codecs;
 import com.dfsek.terra.forge.util.LifecycleUtil;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 
 @Mod("terra")
 @EventBusSubscriber(bus = Bus.MOD)
@@ -72,7 +70,7 @@ public class ForgeEntryPoint {
         event.register(Registry.WORLD_PRESET_KEY, helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> LifecycleUtil.registerWorldTypes(helper)));
         
         
-        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER));
+        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.FORGE_CHUNK_GENERATOR_WRAPPER));
         event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }

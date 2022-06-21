@@ -44,7 +44,7 @@ public final class Codecs {
                                                           .forGetter(TerraBiomeSource::getPack))
                                         .apply(instance, instance.stable(TerraBiomeSource::new)));
     
-    public static final Codec<ForgeChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
+    public static final Codec<ForgeChunkGeneratorWrapper> FORGE_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
             .create(
                     instance -> instance.group(
                             RegistryOps.createRegistryCodec(Registry.STRUCTURE_SET_KEY)
