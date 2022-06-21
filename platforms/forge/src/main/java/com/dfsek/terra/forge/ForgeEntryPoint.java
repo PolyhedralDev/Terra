@@ -19,10 +19,15 @@ package com.dfsek.terra.forge;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistries.Keys;
+import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,10 +56,18 @@ public class ForgeEntryPoint {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(EventPriority.LOWEST, this::registerBiomes);
     }
     
     private void commonSetup(FMLCommonSetupEvent event) {
         logger.info("Initializing Terra Forge mod...");
-        LifecycleUtil.initialize();
+    }
+    
+    private void registerBiomes(RegisterEvent event) {
+        event.register(Keys.BIOMES, helper -> {
+            logger.info("Loading Terra data...");
+            LifecycleUtil.initialize();
+        });
+        event.register(Keys.BLOCKS, helper -> logger.debug("Block registration detected."));
     }
 }
