@@ -35,8 +35,7 @@
       "implementations.terra.world.ChunkRegionMixin",
       "implementations.terra.world.ServerWorldMixin",
       "lifecycle.DataPackContentsMixin",
-      "lifecycle.NoiseConfigMixin",
-      "lifecycle.RegistryMixin"
+      "lifecycle.NoiseConfigMixin"
     ],
     "client": [
     ],

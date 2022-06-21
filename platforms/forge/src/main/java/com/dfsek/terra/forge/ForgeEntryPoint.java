@@ -50,16 +50,8 @@ public class ForgeEntryPoint {
         return TERRA_PLUGIN;
     }
     
-    public static void register() { // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
-    }
-    
     public ForgeEntryPoint() {
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        
         modEventBus.register(this);
     }
     
@@ -69,6 +61,8 @@ public class ForgeEntryPoint {
             logger.info("Loading Terra data...");
             LifecycleUtil.initialize();
         });
+        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER));
+        event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
         event.register(Keys.BLOCKS, helper -> logger.debug("Block registration detected."));
     }
 }
