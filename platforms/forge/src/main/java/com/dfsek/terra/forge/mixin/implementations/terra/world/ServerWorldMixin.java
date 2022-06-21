@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.forge.mixin.implementations.terra.world;
 
-import com.dfsek.terra.forge.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.generation.TerraBiomeSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
@@ -81,8 +81,8 @@ public abstract class ServerWorldMixin {
     }
     
     public ChunkGenerator terra$getGenerator() {
-        return ((FabricChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
-                                                                                                      .getChunkGenerator()).getHandle();
+        return ((ForgeChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
+                                                                                                     .getChunkGenerator()).getHandle();
     }
     
     public BiomeProvider terra$getBiomeProvider() {
@@ -94,8 +94,8 @@ public abstract class ServerWorldMixin {
     public ConfigPack terra$getPack() {
         net.minecraft.world.gen.chunk.ChunkGenerator generator =
                 (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
-        if(generator instanceof FabricChunkGeneratorWrapper fabricChunkGeneratorWrapper) {
-            return fabricChunkGeneratorWrapper.getPack();
+        if(generator instanceof ForgeChunkGeneratorWrapper forgeChunkGeneratorWrapper) {
+            return forgeChunkGeneratorWrapper.getPack();
         }
         return null;
     }

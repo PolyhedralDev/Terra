@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.forge.mixin.implementations.terra.world;
 
-import com.dfsek.terra.forge.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
@@ -117,7 +117,7 @@ public abstract class ChunkRegionMixin {
     }
     
     public ChunkGenerator terraWorld$getGenerator() {
-        return ((FabricChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
+        return ((ForgeChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
     }
     
     public BiomeProvider terraWorld$getBiomeProvider() {

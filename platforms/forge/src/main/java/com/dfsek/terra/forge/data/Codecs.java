@@ -3,7 +3,7 @@ package com.dfsek.terra.forge.data;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.forge.ForgeEntryPoint;
-import com.dfsek.terra.forge.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.generation.TerraBiomeSource;
 
 import com.mojang.serialization.Codec;
@@ -44,22 +44,22 @@ public final class Codecs {
                                                           .forGetter(TerraBiomeSource::getPack))
                                         .apply(instance, instance.stable(TerraBiomeSource::new)));
     
-    public static final Codec<FabricChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
+    public static final Codec<ForgeChunkGeneratorWrapper> FABRIC_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
             .create(
                     instance -> instance.group(
                             RegistryOps.createRegistryCodec(Registry.STRUCTURE_SET_KEY)
                                        .fieldOf("structure_registry")
                                        .stable()
-                                       .forGetter(FabricChunkGeneratorWrapper::getNoiseRegistry),
+                                       .forGetter(ForgeChunkGeneratorWrapper::getNoiseRegistry),
                             TERRA_BIOME_SOURCE.fieldOf("biome_source")
                                               .stable()
-                                              .forGetter(FabricChunkGeneratorWrapper::getBiomeSource),
+                                              .forGetter(ForgeChunkGeneratorWrapper::getBiomeSource),
                             CONFIG_PACK.fieldOf("pack")
                                        .stable()
-                                       .forGetter(FabricChunkGeneratorWrapper::getPack),
+                                       .forGetter(ForgeChunkGeneratorWrapper::getPack),
                             ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
                                                                  .stable()
-                                                                 .forGetter(FabricChunkGeneratorWrapper::getSettings)
-                                              ).apply(instance, instance.stable(FabricChunkGeneratorWrapper::new))
+                                                                 .forGetter(ForgeChunkGeneratorWrapper::getSettings)
+                                              ).apply(instance, instance.stable(ForgeChunkGeneratorWrapper::new))
                    );
 }

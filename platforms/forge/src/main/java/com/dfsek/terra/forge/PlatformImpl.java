@@ -29,9 +29,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
-import net.minecraftforge.common.ForgeConfig.Common;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.targets.FMLServerLaunchHandler;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -49,10 +47,9 @@ import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.forge.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.handle.FabricItemHandle;
 import com.dfsek.terra.forge.handle.FabricWorldHandle;
-import com.dfsek.terra.forge.util.BiomeUtil;
 import com.dfsek.terra.forge.util.ProtoPlatformBiome;
 
 
@@ -85,7 +82,7 @@ public class PlatformImpl extends AbstractPlatform {
             }).join();
             //BiomeUtil.registerBiomes();
             server.getWorlds().forEach(world -> {
-                if(world.getChunkManager().getChunkGenerator() instanceof FabricChunkGeneratorWrapper chunkGeneratorWrapper) {
+                if(world.getChunkManager().getChunkGenerator() instanceof ForgeChunkGeneratorWrapper chunkGeneratorWrapper) {
                     getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
                         chunkGeneratorWrapper.setPack(pack);
                         LOGGER.info("Replaced pack in chunk generator for world {}", world);

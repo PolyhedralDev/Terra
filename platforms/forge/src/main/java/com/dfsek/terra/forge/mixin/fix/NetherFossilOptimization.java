@@ -1,6 +1,6 @@
 package com.dfsek.terra.forge.mixin.fix;
 
-import com.dfsek.terra.forge.generation.FabricChunkGeneratorWrapper;
+import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 
 import net.minecraft.world.gen.structure.NetherFossilStructure;
 import net.minecraft.world.gen.structure.Structure.Context;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class NetherFossilOptimization {
     @Inject(method = "getStructurePosition", at = @At("HEAD"), cancellable = true)
     public void injectFossilPositions(Context context, CallbackInfoReturnable<Optional<StructurePosition>> cir) {
-        if(context.chunkGenerator() instanceof FabricChunkGeneratorWrapper) {
+        if(context.chunkGenerator() instanceof ForgeChunkGeneratorWrapper) {
             cir.setReturnValue(Optional.empty());
         }
     }

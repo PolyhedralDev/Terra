@@ -67,8 +67,8 @@ import com.dfsek.terra.forge.mixin.access.StructureAccessorAccessor;
 import com.dfsek.terra.forge.util.ForgeAdapter;
 
 
-public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
-    private static final Logger logger = LoggerFactory.getLogger(FabricChunkGeneratorWrapper.class);
+public class ForgeChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
+    private static final Logger logger = LoggerFactory.getLogger(ForgeChunkGeneratorWrapper.class);
     
     private final TerraBiomeSource biomeSource;
     private final Registry<StructureSet> noiseRegistry;
@@ -76,8 +76,8 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
-    public FabricChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, ConfigPack configPack,
-                                       RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
+    public ForgeChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, ConfigPack configPack,
+                                      RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
         super(noiseRegistry, Optional.empty(), biomeSource);
         this.noiseRegistry = noiseRegistry;
         this.pack = configPack;
