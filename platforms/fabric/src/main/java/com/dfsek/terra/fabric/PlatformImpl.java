@@ -49,14 +49,14 @@ import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
 import com.dfsek.terra.fabric.handle.FabricItemHandle;
-import com.dfsek.terra.fabric.handle.FabricWorldHandle;
+import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
 
 public class PlatformImpl extends AbstractPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformImpl.class);
     private final ItemHandle itemHandle = new FabricItemHandle();
-    private final WorldHandle worldHandle = new FabricWorldHandle();
+    private final WorldHandle worldHandle = new MinecraftWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra"));
     private MinecraftServer server;
     

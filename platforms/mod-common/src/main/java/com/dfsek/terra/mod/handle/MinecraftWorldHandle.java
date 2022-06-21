@@ -15,16 +15,12 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric.handle;
+package com.dfsek.terra.mod.handle;
 
-import com.dfsek.terra.fabric.FabricEntryPoint;
-
-import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +29,7 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 
 
-public class FabricWorldHandle implements WorldHandle {
+public class MinecraftWorldHandle implements WorldHandle {
     
     private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
     

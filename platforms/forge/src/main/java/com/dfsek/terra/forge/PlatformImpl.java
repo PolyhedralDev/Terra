@@ -49,14 +49,14 @@ import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
 import com.dfsek.terra.forge.handle.ForgeItemHandle;
-import com.dfsek.terra.forge.handle.ForgeWorldHandle;
 import com.dfsek.terra.forge.util.ProtoPlatformBiome;
+import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 
 
 public class PlatformImpl extends AbstractPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformImpl.class);
     private final ItemHandle itemHandle = new ForgeItemHandle();
-    private final WorldHandle worldHandle = new ForgeWorldHandle();
+    private final WorldHandle worldHandle = new MinecraftWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File("./config/Terra"));
     
     public PlatformImpl() {
