@@ -39,12 +39,16 @@ import com.dfsek.terra.forge.util.LifecycleUtil;
 @Mod("terra")
 @EventBusSubscriber(bus = Bus.MOD)
 public class ForgeEntryPoint {
+    static {
+        AwfulForgeHacks.loadAllTerraClasses();
+        TERRA_PLUGIN = new PlatformImpl();
+    }
+    
     public static final String MODID = "terra";
     
     private static final Logger logger = LoggerFactory.getLogger(ForgeEntryPoint.class);
     
-    private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
-    
+    private static final PlatformImpl TERRA_PLUGIN;
     
     public static PlatformImpl getPlatform() {
         return TERRA_PLUGIN;
