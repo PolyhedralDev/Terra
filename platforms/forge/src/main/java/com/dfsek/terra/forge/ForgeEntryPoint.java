@@ -27,9 +27,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.forge.data.Codecs;
+import com.dfsek.terra.forge.util.LifecycleUtil;
 
 @Mod("terra")
 public class ForgeEntryPoint {
+    public static final String MODID = "terra";
+    
     private static final Logger logger = LoggerFactory.getLogger(ForgeEntryPoint.class);
     
     private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
@@ -50,7 +53,8 @@ public class ForgeEntryPoint {
         modEventBus.addListener(this::commonSetup);
     }
     
-    private void commonSetup(final FMLCommonSetupEvent event) {
+    private void commonSetup(FMLCommonSetupEvent event) {
         logger.info("Initializing Terra Forge mod...");
+        LifecycleUtil.initialize();
     }
 }

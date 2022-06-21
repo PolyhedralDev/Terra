@@ -29,7 +29,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
+import net.minecraftforge.common.ForgeConfig.Common;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.targets.FMLServerLaunchHandler;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,18 +61,13 @@ public class PlatformImpl extends AbstractPlatform {
     private final ItemHandle itemHandle = new FabricItemHandle();
     private final WorldHandle worldHandle = new FabricWorldHandle();
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File("./config/Terra"));
-    private MinecraftServer server;
     
     public PlatformImpl() {
         load();
     }
     
-    public void setServer(MinecraftServer server) {
-        this.server = server;
-    }
-    
     public MinecraftServer getServer() {
-        return server;
+        return ServerLifecycleHooks.getCurrentServer();
     }
     
     @Override
@@ -78,6 +76,7 @@ public class PlatformImpl extends AbstractPlatform {
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
         
+        MinecraftServer server = getServer();
         
         if(server != null) {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
