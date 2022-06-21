@@ -68,7 +68,7 @@ public class ForgeEntryPoint {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registerBiomes(RegisterEvent event) {
         event.register(Keys.BLOCKS, helper -> sanityCheck.progress(RegistryStep.BLOCK, () -> logger.debug("Block registration detected.")));
-        event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, LifecycleUtil::initialize));
+        event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, () -> LifecycleUtil.initialize(helper)));
         event.register(Registry.WORLD_PRESET_KEY, helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> LifecycleUtil.registerWorldTypes(helper)));
         
         

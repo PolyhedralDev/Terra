@@ -16,6 +16,8 @@ import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +39,11 @@ public final class BiomeUtil {
                    .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
     }
     
-    public static void registerBiomes() {
+    public static void registerBiomes(RegisterHelper<net.minecraft.world.biome.Biome> helper) {
         logger.info("Registering biomes...");
         ForgeEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             pack.getCheckedRegistry(Biome.class)
-                .forEach((id, biome) -> registerBiome(biome, pack, id));
+                .forEach((id, biome) -> registerBiome(biome, pack, id, helper));
         });
         registerFlora(BuiltinRegistries.BIOME);
         logger.info("Terra biomes registered.");
@@ -54,27 +56,22 @@ public final class BiomeUtil {
      * @param pack  The ConfigPack this biome belongs to.
      */
     private static void registerBiome(Biome biome, ConfigPack pack,
-                                     com.dfsek.terra.api.registry.key.RegistryKey id) {
-        Registry<net.minecraft.world.biome.Biome> registry = BuiltinRegistries.BIOME;
-        RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
+                                      com.dfsek.terra.api.registry.key.RegistryKey id, RegisterHelper<net.minecraft.world.biome.Biome> helper) {
+        RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(ForgeRegistries.BIOMES);
         
         
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
-            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, registry.get(vanilla));
+            net.minecraft.world.biome.Biome minecraftBiome = createBiome(biome, ForgeRegistries.BIOMES.getDelegateOrThrow(vanilla).value());
             
             Identifier identifier = new Identifier("terra", createBiomeID(pack, id));
             
-            if(registry.containsId(identifier)) {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier)
-                                                                                      .orElseThrow()
-                                                                                      .getKey()
-                                                                                      .orElseThrow());
+            if(ForgeRegistries.BIOMES.containsKey(identifier)) {
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier).orElseThrow().getKey().orElseThrow());
             } else {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry,
-                                                                                                  registerKey(identifier).getValue(),
-                                                                                                  minecraftBiome).getKey().orElseThrow());
+                helper.register(registerKey(identifier).getValue(), minecraftBiome);
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier).orElseThrow().getKey().orElseThrow());
             }
             
             TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);

@@ -26,6 +26,8 @@ import java.util.Objects;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
+import net.minecraftforge.registries.IForgeRegistry;
+
 
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
@@ -38,6 +40,10 @@ public class ProtoPlatformBiome implements PlatformBiome {
     
     public RegistryKey<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
         return FabricUtil.getEntry(registry, identifier).orElseThrow().getKey().orElseThrow();
+    }
+    
+    public RegistryKey<Biome> get(IForgeRegistry<Biome> registry) {
+        return registry.getHolder(identifier).orElseThrow().getKey().orElseThrow();
     }
     
     @Override

@@ -35,10 +35,10 @@ public class LifecycleUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifecycleUtil.class);
     
     private static final List<Identifier> PRESETS = new ArrayList<>();
-    public static void initialize() {
+    public static void initialize(RegisterHelper<Biome> helper) {
         ForgeEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent());
-        BiomeUtil.registerBiomes();
+        BiomeUtil.registerBiomes(helper);
     }
     
     public static void registerWorldTypes(RegisterHelper<WorldPreset> helper) {
