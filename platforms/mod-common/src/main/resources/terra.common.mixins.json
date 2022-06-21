@@ -1,0 +1,19 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.dfsek.terra.mod.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "access.MobSpawnerLogicAccessor",
+        "access.StateAccessor",
+        "access.StructureAccessorAccessor"
+    ],
+    "client": [
+    ],
+    "server": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "refmap": "terra-common-refmap.json"
+}

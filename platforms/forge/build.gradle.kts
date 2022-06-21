@@ -13,7 +13,7 @@ dependencies {
 
 loom {
     mixin {
-        defaultRefmapName.set("terra-refmap.json")
+        defaultRefmapName.set("terra-forge-refmap.json")
     }
     
     forge {

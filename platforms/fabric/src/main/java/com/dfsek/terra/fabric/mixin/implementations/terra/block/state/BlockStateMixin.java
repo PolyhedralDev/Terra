@@ -1,6 +1,8 @@
 package com.dfsek.terra.fabric.mixin.implementations.terra.block.state;
 
 
+import com.dfsek.terra.mod.mixin.access.StateAccessor;
+
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
@@ -18,7 +20,6 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
-import com.dfsek.terra.fabric.mixin.access.StateAccessor;
 
 
 @Mixin(AbstractBlockState.class)

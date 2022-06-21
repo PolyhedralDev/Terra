@@ -44,5 +44,5 @@
     "injectors": {
         "defaultRequire": 1
     },
-    "refmap": "terra-refmap.json"
+    "refmap": "terra-forge-refmap.json"
 }

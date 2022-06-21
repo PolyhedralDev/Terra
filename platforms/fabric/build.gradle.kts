@@ -1,6 +1,14 @@
 plugins {
-    id("fabric-loom") version Versions.Fabric.loom
+    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("architectury-plugin") version Versions.Mod.architectutyPlugin
     id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
+}
+
+configurations {
+    val common by creating
+    create("shadowCommon")
+    compileClasspath.get().extendsFrom(common)
+    runtimeClasspath.get().extendsFrom(common)
 }
 
 dependencies {
@@ -9,6 +17,9 @@ dependencies {
     "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
     "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
     "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
+    
+    "common"(project(path = ":platforms:mod-common", configuration = "namedElements")) { isTransitive = false }
+    "shadowCommon"(project(path = ":platforms:mod-common", configuration = "transformProductionFabric")) { isTransitive = false }
     
     minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
@@ -28,7 +39,7 @@ dependencies {
 loom {
     accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
     mixin {
-        defaultRefmapName.set("terra-refmap.json")
+        defaultRefmapName.set("terra-fabric-refmap.json")
     }
 }
 
