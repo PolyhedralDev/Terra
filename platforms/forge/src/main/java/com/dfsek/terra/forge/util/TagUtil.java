@@ -38,7 +38,7 @@ public final class TagUtil {
         
         LifecycleUtil
                 .getPresets()
-                .forEach(id -> FabricUtil
+                .forEach(id -> ForgeUtil
                         .getEntry(registry, id)
                         .ifPresentOrElse(
                                 preset -> collect
@@ -57,11 +57,11 @@ public final class TagUtil {
         BiomeUtil
                 .getTerraBiomeMap()
                 .forEach((vb, terraBiomes) ->
-                                 FabricUtil
+                                 ForgeUtil
                                          .getEntry(registry, vb)
                                          .ifPresentOrElse(
                                                  vanilla -> terraBiomes
-                                                         .forEach(tb -> FabricUtil
+                                                         .forEach(tb -> ForgeUtil
                                                                  .getEntry(registry, tb)
                                                                  .ifPresentOrElse(
                                                                          terra -> {

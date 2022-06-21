@@ -35,7 +35,7 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.forge.util.FabricUtil;
+import com.dfsek.terra.forge.util.ForgeUtil;
 
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
@@ -73,7 +73,7 @@ public abstract class ServerWorldMixin {
     }
     
     public BlockEntity terra$getBlockEntity(int x, int y, int z) {
-        return FabricUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
+        return ForgeUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
     
     public int terra$getMinHeight() {
