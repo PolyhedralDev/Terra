@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.forge;
 
+import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
+import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -25,9 +28,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistries.Keys;
 import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
@@ -36,9 +37,14 @@ import org.slf4j.LoggerFactory;
 import com.dfsek.terra.forge.data.Codecs;
 import com.dfsek.terra.forge.util.LifecycleUtil;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+
 @Mod("terra")
 @EventBusSubscriber(bus = Bus.MOD)
 public class ForgeEntryPoint {
+    private final RegistrySanityCheck sanityCheck = new RegistrySanityCheck();
+    
     static {
         AwfulForgeHacks.loadAllTerraClasses();
         TERRA_PLUGIN = new PlatformImpl();
@@ -61,12 +67,12 @@ public class ForgeEntryPoint {
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registerBiomes(RegisterEvent event) {
-        event.register(Keys.BIOMES, helper -> {
-            logger.info("Loading Terra data...");
-            LifecycleUtil.initialize();
-        });
+        event.register(Keys.BLOCKS, helper -> sanityCheck.progress(RegistryStep.BLOCK, () -> logger.debug("Block registration detected.")));
+        event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, LifecycleUtil::initialize));
+        event.register(Registry.WORLD_PRESET_KEY, helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> LifecycleUtil.registerWorldTypes(helper)));
+        
+        
         event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER));
         event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
-        event.register(Keys.BLOCKS, helper -> logger.debug("Block registration detected."));
     }
 }

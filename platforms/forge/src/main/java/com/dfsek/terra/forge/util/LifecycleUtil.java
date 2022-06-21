@@ -21,6 +21,7 @@ import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
+import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,16 +39,17 @@ public class LifecycleUtil {
         ForgeEntryPoint.getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent());
         BiomeUtil.registerBiomes();
-        
-        
+    }
+    
+    public static void registerWorldTypes(RegisterHelper<WorldPreset> helper) {
         LOGGER.info("Registering Terra world types...");
-        
+    
         Registry<DimensionType> dimensionTypeRegistry = BuiltinRegistries.DIMENSION_TYPE;
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = BuiltinRegistries.CHUNK_GENERATOR_SETTINGS;
         Registry<StructureSet> structureSetRegistry = BuiltinRegistries.STRUCTURE_SET;
         Registry<NoiseParameters> noiseParametersRegistry = BuiltinRegistries.NOISE_PARAMETERS;
         Registry<Biome> biomeRegistry = BuiltinRegistries.BIOME;
-        
+    
         RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.THE_NETHER);
         RegistryEntry<ChunkGeneratorSettings>
                 netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.NETHER);
@@ -64,9 +66,9 @@ public class LifecycleUtil {
                                                                     new NoiseChunkGenerator(structureSetRegistry, noiseParametersRegistry,
                                                                                             new TheEndBiomeSource(biomeRegistry),
                                                                                             endChunkGeneratorSettings));
-        
+    
         RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.OVERWORLD);
-        
+    
         RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.OVERWORLD);
         ForgeEntryPoint
                 .getPlatform()
@@ -74,12 +76,12 @@ public class LifecycleUtil {
                 .forEach((id, pack) -> {
                              Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
                                      Locale.ROOT));
-                             
+                
                              PRESETS.add(generatorID);
-                    
+                
                              TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
                              ChunkGenerator generator = new FabricChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
-                    
+                
                              DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
                              WorldPreset preset = new WorldPreset(
                                      Map.of(
@@ -88,7 +90,7 @@ public class LifecycleUtil {
                                              DimensionOptions.END, endDimensionOptions
                                            )
                              );
-                             BuiltinRegistries.add(BuiltinRegistries.WORLD_PRESET, generatorID, preset);
+                             helper.register(generatorID, preset);
                              LOGGER.info("Registered world type \"{}\"", generatorID);
                          }
                         );
