@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.forge.mixin.implementations.terra.entity;
 
-import com.dfsek.terra.forge.util.FabricAdapter;
+import com.dfsek.terra.forge.util.ForgeAdapter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Implements;
@@ -42,7 +42,7 @@ public abstract class EntityMixin {
     public abstract void teleport(double destX, double destY, double destZ);
     
     public Vector3 terra$position() {
-        return FabricAdapter.adapt(blockPos);
+        return ForgeAdapter.adapt(blockPos);
     }
     
     public void terra$position(Vector3 location) {

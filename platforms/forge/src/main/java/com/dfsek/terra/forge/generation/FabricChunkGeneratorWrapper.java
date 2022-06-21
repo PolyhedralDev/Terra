@@ -64,7 +64,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.forge.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.forge.data.Codecs;
 import com.dfsek.terra.forge.mixin.access.StructureAccessorAccessor;
-import com.dfsek.terra.forge.util.FabricAdapter;
+import com.dfsek.terra.forge.util.ForgeAdapter;
 
 
 public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
@@ -185,7 +185,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
-        WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
+        WorldProperties properties = ForgeAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         int min = height.getBottomY();
         for(int y = height.getTopY() - 1; y >= min; y--) {
@@ -199,7 +199,7 @@ public class FabricChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.C
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height, NoiseConfig noiseConfig) {
         BlockState[] array = new BlockState[height.getHeight()];
-        WorldProperties properties = FabricAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
+        WorldProperties properties = ForgeAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
             array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);
