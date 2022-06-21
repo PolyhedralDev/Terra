@@ -22,11 +22,9 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.fabric.data.Codecs;
 import com.dfsek.terra.fabric.util.ProtoPlatformBiome;
 
-import com.dfsek.terra.fabric.util.SeedHack;
+import com.dfsek.terra.mod.util.SeedHack;
 
 import com.mojang.serialization.Codec;
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.source.BiomeSource;
@@ -34,7 +32,6 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
 import java.util.stream.StreamSupport;
 
 

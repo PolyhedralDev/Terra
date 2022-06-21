@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge.util;
+package com.dfsek.terra.mod.util;
 
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;

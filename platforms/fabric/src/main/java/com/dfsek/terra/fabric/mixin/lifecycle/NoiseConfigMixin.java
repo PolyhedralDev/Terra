@@ -1,5 +1,7 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
+import com.dfsek.terra.mod.util.SeedHack;
+
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
@@ -11,8 +13,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.dfsek.terra.fabric.util.SeedHack;
 
 
 /**
