@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.forge;
 
-import com.dfsek.terra.api.util.generic.Lazy;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -50,6 +48,11 @@ public class ForgeEntryPoint {
     
     public static PlatformImpl getPlatform() {
         return TERRA_PLUGIN;
+    }
+    
+    public static void register() { // register the things
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
+        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     }
     
     public ForgeEntryPoint() {
