@@ -4,9 +4,13 @@ plugins {
     id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
 }
 
+architectury {
+    fabric()
+}
+
+
 configurations {
     val common by creating
-    create("shadowCommon")
     compileClasspath.get().extendsFrom(common)
     runtimeClasspath.get().extendsFrom(common)
 }
@@ -19,7 +23,7 @@ dependencies {
     "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
     
     "common"(project(path = ":platforms:mod-common", configuration = "namedElements")) { isTransitive = false }
-    "shadowCommon"(project(path = ":platforms:mod-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    shaded(project(path = ":platforms:mod-common", configuration = "transformProductionFabric")) { isTransitive = false }
     
     minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")

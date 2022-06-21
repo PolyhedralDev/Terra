@@ -1,9 +1,29 @@
 plugins {
     id("dev.architectury.loom") version Versions.Forge.architecuryLoom
+    id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    val common by creating
+    compileClasspath.get().extendsFrom(common)
+    runtimeClasspath.get().extendsFrom(common)
 }
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
+    
+    "common"(project(path = ":platforms:mod-common", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mod-common", configuration = "transformProductionForge")) { isTransitive = false }
+    "developmentForge"(project(":platforms:mod-common", configuration = "namedElements")) {
+        isTransitive = false
+    }
+    
     
     forge(group = "net.minecraftforge", name = "forge", version = Versions.Forge.forge)
     
@@ -17,7 +37,8 @@ loom {
     }
     
     forge {
-        mixinConfigs.set(listOf("terra.forge.mixins.json"))
+        mixinConfig("terra.common.mixins.json")
+        mixinConfig("terra.forge.mixins.json")
     }
 }
 
@@ -33,6 +54,10 @@ tasks {
                      )
                       )
         }
+    }
+    
+    shadowJar {
+        exclude("fabric.mod.json")
     }
 
     remapJar {

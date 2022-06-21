@@ -3,6 +3,12 @@ plugins {
     id("architectury-plugin") version Versions.Mod.architectutyPlugin
 }
 
+loom {
+    mixin {
+        defaultRefmapName.set("terra-common-refmap.json")
+    }
+}
+
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
