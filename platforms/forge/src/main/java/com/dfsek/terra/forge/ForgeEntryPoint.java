@@ -25,6 +25,8 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -37,6 +39,7 @@ import com.dfsek.terra.forge.data.Codecs;
 import com.dfsek.terra.forge.util.LifecycleUtil;
 
 @Mod("terra")
+@EventBusSubscriber(bus = Bus.MOD)
 public class ForgeEntryPoint {
     public static final String MODID = "terra";
     
@@ -50,19 +53,15 @@ public class ForgeEntryPoint {
     }
     
     public ForgeEntryPoint() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        
-        modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(EventPriority.LOWEST, this::registerBiomes);
-    }
-    
-    private void commonSetup(FMLCommonSetupEvent event) {
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
-        logger.info("Initializing Terra Forge mod...");
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        
+        modEventBus.register(this);
     }
     
-    private void registerBiomes(RegisterEvent event) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void registerBiomes(RegisterEvent event) {
         event.register(Keys.BIOMES, helper -> {
             logger.info("Loading Terra data...");
             LifecycleUtil.initialize();
