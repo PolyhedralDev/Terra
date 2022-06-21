@@ -17,7 +17,7 @@ loom {
     }
     
     forge {
-        mixinConfigs.set(listOf("terra.mixins.json"))
+        mixinConfigs.set(listOf("terra.forge.mixins.json"))
     }
 }
 
