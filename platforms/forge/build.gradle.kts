@@ -18,9 +18,9 @@ configurations {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    "common"(project(path = ":platforms:mod-common", configuration = "namedElements")) { isTransitive = false }
-    shaded(project(path = ":platforms:mod-common", configuration = "transformProductionForge")) { isTransitive = false }
-    "developmentForge"(project(":platforms:mod-common", configuration = "namedElements")) {
+    "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionForge")) { isTransitive = false }
+    "developmentForge"(project(":platforms:mixin-common", configuration = "namedElements")) {
         isTransitive = false
     }
     

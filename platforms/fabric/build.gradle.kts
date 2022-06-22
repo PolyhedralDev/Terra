@@ -22,8 +22,8 @@ dependencies {
     "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
     "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
     
-    "common"(project(path = ":platforms:mod-common", configuration = "namedElements")) { isTransitive = false }
-    shaded(project(path = ":platforms:mod-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
     
     minecraft("com.mojang:minecraft:${Versions.Fabric.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Fabric.yarn}:v2")
