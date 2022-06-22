@@ -1,8 +1,9 @@
 package com.dfsek.terra.forge.mixin.lifecycle;
 
 import com.dfsek.terra.forge.util.BiomeUtil;
-import com.dfsek.terra.forge.util.TagUtil;
 import com.dfsek.terra.mod.util.MinecraftUtil;
+
+import com.dfsek.terra.mod.util.TagUtil;
 
 import net.minecraft.server.DataPackContents;
 import net.minecraft.util.registry.DynamicRegistryManager;

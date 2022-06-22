@@ -1,8 +1,4 @@
-package com.dfsek.terra.forge.util;
-
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
-import com.dfsek.terra.mod.util.PresetUtil;
+package com.dfsek.terra.mod.util;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.tag.TagKey;
