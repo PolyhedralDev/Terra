@@ -56,7 +56,7 @@ public final class TagUtil {
         logger.info("Doing biome tag garbage....");
         Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = tagsToMutableMap(registry);
         
-        BiomeUtil
+        MinecraftUtil
                 .getTerraBiomeMap()
                 .forEach((vb, terraBiomes) ->
                                  MinecraftUtil

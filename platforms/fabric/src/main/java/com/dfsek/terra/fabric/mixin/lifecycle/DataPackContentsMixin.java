@@ -1,7 +1,8 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
-import com.dfsek.terra.fabric.util.BiomeUtil;
 import com.dfsek.terra.fabric.util.TagUtil;
+import com.dfsek.terra.mod.util.MinecraftUtil;
+
 import net.minecraft.server.DataPackContents;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
@@ -23,6 +24,6 @@ public class DataPackContentsMixin {
         
         Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
         TagUtil.registerBiomeTags(biomeRegistry);
-        BiomeUtil.registerFlora(biomeRegistry);
+        MinecraftUtil.registerFlora(biomeRegistry);
     }
 }
