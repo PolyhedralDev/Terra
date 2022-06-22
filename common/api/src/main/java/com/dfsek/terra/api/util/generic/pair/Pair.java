@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -143,6 +144,11 @@ public final class Pair<L, R> {
             
             return Objects.equals(this.left, that.left) && Objects.equals(this.right, that.right);
         }
+    }
+    
+    public Pair<L, R> apply(BiConsumer<L, R> consumer) {
+        consumer.accept(this.left, this.right);
+        return this;
     }
     
     @Override

@@ -25,9 +25,18 @@ import com.dfsek.terra.fabric.util.BiomeUtil;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
 
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
+
+import com.dfsek.terra.mod.util.PresetUtil;
+
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.world.dimension.DimensionOptions;
+import net.minecraft.world.gen.WorldPreset;
+import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +44,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;

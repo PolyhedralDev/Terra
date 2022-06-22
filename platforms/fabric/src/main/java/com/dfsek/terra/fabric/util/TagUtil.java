@@ -2,6 +2,8 @@ package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
+import com.dfsek.terra.mod.util.PresetUtil;
+
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.tag.TagKey;
 import net.minecraft.tag.WorldPresetTags;
@@ -38,7 +40,7 @@ public final class TagUtil {
         logger.info("Doing preset tag garbage....");
         Map<TagKey<WorldPreset>, List<RegistryEntry<WorldPreset>>> collect = tagsToMutableMap(registry);
         
-        LifecycleUtil
+        PresetUtil
                 .getPresets()
                 .forEach(id -> MinecraftUtil
                         .getEntry(registry, id)

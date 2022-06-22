@@ -24,9 +24,14 @@ import cloud.commandframework.fabric.FabricServerCommandManager;
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.fabric.util.BiomeUtil;
+import com.dfsek.terra.mod.CommonPlatform;
+
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +52,13 @@ public class FabricEntryPoint implements ModInitializer {
     public static void register() { // register the things
         Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
+    }
+    
+    public static void initialize() {
+        getPlatform().getEventManager().callEvent(
+                new PlatformInitializationEvent());
+        BiomeUtil.registerBiomes();
+        CommonPlatform.get().registerWorldTypes((id, preset) -> BuiltinRegistries.add(BuiltinRegistries.WORLD_PRESET, id, preset));
     }
     
     @Override

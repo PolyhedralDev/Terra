@@ -1,4 +1,10 @@
-package com.dfsek.terra.forge.util;
+package com.dfsek.terra.mod.util;
+
+import com.dfsek.terra.api.config.ConfigPack;
+
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
@@ -16,7 +22,6 @@ import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
-import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,25 +30,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.forge.ForgeEntryPoint;
-import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
-import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
-
-public class LifecycleUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LifecycleUtil.class);
-    
+public class PresetUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Identifier> PRESETS = new ArrayList<>();
-    public static void initialize(RegisterHelper<Biome> helper) {
-        ForgeEntryPoint.getPlatform().getEventManager().callEvent(
-                new PlatformInitializationEvent());
-        BiomeUtil.registerBiomes(helper);
-    }
     
-    public static void registerWorldTypes(RegisterHelper<WorldPreset> helper) {
-        LOGGER.info("Registering Terra world types...");
-    
+    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack) {
         Registry<DimensionType> dimensionTypeRegistry = BuiltinRegistries.DIMENSION_TYPE;
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = BuiltinRegistries.CHUNK_GENERATOR_SETTINGS;
         Registry<StructureSet> structureSetRegistry = BuiltinRegistries.STRUCTURE_SET;
@@ -70,30 +62,25 @@ public class LifecycleUtil {
         RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.OVERWORLD);
     
         RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.OVERWORLD);
-        ForgeEntryPoint
-                .getPlatform()
-                .getRawConfigRegistry()
-                .forEach((id, pack) -> {
-                             Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
-                                     Locale.ROOT));
-                
-                             PRESETS.add(generatorID);
-                
-                             TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
-                             ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
-                
-                             DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
-                             WorldPreset preset = new WorldPreset(
-                                     Map.of(
-                                             DimensionOptions.OVERWORLD, dimensionOptions,
-                                             DimensionOptions.NETHER, netherDimensionOptions,
-                                             DimensionOptions.END, endDimensionOptions
-                                           )
-                             );
-                             helper.register(generatorID, preset);
-                             LOGGER.info("Registered world type \"{}\"", generatorID);
-                         }
-                        );
+    
+        Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
+                Locale.ROOT));
+    
+        PRESETS.add(generatorID);
+    
+        TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
+        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
+    
+        DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
+        WorldPreset preset = new WorldPreset(
+                Map.of(
+                        DimensionOptions.OVERWORLD, dimensionOptions,
+                        DimensionOptions.NETHER, netherDimensionOptions,
+                        DimensionOptions.END, endDimensionOptions
+                      )
+        );
+        LOGGER.info("Created world type \"{}\"", generatorID);
+        return Pair.of(generatorID, preset);
     }
     
     public static List<Identifier> getPresets() {
