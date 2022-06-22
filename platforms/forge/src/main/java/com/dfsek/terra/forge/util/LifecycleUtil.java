@@ -1,10 +1,5 @@
 package com.dfsek.terra.forge.util;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.forge.ForgeEntryPoint;
-import com.dfsek.terra.forge.generation.ForgeChunkGeneratorWrapper;
-import com.dfsek.terra.forge.generation.TerraBiomeSource;
-
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;
@@ -29,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.forge.ForgeEntryPoint;
+import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 
 public class LifecycleUtil {
@@ -80,7 +80,7 @@ public class LifecycleUtil {
                              PRESETS.add(generatorID);
                 
                              TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
-                             ChunkGenerator generator = new ForgeChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
+                             ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
                 
                              DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
                              WorldPreset preset = new WorldPreset(

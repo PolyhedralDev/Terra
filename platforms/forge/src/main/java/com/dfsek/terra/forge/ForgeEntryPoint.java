@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.forge;
 
-import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
-import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -34,8 +31,10 @@ import net.minecraftforge.registries.RegisterEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.forge.data.Codecs;
+import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
+import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
 import com.dfsek.terra.forge.util.LifecycleUtil;
+import com.dfsek.terra.mod.data.Codecs;
 
 
 @Mod("terra")
@@ -70,7 +69,7 @@ public class ForgeEntryPoint {
         event.register(Registry.WORLD_PRESET_KEY, helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> LifecycleUtil.registerWorldTypes(helper)));
         
         
-        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.FORGE_CHUNK_GENERATOR_WRAPPER));
+        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
         event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }

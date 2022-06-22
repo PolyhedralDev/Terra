@@ -3,10 +3,13 @@ package com.dfsek.terra.fabric.util;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.fabric.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 
-import com.dfsek.terra.fabric.mixin_ifaces.FloraFeatureHolder;
+import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
+import com.dfsek.terra.mod.config.ProtoPlatformBiome;
+import com.dfsek.terra.mod.util.MinecraftUtil;
+
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -66,10 +69,10 @@ public final class BiomeUtil {
             Identifier identifier = new Identifier("terra", createBiomeID(pack, id));
             
             if(registry.containsId(identifier)) {
-                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(FabricUtil.getEntry(registry, identifier)
-                                                                                      .orElseThrow()
-                                                                                      .getKey()
-                                                                                      .orElseThrow());
+                ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(MinecraftUtil.getEntry(registry, identifier)
+                                                                                         .orElseThrow()
+                                                                                         .getKey()
+                                                                                         .orElseThrow());
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry,
                                                                                                   registerKey(identifier).getValue(),

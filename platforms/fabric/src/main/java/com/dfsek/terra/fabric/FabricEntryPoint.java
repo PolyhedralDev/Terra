@@ -28,11 +28,10 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.WorldPresets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.mod.data.Codecs;
 
 
 public class FabricEntryPoint implements ModInitializer {
@@ -46,7 +45,7 @@ public class FabricEntryPoint implements ModInitializer {
     }
     
     public static void register() { // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
+        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER);
         Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
     }
     

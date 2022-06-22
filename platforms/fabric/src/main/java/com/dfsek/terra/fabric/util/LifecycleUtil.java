@@ -2,8 +2,8 @@ package com.dfsek.terra.fabric.util;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.generation.FabricChunkGeneratorWrapper;
-import com.dfsek.terra.fabric.generation.TerraBiomeSource;
+import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
@@ -78,7 +78,7 @@ public class LifecycleUtil {
                              PRESETS.add(generatorID);
                     
                              TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
-                             ChunkGenerator generator = new FabricChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
+                             ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
                     
                              DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
                              WorldPreset preset = new WorldPreset(

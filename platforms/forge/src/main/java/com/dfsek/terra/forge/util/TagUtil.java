@@ -1,5 +1,7 @@
 package com.dfsek.terra.forge.util;
 
+import com.dfsek.terra.mod.util.MinecraftUtil;
+
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.tag.TagKey;
 import net.minecraft.tag.WorldPresetTags;
@@ -38,7 +40,7 @@ public final class TagUtil {
         
         LifecycleUtil
                 .getPresets()
-                .forEach(id -> ForgeUtil
+                .forEach(id -> MinecraftUtil
                         .getEntry(registry, id)
                         .ifPresentOrElse(
                                 preset -> collect
@@ -57,11 +59,11 @@ public final class TagUtil {
         BiomeUtil
                 .getTerraBiomeMap()
                 .forEach((vb, terraBiomes) ->
-                                 ForgeUtil
+                                 MinecraftUtil
                                          .getEntry(registry, vb)
                                          .ifPresentOrElse(
                                                  vanilla -> terraBiomes
-                                                         .forEach(tb -> ForgeUtil
+                                                         .forEach(tb -> MinecraftUtil
                                                                  .getEntry(registry, tb)
                                                                  .ifPresentOrElse(
                                                                          terra -> {
