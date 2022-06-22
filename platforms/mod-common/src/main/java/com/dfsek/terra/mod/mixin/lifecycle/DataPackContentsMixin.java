@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.lifecycle;
+package com.dfsek.terra.mod.mixin.lifecycle;
 
 import com.dfsek.terra.mod.util.TagUtil;
 import com.dfsek.terra.mod.util.MinecraftUtil;
