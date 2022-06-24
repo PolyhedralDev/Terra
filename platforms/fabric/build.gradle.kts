@@ -1,11 +1,6 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("fabric-loom") version Versions.Fabric.loom
     id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
-}
-
-architectury {
-    fabric()
 }
 
 
