@@ -61,7 +61,8 @@ public final class AwfulForgeHacks {
         try(JarFile jar = getTerraJar()) {
             jar.stream()
                .forEach(jarEntry -> {
-                   if(jarEntry.getName().startsWith("com/dfsek/terra/forge/mixin")) {
+                   if(jarEntry.getName().startsWith("com/dfsek/terra/forge/mixin")
+                   || jarEntry.getName().startsWith("com/dfsek/terra/mod/mixin")) {
                        return;
                    }
                    if(jarEntry.getName().endsWith(".class")) {
