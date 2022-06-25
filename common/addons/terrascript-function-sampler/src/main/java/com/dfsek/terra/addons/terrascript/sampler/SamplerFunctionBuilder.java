@@ -61,7 +61,7 @@ public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.a
         } else { // 3D
             if(arg instanceof StringConstant constant) {
                 return new ConstantSamplerFunction(Objects.requireNonNull(samplers3d.get(constant.getConstant()),
-                                                                          "No such 2D noise function " + constant.getConstant())
+                                                                          "No such 3D noise function " + constant.getConstant())
                                                           .getSampler(),
                                                    (Returnable<Number>) argumentList.get(1),
                                                    (Returnable<Number>) argumentList.get(2),
@@ -73,7 +73,7 @@ public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.a
                                            (Returnable<Number>) argumentList.get(1),
                                            (Returnable<Number>) argumentList.get(2),
                                            (Returnable<Number>) argumentList.get(3),
-                                           s -> Objects.requireNonNull(samplers2d.get(s.get()), "No such 2D noise function " + s.get())
+                                           s -> Objects.requireNonNull(samplers3d.get(s.get()), "No such 3D noise function " + s.get())
                                                        .getSampler(),
                                            true,
                                            position);
