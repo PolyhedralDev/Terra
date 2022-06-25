@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.client;
 
-import com.dfsek.terra.fabric.util.LifecycleUtil;
-
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -26,9 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.fabric.util.BiomeUtil;
 
 
 @Mixin(MinecraftClient.class)
@@ -40,6 +36,6 @@ public class MinecraftClientMixin {
                                         // sorta arbitrary position, after mod init, before window opens
                                         shift = At.Shift.BEFORE))
     public void injectConstructor(RunArgs args, CallbackInfo callbackInfo) {
-        LifecycleUtil.initialize();
+        FabricEntryPoint.initialize();
     }
 }

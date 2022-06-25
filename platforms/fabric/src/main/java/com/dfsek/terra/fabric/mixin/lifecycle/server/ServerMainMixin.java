@@ -17,16 +17,12 @@
 
 package com.dfsek.terra.fabric.mixin.lifecycle.server;
 
-import com.dfsek.terra.fabric.util.BiomeUtil;
-import com.dfsek.terra.fabric.util.LifecycleUtil;
-
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.fabric.FabricEntryPoint;
 
 
@@ -39,6 +35,6 @@ public class ServerMainMixin {
             // after registry manager creation
             )
     private static void injectConstructor(String[] args, CallbackInfo ci) {
-        LifecycleUtil.initialize();
+        FabricEntryPoint.initialize();
     }
 }

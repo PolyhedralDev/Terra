@@ -1,10 +1,9 @@
 package com.dfsek.terra.fabric.mixin.lifecycle;
 
-import com.dfsek.terra.fabric.util.SeedHack;
+import com.dfsek.terra.mod.util.SeedHack;
 
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.noise.NoiseConfig;

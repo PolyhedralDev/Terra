@@ -34,6 +34,7 @@ fun Project.configureDependencies() {
         maven("https://repo.codemc.org/repository/maven-public")
         maven("https://repo.codemc.io/repository/nms/")
         maven("https://papermc.io/repo/repository/maven-public/")
+        maven ( "https://files.minecraftforge.net/maven/" )
     }
     
     dependencies {

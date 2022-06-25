@@ -111,8 +111,12 @@ public abstract class AbstractPlatform implements Platform {
             logger.info("Loading config.yml");
             File configFile = new File(getDataFolder(), "config.yml");
             if(!configFile.exists()) {
-                logger.info("Writing new config.yml...");
-                FileUtils.copyInputStreamToFile(stream, configFile);
+                logger.info("Dumping config.yml...");
+                if(stream == null) {
+                    logger.warn("Could not find config.yml in JAR");
+                } else {
+                    FileUtils.copyInputStreamToFile(stream, configFile);
+                }
             }
         } catch(IOException e) {
             logger.error("Error loading config.yml resource from jar", e);
