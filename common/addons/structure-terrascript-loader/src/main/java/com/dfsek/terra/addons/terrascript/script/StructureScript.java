@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
-
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -20,7 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBuilder;

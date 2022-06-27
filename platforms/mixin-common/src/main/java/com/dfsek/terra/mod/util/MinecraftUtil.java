@@ -1,14 +1,5 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.entity.Container;
-import com.dfsek.terra.api.block.entity.MobSpawner;
-import com.dfsek.terra.api.block.entity.Sign;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
-
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -32,6 +23,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.block.entity.MobSpawner;
+import com.dfsek.terra.api.block.entity.Sign;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 
 public final class MinecraftUtil {

@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.biome.query.impl;
 
+import java.util.function.Predicate;
+
 import com.dfsek.terra.addons.biome.query.BiomeQueryAPIAddon;
 import com.dfsek.terra.api.world.biome.Biome;
-
-import java.util.function.Predicate;
 
 
 public class SingleTagQuery implements Predicate<Biome> {

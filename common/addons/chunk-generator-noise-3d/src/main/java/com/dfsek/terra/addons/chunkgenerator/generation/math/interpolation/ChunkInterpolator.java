@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import net.jafama.FastMath;
+
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
-import net.jafama.FastMath;
 
 
 /**

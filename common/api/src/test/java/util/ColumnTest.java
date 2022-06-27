@@ -1,10 +1,5 @@
 package util;
 
-import com.dfsek.terra.api.util.Column;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.mutable.MutableInteger;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +8,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.mutable.MutableInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 

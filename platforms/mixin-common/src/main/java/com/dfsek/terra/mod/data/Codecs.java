@@ -1,8 +1,5 @@
 package com.dfsek.terra.mod.data;
 
-import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
-import com.dfsek.terra.mod.generation.TerraBiomeSource;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.dynamic.RegistryOps;
@@ -12,6 +9,8 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.mod.CommonPlatform;
+import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 
 public final class Codecs {

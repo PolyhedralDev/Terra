@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.forge;
 
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.forge.util.BiomeUtil;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -36,8 +33,10 @@ import net.minecraftforge.registries.RegisterEvent.RegisterHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
 import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
+import com.dfsek.terra.forge.util.BiomeUtil;
 import com.dfsek.terra.mod.data.Codecs;
 
 

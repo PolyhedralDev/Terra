@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 plugins {
     id("xyz.jpenilla.run-paper") version "1.0.6"
 }

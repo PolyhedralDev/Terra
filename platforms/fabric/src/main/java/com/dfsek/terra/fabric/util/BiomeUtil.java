@@ -70,4 +70,5 @@ public final class BiomeUtil {
             MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }
+    
 }

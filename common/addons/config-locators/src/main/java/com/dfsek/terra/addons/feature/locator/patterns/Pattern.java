@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.addons.feature.locator.patterns;
 
-import com.dfsek.terra.api.world.ReadableWorld;
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 

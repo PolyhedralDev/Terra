@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.biome.extrusion.api;
 
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import java.util.Optional;
+
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 /**

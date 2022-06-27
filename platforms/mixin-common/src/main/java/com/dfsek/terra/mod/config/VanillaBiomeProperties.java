@@ -10,10 +10,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
+import net.minecraft.world.biome.BiomeParticleConfig;
 
 import com.dfsek.terra.api.properties.Properties;
-
-import net.minecraft.world.biome.BiomeParticleConfig;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {

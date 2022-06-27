@@ -1,14 +1,13 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
-import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.VariableReferenceNode;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public class Scope {

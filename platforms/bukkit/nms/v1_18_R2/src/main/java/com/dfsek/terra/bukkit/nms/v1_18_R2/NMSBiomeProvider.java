@@ -1,8 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -10,6 +7,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate.Sampler;
 import org.jetbrains.annotations.NotNull;
+
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 public class NMSBiomeProvider extends BiomeSource {

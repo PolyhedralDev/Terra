@@ -1,13 +1,13 @@
 package com.dfsek.terra.api.world.biome.generation;
 
-import com.dfsek.terra.api.Handle;
-import com.dfsek.terra.api.world.biome.Biome;
-
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
 
 import java.util.Optional;
+
+import com.dfsek.terra.api.Handle;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 /**

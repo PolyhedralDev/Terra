@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.mod.generation;
 
-import com.dfsek.terra.mod.mixin.access.StructureAccessorAccessor;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -65,6 +63,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.data.Codecs;
+import com.dfsek.terra.mod.mixin.access.StructureAccessorAccessor;
 import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 

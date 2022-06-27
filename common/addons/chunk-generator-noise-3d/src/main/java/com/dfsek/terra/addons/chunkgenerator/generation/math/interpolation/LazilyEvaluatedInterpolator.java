@@ -1,10 +1,9 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.properties.PropertyKey;
-
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import static com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.Interpolator.lerp;

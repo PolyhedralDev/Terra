@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.mod.config;
 
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -27,6 +25,7 @@ import net.minecraft.world.biome.Biome;
 import java.util.Objects;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 public class ProtoPlatformBiome implements PlatformBiome {

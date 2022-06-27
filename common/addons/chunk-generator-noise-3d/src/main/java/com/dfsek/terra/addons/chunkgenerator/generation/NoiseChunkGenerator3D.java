@@ -8,6 +8,9 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
+import net.jafama.FastMath;
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
@@ -25,9 +28,6 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 import com.dfsek.terra.api.world.info.WorldProperties;
-
-import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
 
 
 public class NoiseChunkGenerator3D implements ChunkGenerator {
