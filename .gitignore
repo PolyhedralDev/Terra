@@ -246,3 +246,4 @@ nbdist/
 /run/
 
 **/testDir/
+platforms/fabric/run/config/Terra/config.yml

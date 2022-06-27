@@ -3,10 +3,17 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+import net.minecraft.sound.BiomeAdditionsSound;
+import net.minecraft.sound.BiomeMoodSound;
+import net.minecraft.sound.MusicSound;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.world.biome.Biome.Precipitation;
+import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 
 import com.dfsek.terra.api.properties.Properties;
+
+import net.minecraft.world.biome.BiomeParticleConfig;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
@@ -38,20 +45,48 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private GrassColorModifier modifier = null;
     
+    @Value("particles")
+    @Default
+    private BiomeParticleConfig particleConfig = null;
+    
     @Value("climate.precipitation")
     @Default
     private Precipitation precipitation = null;
     
-    public Integer getFogColor() {
-        return fogColor;
-    }
+    @Value("climate.temperature")
+    @Default
+    private Float temperature = null;
     
-    public Integer getFoliageColor() {
-        return foliageColor;
-    }
+    @Value("climate.temperature-modifier")
+    @Default
+    private TemperatureModifier temperatureModifier = null;
+    
+    @Value("climate.downfall")
+    @Default
+    private Float downfall = null;
+    
+    @Value("sound.loop-sound.sound")
+    @Default
+    private SoundEvent loopSound = null;
+    
+    @Value("sound.mood-sound")
+    @Default
+    private BiomeMoodSound moodSound = null;
+    
+    @Value("sound.additions-sound")
+    @Default
+    private BiomeAdditionsSound additionsSound = null;
+    
+    @Value("sound.music")
+    @Default
+    private MusicSound music = null;
     
     public Integer getGrassColor() {
         return grassColor;
+    }
+
+    public Integer getFogColor() {
+        return fogColor;
     }
     
     public Integer getWaterColor() {
@@ -62,15 +97,51 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return waterFogColor;
     }
     
+    public Integer getFoliageColor() {
+        return foliageColor;
+    }
+    
     public Integer getSkyColor() {
         return skyColor;
+    }
+    
+    public GrassColorModifier getGrassColorModifier() {
+        return modifier;
+    }
+    
+    public BiomeParticleConfig getParticleConfig() {
+        return particleConfig;
     }
     
     public Precipitation getPrecipitation() {
         return precipitation;
     }
     
-    public GrassColorModifier getModifier() {
-        return modifier;
+    public Float getTemperature() {
+        return temperature;
+    }
+    
+    public TemperatureModifier getTemperatureModifier() {
+        return temperatureModifier;
+    }
+    
+    public Float getDownfall() {
+        return downfall;
+    }
+    
+    public SoundEvent getLoopSound() {
+        return loopSound;
+    }
+    
+    public BiomeMoodSound getMoodSound() {
+        return moodSound;
+    }
+    
+    public BiomeAdditionsSound getAdditionsSound() {
+        return additionsSound;
+    }
+    
+    public MusicSound getMusic() {
+        return music;
     }
 }
