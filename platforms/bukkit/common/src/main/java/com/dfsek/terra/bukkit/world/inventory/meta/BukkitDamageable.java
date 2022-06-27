@@ -25,7 +25,7 @@ import com.dfsek.terra.bukkit.world.inventory.BukkitItemMeta;
 
 public class BukkitDamageable extends BukkitItemMeta implements Damageable {
     public BukkitDamageable(org.bukkit.inventory.meta.Damageable delegate) {
-        super((ItemMeta) delegate);
+        super(delegate);
     }
     
     @Override

@@ -83,7 +83,7 @@ public final class AwfulForgeHacks {
         BLOCK,
         BIOME,
         WORLD_TYPE,
-        DONE;
+        DONE
     }
     
     

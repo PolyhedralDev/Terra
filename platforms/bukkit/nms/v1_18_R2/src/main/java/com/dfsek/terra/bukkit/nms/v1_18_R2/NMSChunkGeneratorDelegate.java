@@ -227,7 +227,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                                                                                       this.climateSampler());
             
             if(pair != null) {
-                BlockPos blockposition = (BlockPos) pair.getFirst();
+                BlockPos blockposition = pair.getFirst();
                 
                 k1 = SectionPos.blockToSectionCoord(blockposition.getX());
                 l1 = SectionPos.blockToSectionCoord(blockposition.getZ());

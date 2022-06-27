@@ -20,7 +20,7 @@ dependencies {
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }
 
-tasks.withType<Jar>() {
+tasks.withType<Jar> {
     entryCompression = ZipEntryCompression.STORED
     manifest {
         attributes(
