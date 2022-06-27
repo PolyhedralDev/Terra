@@ -16,16 +16,16 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
     
     @Value("probability")
     @Default
-    private Integer particleProbability = null;
+    private Integer probability = null;
 
     @Override
     public BiomeParticleConfig get() {
-        if (particle == null || particleProbability == null) {
+        if (particle == null || probability == null) {
             return null;
         }
         
         try {
-            return new BiomeParticleConfig(ParticleEffectArgumentType.readParameters(new StringReader(particle)), particleProbability);
+            return new BiomeParticleConfig(ParticleEffectArgumentType.readParameters(new StringReader(particle)), probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);
         }

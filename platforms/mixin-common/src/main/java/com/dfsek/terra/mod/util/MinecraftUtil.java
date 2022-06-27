@@ -30,6 +30,7 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
 import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 
@@ -151,14 +152,13 @@ public final class MinecraftUtil {
         builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getTemperature()));
     
         builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), vanilla.getDownfall()));
-    
-        if (vanillaBiomeProperties.getTemperatureModifier() != null) {
-            builder.temperatureModifier(vanillaBiomeProperties.getTemperatureModifier());
-        }
-    
+        
+        builder.temperatureModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(), ((BiomeAccessor)((Object)vanilla)).getWeather().temperatureModifier()));
+
+        builder.spawnSettings(Objects.requireNonNullElse(vanillaBiomeProperties.getSpawnSettings(), vanilla.getSpawnSettings()));
+        
         return builder
                 .effects(effects.build())
-                .spawnSettings(vanilla.getSpawnSettings())
                 .generationSettings(generationSettings.build())
                 .build();
     }

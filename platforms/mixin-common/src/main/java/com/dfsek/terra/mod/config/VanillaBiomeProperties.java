@@ -11,6 +11,7 @@ import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
+import net.minecraft.world.biome.SpawnSettings;
 
 import com.dfsek.terra.api.properties.Properties;
 
@@ -42,7 +43,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     @Value("colors.modifier")
     @Default
-    private GrassColorModifier modifier = null;
+    private GrassColorModifier grassColorModifier = null;
     
     @Value("particles")
     @Default
@@ -80,6 +81,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private MusicSound music = null;
     
+    @Value("spawning")
+    @Default
+    private SpawnSettings spawnSettings = null;
+    
     public Integer getGrassColor() {
         return grassColor;
     }
@@ -105,7 +110,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     }
     
     public GrassColorModifier getGrassColorModifier() {
-        return modifier;
+        return grassColorModifier;
     }
     
     public BiomeParticleConfig getParticleConfig() {
@@ -142,5 +147,9 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     public MusicSound getMusic() {
         return music;
+    }
+    
+    public SpawnSettings getSpawnSettings() {
+        return spawnSettings;
     }
 }

@@ -12,7 +12,7 @@ public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
     @Default
     private Identifier id = null;
     
-    @Value("distanceToTravel")
+    @Value("distance-to-travel")
     @Default
     private Float distanceToTravel = null;
     

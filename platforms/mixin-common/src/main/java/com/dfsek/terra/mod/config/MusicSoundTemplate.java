@@ -20,7 +20,7 @@ public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
     @Default
     private Integer maxDelay = null;
     
-    @Value("-current-music")
+    @Value("replace-current-music")
     @Default
     private Boolean replaceCurrentMusic = null;
     

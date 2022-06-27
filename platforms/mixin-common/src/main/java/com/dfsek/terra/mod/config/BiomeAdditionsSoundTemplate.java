@@ -12,7 +12,7 @@ public class BiomeAdditionsSoundTemplate implements ObjectTemplate<BiomeAddition
     @Default
     private SoundEvent sound = null;
     
-    @Value("sound")
+    @Value("sound-chance")
     @Default
     private Double soundChance = null;
     

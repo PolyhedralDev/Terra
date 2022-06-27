@@ -32,11 +32,13 @@ dependencies {
 }
 
 loom {
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
     mixin {
         defaultRefmapName.set("terra-forge-refmap.json")
     }
     
     forge {
+        convertAccessWideners.set(true)
         mixinConfig("terra.common.mixins.json")
         mixinConfig("terra.forge.mixins.json")
     }

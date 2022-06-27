@@ -7,6 +7,7 @@ loom {
     mixin {
         defaultRefmapName.set("terra-common-refmap.json")
     }
+    accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
 }
 
 dependencies {

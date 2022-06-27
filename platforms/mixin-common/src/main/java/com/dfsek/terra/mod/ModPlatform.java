@@ -4,13 +4,10 @@ import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 
-import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.mod.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 
-import com.dfsek.terra.mod.config.MusicSoundTemplate;
-import com.dfsek.terra.mod.config.SoundEventTemplate;
-
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
@@ -22,6 +19,8 @@ import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
+import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.WorldPreset;
 
 import java.util.List;
@@ -31,7 +30,17 @@ import java.util.function.BiConsumer;
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
+import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
+import com.dfsek.terra.mod.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.mod.config.EntityTypeTemplate;
+import com.dfsek.terra.mod.config.MusicSoundTemplate;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
+import com.dfsek.terra.mod.config.SoundEventTemplate;
+import com.dfsek.terra.mod.config.SpawnCostConfig;
+import com.dfsek.terra.mod.config.SpawnEntryTemplate;
+import com.dfsek.terra.mod.config.SpawnGroupTemplate;
+import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.util.PresetUtil;
 
 
@@ -63,7 +72,13 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(SoundEvent.class, SoundEventTemplate::new)
                 .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
                 .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
-                .registerLoader(MusicSound.class, MusicSoundTemplate::new);
+                .registerLoader(MusicSound.class, MusicSoundTemplate::new)
+                .registerLoader(EntityType.class, EntityTypeTemplate::new)
+                .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
+                .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
+                .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
+                .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
+                .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new);
     }
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
