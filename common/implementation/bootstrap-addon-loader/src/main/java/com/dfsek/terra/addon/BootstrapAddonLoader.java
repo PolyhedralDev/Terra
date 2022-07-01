@@ -96,7 +96,6 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             throw new UncheckedIOException(e);
         }
     }
-    
     @Override
     public String getID() {
         return "BOOTSTRAP";

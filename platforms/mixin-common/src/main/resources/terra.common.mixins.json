@@ -4,6 +4,7 @@
   "package": "com.dfsek.terra.mod.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "access.BiomeAccessor",
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
     "access.StructureAccessorAccessor",
@@ -42,6 +43,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "terra-common-refmap.json"
+  }
 }

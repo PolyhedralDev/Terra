@@ -75,6 +75,6 @@ public final class MinecraftAddon implements BaseAddon {
     
     @Override
     public String getID() {
-        return "terra-fabric";
+        return "terra-mod";
     }
 }

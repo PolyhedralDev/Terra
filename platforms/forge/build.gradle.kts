@@ -1,7 +1,7 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Forge.architecuryLoom
+    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architectutyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Fabric.loomQuiltflower
+    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
 architectury {
@@ -17,34 +17,43 @@ configurations {
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
+    "forgeRuntimeLibrary"(project(":common:implementation:base"))
+    
     
     "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionForge")) { isTransitive = false }
-    "developmentForge"(project(":platforms:mixin-common", configuration = "namedElements")) {
+    "developmentForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) {
         isTransitive = false
     }
     
     
     forge(group = "net.minecraftforge", name = "forge", version = Versions.Forge.forge)
     
-    minecraft("com.mojang:minecraft:${Versions.Forge.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Forge.yarn}:v2")
+    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
+    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    
+    //forge is not ok.
+    compileOnly("org.burningwave:core:12.53.0")
+    "forgeRuntimeLibrary"("org.burningwave:core:12.53.0")
 }
 
 loom {
-    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
+    accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
+    
     mixin {
-        defaultRefmapName.set("terra-forge-refmap.json")
+        defaultRefmapName.set("terra.forge.refmap.json")
     }
     
     forge {
         convertAccessWideners.set(true)
         mixinConfig("terra.common.mixins.json")
         mixinConfig("terra.forge.mixins.json")
+        extraAccessWideners.add(loom.accessWidenerPath.get().asFile.name)
     }
 }
 
 
+addonDir(project.file("./run/config/Terra/addons"), tasks.named("configureLaunch").get())
 
 tasks {
     jar {
@@ -65,5 +74,9 @@ tasks {
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
         archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
+    }
+    
+    processResources {
+        from(project(":platforms:mixin-common").file("terra.accesswidener"))
     }
 }

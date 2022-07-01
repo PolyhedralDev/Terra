@@ -21,7 +21,8 @@
         ]
     },
     "mixins": [
-        "terra.fabric.mixins.json"
+        "terra.fabric.mixins.json",
+        "terra.common.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.14.2",

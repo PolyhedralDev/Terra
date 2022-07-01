@@ -246,4 +246,7 @@ nbdist/
 /run/
 
 **/testDir/
-platforms/fabric/run/config/Terra/config.yml
+
+platforms/fabric/run/**
+
+platforms/forge/run/**
