@@ -33,8 +33,8 @@ dependencies {
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
     
     //forge is not ok.
-    compileOnly("org.burningwave:core:12.53.0")
-    "forgeRuntimeLibrary"("org.burningwave:core:12.53.0")
+    compileOnly("org.burningwave:core:${Versions.Forge.burningwave}")
+    "forgeRuntimeLibrary"("org.burningwave:core:${Versions.Forge.burningwave}")
 }
 
 loom {

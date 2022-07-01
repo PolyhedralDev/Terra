@@ -38,7 +38,7 @@ object Versions {
     
     object Forge {
         const val forge = "${Mod.minecraft}-41.0.38"
-        const val burningwave = ""
+        const val burningwave = "12.53.0"
     }
     
     object Bukkit {
