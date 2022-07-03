@@ -86,9 +86,11 @@ public abstract class ModPlatform extends AbstractPlatform {
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
-    
+
     @Override
     protected Iterable<BaseAddon> platformAddon() {
-        return List.of(new MinecraftAddon(this));
+        return List.of(getPlatformAddon());
     }
+
+    protected abstract BaseAddon getPlatformAddon();
 }

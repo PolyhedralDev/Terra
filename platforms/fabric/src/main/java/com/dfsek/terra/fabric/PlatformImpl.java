@@ -143,4 +143,9 @@ public class PlatformImpl extends ModPlatform {
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
+
+    @Override
+    public BaseAddon getPlatformAddon() {
+        return new FabricAddon(this);
+    }
 }
