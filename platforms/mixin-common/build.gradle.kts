@@ -1,11 +1,14 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
 loom {
+    accessWidenerPath.set(file("terra.accesswidener"))
+    
     mixin {
-        defaultRefmapName.set("terra-common-refmap.json")
+        defaultRefmapName.set("terra.common.refmap.json")
     }
 }
 
@@ -22,3 +25,4 @@ architectury {
     common("fabric", "forge")
     minecraft = Versions.Mod.minecraft
 }
+

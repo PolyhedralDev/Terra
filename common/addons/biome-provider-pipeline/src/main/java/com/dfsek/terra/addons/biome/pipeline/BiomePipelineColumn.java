@@ -1,12 +1,12 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
+import java.util.function.Consumer;
+
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.function.IntIntObjConsumer;
 import com.dfsek.terra.api.util.function.IntObjConsumer;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
-import java.util.function.Consumer;
 
 
 class BiomePipelineColumn implements Column<Biome> {

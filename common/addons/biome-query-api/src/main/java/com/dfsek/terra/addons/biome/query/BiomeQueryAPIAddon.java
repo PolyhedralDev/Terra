@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.biome.query;
 
+import java.util.Collection;
+
 import com.dfsek.terra.addons.biome.query.impl.BiomeTagFlattener;
 import com.dfsek.terra.addons.biome.query.impl.BiomeTagHolder;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -11,8 +13,6 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.Biome;
-
-import java.util.Collection;
 
 
 public class BiomeQueryAPIAddon implements AddonInitializer {

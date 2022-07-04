@@ -1,13 +1,5 @@
 package com.dfsek.terra.fabric.util;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.fabric.FabricEntryPoint;
-import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
-
-import com.dfsek.terra.mod.config.ProtoPlatformBiome;
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -15,7 +7,14 @@ import net.minecraft.util.registry.RegistryKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.mod.config.ProtoPlatformBiome;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 public final class BiomeUtil {

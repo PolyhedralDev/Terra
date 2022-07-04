@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.util;
 
-import ca.solostudios.strata.Versions;
-import ca.solostudios.strata.version.Version;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.slf4j.Logger;

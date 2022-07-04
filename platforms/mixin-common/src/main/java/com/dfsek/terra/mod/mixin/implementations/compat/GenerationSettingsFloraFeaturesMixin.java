@@ -1,7 +1,5 @@
 package com.dfsek.terra.mod.mixin.implementations.compat;
 
-import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
-
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.spongepowered.asm.mixin.Implements;
@@ -12,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+
+import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 
 @Mixin(GenerationSettings.class)

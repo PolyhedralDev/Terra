@@ -33,7 +33,7 @@ import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 
 
-public final class MinecraftAddon implements BaseAddon {
+public abstract class MinecraftAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private static final Logger logger = LoggerFactory.getLogger(MinecraftAddon.class);
     private final ModPlatform modPlatform;
@@ -71,10 +71,5 @@ public final class MinecraftAddon implements BaseAddon {
     @Override
     public Version getVersion() {
         return VERSION;
-    }
-    
-    @Override
-    public String getID() {
-        return "terra-fabric";
     }
 }

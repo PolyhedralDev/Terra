@@ -1,8 +1,0 @@
-{
-    "schemaVersion": 1,
-    "id": "terra-common",
-    "version": "1.0.0",
-    "mixins": [
-        "terra.common.mixins.json"
-    ]
-}

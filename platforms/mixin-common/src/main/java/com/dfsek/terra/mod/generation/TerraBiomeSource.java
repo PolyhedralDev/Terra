@@ -17,13 +17,6 @@
 
 package com.dfsek.terra.mod.generation;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.mod.data.Codecs;
-import com.dfsek.terra.mod.config.ProtoPlatformBiome;
-
-import com.dfsek.terra.mod.util.SeedHack;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
@@ -33,6 +26,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.stream.StreamSupport;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.mod.config.ProtoPlatformBiome;
+import com.dfsek.terra.mod.data.Codecs;
+import com.dfsek.terra.mod.util.SeedHack;
 
 
 public class TerraBiomeSource extends BiomeSource {

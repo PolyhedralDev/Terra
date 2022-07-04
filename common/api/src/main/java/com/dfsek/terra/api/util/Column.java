@@ -1,11 +1,11 @@
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.util.function.IntIntObjConsumer;
-import com.dfsek.terra.api.util.function.IntObjConsumer;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import com.dfsek.terra.api.util.function.IntIntObjConsumer;
+import com.dfsek.terra.api.util.function.IntObjConsumer;
 
 
 public interface Column<T> {

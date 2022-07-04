@@ -20,11 +20,8 @@ object Versions {
     object Fabric {
         const val fabricLoader = "0.14.2"
         const val fabricAPI = "0.56.0+1.19"
-        const val minecraft = "1.19"
-        const val yarn = "$minecraft+build.1"
         const val mixin = "0.11.2+mixin.0.8.5"
         const val loom = "0.12-SNAPSHOT"
-        const val loomQuiltflower = "1.7.1"
         const val minotaur = "1.1.0"
     }
     
@@ -35,13 +32,13 @@ object Versions {
     
         const val architecuryLoom = "0.12.0-SNAPSHOT"
         const val architectutyPlugin = "3.4-SNAPSHOT"
+    
+        const val loomQuiltflower = "1.7.1"
     }
     
     object Forge {
-        const val minecraft = "1.19"
-        const val forge = "$minecraft-41.0.38"
-        const val yarn = "$minecraft+build.1"
-        const val architecuryLoom = "0.12.0-SNAPSHOT"
+        const val forge = "${Mod.minecraft}-41.0.38"
+        const val burningwave = "12.53.0"
     }
     
     object Bukkit {

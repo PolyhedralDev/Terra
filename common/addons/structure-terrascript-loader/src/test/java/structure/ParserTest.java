@@ -8,8 +8,6 @@
 package structure;
 
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +18,7 @@ import java.util.Objects;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;

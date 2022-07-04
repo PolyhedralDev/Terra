@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import java.util.function.Supplier;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;

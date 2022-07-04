@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import com.dfsek.terra.mod.util.MinecraftUtil;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
@@ -49,6 +48,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 @Mixin(ChunkRegion.class)

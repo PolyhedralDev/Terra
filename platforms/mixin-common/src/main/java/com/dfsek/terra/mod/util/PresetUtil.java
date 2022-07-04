@@ -1,11 +1,5 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.api.config.ConfigPack;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
-import com.dfsek.terra.mod.generation.TerraBiomeSource;
-
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;
@@ -29,6 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 
 public class PresetUtil {

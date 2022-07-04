@@ -16,6 +16,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    },
-    "refmap": "terra-fabric-refmap.json"
+    }
 }

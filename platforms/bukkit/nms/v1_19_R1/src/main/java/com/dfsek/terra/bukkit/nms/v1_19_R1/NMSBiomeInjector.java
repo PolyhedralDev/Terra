@@ -1,10 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-import com.dfsek.terra.registry.master.ConfigRegistry;
-
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
@@ -21,7 +16,18 @@ import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
 public class NMSBiomeInjector {

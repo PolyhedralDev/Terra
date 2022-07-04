@@ -1,13 +1,10 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.PlatformImpl;
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-
 import org.bukkit.Bukkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
+import com.dfsek.terra.bukkit.PlatformImpl;
 
 
 public interface Initializer {

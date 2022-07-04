@@ -10,8 +10,6 @@ import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
-import com.github.benmanes.caffeine.cache.LoadingCache;
-
 
 public class BiomeExtrusionProvider implements BiomeProvider {
     private final BiomeProvider delegate;

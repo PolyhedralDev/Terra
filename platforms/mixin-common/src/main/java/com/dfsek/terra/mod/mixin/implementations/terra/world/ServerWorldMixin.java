@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import com.dfsek.terra.mod.util.MinecraftUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Implements;
@@ -36,6 +35,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
