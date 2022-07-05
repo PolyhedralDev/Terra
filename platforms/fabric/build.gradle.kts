@@ -20,6 +20,9 @@ dependencies {
     
     "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    "common"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
+    
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")

@@ -15,6 +15,9 @@ dependencies {
     
     "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }
+    "common"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }
+    
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
@@ -23,7 +26,13 @@ dependencies {
     
     modApi("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${Versions.Quilt.fabricApi}")
     
-    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base", "fabric-command-api-v2", "fabric-networking-api-v1").forEach { apiModule ->
+    setOf(
+        "fabric-lifecycle-events-v1",
+        "fabric-resource-loader-v0",
+        "fabric-api-base",
+        "fabric-command-api-v2",
+        "fabric-networking-api-v1"
+         ).forEach { apiModule ->
         val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
         modImplementation(module)
         include(module)
