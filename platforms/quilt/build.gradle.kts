@@ -65,5 +65,7 @@ tasks {
     
     processResources {
         from(project(":platforms:mixin-common").file("terra.accesswidener"))
+        from(project(":platforms:mixin-common").file("src/main/resources/terra.common.mixins.json"))
+        from(project(":platforms:mixin-lifecycle").file("src/main/resources/terra.lifecycle.mixins.json"))
     }
 }
