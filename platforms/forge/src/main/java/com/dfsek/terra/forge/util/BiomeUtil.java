@@ -59,10 +59,8 @@ public final class BiomeUtil {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-    
-            net.minecraft.world.biome.Biome vanillaBiome = ForgeRegistries.BIOMES.getDelegateOrThrow(vanilla).value();
 
-            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, vanillaBiome, vanillaBiomeProperties);
+            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, ForgeRegistries.BIOMES.getDelegateOrThrow(vanilla).value(), vanillaBiomeProperties);
             
             Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
             
