@@ -28,11 +28,14 @@ pluginManagement {
         maven("https://maven.fabricmc.net") {
             name = "Fabric Maven"
         }
-        maven ( "https://maven.architectury.dev/" ) {
+        maven("https://maven.architectury.dev/") {
             name = "Architectury Maven"
         }
-        maven ( "https://files.minecraftforge.net/maven/" ) {
+        maven("https://files.minecraftforge.net/maven/") {
             name = "Forge Maven"
+        }
+        maven("https://maven.quiltmc.org/repository/release/") {
+            name = "Quilt"
         }
     }
 }

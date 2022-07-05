@@ -1,0 +1,52 @@
+{
+    "schema_version": 1,
+    "quilt_loader": {
+        "group": "com.dfsek",
+        "id": "terra",
+        "version": "@VERSION@",
+        "metadata": {
+            "name": "Terra",
+            "description": "@DESCRIPTION@",
+            "authors": [
+                "dfsek"
+            ],
+            "contact": {
+                "homepage": "@WIKI@",
+                "sources": "@SOURCE@",
+                "issues": "@ISSUES@"
+            },
+            "license": "@LICENSE@",
+            "icon": "assets/terra/icon.png"
+        },
+        "environment": "*",
+        "intermediate_mappings": "net.fabricmc:intermediary",
+        "entrypoints": {
+            "init": [
+                "com.dfsek.terra.quilt.QuiltEntryPoint"
+            ]
+        },
+        "depends": [
+            {
+                "id": "quilt_loader",
+                "version": ">=0.17.0"
+            },
+            {
+                "id": "java",
+                "version": ">=17"
+            },
+            {
+                "id": "minecraft",
+                "version": "1.19.x"
+            },
+            {
+                "id": "quilted_fabric_api",
+                "versions": ">=2.0.0-"
+            }
+        ]
+    },
+    "mixin": [
+        "terra.quilt.mixins.json",
+        "terra.common.mixins.json"
+    ],
+    "accessWidener": "terra.accesswidener"
+}
