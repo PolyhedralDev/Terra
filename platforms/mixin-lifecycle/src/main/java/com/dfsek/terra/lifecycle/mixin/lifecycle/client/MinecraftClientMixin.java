@@ -15,15 +15,16 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.quilt.mixin.lifecycle.client;
+package com.dfsek.terra.lifecycle.mixin.lifecycle.client;
 
-import com.dfsek.terra.quilt.QuiltEntryPoint;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 
 
 @Mixin(MinecraftClient.class)
@@ -35,6 +36,6 @@ public class MinecraftClientMixin {
                                         // sorta arbitrary position, after mod init, before window opens
                                         shift = At.Shift.BEFORE))
     public void injectConstructor(RunArgs args, CallbackInfo callbackInfo) {
-        QuiltEntryPoint.initialize();
+        LifecycleUtil.initialize();
     }
 }

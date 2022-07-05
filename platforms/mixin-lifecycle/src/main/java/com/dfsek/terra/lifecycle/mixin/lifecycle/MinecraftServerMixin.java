@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.lifecycle;
+package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
 import com.mojang.datafixers.DataFixer;
 import net.minecraft.resource.ResourcePackManager;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.net.Proxy;
 
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
 
 @Mixin(MinecraftServer.class)
@@ -27,6 +27,6 @@ public class MinecraftServerMixin {
     private void injectConstructor(Thread serverThread, LevelStorage.Session session, ResourcePackManager dataPackManager,
                                    SaveLoader saveLoader, Proxy proxy, DataFixer dataFixer, ApiServices apiServices,
                                    WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
-        FabricEntryPoint.getPlatform().setServer((MinecraftServer) (Object) this);
+        LifecyclePlatform.setServer((MinecraftServer) (Object) this);
     }
 }

@@ -14,9 +14,9 @@ configurations {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    "compileOnly"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    "annotationProcessor"("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    "annotationProcessor"("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    annotationProcessor("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
     
     "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }

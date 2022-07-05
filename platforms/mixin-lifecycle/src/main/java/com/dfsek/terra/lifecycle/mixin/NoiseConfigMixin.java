@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.mixin.lifecycle;
+package com.dfsek.terra.lifecycle.mixin;
 
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.util.registry.Registry;

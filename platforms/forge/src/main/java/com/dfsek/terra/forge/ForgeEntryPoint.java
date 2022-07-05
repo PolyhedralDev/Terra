@@ -47,16 +47,16 @@ public class ForgeEntryPoint {
     
     static {
         AwfulForgeHacks.loadAllTerraClasses();
-        TERRA_PLUGIN = new PlatformImpl();
+        TERRA_PLUGIN = new ForgePlatform();
     }
     
     public static final String MODID = "terra";
     
     private static final Logger logger = LoggerFactory.getLogger(ForgeEntryPoint.class);
     
-    private static final PlatformImpl TERRA_PLUGIN;
+    private static final ForgePlatform TERRA_PLUGIN;
     
-    public static PlatformImpl getPlatform() {
+    public static ForgePlatform getPlatform() {
         return TERRA_PLUGIN;
     }
     

@@ -4,7 +4,13 @@ import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
+
+import com.dfsek.terra.mod.handle.MinecraftItemHandle;
+
+import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -43,9 +49,14 @@ import com.dfsek.terra.mod.config.SpawnGroupTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.util.PresetUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public abstract class ModPlatform extends AbstractPlatform {
     public abstract MinecraftServer getServer();
+    
+    private final ItemHandle itemHandle = new MinecraftItemHandle();
+    private final WorldHandle worldHandle = new MinecraftWorldHandle();
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
@@ -93,4 +104,14 @@ public abstract class ModPlatform extends AbstractPlatform {
     }
 
     protected abstract BaseAddon getPlatformAddon();
+    
+    @Override
+    public @NotNull WorldHandle getWorldHandle() {
+        return worldHandle;
+    }
+    
+    @Override
+    public @NotNull ItemHandle getItemHandle() {
+        return itemHandle;
+    }
 }

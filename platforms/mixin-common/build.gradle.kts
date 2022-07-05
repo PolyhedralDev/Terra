@@ -15,6 +15,8 @@ loom {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
+    
     modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
