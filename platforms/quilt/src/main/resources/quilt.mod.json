@@ -23,6 +23,9 @@
         "entrypoints": {
             "init": [
                 "com.dfsek.terra.quilt.QuiltEntryPoint"
+            ],
+            "pre_launch": [
+                "com.dfsek.terra.quilt.QuiltPreLaunchEntryPoint"
             ]
         },
         "depends": [
