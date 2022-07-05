@@ -19,9 +19,6 @@ package com.dfsek.terra.quilt;
 
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.fabric.FabricServerCommandManager;
-
-import com.dfsek.terra.lifecycle.util.RegistryUtil;
-
 import net.minecraft.server.command.ServerCommandSource;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
@@ -45,8 +42,7 @@ public class QuiltEntryPoint implements ModInitializer {
                 serverCommandSource -> (CommandSender) serverCommandSource,
                 commandSender -> (ServerCommandSource) commandSender
         );
-    
-        RegistryUtil.register();
+        
         
         manager.brigadierManager().setNativeNumberSuggestions(false);
         
