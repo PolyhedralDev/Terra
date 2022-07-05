@@ -1,4 +1,4 @@
-package com.dfsek.terra.fabric.util;
+package com.dfsek.terra.lifecycle.util;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.fabric.FabricEntryPoint;
+import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.util.MinecraftUtil;
@@ -26,7 +26,7 @@ public final class BiomeUtil {
     
     public static void registerBiomes() {
         logger.info("Registering biomes...");
-        FabricEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
+        CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             pack.getCheckedRegistry(Biome.class)
                 .forEach((id, biome) -> registerBiome(biome, pack, id));
         });

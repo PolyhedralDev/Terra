@@ -1,7 +1,6 @@
 plugins {
-    id("fabric-loom") version Versions.Fabric.loom
+    id("org.quiltmc.loom") version Versions.Quilt.loom
     id("architectury-plugin") version Versions.Mod.architectutyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
 
@@ -14,22 +13,26 @@ configurations {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
-    
     "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
-    shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }
     "common"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
-    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
+    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }
     
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
     
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
+    modImplementation("org.quiltmc:quilt-loader:${Versions.Quilt.quiltLoader}")
     
-    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base", "fabric-command-api-v2", "fabric-networking-api-v1").forEach { apiModule ->
+    modApi("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${Versions.Quilt.fabricApi}")
+    
+    setOf(
+        "fabric-lifecycle-events-v1",
+        "fabric-resource-loader-v0",
+        "fabric-api-base",
+        "fabric-command-api-v2",
+        "fabric-networking-api-v1"
+         ).forEach { apiModule ->
         val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
         modImplementation(module)
         include(module)
@@ -43,9 +46,8 @@ loom {
     accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
     
     mixin {
-        defaultRefmapName.set("terra.fabric.refmap.json")
+        defaultRefmapName.set("terra.quilt.refmap.json")
     }
-    
 }
 
 

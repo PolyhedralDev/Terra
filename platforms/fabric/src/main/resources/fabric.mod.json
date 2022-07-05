@@ -22,6 +22,7 @@
     },
     "mixins": [
         "terra.fabric.mixins.json",
+        "terra.lifecycle.mixins.json",
         "terra.common.mixins.json"
     ],
     "depends": {

@@ -15,12 +15,13 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.fabric;
+package com.dfsek.terra.quilt;
 
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.fabric.FabricServerCommandManager;
-import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
+import org.quiltmc.loader.api.ModContainer;
+import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,14 +29,13 @@ import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
 
-public class FabricEntryPoint implements ModInitializer {
-    private static final Logger logger = LoggerFactory.getLogger(FabricEntryPoint.class);
+public class QuiltEntryPoint implements ModInitializer {
+    private static final Logger logger = LoggerFactory.getLogger(QuiltEntryPoint.class);
     
-    private static final FabricPlatform TERRA_PLUGIN = new FabricPlatform();
-
+    private static final QuiltPlatform TERRA_PLUGIN = new QuiltPlatform();
     @Override
-    public void onInitialize() {
-        logger.info("Initializing Terra Fabric mod...");
+    public void onInitialize(ModContainer container) {
+        logger.info("Initializing Terra Quilt mod...");
         
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),

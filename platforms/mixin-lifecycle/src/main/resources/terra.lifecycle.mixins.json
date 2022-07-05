@@ -1,0 +1,20 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.dfsek.terra.lifecycle.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "NoiseConfigMixin",
+        "RegistryMixin",
+        "lifecycle.MinecraftServerMixin"
+    ],
+    "client": [
+        "lifecycle.client.MinecraftClientMixin"
+    ],
+    "server": [
+        "lifecycle.server.ServerMainMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+  }
+}

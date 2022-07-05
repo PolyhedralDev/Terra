@@ -25,6 +25,12 @@ object Versions {
         const val minotaur = "1.1.0"
     }
     
+    object Quilt {
+        const val quiltLoader = "0.17.0"
+        const val loom = "0.12.+"
+        const val fabricApi = "2.0.0-alpha.2+0.55.3-1.19"
+    }
+    
     object Mod {
         const val minecraft = "1.19"
         const val yarn = "$minecraft+build.1"
