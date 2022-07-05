@@ -1,5 +1,7 @@
 package com.dfsek.terra.mod.util;
 
+import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
+
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -8,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.village.VillagerType;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Builder;
@@ -89,14 +92,12 @@ public final class MinecraftUtil {
         return RegistryKey.of(Registry.BIOME_KEY, identifier);
     }
     
-    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla) {
+    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla, VanillaBiomeProperties vanillaBiomeProperties) {
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
     
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
     
         net.minecraft.world.biome.Biome.Builder builder = new Builder();
-    
-        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
     
         effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
                .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))

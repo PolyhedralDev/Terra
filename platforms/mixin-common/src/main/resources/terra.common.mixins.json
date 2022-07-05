@@ -8,6 +8,7 @@
     "access.MobSpawnerLogicAccessor",
     "access.StateAccessor",
     "access.StructureAccessorAccessor",
+    "access.VillagerTypeAccessor",
     "fix.BeeMoveGoalsUnsynchronizedRandomAccessFix",
     "fix.NetherFossilOptimization",
     "implementations.compat.GenerationSettingsFloraFeaturesMixin",
