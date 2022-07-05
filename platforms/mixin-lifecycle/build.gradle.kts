@@ -16,6 +16,7 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
     
     modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
     
     compileOnly(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     
