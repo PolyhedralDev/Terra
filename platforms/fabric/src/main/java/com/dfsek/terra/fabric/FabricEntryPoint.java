@@ -19,6 +19,9 @@ package com.dfsek.terra.fabric;
 
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.fabric.FabricServerCommandManager;
+
+import com.dfsek.terra.lifecycle.util.RegistryUtil;
+
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import org.slf4j.Logger;
@@ -42,7 +45,6 @@ public class FabricEntryPoint implements ModInitializer {
                 serverCommandSource -> (CommandSender) serverCommandSource,
                 commandSender -> (ServerCommandSource) commandSender
         );
-        
         
         manager.brigadierManager().setNativeNumberSuggestions(false);
         

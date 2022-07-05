@@ -31,7 +31,7 @@ import com.dfsek.terra.api.handle.WorldHandle;
 
 public class MinecraftWorldHandle implements WorldHandle {
     
-    private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
+    private static BlockState AIR = null;
     
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
@@ -46,6 +46,7 @@ public class MinecraftWorldHandle implements WorldHandle {
     
     @Override
     public @NotNull BlockState air() {
+        if (AIR == null) AIR = (BlockState) Blocks.AIR.getDefaultState();
         return AIR;
     }
     
