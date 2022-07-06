@@ -12,9 +12,14 @@ architectury {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    
+    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentQuilt"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }
+    
     implementation(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     "developmentQuilt"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }

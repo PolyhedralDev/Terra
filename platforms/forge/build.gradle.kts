@@ -10,6 +10,9 @@ architectury {
 }
 
 dependencies {
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    
     shadedApi(project(":common:implementation:base"))
     "forgeRuntimeLibrary"(project(":common:implementation:base"))
     
