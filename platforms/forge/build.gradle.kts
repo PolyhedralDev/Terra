@@ -1,31 +1,21 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("architectury-plugin") version Versions.Mod.architecturyPlugin
     id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
 architectury {
     platformSetupLoomIde()
-    forge()
-}
-
-configurations {
-    val common by creating
-    compileClasspath.get().extendsFrom(common)
-    runtimeClasspath.get().extendsFrom(common)
+    loader("forge")
 }
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
     "forgeRuntimeLibrary"(project(":common:implementation:base"))
     
-    
-    "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    "developmentForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionForge")) { isTransitive = false }
-    "developmentForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) {
-        isTransitive = false
-    }
-    
     
     forge(group = "net.minecraftforge", name = "forge", version = Versions.Forge.forge)
     
@@ -38,10 +28,19 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
     
     mixin {
         defaultRefmapName.set("terra.forge.refmap.json")
+    }
+    
+    launches {
+        named("client") {
+            property("fabric.log.level", "debug")
+        }
+        named("server") {
+            property("fabric.log.level", "debug")
+        }
     }
     
     forge {
@@ -66,17 +65,9 @@ tasks {
                       )
         }
     }
-    
-    shadowJar {
-        exclude("fabric.mod.json")
-    }
 
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
         archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
-    }
-    
-    processResources {
-        from(project(":platforms:mixin-common").file("terra.accesswidener"))
     }
 }

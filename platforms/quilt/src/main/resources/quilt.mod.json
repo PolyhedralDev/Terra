@@ -23,6 +23,9 @@
         "entrypoints": {
             "init": [
                 "com.dfsek.terra.quilt.QuiltEntryPoint"
+            ],
+            "pre_launch": [
+                "com.dfsek.terra.quilt.QuiltPreLaunchEntryPoint"
             ]
         },
         "depends": [
@@ -48,6 +51,5 @@
         "terra.quilt.mixins.json",
         "terra.lifecycle.mixins.json",
         "terra.common.mixins.json"
-    ],
-    "accessWidener": "terra.accesswidener"
+    ]
 }

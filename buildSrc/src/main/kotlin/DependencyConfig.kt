@@ -45,6 +45,9 @@ fun Project.configureDependencies() {
         maven ("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
+        maven("https://jitpack.io") {
+            name = "JitPack"
+        }
     }
     
     dependencies {

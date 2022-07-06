@@ -12,6 +12,8 @@ import com.dfsek.terra.mod.handle.MinecraftItemHandle;
 
 import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 
+import com.dfsek.terra.mod.config.VillagerTypeTemplate;
+
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.MinecraftServer;
@@ -21,6 +23,7 @@ import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.village.VillagerType;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
@@ -89,7 +92,8 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
                 .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
                 .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-                .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new);
+                .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
+                .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {

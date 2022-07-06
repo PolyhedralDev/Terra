@@ -2,18 +2,15 @@ plugins {
     application
 }
 
-repositories {
-    maven { url = uri("https://jitpack.io/") }
-}
-
 val javaMainClass = "com.dfsek.terra.cli.TerraCLI"
 
 dependencies {
-    shadedApi("commons-io:commons-io:${Versions.CLI.commonsIO}")
-    shadedApi("com.github.Querz:NBT:${Versions.CLI.nbt}")
     shadedApi(project(":common:implementation:base"))
     
-    shadedImplementation("com.google.guava:guava:31.0.1-jre")
+    shadedApi("commons-io:commons-io:${Versions.CLI.commonsIO}")
+    shadedApi("com.github.Querz:NBT:${Versions.CLI.nbt}")
+    
+    shadedImplementation("com.google.guava:guava:${Versions.CLI.guava}")
     
     shadedImplementation("ch.qos.logback:logback-classic:${Versions.CLI.logback}")
     

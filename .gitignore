@@ -247,6 +247,5 @@ nbdist/
 
 **/testDir/
 
-platforms/fabric/run/**
+platforms/**/run/**
 
-platforms/forge/run/**

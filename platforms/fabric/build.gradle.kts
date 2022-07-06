@@ -1,26 +1,22 @@
 plugins {
-    id("fabric-loom") version Versions.Fabric.loom
-    id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("architectury-plugin") version Versions.Mod.architecturyPlugin
     id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
-
-configurations {
-    val common by creating
-    compileClasspath.get().extendsFrom(common)
-    runtimeClasspath.get().extendsFrom(common)
+architectury {
+    platformSetupLoomIde()
+    loader("fabric")
 }
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
-    
-    "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    "developmentFabric"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
-    "common"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
+    "developmentFabric"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
     
     
@@ -37,15 +33,25 @@ dependencies {
     
     modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
     include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    
+    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}")
 }
 
 loom {
-    accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
     
     mixin {
         defaultRefmapName.set("terra.fabric.refmap.json")
     }
     
+    launches {
+        named("client") {
+            property("fabric.log.level", "debug")
+        }
+        named("server") {
+            property("fabric.log.level", "debug")
+        }
+    }
 }
 
 
@@ -57,11 +63,8 @@ tasks {
     }
     
     remapJar {
+        injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
         archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
-    }
-    
-    processResources {
-        from(project(":platforms:mixin-common").file("terra.accesswidener"))
     }
 }
