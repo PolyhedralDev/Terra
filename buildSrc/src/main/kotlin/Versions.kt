@@ -28,7 +28,7 @@ object Versions {
     object Quilt {
         const val quiltLoader = "0.17.0"
         const val loom = "0.12.+"
-        const val fabricApi = "2.0.0-alpha.2+0.55.3-1.19"
+        const val fabricApi = "2.0.0-beta.4+0.57.0-1.19"
     }
     
     object Mod {
