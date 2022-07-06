@@ -47,6 +47,5 @@
         "terra.quilt.mixins.json",
         "terra.lifecycle.mixins.json",
         "terra.common.mixins.json"
-    ],
-    "accessWidener": "terra.accesswidener"
+    ]
 }

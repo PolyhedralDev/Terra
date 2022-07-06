@@ -4,32 +4,20 @@ plugins {
     id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
-
-configurations {
-    val common by creating
-    compileClasspath.get().extendsFrom(common)
-    runtimeClasspath.get().extendsFrom(common)
-}
-
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    compileOnly("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Fabric.mixin}")
-    annotationProcessor("net.fabricmc:fabric-loom:${Versions.Fabric.loom}")
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     
-    "common"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 }
 
 loom {
-    accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
     
     mixin {
         defaultRefmapName.set("terra.lifecycle.refmap.json")
@@ -43,10 +31,6 @@ tasks {
     
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
-    }
-    
-    processResources {
-        from(project(":platforms:mixin-common").file("terra.accesswidener"))
     }
 }
 

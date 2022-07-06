@@ -18,20 +18,18 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricLoader = "0.14.2"
-        const val fabricAPI = "0.56.0+1.19"
-        const val mixin = "0.11.2+mixin.0.8.5"
-        const val loom = "0.12-SNAPSHOT"
-        const val minotaur = "1.1.0"
+        const val fabricLoader = "0.14.8"
+        const val fabricAPI = "0.57.0+1.19"
     }
     
     object Quilt {
         const val quiltLoader = "0.17.0"
-        const val loom = "0.12.+"
         const val fabricApi = "2.0.0-beta.4+0.57.0-1.19"
     }
     
     object Mod {
+        const val mixin = "0.11.2+mixin.0.8.5"
+        
         const val minecraft = "1.19"
         const val yarn = "$minecraft+build.1"
         const val fabricLoader = "0.14.2"
@@ -40,10 +38,12 @@ object Versions {
         const val architecturyPlugin = "3.4-SNAPSHOT"
     
         const val loomQuiltflower = "1.7.1"
+        
+        const val lazyDfu = "0.1.2"
     }
     
     object Forge {
-        const val forge = "${Mod.minecraft}-41.0.38"
+        const val forge = "${Mod.minecraft}-41.0.63"
         const val burningwave = "12.53.0"
     }
     
@@ -64,5 +64,6 @@ object Versions {
         const val nbt = "6.1"
         const val logback = "1.2.9"
         const val commonsIO = "2.7"
+        const val guava = "31.0.1-jre"
     }
 }

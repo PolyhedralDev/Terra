@@ -29,6 +29,5 @@
         "fabricloader": ">=0.14.2",
         "java": ">=17",
         "minecraft": "1.19.x"
-    },
-    "accessWidener": "terra.accesswidener"
+    }
 }

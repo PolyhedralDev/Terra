@@ -1,6 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
+    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
 }
 
 architectury {
@@ -18,7 +19,6 @@ dependencies {
     "developmentQuilt"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }
     
-    
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
     
@@ -34,13 +34,27 @@ dependencies {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
+    
+    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}") {
+        exclude("net.fabricmc")
+        exclude("net.fabricmc.fabric-api")
+    }
 }
 
 loom {
-    accessWidenerPath.set(project(":platforms:mixin-common").file("terra.accesswidener"))
+    accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
     
     mixin {
         defaultRefmapName.set("terra.quilt.refmap.json")
+    }
+    
+    launches {
+        named("client") {
+            property("fabric.log.level", "debug")
+        }
+        named("server") {
+            property("fabric.log.level", "debug")
+        }
     }
 }
 
@@ -53,11 +67,8 @@ tasks {
     }
     
     remapJar {
+        injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
         archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
-    }
-    
-    processResources {
-        from(project(":platforms:mixin-common").file("terra.accesswidener"))
     }
 }

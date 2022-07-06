@@ -5,7 +5,7 @@ plugins {
 }
 
 loom {
-    accessWidenerPath.set(file("terra.accesswidener"))
+    accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
     
     mixin {
         defaultRefmapName.set("terra.common.refmap.json")
@@ -15,7 +15,8 @@ loom {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
+    compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
