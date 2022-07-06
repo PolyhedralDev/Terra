@@ -11,8 +11,8 @@ import java.net.URL;
  *
  * This will likely not work on Gson because FabricLoader has some special logic related to Gson.
  */
-public final class PreLaunchHacks {
-	private PreLaunchHacks() {}
+public final class AwfulQuiltHacks {
+	private AwfulQuiltHacks() {}
 
 	private static final ClassLoader KNOT_CLASSLOADER = Thread.currentThread().getContextClassLoader();
 	private static final Method ADD_URL_METHOD;

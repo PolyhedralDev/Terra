@@ -13,7 +13,7 @@ public class QuiltPreLaunchEntryPoint implements PreLaunchEntrypoint {
     public void onPreLaunch(ModContainer mod) {
         if (QuiltLoader.isDevelopmentEnvironment()) {
             try {
-                PreLaunchHacks.hackilyLoadForMixin(BrigadierMappingBuilder.class.getName());
+                AwfulQuiltHacks.hackilyLoadForMixin(BrigadierMappingBuilder.class.getName());
             } catch(ClassNotFoundException | InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
