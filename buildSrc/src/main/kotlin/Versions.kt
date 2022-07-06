@@ -37,7 +37,7 @@ object Versions {
         const val fabricLoader = "0.14.2"
     
         const val architecuryLoom = "0.12.0-SNAPSHOT"
-        const val architectutyPlugin = "3.4-SNAPSHOT"
+        const val architecturyPlugin = "3.4-SNAPSHOT"
     
         const val loomQuiltflower = "1.7.1"
     }

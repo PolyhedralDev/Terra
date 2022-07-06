@@ -1,6 +1,6 @@
 plugins {
     id("org.quiltmc.loom") version Versions.Quilt.loom
-    id("architectury-plugin") version Versions.Mod.architectutyPlugin
+    id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 
 
