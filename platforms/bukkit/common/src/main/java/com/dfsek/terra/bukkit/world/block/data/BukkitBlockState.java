@@ -24,7 +24,7 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class BukkitBlockState implements BlockState {
-    private org.bukkit.block.data.BlockData delegate;
+    private final org.bukkit.block.data.BlockData delegate;
     
     protected BukkitBlockState(org.bukkit.block.data.BlockData delegate) {
         this.delegate = delegate;

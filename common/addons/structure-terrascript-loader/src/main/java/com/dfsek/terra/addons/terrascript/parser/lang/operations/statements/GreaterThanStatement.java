@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
-import java.util.function.Supplier;
-
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
@@ -19,11 +19,16 @@ public class GreaterThanStatement extends BinaryOperation<Number, Boolean> {
         super(left, right, position);
     }
     
+    
     @Override
-    public Boolean apply(Supplier<Number> left, Supplier<Number> right) {
-        return left.get().doubleValue() > right.get().doubleValue();
+    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
+        return applyBoolean(implementationArguments, scope);
     }
     
+    @Override
+    public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        return left.applyDouble(implementationArguments, scope) > right.applyDouble(implementationArguments, scope);
+    }
     
     @Override
     public Returnable.ReturnType returnType() {

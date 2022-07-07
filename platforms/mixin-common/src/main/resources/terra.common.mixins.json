@@ -1,0 +1,49 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.dfsek.terra.mod.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "access.BiomeAccessor",
+        "access.MobSpawnerLogicAccessor",
+        "access.StateAccessor",
+        "access.StructureAccessorAccessor",
+        "access.VillagerTypeAccessor",
+        "fix.BeeMoveGoalsUnsynchronizedRandomAccessFix",
+        "fix.NetherFossilOptimization",
+        "implementations.compat.GenerationSettingsFloraFeaturesMixin",
+        "implementations.terra.BiomeMixin",
+        "implementations.terra.HandleImplementationMixin",
+        "implementations.terra.block.BlockMixin",
+        "implementations.terra.block.entity.BlockEntityMixin",
+        "implementations.terra.block.entity.LootableContainerBlockEntityMixin",
+        "implementations.terra.block.entity.MobSpawnerBlockEntityMixin",
+        "implementations.terra.block.entity.SignBlockEntityMixin",
+        "implementations.terra.block.state.BlockStateMixin",
+        "implementations.terra.block.state.PropertyMixin",
+        "implementations.terra.chunk.ChunkRegionMixin",
+        "implementations.terra.chunk.WorldChunkMixin",
+        "implementations.terra.chunk.data.ProtoChunkMixin",
+        "implementations.terra.entity.EntityMixin",
+        "implementations.terra.entity.EntityTypeMixin",
+        "implementations.terra.entity.PlayerEntityMixin",
+        "implementations.terra.entity.ServerCommandSourceMixin",
+        "implementations.terra.inventory.LockableContainerBlockEntityMixin",
+        "implementations.terra.inventory.item.ItemMixin",
+        "implementations.terra.inventory.item.ItemStackMixin",
+        "implementations.terra.inventory.meta.EnchantmentMixin",
+        "implementations.terra.inventory.meta.ItemStackDamageableMixin",
+        "implementations.terra.inventory.meta.ItemStackMetaMixin",
+        "implementations.terra.world.ChunkRegionMixin",
+        "implementations.terra.world.ServerWorldMixin",
+        "lifecycle.DataPackContentsMixin"
+    ],
+    "client": [
+    ],
+    "server": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "refmap": "terra.common.refmap.json"
+}

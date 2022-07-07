@@ -31,9 +31,12 @@ public class BukkitProtoWorld implements ProtoWorld {
     private final LimitedRegion delegate;
     private final BlockState air;
     
-    public BukkitProtoWorld(LimitedRegion delegate, BlockState air) {
+    private final BiomeProvider biomeProvider;
+    
+    public BukkitProtoWorld(LimitedRegion delegate, BlockState air, BiomeProvider provider) {
         this.delegate = delegate;
         this.air = air;
+        this.biomeProvider = provider;
     }
     
     @Override
@@ -90,7 +93,7 @@ public class BukkitProtoWorld implements ProtoWorld {
     
     @Override
     public BiomeProvider getBiomeProvider() {
-        return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getPack().getBiomeProvider();
+        return biomeProvider;
     }
     
     @Override

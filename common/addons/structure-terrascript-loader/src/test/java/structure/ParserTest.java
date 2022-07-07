@@ -14,10 +14,11 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Objects;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -29,7 +30,8 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public class ParserTest {
     @Test
     public void parse() throws IOException, ParseException {
-        Parser parser = new Parser(IOUtils.toString(getClass().getResourceAsStream("/test.tesf"), Charset.defaultCharset()));
+        Parser parser = new Parser(
+                IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
         
         parser.registerFunction("test", new FunctionBuilder<Test1>() {
             @Override
@@ -54,13 +56,13 @@ public class ParserTest {
         });
         
         long l = System.nanoTime();
-        Block block = parser.parse();
+        Executable block = parser.parse();
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
         
-        block.apply(null, new Scope());
+        block.execute(null);
         
-        block.apply(null, new Scope());
+        block.execute(null);
     }
     
     private static class Test1 implements Function<Void> {

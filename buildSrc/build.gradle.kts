@@ -15,7 +15,9 @@ buildscript {
 repositories {
     mavenCentral()
     gradlePluginPortal()
-    maven { url = uri("https://repo.codemc.org/repository/maven-public") }
+    maven("https://repo.codemc.org/repository/maven-public") {
+        name = "CodeMC"
+    }
     maven("https://papermc.io/repo/repository/maven-public/") {
         name = "PaperMC"
     }

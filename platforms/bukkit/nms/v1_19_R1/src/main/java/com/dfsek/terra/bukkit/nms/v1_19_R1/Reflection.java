@@ -12,10 +12,12 @@ public class Reflection {
     
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
-        ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper, Reflection.class.getClassLoader());
+        ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper,
+                                                                                      Reflection.class.getClassLoader());
         
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
     }
+    
     
     @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {

@@ -11,6 +11,7 @@ import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
@@ -31,16 +32,19 @@ public class AdjacentPatternLocator implements Locator {
     }
     
     private boolean isValid(int y, Column<?> column) {
+        WritableWorld world = column.getWorld();
+        int x = column.getX();
+        int z = column.getZ();
         if(matchAll) {
-            return pattern.matches(y, column.adjacent(0, -1)) &&
-                   pattern.matches(y, column.adjacent(0, 1)) &&
-                   pattern.matches(y, column.adjacent(-1, 0)) &&
-                   pattern.matches(y, column.adjacent(1, 0));
+            return pattern.matches(world, x, y, z - 1) &&
+                   pattern.matches(world, x, y, z + 1) &&
+                   pattern.matches(world, x - 1, y, z) &&
+                   pattern.matches(world, x + 1, y, z);
         } else {
-            return pattern.matches(y, column.adjacent(0, -1)) ||
-                   pattern.matches(y, column.adjacent(0, 1)) ||
-                   pattern.matches(y, column.adjacent(-1, 0)) ||
-                   pattern.matches(y, column.adjacent(1, 0));
+            return pattern.matches(world, x, y, z - 1) ||
+                   pattern.matches(world, x, y, z + 1) ||
+                   pattern.matches(world, x - 1, y, z) ||
+                   pattern.matches(world, x + 1, y, z);
         }
     }
 }

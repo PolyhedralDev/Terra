@@ -17,15 +17,13 @@
 
 package com.dfsek.terra.bukkit.world.inventory.meta;
 
-import org.bukkit.inventory.meta.ItemMeta;
-
 import com.dfsek.terra.api.inventory.item.Damageable;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemMeta;
 
 
 public class BukkitDamageable extends BukkitItemMeta implements Damageable {
     public BukkitDamageable(org.bukkit.inventory.meta.Damageable delegate) {
-        super((ItemMeta) delegate);
+        super(delegate);
     }
     
     @Override

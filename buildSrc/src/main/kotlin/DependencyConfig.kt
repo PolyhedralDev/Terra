@@ -30,10 +30,24 @@ fun Project.configureDependencies() {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        maven("https://maven.fabricmc.net/")
-        maven("https://repo.codemc.org/repository/maven-public")
-        maven("https://repo.codemc.io/repository/nms/")
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://maven.fabricmc.net/") {
+            name = "FabricMC"
+        }
+        maven("https://repo.codemc.org/repository/maven-public") {
+            name = "CodeMC"
+        }
+        maven("https://papermc.io/repo/repository/maven-public/") {
+            name = "PaperMC"
+        }
+        maven("https://files.minecraftforge.net/maven/") {
+            name = "Forge"
+        }
+        maven("https://maven.quiltmc.org/repository/release/") {
+            name = "Quilt"
+        }
+        maven("https://jitpack.io") {
+            name = "JitPack"
+        }
     }
     
     dependencies {

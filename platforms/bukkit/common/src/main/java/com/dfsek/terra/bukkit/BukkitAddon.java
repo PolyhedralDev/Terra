@@ -7,11 +7,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.Biome;
-
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class BukkitAddon implements BaseAddon {

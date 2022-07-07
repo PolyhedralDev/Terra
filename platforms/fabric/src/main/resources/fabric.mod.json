@@ -21,12 +21,13 @@
         ]
     },
     "mixins": [
-        "terra.mixins.json"
+        "terra.fabric.mixins.json",
+        "terra.lifecycle.mixins.json",
+        "terra.common.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=0.14.2",
         "java": ">=17",
         "minecraft": "1.19.x"
-    },
-    "accessWidener": "terra.accesswidener"
+    }
 }

@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
+import net.jafama.FastMath;
+
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.Range;
@@ -24,7 +26,10 @@ public class SurfaceLocator implements Locator {
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder builder = column.newBinaryColumn();
-        for(int y : search) {
+        int max = FastMath.min(search.getMax(), column.getMaxY());
+        int min = FastMath.max(search.getMin(), column.getMinY());
+        if(min >= max) return builder.build();
+        for(int y = min; y < max; y++) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
                 builder.set(y);
             }

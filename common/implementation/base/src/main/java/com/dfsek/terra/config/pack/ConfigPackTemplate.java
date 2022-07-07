@@ -107,6 +107,10 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("generator")
     private @Meta ChunkGeneratorProvider generatorProvider;
     
+    @Value("cache.biome.enable")
+    @Default
+    private boolean biomeCache = false;
+    
     public boolean disableCarvers() {
         return disableCarvers;
     }
@@ -181,5 +185,9 @@ public class ConfigPackTemplate implements ConfigTemplate {
     
     public Map<String, String> getLocatable() {
         return locatable;
+    }
+    
+    public boolean getBiomeCache() {
+        return biomeCache;
     }
 }

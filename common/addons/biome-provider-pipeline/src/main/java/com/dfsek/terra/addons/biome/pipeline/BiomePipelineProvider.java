@@ -13,6 +13,7 @@ import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -21,6 +22,7 @@ import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
@@ -73,18 +75,26 @@ public class BiomePipelineProvider implements BiomeProvider {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
+        return getBiome(x, z, seed);
+    }
+    
+    public Biome getBiome(int x, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
-        
-        
-        x = FastMath.floorToInt(FastMath.floorDiv(x, resolution));
-        
-        z = FastMath.floorToInt(FastMath.floorDiv(z, resolution));
-        
+
+
+        x /= resolution;
+        z /= resolution;
+
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
-                                                                                   z - fdZ * pipeline.getSize()).getBiome();
+                                                                          z - fdZ * pipeline.getSize()).getBiome();
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.of(getBiome(x, z, seed));
     }
     
     @Override
@@ -92,6 +102,30 @@ public class BiomePipelineProvider implements BiomeProvider {
         return biomes;
     }
     
+    @Override
+    public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return new BiomePipelineColumn(this, min, max, x, z, seed);
+    }
+    
+    @Override
+    public int resolution() {
+        return resolution;
+    }
+    
     private record SeededVector(int x, int z, long seed) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector that) {
+                return this.z == that.z && this.x == that.x && this.seed == that.seed;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+        }
     }
 }

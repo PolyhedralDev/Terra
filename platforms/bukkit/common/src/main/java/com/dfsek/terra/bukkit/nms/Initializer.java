@@ -1,20 +1,15 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.PlatformImpl;
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-
 import org.bukkit.Bukkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
+import com.dfsek.terra.bukkit.PlatformImpl;
 
 
 public interface Initializer {
     String NMS = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     String TERRA_PACKAGE = Initializer.class.getPackageName();
-    
-    void initialize(PlatformImpl plugin);
     
     static void init(PlatformImpl platform) {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
@@ -40,4 +35,6 @@ public interface Initializer {
             logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
         }
     }
+    
+    void initialize(PlatformImpl plugin);
 }

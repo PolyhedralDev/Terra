@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.api.world.biome.Biome;
@@ -38,6 +39,10 @@ public class ImageBiomeProvider implements BiomeProvider {
     
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
+        return getBiome(x, z);
+    }
+    
+    public Biome getBiome(int x, int z) {
         x /= resolution;
         z /= resolution;
         Color color = align.getColor(image, x, z);
@@ -49,6 +54,11 @@ public class ImageBiomeProvider implements BiomeProvider {
                                                           int d2 = distance(color, element);
                                                           return d1 < d2 ? running : element;
                                                       }));
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.of(getBiome(x, z));
     }
     
     @Override

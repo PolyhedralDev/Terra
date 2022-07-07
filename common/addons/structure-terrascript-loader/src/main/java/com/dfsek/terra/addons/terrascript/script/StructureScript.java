@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBuilder;
@@ -51,7 +51,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
-    private final Block block;
+    private final Executable block;
     private final RegistryKey id;
     
     private final String profile;
@@ -146,7 +146,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
-            return block.apply(arguments).getLevel() != Block.ReturnLevel.FAIL;
+            return block.execute(arguments);
         } catch(RuntimeException e) {
             LOGGER.error("Failed to generate structure at {}", arguments.getOrigin(), e);
             return false;

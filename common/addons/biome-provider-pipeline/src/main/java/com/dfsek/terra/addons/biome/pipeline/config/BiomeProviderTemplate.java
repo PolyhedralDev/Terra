@@ -22,7 +22,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     @Default
     @Description("""
                  The resolution at which to sample biomes.
-                 
+                                  
                  Larger values are quadratically faster, but produce lower quality results.
                  For example, a value of 3 would sample every 3 blocks.""")
     protected @Meta int resolution = 1;

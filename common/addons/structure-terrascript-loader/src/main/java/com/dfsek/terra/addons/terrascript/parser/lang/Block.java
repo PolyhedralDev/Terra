@@ -21,23 +21,8 @@ public class Block implements Item<Block.ReturnInfo<?>> {
         this.position = position;
     }
     
-    public ReturnInfo<?> apply(ImplementationArguments implementationArguments) {
-        return apply(implementationArguments, new Scope());
-    }
-    
     @Override
     public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
-        Scope sub = scope.sub();
-        for(Item<?> item : items) {
-            Object result = item.apply(implementationArguments, sub);
-            if(result instanceof ReturnInfo<?> level) {
-                if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
-            }
-        }
-        return new ReturnInfo<>(ReturnLevel.NONE, null);
-    }
-    
-    public ReturnInfo<?> applyNoNewScope(ImplementationArguments implementationArguments, Scope scope) {
         for(Item<?> item : items) {
             Object result = item.apply(implementationArguments, scope);
             if(result instanceof ReturnInfo<?> level) {
@@ -50,10 +35,6 @@ public class Block implements Item<Block.ReturnInfo<?>> {
     @Override
     public Position getPosition() {
         return position;
-    }
-    
-    public List<Item<?>> getItems() {
-        return items;
     }
     
     public enum ReturnLevel {

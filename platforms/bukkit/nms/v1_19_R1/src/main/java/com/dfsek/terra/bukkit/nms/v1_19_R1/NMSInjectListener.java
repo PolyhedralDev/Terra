@@ -25,15 +25,16 @@ public class NMSInjectListener implements Listener {
     
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
-        if (!INJECTED.contains(event.getWorld()) && event.getWorld().getGenerator() instanceof BukkitChunkGeneratorWrapper bukkitChunkGeneratorWrapper) {
+        if(!INJECTED.contains(event.getWorld()) &&
+           event.getWorld().getGenerator() instanceof BukkitChunkGeneratorWrapper bukkitChunkGeneratorWrapper) {
             INJECT_LOCK.lock();
             INJECTED.add(event.getWorld());
             LOGGER.info("Preparing to take over the world: {}", event.getWorld().getName());
             CraftWorld craftWorld = (CraftWorld) event.getWorld();
             ServerLevel serverWorld = craftWorld.getHandle();
-
+            
             ConfigPack pack = bukkitChunkGeneratorWrapper.getPack();
-    
+            
             ChunkGenerator vanilla = serverWorld.getChunkSource().getGenerator();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), craftWorld.getSeed());
             NMSChunkGeneratorDelegate custom = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());

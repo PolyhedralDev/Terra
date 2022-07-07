@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.Random;
+import java.util.function.Supplier;
 
 
 public interface Range extends Iterable<Integer> {
@@ -41,4 +42,24 @@ public interface Range extends Iterable<Integer> {
     Range setMin(int min);
     
     int getRange();
+    
+    default <T> T ifInRange(int y, T inRange, T notInRange) {
+        if(isInRange(y)) return inRange;
+        return notInRange;
+    }
+    
+    default <T> T ifInRange(int y, Supplier<T> inRange, Supplier<T> notInRange) {
+        if(isInRange(y)) return inRange.get();
+        return notInRange.get();
+    }
+    
+    default <T> T ifInRange(int y, Supplier<T> inRange, T notInRange) {
+        if(isInRange(y)) return inRange.get();
+        return notInRange;
+    }
+    
+    default <T> T ifInRange(int y, T inRange, Supplier<T> notInRange) {
+        if(isInRange(y)) return inRange;
+        return notInRange.get();
+    }
 }

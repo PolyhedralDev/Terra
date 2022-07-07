@@ -17,17 +17,15 @@
 
 package com.dfsek.terra.bukkit.generator;
 
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
-
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Random;
@@ -37,11 +35,9 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
@@ -50,6 +46,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
+
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
@@ -68,7 +65,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
-        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider().caching(properties), x, z);
+        delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }
     
     @Override
@@ -79,7 +76,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
                        @Override
                        public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
                                             @NotNull LimitedRegion limitedRegion) {
-                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air));
+                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider()));
                        }
                    })
                    .collect(Collectors.toList());
@@ -95,13 +92,12 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public boolean shouldGenerateDecorations() {
         return true;
     }
-
     
     @Override
     public boolean shouldGenerateMobs() {
         return true;
     }
-    
+
     @Override
     public boolean shouldGenerateStructures() {
         return true;
@@ -119,5 +115,23 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public ChunkGenerator getHandle() {
         return delegate;
+    }
+    
+
+    private record SeededVector(int x, int z, WorldProperties worldProperties) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector that) {
+                return this.z == that.z && this.x == that.x && this.worldProperties.equals(that.worldProperties);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + worldProperties.hashCode();
+        }
     }
 }

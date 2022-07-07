@@ -7,26 +7,17 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public abstract class UnaryOperation<T> implements Returnable<T> {
-    private final Returnable<T> input;
+    protected final Returnable<T> input;
     private final Position position;
     
     public UnaryOperation(Returnable<T> input, Position position) {
         this.input = input;
         this.position = position;
-    }
-    
-    public abstract T apply(T input);
-    
-    @Override
-    public T apply(ImplementationArguments implementationArguments, Scope scope) {
-        return apply(input.apply(implementationArguments, scope));
     }
     
     @Override

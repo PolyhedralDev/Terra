@@ -17,5 +17,6 @@ public record PaletteInfo(PaletteHolder paletteHolder,
                           SlantHolder slantHolder,
                           Palette ocean,
                           int seaLevel,
-                          int maxSlantDepth) implements Properties {
+                          int maxSlantDepth,
+                          boolean updatePaletteWhenCarving) implements Properties {
 }

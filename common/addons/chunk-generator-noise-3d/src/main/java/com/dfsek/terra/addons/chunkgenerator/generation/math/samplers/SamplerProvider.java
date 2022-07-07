@@ -17,13 +17,13 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import net.jafama.FastMath;
 
-import java.util.concurrent.ExecutionException;
-
+import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
@@ -31,10 +31,17 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 public class SamplerProvider {
     private final Cache<WorldContext, Sampler3D> cache;
     private final int elevationSmooth;
+    private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
+    private final int maxBlend;
     
-    public SamplerProvider(Platform platform, int elevationSmooth) {
+    public SamplerProvider(Platform platform, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
+        cache = Caffeine
+                .newBuilder()
+                .maximumSize(platform.getTerraConfig().getSamplerCache())
+                .build();
         this.elevationSmooth = elevationSmooth;
-        cache = CacheBuilder.newBuilder().maximumSize(platform.getTerraConfig().getSamplerCache()).build();
+        this.noisePropertiesKey = noisePropertiesKey;
+        this.maxBlend = maxBlend;
     }
     
     public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
@@ -45,13 +52,8 @@ public class SamplerProvider {
     
     public Sampler3D getChunk(int cx, int cz, WorldProperties world, BiomeProvider provider) {
         WorldContext context = new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight());
-        try {
-            return cache.get(context,
-                             () -> new Sampler3D(context.cx, context.cz, context.seed, context.minHeight, context.maxHeight, provider,
-                                                 elevationSmooth));
-        } catch(ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        return cache.get(context, c -> new Sampler3D(c.cx, c.cz, c.seed, c.minHeight, c.maxHeight, provider,
+                                                     elevationSmooth, noisePropertiesKey, maxBlend));
     }
     
     private record WorldContext(int cx, int cz, long seed, int minHeight, int maxHeight) {

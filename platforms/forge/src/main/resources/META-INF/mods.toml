@@ -1,0 +1,24 @@
+modLoader = "javafml"
+loaderVersion = "[41,)"
+license = "GNU General Public License, v3.0"
+issueTrackerURL = "https://github.com/PolyhedralDev/Terra/issues"
+
+[[mods]]
+modId = "terra"
+version = "@VERSION@"
+displayName = "Terra"
+description = "@DESCRIPTION@"
+
+[[dependencies.terra]]
+modId = "forge"
+mandatory = true
+versionRange = "[41,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.terra]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.19,)"
+ordering = "NONE"
+side = "BOTH"

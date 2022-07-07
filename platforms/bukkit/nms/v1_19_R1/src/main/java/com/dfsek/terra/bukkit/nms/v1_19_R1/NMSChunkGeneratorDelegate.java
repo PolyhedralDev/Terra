@@ -16,7 +16,6 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.GenerationStep.Carving;
@@ -56,6 +55,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     private final ConfigPack pack;
     
     private final long seed;
+    private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkPos>>> ringPositions = new Object2ObjectArrayMap<>();
+    private volatile boolean rings = false;
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
         super(Registries.structureSet(), Optional.empty(), biomeProvider);
@@ -119,7 +120,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     public int getBaseHeight(int x, int z, @NotNull Types heightmap, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
         WorldProperties properties = new NMSWorldProperties(seed, world);
         int y = properties.getMaxHeight();
-        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
+        BiomeProvider biomeProvider = pack.getBiomeProvider();
         while(y >= getMinY() && !heightmap.isOpaque().test(
                 ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
             y--;
@@ -129,6 +130,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
+        /*
         BlockState[] array = new BlockState[world.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, world);
         BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
@@ -137,15 +139,15 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                                                                              .getHandle()).getState();
         }
         return new NoiseColumn(getMinY(), array);
+
+         */
+        return vanilla.getBaseColumn(x, z, world, noiseConfig);
     }
-    
+
     @Override
     public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
-    
+
     }
-    
-    private volatile boolean rings = false;
-    private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkPos>>> ringPositions = new Object2ObjectArrayMap<>();
     
     @Override
     public void ensureStructuresGenerated(@NotNull RandomState noiseConfig) {
@@ -158,7 +160,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public List<ChunkPos> getRingPositionsFor(@NotNull ConcentricRingsStructurePlacement structurePlacement, @NotNull RandomState noiseConfig) {
+    public List<ChunkPos> getRingPositionsFor(@NotNull ConcentricRingsStructurePlacement structurePlacement,
+                                              @NotNull RandomState noiseConfig) {
         ensureStructuresGenerated(noiseConfig);
         return ringPositions.get(structurePlacement).value();
     }
@@ -176,13 +179,15 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                 }
             }
             
-            if (match) {
-                if (holder.placement() instanceof ConcentricRingsStructurePlacement concentricringsstructureplacement) {
-                    this.ringPositions.put(concentricringsstructureplacement, Lazy.lazy(() -> this.generateRingPositions(holder, noiseConfig, concentricringsstructureplacement)));
+            if(match) {
+                if(holder.placement() instanceof ConcentricRingsStructurePlacement concentricringsstructureplacement) {
+                    this.ringPositions.put(concentricringsstructureplacement, Lazy.lazy(
+                            () -> this.generateRingPositions(holder, noiseConfig, concentricringsstructureplacement)));
                 }
             }
         });
     }
+
     private List<ChunkPos> generateRingPositions(StructureSet holder, RandomState randomstate,
                                                  ConcentricRingsStructurePlacement concentricringsstructureplacement) { // Spigot
         if(concentricringsstructureplacement.count() == 0) {

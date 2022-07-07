@@ -18,37 +18,20 @@
 package com.dfsek.terra.fabric;
 
 import cloud.commandframework.execution.CommandExecutionCoordinator;
-
 import cloud.commandframework.fabric.FabricServerCommandManager;
-
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
-
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.world.gen.WorldPresets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.fabric.data.Codecs;
+import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
 
 public class FabricEntryPoint implements ModInitializer {
     private static final Logger logger = LoggerFactory.getLogger(FabricEntryPoint.class);
     
-    private static final PlatformImpl TERRA_PLUGIN = new PlatformImpl();
-    
-    
-    public static PlatformImpl getPlatform() {
-        return TERRA_PLUGIN;
-    }
-    
-    public static void register() { // register the things
-        Registry.register(Registry.CHUNK_GENERATOR, new Identifier("terra:terra"), Codecs.FABRIC_CHUNK_GENERATOR_WRAPPER);
-        Registry.register(Registry.BIOME_SOURCE, new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE);
-    }
+    private static final FabricPlatform TERRA_PLUGIN = new FabricPlatform();
     
     @Override
     public void onInitialize() {

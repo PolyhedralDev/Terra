@@ -13,5 +13,13 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public interface Item<T> {
     T apply(ImplementationArguments implementationArguments, Scope scope);
     
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
     Position getPosition();
 }

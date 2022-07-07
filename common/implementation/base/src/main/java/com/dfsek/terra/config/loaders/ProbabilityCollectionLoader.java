@@ -49,6 +49,14 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                 }
             } else if(o instanceof List) {
                 List<Map<Object, Object>> map = (List<Map<Object, Object>>) o;
+                if(map.size() == 1) {
+                    Map<Object, Object> entry = map.get(0);
+                    if(entry.size() == 1) {
+                        for(Object value : entry.keySet()) {
+                            return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, value, depthTracker));
+                        }
+                    }
+                }
                 for(int i = 0; i < map.size(); i++) {
                     Map<Object, Object> l = map.get(i);
                     for(Entry<Object, Object> entry : l.entrySet()) {

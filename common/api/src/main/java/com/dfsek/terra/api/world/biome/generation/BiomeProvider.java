@@ -7,16 +7,17 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
+import org.jetbrains.annotations.Contract;
+
+import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.Biome;
-
 import com.dfsek.terra.api.world.info.WorldProperties;
-
-import org.jetbrains.annotations.Contract;
-
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 
 /**
@@ -62,6 +63,19 @@ public interface BiomeProvider {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
     
+    default Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.empty();
+    }
+    
+    
+    default Column<Biome> getColumn(int x, int z, WorldProperties properties) {
+        return getColumn(x, z, properties.getSeed(), properties.getMinHeight(), properties.getMaxHeight());
+    }
+    
+    default Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
+        return new BiomeColumn(this, min, max, x, z, seed);
+    }
+    
     /**
      * Get all biomes this {@link BiomeProvider} is capable of generating in the world.
      * <p>
@@ -77,11 +91,15 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
     
-    default BiomeProvider caching(int minY, int maxY) {
-        return new CachingBiomeProvider(this, minY, maxY);
+    default CachingBiomeProvider caching() {
+        if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
+            return cachingBiomeProvider;
+        }
+        return new CachingBiomeProvider(this);
     }
     
-    default BiomeProvider caching(WorldProperties worldProperties) {
-        return caching(worldProperties.getMinHeight(), worldProperties.getMaxHeight());
+    
+    default int resolution() {
+        return 1;
     }
 }

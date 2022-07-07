@@ -17,17 +17,28 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 /**
  * A single vertical column of a world.
+ *
+ * <b>Due to the {@link #clamp(int, int)} method, the height of the column may not always be the same as the world! Be careful!</b>
  */
 public class Column<T extends WritableWorld> {
     private final int x;
     private final int z;
+    private final int min;
+    private final int max;
     private final T world;
     
     public Column(int x, int z, T world) {
+        this(x, z, world, world.getMinHeight(), world.getMaxHeight());
+    }
+    
+    public Column(int x, int z, T world, int min, int max) {
         this.x = x;
         this.z = z;
         this.world = world;
+        this.max = max;
+        this.min = min;
     }
+    
     
     public int getX() {
         return x;
@@ -46,17 +57,22 @@ public class Column<T extends WritableWorld> {
     }
     
     public int getMinY() {
-        return world.getMinHeight();
+        return min;
     }
     
     public int getMaxY() {
-        return world.getMaxHeight();
+        return max;
     }
     
     public void forEach(IntConsumer function) {
         for(int y = world.getMinHeight(); y < world.getMaxHeight(); y++) {
             function.accept(y);
         }
+    }
+    
+    public Column<T> clamp(int min, int max) {
+        if(min >= max) throw new IllegalArgumentException("Min greater than or equal to max: " + min + ", " + max);
+        return new Column<>(x, z, world, min, max);
     }
     
     public BinaryColumn newBinaryColumn(IntToBooleanFunction function) {

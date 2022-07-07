@@ -12,20 +12,21 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class PaletteLayerLoader implements ObjectTemplate<PaletteLayerHolder> {
     @Value("materials")
-    private ProbabilityCollection<BlockState> collection;
+    private @Meta ProbabilityCollection<@Meta BlockState> collection;
     
     @Value("sampler")
     @Default
-    private NoiseSampler sampler = null;
+    private @Meta NoiseSampler sampler = null;
     
     @Value("layers")
-    private int layers;
+    private @Meta int layers;
     
     @Override
     public PaletteLayerHolder get() {

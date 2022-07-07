@@ -246,3 +246,6 @@ nbdist/
 /run/
 
 **/testDir/
+
+platforms/**/run/**
+

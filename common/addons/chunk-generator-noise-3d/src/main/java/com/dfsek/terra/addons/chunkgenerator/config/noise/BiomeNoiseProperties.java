@@ -10,6 +10,6 @@ public record BiomeNoiseProperties(NoiseSampler base,
                                    int blendDistance,
                                    int blendStep,
                                    double blendWeight,
-                                   double elevationWeight) implements Properties {
-    
+                                   double elevationWeight,
+                                   ThreadLocalNoiseHolder noiseHolder) implements Properties {
 }

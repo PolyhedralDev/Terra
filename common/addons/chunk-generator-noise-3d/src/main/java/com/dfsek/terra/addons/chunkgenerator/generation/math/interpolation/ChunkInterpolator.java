@@ -9,11 +9,10 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import net.jafama.FastMath;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.util.mutable.MutableInteger;
+import com.dfsek.terra.api.properties.PropertyKey;
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -23,7 +22,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
  */
 public class ChunkInterpolator {
     private final Interpolator3[][][] interpGrid;
-    private final long seed;
     
     private final int min;
     private final int max;
@@ -37,10 +35,10 @@ public class ChunkInterpolator {
      * @param min
      * @param max
      */
-    public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max) {
+    public ChunkInterpolator(long seed, int chunkX, int chunkZ, BiomeProvider provider, int min, int max,
+                             PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
         this.min = min;
         this.max = max;
-        this.seed = seed;
         
         int xOrigin = chunkX << 4;
         int zOrigin = chunkZ << 4;
@@ -53,28 +51,67 @@ public class ChunkInterpolator {
         
         double[][][] noiseStorage = new double[5][5][size + 1];
         
+        int maxBlendAndChunk = 17 + 2 * maxBlend;
+        
+        @SuppressWarnings("unchecked")
+        Column<Biome>[] columns = new Column[maxBlendAndChunk * maxBlendAndChunk];
+        
         for(int x = 0; x < 5; x++) {
+            int scaledX = x << 2;
+            int absoluteX = xOrigin + scaledX;
             for(int z = 0; z < 5; z++) {
-                BiomeNoiseProperties generationSettings = provider.getBiome(xOrigin + (x << 2), 0, zOrigin + (z << 2), seed)
-                                                                  .getContext()
-                                                                  .get(BiomeNoiseProperties.class);
-                Map<BiomeNoiseProperties, MutableInteger> genMap = new HashMap<>();
+                int scaledZ = z << 2;
+                int absoluteZ = zOrigin + scaledZ;
                 
-                int step = generationSettings.blendStep();
-                int blend = generationSettings.blendDistance();
+                int index = (scaledX + maxBlend) + maxBlendAndChunk * (scaledZ + maxBlend);
+                Column<Biome> biomeColumn = columns[index];
                 
-                for(int xi = -blend; xi <= blend; xi++) {
-                    for(int zi = -blend; zi <= blend; zi++) {
-                        genMap.computeIfAbsent(
-                                provider.getBiome(xOrigin + (x << 2) + (xi * step), 0, zOrigin + (z << 2) + (zi * step), seed)
-                                        .getContext()
-                                        .get(BiomeNoiseProperties.class),
-                                g -> new MutableInteger(0)).increment(); // Increment by 1
-                    }
+                if(biomeColumn == null) {
+                    biomeColumn = provider.getColumn(absoluteX, absoluteZ, seed, min, max);
+                    columns[index] = biomeColumn;
                 }
                 
-                for(int y = 0; y < size + 1; y++) {
-                    noiseStorage[x][z][y] = computeNoise(genMap, (x << 2) + xOrigin, (y << 2) + this.min, (z << 2) + zOrigin);
+                for(int y = 0; y < size; y++) {
+                    int scaledY = (y << 2) + min;
+                    BiomeNoiseProperties generationSettings = biomeColumn.get(scaledY)
+                                                                         .getContext()
+                                                                         .get(noisePropertiesKey);
+                    
+                    int step = generationSettings.blendStep();
+                    int blend = generationSettings.blendDistance();
+                    
+                    double runningNoise = 0;
+                    double runningDiv = 0;
+                    
+                    for(int xi = -blend; xi <= blend; xi++) {
+                        for(int zi = -blend; zi <= blend; zi++) {
+                            int blendX = (xi * step);
+                            int blendZ = (zi * step);
+                            
+                            int localIndex = (scaledX + maxBlend + blendX) + maxBlendAndChunk * (scaledZ + maxBlend + blendZ);
+                            Column<Biome> column = columns[localIndex];
+                            
+                            if(column == null) {
+                                column = provider.getColumn(absoluteX + blendX, absoluteZ + blendZ, seed, min, max);
+                                columns[localIndex] = column;
+                            }
+                            
+                            BiomeNoiseProperties properties = column
+                                    .get(scaledY)
+                                    .getContext()
+                                    .get(noisePropertiesKey);
+                            double sample = properties.noiseHolder().getNoise(properties.base(), absoluteX, scaledY, absoluteZ, seed);
+                            runningNoise += sample * properties.blendWeight();
+                            runningDiv += properties.blendWeight();
+                        }
+                    }
+                    
+                    double noise = runningNoise / runningDiv;
+                    
+                    noiseStorage[x][z][y] = noise;
+                    if(y == size - 1) {
+                        noiseStorage[x][z][size] = noise;
+                    }
                 }
             }
         }
@@ -98,24 +135,6 @@ public class ChunkInterpolator {
     
     private static int reRange(int value, int high) {
         return FastMath.max(FastMath.min(value, high), 0);
-    }
-    
-    public double computeNoise(BiomeNoiseProperties generationSettings, double x, double y, double z) {
-        return generationSettings.base().noise(seed, x, y, z);
-    }
-    
-    public double computeNoise(Map<BiomeNoiseProperties, MutableInteger> gens, double x, double y, double z) {
-        double n = 0;
-        double div = 0;
-        for(Map.Entry<BiomeNoiseProperties, MutableInteger> entry : gens.entrySet()) {
-            BiomeNoiseProperties gen = entry.getKey();
-            int weight = entry.getValue().get();
-            double noise = computeNoise(gen, x, y, z);
-            
-            n += noise * weight;
-            div += gen.blendWeight() * weight;
-        }
-        return n / div;
     }
     
     /**

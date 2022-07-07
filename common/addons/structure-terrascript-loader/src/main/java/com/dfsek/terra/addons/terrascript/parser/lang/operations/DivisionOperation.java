@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import java.util.function.Supplier;
-
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
@@ -19,12 +19,17 @@ public class DivisionOperation extends BinaryOperation<Number, Number> {
     }
     
     @Override
-    public Number apply(Supplier<Number> left, Supplier<Number> right) {
-        return left.get().doubleValue() / right.get().doubleValue();
+    public Returnable.ReturnType returnType() {
+        return Returnable.ReturnType.NUMBER;
     }
     
     @Override
-    public Returnable.ReturnType returnType() {
-        return Returnable.ReturnType.NUMBER;
+    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+        return applyDouble(implementationArguments, scope);
+    }
+    
+    @Override
+    public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        return left.applyDouble(implementationArguments, scope) / right.applyDouble(implementationArguments, scope);
     }
 }

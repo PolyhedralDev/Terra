@@ -15,18 +15,21 @@ public class Reflection {
     
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
-        ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper, Reflection.class.getClassLoader());
+        ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper,
+                                                                                      Reflection.class.getClassLoader());
         
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
     
+
     @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
     
+
     @Proxies(Biome.class)
     public interface BiomeProxy {
         @FieldGetter("biomeCategory")

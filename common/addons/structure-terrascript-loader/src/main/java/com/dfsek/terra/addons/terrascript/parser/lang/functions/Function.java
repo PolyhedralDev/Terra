@@ -19,15 +19,25 @@ public interface Function<T> extends Returnable<T> {
         public ReturnType returnType() {
             return null;
         }
-        
+
         @Override
         public Object apply(ImplementationArguments implementationArguments, Scope scope) {
             return null;
         }
-        
+
         @Override
         public Position getPosition() {
             return null;
         }
     };
+    
+    @Override
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        return ((Number) apply(implementationArguments, scope)).doubleValue();
+    }
+    
+    @Override
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        return (Boolean) apply(implementationArguments, scope);
+    }
 }

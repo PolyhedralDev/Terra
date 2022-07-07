@@ -3,16 +3,14 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import static com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.Interpolator.lerp;
 
 
 public class LazilyEvaluatedInterpolator {
-    private final Double[][][] samples;
-    
-    private final NoiseSampler[][] samplers;
+    private final Double[] samples; //
     
     private final int chunkX;
     private final int chunkZ;
@@ -21,16 +19,22 @@ public class LazilyEvaluatedInterpolator {
     private final int verticalRes;
     
     private final BiomeProvider biomeProvider;
+    private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
     private final long seed;
-    private final int min;
+    private final int min, max;
     
-    public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max, int min, int horizontalRes, int verticalRes,
+    private final int zMul, yMul;
+    
+    public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max,
+                                       PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {
+        this.noisePropertiesKey = noisePropertiesKey;
         int hSamples = FastMath.ceilToInt(16.0 / horizontalRes);
         int vSamples = FastMath.ceilToInt((double) (max - min) / verticalRes);
-        samples = new Double[hSamples + 1][vSamples + 1][hSamples + 1];
-        samplers = new NoiseSampler[hSamples + 1][hSamples + 1];
+        this.zMul = (hSamples + 1);
+        this.yMul = zMul * zMul;
+        samples = new Double[yMul * (vSamples + 1)];
         this.chunkX = cx << 4;
         this.chunkZ = cz << 4;
         this.horizontalRes = horizontalRes;
@@ -38,22 +42,25 @@ public class LazilyEvaluatedInterpolator {
         this.biomeProvider = biomeProvider;
         this.seed = seed;
         this.min = min;
+        this.max = max - 1;
     }
     
-    private double sample(int x, int y, int z, int ox, int oy, int oz) {
-        Double sample = samples[x][y][z];
+    private double sample(int xIndex, int yIndex, int zIndex, int ox, int oy, int oz) {
+        int index = xIndex + (zIndex * zMul) + (yIndex * yMul);
+        Double sample = samples[index];
         if(sample == null) {
             int xi = ox + chunkX;
             int zi = oz + chunkZ;
             
-            NoiseSampler sampler = samplers[x][z];
-            if(sampler == null) {
-                sampler = biomeProvider.getBiome(xi, y, zi, seed).getContext().get(BiomeNoiseProperties.class).carving();
-                samplers[x][z] = sampler;
-            }
+            int y = FastMath.min(max, oy);
             
-            sample = sampler.noise(seed, xi, oy, zi);
-            samples[x][y][z] = sample;
+            sample = biomeProvider
+                    .getBiome(xi, y, zi, seed)
+                    .getContext()
+                    .get(noisePropertiesKey)
+                    .carving()
+                    .noise(seed, xi, y, zi);
+            samples[index] = sample;
         }
         return sample;
     }
