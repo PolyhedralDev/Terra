@@ -109,10 +109,13 @@ fun Project.configureDistribution() {
             FileWriter(manifest).use {
                 yaml.dump(resources, it)
             }
+
         }
     }
     
-    tasks["processResources"].dependsOn(generateResourceManifest)
+    tasks.named("processResources") {
+        finalizedBy(generateResourceManifest)
+    }
     
     
     tasks.named<ShadowJar>("shadowJar") {
