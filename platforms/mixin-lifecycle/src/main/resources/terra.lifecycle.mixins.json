@@ -16,5 +16,6 @@
     ],
     "injectors": {
         "defaultRequire": 1
-  }
+  },
+    "refmap": "terra.lifecycle.refmap.json"
 }
