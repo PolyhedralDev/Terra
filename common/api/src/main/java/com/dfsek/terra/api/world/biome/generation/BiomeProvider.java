@@ -97,7 +97,7 @@ public interface BiomeProvider {
         }
         return new CachingBiomeProvider(this);
     }
-
+    
     
     default int resolution() {
         return 1;

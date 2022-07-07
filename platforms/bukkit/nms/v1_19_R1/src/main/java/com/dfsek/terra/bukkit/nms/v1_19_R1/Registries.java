@@ -16,8 +16,8 @@ public class Registries {
         return dedicatedserver
                 .registryAccess()
                 .registryOrThrow( // getRegistry
-                    key
-                  );
+                                  key
+                                );
     }
     
     public static Registry<Biome> biomeRegistry() {

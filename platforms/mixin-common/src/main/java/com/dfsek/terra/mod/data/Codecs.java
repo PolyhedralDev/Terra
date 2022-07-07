@@ -31,8 +31,8 @@ public final class Codecs {
                                                                                      .getConfigRegistry()
                                                                                      .get(id)
                                                                                      .orElseThrow(() -> new IllegalArgumentException(
-                                                                                               "No such config pack " +
-                                                                                               id)))));
+                                                                                             "No such config pack " +
+                                                                                             id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
             .create(instance -> instance.group(RegistryOps.createRegistryCodec(Registry.BIOME_KEY)

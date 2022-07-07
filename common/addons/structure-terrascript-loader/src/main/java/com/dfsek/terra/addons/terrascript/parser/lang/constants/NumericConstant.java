@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class NumericConstant extends ConstantExpression<Number> {
     private final double constant;
+
     public NumericConstant(Number constant, Position position) {
         super(constant, position);
         this.constant = constant.doubleValue();

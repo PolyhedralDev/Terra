@@ -24,13 +24,13 @@ public class SpawnSettingsTemplate implements ObjectTemplate<SpawnSettings> {
     @Override
     public SpawnSettings get() {
         SpawnSettings.Builder builder = new SpawnSettings.Builder();
-        for (SpawnTypeConfig spawn : spawns) {
+        for(SpawnTypeConfig spawn : spawns) {
             builder.spawn(spawn.getGroup(), spawn.getEntry());
         }
-        for (SpawnCostConfig cost: costs) {
+        for(SpawnCostConfig cost : costs) {
             builder.spawnCost(cost.getType(), cost.getMass(), cost.getGravity());
         }
-        if (probability != null) {
+        if(probability != null) {
             builder.creatureSpawnProbability(probability);
         }
         

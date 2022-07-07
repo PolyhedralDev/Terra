@@ -49,9 +49,9 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                          .getOrCreateRegistry(ChunkGeneratorProvider.class)
                          .register(addon.key("NOISE_3D"),
                                    pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(),
-                                                                       config.getHorizontalRes(),
-                                                                       config.getVerticalRes(), noisePropertiesPropertyKey,
-                                                                       paletteInfoPropertyKey));
+                                                                     config.getHorizontalRes(),
+                                                                     config.getVerticalRes(), noisePropertiesPropertyKey,
+                                                                     paletteInfoPropertyKey));
                     event.getPack()
                          .applyLoader(SlantLayer.class, SlantLayer::new);
                 })
@@ -62,8 +62,10 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                 .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
                     if(event.is(Biome.class)) {
-                        event.getLoadedObject(Biome.class).getContext().put(paletteInfoPropertyKey, event.load(new BiomePaletteTemplate(platform)).get());
-                        event.getLoadedObject(Biome.class).getContext().put(noisePropertiesPropertyKey, event.load(new BiomeNoiseConfigTemplate()).get());
+                        event.getLoadedObject(Biome.class).getContext().put(paletteInfoPropertyKey,
+                                                                            event.load(new BiomePaletteTemplate(platform)).get());
+                        event.getLoadedObject(Biome.class).getContext().put(noisePropertiesPropertyKey,
+                                                                            event.load(new BiomeNoiseConfigTemplate()).get());
                     }
                 })
                 .failThrough();

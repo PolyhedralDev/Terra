@@ -12,30 +12,30 @@ import kotlin.streams.asStream
  */
 fun Project.addonDir(dir: File, task: Task) {
     val moveAddons = tasks.register("moveAddons" + task.name) {
-            dependsOn("compileAddons")
-            doLast {
-                dir.parentFile.mkdirs()
-                matchingAddons(dir) {
-                    it.name.startsWith("Terra-") // Assume everything that starts with Terra- is a core addon.
-                }.forEach {
-                    println("Deleting old addon: " + it.absolutePath)
-                    it.delete()
-                }
-                forSubProjects(":common:addons") {
-                    val jar = tasks.named("shadowJar").get() as ShadowJar
-                    
-                    val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
-                    val target = File(dir, boot + jar.archiveFileName.get())
-                    
-                    val base = "${jar.archiveBaseName.get()}-${version}"
-                    
-                    println("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
-                    
-                    jar.archiveFile.orNull?.asFile?.copyTo(target)
-                }
+        dependsOn("compileAddons")
+        doLast {
+            dir.parentFile.mkdirs()
+            matchingAddons(dir) {
+                it.name.startsWith("Terra-") // Assume everything that starts with Terra- is a core addon.
+            }.forEach {
+                println("Deleting old addon: " + it.absolutePath)
+                it.delete()
             }
-            
+            forSubProjects(":common:addons") {
+                val jar = tasks.named("shadowJar").get() as ShadowJar
+                
+                val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+                val target = File(dir, boot + jar.archiveFileName.get())
+                
+                val base = "${jar.archiveBaseName.get()}-${version}"
+                
+                println("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
+                
+                jar.archiveFile.orNull?.asFile?.copyTo(target)
+            }
         }
+        
+    }
     
     task.dependsOn(moveAddons)
 }

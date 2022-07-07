@@ -24,7 +24,15 @@ public class NoiseConfigMixin {
     @Final
     private long legacyWorldSeed;
     
-    @Redirect(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/util/registry/Registry;J)V", at =  @At(value = "NEW", target = "(Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;Lnet/minecraft/world/gen/densityfunction/DensityFunction;Ljava/util/List;)Lnet/minecraft/world/biome/source/util/MultiNoiseUtil$MultiNoiseSampler;"))
+    @Redirect(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/util/registry/Registry;J)V",
+              at = @At(value = "NEW",
+                       target = "(Lnet/minecraft/world/gen/densityfunction/DensityFunction;" +
+                                "Lnet/minecraft/world/gen/densityfunction/DensityFunction;" +
+                                "Lnet/minecraft/world/gen/densityfunction/DensityFunction;" +
+                                "Lnet/minecraft/world/gen/densityfunction/DensityFunction;" +
+                                "Lnet/minecraft/world/gen/densityfunction/DensityFunction;" +
+                                "Lnet/minecraft/world/gen/densityfunction/DensityFunction;Ljava/util/List;)" +
+                                "Lnet/minecraft/world/biome/source/util/MultiNoiseUtil$MultiNoiseSampler;"))
     private MultiNoiseSampler t(DensityFunction densityFunction, DensityFunction densityFunction2, DensityFunction densityFunction3,
                                 DensityFunction densityFunction4, DensityFunction densityFunction5, DensityFunction densityFunction6,
                                 List<NoiseHypercube> list) {

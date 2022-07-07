@@ -16,13 +16,11 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class BiomeQueryAPIAddon implements AddonInitializer {
+    public static PropertyKey<BiomeTagHolder> BIOME_TAG_KEY = Context.create(BiomeTagHolder.class);
     @Inject
     private Platform platform;
-    
     @Inject
     private BaseAddon addon;
-    
-    public static PropertyKey<BiomeTagHolder> BIOME_TAG_KEY = Context.create(BiomeTagHolder.class);
     
     @Override
     public void initialize() {

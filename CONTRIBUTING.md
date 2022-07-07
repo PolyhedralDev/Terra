@@ -63,7 +63,8 @@ to [Terra global moderation team](CODE_OF_CONDUCT.md#Reporting).
 
 ## I don't want to read this whole thing I just have a question!!!
 
-> **Note:** Please don't file an issue to ask a question. You'll get faster results by using the resources below.
+> **Note:** Please don't file an issue to ask a question. You'll get faster
+> results by using the resources below.
 
 We have an official discord server where you can request help from various users
 
@@ -103,7 +104,9 @@ you don't need to create one. When you are creating a bug report,
 please [include as many details as possible](#how-do-i-submit-a-good-bug-report)
 .
 
-> **Note:** If you find a **Closed** issue that seems like it is the same thing that you're experiencing, open a new issue and include a link to the original issue in the body of your new one.
+> **Note:** If you find a **Closed** issue that seems like it is the same thing
+> that you're experiencing, open a new issue and include a link to the original
+> issue in the body of your new one.
 
 #### Before Submitting A Bug Report
 

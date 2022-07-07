@@ -231,7 +231,8 @@ public class ConfigPackImpl implements ConfigPack {
         
         ConfigPackPostTemplate packPostTemplate = new ConfigPackPostTemplate();
         selfLoader.load(packPostTemplate, packManifest);
-        seededBiomeProvider = template.getBiomeCache() ? packPostTemplate.getProviderBuilder().caching() : packPostTemplate.getProviderBuilder();
+        seededBiomeProvider =
+                template.getBiomeCache() ? packPostTemplate.getProviderBuilder().caching() : packPostTemplate.getProviderBuilder();
         checkDeadEntries();
     }
     

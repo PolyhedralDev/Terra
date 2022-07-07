@@ -61,10 +61,10 @@ public abstract class MinecraftAddon implements BaseAddon {
                    .getHandler(FunctionalEventHandler.class)
                    .register(this, ConfigurationLoadEvent.class)
                    .then(event -> {
-                             if(event.is(Biome.class)) {
-                                 event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
-                             }
-                         })
+                       if(event.is(Biome.class)) {
+                           event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
+                       }
+                   })
                    .global();
     }
     

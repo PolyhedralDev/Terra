@@ -28,13 +28,13 @@ public abstract class LifecyclePlatform extends ModPlatform {
         load();
     }
     
-    public static void setServer(MinecraftServer server) {
-        LifecyclePlatform.server = server;
-    }
-    
     @Override
     public MinecraftServer getServer() {
         return server;
+    }
+    
+    public static void setServer(MinecraftServer server) {
+        LifecyclePlatform.server = server;
     }
     
     @Override

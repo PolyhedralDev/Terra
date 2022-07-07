@@ -46,9 +46,8 @@ public class Scope {
     }
     
     public static final class ScopeBuilder {
-        private int numSize, boolSize, strSize = 0;
         private final Map<String, Pair<Integer, ReturnType>> indices;
-        
+        private int numSize, boolSize, strSize = 0;
         private ScopeBuilder parent;
         
         public ScopeBuilder() {
@@ -77,6 +76,7 @@ public class Scope {
             }
             return id;
         }
+
         public int num(String id) {
             int num = numSize;
             indices.put(check(id), Pair.of(num, ReturnType.NUMBER));
@@ -107,14 +107,14 @@ public class Scope {
                 parent.updateBoolSize(size);
             }
         }
-    
+
         private void updateNumSize(int size) {
             this.numSize = FastMath.max(numSize, size);
             if(parent != null) {
                 parent.updateNumSize(size);
             }
         }
-    
+
         private void updateStrSize(int size) {
             this.strSize = FastMath.max(strSize, size);
             if(parent != null) {

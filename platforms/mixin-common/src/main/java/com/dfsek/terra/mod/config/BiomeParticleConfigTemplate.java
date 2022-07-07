@@ -17,10 +17,10 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
     @Value("probability")
     @Default
     private Integer probability = null;
-
+    
     @Override
     public BiomeParticleConfig get() {
-        if (particle == null || probability == null) {
+        if(particle == null || probability == null) {
             return null;
         }
         

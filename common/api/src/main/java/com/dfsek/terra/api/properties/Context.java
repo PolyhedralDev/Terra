@@ -14,10 +14,15 @@ import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Context {
-    private final Map<Class<? extends Properties>, Properties> map = new HashMap<>();
-    private final AtomicReference<Properties[]> list = new AtomicReference<>(new Properties[size.get()]);
     private static final AtomicInteger size = new AtomicInteger(0);
     private static final Map<Class<? extends Properties>, PropertyKey<?>> properties = new HashMap<>();
+    private final Map<Class<? extends Properties>, Properties> map = new HashMap<>();
+    private final AtomicReference<Properties[]> list = new AtomicReference<>(new Properties[size.get()]);
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Properties> PropertyKey<T> create(Class<T> clazz) {
+        return (PropertyKey<T>) properties.computeIfAbsent(clazz, c -> new PropertyKey<>(size.getAndIncrement(), clazz));
+    }
     
     @SuppressWarnings("unchecked")
     public <T extends Properties> T get(Class<T> clazz) {
@@ -31,11 +36,6 @@ public class Context {
                 "Property for class " + properties.getClass().getCanonicalName() + " already registered.");
         map.put(properties.getClass(), properties);
         return this;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends Properties> PropertyKey<T> create(Class<T> clazz) {
-        return (PropertyKey<T>) properties.computeIfAbsent(clazz, c -> new PropertyKey<>(size.getAndIncrement(), clazz));
     }
     
     public <T extends Properties> Context put(PropertyKey<T> key, T properties) {

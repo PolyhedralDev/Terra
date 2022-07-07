@@ -30,7 +30,7 @@ dependencies {
     modImplementation("org.quiltmc:quilt-loader:${Versions.Quilt.quiltLoader}")
     
     modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${Versions.Quilt.fabricApi}")
-
+    
     modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")

@@ -33,6 +33,7 @@ public class QuiltEntryPoint implements ModInitializer {
     private static final Logger logger = LoggerFactory.getLogger(QuiltEntryPoint.class);
     
     private static final QuiltPlatform TERRA_PLUGIN = new QuiltPlatform();
+
     @Override
     public void onInitialize(ModContainer container) {
         logger.info("Initializing Terra Quilt mod...");

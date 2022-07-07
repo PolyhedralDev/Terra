@@ -49,17 +49,14 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSChunkGeneratorDelegate.class);
+    private static final Lazy<List<ChunkPos>> EMPTY = Lazy.lazy(List::of);
     private final NMSBiomeProvider biomeSource;
     private final com.dfsek.terra.api.world.chunk.generation.ChunkGenerator delegate;
-    
     private final ChunkGenerator vanilla;
     private final ConfigPack pack;
-    
     private final long seed;
-    
     private final Map<ConcentricRingsStructurePlacement, Lazy<List<ChunkPos>>> ringPositions = new Object2ObjectArrayMap<>();
-    private static final Lazy<List<ChunkPos>> EMPTY = Lazy.lazy(List::of);
-    
+    private volatile boolean rings = false;
     
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
         super(Registries.structureSet(), Optional.empty(), biomeProvider, biomeProvider, seed);
@@ -71,13 +68,15 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull BiomeManager biomeAccess, @NotNull StructureFeatureManager structureAccessor,
+    public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull BiomeManager biomeAccess,
+                             @NotNull StructureFeatureManager structureAccessor,
                              @NotNull ChunkAccess chunk, GenerationStep.@NotNull Carving generationStep) {
         // no-op
     }
     
     @Override
-    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk, @NotNull StructureFeatureManager structureAccessor) {
+    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk,
+                                     @NotNull StructureFeatureManager structureAccessor) {
         vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
     
@@ -87,7 +86,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender, @NotNull StructureFeatureManager structureAccessor,
+    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
+                                                                 @NotNull StructureFeatureManager structureAccessor,
                                                                  @NotNull ChunkAccess chunk) {
         return vanilla.fillFromNoise(executor, blender, structureAccessor, chunk);
     }
@@ -160,8 +160,6 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         ensureStructuresGenerated();
         return ringPositions.getOrDefault(concentricringsstructureplacement, EMPTY).value();
     }
-    
-    private volatile boolean rings = false;
     
     @Override
     public synchronized void ensureStructuresGenerated() {

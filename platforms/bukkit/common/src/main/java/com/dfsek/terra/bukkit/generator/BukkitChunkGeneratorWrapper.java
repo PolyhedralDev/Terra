@@ -46,23 +46,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
-    private record SeededVector(int x, int z, WorldProperties worldProperties) {
-        @Override
-        public boolean equals(Object obj) {
-            if(obj instanceof SeededVector that) {
-                return this.z == that.z && this.x == that.x && this.worldProperties.equals(that.worldProperties);
-            }
-            return false;
-        }
-        
-        @Override
-        public int hashCode() {
-            int code = x;
-            code = 31 * code + z;
-            return 31 * code + worldProperties.hashCode();
-        }
-    }
-    
+
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
@@ -108,13 +92,12 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public boolean shouldGenerateDecorations() {
         return true;
     }
-
     
     @Override
     public boolean shouldGenerateMobs() {
         return true;
     }
-    
+
     @Override
     public boolean shouldGenerateStructures() {
         return true;
@@ -132,5 +115,23 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public ChunkGenerator getHandle() {
         return delegate;
+    }
+    
+
+    private record SeededVector(int x, int z, WorldProperties worldProperties) {
+        @Override
+        public boolean equals(Object obj) {
+            if(obj instanceof SeededVector that) {
+                return this.z == that.z && this.x == that.x && this.worldProperties.equals(that.worldProperties);
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int code = x;
+            code = 31 * code + z;
+            return 31 * code + worldProperties.hashCode();
+        }
     }
 }

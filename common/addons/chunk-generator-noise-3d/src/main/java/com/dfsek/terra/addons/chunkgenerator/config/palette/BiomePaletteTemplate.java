@@ -83,6 +83,7 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
             slantLayers.put(threshold, layer.getPalette());
         }
         
-        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth, updatePalette);
+        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth,
+                               updatePalette);
     }
 }

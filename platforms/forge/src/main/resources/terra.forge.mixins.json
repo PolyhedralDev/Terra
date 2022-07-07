@@ -4,7 +4,7 @@
     "package": "com.dfsek.terra.forge.mixin",
     "compatibilityLevel": "JAVA_17",
     "mixins": [
-      "lifecycle.NoiseConfigMixin"
+        "lifecycle.NoiseConfigMixin"
     ],
     "client": [
     ],

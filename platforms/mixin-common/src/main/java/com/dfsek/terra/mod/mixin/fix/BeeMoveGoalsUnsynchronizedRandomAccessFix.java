@@ -20,7 +20,8 @@ import com.dfsek.terra.mod.CommonPlatform;
         MoveToFlowerGoal.class
 })
 public class BeeMoveGoalsUnsynchronizedRandomAccessFix {
-    @Redirect(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;random:Lnet/minecraft/util/math/random/Random;"))
+    @Redirect(method = "<init>",
+              at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;random:Lnet/minecraft/util/math/random/Random;"))
     public Random redirectRandomAccess(World instance) {
         return new CheckedRandom(CommonPlatform.get().getServer().getTicks()); // replace with new random seeded by tick time.
     }

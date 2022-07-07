@@ -40,7 +40,7 @@ public class PresetUtil {
         Registry<StructureSet> structureSetRegistry = BuiltinRegistries.STRUCTURE_SET;
         Registry<NoiseParameters> noiseParametersRegistry = BuiltinRegistries.NOISE_PARAMETERS;
         Registry<Biome> biomeRegistry = BuiltinRegistries.BIOME;
-    
+        
         RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.THE_NETHER);
         RegistryEntry<ChunkGeneratorSettings>
                 netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.NETHER);
@@ -57,19 +57,19 @@ public class PresetUtil {
                                                                     new NoiseChunkGenerator(structureSetRegistry, noiseParametersRegistry,
                                                                                             new TheEndBiomeSource(biomeRegistry),
                                                                                             endChunkGeneratorSettings));
-    
+        
         RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.OVERWORLD);
-    
+        
         RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.OVERWORLD);
-    
+        
         Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
                 Locale.ROOT));
-    
+        
         PRESETS.add(generatorID);
-    
+        
         TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
-    
+        
         DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
         WorldPreset preset = new WorldPreset(
                 Map.of(

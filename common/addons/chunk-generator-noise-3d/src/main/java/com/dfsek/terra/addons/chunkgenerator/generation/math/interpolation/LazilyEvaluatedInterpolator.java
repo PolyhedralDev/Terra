@@ -25,6 +25,7 @@ public class LazilyEvaluatedInterpolator {
     private final int min, max;
     
     private final int zMul, yMul;
+    
     public LazilyEvaluatedInterpolator(BiomeProvider biomeProvider, int cx, int cz, int max,
                                        PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {

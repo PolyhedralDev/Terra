@@ -1,33 +1,17 @@
 package com.dfsek.terra.bukkit.nms.v1_18_R2;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
-import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
-import net.minecraft.data.BuiltinRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import org.bukkit.NamespacedKey;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
 public class NMSBiomeInjector {
@@ -45,33 +29,32 @@ public class NMSBiomeInjector {
         
         builder.biomeCategory(Reflection.BIOME.getBiomeCategory(vanilla))
                .precipitation(vanilla.getPrecipitation()) // getPrecipitation
-                .mobSpawnSettings(vanilla.getMobSettings())
-                .generationSettings(vanilla.getGenerationSettings())
-                .temperature(vanilla.getBaseTemperature())
-                .downfall(vanilla.getDownfall());
-    
-    
+               .mobSpawnSettings(vanilla.getMobSettings())
+               .generationSettings(vanilla.getGenerationSettings())
+               .temperature(vanilla.getBaseTemperature())
+               .downfall(vanilla.getDownfall());
+
         
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-    
+
         effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
-    
+
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-    
+
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-    
+
                .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-    
+
                .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-    
+
                .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
-    
+
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         } else {
             effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
         }
-    
+
         if(vanillaBiomeProperties.getGrassColor() == null) {
             vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
         } else {
@@ -83,7 +66,7 @@ public class NMSBiomeInjector {
         vanilla.getAmbientMood().ifPresent(effects::ambientMoodSound);
         vanilla.getBackgroundMusic().ifPresent(effects::backgroundMusic);
         vanilla.getAmbientParticle().ifPresent(effects::ambientParticle);
-    
+
         builder.specialEffects(effects.build());
         
         return builder.build(); // build()

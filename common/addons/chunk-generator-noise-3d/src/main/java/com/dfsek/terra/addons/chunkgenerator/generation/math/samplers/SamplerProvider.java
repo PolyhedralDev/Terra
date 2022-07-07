@@ -53,7 +53,7 @@ public class SamplerProvider {
     public Sampler3D getChunk(int cx, int cz, WorldProperties world, BiomeProvider provider) {
         WorldContext context = new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight());
         return cache.get(context, c -> new Sampler3D(c.cx, c.cz, c.seed, c.minHeight, c.maxHeight, provider,
-                                                           elevationSmooth, noisePropertiesKey, maxBlend));
+                                                     elevationSmooth, noisePropertiesKey, maxBlend));
     }
     
     private record WorldContext(int cx, int cz, long seed, int minHeight, int maxHeight) {

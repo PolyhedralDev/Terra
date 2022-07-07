@@ -30,7 +30,8 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public class ParserTest {
     @Test
     public void parse() throws IOException, ParseException {
-        Parser parser = new Parser(IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
+        Parser parser = new Parser(
+                IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
         
         parser.registerFunction("test", new FunctionBuilder<Test1>() {
             @Override

@@ -18,7 +18,7 @@ public class BiomeAdditionsSoundTemplate implements ObjectTemplate<BiomeAddition
     
     @Override
     public BiomeAdditionsSound get() {
-        if (sound == null || soundChance == null) {
+        if(sound == null || soundChance == null) {
             return null;
         } else {
             return new BiomeAdditionsSound(sound, soundChance);

@@ -7,7 +7,7 @@ import com.dfsek.terra.api.util.vector.Vector3Int;
 
 public final class GeometryUtil {
     private GeometryUtil() {
-    
+
     }
     
     public static void sphere(Vector3Int origin, int radius, Consumer<Vector3Int> action) {

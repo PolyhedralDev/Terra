@@ -24,8 +24,10 @@ public class NoiseConfigMixin {
     @Final
     private MultiNoiseSampler multiNoiseSampler;
     
-    @Inject(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/util/registry/Registry;J)V", at =  @At("TAIL"))
-    private void mapMultiNoise(ChunkGeneratorSettings chunkGeneratorSettings, Registry<DoublePerlinNoiseSampler.NoiseParameters> noiseRegistry, long seed, CallbackInfo ci) {
+    @Inject(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/util/registry/Registry;J)V",
+            at = @At("TAIL"))
+    private void mapMultiNoise(ChunkGeneratorSettings chunkGeneratorSettings,
+                               Registry<DoublePerlinNoiseSampler.NoiseParameters> noiseRegistry, long seed, CallbackInfo ci) {
         SeedHack.register(multiNoiseSampler, seed);
     }
 }

@@ -43,26 +43,22 @@ import com.dfsek.terra.mod.data.Codecs;
 @Mod("terra")
 @EventBusSubscriber(bus = Bus.MOD)
 public class ForgeEntryPoint {
-    private final RegistrySanityCheck sanityCheck = new RegistrySanityCheck();
-    
+    public static final String MODID = "terra";
+    private static final Logger logger = LoggerFactory.getLogger(ForgeEntryPoint.class);
+    private static final ForgePlatform TERRA_PLUGIN;
     static {
         AwfulForgeHacks.loadAllTerraClasses();
         TERRA_PLUGIN = new ForgePlatform();
     }
-    
-    public static final String MODID = "terra";
-    
-    private static final Logger logger = LoggerFactory.getLogger(ForgeEntryPoint.class);
-    
-    private static final ForgePlatform TERRA_PLUGIN;
-    
-    public static ForgePlatform getPlatform() {
-        return TERRA_PLUGIN;
-    }
+    private final RegistrySanityCheck sanityCheck = new RegistrySanityCheck();
     
     public ForgeEntryPoint() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
+    }
+    
+    public static ForgePlatform getPlatform() {
+        return TERRA_PLUGIN;
     }
     
     public static void initialize(RegisterHelper<Biome> helper) {
@@ -75,10 +71,12 @@ public class ForgeEntryPoint {
     public void registerBiomes(RegisterEvent event) {
         event.register(Keys.BLOCKS, helper -> sanityCheck.progress(RegistryStep.BLOCK, () -> logger.debug("Block registration detected.")));
         event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, () -> initialize(helper)));
-        event.register(Registry.WORLD_PRESET_KEY, helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> TERRA_PLUGIN.registerWorldTypes(helper::register)));
+        event.register(Registry.WORLD_PRESET_KEY,
+                       helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> TERRA_PLUGIN.registerWorldTypes(helper::register)));
         
         
-        event.register(Registry.CHUNK_GENERATOR_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
+        event.register(Registry.CHUNK_GENERATOR_KEY,
+                       helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
         event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }

@@ -1,9 +1,5 @@
 package com.dfsek.terra.lifecycle.util;
 
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-
-import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
@@ -21,6 +17,8 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -48,7 +46,7 @@ public final class BiomeUtil {
      * @param pack  The ConfigPack this biome belongs to.
      */
     private static void registerBiome(Biome biome, ConfigPack pack,
-                                     com.dfsek.terra.api.registry.key.RegistryKey id) {
+                                      com.dfsek.terra.api.registry.key.RegistryKey id) {
         Registry<net.minecraft.world.biome.Biome> registry = BuiltinRegistries.BIOME;
         RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
         
@@ -58,7 +56,8 @@ public final class BiomeUtil {
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
             
-            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, registry.get(vanilla), vanillaBiomeProperties);
+            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, registry.get(vanilla),
+                                                                                       vanillaBiomeProperties);
             
             Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
             
@@ -69,14 +68,17 @@ public final class BiomeUtil {
                                                                                          .orElseThrow());
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(BuiltinRegistries.add(registry,
-                                                                                                  MinecraftUtil.registerKey(identifier).getValue(),
+                                                                                                  MinecraftUtil.registerKey(identifier)
+                                                                                                               .getValue(),
                                                                                                   minecraftBiome).getKey().orElseThrow());
             }
-    
+            
             Map villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
-    
-            villagerMap.put(RegistryKey.of(Registry.BIOME_KEY, identifier), Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(), villagerMap.getOrDefault(vanilla, VillagerType.PLAINS)));
-    
+            
+            villagerMap.put(RegistryKey.of(Registry.BIOME_KEY, identifier),
+                            Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
+                                                       villagerMap.getOrDefault(vanilla, VillagerType.PLAINS)));
+            
             MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }

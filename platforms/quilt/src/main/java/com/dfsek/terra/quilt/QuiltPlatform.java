@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
 
@@ -41,7 +40,7 @@ public class QuiltPlatform extends LifecyclePlatform {
     
     @Override
     protected Collection<BaseAddon> getPlatformMods() {
-       return QuiltLoader.getAllMods().stream().flatMap(mod -> {
+        return QuiltLoader.getAllMods().stream().flatMap(mod -> {
             String id = mod.metadata().id();
             if(id.equals("terra") || id.equals("minecraft") || id.equals("java")) return Stream.empty();
             try {

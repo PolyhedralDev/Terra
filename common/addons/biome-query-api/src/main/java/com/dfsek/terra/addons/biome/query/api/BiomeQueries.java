@@ -8,7 +8,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public final class BiomeQueries {
     private BiomeQueries() {
-    
+
     }
     
     public static Predicate<Biome> has(String tag) {

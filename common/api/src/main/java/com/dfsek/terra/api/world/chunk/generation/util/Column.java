@@ -38,7 +38,7 @@ public class Column<T extends WritableWorld> {
         this.max = max;
         this.min = min;
     }
-
+    
     
     public int getX() {
         return x;

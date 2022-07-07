@@ -28,7 +28,7 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         Biome delegated = delegate.getBiome(x, y, z, seed);
-
+        
         return extrude(delegated, x, y, z, seed);
     }
     
@@ -42,8 +42,8 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     @Override
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return delegate.getBaseBiome(x, z, seed)
-                .map(base -> (Column<Biome>) new BaseBiomeColumn(this, base, min, max, x, z, seed))
-                .orElseGet(() -> BiomeProvider.super.getColumn(x, z, seed, min, max));
+                       .map(base -> (Column<Biome>) new BaseBiomeColumn(this, base, min, max, x, z, seed))
+                       .orElseGet(() -> BiomeProvider.super.getColumn(x, z, seed, min, max));
     }
     
     @Override

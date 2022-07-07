@@ -12,9 +12,9 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public abstract class VariableReferenceNode<T> implements Returnable<T> {
+    protected final int index;
     private final Position position;
     private final ReturnType type;
-    protected final int index;
     
     public VariableReferenceNode(Position position, ReturnType type, int index) {
         this.position = position;

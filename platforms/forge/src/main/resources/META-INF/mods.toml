@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[41,)"
 license = "GNU General Public License, v3.0"
-issueTrackerURL="https://github.com/PolyhedralDev/Terra/issues"
+issueTrackerURL = "https://github.com/PolyhedralDev/Terra/issues"
 
 [[mods]]
 modId = "terra"

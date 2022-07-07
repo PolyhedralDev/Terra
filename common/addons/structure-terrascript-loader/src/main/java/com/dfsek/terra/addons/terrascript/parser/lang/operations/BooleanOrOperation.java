@@ -27,6 +27,7 @@ public class BooleanOrOperation extends BinaryOperation<Boolean, Boolean> {
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyBoolean(implementationArguments, scope) || right.applyBoolean(implementationArguments, scope);
     }
+
     @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;

@@ -93,7 +93,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     public Integer getGrassColor() {
         return grassColor;
     }
-
+    
     public Integer getFogColor() {
         return fogColor;
     }

@@ -87,10 +87,10 @@ public class ChunkInterpolator {
                         for(int zi = -blend; zi <= blend; zi++) {
                             int blendX = (xi * step);
                             int blendZ = (zi * step);
-    
+                            
                             int localIndex = (scaledX + maxBlend + blendX) + maxBlendAndChunk * (scaledZ + maxBlend + blendZ);
                             Column<Biome> column = columns[localIndex];
-    
+                            
                             if(column == null) {
                                 column = provider.getColumn(absoluteX + blendX, absoluteZ + blendZ, seed, min, max);
                                 columns[localIndex] = column;

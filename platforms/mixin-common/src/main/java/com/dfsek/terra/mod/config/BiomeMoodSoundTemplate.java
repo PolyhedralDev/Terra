@@ -26,7 +26,7 @@ public class BiomeMoodSoundTemplate implements ObjectTemplate<BiomeMoodSound> {
     
     @Override
     public BiomeMoodSound get() {
-        if (sound == null || soundCultivationTicks == null || soundSpawnRange == null || soundExtraDistance == null) {
+        if(sound == null || soundCultivationTicks == null || soundSpawnRange == null || soundExtraDistance == null) {
             return null;
         } else {
             return new BiomeMoodSound(sound, soundCultivationTicks, soundSpawnRange, soundExtraDistance);

@@ -39,10 +39,10 @@ fun Project.configureDependencies() {
         maven("https://papermc.io/repo/repository/maven-public/") {
             name = "PaperMC"
         }
-        maven ( "https://files.minecraftforge.net/maven/" ) {
+        maven("https://files.minecraftforge.net/maven/") {
             name = "Forge"
         }
-        maven ("https://maven.quiltmc.org/repository/release/") {
+        maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
         maven("https://jitpack.io") {

@@ -27,6 +27,7 @@ public class SubtractionOperation extends BinaryOperation<Number, Number> {
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) - right.applyDouble(implementationArguments, scope);
     }
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;

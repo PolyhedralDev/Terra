@@ -14,9 +14,8 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public abstract class VariableAssignmentNode<T> implements Item<T> {
     protected final Returnable<T> value;
-    private final Position position;
     protected final int index;
-    
+    private final Position position;
     
     
     public VariableAssignmentNode(Returnable<T> value, Position position, int index) {

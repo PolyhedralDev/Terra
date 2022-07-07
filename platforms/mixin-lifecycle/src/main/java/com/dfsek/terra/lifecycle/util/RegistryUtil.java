@@ -1,14 +1,14 @@
 package com.dfsek.terra.lifecycle.util;
 
-import com.dfsek.terra.mod.data.Codecs;
-
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import com.dfsek.terra.mod.data.Codecs;
 
 
 public final class RegistryUtil {
     private RegistryUtil() {
-    
+
     }
     
     public static void register() {

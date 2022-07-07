@@ -53,7 +53,7 @@ fun Project.configureDistribution() {
                     
                     val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
                     val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
-
+                    
                     if (!Files.exists(addonPath)) {
                         Files.createDirectories(addonPath.parent)
                         Files.createFile(addonPath)

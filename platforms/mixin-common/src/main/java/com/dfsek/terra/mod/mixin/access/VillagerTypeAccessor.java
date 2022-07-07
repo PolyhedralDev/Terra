@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 import java.util.Map;
 
+
 @Mixin(VillagerType.class)
 public interface VillagerTypeAccessor {
     @Accessor("BIOME_TO_TYPE")

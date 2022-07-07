@@ -3,17 +3,6 @@ package com.dfsek.terra.mod;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
-
-import com.dfsek.terra.api.handle.ItemHandle;
-import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
-
-import com.dfsek.terra.mod.handle.MinecraftItemHandle;
-
-import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
-
-import com.dfsek.terra.mod.config.VillagerTypeTemplate;
-
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.MinecraftServer;
@@ -31,6 +20,7 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.WorldPreset;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,6 +28,8 @@ import java.util.function.BiConsumer;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
 import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
@@ -49,17 +41,19 @@ import com.dfsek.terra.mod.config.SoundEventTemplate;
 import com.dfsek.terra.mod.config.SpawnCostConfig;
 import com.dfsek.terra.mod.config.SpawnEntryTemplate;
 import com.dfsek.terra.mod.config.SpawnGroupTemplate;
+import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
+import com.dfsek.terra.mod.config.VillagerTypeTemplate;
+import com.dfsek.terra.mod.handle.MinecraftItemHandle;
+import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 import com.dfsek.terra.mod.util.PresetUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public abstract class ModPlatform extends AbstractPlatform {
-    public abstract MinecraftServer getServer();
-    
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
+
+    public abstract MinecraftServer getServer();
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
@@ -78,10 +72,12 @@ public abstract class ModPlatform extends AbstractPlatform {
                 })
                 .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
                         Locale.ROOT)))
-                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                        Locale.ROOT)))
-                .registerLoader(GrassColorModifier.class, (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
-                        Locale.ROOT)))
+                .registerLoader(GrassColorModifier.class,
+                                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
+                                        Locale.ROOT)))
+                .registerLoader(GrassColorModifier.class,
+                                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
+                                        Locale.ROOT)))
                 .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
                 .registerLoader(SoundEvent.class, SoundEventTemplate::new)
                 .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
@@ -101,12 +97,12 @@ public abstract class ModPlatform extends AbstractPlatform {
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
-
+    
     @Override
     protected Iterable<BaseAddon> platformAddon() {
         return List.of(getPlatformAddon());
     }
-
+    
     protected abstract BaseAddon getPlatformAddon();
     
     @Override

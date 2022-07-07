@@ -18,9 +18,9 @@ public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
     
     @Override
     public SoundEvent get() {
-        if (id == null) {
+        if(id == null) {
             return null;
-        } else if (distanceToTravel == null) {
+        } else if(distanceToTravel == null) {
             return new SoundEvent(id);
         } else {
             return new SoundEvent(id, distanceToTravel);

@@ -26,7 +26,7 @@ public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
     
     @Override
     public MusicSound get() {
-        if (sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
+        if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
             return null;
         } else {
             return new MusicSound(sound, minDelay, maxDelay, replaceCurrentMusic);

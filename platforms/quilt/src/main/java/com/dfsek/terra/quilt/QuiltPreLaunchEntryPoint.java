@@ -11,7 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 public class QuiltPreLaunchEntryPoint implements PreLaunchEntrypoint {
     @Override
     public void onPreLaunch(ModContainer mod) {
-        if (QuiltLoader.isDevelopmentEnvironment()) {
+        if(QuiltLoader.isDevelopmentEnvironment()) {
             try {
                 AwfulQuiltHacks.hackilyLoadForMixin(BrigadierMappingBuilder.class.getName());
             } catch(ClassNotFoundException | InvocationTargetException | IllegalAccessException e) {

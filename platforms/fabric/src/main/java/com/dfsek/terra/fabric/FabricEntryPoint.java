@@ -32,7 +32,7 @@ public class FabricEntryPoint implements ModInitializer {
     private static final Logger logger = LoggerFactory.getLogger(FabricEntryPoint.class);
     
     private static final FabricPlatform TERRA_PLUGIN = new FabricPlatform();
-
+    
     @Override
     public void onInitialize() {
         logger.info("Initializing Terra Fabric mod...");

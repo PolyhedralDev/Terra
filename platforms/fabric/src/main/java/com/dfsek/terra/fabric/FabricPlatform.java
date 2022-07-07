@@ -20,9 +20,6 @@ package com.dfsek.terra.fabric;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.lifecycle.LifecyclePlatform;
-
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -35,8 +32,7 @@ import java.util.stream.Stream;
 
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.util.generic.Lazy;
-import com.dfsek.terra.mod.CommonPlatform;
+import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
 
 public class FabricPlatform extends LifecyclePlatform {
@@ -59,6 +55,7 @@ public class FabricPlatform extends LifecyclePlatform {
             return Stream.empty();
         }).collect(Collectors.toList());
     }
+    
     @Override
     public @NotNull String platformName() {
         return "Fabric";
@@ -68,7 +65,7 @@ public class FabricPlatform extends LifecyclePlatform {
     public @NotNull File getDataFolder() {
         return new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
     }
-
+    
     @Override
     public BaseAddon getPlatformAddon() {
         return new FabricAddon(this);

@@ -7,8 +7,8 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class SingleTagQuery implements Predicate<Biome> {
-    private int tagIndex = -1;
     private final String tag;
+    private int tagIndex = -1;
     
     public SingleTagQuery(String tag) {
         this.tag = tag;

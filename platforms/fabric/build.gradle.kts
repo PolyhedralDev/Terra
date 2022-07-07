@@ -25,7 +25,13 @@ dependencies {
     
     modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
     
-    setOf("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-api-base", "fabric-command-api-v2", "fabric-networking-api-v1").forEach { apiModule ->
+    setOf(
+        "fabric-lifecycle-events-v1",
+        "fabric-resource-loader-v0",
+        "fabric-api-base",
+        "fabric-command-api-v2",
+        "fabric-networking-api-v1"
+         ).forEach { apiModule ->
         val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
         modImplementation(module)
         include(module)

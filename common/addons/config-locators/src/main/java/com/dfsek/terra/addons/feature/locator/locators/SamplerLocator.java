@@ -23,6 +23,19 @@ public class SamplerLocator implements Locator {
         this.samplers = samplers;
     }
     
+    private static int floorToInt(double value) {
+        int valueInt = (int) value;
+        if(value < 0.0) {
+            if(value == (double) valueInt) {
+                return valueInt;
+            } else {
+                return valueInt == Integer.MIN_VALUE ? valueInt : valueInt - 1;
+            }
+        } else {
+            return valueInt;
+        }
+    }
+    
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder results = column.newBinaryColumn();
@@ -35,18 +48,5 @@ public class SamplerLocator implements Locator {
         });
         
         return results.build();
-    }
-    
-    private static int floorToInt(double value) {
-        int valueInt = (int)value;
-        if (value < 0.0) {
-            if (value == (double)valueInt) {
-                return valueInt;
-            } else {
-                return valueInt == Integer.MIN_VALUE ? valueInt : valueInt - 1;
-            }
-        } else {
-            return valueInt;
-        }
     }
 }
