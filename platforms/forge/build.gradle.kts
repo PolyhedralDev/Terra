@@ -73,6 +73,6 @@ tasks {
     
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
-        archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
+        archiveFileName.set("${rootProject.name.capitalize()}-forge-${project.version}.jar")
     }
 }

@@ -74,6 +74,6 @@ tasks {
     remapJar {
         injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
-        archiveFileName.set("${rootProject.name.capitalize()}-${project.version}.jar")
+        archiveFileName.set("${rootProject.name.capitalize()}-quilt-${project.version}.jar")
     }
 }
