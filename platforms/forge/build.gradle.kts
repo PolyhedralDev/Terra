@@ -40,9 +40,11 @@ loom {
     launches {
         named("client") {
             property("fabric.log.level", "debug")
+            property("mixin.env.disableRefMap", "true")
         }
         named("server") {
             property("fabric.log.level", "debug")
+            property("mixin.env.disableRefMap", "true")
         }
     }
     
