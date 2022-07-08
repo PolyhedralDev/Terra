@@ -68,7 +68,6 @@ fun Project.configureDistribution() {
     
     val generateResourceManifest = tasks.create("generateResourceManifest") {
         group = "terra"
-        dependsOn(downloadDefaultPacks)
         doLast {
             val resources = HashMap<String, MutableList<String>>()
             val packsDir = File("${project.buildDir}/resources/main/packs/")
@@ -115,6 +114,8 @@ fun Project.configureDistribution() {
     }
     
     tasks.named("processResources") {
+        generateResourceManifest.mustRunAfter(downloadDefaultPacks)
+        finalizedBy(downloadDefaultPacks)
         finalizedBy(generateResourceManifest)
     }
     
