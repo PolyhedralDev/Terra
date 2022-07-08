@@ -17,36 +17,17 @@
 
 package com.dfsek.terra.quilt;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.fabric.FabricServerCommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
 
 
-public class QuiltEntryPoint implements ModInitializer {
-    private static final Logger logger = LoggerFactory.getLogger(QuiltEntryPoint.class);
-    
+public class QuiltEntryPoint extends LifecycleEntryPoint implements ModInitializer {
     private static final QuiltPlatform TERRA_PLUGIN = new QuiltPlatform();
-
+    
     @Override
     public void onInitialize(ModContainer container) {
-        logger.info("Initializing Terra Quilt mod...");
-        
-        FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
-                CommandExecutionCoordinator.simpleCoordinator(),
-                serverCommandSource -> (CommandSender) serverCommandSource,
-                commandSender -> (ServerCommandSource) commandSender
-        );
-        
-        
-        manager.brigadierManager().setNativeNumberSuggestions(false);
-        
-        TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(manager));
+        initialize("Quilt", TERRA_PLUGIN);
     }
 }
