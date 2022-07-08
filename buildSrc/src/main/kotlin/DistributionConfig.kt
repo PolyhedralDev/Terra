@@ -105,6 +105,7 @@ fun Project.configureDistribution() {
             val manifest = File("${project.buildDir}/resources/main/resources.yml")
             
             if (manifest.exists()) manifest.delete()
+            manifest.parentFile.mkdirs()
             manifest.createNewFile()
             FileWriter(manifest).use {
                 yaml.dump(resources, it)
