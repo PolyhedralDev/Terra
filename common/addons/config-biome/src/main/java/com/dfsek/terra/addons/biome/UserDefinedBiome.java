@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.biome;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.Context;
@@ -18,7 +20,8 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
-    private final PlatformBiome vanilla;
+    private PlatformBiome platformBiome;
+    
     private final String id;
     private final BiomeTemplate config;
     private final int color;
@@ -26,8 +29,7 @@ public class UserDefinedBiome implements Biome {
     
     private final Context context = new Context();
     
-    public UserDefinedBiome(PlatformBiome vanilla, BiomeTemplate config) {
-        this.vanilla = vanilla;
+    public UserDefinedBiome(BiomeTemplate config) {
         this.id = config.getID();
         this.config = config;
         this.color = config.getColor();
@@ -41,19 +43,23 @@ public class UserDefinedBiome implements Biome {
         return "{BIOME:" + getID() + "}";
     }
     
-    /**
-     * Gets the Vanilla biomes to represent the custom biome.
-     *
-     * @return Collection of biomes to represent the custom biome.
-     */
     @Override
-    public PlatformBiome getPlatformBiome() {
-        return vanilla;
+    public @Nullable PlatformBiome getPlatformBiome() {
+        return platformBiome;
     }
     
     @Override
     public int getColor() {
         return color;
+    }
+    
+    @Override
+    public void setPlatformBiome(PlatformBiome biome) {
+        if(platformBiome != null) {
+            throw new IllegalStateException("Platform biome already set");
+        }
+        
+        this.platformBiome = biome;
     }
     
     @Override

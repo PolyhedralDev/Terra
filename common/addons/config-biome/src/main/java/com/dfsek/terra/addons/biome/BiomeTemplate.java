@@ -21,7 +21,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
@@ -37,13 +36,11 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Default
     private List<String> extended = Collections.emptyList();
     
-    @Value("vanilla")
-    private @Meta PlatformBiome vanilla;
-    
     @Value("color")
     @Final
     @Default
     private @Meta int color = 0;
+    
     @Value("tags")
     @Default
     private @Meta Set<@Meta String> tags = new HashSet<>();
@@ -76,9 +73,5 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     
     public String getID() {
         return id;
-    }
-    
-    public PlatformBiome getVanilla() {
-        return vanilla;
     }
 }

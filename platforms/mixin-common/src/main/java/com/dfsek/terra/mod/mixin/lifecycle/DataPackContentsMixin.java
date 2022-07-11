@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.dfsek.terra.mod.util.MinecraftUtil;
 import com.dfsek.terra.mod.util.TagUtil;
 
 
@@ -24,6 +23,5 @@ public class DataPackContentsMixin {
         
         Registry<Biome> biomeRegistry = dynamicRegistryManager.get(Registry.BIOME_KEY);
         TagUtil.registerBiomeTags(biomeRegistry);
-        MinecraftUtil.registerFlora(biomeRegistry);
     }
 }

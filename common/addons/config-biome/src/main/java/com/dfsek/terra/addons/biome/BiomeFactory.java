@@ -22,6 +22,6 @@ public class BiomeFactory implements ConfigFactory<BiomeTemplate, Biome> {
     
     @Override
     public Biome build(BiomeTemplate template, Platform platform) {
-        return new UserDefinedBiome(template.getVanilla(), template);
+        return new UserDefinedBiome(template);
     }
 }

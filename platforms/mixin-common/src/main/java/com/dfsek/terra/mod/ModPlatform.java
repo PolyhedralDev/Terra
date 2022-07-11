@@ -12,7 +12,9 @@ import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.VillagerType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
@@ -45,18 +47,23 @@ import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.config.VillagerTypeTemplate;
 import com.dfsek.terra.mod.handle.MinecraftItemHandle;
 import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
+import com.dfsek.terra.mod.util.BiomeUtil;
 import com.dfsek.terra.mod.util.PresetUtil;
 
 
 public abstract class ModPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
-
+    
     public abstract MinecraftServer getServer();
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
                 .forEach(pack -> PresetUtil.createDefault(pack).apply(registerFunction));
+    }
+    
+    public RegistryKey<Biome> getBiomeKey(Identifier identifier) {
+        return BiomeUtil.getBiomeKey(identifier);
     }
     
     @Override
@@ -94,7 +101,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
-        return new ProtoPlatformBiome(identifier);
+        return new ProtoPlatformBiome(identifier, getBiomeKey(identifier));
     }
     
     @Override

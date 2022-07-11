@@ -22,8 +22,6 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 
-import java.util.Objects;
-
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
@@ -31,10 +29,11 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
     
-    private RegistryKey<Biome> delegate;
+    private final RegistryKey<Biome> biome;
     
-    public ProtoPlatformBiome(Identifier identifier) {
+    public ProtoPlatformBiome(Identifier identifier, RegistryKey<Biome> biome) {
         this.identifier = identifier;
+        this.biome = biome;
     }
     
     public RegistryKey<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
@@ -46,11 +45,7 @@ public class ProtoPlatformBiome implements PlatformBiome {
         return identifier;
     }
     
-    public RegistryKey<Biome> getDelegate() {
-        return delegate;
-    }
-    
-    public void setDelegate(RegistryKey<Biome> delegate) {
-        this.delegate = Objects.requireNonNull(delegate);
+    public RegistryKey<Biome> getBiome() {
+        return biome;
     }
 }

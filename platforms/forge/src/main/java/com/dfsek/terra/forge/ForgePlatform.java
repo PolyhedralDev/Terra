@@ -22,6 +22,9 @@ import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +38,7 @@ import java.util.List;
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.forge.util.ForgeBiomeUtil;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
@@ -47,6 +51,11 @@ public class ForgePlatform extends ModPlatform {
     public ForgePlatform() {
         CommonPlatform.initialize(this);
         load();
+    }
+    
+    @Override
+    public RegistryKey<Biome> getBiomeKey(Identifier identifier) {
+        return ForgeBiomeUtil.getBiomeKey(identifier);
     }
     
     @Override
