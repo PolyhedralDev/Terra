@@ -117,7 +117,7 @@ public class PlatformImpl extends AbstractPlatform {
         
     }
     
-    private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
+    protected BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
         return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }

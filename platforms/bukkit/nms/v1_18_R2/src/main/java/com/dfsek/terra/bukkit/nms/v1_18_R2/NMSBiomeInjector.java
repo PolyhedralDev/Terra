@@ -11,7 +11,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
 
 public class NMSBiomeInjector {

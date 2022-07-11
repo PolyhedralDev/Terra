@@ -47,7 +47,7 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     
-    private final PlatformImpl platform = new PlatformImpl(this);
+    private PlatformImpl platform;
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
     
     @Override
@@ -55,6 +55,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
         if(!doVersionCheck()) {
             return;
         }
+        
+        platform = Initializer.init(this);
         
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
         
@@ -91,8 +93,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
-
-        Initializer.init(platform);
     }
     
     public PlatformImpl getPlatform() {
