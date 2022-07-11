@@ -26,10 +26,6 @@ import com.dfsek.terra.api.properties.Properties;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
-    @Value("minecraft.use-vanilla-biomes")
-    @Default
-    private boolean vanillaBiomes = false;
-    
     @Value("minecraft.beard.enable")
     @Default
     private boolean beard = true;
@@ -41,10 +37,6 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Value("minecraft.beard.air-threshold")
     @Default
     private double airThreshold = -0.5;
-    
-    public boolean useVanillaBiomes() {
-        return vanillaBiomes;
-    }
     
     public boolean isBeard() {
         return beard;
