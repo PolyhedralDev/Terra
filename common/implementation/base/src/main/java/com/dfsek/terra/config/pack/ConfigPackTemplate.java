@@ -23,9 +23,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
@@ -37,25 +35,9 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;
     
-    @Value("variables")
-    @Default
-    private @Meta Map<String, @Meta Double> variables = new HashMap<>();
-    
-    @Value("structures.locatable")
-    @Default
-    private @Meta Map<@Meta String, @Meta String> locatable = new HashMap<>();
-    
-    @Value("blend.terrain.elevation")
-    @Default
-    private @Meta int elevationBlend = 4;
-    
     @Value("author")
     @Default
     private String author = "Anon Y. Mous";
-    
-    @Value("disable.sapling")
-    @Default
-    private @Meta boolean disableSaplings = false;
     
     @Value("stages")
     @Default
@@ -83,28 +65,12 @@ public class ConfigPackTemplate implements ConfigTemplate {
         return version;
     }
     
-    public boolean isDisableSaplings() {
-        return disableSaplings;
-    }
-    
     public String getID() {
         return id;
     }
     
     public String getAuthor() {
         return author;
-    }
-    
-    public Map<String, Double> getVariables() {
-        return variables;
-    }
-    
-    public int getElevationBlend() {
-        return elevationBlend;
-    }
-    
-    public Map<String, String> getLocatable() {
-        return locatable;
     }
     
     public boolean getBiomeCache() {
