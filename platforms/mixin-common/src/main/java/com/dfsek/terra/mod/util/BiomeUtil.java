@@ -4,16 +4,21 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.VillagerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
@@ -23,6 +28,12 @@ import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 
 public class BiomeUtil {
     private static final Logger logger = LoggerFactory.getLogger(BiomeUtil.class);
+    
+    public static final Map<RegistryEntry<net.minecraft.world.biome.Biome>, Map<Identifier, ProbabilityCollection<ConfiguredStructure>>>
+            TERRA_BIOME_FERTILIZABLE_MAP = new HashMap<>();
+    
+    public static final Map<TagKey<net.minecraft.world.biome.Biome>, List<Identifier>>
+            TERRA_BIOME_TAG_MAP = new HashMap<>();
     
     public static void registerBiomes() {
         logger.info("Registering biomes...");
@@ -55,20 +66,22 @@ public class BiomeUtil {
     protected static void registerBiome(Biome biome, ConfigPack pack,
                                         com.dfsek.terra.api.registry.key.RegistryKey id) {
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-        
+    
         net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(vanillaBiomeProperties);
-        
+    
         Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
-        
+    
         biome.setPlatformBiome(new ProtoPlatformBiome(identifier, registerBiome(identifier, minecraftBiome)));
-        
+    
         Map villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
-        
+    
         villagerMap.put(RegistryKey.of(Registry.BIOME_KEY, identifier),
                         Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(), VillagerType.PLAINS));
-        
+    
+        TERRA_BIOME_FERTILIZABLE_MAP.put(RegistryEntry.of(minecraftBiome), vanillaBiomeProperties.getFertilizables());
+    
         for(Identifier tag : vanillaBiomeProperties.getTags()) {
-            MinecraftUtil.TERRA_BIOME_TAG_MAP.getOrDefault(TagKey.of(Registry.BIOME_KEY, tag), new ArrayList<>()).add(identifier);
+            TERRA_BIOME_TAG_MAP.getOrDefault(TagKey.of(Registry.BIOME_KEY, tag), new ArrayList<>()).add(identifier);
         }
     }
 }

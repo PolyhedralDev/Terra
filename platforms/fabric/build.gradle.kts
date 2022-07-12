@@ -12,6 +12,12 @@ architectury {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
+    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    
+    modImplementation("com.github.the-glitch-network:minecraft-gudasm:${Versions.Mod.minecraftGudAsm}")
+    include("com.github.the-glitch-network:minecraft-gudasm:${Versions.Mod.minecraftGudAsm}")
+    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentFabric"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }

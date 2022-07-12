@@ -3,7 +3,6 @@ package com.dfsek.terra.mod.util;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
@@ -17,10 +16,7 @@ import net.minecraft.world.biome.GenerationSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,8 +31,6 @@ import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 public final class MinecraftUtil {
     public static final Logger logger = LoggerFactory.getLogger(MinecraftUtil.class);
     
-    public static final Map<TagKey<Biome>, List<Identifier>>
-            TERRA_BIOME_TAG_MAP = new HashMap<>();
     
     private MinecraftUtil() {
     

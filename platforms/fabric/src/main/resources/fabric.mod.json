@@ -18,6 +18,9 @@
     "entrypoints": {
         "main": [
             "com.dfsek.terra.fabric.FabricEntryPoint"
+        ],
+        "gud_asm": [
+            "com.dfsek.terra.fabric.FabricASMEntryPoint"
         ]
     },
     "mixins": [

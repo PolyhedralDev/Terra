@@ -56,7 +56,7 @@ public final class TagUtil {
         logger.info("who let this data drive?");
         Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = tagsToMutableMap(registry);
     
-        MinecraftUtil.TERRA_BIOME_TAG_MAP.forEach((tag, biomeList) -> {
+        BiomeUtil.TERRA_BIOME_TAG_MAP.forEach((tag, biomeList) -> {
             collect.getOrDefault(tag, new ArrayList<>())
                    .addAll(biomeList.stream()
                                     .map(registry::getOrEmpty)
