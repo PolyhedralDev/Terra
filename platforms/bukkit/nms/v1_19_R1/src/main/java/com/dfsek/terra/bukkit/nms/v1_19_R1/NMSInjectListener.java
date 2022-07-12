@@ -9,6 +9,8 @@ import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.block.BlockFertilizeEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
@@ -61,17 +63,18 @@ public class NMSInjectListener implements Listener {
     
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockGrow(BlockGrowEvent event) {
-        Block block = event.getBlock();
-        Vector3Int pos = Vector3Int.of(block.getX(), block.getY(), block.getZ());
-        ServerWorld world = BukkitAdapter.adapt(block.getWorld());
-        event.setCancelled(FertilizableUtil.grow(world, new Random(), pos, ResourceLocation.tryParse(block.getType().getKey().asString())));
+        event.setCancelled(onGrow(event));
     }
     
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onStructureGow(StructureGrowEvent event) {
-        Block block = event.getLocation().getBlock();
+    public void onBlockFertilize(BlockFertilizeEvent event) {
+        event.setCancelled(onGrow(event));
+    }
+    
+    public boolean onGrow(BlockEvent event) {
+        Block block = event.getBlock();
         Vector3Int pos = Vector3Int.of(block.getX(), block.getY(), block.getZ());
         ServerWorld world = BukkitAdapter.adapt(block.getWorld());
-        event.setCancelled(FertilizableUtil.grow(world, new Random(), pos, ResourceLocation.tryParse(block.getType().getKey().asString())));
+        return FertilizableUtil.grow(world, new Random(), pos, ResourceLocation.tryParse(block.getType().getKey().asString()));
     }
 }
