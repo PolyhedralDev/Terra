@@ -1,7 +1,5 @@
 package com.dfsek.terra.lifecycle.asm;
 
-import com.dfsek.terra.mod.util.FertilizableUtil;
-
 import net.gudenau.minecraft.asm.api.v1.Identifier;
 import net.gudenau.minecraft.asm.api.v1.Transformer;
 import org.objectweb.asm.Opcodes;
@@ -12,13 +10,13 @@ import org.objectweb.asm.tree.JumpInsnNode;
 import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.VarInsnNode;
 
 import java.io.IOException;
 
-import com.dfsek.terra.lifecycle.util.ASMUtil;
 import com.dfsek.terra.lifecycle.util.LoaderUtil;
-
-import org.objectweb.asm.tree.VarInsnNode;
+import com.dfsek.terra.mod.util.ASMUtil;
+import com.dfsek.terra.mod.util.FertilizableUtil;
 
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 

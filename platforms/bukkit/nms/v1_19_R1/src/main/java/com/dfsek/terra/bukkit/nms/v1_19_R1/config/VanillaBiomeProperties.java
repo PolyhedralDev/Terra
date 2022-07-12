@@ -15,12 +15,20 @@ import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.dfsek.terra.api.properties.Properties;
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
+    
+    @Value("minecraft.fertilizables")
+    @Default
+    private Map<ResourceLocation, ProbabilityCollection<ConfiguredStructure>> fertilizables = Collections.emptyMap();
     
     @Value("minecraft.tags")
     @Default
@@ -97,6 +105,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Value("minecraft.villager-type")
     @Default
     private VillagerType villagerType = null;
+    
+    public Map<ResourceLocation, ProbabilityCollection<ConfiguredStructure>> getFertilizables() {
+        return fertilizables;
+    }
     
     public List<ResourceLocation> getTags() {
         return tags;

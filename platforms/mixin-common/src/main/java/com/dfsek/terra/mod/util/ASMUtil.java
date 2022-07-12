@@ -1,4 +1,4 @@
-package com.dfsek.terra.lifecycle.util;
+package com.dfsek.terra.mod.util;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;

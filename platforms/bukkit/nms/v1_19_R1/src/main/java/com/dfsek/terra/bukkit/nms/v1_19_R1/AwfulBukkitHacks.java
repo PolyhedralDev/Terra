@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
-import com.dfsek.terra.bukkit.nms.v1_19_R1.config.VanillaBiomeProperties;
-
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
@@ -24,6 +22,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.bukkit.nms.v1_19_R1.config.VanillaBiomeProperties;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
@@ -31,6 +32,9 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 public class AwfulBukkitHacks {
     private static final Logger LOGGER = LoggerFactory.getLogger(AwfulBukkitHacks.class);
     
+    public static final Map<Holder<net.minecraft.world.level.biome.Biome>, Map<ResourceLocation,
+            ProbabilityCollection<ConfiguredStructure>>>
+            TERRA_BIOME_FERTILIZABLE_MAP = new HashMap<>();
     public static final Map<TagKey<Biome>, List<ResourceLocation>>
             TERRA_BIOME_TAG_MAP = new HashMap<>();
     
@@ -56,16 +60,19 @@ public class AwfulBukkitHacks {
                     BuiltinRegistries.register(BuiltinRegistries.BIOME, delegateKey, platform);
                     biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
-                    
+    
                     Map villagerMap = Reflection.VILLAGER_TYPE.getByBiome();
     
                     villagerMap.put(ResourceKey.create(Registry.BIOME_REGISTRY, delegateKey.location()),
                                     Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(), VillagerType.PLAINS));
     
+                    TERRA_BIOME_FERTILIZABLE_MAP.put(Holder.direct(platform), vanillaBiomeProperties.getFertilizables());
+    
                     for(ResourceLocation tag : vanillaBiomeProperties.getTags()) {
-                        TERRA_BIOME_TAG_MAP.getOrDefault(TagKey.create(Registry.BIOME_REGISTRY, tag), new ArrayList<>()).add(delegateKey.location());
+                        TERRA_BIOME_TAG_MAP.getOrDefault(TagKey.create(Registry.BIOME_REGISTRY, tag), new ArrayList<>()).add(
+                                delegateKey.location());
                     }
-                    
+    
                     LOGGER.debug("Registered biome: " + delegateKey);
                 } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                     throw new RuntimeException(e);
