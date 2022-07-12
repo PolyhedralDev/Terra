@@ -7,7 +7,6 @@ import net.gudenau.minecraft.asm.api.v1.AsmRegistry;
 
 import com.dfsek.terra.lifecycle.asm.FertilizableASM;
 import com.dfsek.terra.lifecycle.util.LoaderUtil;
-import com.dfsek.terra.quilt.util.QuiltLoaderUtil;
 
 
 public class FabricASMEntryPoint implements AsmInitializer {

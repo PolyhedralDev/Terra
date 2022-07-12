@@ -41,10 +41,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Default
     private @Meta Map<String, @Meta Double> variables = new HashMap<>();
     
-    @Value("beta.carving")
-    @Default
-    private @Meta boolean betaCarvers = false;
-    
     @Value("structures.locatable")
     @Default
     private @Meta Map<@Meta String, @Meta String> locatable = new HashMap<>();
@@ -52,22 +48,6 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("blend.terrain.elevation")
     @Default
     private @Meta int elevationBlend = 4;
-    
-    @Value("vanilla.mobs")
-    @Default
-    private @Meta boolean vanillaMobs = true;
-    
-    @Value("vanilla.caves")
-    @Default
-    private @Meta boolean vanillaCaves = false;
-    
-    @Value("vanilla.decorations")
-    @Default
-    private @Meta boolean vanillaDecorations = false;
-    
-    @Value("vanilla.structures")
-    @Default
-    private @Meta boolean vanillaStructures = false;
     
     @Value("author")
     @Default
@@ -84,72 +64,12 @@ public class ConfigPackTemplate implements ConfigTemplate {
     @Value("version")
     private Version version;
     
-    @Value("disable.carvers")
-    @Default
-    private @Meta boolean disableCarvers = false;
-    
-    @Value("disable.structures")
-    @Default
-    private @Meta boolean disableStructures = false;
-    
-    @Value("disable.ores")
-    @Default
-    private @Meta boolean disableOres = false;
-    
-    @Value("disable.trees")
-    @Default
-    private @Meta boolean disableTrees = false;
-    
-    @Value("disable.flora")
-    @Default
-    private @Meta boolean disableFlora = false;
-    
     @Value("generator")
     private @Meta ChunkGeneratorProvider generatorProvider;
     
     @Value("cache.biome.enable")
     @Default
     private boolean biomeCache = false;
-    
-    public boolean disableCarvers() {
-        return disableCarvers;
-    }
-    
-    public boolean disableFlora() {
-        return disableFlora;
-    }
-    
-    public boolean disableOres() {
-        return disableOres;
-    }
-    
-    public boolean disableStructures() {
-        return disableStructures;
-    }
-    
-    public boolean disableTrees() {
-        return disableTrees;
-    }
-    
-    public boolean vanillaMobs() {
-        return vanillaMobs;
-    }
-    
-    public boolean vanillaCaves() {
-        return vanillaCaves;
-    }
-    
-    public boolean vanillaDecorations() {
-        return vanillaDecorations;
-    }
-    
-    public boolean vanillaStructures() {
-        return vanillaStructures;
-    }
-    
-    public boolean doBetaCarvers() {
-        return betaCarvers;
-    }
     
     public ChunkGeneratorProvider getGeneratorProvider() {
         return generatorProvider;

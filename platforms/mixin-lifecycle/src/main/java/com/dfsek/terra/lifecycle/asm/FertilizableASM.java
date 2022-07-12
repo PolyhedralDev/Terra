@@ -14,8 +14,8 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import java.io.IOException;
 
-import com.dfsek.terra.lifecycle.util.LoaderUtil;
 import com.dfsek.terra.lifecycle.util.ASMUtil;
+import com.dfsek.terra.lifecycle.util.LoaderUtil;
 import com.dfsek.terra.mod.util.FertilizableUtil;
 
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
