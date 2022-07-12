@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.addons.chunkgenerator.layer.palette.LayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.layer.resolve.LayerResolver;
 import com.dfsek.terra.api.Platform;
@@ -11,8 +13,6 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 import com.dfsek.terra.api.world.info.WorldProperties;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class LayeredChunkGenerator implements ChunkGenerator {
@@ -48,7 +48,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                     
                     Biome biome = biomeColumn.get(y);
                     
-                    LayerPalette layerPalette = resolver.resolve(seed, biome, x, y, z);
+                    LayerPalette layerPalette = resolver.resolve(seed, biome, cx, y, cz);
                     
                     if (previousLayerPalette == layerPalette) {
                         paletteLevel++;
@@ -57,9 +57,9 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                     }
                     previousLayerPalette = layerPalette;
                     
-                    Palette palette = layerPalette.get(seed, biome, x, y, z);
+                    Palette palette = layerPalette.get(seed, biome, cx, y, cz);
     
-                    chunk.setBlock(cx, y, cz, palette.get(paletteLevel, x, y, z, seed));
+                    chunk.setBlock(cx, y, cz, palette.get(paletteLevel, cx, y, cz, seed));
                     
                 }
             }
