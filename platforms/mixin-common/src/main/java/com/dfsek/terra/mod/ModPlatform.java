@@ -37,6 +37,7 @@ import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
 import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
 import com.dfsek.terra.mod.config.BiomeParticleConfigTemplate;
 import com.dfsek.terra.mod.config.EntityTypeTemplate;
+import com.dfsek.terra.mod.config.FertilizableConfig;
 import com.dfsek.terra.mod.config.MusicSoundTemplate;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.SoundEventTemplate;
@@ -95,7 +96,8 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
                 .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
                 .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
-                .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+                .registerLoader(VillagerType.class, VillagerTypeTemplate::new)
+                .registerLoader(FertilizableConfig.class, FertilizableConfig::new);
     }
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {

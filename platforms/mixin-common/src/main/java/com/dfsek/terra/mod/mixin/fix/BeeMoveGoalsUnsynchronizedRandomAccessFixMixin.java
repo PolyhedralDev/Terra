@@ -19,7 +19,7 @@ import com.dfsek.terra.mod.CommonPlatform;
         MoveToHiveGoal.class,
         MoveToFlowerGoal.class
 })
-public class BeeMoveGoalsUnsynchronizedRandomAccessFix {
+public class BeeMoveGoalsUnsynchronizedRandomAccessFixMixin {
     @Redirect(method = "<init>",
               at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;random:Lnet/minecraft/util/math/random/Random;"))
     public Random redirectRandomAccess(World instance) {

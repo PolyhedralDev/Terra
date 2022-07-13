@@ -20,15 +20,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.dfsek.terra.api.properties.Properties;
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     @Value("minecraft.fertilizables")
     @Default
-    private Map<Identifier, ProbabilityCollection<ConfiguredStructure>> fertilizables = Collections.emptyMap();
+    private Map<Identifier, FertilizableConfig> fertilizables = Collections.emptyMap();
     
     @Value("minecraft.tags")
     @Default
@@ -106,7 +104,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private VillagerType villagerType = null;
     
-    public Map<Identifier, ProbabilityCollection<ConfiguredStructure>> getFertilizables() {
+    public Map<Identifier, FertilizableConfig> getFertilizables() {
         return fertilizables;
     }
     

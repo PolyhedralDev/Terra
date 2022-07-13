@@ -26,9 +26,6 @@
             ],
             "pre_launch": [
                 "com.dfsek.terra.quilt.QuiltPreLaunchEntryPoint"
-            ],
-            "gud_asm": [
-                "com.dfsek.terra.quilt.QuiltASMEntryPoint"
             ]
         },
         "depends": [

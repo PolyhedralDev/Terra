@@ -17,10 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.CommonPlatform;
+import com.dfsek.terra.mod.config.FertilizableConfig;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
@@ -29,7 +28,7 @@ import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 public class BiomeUtil {
     private static final Logger logger = LoggerFactory.getLogger(BiomeUtil.class);
     
-    public static final Map<RegistryEntry<net.minecraft.world.biome.Biome>, Map<Identifier, ProbabilityCollection<ConfiguredStructure>>>
+    public static final Map<RegistryEntry<net.minecraft.world.biome.Biome>, Map<Identifier, FertilizableConfig>>
             TERRA_BIOME_FERTILIZABLE_MAP = new HashMap<>();
     
     public static final Map<TagKey<net.minecraft.world.biome.Biome>, List<Identifier>>

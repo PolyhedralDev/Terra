@@ -20,7 +20,7 @@ import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
  * nether.
  */
 @Mixin(NetherFossilStructure.class)
-public class NetherFossilOptimization {
+public class NetherFossilOptimizationMixin {
     @Inject(method = "getStructurePosition", at = @At("HEAD"), cancellable = true)
     public void injectFossilPositions(Context context, CallbackInfoReturnable<Optional<StructurePosition>> cir) {
         if(context.chunkGenerator() instanceof MinecraftChunkGeneratorWrapper) {
