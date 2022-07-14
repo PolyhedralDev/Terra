@@ -18,7 +18,7 @@ public class LifecycleEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(LifecycleEntryPoint.class);
     
     protected static void initialize(String modName, LifecyclePlatform platform) {
-        logger.info("Initializing Terra %s mod...", modName);
+        logger.info("Initializing Terra {} mod...", modName);
     
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
                 CommandExecutionCoordinator.simpleCoordinator(),
