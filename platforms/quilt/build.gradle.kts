@@ -15,15 +15,6 @@ dependencies {
     annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
     
-    modImplementation("com.github.the-glitch-network:minecraft-gudasm:${Versions.Mod.minecraftGudAsm}") {
-        exclude("net.fabricmc")
-        exclude("net.fabricmc.fabric-api")
-    }
-    include("com.github.the-glitch-network:minecraft-gudasm:${Versions.Mod.minecraftGudAsm}") {
-        exclude("net.fabricmc")
-        exclude("net.fabricmc.fabric-api")
-    }
-    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentQuilt"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }

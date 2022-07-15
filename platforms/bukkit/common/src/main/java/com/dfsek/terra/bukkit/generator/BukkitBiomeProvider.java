@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +22,13 @@ public class BukkitBiomeProvider extends BiomeProvider implements Handle {
     @Override
     public @NotNull org.bukkit.block.Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
         Biome biome = delegate.getBiome(x, y, z, worldInfo.getSeed());
-        return (org.bukkit.block.Biome) biome.getPlatformBiome().getHandle();
+        return ((BukkitPlatformBiome)biome.getPlatformBiome().get()).getBukkitBiome();
     }
     
     @Override
     public @NotNull List<org.bukkit.block.Biome> getBiomes(@NotNull WorldInfo worldInfo) {
         return StreamSupport.stream(delegate.getBiomes().spliterator(), false)
-                            .map(terraBiome -> (org.bukkit.block.Biome) terraBiome.getPlatformBiome().getHandle())
+                            .map(terraBiome -> ((BukkitPlatformBiome)terraBiome.getPlatformBiome().get()).getBukkitBiome())
                             .collect(Collectors.toList());
     }
     

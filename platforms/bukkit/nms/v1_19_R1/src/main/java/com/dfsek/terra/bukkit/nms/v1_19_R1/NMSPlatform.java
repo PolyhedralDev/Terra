@@ -6,7 +6,6 @@ import com.dfsek.tectonic.api.exception.LoadException;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.bukkit.BukkitAddon;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import com.dfsek.terra.bukkit.nms.v1_19_R1.config.BiomeAdditionsSoundTemplate;

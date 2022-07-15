@@ -3,6 +3,8 @@ package com.dfsek.terra.bukkit.nms.v1_19_R1.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import com.dfsek.terra.api.util.Range;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
 
@@ -12,13 +14,10 @@ public class MusicSoundTemplate implements ObjectTemplate<Music> {
     @Default
     private SoundEvent sound = null;
     
-    @Value("min-delay")
+    @Value("delay")
     @Default
-    private Integer minDelay = null;
-    
-    @Value("max-delay")
-    @Default
-    private Integer maxDelay = null;
+    private Range delay = null;
+
     
     @Value("replace-current-music")
     @Default
@@ -26,10 +25,10 @@ public class MusicSoundTemplate implements ObjectTemplate<Music> {
     
     @Override
     public Music get() {
-        if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
+        if(sound == null || delay == null || replaceCurrentMusic == null) {
             return null;
         } else {
-            return new Music(sound, minDelay, maxDelay, replaceCurrentMusic);
+            return new Music(sound, delay.getMin(), delay.getMax(), replaceCurrentMusic);
         }
     }
 }

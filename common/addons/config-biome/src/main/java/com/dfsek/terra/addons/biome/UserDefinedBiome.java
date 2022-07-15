@@ -9,6 +9,7 @@ package com.dfsek.terra.addons.biome;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.Context;
@@ -44,8 +45,8 @@ public class UserDefinedBiome implements Biome {
     }
     
     @Override
-    public @Nullable PlatformBiome getPlatformBiome() {
-        return platformBiome;
+    public Optional<PlatformBiome> getPlatformBiome() {
+        return Optional.ofNullable(platformBiome);
     }
     
     @Override

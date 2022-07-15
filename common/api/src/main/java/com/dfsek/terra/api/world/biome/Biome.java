@@ -10,6 +10,7 @@ package com.dfsek.terra.api.world.biome;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.dfsek.terra.api.properties.PropertyHolder;
@@ -26,7 +27,7 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
      *
      * @return The platform biome.
      */
-    @Nullable PlatformBiome getPlatformBiome();
+    Optional<PlatformBiome> getPlatformBiome();
     
     /**
      * Get the color of this biome.

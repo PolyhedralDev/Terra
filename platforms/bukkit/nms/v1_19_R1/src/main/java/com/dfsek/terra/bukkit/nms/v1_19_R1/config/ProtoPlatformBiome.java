@@ -20,17 +20,21 @@ package com.dfsek.terra.bukkit.nms.v1_19_R1.config;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.nms.v1_19_R1.util.MinecraftUtil;
 
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
+import org.bukkit.craftbukkit.v1_19_R1.block.CraftBlock;
 
 
-public class ProtoPlatformBiome implements PlatformBiome {
+public class ProtoPlatformBiome implements PlatformBiome, BukkitPlatformBiome {
     private final ResourceLocation identifier;
     
     private final ResourceKey<Biome> biome;
-    
+
     public ProtoPlatformBiome(ResourceLocation identifier, ResourceKey<Biome> biome) {
         this.identifier = identifier;
         this.biome = biome;
@@ -47,5 +51,10 @@ public class ProtoPlatformBiome implements PlatformBiome {
     
     public ResourceKey<Biome> getBiome() {
         return biome;
+    }
+    
+    @Override
+    public org.bukkit.block.Biome getBukkitBiome() {
+        return org.bukkit.block.Biome.CUSTOM;
     }
 }
