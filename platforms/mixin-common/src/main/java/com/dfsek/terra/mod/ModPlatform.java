@@ -12,7 +12,9 @@ import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.VillagerType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
@@ -35,29 +37,34 @@ import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
 import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
 import com.dfsek.terra.mod.config.BiomeParticleConfigTemplate;
 import com.dfsek.terra.mod.config.EntityTypeTemplate;
+import com.dfsek.terra.mod.config.FertilizableConfig;
 import com.dfsek.terra.mod.config.MusicSoundTemplate;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.SoundEventTemplate;
 import com.dfsek.terra.mod.config.SpawnCostConfig;
 import com.dfsek.terra.mod.config.SpawnEntryTemplate;
-import com.dfsek.terra.mod.config.SpawnGroupTemplate;
 import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.config.VillagerTypeTemplate;
 import com.dfsek.terra.mod.handle.MinecraftItemHandle;
 import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
+import com.dfsek.terra.mod.util.BiomeUtil;
 import com.dfsek.terra.mod.util.PresetUtil;
 
 
 public abstract class ModPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
-
+    
     public abstract MinecraftServer getServer();
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
                 .forEach(pack -> PresetUtil.createDefault(pack).apply(registerFunction));
+    }
+    
+    public RegistryKey<Biome> getBiomeKey(Identifier identifier) {
+        return BiomeUtil.getBiomeKey(identifier);
     }
     
     @Override
@@ -78,6 +85,7 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(GrassColorModifier.class,
                                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                                         Locale.ROOT)))
+                .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
                 .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
                 .registerLoader(SoundEvent.class, SoundEventTemplate::new)
                 .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
@@ -86,16 +94,16 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(EntityType.class, EntityTypeTemplate::new)
                 .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
                 .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
-                .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
                 .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
                 .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
-                .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+                .registerLoader(VillagerType.class, VillagerTypeTemplate::new)
+                .registerLoader(FertilizableConfig.class, FertilizableConfig::new);
     }
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
         if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
-        return new ProtoPlatformBiome(identifier);
+        return new ProtoPlatformBiome(identifier, getBiomeKey(identifier));
     }
     
     @Override

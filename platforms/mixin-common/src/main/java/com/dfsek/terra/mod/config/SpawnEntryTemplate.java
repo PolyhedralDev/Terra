@@ -6,6 +6,8 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 
+import com.dfsek.terra.api.util.Range;
+
 
 public class SpawnEntryTemplate implements ObjectTemplate<SpawnEntry> {
     @Value("type")
@@ -16,16 +18,12 @@ public class SpawnEntryTemplate implements ObjectTemplate<SpawnEntry> {
     @Default
     private Integer weight = null;
     
-    @Value("min-group-size")
+    @Value("group-size")
     @Default
-    private Integer minGroupSize = null;
-    
-    @Value("max-group-size")
-    @Default
-    private Integer maxGroupSize = null;
+    private Range groupSize = null;
     
     @Override
     public SpawnEntry get() {
-        return new SpawnEntry(type, weight, minGroupSize, maxGroupSize);
+        return new SpawnEntry(type, weight, groupSize.getMin(), groupSize.getMax());
     }
 }

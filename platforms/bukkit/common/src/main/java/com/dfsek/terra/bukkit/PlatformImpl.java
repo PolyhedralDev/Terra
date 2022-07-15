@@ -18,8 +18,6 @@
 package com.dfsek.terra.bukkit;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-import com.dfsek.tectonic.api.depth.DepthTracker;
-import com.dfsek.tectonic.api.exception.LoadException;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -28,18 +26,15 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 public class PlatformImpl extends AbstractPlatform {
@@ -112,13 +107,7 @@ public class PlatformImpl extends AbstractPlatform {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> handle.createBlockState((String) o))
-                .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
                 .registerLoader(EntityType.class, (type, o, loader, depthTracker) -> EntityType.valueOf((String) o));
         
-    }
-    
-    private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
-        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
-        return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }
 }

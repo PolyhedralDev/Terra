@@ -143,10 +143,10 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
          */
         return vanilla.getBaseColumn(x, z, world, noiseConfig);
     }
-
+    
     @Override
     public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
-
+    
     }
     
     @Override
@@ -187,7 +187,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
             }
         });
     }
-
+    
     private List<ChunkPos> generateRingPositions(StructureSet holder, RandomState randomstate,
                                                  ConcentricRingsStructurePlacement concentricringsstructureplacement) { // Spigot
         if(concentricringsstructureplacement.count() == 0) {

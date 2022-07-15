@@ -7,6 +7,7 @@ import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import net.minecraft.village.VillagerType;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
@@ -14,81 +15,102 @@ import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import com.dfsek.terra.api.properties.Properties;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
-    @Value("colors.grass")
-    @Default
-    private Integer grassColor = null;
     
-    @Value("colors.fog")
+    @Value("minecraft.fertilizables")
     @Default
-    private Integer fogColor = null;
+    private Map<Identifier, FertilizableConfig> fertilizables = Collections.emptyMap();
     
-    @Value("colors.water")
+    @Value("minecraft.tags")
     @Default
-    private Integer waterColor = null;
+    private List<Identifier> tags = Collections.emptyList();
     
-    @Value("colors.water-fog")
+    @Value("minecraft.colors.grass")
     @Default
-    private Integer waterFogColor = null;
+    private Integer grassColor = 0;
     
-    @Value("colors.foliage")
+    @Value("minecraft.colors.fog")
     @Default
-    private Integer foliageColor = null;
+    private Integer fogColor = 0;
     
-    @Value("colors.sky")
+    @Value("minecraft.colors.water")
     @Default
-    private Integer skyColor = null;
+    private Integer waterColor = 0;
     
-    @Value("colors.modifier")
+    @Value("minecraft.colors.water-fog")
     @Default
-    private GrassColorModifier grassColorModifier = null;
+    private Integer waterFogColor = 0;
     
-    @Value("particles")
+    @Value("minecraft.colors.foliage")
+    @Default
+    private Integer foliageColor = 0;
+    
+    @Value("minecraft.colors.sky")
+    @Default
+    private Integer skyColor = 0;
+    
+    @Value("minecraft.colors.modifier")
+    @Default
+    private GrassColorModifier grassColorModifier = GrassColorModifier.NONE;
+    
+    @Value("minecraft.particles")
     @Default
     private BiomeParticleConfig particleConfig = null;
     
-    @Value("climate.precipitation")
+    @Value("minecraft.climate.precipitation")
     @Default
-    private Precipitation precipitation = null;
+    private Precipitation precipitation = Precipitation.NONE;
     
-    @Value("climate.temperature")
+    @Value("minecraft.climate.temperature")
     @Default
-    private Float temperature = null;
+    private Float temperature = 0.0f;
     
-    @Value("climate.temperature-modifier")
+    @Value("minecraft.climate.temperature-modifier")
     @Default
-    private TemperatureModifier temperatureModifier = null;
+    private TemperatureModifier temperatureModifier = TemperatureModifier.NONE;
     
-    @Value("climate.downfall")
+    @Value("minecraft.climate.downfall")
     @Default
-    private Float downfall = null;
+    private Float downfall = 0.0f;
     
-    @Value("sound.loop-sound.sound")
+    @Value("minecraft.sound.loop-sound.sound")
     @Default
     private SoundEvent loopSound = null;
     
-    @Value("sound.mood-sound")
+    @Value("minecraft.sound.mood-sound")
     @Default
     private BiomeMoodSound moodSound = null;
     
-    @Value("sound.additions-sound")
+    @Value("minecraft.sound.additions-sound")
     @Default
     private BiomeAdditionsSound additionsSound = null;
     
-    @Value("sound.music")
+    @Value("minecraft.sound.music")
     @Default
     private MusicSound music = null;
     
-    @Value("spawning")
+    @Value("minecraft.spawning")
     @Default
-    private SpawnSettings spawnSettings = null;
+    private SpawnSettings spawnSettings = SpawnSettings.INSTANCE;
     
-    @Value("villager-type")
+    @Value("minecraft.villager-type")
     @Default
     private VillagerType villagerType = null;
+    
+    public Map<Identifier, FertilizableConfig> getFertilizables() {
+        return fertilizables;
+    }
+    
+    public List<Identifier> getTags() {
+        return tags;
+    }
     
     public Integer getGrassColor() {
         return grassColor;

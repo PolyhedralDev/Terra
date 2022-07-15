@@ -45,7 +45,7 @@ public class TerraBiomeSource extends BiomeSource {
                       .stream(pack.getBiomeProvider()
                                   .getBiomes()
                                   .spliterator(), false)
-                      .map(b -> biomes.getOrCreateEntry(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate())));
+                      .map(b -> biomes.getOrCreateEntry(((ProtoPlatformBiome) b.getPlatformBiome().get()).getBiome())));
         this.biomeRegistry = biomes;
         this.pack = pack;
         
@@ -63,7 +63,7 @@ public class TerraBiomeSource extends BiomeSource {
                 .entryOf(((ProtoPlatformBiome) pack
                                  .getBiomeProvider()
                                  .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
-                                 .getPlatformBiome()).getDelegate()
+                                 .getPlatformBiome().get()).getBiome()
                         );
     }
     

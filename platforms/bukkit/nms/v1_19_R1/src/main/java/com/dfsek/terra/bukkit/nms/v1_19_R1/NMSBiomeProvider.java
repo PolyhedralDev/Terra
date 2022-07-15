@@ -9,7 +9,7 @@ import net.minecraft.world.level.biome.Climate.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.bukkit.nms.v1_19_R1.config.ProtoPlatformBiome;
 
 
 public class NMSBiomeProvider extends BiomeSource {
@@ -20,9 +20,7 @@ public class NMSBiomeProvider extends BiomeSource {
     public NMSBiomeProvider(BiomeProvider delegate, long seed) {
         super(delegate.stream()
                       .map(biome -> Registries.biomeRegistry()
-                                              .getHolderOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                                                                                                                .get(NMSBiomeInfo.class)
-                                                                                                                .biomeKey())));
+                                              .getHolderOrThrow(((ProtoPlatformBiome) biome.getPlatformBiome()).getBiome())));
         this.delegate = delegate;
         this.seed = seed;
     }
@@ -34,9 +32,7 @@ public class NMSBiomeProvider extends BiomeSource {
     
     @Override
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, @NotNull Sampler sampler) {
-        return biomeRegistry.getHolderOrThrow(((BukkitPlatformBiome) delegate.getBiome(x << 2, y << 2, z << 2, seed)
-                                                                             .getPlatformBiome()).getContext()
-                                                                                                 .get(NMSBiomeInfo.class)
-                                                                                                 .biomeKey());
+        return biomeRegistry.getHolderOrThrow(((ProtoPlatformBiome) delegate.getBiome(x << 2, y << 2, z << 2, seed)
+                                                                            .getPlatformBiome()).getBiome());
     }
 }

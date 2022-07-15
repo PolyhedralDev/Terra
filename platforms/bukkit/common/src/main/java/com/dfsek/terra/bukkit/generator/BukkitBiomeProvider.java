@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 public class BukkitBiomeProvider extends BiomeProvider implements Handle {
@@ -20,13 +21,13 @@ public class BukkitBiomeProvider extends BiomeProvider implements Handle {
     @Override
     public @NotNull org.bukkit.block.Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
         Biome biome = delegate.getBiome(x, y, z, worldInfo.getSeed());
-        return (org.bukkit.block.Biome) biome.getPlatformBiome().getHandle();
+        return ((BukkitPlatformBiome) biome.getPlatformBiome().get()).getBukkitBiome();
     }
     
     @Override
     public @NotNull List<org.bukkit.block.Biome> getBiomes(@NotNull WorldInfo worldInfo) {
         return StreamSupport.stream(delegate.getBiomes().spliterator(), false)
-                            .map(terraBiome -> (org.bukkit.block.Biome) terraBiome.getPlatformBiome().getHandle())
+                            .map(terraBiome -> ((BukkitPlatformBiome) terraBiome.getPlatformBiome().get()).getBukkitBiome())
                             .collect(Collectors.toList());
     }
     

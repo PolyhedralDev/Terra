@@ -15,7 +15,6 @@ dependencies {
     annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
     
-    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentQuilt"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }

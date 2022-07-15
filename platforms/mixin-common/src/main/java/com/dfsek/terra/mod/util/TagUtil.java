@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public final class TagUtil {
@@ -51,44 +52,19 @@ public final class TagUtil {
     }
     
     public static void registerBiomeTags(Registry<Biome> registry) {
-        logger.info("Doing biome tag garbage....");
+        logger.info("Doing data-driven biome tag garbage....");
+        logger.info("who let this data drive?");
         Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = tagsToMutableMap(registry);
         
-        MinecraftUtil
-                .getTerraBiomeMap()
-                .forEach((vb, terraBiomes) ->
-                                 MinecraftUtil
-                                         .getEntry(registry, vb)
-                                         .ifPresentOrElse(
-                                                 vanilla -> terraBiomes
-                                                         .forEach(tb -> MinecraftUtil
-                                                                 .getEntry(registry, tb)
-                                                                 .ifPresentOrElse(
-                                                                         terra -> {
-                                                                             logger.debug(
-                                                                                     vanilla.getKey()
-                                                                                            .orElseThrow()
-                                                                                            .getValue() +
-                                                                                     " (vanilla for " +
-                                                                                     terra.getKey()
-                                                                                          .orElseThrow()
-                                                                                          .getValue() +
-                                                                                     ": " +
-                                                                                     vanilla.streamTags()
-                                                                                            .toList());
-                                                                    
-                                                                             vanilla.streamTags()
-                                                                                    .forEach(
-                                                                                            tag -> collect
-                                                                                                    .computeIfAbsent(
-                                                                                                            tag,
-                                                                                                            t -> new ArrayList<>())
-                                                                                                    .add(terra));
-                                                                         },
-                                                                         () -> logger.error(
-                                                                                 "No such biome: {}",
-                                                                                 tb))),
-                                                 () -> logger.error("No vanilla biome: {}", vb)));
+        BiomeUtil.TERRA_BIOME_TAG_MAP.forEach((tag, biomeList) -> {
+            collect.getOrDefault(tag, new ArrayList<>())
+                   .addAll(biomeList.stream()
+                                    .map(registry::getOrEmpty)
+                                    .filter(Optional::isPresent)
+                                    .map(Optional::get)
+                                    .map(RegistryEntry::of)
+                                    .toList());
+        });
         
         registry.clearTags();
         registry.populateTags(ImmutableMap.copyOf(collect));

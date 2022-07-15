@@ -84,7 +84,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             Path bootstrapFolder = addonsFolder.resolve("bootstrap");
             Files.createDirectories(bootstrapFolder);
             logger.debug("Loading bootstrap addons from {}", bootstrapFolder);
-
+            
             try(Stream<Path> bootstrapAddons = Files.walk(bootstrapFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
                 return bootstrapAddons.filter(path -> path.toFile().isFile())
                                       .filter(path -> path.toFile().canRead())
@@ -96,7 +96,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
             throw new UncheckedIOException(e);
         }
     }
-
+    
     @Override
     public String getID() {
         return "BOOTSTRAP";

@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
 import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
-import com.dfsek.terra.forge.util.BiomeUtil;
+import com.dfsek.terra.forge.util.ForgeBiomeUtil;
 import com.dfsek.terra.mod.data.Codecs;
 
 
@@ -64,7 +64,7 @@ public class ForgeEntryPoint {
     public static void initialize(RegisterHelper<Biome> helper) {
         getPlatform().getEventManager().callEvent(
                 new PlatformInitializationEvent());
-        BiomeUtil.registerBiomes(helper);
+        ForgeBiomeUtil.registerBiomes(helper);
     }
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
