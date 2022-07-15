@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
-import com.dfsek.terra.bukkit.nms.v1_19_R1.config.ProtoPlatformBiome;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -11,6 +9,7 @@ import net.minecraft.world.level.biome.Climate.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.bukkit.nms.v1_19_R1.config.ProtoPlatformBiome;
 
 
 public class NMSBiomeProvider extends BiomeSource {
@@ -34,6 +33,6 @@ public class NMSBiomeProvider extends BiomeSource {
     @Override
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, @NotNull Sampler sampler) {
         return biomeRegistry.getHolderOrThrow(((ProtoPlatformBiome) delegate.getBiome(x << 2, y << 2, z << 2, seed)
-                                                                             .getPlatformBiome()).getBiome());
+                                                                            .getPlatformBiome()).getBiome());
     }
 }

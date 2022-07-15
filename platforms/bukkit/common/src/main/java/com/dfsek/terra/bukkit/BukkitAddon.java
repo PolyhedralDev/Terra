@@ -4,9 +4,6 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class BukkitAddon implements BaseAddon {
@@ -18,7 +15,7 @@ public class BukkitAddon implements BaseAddon {
         this.terraBukkitPlugin = terraBukkitPlugin;
     }
     
-
+    
     @Override
     public Version getVersion() {
         return VERSION;

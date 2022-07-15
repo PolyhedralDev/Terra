@@ -8,8 +8,6 @@
 package com.dfsek.terra.api.world.biome;
 
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,6 +28,11 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
     Optional<PlatformBiome> getPlatformBiome();
     
     /**
+     * Sets the platform biome this custom biome delegates to.
+     */
+    void setPlatformBiome(PlatformBiome biome);
+    
+    /**
      * Get the color of this biome.
      *
      * @return ARGB color of this biome
@@ -42,9 +45,4 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
      * @return A {@link Set} of String tags this biome holds.
      */
     Set<String> getTags();
-    
-    /**
-     * Sets the platform biome this custom biome delegates to.
-     */
-    void setPlatformBiome(PlatformBiome biome);
 }

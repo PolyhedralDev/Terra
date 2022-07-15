@@ -85,7 +85,7 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(GrassColorModifier.class,
                                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                                         Locale.ROOT)))
-                .registerLoader(SpawnGroup.class,(type, o, loader, depthTracker) ->  SpawnGroup.valueOf((String) o))
+                .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
                 .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
                 .registerLoader(SoundEvent.class, SoundEventTemplate::new)
                 .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)

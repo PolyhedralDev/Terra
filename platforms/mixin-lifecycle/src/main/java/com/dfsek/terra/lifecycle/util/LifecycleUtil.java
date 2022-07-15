@@ -9,7 +9,7 @@ import com.dfsek.terra.mod.util.BiomeUtil;
 
 public final class LifecycleUtil {
     private LifecycleUtil() {
-
+    
     }
     
     public static void initialize() {

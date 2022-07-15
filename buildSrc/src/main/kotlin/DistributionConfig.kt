@@ -8,7 +8,6 @@ import java.nio.file.StandardCopyOption
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
-import org.gradle.kotlin.dsl.TaskContainerScope
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
@@ -88,7 +87,8 @@ fun Project.configureDistribution() {
                 val jar = getJarTask().archiveFileName.get()
                 resources.computeIfAbsent(
                     if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "addons/bootstrap"
-                    else "addons") { ArrayList() }.add(jar)
+                    else "addons"
+                                         ) { ArrayList() }.add(jar)
             }
             
             val options = DumperOptions()
@@ -109,7 +109,7 @@ fun Project.configureDistribution() {
             FileWriter(manifest).use {
                 yaml.dump(resources, it)
             }
-
+            
         }
     }
     

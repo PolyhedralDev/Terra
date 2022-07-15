@@ -3,9 +3,10 @@ package com.dfsek.terra.bukkit.nms.v1_19_R1.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import java.util.List;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
+
+import java.util.List;
 
 
 public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {

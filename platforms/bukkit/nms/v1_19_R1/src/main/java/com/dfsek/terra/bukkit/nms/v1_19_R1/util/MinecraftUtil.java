@@ -1,13 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1.util;
 
-import com.dfsek.terra.bukkit.nms.v1_19_R1.config.VanillaBiomeProperties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -21,11 +13,19 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.nms.v1_19_R1.config.VanillaBiomeProperties;
 
 
 public final class MinecraftUtil {
@@ -110,7 +110,7 @@ public final class MinecraftUtil {
         builder.temperatureAdjustment(Objects.requireNonNull(vanillaBiomeProperties.getTemperatureModifier()));
         
         builder.mobSpawnSettings(Objects.requireNonNull(vanillaBiomeProperties.getSpawnSettings()));
-    
+        
         return builder
                 .specialEffects(effects.build())
                 .generationSettings(generationSettings.build())

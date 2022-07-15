@@ -3,10 +3,6 @@ package com.dfsek.terra.bukkit.nms.v1_19_R1.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
@@ -18,6 +14,11 @@ import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import com.dfsek.terra.api.properties.Properties;
 
 

@@ -110,7 +110,7 @@ public final class MinecraftUtil {
         builder.temperatureModifier(Objects.requireNonNull(vanillaBiomeProperties.getTemperatureModifier()));
         
         builder.spawnSettings(Objects.requireNonNull(vanillaBiomeProperties.getSpawnSettings()));
-    
+        
         return builder
                 .effects(effects.build())
                 .generationSettings(generationSettings.build())

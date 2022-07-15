@@ -29,16 +29,16 @@ object Versions {
     
     object Mod {
         const val mixin = "0.11.2+mixin.0.8.5"
-    
+        
         const val minecraft = "1.19"
         const val yarn = "$minecraft+build.1"
         const val fabricLoader = "0.14.2"
-    
+        
         const val architecuryLoom = "0.12.0.290"
         const val architecturyPlugin = "3.4-SNAPSHOT"
-    
+        
         const val loomQuiltflower = "1.7.1"
-    
+        
         const val lazyDfu = "0.1.2"
     }
     

@@ -35,6 +35,7 @@ public class Reflection {
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
     
+    
     @Proxies(VillagerTypeProxy.class)
     public interface VillagerTypeProxy {
         @Static

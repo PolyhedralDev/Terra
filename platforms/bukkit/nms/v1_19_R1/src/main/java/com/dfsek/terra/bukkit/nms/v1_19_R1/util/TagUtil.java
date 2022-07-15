@@ -36,7 +36,7 @@ public final class TagUtil {
         logger.info("Doing data-driven biome tag garbage....");
         logger.info("who let this data drive?");
         Map<TagKey<Biome>, List<Holder<Biome>>> collect = tagsToMutableMap(registry);
-    
+        
         BiomeUtil.TERRA_BIOME_TAG_MAP.forEach((tag, biomeList) -> {
             collect.getOrDefault(tag, new ArrayList<>())
                    .addAll(biomeList.stream()
@@ -46,10 +46,10 @@ public final class TagUtil {
                                     .map(Holder::direct)
                                     .toList());
         });
-    
+        
         registry.resetTags();
         registry.bindTags(ImmutableMap.copyOf(collect));
-    
+        
         if(logger.isDebugEnabled()) {
             registry.holders()
                     .map(e -> e.key().location() + ": " +

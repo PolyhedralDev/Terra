@@ -17,10 +17,11 @@
 
 package com.dfsek.terra.bukkit.nms.v1_19_R1.util;
 
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.info.WorldProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelHeightAccessor;
+
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public final class MinecraftAdapter {

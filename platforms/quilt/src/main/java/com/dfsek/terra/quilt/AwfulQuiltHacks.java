@@ -23,12 +23,12 @@ public final class AwfulQuiltHacks {
         } catch(ReflectiveOperationException e) {
             throw new RuntimeException("Failed to load Classloader fields", e);
         }
-
+        
         ADD_URL_METHOD = tempAddUrlMethod;
     }
-
+    
     private AwfulQuiltHacks() { }
-
+    
     /**
      * Hackily load the package which a mixin may exist within.
      * <p>

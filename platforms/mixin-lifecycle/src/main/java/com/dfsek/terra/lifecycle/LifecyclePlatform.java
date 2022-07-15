@@ -80,9 +80,9 @@ public abstract class LifecyclePlatform extends ModPlatform {
                 LOGGER.warn("Failed to parse Minecraft version", e);
             }
         }
-    
+        
         addons.addAll(getPlatformMods());
-    
+        
         return addons;
     }
     
