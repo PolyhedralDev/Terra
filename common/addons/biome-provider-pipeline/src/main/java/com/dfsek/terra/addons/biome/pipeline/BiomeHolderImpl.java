@@ -12,69 +12,77 @@ import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeExpander;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.api.util.vector.Vector2;
 
 
 public class BiomeHolderImpl implements BiomeHolder {
-    private final Vector2.Mutable origin;
     private final int width;
     private final int offset;
+    private final double totalWidth;
+    private final int originalWidth;
     private BiomeDelegate[][] biomes;
     
-    public BiomeHolderImpl(int width, Vector2.Mutable origin) {
+    public BiomeHolderImpl(int width, double totalWidth) {
+        this.totalWidth = totalWidth;
+        this.originalWidth = width;
         width += 4;
         this.width = width;
         biomes = new BiomeDelegate[width][width];
-        this.origin = origin;
         this.offset = 2;
     }
     
-    private BiomeHolderImpl(BiomeDelegate[][] biomes, Vector2.Mutable origin, int width, int offset) {
+    private BiomeHolderImpl(BiomeDelegate[][] biomes, int width, int offset, double totalWidth, int originalWidth) {
         this.biomes = biomes;
-        this.origin = origin;
         this.width = width;
         this.offset = 2 * offset;
+        this.totalWidth = totalWidth;
+        this.originalWidth = originalWidth;
+    }
+    
+    private double normalise(double in) {
+        return totalWidth * ((in - offset) / originalWidth);
     }
     
     @Override
-    public BiomeHolder expand(BiomeExpander expander, long seed) {
+    public BiomeHolder expand(BiomeExpander expander, int x, int z, long seed) {
         BiomeDelegate[][] old = biomes;
         int newWidth = width * 2 - 1;
         
         biomes = new BiomeDelegate[newWidth][newWidth];
         
-        for(int x = 0; x < width; x++) {
-            for(int z = 0; z < width; z++) {
-                biomes[x * 2][z * 2] = old[x][z];
-                if(z != width - 1)
-                    biomes[x * 2][z * 2 + 1] = expander.getBetween(x + origin.getX(), z + 1 + origin.getZ(), seed, old[x][z],
-                                                                   old[x][z + 1]);
-                if(x != width - 1)
-                    biomes[x * 2 + 1][z * 2] = expander.getBetween(x + 1 + origin.getX(), z + origin.getZ(), seed, old[x][z],
-                                                                   old[x + 1][z]);
-                if(x != width - 1 && z != width - 1)
-                    biomes[x * 2 + 1][z * 2 + 1] = expander.getBetween(x + 1 + origin.getX(), z + 1 + origin.getZ(), seed, old[x][z],
-                                                                       old[x + 1][z + 1], old[x][z + 1], old[x + 1][z]);
+        
+        for(int xi = 0; xi < width; xi++) {
+            for(int zi = 0; zi < width; zi++) {
+                biomes[xi * 2][zi * 2] = old[xi][zi];
+                if(zi != width - 1)
+                    biomes[xi * 2][zi * 2 + 1] = expander.getBetween(normalise(xi) + x, normalise(zi + 1) + z, seed, old[xi][zi],
+                                                                     old[xi][zi + 1]);
+                if(xi != width - 1)
+                    biomes[xi * 2 + 1][zi * 2] = expander.getBetween(normalise(xi + 1) + x, normalise(zi) + z, seed, old[xi][zi],
+                                                                     old[xi + 1][zi]);
+                if(xi != width - 1 && zi != width - 1)
+                    biomes[xi * 2 + 1][zi * 2 + 1] = expander.getBetween(normalise(xi + 1) + x, normalise(zi + 1) + z, seed,
+                                                                         old[xi][zi],
+                                                                         old[xi + 1][zi + 1], old[xi][zi + 1], old[xi + 1][zi]);
             }
         }
-        return new BiomeHolderImpl(biomes, origin.setX(origin.getX() * 2 - 1).setZ(origin.getZ() * 2 - 1), newWidth, offset);
+        return new BiomeHolderImpl(biomes, newWidth, offset, totalWidth, originalWidth * 2 - 1);
     }
     
     @Override
-    public void mutate(BiomeMutator mutator, long seed) {
-        for(int x = 0; x < width; x++) {
-            for(int z = 0; z < width; z++) {
-                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(this, x, z);
-                biomes[x][z] = mutator.mutate(viewPoint, x + origin.getX(), z + origin.getZ(), seed);
+    public void mutate(BiomeMutator mutator, int x, int z, long seed) {
+        for(int xi = 0; xi < width; xi++) {
+            for(int zi = 0; zi < width; zi++) {
+                BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(this, xi, zi);
+                biomes[xi][zi] = mutator.mutate(viewPoint, normalise(xi) + x, normalise(zi) + z, seed);
             }
         }
     }
     
     @Override
-    public void fill(BiomeSource source, long seed) {
-        for(int x = 0; x < width; x++) {
-            for(int z = 0; z < width; z++) {
-                biomes[x][z] = source.getBiome(origin.getX() + x, origin.getZ() + z, seed);
+    public void fill(BiomeSource source, int x, int z, long seed) {
+        for(int xi = 0; xi < width; xi++) {
+            for(int zi = 0; zi < width; zi++) {
+                biomes[xi][zi] = source.getBiome(normalise(xi) + x, normalise(zi) + z, seed);
             }
         }
     }
