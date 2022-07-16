@@ -42,7 +42,7 @@ public class BiomePipeline {
     public BiomeHolder getBiomes(int x, int z, long seed) {
         x *= size;
         z *= size;
-        BiomeHolder holder = new BiomeHolderImpl(init, size, resolution);
+        BiomeHolder holder = new BiomeHolderImpl(init, size);
         holder.fill(source, x, z, seed);
         for(Stage stage : stages) {
             holder = stage.apply(holder, x, z, seed);
