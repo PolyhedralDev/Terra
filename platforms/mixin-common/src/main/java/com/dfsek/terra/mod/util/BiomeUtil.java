@@ -62,7 +62,13 @@ public class BiomeUtil {
      */
     protected static void registerBiome(Biome biome, ConfigPack pack,
                                         com.dfsek.terra.api.registry.key.RegistryKey id) {
-        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+        VanillaBiomeProperties vanillaBiomeProperties;
+        if (biome.getContext().has(VanillaBiomeProperties.class)) {
+            vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+        } else {
+            vanillaBiomeProperties = new VanillaBiomeProperties();
+        }
+
         
         net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(vanillaBiomeProperties);
         
