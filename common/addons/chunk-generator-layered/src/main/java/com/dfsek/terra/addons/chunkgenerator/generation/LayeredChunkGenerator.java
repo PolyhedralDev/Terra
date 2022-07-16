@@ -52,6 +52,10 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                     
                     if (previousLayerPalette == layerPalette) {
                         paletteLevel++;
+                    } else if (layerPalette.resetsGroup()) {
+                        paletteLevel = 0;
+                    } else if (previousLayerPalette != null && layerPalette.getGroup() == previousLayerPalette.getGroup()) {
+                        paletteLevel++;
                     } else {
                         paletteLevel = 0;
                     }

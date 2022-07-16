@@ -18,11 +18,12 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
-public class BiomeDefinedLayerPalette implements LayerPalette {
+public class BiomeDefinedLayerPalette extends LayerPalette {
     
     private final Palette defaultPalette;
     
-    public BiomeDefinedLayerPalette(Palette defaultPalette) {
+    public BiomeDefinedLayerPalette(Group group, boolean resetsGroup, Palette defaultPalette) {
+        super(group, resetsGroup);
         this.defaultPalette = defaultPalette;
     }
     

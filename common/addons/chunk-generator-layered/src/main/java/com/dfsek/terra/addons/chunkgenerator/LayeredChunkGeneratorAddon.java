@@ -88,6 +88,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                     paletteTypeRegistry.register(addon.key("PALETTE"), SimpleLayerPaletteTemplate::new);
                     paletteTypeRegistry.register(addon.key("BIOME_DEFINED"), BiomeDefinedLayerPaletteTemplate::new);
                     CheckedRegistry<InstanceWrapper<LayerPalette>> paletteRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TOKEN);
+                    event.getPack().applyLoader(LayerPalette.Group.class, new LayerPalette.Group.Loader(event.getPack()));
                     event.loadTemplate(new LayerPalettePackConfigTemplate()).getPalettes().forEach((key, palette) -> {
                         paletteRegistry.register(addon.key(key), new InstanceWrapper<>(palette));
                     });
