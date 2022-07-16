@@ -1,11 +1,11 @@
-package com.dfsek.terra.addons.chunkgenerator.config.palette;
+package com.dfsek.terra.addons.chunkgenerator.config.pack;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.Map;
 
-import com.dfsek.terra.addons.chunkgenerator.layer.palette.LayerPalette;
+import com.dfsek.terra.addons.chunkgenerator.api.LayerPalette;
 import com.dfsek.terra.api.config.meta.Meta;
 
 

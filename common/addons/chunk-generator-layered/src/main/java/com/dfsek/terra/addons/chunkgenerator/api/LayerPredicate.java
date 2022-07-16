@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
+package com.dfsek.terra.addons.chunkgenerator.api;
 
 import com.dfsek.terra.api.world.biome.Biome;
 

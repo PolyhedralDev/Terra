@@ -2,8 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.generation;
 
 import org.jetbrains.annotations.NotNull;
 
-import com.dfsek.terra.addons.chunkgenerator.layer.palette.LayerPalette;
-import com.dfsek.terra.addons.chunkgenerator.layer.resolve.LayerResolver;
+import com.dfsek.terra.addons.chunkgenerator.api.LayerPalette;
+import com.dfsek.terra.addons.chunkgenerator.api.LayerResolver;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.Column;

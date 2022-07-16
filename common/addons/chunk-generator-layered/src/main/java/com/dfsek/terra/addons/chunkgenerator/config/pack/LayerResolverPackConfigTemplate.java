@@ -1,9 +1,9 @@
-package com.dfsek.terra.addons.chunkgenerator.config.resolve;
+package com.dfsek.terra.addons.chunkgenerator.config.pack;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.chunkgenerator.layer.resolve.LayerResolver;
+import com.dfsek.terra.addons.chunkgenerator.api.LayerResolver;
 import com.dfsek.terra.api.config.meta.Meta;
 
 

@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
 
+import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 

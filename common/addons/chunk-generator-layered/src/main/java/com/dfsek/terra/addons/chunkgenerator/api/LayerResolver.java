@@ -1,6 +1,5 @@
-package com.dfsek.terra.addons.chunkgenerator.layer.resolve;
+package com.dfsek.terra.addons.chunkgenerator.api;
 
-import com.dfsek.terra.addons.chunkgenerator.layer.palette.LayerPalette;
 import com.dfsek.terra.api.world.biome.Biome;
 
 public interface LayerResolver {
