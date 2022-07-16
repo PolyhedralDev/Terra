@@ -14,6 +14,7 @@ import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPalettePackConfigT
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPredicatePackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerResolverPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerSamplerPackConfigTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.BiomeDefinedLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.SimpleLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
@@ -22,10 +23,12 @@ import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolver
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTemplate;
 import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
+import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -83,6 +86,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerPalette>>> paletteTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TYPE_TOKEN);
                     paletteTypeRegistry.register(addon.key("PALETTE"), SimpleLayerPaletteTemplate::new);
+                    paletteTypeRegistry.register(addon.key("BIOME_DEFINED"), BiomeDefinedLayerPaletteTemplate::new);
                     CheckedRegistry<InstanceWrapper<LayerPalette>> paletteRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TOKEN);
                     event.loadTemplate(new LayerPalettePackConfigTemplate()).getPalettes().forEach((key, palette) -> {
                         paletteRegistry.register(addon.key(key), new InstanceWrapper<>(palette));
@@ -110,5 +114,11 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                                    pack -> new LayeredChunkGenerator(platform, resolver));
                 })
                 .failThrough();
+        
+        platform.getEventManager()
+                .getHandler(FunctionalEventHandler.class)
+                .register(addon, ConfigurationLoadEvent.class)
+                .priority(1000)
+                .then(BiomeDefinedLayerPalette.injectLayerPalettes);
     }
 }
