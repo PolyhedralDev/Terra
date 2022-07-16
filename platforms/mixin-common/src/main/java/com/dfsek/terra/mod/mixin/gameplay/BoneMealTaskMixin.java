@@ -1,6 +1,8 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
+import com.dfsek.terra.api.structure.Structure;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.brain.task.BoneMealTask;
@@ -38,10 +40,10 @@ public class BoneMealTaskMixin {
                 Boolean villagerFertilizable = config.isVillagerFertilizable();
                 if(villagerFertilizable != null) {
                     if(villagerFertilizable) {
-                        ConfiguredStructure canGrow = config.getCanGrow();
+                        Structure canGrow = config.getCanGrow();
                         if(canGrow != null) {
                             Random random = (Random) world.getRandom();
-                            cir.setReturnValue(canGrow.getStructure().get(random).generate(
+                            cir.setReturnValue(canGrow.generate(
                                     Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE));
                             return;
                         }

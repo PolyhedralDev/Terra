@@ -1,5 +1,7 @@
 package com.dfsek.terra.mod.util;
 
+import com.dfsek.terra.api.structure.Structure;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
@@ -31,9 +33,9 @@ public class FertilizableUtil {
             Block block = state.getBlock();
             FertilizableConfig config = map.get(Registry.BLOCK.getId(block));
             if(config != null) {
-                ConfiguredStructure canGrow = config.getCanGrow();
+                Structure canGrow = config.getCanGrow();
                 if(canGrow != null) {
-                    if(!canGrow.getStructure().get(random).generate(
+                    if(!canGrow.generate(
                             Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE)) {
                         return false;
                     }
@@ -44,7 +46,7 @@ public class FertilizableUtil {
                         return true;
                     }
                 }
-                config.getStructures().get(random).getStructure().get(random).generate(
+                config.getStructures().get(random).generate(
                         Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE);
                 return true;
             }

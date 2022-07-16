@@ -3,6 +3,9 @@ package com.dfsek.terra.bukkit.nms.v1_19_R1.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import com.dfsek.terra.api.structure.Structure;
+
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Map;
@@ -14,7 +17,7 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
     @Value("strucutres")
     @Default
-    private ProbabilityCollection<ConfiguredStructure> structures = null;
+    private ProbabilityCollection<Structure> structures = null;
     
     @Value("cooldowns")
     @Default
@@ -28,7 +31,7 @@ public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
     @Default
     private Boolean villagerFertilizable = null;
     
-    public ProbabilityCollection<ConfiguredStructure> getStructures() {
+    public ProbabilityCollection<Structure> getStructures() {
         return structures;
     }
     
