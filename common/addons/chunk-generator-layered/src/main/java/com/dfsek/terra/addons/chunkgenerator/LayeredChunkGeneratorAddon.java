@@ -6,19 +6,22 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.chunkgenerator.config.palette.BlockLayerPaletteTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPalettePackConfigTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPredicatePackConfigTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredicateTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerResolverPackConfigTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolverTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
-import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerResolver;
+import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
+import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPalettePackConfigTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPredicatePackConfigTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerResolverPackConfigTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerSamplerPackConfigTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.BlockLayerPaletteTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredicateTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolverTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTemplate;
+import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -34,6 +37,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorPr
 public class LayeredChunkGeneratorAddon implements AddonInitializer {
     
     private static final Logger logger = LoggerFactory.getLogger(LayeredChunkGenerator.class);
+    
+    public static final TypeKey<Supplier<ObjectTemplate<LayerSampler>>> LAYER_SAMPLER_TYPE_TOKEN = new TypeKey<>() {
+    };
+    
+    public static final TypeKey<InstanceWrapper<LayerSampler>> LAYER_SAMPLER_TOKEN = new TypeKey<>() {
+    };
     
     public static final TypeKey<Supplier<ObjectTemplate<LayerPalette>>> LAYER_PALETTE_TYPE_TOKEN = new TypeKey<>() {
     };
@@ -63,6 +72,14 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(1000)
+                .then(event -> {
+                    CheckedRegistry<Supplier<ObjectTemplate<LayerSampler>>> samplerTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TYPE_TOKEN);
+                    CheckedRegistry<InstanceWrapper<LayerSampler>> samplerRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TOKEN);
+                    samplerTypeRegistry.register(addon.key("SIMPLE"), SimpleLayerSamplerTemplate::new);
+                    event.loadTemplate(new LayerSamplerPackConfigTemplate()).getSamplers().forEach((key, sampler) -> {
+                        samplerRegistry.register(addon.key(key), new InstanceWrapper<>(sampler));
+                    });
+                })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerPalette>>> paletteTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TYPE_TOKEN);
                     paletteTypeRegistry.register(addon.key("BLOCK"), BlockLayerPaletteTemplate::new);
