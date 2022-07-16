@@ -11,7 +11,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 
 public class LayerPalettePackConfigTemplate implements ConfigTemplate {
     
-    @Value("generation.palettes")
+    @Value("generation.layers")
     private @Meta Map<String, LayerPalette> palettes;
     
     public Map<String, LayerPalette> getPalettes() {

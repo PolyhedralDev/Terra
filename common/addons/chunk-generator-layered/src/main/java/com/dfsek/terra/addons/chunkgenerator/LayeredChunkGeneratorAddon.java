@@ -83,8 +83,8 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerResolver>>> resolverTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_RESOLVER_TYPE_TOKEN);
-                    resolverTypeRegistry.register(addon.key("TEST_PREDICATE"), PredicateLayerResolverTemplate::new);
-                    resolverTypeRegistry.register(addon.key("USE_PALETTE"), PaletteLayerResolverTemplate::new);
+                    resolverTypeRegistry.register(addon.key("TEST"), PredicateLayerResolverTemplate::new);
+                    resolverTypeRegistry.register(addon.key("LAYER"), PaletteLayerResolverTemplate::new);
                     LayerResolver resolver = event.loadTemplate(new LayerResolverPackConfigTemplate()).getResolver();
 
                     event.getPack()

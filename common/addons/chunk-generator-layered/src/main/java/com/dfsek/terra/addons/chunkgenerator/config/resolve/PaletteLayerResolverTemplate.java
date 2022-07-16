@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 
 public class PaletteLayerResolverTemplate implements ObjectTemplate<LayerResolver> {
     
-    @Value("palette")
+    @Value("layer")
     private InstanceWrapper<LayerPalette> palette;
     
     @Override
