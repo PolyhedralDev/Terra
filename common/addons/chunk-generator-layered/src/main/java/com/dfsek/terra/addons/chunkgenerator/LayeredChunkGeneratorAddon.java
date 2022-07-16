@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPalettePackConfigT
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPredicatePackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerResolverPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerSamplerPackConfigTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.palette.BlockLayerPaletteTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.SimpleLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredicateTemplate;
@@ -82,7 +82,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerPalette>>> paletteTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TYPE_TOKEN);
-                    paletteTypeRegistry.register(addon.key("BLOCK"), BlockLayerPaletteTemplate::new);
+                    paletteTypeRegistry.register(addon.key("PALETTE"), SimpleLayerPaletteTemplate::new);
                     CheckedRegistry<InstanceWrapper<LayerPalette>> paletteRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TOKEN);
                     event.loadTemplate(new LayerPalettePackConfigTemplate()).getPalettes().forEach((key, palette) -> {
                         paletteRegistry.register(addon.key(key), new InstanceWrapper<>(palette));
