@@ -19,11 +19,14 @@ import com.dfsek.terra.addons.chunkgenerator.config.palette.SimpleLayerPaletteTe
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredicateTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerListLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTemplate;
 import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPalette;
+import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerLayerPredicate;
+import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate.CoordinateTest;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -98,6 +101,12 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                     predicateTypeRegistry.register(addon.key("BELOW"), BelowLayerPredicateTemplate::new);
                     predicateTypeRegistry.register(addon.key("RANGE"), RangeLayerPredicateTemplate::new);
                     predicateTypeRegistry.register(addon.key("SAMPLER"), SamplerLayerPredicateTemplate::new);
+                    predicateTypeRegistry.register(addon.key("SAMPLER_LIST"), SamplerListLayerPredicateTemplate::new);
+                    
+                    event.getPack().applyLoader(CoordinateTest.class, CoordinateTest.Template::new)
+                                   .applyLoader(SamplerLayerPredicate.Operator.class,
+                                                (type, o, loader, depthTracker) -> SamplerLayerPredicate.Operator.valueOf((String) o));
+                    
                     CheckedRegistry<InstanceWrapper<LayerPredicate>> predicateRegistry = event.getPack().getOrCreateRegistry(LAYER_PREDICATE_TOKEN);
                     event.loadTemplate(new LayerPredicatePackConfigTemplate()).getPredicates().forEach((key, predicate) -> {
                         predicateRegistry.register(addon.key(key), new InstanceWrapper<>(predicate));
