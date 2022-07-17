@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerPredicatePackConfi
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerResolverPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerSamplerPackConfigTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.BiomeDefinedLayerPaletteTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.palette.PlatformAirLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.SimpleLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
@@ -82,6 +83,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerSampler>>> samplerTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TYPE_TOKEN);
                     CheckedRegistry<InstanceWrapper<LayerSampler>> samplerRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TOKEN);
                     samplerTypeRegistry.register(addon.key("SIMPLE"), SimpleLayerSamplerTemplate::new);
+                    
                     event.loadTemplate(new LayerSamplerPackConfigTemplate()).getSamplers().forEach((key, sampler) -> {
                         samplerRegistry.register(addon.key(key), new InstanceWrapper<>(sampler));
                     });
@@ -90,8 +92,11 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerPalette>>> paletteTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TYPE_TOKEN);
                     paletteTypeRegistry.register(addon.key("PALETTE"), SimpleLayerPaletteTemplate::new);
                     paletteTypeRegistry.register(addon.key("BIOME_DEFINED"), BiomeDefinedLayerPaletteTemplate::new);
-                    CheckedRegistry<InstanceWrapper<LayerPalette>> paletteRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TOKEN);
+                    paletteTypeRegistry.register(addon.key("AIR"), () -> new PlatformAirLayerPaletteTemplate(platform));
+                    
                     event.getPack().applyLoader(LayerPalette.Group.class, new LayerPalette.Group.Loader(event.getPack()));
+                    
+                    CheckedRegistry<InstanceWrapper<LayerPalette>> paletteRegistry = event.getPack().getOrCreateRegistry(LAYER_PALETTE_TOKEN);
                     event.loadTemplate(new LayerPalettePackConfigTemplate()).getPalettes().forEach((key, palette) -> {
                         paletteRegistry.register(addon.key(key), new InstanceWrapper<>(palette));
                     });
