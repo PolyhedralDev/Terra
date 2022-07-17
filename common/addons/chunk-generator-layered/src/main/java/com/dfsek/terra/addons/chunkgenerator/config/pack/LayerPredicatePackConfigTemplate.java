@@ -13,7 +13,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 
 public class LayerPredicatePackConfigTemplate implements ConfigTemplate {
     
-    @Value("generation.predicates")
+    @Value("generation.tests")
     @Default
     private @Meta Map<String, LayerPredicate> predicates = new LinkedHashMap<>();
     
