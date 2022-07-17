@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.registry.key.Keyed;
@@ -31,7 +31,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         int bX = location.getX();
         int bY = location.getY();
         int bZ = location.getZ();

@@ -6,8 +6,6 @@ import cloud.commandframework.arguments.standard.EnumArgument;
 import cloud.commandframework.arguments.standard.LongArgument;
 import cloud.commandframework.context.CommandContext;
 
-import java.util.Random;
-
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -21,6 +19,9 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 
 public class StructureCommandAddon implements AddonInitializer {
@@ -56,7 +57,11 @@ public class StructureCommandAddon implements AddonInitializer {
                                        structure.generate(
                                                sender.position().toInt(),
                                                sender.world(),
-                                               ((Long) context.get("seed") == 0) ? new Random() : new Random(context.get("seed")),
+                                               ((Long) context.get("seed") == 0)
+                                               ? RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                                                                       .create()
+                                               : RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                                                                       .create(context.get("seed")),
                                                context.get("rotation")
                                                          );
                                    })

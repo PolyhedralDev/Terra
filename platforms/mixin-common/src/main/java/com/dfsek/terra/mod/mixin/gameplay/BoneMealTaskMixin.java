@@ -1,7 +1,7 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
-import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
@@ -42,7 +42,7 @@ public class BoneMealTaskMixin {
                     if(villagerFertilizable) {
                         Structure canGrow = config.getCanGrow();
                         if(canGrow != null) {
-                            Random random = (Random) world.getRandom();
+                            RandomGenerator random = MinecraftAdapter.adapt(world.getRandom());
                             cir.setReturnValue(canGrow.generate(
                                     Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE));
                             return;

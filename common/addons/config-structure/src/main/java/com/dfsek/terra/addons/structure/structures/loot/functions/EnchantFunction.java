@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
@@ -42,12 +42,12 @@ public class EnchantFunction implements LootFunction {
      * Applies the function to an ItemStack.
      *
      * @param original The ItemStack on which to apply the function.
-     * @param r        The Random instance to use.
+     * @param r        The RandomGenerator instance to use.
      *
      * @return - ItemStack - The mutated ItemStack.
      */
     @Override
-    public ItemStack apply(ItemStack original, Random r) {
+    public ItemStack apply(ItemStack original, RandomGenerator r) {
         if(original.getItemMeta() == null) return original;
         
         double enchant = (r.nextDouble() * (max - min)) + min;
