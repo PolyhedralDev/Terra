@@ -48,7 +48,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                     
                     Biome biome = biomeColumn.get(y);
                     
-                    LayerPalette layerPalette = resolver.resolve(seed, biome, cx, y, cz);
+                    LayerPalette layerPalette = resolver.resolve(cx, y, cz, world, biomeProvider);
                     
                     if (previousLayerPalette == layerPalette) {
                         paletteLevel++;
@@ -60,11 +60,9 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                         paletteLevel = 0;
                     }
                     previousLayerPalette = layerPalette;
-                    
-                    Palette palette = layerPalette.get(seed, biome, cx, y, cz);
     
-                    chunk.setBlock(cx, y, cz, palette.get(paletteLevel, cx, y, cz, seed));
-                    
+                    chunk.setBlock(cx, y, cz, layerPalette.get(seed, biome, cx, y, cz)
+                                                          .get(paletteLevel, cx, y, cz, seed));
                 }
             }
         }
@@ -77,7 +75,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
         long seed = world.getSeed();
         Biome biome = biomeProvider.getBiome(x, y, z, seed);
         int layer = 0; // Default to layer 0 for now
-        return resolver.resolve(seed, biome, x, y, z)
+        return resolver.resolve(x, y, z, world, biomeProvider)
                        .get(seed, biome, x, y, z)
                        .get(layer, x, y, z, seed);
     }
@@ -86,7 +84,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
     public Palette getPalette(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
         long seed = world.getSeed();
         Biome biome = biomeProvider.getBiome(x, y, z, seed);
-        return resolver.resolve(seed, biome, x, y, z)
+        return resolver.resolve(x, y, z, world, biomeProvider)
                        .get(seed, biome, x, y, z);
     }
 }

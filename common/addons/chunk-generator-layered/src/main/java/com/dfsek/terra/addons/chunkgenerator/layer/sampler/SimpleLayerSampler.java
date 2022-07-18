@@ -2,7 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.layer.sampler;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class SimpleLayerSampler implements LayerSampler {
@@ -14,12 +15,7 @@ public class SimpleLayerSampler implements LayerSampler {
     }
     
     @Override
-    public double sample(long seed, Biome biome, int x, int y, int z) {
-        return sampler.noise(seed, x, y, z);
-    }
-    
-    @Override
-    public NoiseSampler getSampler() {
-        return sampler;
+    public double sample(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
+        return sampler.noise(world.getSeed(), x, y, z);
     }
 }

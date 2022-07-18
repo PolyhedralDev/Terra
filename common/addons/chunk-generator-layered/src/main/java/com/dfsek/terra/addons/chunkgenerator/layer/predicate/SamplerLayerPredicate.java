@@ -2,7 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class SamplerLayerPredicate implements LayerPredicate {
@@ -20,8 +21,8 @@ public class SamplerLayerPredicate implements LayerPredicate {
     }
     
     @Override
-    public boolean test(long seed, Biome biome, int x, int y, int z) {
-        return operator.evaluate(sampler.sample(seed, biome, x, y, z), threshold);
+    public boolean test(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
+        return operator.evaluate(sampler.sample(x, y, z, world, biomeProvider), threshold);
     }
     
     public enum Operator {

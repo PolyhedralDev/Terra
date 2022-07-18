@@ -2,7 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class RangeLayerPredicate implements LayerPredicate {
@@ -13,7 +14,7 @@ public class RangeLayerPredicate implements LayerPredicate {
         this.range = range;
     }
     @Override
-    public boolean test(long seed, Biome biome, int x, int y, int z) {
+    public boolean test(int x, int y, int z, WorldProperties world, BiomeProvider provider) {
         return range.isInRange(y);
     }
 }

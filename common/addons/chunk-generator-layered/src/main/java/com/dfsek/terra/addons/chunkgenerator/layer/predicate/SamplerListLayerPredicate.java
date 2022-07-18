@@ -9,7 +9,8 @@ import java.util.List;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerLayerPredicate.Operator;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class SamplerListLayerPredicate implements LayerPredicate {
@@ -25,9 +26,9 @@ public class SamplerListLayerPredicate implements LayerPredicate {
     }
     
     @Override
-    public boolean test(long seed, Biome biome, int x, int y, int z) {
+    public boolean test(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
         for (CoordinateTest test : tests) {
-            if (operator.evaluate(sampler.sample(seed, biome, x + test.x, y + test.y, z + test.z), test.threshold)) return true;
+            if (operator.evaluate(sampler.sample(x + test.x, y + test.y, z + test.z, world, biomeProvider), test.threshold)) return true;
         }
         return false;
     }
