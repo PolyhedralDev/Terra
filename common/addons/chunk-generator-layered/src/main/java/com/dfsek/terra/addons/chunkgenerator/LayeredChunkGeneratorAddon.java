@@ -23,11 +23,13 @@ import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredic
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerListLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.sampler.BiomeDefinedLayerSamplerTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTemplate;
 import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerLayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate.CoordinateTest;
+import com.dfsek.terra.addons.chunkgenerator.layer.sampler.BiomeDefinedLayerSampler;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -83,6 +85,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerSampler>>> samplerTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TYPE_TOKEN);
                     CheckedRegistry<InstanceWrapper<LayerSampler>> samplerRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TOKEN);
                     samplerTypeRegistry.register(addon.key("SIMPLE"), SimpleLayerSamplerTemplate::new);
+                    samplerTypeRegistry.register(addon.key("BIOME_DEFINED"), BiomeDefinedLayerSamplerTemplate::new);
                     
                     event.loadTemplate(new LayerSamplerPackConfigTemplate()).getSamplers().forEach((key, sampler) -> {
                         samplerRegistry.register(addon.key(key), new InstanceWrapper<>(sampler));
@@ -134,6 +137,7 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigurationLoadEvent.class)
                 .priority(1000)
-                .then(BiomeDefinedLayerPalette.injectLayerPalettes);
+                .then(BiomeDefinedLayerPalette.injectLayerPalettes)
+                .then(BiomeDefinedLayerSampler.injectLayerSamplers);
     }
 }

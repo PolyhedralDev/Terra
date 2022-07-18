@@ -49,7 +49,7 @@ public class BiomeDefinedLayerPalette extends LayerPalette {
                     String id = registryKey.getID();
                     String fieldName = id + "LayerPalette";
                     paletteFields.put(biomeLayerPalette, fieldName);
-                    DynamicValue.Builder<Palette> value = DynamicValue.builder("layers." + id, Palette.class);
+                    DynamicValue.Builder<Palette> value = DynamicValue.builder("generation.layers." + id, Palette.class);
                     biomeLayerPalette.getDefaultPalette().ifPresent(value::setDefault);
                     templateBuilder.value(fieldName, value.build());
                 }
