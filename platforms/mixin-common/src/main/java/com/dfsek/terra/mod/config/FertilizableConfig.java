@@ -3,14 +3,11 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-
-import com.dfsek.terra.api.structure.Structure;
-
 import net.minecraft.util.Identifier;
 
 import java.util.Map;
 
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
@@ -27,9 +24,9 @@ public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
     @Default
     private Structure canGrow = null;
     
-    @Value("villager-fertilizable")
+    @Value("villager-farmable")
     @Default
-    private Boolean villagerFertilizable = null;
+    private Boolean villagerFarmable = null;
     
     public ProbabilityCollection<Structure> getStructures() {
         return structures;
@@ -43,8 +40,8 @@ public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
         return canGrow;
     }
     
-    public Boolean isVillagerFertilizable() {
-        return villagerFertilizable;
+    public Boolean isVillagerFarmable() {
+        return villagerFarmable;
     }
     
     @Override
