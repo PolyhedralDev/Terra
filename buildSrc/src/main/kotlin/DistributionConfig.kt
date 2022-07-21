@@ -44,7 +44,7 @@ fun Project.configureDistribution() {
         
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
-            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toPath()
+            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI()
             
             FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
                 forSubProjects(":common:addons") {
