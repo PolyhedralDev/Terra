@@ -23,7 +23,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.nio.file.Path;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
@@ -39,42 +41,87 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
     
+    private static final String PACK_MANIFEST_NAME = "pack.yml";
+    
+    private static final String PACKS_FOLDER ="packs";
+    
     public ConfigRegistry() {
         super(TypeKey.of(ConfigPack.class));
     }
     
-    public void load(File folder, Platform platform) throws ConfigException {
-        ConfigPack pack = new ConfigPackImpl(folder, platform);
-        registerChecked(pack.getRegistryKey(), pack);
+    public boolean load(File folder, Platform platform) {
+        try {
+            ConfigPack pack = new ConfigPackImpl(folder, platform);
+            registerChecked(pack.getRegistryKey(), pack);
+            return true;
+        } catch(ConfigException e) {
+            logger.error("Error loading config pack {}", folder.getName(), e);
+            return false;
+        }
+    }
+    
+    public boolean load(ZipFile zip, Platform platform) throws ConfigException {
+        try {
+            ConfigPack pack = new ConfigPackImpl(zip, platform);
+            registerChecked(pack.getRegistryKey(), pack);
+            return true;
+        } catch(ConfigException e) {
+            logger.error("Error loading config pack {}", zip.getName(), e);
+            return false;
+        }
+    }
+    
+    public boolean loadPacksFromZip(Path zip) {
+        return true;
+    }
+    
+    private boolean hasManifest(File folder) {
+        return new File(folder, PACK_MANIFEST_NAME).exists();
+    }
+    
+    private boolean hasManifest(ZipFile folder) {
+        return folder.getEntry(PACK_MANIFEST_NAME) != null;
     }
     
     public boolean loadAll(Platform platform) {
-        boolean valid = true;
-        File packsFolder = new File(platform.getDataFolder(), "packs");
+        File packsFolder = new File(platform.getDataFolder(), PACKS_FOLDER);
         packsFolder.mkdirs();
-        for(File dir : Objects.requireNonNull(packsFolder.listFiles(File::isDirectory))) {
-            try {
-                load(dir, platform);
-            } catch(ConfigException e) {
-                logger.error("Error loading config pack {}", dir.getName(), e);
-                valid = false;
-            }
-        }
-        for(File zip : Objects.requireNonNull(
-                packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra")))) {
-            try {
-                logger.info("Loading ZIP archive: {}", zip.getName());
-                load(new ZipFile(zip), platform);
-            } catch(IOException | ConfigException e) {
-                logger.error("Error loading config pack {}", zip.getName(), e);
-                valid = false;
+        boolean valid = true;
+        
+        // Breadth first search through the packs folder for config packs
+        Queue<File> queue = new LinkedList<>();
+        queue.add(packsFolder);
+        while (!queue.isEmpty()) {
+            File current = queue.poll();
+            logger.debug("Checking for packs in {}", current.getPath());
+            File[] files = current.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        if (hasManifest(file)) {
+                            logger.debug("Loading {} as a pack", file.getPath());
+                            if(!load(file, platform)) valid = false;
+                        } else {
+                            queue.add(file); // Recurse if folder does not contain a manifest
+                        }
+                    } else if (file.getName().endsWith(".zip") || file.getName().endsWith(".terra")) {
+                        try (ZipFile zip = new ZipFile(file)) {
+                            if (hasManifest(zip)) {
+                                logger.debug("Loading ZIP archive {} as a pack", zip.getName());
+                                if(!load(zip, platform)) valid = false;
+                            } else {
+                                // Recurse if zip does not contain a manifest
+                                logger.debug("Searching for packs in ZIP archive {}", file.getPath());
+                                if(!loadPacksFromZip(file.toPath())) valid = false;
+                            }
+                        } catch(IOException e) {
+                            logger.error("Failed to load ZIP archive: {}", file.getPath(), e);
+                            valid = false;
+                        }
+                    }
+                }
             }
         }
         return valid;
-    }
-    
-    public void load(ZipFile file, Platform platform) throws ConfigException {
-        ConfigPackImpl pack = new ConfigPackImpl(file, platform);
-        registerChecked(pack.getRegistryKey(), pack);
     }
 }
