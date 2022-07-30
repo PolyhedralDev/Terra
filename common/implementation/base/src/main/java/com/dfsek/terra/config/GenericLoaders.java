@@ -31,10 +31,14 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
+import com.dfsek.terra.config.loaders.Vector3IntLoader;
+import com.dfsek.terra.config.loaders.Vector3Loader;
 import com.dfsek.terra.config.loaders.VersionLoader;
 import com.dfsek.terra.config.loaders.VersionRangeLoader;
 
@@ -53,7 +57,9 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(Version.class, new VersionLoader())
                 .registerLoader(MaterialSet.class, new MaterialSetLoader())
                 .registerLoader(VersionRange.class, new VersionRangeLoader())
-                .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
+                .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
+                .registerLoader(Vector3.class, new Vector3Loader())
+                .registerLoader(Vector3Int.class, new Vector3IntLoader());
         
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
