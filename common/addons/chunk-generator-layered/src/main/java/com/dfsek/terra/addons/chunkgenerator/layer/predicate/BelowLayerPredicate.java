@@ -14,7 +14,7 @@ public class BelowLayerPredicate implements LayerPredicate {
     }
     
     @Override
-    public boolean test(int x, int y, int z, WorldProperties properties, BiomeProvider biomeProvider) {
+    public boolean test(int x, int y, int z, WorldProperties worldProperties, BiomeProvider biomeProvider) {
         return y < this.y;
     }
 }

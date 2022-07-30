@@ -12,8 +12,9 @@ import java.util.Map;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.properties.Properties;
-import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public abstract class LayerPalette {
@@ -27,7 +28,7 @@ public abstract class LayerPalette {
         this.resetsGroup = resetsGroup;
     }
     
-    public abstract Palette get(long seed, Biome biome, int x, int y, int z);
+    public abstract Palette get(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider);
     
     public final Group getGroup() {
         return group;

@@ -15,7 +15,9 @@ import com.dfsek.terra.addons.chunkgenerator.api.LayerPalette;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public class BiomeDefinedLayerPalette extends LayerPalette {
@@ -28,8 +30,8 @@ public class BiomeDefinedLayerPalette extends LayerPalette {
     }
     
     @Override
-    public Palette get(long seed, Biome biome, int x, int y, int z) {
-        return biome.getContext().get(BiomeLayerPalettes.class).palettes().get(this);
+    public Palette get(int x, int y, int z, WorldProperties worldProperties, BiomeProvider biomeProvider) {
+        return biomeProvider.getBiome(x, y, z, worldProperties.getSeed()).getContext().get(BiomeLayerPalettes.class).palettes().get(this);
     }
     
     public Optional<Palette> getDefaultPalette() {

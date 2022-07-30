@@ -14,7 +14,7 @@ public class RangeLayerPredicate implements LayerPredicate {
         this.range = range;
     }
     @Override
-    public boolean test(int x, int y, int z, WorldProperties world, BiomeProvider provider) {
+    public boolean test(int x, int y, int z, WorldProperties worldProperties, BiomeProvider biomeProvider) {
         return range.isInRange(y);
     }
 }

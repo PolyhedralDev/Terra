@@ -5,5 +5,5 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public interface LayerPredicate {
-    boolean test(int x, int y, int z, WorldProperties properties, BiomeProvider provider);
+    boolean test(int x, int y, int z, WorldProperties worldProperties, BiomeProvider biomeProvider);
 }
