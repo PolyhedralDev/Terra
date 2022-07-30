@@ -1,42 +1,45 @@
 package com.dfsek.terra.addons.chunkgenerator.math;
 
-public enum BooleanOperator {
+import com.dfsek.terra.addons.chunkgenerator.util.DoubleBiPredicate;
+
+
+public enum RelationalOperator implements DoubleBiPredicate {
     GreaterThan {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a > b;
         }
     },
     GreaterThanOrEqual {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a >= b;
         }
     },
     LessThan {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a < b;
         }
     },
     LessThanOrEqual {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a <= b;
         }
     },
     Equals {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a == b;
         }
     },
     NotEquals {
         @Override
-        public boolean evaluate(double a, double b) {
+        public boolean test(double a, double b) {
             return a != b;
         }
     };
     
-    public abstract boolean evaluate(double a, double b);
+    public abstract boolean test(double a, double b);
 }

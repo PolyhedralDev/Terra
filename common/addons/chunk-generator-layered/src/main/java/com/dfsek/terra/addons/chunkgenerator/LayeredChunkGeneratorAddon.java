@@ -38,7 +38,7 @@ import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTe
 import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.layer.sampler.BiomeDefinedLayerSampler;
-import com.dfsek.terra.addons.chunkgenerator.math.BooleanOperator;
+import com.dfsek.terra.addons.chunkgenerator.math.RelationalOperator;
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -95,8 +95,8 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(1000)
                 .then(event -> {
-                    event.getPack().applyLoader(BooleanOperator.class,
-                                                (type, o, loader, depthTracker) -> BooleanOperator.valueOf((String) o));
+                    event.getPack().applyLoader(RelationalOperator.class,
+                                                (type, o, loader, depthTracker) -> RelationalOperator.valueOf((String) o));
     
                     CheckedRegistry<Supplier<ObjectTemplate<PointSet>>> pointSetTypeRegistry = event.getPack().getOrCreateRegistry(
                             POINT_SET_TYPE_TOKEN);

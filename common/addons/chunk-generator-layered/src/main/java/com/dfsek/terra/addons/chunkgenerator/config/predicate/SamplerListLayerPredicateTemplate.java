@@ -6,7 +6,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
-import com.dfsek.terra.addons.chunkgenerator.math.BooleanOperator;
+import com.dfsek.terra.addons.chunkgenerator.math.RelationalOperator;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
@@ -27,7 +27,7 @@ public class SamplerListLayerPredicateTemplate implements ObjectTemplate<LayerPr
     
     @Value("operator")
     @Default
-    private BooleanOperator defaultOperator = BooleanOperator.GreaterThan;
+    private RelationalOperator defaultOperator = RelationalOperator.GreaterThan;
     
     @Override
     public LayerPredicate get() {
