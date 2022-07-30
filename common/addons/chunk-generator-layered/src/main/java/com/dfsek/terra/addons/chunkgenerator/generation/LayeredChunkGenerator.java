@@ -61,7 +61,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
                     }
                     previousLayerPalette = layerPalette;
     
-                    chunk.setBlock(cx, y, cz, layerPalette.get(seed, biome, cx, y, cz)
+                    chunk.setBlock(cx, y, cz, layerPalette.get(cx, y, cz, world, biomeProvider)
                                                           .get(paletteLevel, cx, y, cz, seed));
                 }
             }
@@ -76,7 +76,7 @@ public class LayeredChunkGenerator implements ChunkGenerator {
         Biome biome = biomeProvider.getBiome(x, y, z, seed);
         int layer = 0; // Default to layer 0 for now
         return resolver.resolve(x, y, z, world, biomeProvider)
-                       .get(seed, biome, x, y, z)
+                       .get(x, y, z, world, biomeProvider)
                        .get(layer, x, y, z, seed);
     }
     
@@ -85,6 +85,6 @@ public class LayeredChunkGenerator implements ChunkGenerator {
         long seed = world.getSeed();
         Biome biome = biomeProvider.getBiome(x, y, z, seed);
         return resolver.resolve(x, y, z, world, biomeProvider)
-                       .get(seed, biome, x, y, z);
+                       .get(x, y, z, world, biomeProvider);
     }
 }
