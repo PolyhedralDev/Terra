@@ -4,14 +4,12 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.List;
-
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
+import com.dfsek.terra.addons.chunkgenerator.math.BooleanOperator;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate;
-import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate.CoordinateTest;
-import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerLayerPredicate.Operator;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
+import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
 import com.dfsek.terra.api.config.meta.Meta;
 
 
@@ -20,19 +18,19 @@ public class SamplerListLayerPredicateTemplate implements ObjectTemplate<LayerPr
     @Value("sampler")
     private @Meta InstanceWrapper<LayerSampler> sampler;
     
-    @Value("tests")
-    private List<CoordinateTest> tests;
+    @Value("point-set")
+    private PointSet points;
     
-    @Value("default-threshold")
+    @Value("threshold")
     @Default
     private double defaultThreshold = 0;
     
-    @Value("default-operator")
+    @Value("operator")
     @Default
-    private Operator defaultOperator = Operator.GreaterThan;
+    private BooleanOperator defaultOperator = BooleanOperator.GreaterThan;
     
     @Override
     public LayerPredicate get() {
-        return new SamplerListLayerPredicate(sampler.get(), defaultOperator, tests);
+        return new SamplerListLayerPredicate(sampler.get(), defaultThreshold, defaultOperator, points);
     }
 }

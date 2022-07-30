@@ -17,6 +17,15 @@ import com.dfsek.terra.addons.chunkgenerator.config.pack.LayerSamplerPackConfigT
 import com.dfsek.terra.addons.chunkgenerator.config.palette.BiomeDefinedLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PlatformAirLayerPaletteTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.SimpleLayerPaletteTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.generative.AdjacentPointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.generative.SimplePointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.generative.geometric.CubePointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.generative.geometric.CuboidPointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.generative.geometric.SphericalPointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.operative.DifferencePointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.operative.ExpressionFilterPointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.operative.IntersectionPointSetTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.pointset.operative.UnionPointSetTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.BelowLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.RangeLayerPredicateTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerLayerPredicateTemplate;
@@ -30,6 +39,8 @@ import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPale
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerLayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.SamplerListLayerPredicate.CoordinateTest;
 import com.dfsek.terra.addons.chunkgenerator.layer.sampler.BiomeDefinedLayerSampler;
+import com.dfsek.terra.addons.chunkgenerator.math.BooleanOperator;
+import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -46,6 +57,9 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorPr
 public class LayeredChunkGeneratorAddon implements AddonInitializer {
     
     private static final Logger logger = LoggerFactory.getLogger(LayeredChunkGenerator.class);
+    
+    public static final TypeKey<Supplier<ObjectTemplate<PointSet>>> POINT_SET_TYPE_TOKEN = new TypeKey<>() {
+    };
     
     public static final TypeKey<Supplier<ObjectTemplate<LayerSampler>>> LAYER_SAMPLER_TYPE_TOKEN = new TypeKey<>() {
     };
@@ -81,6 +95,25 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(1000)
+                .then(event -> {
+                    event.getPack().applyLoader(BooleanOperator.class,
+                                                (type, o, loader, depthTracker) -> BooleanOperator.valueOf((String) o));
+    
+                    CheckedRegistry<Supplier<ObjectTemplate<PointSet>>> pointSetTypeRegistry = event.getPack().getOrCreateRegistry(
+                            POINT_SET_TYPE_TOKEN);
+                    pointSetTypeRegistry.register(addon.key("LIST"), SimplePointSetTemplate::new);
+                    pointSetTypeRegistry.register(addon.key("ADJACENT"), AdjacentPointSetTemplate::new);
+                    
+                    pointSetTypeRegistry.register(addon.key("SPHERE"), SphericalPointSetTemplate::new);
+                    pointSetTypeRegistry.register(addon.key("CUBOID"), CuboidPointSetTemplate::new);
+                    pointSetTypeRegistry.register(addon.key("CUBE"), CubePointSetTemplate::new);
+                    
+                    pointSetTypeRegistry.register(addon.key("UNION"), UnionPointSetTemplate::new);
+                    pointSetTypeRegistry.register(addon.key("INTERSECTION"), IntersectionPointSetTemplate::new);
+                    pointSetTypeRegistry.register(addon.key("DIFFERENCE"), DifferencePointSetTemplate::new);
+                    
+                    pointSetTypeRegistry.register(addon.key("EXPRESSION"), ExpressionFilterPointSetTemplate::new);
+                })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerSampler>>> samplerTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TYPE_TOKEN);
                     CheckedRegistry<InstanceWrapper<LayerSampler>> samplerRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TOKEN);

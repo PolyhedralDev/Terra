@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
+import com.dfsek.terra.addons.chunkgenerator.math.BooleanOperator;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
@@ -12,57 +13,17 @@ public class SamplerLayerPredicate implements LayerPredicate {
     
     private final double threshold;
     
-    private final Operator operator;
+    private final BooleanOperator operator;
     
-    public SamplerLayerPredicate(LayerSampler sampler, Operator operator, double threshold) {
+    public SamplerLayerPredicate(LayerSampler sampler, BooleanOperator operator, double threshold) {
         this.sampler = sampler;
         this.operator = operator;
         this.threshold = threshold;
     }
     
     @Override
-    public boolean test(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
-        return operator.evaluate(sampler.sample(x, y, z, world, biomeProvider), threshold);
+    public boolean test(int x, int y, int z, WorldProperties worldProperties, BiomeProvider biomeProvider) {
+        return operator.evaluate(sampler.sample(x, y, z, worldProperties, biomeProvider), threshold);
     }
     
-    public enum Operator {
-        GreaterThan {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a > b;
-            }
-        },
-        GreaterThanOrEqual {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a >= b;
-            }
-        },
-        LessThan {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a < b;
-            }
-        },
-        LessThanOrEqual {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a <= b;
-            }
-        },
-        Equals {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a == b;
-            }
-        },
-        NotEquals {
-            @Override
-            public boolean evaluate(double a, double b) {
-                return a != b;
-            }
-        };
-        
-        public abstract boolean evaluate(double a, double b);
-    }
 }
