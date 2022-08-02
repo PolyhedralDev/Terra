@@ -47,11 +47,6 @@ public class PresetUtil {
         return RegistryKey.of(Registry.WORLD_PRESET_KEY, identifier);
     }
     
-//    public static void addPreset() {
-//        LevelScreenProvider
-//        LevelScreenProvider.WORLD_PRESET_TO_SCREEN_PROVIDER.put(Optional.ofNullable(getPresetKey(new Identifier("terra", "terra"))), new TerraPresetScreen());
-//    }
-    
     public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack) {
         Registry<DimensionType> dimensionTypeRegistry = BuiltinRegistries.DIMENSION_TYPE;
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = BuiltinRegistries.CHUNK_GENERATOR_SETTINGS;
