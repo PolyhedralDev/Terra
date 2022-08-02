@@ -21,10 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.HeightLimitView;
 
+import java.util.random.RandomGenerator;
+
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.info.WorldProperties;
-
-import java.util.random.RandomGenerator;
 
 
 public final class MinecraftAdapter {
@@ -63,37 +63,37 @@ public final class MinecraftAdapter {
             public boolean nextBoolean() {
                 return random.nextBoolean();
             }
-    
+
             @Override
             public float nextFloat() {
                 return random.nextFloat();
             }
-    
+
             @Override
             public double nextDouble() {
                 return random.nextDouble();
             }
-    
+
             @Override
             public int nextInt() {
                 return random.nextInt();
             }
-    
+
             @Override
             public int nextInt(int bound) {
                 return random.nextInt(bound);
             }
-    
+
             @Override
             public long nextLong() {
                 return random.nextLong();
             }
-    
+
             @Override
             public double nextGaussian() {
                 return random.nextGaussian();
             }
-    
+
             @Override
             public int nextInt(int origin, int bound) {
                 return random.nextBetween(origin, bound);

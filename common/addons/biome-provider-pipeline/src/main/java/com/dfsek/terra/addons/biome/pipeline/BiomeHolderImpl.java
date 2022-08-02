@@ -36,7 +36,7 @@ public class BiomeHolderImpl implements BiomeHolder {
     }
     
     private double normalise(double in) {
-        return totalWidth * (in  / width);
+        return totalWidth * (in / width);
     }
     
     @Override
@@ -50,13 +50,16 @@ public class BiomeHolderImpl implements BiomeHolder {
             for(int zi = 0; zi < width; zi++) {
                 biomes[xi * 2][zi * 2] = old[xi][zi];
                 if(zi != width - 1)
-                    biomes[xi * 2][zi * 2 + 1] = expander.getBetween(normalise(xi + origin.getX()), normalise(zi + 0.5 + origin.getZ()), seed, old[xi][zi],
+                    biomes[xi * 2][zi * 2 + 1] = expander.getBetween(normalise(xi + origin.getX()), normalise(zi + 0.5 + origin.getZ()),
+                                                                     seed, old[xi][zi],
                                                                      old[xi][zi + 1]);
                 if(xi != width - 1)
-                    biomes[xi * 2 + 1][zi * 2] = expander.getBetween(normalise(xi + 0.5 + origin.getX()), normalise(zi + origin.getZ()), seed, old[xi][zi],
+                    biomes[xi * 2 + 1][zi * 2] = expander.getBetween(normalise(xi + 0.5 + origin.getX()), normalise(zi + origin.getZ()),
+                                                                     seed, old[xi][zi],
                                                                      old[xi + 1][zi]);
                 if(xi != width - 1 && zi != width - 1)
-                    biomes[xi * 2 + 1][zi * 2 + 1] = expander.getBetween(normalise(xi + 0.5 + origin.getX()), normalise(zi + 0.5 + origin.getZ()), seed,
+                    biomes[xi * 2 + 1][zi * 2 + 1] = expander.getBetween(normalise(xi + 0.5 + origin.getX()),
+                                                                         normalise(zi + 0.5 + origin.getZ()), seed,
                                                                          old[xi][zi],
                                                                          old[xi + 1][zi + 1], old[xi][zi + 1], old[xi + 1][zi]);
             }

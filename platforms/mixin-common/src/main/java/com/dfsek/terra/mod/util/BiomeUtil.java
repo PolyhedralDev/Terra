@@ -63,7 +63,7 @@ public class BiomeUtil {
     protected static void registerBiome(Biome biome, ConfigPack pack,
                                         com.dfsek.terra.api.registry.key.RegistryKey id) {
         VanillaBiomeProperties vanillaBiomeProperties;
-        if (biome.getContext().has(VanillaBiomeProperties.class)) {
+        if(biome.getContext().has(VanillaBiomeProperties.class)) {
             vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
         } else {
             vanillaBiomeProperties = new VanillaBiomeProperties();

@@ -146,7 +146,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override
     public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
-    
+
     }
     
     @Override

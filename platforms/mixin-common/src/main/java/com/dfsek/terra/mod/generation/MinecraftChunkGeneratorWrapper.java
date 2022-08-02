@@ -17,9 +17,6 @@
 
 package com.dfsek.terra.mod.generation;
 
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -65,6 +62,8 @@ import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
 import com.dfsek.terra.mod.data.Codecs;
 import com.dfsek.terra.mod.mixin.access.StructureAccessorAccessor;
 import com.dfsek.terra.mod.util.MinecraftAdapter;
@@ -91,7 +90,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
+        if(pack.getContext().has(VanillaBiomeProperties.class)) {
             vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
         } else {
             vanillaWorldProperties = new VanillaWorldProperties();
@@ -230,8 +229,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.pack = pack;
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         biomeSource.setPack(pack);
-    
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
+        
+        if(pack.getContext().has(VanillaBiomeProperties.class)) {
             vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
         } else {
             vanillaWorldProperties = new VanillaWorldProperties();

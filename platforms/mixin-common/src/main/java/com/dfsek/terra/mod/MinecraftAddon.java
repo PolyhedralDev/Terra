@@ -19,17 +19,11 @@ package com.dfsek.terra.mod;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.api.config.ConfigPack;
-
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
-
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
@@ -38,6 +32,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 
 public abstract class MinecraftAddon implements BaseAddon {
@@ -52,14 +47,14 @@ public abstract class MinecraftAddon implements BaseAddon {
     @Override
     public void initialize() {
         modPlatform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(ConfigPack.class)) {
-                        event.getLoadedObject(ConfigPack.class).getContext().put(event.load(new VanillaWorldProperties()));
-                    }
-                })
-                .global();
+                   .getHandler(FunctionalEventHandler.class)
+                   .register(this, ConfigurationLoadEvent.class)
+                   .then(event -> {
+                       if(event.is(ConfigPack.class)) {
+                           event.getLoadedObject(ConfigPack.class).getContext().put(event.load(new VanillaWorldProperties()));
+                       }
+                   })
+                   .global();
         modPlatform.getEventManager()
                    .getHandler(FunctionalEventHandler.class)
                    .register(this, ConfigPackPreLoadEvent.class)

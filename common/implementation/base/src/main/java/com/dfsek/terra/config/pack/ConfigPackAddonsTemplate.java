@@ -22,10 +22,10 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
+import com.dfsek.terra.api.addon.BaseAddon;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dfsek.terra.api.addon.BaseAddon;
 
 
 @SuppressWarnings("FieldMayBeFinal")

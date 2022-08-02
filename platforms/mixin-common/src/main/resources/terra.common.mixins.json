@@ -1,9 +1,9 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "com.dfsek.terra.mod.mixin",
-    "compatibilityLevel": "JAVA_17",
-    "mixins": [
+    "required" : true,
+    "minVersion" : "0.8",
+    "package" : "com.dfsek.terra.mod.mixin",
+    "compatibilityLevel" : "JAVA_17",
+    "mixins" : [
         "access.BiomeAccessor",
         "access.MobSpawnerLogicAccessor",
         "access.StateAccessor",
@@ -41,12 +41,12 @@
         "implementations.terra.world.ServerWorldMixin",
         "lifecycle.DataPackContentsMixin"
     ],
-    "client": [
+    "client" : [
     ],
-    "server": [
+    "server" : [
     ],
-    "injectors": {
-        "defaultRequire": 1
+    "injectors" : {
+        "defaultRequire" : 1
     },
-    "refmap": "terra.common.refmap.json"
+    "refmap" : "terra.common.refmap.json"
 }

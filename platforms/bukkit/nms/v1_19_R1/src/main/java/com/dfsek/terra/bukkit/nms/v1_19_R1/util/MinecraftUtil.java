@@ -33,7 +33,7 @@ public final class MinecraftUtil {
     
     
     private MinecraftUtil() {
-    
+
     }
     
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {

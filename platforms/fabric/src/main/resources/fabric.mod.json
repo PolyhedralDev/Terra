@@ -1,33 +1,33 @@
 {
-    "schemaVersion": 1,
-    "id": "terra",
-    "version": "@VERSION@",
-    "name": "Terra",
-    "description": "@DESCRIPTION@",
-    "authors": [
+    "schemaVersion" : 1,
+    "id" : "terra",
+    "version" : "@VERSION@",
+    "name" : "Terra",
+    "description" : "@DESCRIPTION@",
+    "authors" : [
         "dfsek"
     ],
-    "contact": {
-        "homepage": "@WIKI@",
-        "sources": "@SOURCE@",
-        "issues": "@ISSUES@"
+    "contact" : {
+        "homepage" : "@WIKI@",
+        "sources" : "@SOURCE@",
+        "issues" : "@ISSUES@"
     },
-    "license": "@LICENSE@",
-    "icon": "assets/terra/icon.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
+    "license" : "@LICENSE@",
+    "icon" : "assets/terra/icon.png",
+    "environment" : "*",
+    "entrypoints" : {
+        "main" : [
             "com.dfsek.terra.fabric.FabricEntryPoint"
         ]
     },
-    "mixins": [
+    "mixins" : [
         "terra.fabric.mixins.json",
         "terra.lifecycle.mixins.json",
         "terra.common.mixins.json"
     ],
-    "depends": {
-        "fabricloader": ">=0.14.2",
-        "java": ">=17",
-        "minecraft": "1.19.x"
+    "depends" : {
+        "fabricloader" : ">=0.14.2",
+        "java" : ">=17",
+        "minecraft" : "1.19.x"
     }
 }

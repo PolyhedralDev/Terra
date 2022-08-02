@@ -1,8 +1,6 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
-import com.dfsek.terra.mod.util.MinecraftAdapter;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -13,8 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.dfsek.terra.mod.util.FertilizableUtil;
-
-import java.util.random.RandomGenerator;
+import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 
 @Mixin(ServerWorld.class)

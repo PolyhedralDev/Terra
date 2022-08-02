@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.world;
 
-import org.bukkit.block.Biome;
-
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+
+import org.bukkit.block.Biome;
 
 
 public interface BukkitPlatformBiome extends PlatformBiome {

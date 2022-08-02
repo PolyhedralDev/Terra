@@ -1,10 +1,5 @@
 package com.dfsek.terra.mod.data;
 
-import com.dfsek.terra.api.util.ConstantRange;
-import com.dfsek.terra.api.util.Range;
-
-import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.dynamic.RegistryOps;
@@ -13,9 +8,11 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
+import com.dfsek.terra.mod.implmentation.TerraIntProvider;
 
 
 public final class Codecs {
@@ -69,7 +66,12 @@ public final class Codecs {
                    );
     
     public static final Codec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.create(range -> range.group(
-            Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMin),
-            Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMax)).apply(range, range.stable((min, max) -> new TerraIntProvider(new ConstantRange(
-            min, max)))));
+                                                                                                                                         Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMin),
+                                                                                                                                         Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMax))
+                                                                                                                                 .apply(range,
+                                                                                                                                        range.stable(
+                                                                                                                                                (min, max) -> new TerraIntProvider(
+                                                                                                                                                        new ConstantRange(
+                                                                                                                                                                min,
+                                                                                                                                                                max)))));
 }

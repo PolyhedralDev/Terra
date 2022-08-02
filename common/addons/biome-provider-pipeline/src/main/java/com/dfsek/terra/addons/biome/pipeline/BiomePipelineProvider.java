@@ -123,7 +123,7 @@ public class BiomePipelineProvider implements BiomeProvider {
             }
             return false;
         }
-
+        
         @Override
         public int hashCode() {
             int code = x;

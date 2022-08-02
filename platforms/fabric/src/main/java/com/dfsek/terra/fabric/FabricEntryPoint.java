@@ -17,9 +17,9 @@
 
 package com.dfsek.terra.fabric;
 
-import net.fabricmc.api.ModInitializer;
-
 import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
+
+import net.fabricmc.api.ModInitializer;
 
 
 public class FabricEntryPoint extends LifecycleEntryPoint implements ModInitializer {
