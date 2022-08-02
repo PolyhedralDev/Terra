@@ -22,12 +22,14 @@ public class BiomePipeline {
     private final List<Stage> stages;
     private final int size;
     private final int init;
+    private final int expansions;
     
-    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init) {
+    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init, int expansions) {
         this.source = source;
         this.stages = stages;
         this.size = size;
         this.init = init;
+        this.expansions = expansions;
     }
     
     /**
@@ -59,22 +61,31 @@ public class BiomePipeline {
         return size;
     }
     
+    public int getExpansions() {
+        return expansions;
+    }
+    
     public static final class BiomePipelineBuilder {
         private final int init;
         private final List<Stage> stages = new ArrayList<>();
         private int expand;
+        private int expansions;
         
         public BiomePipelineBuilder(int init) {
             this.init = init;
             expand = init;
+            expansions = 0;
         }
         
         public BiomePipeline build(BiomeSource source) {
             for(Stage stage : stages) {
-                if(stage.isExpansion()) expand = expand * 2 - 1;
+                if(stage.isExpansion()) {
+                    expansions++;
+                    expand = expand * 2 - 1;
+                }
             }
             
-            return new BiomePipeline(source, stages, expand, init);
+            return new BiomePipeline(source, stages, expand, init, expansions);
         }
         
         public BiomePipelineBuilder addStage(Stage stage) {

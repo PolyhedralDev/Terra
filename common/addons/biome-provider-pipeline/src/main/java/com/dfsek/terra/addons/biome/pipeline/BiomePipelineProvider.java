@@ -79,6 +79,9 @@ public class BiomePipelineProvider implements BiomeProvider {
     }
     
     public Biome getBiome(int x, int z, long seed) {
+        x = x << pipeline.getExpansions();
+        z = z << pipeline.getExpansions();
+        
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
         
