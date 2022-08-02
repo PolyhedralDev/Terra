@@ -90,6 +90,7 @@ public class BiomePipelineProvider implements BiomeProvider {
         
         int fdX = FastMath.floorDiv(x, pipeline.getSize());
         int fdZ = FastMath.floorDiv(z, pipeline.getSize());
+        
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
                                                                           z - fdZ * pipeline.getSize()).getBiome();
     }

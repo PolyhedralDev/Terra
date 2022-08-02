@@ -46,7 +46,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     
     @Override
     public BiomeProvider get() {
-        BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize, resolution);
+        BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize);
         stages.forEach(biomePipelineBuilder::addStage);
         BiomePipeline pipeline = biomePipelineBuilder.build(source);
         return new BiomePipelineProvider(pipeline, resolution, blend, blendAmp);

@@ -14,6 +14,7 @@ import java.util.List;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.api.util.vector.Vector2;
 
 
 public class BiomePipeline {
@@ -21,14 +22,12 @@ public class BiomePipeline {
     private final List<Stage> stages;
     private final int size;
     private final int init;
-    private final int resolution;
     
-    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init, int resolution) {
+    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init) {
         this.source = source;
         this.stages = stages;
         this.size = size;
         this.init = init;
-        this.resolution = resolution;
     }
     
     /**
@@ -40,12 +39,10 @@ public class BiomePipeline {
      * @return BiomeHolder containing biomes.
      */
     public BiomeHolder getBiomes(int x, int z, long seed) {
-        x *= size;
-        z *= size;
-        BiomeHolder holder = new BiomeHolderImpl(init, size);
-        holder.fill(source, x, z, seed);
+        BiomeHolder holder = new BiomeHolderImpl(init, size, Vector2.of(x * (init - 1), z * (init - 1)).mutable());
+        holder.fill(source, seed);
         for(Stage stage : stages) {
-            holder = stage.apply(holder, x, z, seed);
+            holder = stage.apply(holder, seed);
         }
         return holder;
     }
@@ -66,12 +63,10 @@ public class BiomePipeline {
         private final int init;
         private final List<Stage> stages = new ArrayList<>();
         private int expand;
-        private final int resolution;
         
-        public BiomePipelineBuilder(int init, int resolution) {
+        public BiomePipelineBuilder(int init) {
             this.init = init;
             expand = init;
-            this.resolution = resolution;
         }
         
         public BiomePipeline build(BiomeSource source) {
@@ -79,7 +74,7 @@ public class BiomePipeline {
                 if(stage.isExpansion()) expand = expand * 2 - 1;
             }
             
-            return new BiomePipeline(source, stages, expand, init, resolution);
+            return new BiomePipeline(source, stages, expand, init);
         }
         
         public BiomePipelineBuilder addStage(Stage stage) {

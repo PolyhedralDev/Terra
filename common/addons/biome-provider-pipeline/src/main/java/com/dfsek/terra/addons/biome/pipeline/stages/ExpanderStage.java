@@ -21,8 +21,8 @@ public class ExpanderStage implements Stage {
     }
     
     @Override
-    public BiomeHolder apply(BiomeHolder in, int x, int z, long seed) {
-        return in.expand(expander, x, z, seed);
+    public BiomeHolder apply(BiomeHolder in, long seed) {
+        return in.expand(expander, seed);
     }
     
     @Override
