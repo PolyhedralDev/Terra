@@ -23,18 +23,14 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class BiomePipelineTemplate extends BiomeProviderTemplate {
-    @Value("pipeline.initial-size")
+    @Value("pipeline.final-size")
     @Default
     @Description("""
-                 The initial size of biome chunks. This value must be at least 2.
-                 <b>This is not the final size of biome chunks. Final chunks will be much larger</b>.
+                 The minimum final size of biome chunks. This value must be at least 2. This may not be the exact final size.
                                   
                  It is recommended to keep biome chunks' final size in the range of [50, 300]
-                 to prevent performance issues. To calculate the size of biome chunks, simply
-                 take initial-size and for each expand stage, multiply the running value by 2
-                 and subtract 1. (The size is also printed to the server console if you
-                 have debug mode enabled)""")
-    private @Meta int initialSize = 2;
+                 to prevent performance issues.""")
+    private @Meta int finalSize = 50;
     
     @Value("pipeline.source")
     @Description("The Biome Source to use for initial population of biomes.")
@@ -46,7 +42,7 @@ public class BiomePipelineTemplate extends BiomeProviderTemplate {
     
     @Override
     public BiomeProvider get() {
-        BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(initialSize);
+        BiomePipeline.BiomePipelineBuilder biomePipelineBuilder = new BiomePipeline.BiomePipelineBuilder(finalSize);
         stages.forEach(biomePipelineBuilder::addStage);
         BiomePipeline pipeline = biomePipelineBuilder.build(source);
         return new BiomePipelineProvider(pipeline, resolution, blend, blendAmp);

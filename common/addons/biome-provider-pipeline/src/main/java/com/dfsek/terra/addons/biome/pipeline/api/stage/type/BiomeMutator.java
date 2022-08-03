@@ -20,18 +20,31 @@ public interface BiomeMutator {
     
     class ViewPoint {
         private final BiomeHolder biomes;
-        private final int offX;
-        private final int offZ;
+        private int offX;
+        private int offZ;
+        private final int ratio;
         
-        public ViewPoint(BiomeHolder biomes, int offX, int offZ) {
+        public ViewPoint(BiomeHolder biomes, int offX, int offZ, int ratio) {
             this.biomes = biomes;
             this.offX = offX;
             this.offZ = offZ;
+            this.ratio = ratio;
         }
         
+        public void setX(int i) {
+            this.offX = i;
+        }
+        
+        public void setZ(int i) {
+            this.offZ += i;
+        }
         
         public BiomeDelegate getBiome(int x, int z) {
-            return biomes.getBiomeRaw(x + offX, z + offZ);
+            var i = biomes.getBiomeRaw(x * ratio + offX, z * ratio + offZ);
+            if (i == null) {
+                System.out.println("fuck");
+            }
+            return i;
         }
     }
 }

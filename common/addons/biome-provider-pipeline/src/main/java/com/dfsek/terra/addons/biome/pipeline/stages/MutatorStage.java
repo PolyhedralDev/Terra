@@ -21,9 +21,8 @@ public class MutatorStage implements Stage {
     }
     
     @Override
-    public BiomeHolder apply(BiomeHolder in, long seed) {
+    public void apply(BiomeHolder in, long seed) {
         in.mutate(mutator, seed);
-        return in;
     }
     
     @Override

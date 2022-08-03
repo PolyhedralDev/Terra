@@ -15,19 +15,22 @@ import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector2Int;
 
 
 public class BiomePipeline {
     private final BiomeSource source;
     private final List<Stage> stages;
     private final int size;
-    private final int init;
+    private final int ratio;
+    private final int maxArraySize;
     
-    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init) {
+    private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int ratio, int maxArraySize) {
         this.source = source;
         this.stages = stages;
         this.size = size;
-        this.init = init;
+        this.ratio = ratio;
+        this.maxArraySize = maxArraySize;
     }
     
     /**
@@ -39,10 +42,10 @@ public class BiomePipeline {
      * @return BiomeHolder containing biomes.
      */
     public BiomeHolder getBiomes(int x, int z, long seed) {
-        BiomeHolder holder = new BiomeHolderImpl(init, size, Vector2.of(x * (init - 1), z * (init - 1)).mutable());
+        BiomeHolder holder = new BiomeHolderImpl(maxArraySize, ratio, Vector2Int.of(x * size, z * size).mutable());
         holder.fill(source, seed);
         for(Stage stage : stages) {
-            holder = stage.apply(holder, seed);
+            stage.apply(holder, seed);
         }
         return holder;
     }
@@ -60,21 +63,46 @@ public class BiomePipeline {
     }
     
     public static final class BiomePipelineBuilder {
-        private final int init;
         private final List<Stage> stages = new ArrayList<>();
-        private int expand;
+        private final int finalSize;
         
-        public BiomePipelineBuilder(int init) {
-            this.init = init;
-            expand = init;
+        public BiomePipelineBuilder(int finalSize) {
+            this.finalSize = finalSize;
         }
         
         public BiomePipeline build(BiomeSource source) {
-            for(Stage stage : stages) {
-                if(stage.isExpansion()) expand = expand * 2 - 1;
+            int init = 2;
+            int ratio;
+            int expand;
+            int maxSize;
+            while(true) {
+                expand = init;
+                for(Stage stage : stages) {
+                    if(stage.isExpansion()) {
+                        expand = expand * 2 - 1;
+                    } else {
+                        expand -= 2;
+                    }
+                    if (expand <= 0 ) {
+                        break;
+                    }
+                }
+                if (expand < finalSize ) {
+                    init++;
+                    continue;
+                }
+                ratio = 1;
+                maxSize = init;
+                for(Stage stage : stages) {
+                    if(stage.isExpansion()) {
+                        ratio = ratio * 2;
+                        maxSize = maxSize * 2 - 1;
+                    }
+                }
+                break;
             }
             
-            return new BiomePipeline(source, stages, expand, init);
+            return new BiomePipeline(source, stages, expand, ratio, maxSize);
         }
         
         public BiomePipelineBuilder addStage(Stage stage) {

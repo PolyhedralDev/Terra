@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 
 
 public interface BiomeHolder {
-    BiomeHolder expand(BiomeExpander expander, long seed);
+    void expand(BiomeExpander expander, long seed);
     
     void mutate(BiomeMutator mutator, long seed);
     
