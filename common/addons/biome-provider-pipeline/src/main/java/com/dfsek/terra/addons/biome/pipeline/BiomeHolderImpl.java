@@ -27,13 +27,13 @@ public class BiomeHolderImpl implements BiomeHolder {
     public void expand(BiomeExpander expander, long seed) {
         int newRatio = ratio / 2;
         for(int xi = arrayOrigin.getX(); xi < totalWidth - arrayOrigin.getX(); xi += ratio) {
-            for(int zi = arrayOrigin.getZ(); zi < totalWidth - arrayOrigin.getX(); zi += ratio) {
-                
+            for(int zi = arrayOrigin.getZ(); zi < totalWidth - arrayOrigin.getZ(); zi += ratio) {
+    
                 if(zi + ratio < totalWidth - arrayOrigin.getZ())
                     biomeArray[xi][zi + newRatio] = expander.getBetween(xi + origin.getX(), zi + newRatio + origin.getZ(),
                                                                         seed, biomeArray[xi][zi],
                                                                         biomeArray[xi][zi + ratio]);
-                
+    
                 if(xi + ratio < totalWidth - arrayOrigin.getX())
                     biomeArray[xi + newRatio][zi] = expander.getBetween(xi + newRatio + origin.getX(), zi + origin.getZ(),
                                                                         seed, biomeArray[xi][zi],
@@ -54,7 +54,6 @@ public class BiomeHolderImpl implements BiomeHolder {
         arrayOrigin.setX(arrayOrigin.getX() + ratio);
         arrayOrigin.setZ(arrayOrigin.getZ() + ratio);
         
-        
         for(int xi = arrayOrigin.getX(); xi < totalWidth - arrayOrigin.getX(); xi += ratio) {
             for(int zi = arrayOrigin.getZ(); zi < totalWidth - arrayOrigin.getZ(); zi += ratio) {
                 BiomeMutator.ViewPoint viewPoint = new BiomeMutator.ViewPoint(this, xi, zi, ratio);
@@ -68,7 +67,7 @@ public class BiomeHolderImpl implements BiomeHolder {
     @Override
     public void fill(BiomeSource source, long seed) {
         for(int xi = arrayOrigin.getX(); xi < totalWidth - arrayOrigin.getX(); xi += ratio) {
-            for(int zi = arrayOrigin.getZ(); zi < totalWidth - arrayOrigin.getX(); zi += ratio) {
+            for(int zi = arrayOrigin.getZ(); zi < totalWidth - arrayOrigin.getZ(); zi += ratio) {
                 biomeArray[xi][zi] = source.getBiome(xi + origin.getX(), zi + origin.getZ(), seed);
             }
         }
