@@ -37,7 +37,7 @@ public final class MinecraftUtil {
     
     
     private MinecraftUtil() {
-
+    
     }
     
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {

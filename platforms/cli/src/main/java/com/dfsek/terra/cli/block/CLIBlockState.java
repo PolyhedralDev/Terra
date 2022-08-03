@@ -16,9 +16,9 @@ public class CLIBlockState implements BlockState {
     public CLIBlockState(String value) {
         this.value = value;
         if(value.contains("[")) {
-
+        
         } else {
-
+        
         }
         this.isAir = value.startsWith("minecraft:air");
         this.nbt = new CompoundTag();

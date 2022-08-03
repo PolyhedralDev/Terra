@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.api.world.chunk;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.block.state.BlockState;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public interface ChunkAccess extends Handle {

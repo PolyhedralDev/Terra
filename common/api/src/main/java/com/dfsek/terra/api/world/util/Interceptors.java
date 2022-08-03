@@ -6,7 +6,7 @@ public final class Interceptors {
                                                                                                                    physics));
     
     private Interceptors() {
-    
+
     }
     
     public static ReadInterceptor readThrough() {

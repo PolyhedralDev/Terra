@@ -68,7 +68,7 @@ public class BiomeUtil {
         } else {
             vanillaBiomeProperties = new VanillaBiomeProperties();
         }
-
+        
         
         net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(vanillaBiomeProperties);
         

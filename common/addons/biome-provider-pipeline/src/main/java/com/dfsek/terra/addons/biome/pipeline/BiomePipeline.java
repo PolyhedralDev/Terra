@@ -14,7 +14,6 @@ import java.util.List;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector2Int;
 
 
@@ -83,11 +82,11 @@ public class BiomePipeline {
                     } else {
                         expand -= 2;
                     }
-                    if (expand <= 0 ) {
+                    if(expand <= 0) {
                         break;
                     }
                 }
-                if (expand < finalSize ) {
+                if(expand < finalSize) {
                     init++;
                     continue;
                 }

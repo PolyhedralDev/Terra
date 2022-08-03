@@ -10,11 +10,10 @@ import com.dfsek.terra.api.util.vector.Vector2Int;
 
 public class BiomeHolderImpl implements BiomeHolder {
     private final BiomeDelegate[][] biomeArray;
-    private int totalWidth;
-    private int ratio;
-    private int offset;
     private final Vector2Int.Mutable origin;
     private final Vector2Int.Mutable arrayOrigin;
+    private int totalWidth;
+    private int ratio;
     
     public BiomeHolderImpl(int totalWidth, int ratio, Vector2Int.Mutable origin) {
         biomeArray = new BiomeDelegate[totalWidth][totalWidth];
@@ -22,7 +21,6 @@ public class BiomeHolderImpl implements BiomeHolder {
         this.totalWidth = totalWidth;
         this.ratio = ratio;
         arrayOrigin = Vector2Int.of(0, 0).mutable();
-        int offset = 2;
     }
     
     @Override
@@ -33,18 +31,19 @@ public class BiomeHolderImpl implements BiomeHolder {
                 
                 if(zi + ratio < totalWidth - arrayOrigin.getZ())
                     biomeArray[xi][zi + newRatio] = expander.getBetween(xi + origin.getX(), zi + newRatio + origin.getZ(),
-                                                            seed, biomeArray[xi][zi],
-                                                            biomeArray[xi][zi + ratio]);
+                                                                        seed, biomeArray[xi][zi],
+                                                                        biomeArray[xi][zi + ratio]);
                 
                 if(xi + ratio < totalWidth - arrayOrigin.getX())
                     biomeArray[xi + newRatio][zi] = expander.getBetween(xi + newRatio + origin.getX(), zi + origin.getZ(),
-                                                                         seed, biomeArray[xi][zi],
-                                                                         biomeArray[xi + ratio][zi]);
+                                                                        seed, biomeArray[xi][zi],
+                                                                        biomeArray[xi + ratio][zi]);
                 if(xi + ratio < totalWidth - arrayOrigin.getX() && zi + ratio < totalWidth - arrayOrigin.getZ())
                     biomeArray[xi + newRatio][zi + newRatio] = expander.getBetween(xi + newRatio + origin.getX(),
-                                                                         zi + newRatio + origin.getZ(), seed,
-                                                                             biomeArray[xi][zi],
-                                                                             biomeArray[xi + ratio][zi + ratio], biomeArray[xi][zi + ratio], biomeArray[xi + ratio][zi]);
+                                                                                   zi + newRatio + origin.getZ(), seed,
+                                                                                   biomeArray[xi][zi],
+                                                                                   biomeArray[xi + ratio][zi + ratio],
+                                                                                   biomeArray[xi][zi + ratio], biomeArray[xi + ratio][zi]);
             }
         }
         ratio = newRatio;
@@ -54,7 +53,6 @@ public class BiomeHolderImpl implements BiomeHolder {
     public void mutate(BiomeMutator mutator, long seed) {
         arrayOrigin.setX(arrayOrigin.getX() + ratio);
         arrayOrigin.setZ(arrayOrigin.getZ() + ratio);
-    
         
         
         for(int xi = arrayOrigin.getX(); xi < totalWidth - arrayOrigin.getX(); xi += ratio) {

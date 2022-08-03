@@ -21,7 +21,7 @@ public final class TagUtil {
     private static final Logger logger = LoggerFactory.getLogger(TagUtil.class);
     
     private TagUtil() {
-    
+
     }
     
     private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {

@@ -63,37 +63,37 @@ public final class MinecraftAdapter {
             public boolean nextBoolean() {
                 return random.nextBoolean();
             }
-
+            
             @Override
             public float nextFloat() {
                 return random.nextFloat();
             }
-
+            
             @Override
             public double nextDouble() {
                 return random.nextDouble();
             }
-
+            
             @Override
             public int nextInt() {
                 return random.nextInt();
             }
-
+            
             @Override
             public int nextInt(int bound) {
                 return random.nextInt(bound);
             }
-
+            
             @Override
             public long nextLong() {
                 return random.nextLong();
             }
-
+            
             @Override
             public double nextGaussian() {
                 return random.nextGaussian();
             }
-
+            
             @Override
             public int nextInt(int origin, int bound) {
                 return random.nextBetween(origin, bound);
