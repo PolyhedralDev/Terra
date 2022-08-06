@@ -9,7 +9,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-class BiomePipelineColumn implements Column<Biome> {
+public class BiomePipelineColumn implements Column<Biome> {
     private final int min;
     private final int max;
     
@@ -17,7 +17,7 @@ class BiomePipelineColumn implements Column<Biome> {
     private final int z;
     private final Biome biome;
     
-    protected BiomePipelineColumn(BiomeProvider biomeProvider, int min, int max, int x, int z, long seed) {
+    public BiomePipelineColumn(BiomeProvider biomeProvider, int min, int max, int x, int z, long seed) {
         this.min = min;
         this.max = max;
         this.x = x;

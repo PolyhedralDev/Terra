@@ -11,11 +11,10 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.Map;
 
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
-import com.dfsek.terra.addons.biome.pipeline.mutator.BorderListMutator;
-import com.dfsek.terra.addons.biome.pipeline.stages.MutatorStage;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.stage.mutators.BorderListMutator;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
@@ -29,14 +28,14 @@ public class BorderListMutatorTemplate extends StageTemplate {
     private @Meta String defaultReplace;
     
     @Value("default-to")
-    private @Meta ProbabilityCollection<@Meta BiomeDelegate> defaultTo;
+    private @Meta ProbabilityCollection<@Meta PipelineBiome> defaultTo;
     
     @Value("replace")
-    private @Meta Map<@Meta BiomeDelegate, @Meta ProbabilityCollection<@Meta BiomeDelegate>> replace;
+    private @Meta Map<@Meta PipelineBiome, @Meta ProbabilityCollection<@Meta PipelineBiome>> replace;
     
     
     @Override
     public Stage get() {
-        return new MutatorStage(new BorderListMutator(replace, from, defaultReplace, noise, defaultTo));
+        return new BorderListMutator(replace, from, defaultReplace, noise, defaultTo);
     }
 }
