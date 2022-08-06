@@ -9,11 +9,10 @@ package com.dfsek.terra.addons.biome.pipeline.stages;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeHolder;
 import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 
 
-public class MutatorStage implements Stage {
+public class MutatorStage implements com.dfsek.terra.addons.biome.pipeline.api.stage.Stage {
     private final BiomeMutator mutator;
     
     public MutatorStage(BiomeMutator mutator) {

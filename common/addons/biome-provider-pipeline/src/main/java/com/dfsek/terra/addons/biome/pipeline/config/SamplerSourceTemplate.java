@@ -10,9 +10,9 @@ package com.dfsek.terra.addons.biome.pipeline.config;
 import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
-import com.dfsek.terra.addons.biome.pipeline.source.SamplerSource;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.Source;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.reimplementation.source.SamplerSource;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
@@ -25,10 +25,10 @@ public class SamplerSourceTemplate extends SourceTemplate {
     
     @Value("biomes")
     @Description("The biomes to be distributed.")
-    private @Meta ProbabilityCollection<@Meta BiomeDelegate> biomes;
+    private @Meta ProbabilityCollection<@Meta PipelineBiome> biomes;
     
     @Override
-    public BiomeSource get() {
+    public Source get() {
         return new SamplerSource(biomes, noise);
     }
 }
