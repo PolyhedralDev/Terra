@@ -24,7 +24,7 @@ final class SelfPipelineBiome implements PipelineBiome {
     }
     
     @Override
-    public boolean isEphemeral() {
+    public boolean isPlaceholder() {
         return true;
     }
     

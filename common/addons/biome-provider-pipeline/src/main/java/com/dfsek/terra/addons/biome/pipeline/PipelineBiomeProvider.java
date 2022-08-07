@@ -48,7 +48,7 @@ public class PipelineBiomeProvider implements BiomeProvider {
         this.biomes = new HashSet<>();
         Iterable<PipelineBiome> finalResult = result;
         result.forEach(pipelineBiome -> {
-            if(pipelineBiome.isEphemeral()) {
+            if(pipelineBiome.isPlaceholder()) {
             
                 StringBuilder biomeList = new StringBuilder("\n");
                 StreamSupport.stream(finalResult.spliterator(), false)
@@ -59,8 +59,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
                                      .append(':')
                                      .append(delegate.getClass().getCanonicalName())
                                      .append('\n'));
-                throw new IllegalArgumentException("Biome Pipeline leaks ephemeral biome \"" + pipelineBiome.getID() +
-                                                   "\". Ensure there is a stage to guarantee replacement of the ephemeral biome. Biomes: " +
+                throw new IllegalArgumentException("Biome Pipeline leaks placeholder biome \"" + pipelineBiome.getID() +
+                                                   "\". Ensure there is a stage to guarantee replacement of the placeholder biome. Biomes: " +
                                                    biomeList);
             }
             this.biomes.add(pipelineBiome.getBiome());
