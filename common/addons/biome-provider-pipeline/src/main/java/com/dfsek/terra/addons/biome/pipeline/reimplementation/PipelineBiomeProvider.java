@@ -74,14 +74,11 @@ public class PipelineBiomeProvider implements BiomeProvider {
     
     public Biome getBiome(int x, int z, long seed) {
     
-//        x += mutator.noise(seed + 1, x, z) * noiseAmp;
-//        z += mutator.noise(seed + 2, x, z) * noiseAmp;
-    
-//        x /= resolution;
-//        z /= resolution;
+        x += mutator.noise(seed + 1, x, z) * noiseAmp;
+        z += mutator.noise(seed + 2, x, z) * noiseAmp;
         
-//        x *= resolution;
-//        z *= resolution;
+        x /= resolution;
+        z /= resolution;
         
         int chunkX = FastMath.floorDiv(x, chunkSize);
         int chunkZ = FastMath.floorDiv(z, chunkSize);

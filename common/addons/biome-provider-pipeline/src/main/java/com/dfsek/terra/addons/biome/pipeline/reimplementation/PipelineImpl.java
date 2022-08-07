@@ -19,10 +19,12 @@ public class PipelineImpl implements Pipeline {
     private final int expanderCount;
     private final int arraySize;
     private final int chunkOriginArrayIndex;
+    private final int resolution;
     
-    public PipelineImpl(Source source, List<Stage> stages, int idealChunkArraySize) {
+    public PipelineImpl(Source source, List<Stage> stages, int resolution, int idealChunkArraySize) {
         this.source = source;
         this.stages = stages;
+        this.resolution = resolution;
         this.expanderCount = (int) stages.stream().filter(s -> s instanceof Expander).count();
         
         // Optimize for the ideal array size
@@ -78,5 +80,9 @@ public class PipelineImpl implements Pipeline {
     
     public int getChunkOriginArrayIndex() {
         return chunkOriginArrayIndex;
+    }
+    
+    public int getResolution() {
+        return resolution;
     }
 }
