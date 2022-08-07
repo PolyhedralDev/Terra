@@ -17,7 +17,7 @@ public class BiomePipelineColumn implements Column<Biome> {
     private final int z;
     private final Biome biome;
     
-    public BiomePipelineColumn(BiomeProvider biomeProvider, int min, int max, int x, int z, long seed) {
+    protected BiomePipelineColumn(BiomeProvider biomeProvider, int min, int max, int x, int z, long seed) {
         this.min = min;
         this.max = max;
         this.x = x;
