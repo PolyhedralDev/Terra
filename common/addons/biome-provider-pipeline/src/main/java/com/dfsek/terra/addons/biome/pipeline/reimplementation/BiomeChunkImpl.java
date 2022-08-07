@@ -15,11 +15,13 @@ public class BiomeChunkImpl implements BiomeChunk {
     private PipelineBiome[][] biomes;
     private final SeededVector worldOrigin;
     private final int chunkOriginArrayIndex;
+    private final int worldCoordinateScale;
     
     public BiomeChunkImpl(SeededVector worldOrigin, PipelineImpl pipeline) {
         
         this.worldOrigin = worldOrigin;
         this.chunkOriginArrayIndex = pipeline.getChunkOriginArrayIndex();
+        this.worldCoordinateScale = pipeline.getResolution();
         
         int size = pipeline.getArraySize();
         
@@ -86,11 +88,11 @@ public class BiomeChunkImpl implements BiomeChunk {
     }
     
     private int xIndexToWorldCoordinate(int xIndex) {
-        return worldOrigin.x() + xIndex - chunkOriginArrayIndex;
+        return (worldOrigin.x() + xIndex - chunkOriginArrayIndex) * worldCoordinateScale;
     }
     
     private int zIndexToWorldCoordinate(int zIndex) {
-        return worldOrigin.z() + zIndex - chunkOriginArrayIndex;
+        return (worldOrigin.z() + zIndex - chunkOriginArrayIndex) * worldCoordinateScale;
     }
     
     protected static int initialSizeToArraySize(int expanderCount, int initialSize) {
