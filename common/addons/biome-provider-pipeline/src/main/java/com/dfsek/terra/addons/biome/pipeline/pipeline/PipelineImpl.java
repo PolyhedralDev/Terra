@@ -1,18 +1,21 @@
 package com.dfsek.terra.addons.biome.pipeline.pipeline;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
-import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
+import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 
 
 public class PipelineImpl implements Pipeline {
     
-//    private static final Logger logger = LoggerFactory.getLogger(PipelineImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PipelineImpl.class);
     
     private final Source source;
     private final List<Stage> stages;
@@ -45,10 +48,10 @@ public class PipelineImpl implements Pipeline {
         this.chunkOriginArrayIndex = chunkOriginArrayIndex;
         this.chunkSize = chunkSize;
     
-        System.out.println("Initialized a new biome pipeline:");
-        System.out.println("Array size: " + arraySize + " (Target: " + idealChunkArraySize + ")");
-        System.out.println("Internal array origin: " + chunkOriginArrayIndex);
-        System.out.println("Chunk size: " + chunkSize);
+        logger.debug("Initialized a new biome pipeline:");
+        logger.debug("Array size: {} (Target: {})", arraySize, idealChunkArraySize);
+        logger.debug("Internal array origin: {}", chunkOriginArrayIndex);
+        logger.debug("Chunk size: {}", chunkSize);
     }
     
     @Override
