@@ -13,16 +13,16 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.PipelineBiomeLoader;
-import com.dfsek.terra.addons.biome.pipeline.config.SamplerSourceTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.source.SamplerSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.Source;
-import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.Stage;
-import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.api.Source;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -71,11 +71,11 @@ public class BiomePipelineAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(
                             STAGE_REGISTRY_KEY);
                     stageRegistry.register(addon.key("FRACTAL_EXPAND"), ExpanderStageTemplate::new);
-                    stageRegistry.register(addon.key("SMOOTH"), SmoothMutatorTemplate::new);
-                    stageRegistry.register(addon.key("REPLACE"), ReplaceMutatorTemplate::new);
-                    stageRegistry.register(addon.key("REPLACE_LIST"), ReplaceListMutatorTemplate::new);
-                    stageRegistry.register(addon.key("BORDER"), BorderMutatorTemplate::new);
-                    stageRegistry.register(addon.key("BORDER_LIST"), BorderListMutatorTemplate::new);
+                    stageRegistry.register(addon.key("SMOOTH"), SmoothStageTemplate::new);
+                    stageRegistry.register(addon.key("REPLACE"), ReplaceStageTemplate::new);
+                    stageRegistry.register(addon.key("REPLACE_LIST"), ReplaceListStageTemplate::new);
+                    stageRegistry.register(addon.key("BORDER"), BorderStageTemplate::new);
+                    stageRegistry.register(addon.key("BORDER_LIST"), BorderListStageTemplate::new);
                 })
                 .failThrough();
         platform.getEventManager()

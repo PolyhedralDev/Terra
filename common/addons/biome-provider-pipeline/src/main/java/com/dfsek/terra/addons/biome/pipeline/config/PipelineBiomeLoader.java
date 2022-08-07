@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 
-import com.dfsek.terra.addons.biome.pipeline.reimplementation.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.world.biome.Biome;
 
