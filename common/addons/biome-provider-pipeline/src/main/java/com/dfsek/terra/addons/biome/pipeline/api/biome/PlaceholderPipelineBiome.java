@@ -6,11 +6,11 @@ import java.util.Set;
 import com.dfsek.terra.api.world.biome.Biome;
 
 
-final class EphemeralPipelineBiome implements PipelineBiome {
+final class PlaceholderPipelineBiome implements PipelineBiome {
     private final Set<String> tags;
     private final String id;
     
-    public EphemeralPipelineBiome(String id) {
+    public PlaceholderPipelineBiome(String id) {
         this.id = id;
         tags = new HashSet<>();
         tags.add(id);
@@ -19,7 +19,7 @@ final class EphemeralPipelineBiome implements PipelineBiome {
     
     @Override
     public Biome getBiome() {
-        throw new UnsupportedOperationException("Cannot get biome from ephemeral delegate");
+        throw new UnsupportedOperationException("Cannot get raw biome from placeholder pipeline biome");
     }
     
     @Override
@@ -33,7 +33,7 @@ final class EphemeralPipelineBiome implements PipelineBiome {
     }
     
     @Override
-    public boolean isEphemeral() {
+    public boolean isPlaceholder() {
         return true;
     }
     
@@ -44,7 +44,7 @@ final class EphemeralPipelineBiome implements PipelineBiome {
     
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof EphemeralPipelineBiome that)) return false;
+        if(!(obj instanceof PlaceholderPipelineBiome that)) return false;
         
         return this.id.equals(that.id);
     }

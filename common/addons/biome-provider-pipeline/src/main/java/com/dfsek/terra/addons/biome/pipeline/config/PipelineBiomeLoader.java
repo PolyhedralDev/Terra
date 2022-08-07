@@ -27,6 +27,6 @@ public class PipelineBiomeLoader implements TypeLoader<PipelineBiome> {
         return biomeRegistry
                 .getByID((String) c)
                 .map(PipelineBiome::from)
-                .orElseGet(() -> PipelineBiome.ephemeral((String) c));
+                .orElseGet(() -> PipelineBiome.placeholder((String) c));
     }
 }

@@ -9,8 +9,8 @@ import com.dfsek.terra.api.world.biome.Biome;
 public interface PipelineBiome extends StringIdentifiable {
     Biome getBiome();
     
-    static PipelineBiome ephemeral(String id) {
-        return new EphemeralPipelineBiome(id);
+    static PipelineBiome placeholder(String id) {
+        return new PlaceholderPipelineBiome(id);
     }
     
     static PipelineBiome from(Biome biome) {
@@ -23,7 +23,7 @@ public interface PipelineBiome extends StringIdentifiable {
     
     Set<String> getTags();
     
-    default boolean isEphemeral() {
+    default boolean isPlaceholder() {
         return false;
     }
     
