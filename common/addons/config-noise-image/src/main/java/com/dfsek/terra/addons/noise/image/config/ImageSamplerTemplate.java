@@ -11,6 +11,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.awt.image.BufferedImage;
 
+import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.image.ImageSampler;
 import com.dfsek.terra.api.config.meta.Meta;
@@ -27,7 +28,7 @@ public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
     private @Meta double frequency;
     
     @Value("channel")
-    private ImageSampler.@Meta Channel channel;
+    private @Meta Channel channel;
     
     @Override
     public NoiseSampler get() {
