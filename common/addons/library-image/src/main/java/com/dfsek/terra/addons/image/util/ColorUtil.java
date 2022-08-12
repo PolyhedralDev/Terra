@@ -8,7 +8,9 @@ public class ColorUtil {
     private ColorUtil() {}
     
     public static int distance(int a, int b) {
-        return FastMath.abs(getRed(a) - getRed(b)) + FastMath.abs(getGreen(a) - getGreen(b)) + FastMath.abs(getBlue(a) - getBlue(b));
+        return FastMath.abs(getRed(a) - getRed(b)) +
+               FastMath.abs(getGreen(a) - getGreen(b)) +
+               FastMath.abs(getBlue(a) - getBlue(b));
     }
     
     public static int getRed(int rgb) {
@@ -27,4 +29,42 @@ public class ColorUtil {
         return rgb >> 24 & 255;
     }
     
+    public static int getGrayscale(int rgb) {
+        return (getRed(rgb) + getGreen(rgb) + getBlue(rgb)) / 3;
+    }
+    
+    public enum Channel {
+        RED {
+            @Override
+            public int getChannel(int rgb) {
+                return getRed(rgb);
+            }
+        },
+        GREEN {
+            @Override
+            public int getChannel(int rgb) {
+                return getGreen(rgb);
+            }
+        },
+        BLUE {
+            @Override
+            public int getChannel(int rgb) {
+                return getBlue(rgb);
+            }
+        },
+        GRAYSCALE {
+            @Override
+            public int getChannel(int rgb) {
+                return getGrayscale(rgb);
+            }
+        },
+        ALPHA {
+            @Override
+            public int getChannel(int rgb) {
+                return getAlpha(rgb);
+            }
+        };
+        
+        public abstract int getChannel(int rgb);
+    }
 }
