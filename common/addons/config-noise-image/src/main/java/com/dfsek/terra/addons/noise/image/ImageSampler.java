@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.noise.samplers;
+package com.dfsek.terra.addons.noise.image;
 
 import net.jafama.FastMath;
 

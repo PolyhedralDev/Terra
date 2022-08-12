@@ -18,7 +18,6 @@ import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.BinaryArithmeticTemplate;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
-import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
 import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
@@ -92,8 +91,6 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
-            
-                  noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("DOMAIN_WARP"), DomainWarpTemplate::new);
             

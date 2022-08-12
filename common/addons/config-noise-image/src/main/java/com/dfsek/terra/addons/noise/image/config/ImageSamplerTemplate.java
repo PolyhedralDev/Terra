@@ -5,13 +5,14 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.noise.config.templates;
+package com.dfsek.terra.addons.noise.image.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.awt.image.BufferedImage;
 
-import com.dfsek.terra.addons.noise.samplers.ImageSampler;
+import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
+import com.dfsek.terra.addons.noise.image.ImageSampler;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
