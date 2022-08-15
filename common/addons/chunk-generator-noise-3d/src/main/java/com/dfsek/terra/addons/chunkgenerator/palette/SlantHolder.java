@@ -14,39 +14,39 @@ import java.util.TreeMap;
 
 public class SlantHolder {
     private final TreeMap<Double, PaletteHolder> layers;
-    private final double minSlope;
+    private final double maxSlant;
     
-    private SlantHolder(TreeMap<Double, PaletteHolder> layers, double minSlope) {
+    private SlantHolder(TreeMap<Double, PaletteHolder> layers, double maxSlant) {
         this.layers = layers;
-        this.minSlope = minSlope;
+        this.maxSlant = maxSlant;
     }
     
-    public static SlantHolder of(TreeMap<Double, PaletteHolder> layers, double minSlope) {
+    public static SlantHolder of(TreeMap<Double, PaletteHolder> layers, double maxSlant) {
         if(layers.size() == 1) {
             Entry<Double, PaletteHolder> firstEntry = layers.firstEntry();
-            return new Single(firstEntry.getValue(), minSlope);
+            return new Single(firstEntry.getValue(), maxSlant);
         }
-        return new SlantHolder(layers, minSlope);
+        return new SlantHolder(layers, maxSlant);
     }
     
     public boolean isEmpty() {
         return layers.isEmpty();
     }
     
-    public PaletteHolder getPalette(double slope) {
-        return layers.floorEntry(slope).getValue();
+    public PaletteHolder getPalette(double slant) {
+        return layers.ceilingEntry(slant).getValue();
     }
     
-    public double getMinSlope() {
-        return minSlope;
+    public double getMaxSlant() {
+        return maxSlant;
     }
     
     private static final class Single extends SlantHolder {
         
         private final PaletteHolder layers;
         
-        public Single(PaletteHolder layers, double minSlope) {
-            super(of(minSlope, layers), minSlope);
+        public Single(PaletteHolder layers, double maxSlant) {
+            super(of(maxSlant, layers), maxSlant);
             this.layers = layers;
         }
         
@@ -57,7 +57,7 @@ public class SlantHolder {
         }
         
         @Override
-        public PaletteHolder getPalette(double slope) {
+        public PaletteHolder getPalette(double slant) {
             return layers;
         }
     }
