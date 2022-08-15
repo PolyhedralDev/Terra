@@ -10,6 +10,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
@@ -22,25 +23,32 @@ public final class PaletteUtil {
     public static Palette getPalette(int x, int y, int z, Sampler3D sampler, PaletteInfo paletteInfo, int depth) {
         SlantHolder slant = paletteInfo.slantHolder();
         if(!slant.isEmpty() && depth <= paletteInfo.maxSlantDepth()) {
-            double slope = derivative(sampler, x, y, z);
-            if(slope > slant.getMinSlope()) {
-                return slant.getPalette(slope).getPalette(y);
+            double dot = surfaceNormalDotProduct(sampler, x, y, z);
+            if(dot <= slant.getMaxSlant()) {
+                return slant.getPalette(dot).getPalette(y);
             }
         }
         
         return paletteInfo.paletteHolder().getPalette(y);
     }
     
-    public static double derivative(Sampler3D sampler, double x, double y, double z) {
-        double baseSample = sampler.sample(x, y, z);
-        
-        double xVal1 = (sampler.sample(x + DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
-        double xVal2 = (sampler.sample(x - DERIVATIVE_DIST, y, z) - baseSample) / DERIVATIVE_DIST;
-        double zVal1 = (sampler.sample(x, y, z + DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
-        double zVal2 = (sampler.sample(x, y, z - DERIVATIVE_DIST) - baseSample) / DERIVATIVE_DIST;
-        double yVal1 = (sampler.sample(x, y + DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
-        double yVal2 = (sampler.sample(x, y - DERIVATIVE_DIST, z) - baseSample) / DERIVATIVE_DIST;
-        
-        return Math.sqrt(((xVal2 - xVal1) * (xVal2 - xVal1)) + ((zVal2 - zVal1) * (zVal2 - zVal1)) + ((yVal2 - yVal1) * (yVal2 - yVal1)));
+    private static final Vector3[] samplePoints = {
+            Vector3.of(0, 0, -DERIVATIVE_DIST),
+            Vector3.of(0, 0, DERIVATIVE_DIST),
+            Vector3.of(0, -DERIVATIVE_DIST, 0),
+            Vector3.of(0, DERIVATIVE_DIST, 0),
+            Vector3.of(-DERIVATIVE_DIST, 0, 0),
+            Vector3.of(DERIVATIVE_DIST, 0, 0),
+    };
+    
+    private static final Vector3 direction = Vector3.of(0, 1, 0);
+    
+    public static double surfaceNormalDotProduct(Sampler3D sampler, double x, double y, double z) {
+        Vector3.Mutable surfaceNormalApproximation = Vector3.Mutable.of(0, 0, 0);
+        for(Vector3 point : samplePoints) {
+            double scalar = -sampler.sample(x+point.getX(), y+point.getY(), z+point.getZ());
+            surfaceNormalApproximation.add(point.mutable().multiply(scalar));
+        }
+        return direction.dot(surfaceNormalApproximation.normalize());
     }
 }
