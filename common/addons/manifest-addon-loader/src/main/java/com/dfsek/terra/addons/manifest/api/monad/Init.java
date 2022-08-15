@@ -34,6 +34,10 @@ public class Init<T> implements Monad<T, Init<?>> {
     
     @Override
     public <U> Monad<U, Init<?>> pure(U u) {
-        return of(Functions.constant(u));
+        return ofPure(u);
+    }
+    
+    public static <T> Init<T> ofPure(T t) {
+        return of(Functions.constant(t));
     }
 }

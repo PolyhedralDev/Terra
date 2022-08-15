@@ -8,25 +8,27 @@
 package com.dfsek.terra.addons.ore;
 
 import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.util.function.monad.Monad;
 
 
 public class OreAddon implements MonadAddonInitializer {
     @Override
-    public Init<?> initialize() {
-        return Get.eventManager()
-                  .map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class))
-                  .bind(functionalEventHandler ->
-                                Get.addon()
-                                   .map(addon -> functionalEventHandler
-                                           .register(addon, ConfigPackPreLoadEvent.class)
-                                           .then(event -> event
-                                                   .getPack()
-                                                   .registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
-                                           .failThrough()
-                                       ));
+    public Monad<?, Init<?>> initialize() {
+        return Do.with(
+                Get.eventManager().map(manager -> manager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                ((eventHandler, addon) -> Init
+                        .ofPure(eventHandler
+                                        .register(addon, ConfigPackPreLoadEvent.class)
+                                        .then(event -> event
+                                                .getPack()
+                                                .registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
+                                        .failThrough()))
+                      );
     }
 }

@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.manifest.impl;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.inject.Injector;
@@ -34,7 +35,7 @@ public abstract class Initializer {
         
         @Override
         public void initialize(InitInfo info) {
-            addon.initialize().apply(info);
+            ((Init<?>) addon.initialize()).apply(info);
         }
     }
     
