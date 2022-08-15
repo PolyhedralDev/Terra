@@ -6,6 +6,9 @@ dependencies {
     
     api("com.dfsek.tectonic", "common", Versions.Libraries.tectonic)
     
-    api("com.github.ben-manes.caffeine:caffeine:3.1.0")
+    api("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
+    
+    api("io.vavr", "vavr", Versions.Libraries.vavr)
+    
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
 }

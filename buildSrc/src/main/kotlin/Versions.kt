@@ -9,6 +9,9 @@ object Versions {
         const val slf4j = "1.7.36"
         const val log4j_slf4j_impl = "2.14.1"
         
+        const val caffeine = "3.1.0"
+        const val vavr = "0.10.4"
+        
         object Internal {
             const val apacheText = "1.9"
             const val jafama = "2.3.2"
