@@ -13,6 +13,9 @@ import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,13 +75,17 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                     throw new AddonException("Addon " + manifest.getID() + " has unknown schema version: " + manifest.getSchemaVersion());
                 }
                 
-                List<AddonInitializer> initializers = manifest.getEntryPoints().stream().map(entryPoint -> {
+                List<Initializer> initializers = manifest.getEntryPoints().stream().map(entryPoint -> {
                     try {
                         Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
-                        if(!(in instanceof AddonInitializer)) {
-                            throw new AddonException(in.getClass() + " does not extend " + AddonInitializer.class);
+                        if(in instanceof AddonInitializer a) {
+                            return Initializer.of(a);
                         }
-                        return (AddonInitializer) in;
+    
+                        if(in instanceof MonadAddonInitializer m) {
+                            return Initializer.of(m);
+                        }
+                        throw new AddonException(in.getClass() + " is not a valid initializer" );
                     } catch(InvocationTargetException e) {
                         throw new AddonException("Exception occurred while instantiating addon", e);
                     } catch(NoSuchMethodException | IllegalAccessException | InstantiationException e) {
