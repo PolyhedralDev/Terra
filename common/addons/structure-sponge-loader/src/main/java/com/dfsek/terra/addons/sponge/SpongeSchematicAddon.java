@@ -7,6 +7,13 @@
 
 package com.dfsek.terra.addons.sponge;
 
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
+
+import com.dfsek.terra.api.util.function.monad.Monad;
+
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -20,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -32,13 +38,7 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
 
 
-public class SpongeSchematicAddon implements AddonInitializer {
-    @Inject
-    private Platform platform;
-    
-    @Inject
-    private BaseAddon addon;
-    
+public class SpongeSchematicAddon implements MonadAddonInitializer {
     private static InputStream detectDecompression(InputStream is) throws IOException {
         PushbackInputStream pbis = new PushbackInputStream(is, 2);
         int signature = (pbis.read() & 0xFF) + (pbis.read() << 8);
@@ -51,24 +51,28 @@ public class SpongeSchematicAddon implements AddonInitializer {
     }
     
     @Override
-    public void initialize() {
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                    event.getPack()
-                         .getLoader()
-                         .open("", ".schem")
-                         .thenEntries(entries -> entries
-                                 .stream()
-                                 .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey())))
-                                 .forEach(structureRegistry::register)).close();
-                })
-                .failThrough();
+    public Monad<?, Init<?>> initialize() {
+        return Do.with(
+                Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                Get.platform(),
+                ((handler, base, platform) -> Init.ofPure(
+                        handler.register(base, ConfigPackPreLoadEvent.class)
+                               .then(event -> {
+                                   CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
+                                   event.getPack()
+                                        .getLoader()
+                                        .open("", ".schem")
+                                        .thenEntries(entries -> entries
+                                                .stream()
+                                                .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey()), platform, base))
+                                                .forEach(structureRegistry::register)).close();
+                               })
+                               .failThrough()))
+                      );
     }
     
-    public SpongeStructure convert(InputStream in, String id) {
+    public SpongeStructure convert(InputStream in, String id, Platform platform, BaseAddon addon) {
         try {
             CompoundTag baseTag = (CompoundTag) new NBTDeserializer(false).fromStream(detectDecompression(in)).getTag();
             int wid = baseTag.getShort("Width");

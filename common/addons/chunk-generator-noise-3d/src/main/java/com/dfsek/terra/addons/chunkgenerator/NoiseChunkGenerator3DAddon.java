@@ -14,60 +14,58 @@ import com.dfsek.terra.addons.chunkgenerator.config.palette.BiomePaletteTemplate
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.SlantLayer;
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.properties.PropertyKey;
+import com.dfsek.terra.api.util.function.monad.Monad;
+import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
-public class NoiseChunkGenerator3DAddon implements AddonInitializer {
-    @Inject
-    private Platform platform;
-    
-    @Inject
-    private BaseAddon addon;
-    
+public class NoiseChunkGenerator3DAddon implements MonadAddonInitializer {
     @Override
-    public void initialize() {
+    public Monad<?, Init<?>> initialize() {
         PropertyKey<PaletteInfo> paletteInfoPropertyKey = Context.create(PaletteInfo.class);
         PropertyKey<BiomeNoiseProperties> noisePropertiesPropertyKey = Context.create(BiomeNoiseProperties.class);
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .priority(1000)
-                .then(event -> {
-                    NoiseChunkGeneratorPackConfigTemplate config = event.loadTemplate(new NoiseChunkGeneratorPackConfigTemplate());
-            
-                    event.getPack()
-                         .getOrCreateRegistry(ChunkGeneratorProvider.class)
-                         .register(addon.key("NOISE_3D"),
-                                   pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(),
-                                                                     config.getHorizontalRes(),
-                                                                     config.getVerticalRes(), noisePropertiesPropertyKey,
-                                                                     paletteInfoPropertyKey));
-                    event.getPack()
-                         .applyLoader(SlantLayer.class, SlantLayer::new);
-                })
-                .failThrough();
-        
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(Biome.class)) {
-                        event.getLoadedObject(Biome.class).getContext().put(paletteInfoPropertyKey,
-                                                                            event.load(new BiomePaletteTemplate(platform)).get());
-                        event.getLoadedObject(Biome.class).getContext().put(noisePropertiesPropertyKey,
-                                                                            event.load(new BiomeNoiseConfigTemplate()).get());
-                    }
-                })
-                .failThrough();
+        return Do.with(
+                Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                Get.platform(),
+                ((handler, base, platform) -> Init.ofPure(Construct.construct(() -> {
+                                                          handler.register(base, ConfigPackPreLoadEvent.class)
+                                                                 .priority(1000)
+                                                                 .then(event -> {
+                                                                     NoiseChunkGeneratorPackConfigTemplate config = event.loadTemplate(new NoiseChunkGeneratorPackConfigTemplate());
+    
+                                                                     event.getPack()
+                                                                          .getOrCreateRegistry(ChunkGeneratorProvider.class)
+                                                                          .register(base.key("NOISE_3D"),
+                                                                                    pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(),
+                                                                                                                      config.getHorizontalRes(),
+                                                                                                                      config.getVerticalRes(), noisePropertiesPropertyKey,
+                                                                                                                      paletteInfoPropertyKey));
+                                                                     event.getPack()
+                                                                          .applyLoader(SlantLayer.class, SlantLayer::new);
+                                                                 })
+                                                                 .failThrough();
+                return handler.register(base, ConfigurationLoadEvent.class)
+                              .then(event -> {
+                                  if(event.is(Biome.class)) {
+                                      event.getLoadedObject(Biome.class).getContext().put(paletteInfoPropertyKey,
+                                                                                          event.load(new BiomePaletteTemplate(platform)).get());
+                                      event.getLoadedObject(Biome.class).getContext().put(noisePropertiesPropertyKey,
+                                                                                          event.load(new BiomeNoiseConfigTemplate()).get());
+                                  }
+                              })
+                              .failThrough();
+                }))));
+
     }
 }

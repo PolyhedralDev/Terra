@@ -22,13 +22,13 @@ public class OreAddon implements MonadAddonInitializer {
         return Do.with(
                 Get.eventManager().map(manager -> manager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),
-                ((eventHandler, addon) -> Init
+                (eventHandler, addon) -> Init
                         .ofPure(eventHandler
                                         .register(addon, ConfigPackPreLoadEvent.class)
                                         .then(event -> event
                                                 .getPack()
                                                 .registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
-                                        .failThrough()))
+                                        .failThrough())
                       );
     }
 }

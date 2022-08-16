@@ -20,7 +20,10 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.addons.generation.feature.config.FeatureStageTemplate;
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.meta.Meta;
@@ -31,65 +34,67 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.structure.feature.Feature;
+import com.dfsek.terra.api.util.function.monad.Monad;
+import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
-public class FeatureGenerationAddon implements AddonInitializer {
+public class FeatureGenerationAddon implements MonadAddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<GenerationStage>>> STAGE_TYPE_KEY = new TypeKey<>() {
     };
     
     public static final TypeKey<@Meta List<@Meta Feature>> FEATURE_LIST_TYPE_KEY = new TypeKey<>() {
     };
-    @Inject
-    private Platform platform;
     
-    @Inject
-    private BaseAddon addon;
     
     @SuppressWarnings("unchecked")
     @Override
-    public void initialize() {
+    public Monad<?, Init<?>> initialize() {
         PropertyKey<BiomeFeatures> biomeFeaturesKey = Context.create(BiomeFeatures.class);
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack()
-                                    .getOrCreateRegistry(STAGE_TYPE_KEY)
-                                    .register(addon.key("FEATURE"), () -> new FeatureStageTemplate(platform, biomeFeaturesKey)))
-                .failThrough();
-        
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(Biome.class)) {
-                        DynamicTemplate.Builder templateBuilder = DynamicTemplate.builder();
-                
-                        List<FeatureGenerationStage> featureGenerationStages = new ArrayList<>();
-                        event.getPack().getStages().forEach(stage -> {
-                            if(stage instanceof FeatureGenerationStage featureGenerationStage) {
-                                featureGenerationStages.add(featureGenerationStage);
-                                templateBuilder
-                                        .value(featureGenerationStage.getID(),
-                                               DynamicValue
-                                                       .builder("features." + featureGenerationStage.getID(), List.class)
-                                                       .annotatedType(FEATURE_LIST_TYPE_KEY.getAnnotatedType())
-                                                       .setDefault(Collections.emptyList())
-                                                       .build());
-                            }
-                        });
-                
-                        DynamicTemplate template = event.load(templateBuilder.build());
-                
-                        Map<FeatureGenerationStage, List<Feature>> features = new HashMap<>();
-                
-                        featureGenerationStages.forEach(stage -> features.put(stage, template.get(stage.getID(), List.class)));
-                
-                        event.getLoadedObject(Biome.class).getContext().put(biomeFeaturesKey, new BiomeFeatures(features));
-                    }
-                })
-                .failThrough();
+        return Do.with(
+                Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                Get.platform(),
+                ((handler, base, platform) -> Init.ofPure(Construct.construct(() -> {
+                    handler.register(base, ConfigPackPreLoadEvent.class)
+                           .then(event -> event.getPack()
+                                               .getOrCreateRegistry(STAGE_TYPE_KEY)
+                                               .register(base.key("FEATURE"), () -> new FeatureStageTemplate(platform, biomeFeaturesKey)))
+                           .failThrough();
+                    return handler.register(base, ConfigurationLoadEvent.class)
+                                  .then(event -> {
+                                      if(event.is(Biome.class)) {
+                                          DynamicTemplate.Builder templateBuilder = DynamicTemplate.builder();
+                            
+                                          List<FeatureGenerationStage> featureGenerationStages = new ArrayList<>();
+                                          event.getPack().getStages().forEach(stage -> {
+                                              if(stage instanceof FeatureGenerationStage featureGenerationStage) {
+                                                  featureGenerationStages.add(featureGenerationStage);
+                                                  templateBuilder
+                                                          .value(featureGenerationStage.getID(),
+                                                                 DynamicValue
+                                                                         .builder("features." + featureGenerationStage.getID(), List.class)
+                                                                         .annotatedType(FEATURE_LIST_TYPE_KEY.getAnnotatedType())
+                                                                         .setDefault(Collections.emptyList())
+                                                                         .build());
+                                              }
+                                          });
+                            
+                                          DynamicTemplate template = event.load(templateBuilder.build());
+                            
+                                          Map<FeatureGenerationStage, List<Feature>> features = new HashMap<>();
+                            
+                                          featureGenerationStages.forEach(
+                                                  stage -> features.put(stage, template.get(stage.getID(), List.class)));
+                            
+                                          event.getLoadedObject(Biome.class).getContext().put(biomeFeaturesKey,
+                                                                                              new BiomeFeatures(features));
+                                      }
+                                  })
+                                  .failThrough();
+                }))));
     }
 }
