@@ -82,6 +82,7 @@ public interface Registry<T> extends TypeLoader<T> {
         return getType().getRawType();
     }
     
+    @Deprecated
     default Optional<T> getByID(String id) {
         return getByID(id, map -> {
             if(map.isEmpty()) return Optional.empty();
