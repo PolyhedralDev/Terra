@@ -75,15 +75,15 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
         }
         
         TreeMap<Double, PaletteHolder> slantLayers = new TreeMap<>();
-        double minThreshold = Double.MAX_VALUE;
+        double maxThreshold = Double.MIN_VALUE;
         
         for(SlantLayer layer : slant) {
             double threshold = layer.getThreshold();
-            if(threshold < minThreshold) minThreshold = threshold;
+            if(threshold > maxThreshold) maxThreshold = threshold;
             slantLayers.put(threshold, layer.getPalette());
         }
         
-        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth,
+        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, maxThreshold), oceanPalette, seaLevel, slantDepth,
                                updatePalette);
     }
 }
