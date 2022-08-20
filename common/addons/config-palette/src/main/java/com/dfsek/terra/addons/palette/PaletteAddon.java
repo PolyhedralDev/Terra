@@ -7,7 +7,12 @@
 
 package com.dfsek.terra.addons.palette;
 
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerLoader;
 import com.dfsek.terra.api.Platform;
@@ -15,24 +20,28 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.util.function.monad.Monad;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import java.util.function.Supplier;
 
 
-public class PaletteAddon implements AddonInitializer {
-    @Inject
-    private Platform platform;
-    
-    @Inject
-    private BaseAddon addon;
-    
+public class PaletteAddon implements MonadAddonInitializer {
     @Override
-    public void initialize() {
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new PaletteConfigType(platform), addon.key("PALETTE"), 2);
-                    event.getPack().applyLoader(PaletteLayerHolder.class, PaletteLayerLoader::new);
-                })
-                .failThrough();
+    public Monad<?, Init<?>> initialize() {
+        return Do.with(
+                Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                Get.platform(),
+                ((handler, base, platform) -> Init.ofPure(
+                        handler.register(base, ConfigPackPreLoadEvent.class)
+                               .then(event -> {
+                                   event.getPack().registerConfigType(new PaletteConfigType(platform), base.key("PALETTE"), 2);
+                                   event.getPack().applyLoader(PaletteLayerHolder.class, PaletteLayerLoader::new);
+                               })
+                               .failThrough()))
+                      );
     }
 }

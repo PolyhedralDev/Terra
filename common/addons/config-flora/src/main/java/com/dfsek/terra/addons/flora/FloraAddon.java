@@ -9,30 +9,31 @@ package com.dfsek.terra.addons.flora;
 
 import com.dfsek.terra.addons.flora.config.BlockLayerTemplate;
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.util.function.monad.Monad;
 
 
-public class FloraAddon implements AddonInitializer {
-    @Inject
-    private Platform platform;
-    
-    @Inject
-    private BaseAddon addon;
-    
+public class FloraAddon implements MonadAddonInitializer {
     @Override
-    public void initialize() {
-        platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new FloraConfigType(), addon.key("FLORA"), 2);
-                    event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
-                })
-                .failThrough();
+    public Monad<?, Init<?>> initialize() {
+        return Do.with(
+                Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
+                Get.addon(),
+                ((functionalEventHandler, base) -> Init.ofPure(
+                        functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
+                                              .then(event -> {
+                                                  event.getPack().registerConfigType(new FloraConfigType(), base.key("FLORA"), 2);
+                                                  event.getPack().applyLoader(BlockLayer.class, BlockLayerTemplate::new);
+                                              })
+                                              .failThrough()))
+                      );
     }
 }
