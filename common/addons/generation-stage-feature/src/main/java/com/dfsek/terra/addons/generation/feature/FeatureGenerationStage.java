@@ -8,7 +8,8 @@
 package com.dfsek.terra.addons.generation.feature;
 
 import java.util.Collections;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
@@ -72,7 +73,9 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                      .forEach(y -> feature.getStructure(world, x, y, z)
                                                                           .generate(Vector3Int.of(x, y, z),
                                                                                     world,
-                                                                                    new Random(coordinateSeed * 31 + y),
+                                                                                    RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                                                                                                  "Xoroshiro128PlusPlus")
+                                                                                                          .create(coordinateSeed * 31 + y),
                                                                                     Rotation.NONE)
                                                              );
                                           }

@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.ore.ores;
 import net.jafama.FastMath;
 
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -42,7 +42,7 @@ public class VanillaOre implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         int centerX = location.getX();
         int centerZ = location.getZ();
         int centerY = location.getY();
