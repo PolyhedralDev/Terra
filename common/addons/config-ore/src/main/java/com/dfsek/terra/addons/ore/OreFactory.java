@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.ore;
 
+import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.addons.ore.ores.VanillaOre;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
@@ -19,6 +20,6 @@ public class OreFactory implements ConfigFactory<OreTemplate, Structure> {
     public VanillaOre build(OreTemplate config, Platform platform) {
         BlockState m = config.getMaterial();
         return new VanillaOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.isExposed(),
-                              config.getMaterialOverrides());
+                              config.getMaterialOverrides(), new WhiteNoiseSampler());
     }
 }

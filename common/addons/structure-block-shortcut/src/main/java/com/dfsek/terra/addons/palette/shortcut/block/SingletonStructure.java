@@ -17,7 +17,7 @@ public class SingletonStructure implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
         world.setBlockState(location, blockState);
         return true;
     }

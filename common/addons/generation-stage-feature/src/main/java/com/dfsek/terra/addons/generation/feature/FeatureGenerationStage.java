@@ -73,10 +73,8 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                      .forEach(y -> feature.getStructure(world, x, y, z)
                                                                           .generate(Vector3Int.of(x, y, z),
                                                                                     world,
-                                                                                    RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
-                                                                                                                  "Xoroshiro128PlusPlus")
-                                                                                                          .create(coordinateSeed * 31 + y),
-                                                                                    Rotation.NONE)
+                                                                                    Rotation.NONE,
+                                                                                    coordinateSeed * 31 + y)
                                                              );
                                           }
                                           platform.getProfiler().pop(feature.getID());

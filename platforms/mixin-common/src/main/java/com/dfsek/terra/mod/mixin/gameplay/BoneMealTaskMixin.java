@@ -1,6 +1,8 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
+import com.dfsek.terra.api.world.World;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.brain.task.BoneMealTask;
@@ -43,14 +45,13 @@ public class BoneMealTaskMixin {
                         if(canGrow != null) {
                             RandomGenerator random = MinecraftAdapter.adapt(world.getRandom());
                             cir.setReturnValue(canGrow.generate(
-                                    Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE));
+                                    Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, Rotation.NONE, world.getSeed() + random.nextLong(Long.MAX_VALUE)));
                             return;
                         }
                         cir.setReturnValue(true);
                         return;
                     }
                     cir.setReturnValue(false);
-                    return;
                 }
             }
         }

@@ -29,7 +29,6 @@ import com.dfsek.terra.addons.terrascript.script.builders.EntityFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.GetMarkFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.LootFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.PullFunctionBuilder;
-import com.dfsek.terra.addons.terrascript.script.builders.RandomFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.RecursionsFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.SetMarkFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.StateFunctionBuilder;
@@ -77,7 +76,6 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("block", new BlockFunctionBuilder(platform))
                 .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
                 .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
-                .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
                 .registerFunction("setMark", new SetMarkFunctionBuilder())
                 .registerFunction("getMark", new GetMarkFunctionBuilder())
@@ -130,16 +128,16 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
         platform.getProfiler().push(profile);
-        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
+        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, world, 0));
         platform.getProfiler().pop(profile);
         return result;
     }
     
-    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation, int recursions) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, int recursions) {
         platform.getProfiler().push(profile);
-        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
+        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, world, recursions));
         platform.getProfiler().pop(profile);
         return result;
     }

@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import com.dfsek.terra.api.util.MathUtil;
+
+
 /**
  * Class for bilinear interpolation of values arranged on a unit square.
  */
@@ -34,6 +37,6 @@ public class Interpolator3 {
     }
     
     public double trilerp(double x, double y, double z) {
-        return Interpolator.lerp(x, top.bilerp(y, z), bottom.bilerp(y, z));
+        return MathUtil.lerp(x, top.bilerp(y, z), bottom.bilerp(y, z));
     }
 }

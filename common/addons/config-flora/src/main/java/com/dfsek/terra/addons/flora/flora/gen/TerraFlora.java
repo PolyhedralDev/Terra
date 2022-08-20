@@ -74,7 +74,7 @@ public class TerraFlora implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();
         int c = ceiling ? -1 : 1;
@@ -86,13 +86,8 @@ public class TerraFlora implements Structure {
         for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
             int lvl = (FastMath.abs(i));
             BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(),
-                                                                                       location.getZ(), world.getSeed());
-            if(doRotation) {
-                Direction oneFace = new ArrayList<>(faces).get(
-                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
-                                              .create(location.getX() ^ location.getZ())
-                                              .nextInt(faces.size())); // Get RandomGenerator face.
-            }
+                                                                                       location.getZ(), seed);
+            
             world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }
         return true;
