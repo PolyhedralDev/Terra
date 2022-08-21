@@ -47,26 +47,26 @@ public class VanillaOre implements Structure {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed){
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation){
         int centerX = location.getX();
         int centerZ = location.getZ();
         int centerY = location.getY();
         
         
-        double f = sampler.noise(centerX, centerY, centerZ, seed) * (float) Math.PI;
+        double f = sampler.noise(centerX, centerY, centerZ, world.getSeed()) * (float) Math.PI;
         
         double d1 = centerX + 8 + FastMath.sin(f) * size / 8.0F;
         double d2 = centerX + 8 - FastMath.sin(f) * size / 8.0F;
         double d3 = centerZ + 8 + FastMath.cos(f) * size / 8.0F;
         double d4 = centerZ + 8 - FastMath.cos(f) * size / 8.0F;
         
-        double d5 = centerY + (Math.round(sampler.noise(centerX, centerY, centerZ, seed + 1) + 1)) - 2D;
-        double d6 = centerY + (Math.round(sampler.noise(centerX, centerY, centerZ, seed + 2) + 1)) - 2D;
+        double d5 = centerY + (Math.round(sampler.noise(centerX, centerY, centerZ, world.getSeed() + 1) + 1)) - 2D;
+        double d6 = centerY + (Math.round(sampler.noise(centerX, centerY, centerZ, world.getSeed() + 2) + 1)) - 2D;
         
         for(int i = 0; i < size; i++) {
             float iFactor = (float) i / (float) size;
             
-            double d10 = MathUtil.inverseLerp(sampler.noise(centerX, centerY, centerZ, seed + 2 + (i * 2 - 1)), -1, 1) * size / 16.0D;
+            double d10 = MathUtil.inverseLerp(sampler.noise(centerX, centerY, centerZ, world.getSeed() + 2 + (i * 2 - 1)), -1, 1) * size / 16.0D;
             double d11 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
             double d12 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
             
@@ -90,7 +90,7 @@ public class VanillaOre implements Structure {
                                 if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
                                 BlockType block = world.getBlockState(x, y, z).getBlockType();
                                 if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
-                                    if(exposed > MathUtil.inverseLerp(sampler.noise(centerX, centerY, centerZ, seed + 2 + (i * 2)), -1, 1) || !(world.getBlockState(x, y, z - 1).isAir() ||
+                                    if(exposed > MathUtil.inverseLerp(sampler.noise(centerX, centerY, centerZ, world.getSeed() + 2 + (i * 2)), -1, 1) || !(world.getBlockState(x, y, z - 1).isAir() ||
                                                                           world.getBlockState(x, y, z + 1).isAir() ||
                                                                           world.getBlockState(x, y - 1, z).isAir() ||
                                                                           world.getBlockState(x, y + 1, z).isAir() ||

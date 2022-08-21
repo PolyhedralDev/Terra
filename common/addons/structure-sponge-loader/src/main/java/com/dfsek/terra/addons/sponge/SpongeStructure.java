@@ -31,7 +31,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation) {
         int bX = location.getX();
         int bY = location.getY();
         int bZ = location.getZ();

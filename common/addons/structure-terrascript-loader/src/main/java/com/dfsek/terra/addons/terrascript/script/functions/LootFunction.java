@@ -85,9 +85,7 @@ public class LootFunction implements Function<Void> {
                                          platform.getEventManager().callEvent(event);
                                          if(event.isCancelled()) return;
                 
-                                         event.getTable().fillInventory(container.getInventory(),
-                                                                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
-                                                                                "Xoroshiro128PlusPlus").create(apply.hashCode()));
+                                         event.getTable().fillInventory(container.getInventory());
                                          data.update(false);
                                      } catch(Exception e) {
                                          LOGGER.error("Could not apply loot at {}", apply, e);

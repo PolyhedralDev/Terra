@@ -27,7 +27,7 @@ public class FertilizableUtil {
                 Structure canGrow = config.getCanGrow();
                 if(canGrow != null) {
                     if(!canGrow.generate(
-                            Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, Rotation.NONE, world.getSeed() + random.nextLong(Long.MAX_VALUE))) {
+                            Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), new WritableWorldSeedRedirecter((WritableWorld) world, world.getSeed() + random.nextLong(Long.MAX_VALUE)), Rotation.NONE)) {
                         return false;
                     }
                 }
@@ -38,7 +38,7 @@ public class FertilizableUtil {
                     }
                 }
                 config.getStructures().get(random).generate(
-                        Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, Rotation.NONE, world.getSeed() + random.nextLong(Long.MAX_VALUE));
+                        Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), new WritableWorldSeedRedirecter((WritableWorld) world, world.getSeed() + random.nextLong(Long.MAX_VALUE)), Rotation.NONE);
                 return true;
             }
         }

@@ -80,7 +80,7 @@ public class StructureFunction implements Function<Boolean> {
                                             .buffer(FastMath.roundToInt(xz.getX()),
                                                     y.apply(implementationArguments, scope).intValue(),
                                                     FastMath.roundToInt(xz.getZ())),
-                                   arguments.getRotation(),  arguments.getWorld().getSeed());
+                                   arguments.getRotation());
         }).orElseGet(() -> {
             LOGGER.error("No such structure {}", app);
             return false;

@@ -32,12 +32,12 @@ public class MutatedStructure implements Structure, Keyed<MutatedStructure> {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation) {
         return base.generate(location,
                              world
                                      .buffer()
                                      .read(readInterceptor)
                                      .write(writeInterceptor)
-                                     .build(), rotation, seed);
+                                     .build(), rotation);
     }
 }

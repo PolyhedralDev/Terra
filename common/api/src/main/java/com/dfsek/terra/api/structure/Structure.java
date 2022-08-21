@@ -16,5 +16,5 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface Structure {
-    boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long Seed);
+    boolean generate(Vector3Int location, WritableWorld world, Rotation rotation);
 }

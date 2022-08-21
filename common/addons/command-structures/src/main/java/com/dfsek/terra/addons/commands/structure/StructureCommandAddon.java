@@ -54,8 +54,7 @@ public class StructureCommandAddon implements MonadAddonInitializer {
                                                       structure.generate(
                                                               sender.position().toInt(),
                                                               sender.world(),
-                                                              context.get("rotation"), sender.world().getSeed()
-                                                                        );
+                                                              context.get("rotation"));
                                                   })
                                                   .permission("terra.structures.generate")
                                                   );

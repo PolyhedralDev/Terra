@@ -128,7 +128,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation, Long seed) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation) {
         platform.getProfiler().push(profile);
         boolean result = applyBlock(new TerraImplementationArguments(location, rotation, world, 0));
         platform.getProfiler().pop(profile);

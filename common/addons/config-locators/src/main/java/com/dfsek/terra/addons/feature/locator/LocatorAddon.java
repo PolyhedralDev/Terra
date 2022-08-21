@@ -13,10 +13,8 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.locator.config.AdjacentPatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.GaussianRandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.Sampler3DLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SamplerLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
@@ -35,11 +33,8 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.function.monad.Monad;
@@ -65,9 +60,6 @@ public class LocatorAddon implements MonadAddonInitializer {
                                                   CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                                                   locatorRegistry.register(base.key("SURFACE"), SurfaceLocatorTemplate::new);
                                                   locatorRegistry.register(base.key("TOP"), TopLocatorTemplate::new);
-    
-                                                  locatorRegistry.register(base.key("RANDOM"), RandomLocatorTemplate::new);
-                                                  locatorRegistry.register(base.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
     
                                                   locatorRegistry.register(base.key("PATTERN"), PatternLocatorTemplate::new);
                                                   locatorRegistry.register(base.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
