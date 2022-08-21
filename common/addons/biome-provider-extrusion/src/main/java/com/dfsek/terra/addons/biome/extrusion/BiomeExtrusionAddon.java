@@ -24,6 +24,8 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class BiomeExtrusionAddon implements MonadAddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<Extrusion>>> EXTRUSION_REGISTRY_KEY = new TypeKey<>() {
@@ -34,7 +36,7 @@ public class BiomeExtrusionAddon implements MonadAddonInitializer {
     
     
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

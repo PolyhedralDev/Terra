@@ -22,10 +22,12 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class TerraScriptAddon implements MonadAddonInitializer {
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

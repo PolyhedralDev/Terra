@@ -10,11 +10,13 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class PaletteBlockShortcutAddon implements MonadAddonInitializer {
     
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

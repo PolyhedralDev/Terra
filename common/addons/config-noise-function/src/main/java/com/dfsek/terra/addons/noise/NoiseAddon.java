@@ -61,13 +61,15 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class NoiseAddon implements MonadAddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
     };
     
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

@@ -11,10 +11,12 @@ import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.world.biome.Biome;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class StructureGenerationAddon implements MonadAddonInitializer {
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

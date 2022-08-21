@@ -11,6 +11,7 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,7 @@ public class ProfilerCommandAddon implements MonadAddonInitializer {
     private static final Logger logger = LoggerFactory.getLogger(ProfilerCommandAddon.class);
     
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

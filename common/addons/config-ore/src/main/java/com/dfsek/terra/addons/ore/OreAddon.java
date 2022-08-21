@@ -15,10 +15,12 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class OreAddon implements MonadAddonInitializer {
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(manager -> manager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

@@ -14,15 +14,17 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class AddonsCommandAddon implements MonadAddonInitializer {
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),
                 Get.platform(),
-                ((functionalEventHandler, base, platform) -> Init.ofPure(
+                ((functionalEventHandler, base, platform) -> Init.unit() /* Init.ofPure(
                         functionalEventHandler
                                 .register(base, CommandRegistrationEvent.class)
                                 .then(event -> {
@@ -69,7 +71,7 @@ public class AddonsCommandAddon implements MonadAddonInitializer {
                                                               context.getSender().sendMessage(addonInfo.toString());
                                                           })
                                                    );
-                                })))
+                                }))*/)
                       );
     }
 }

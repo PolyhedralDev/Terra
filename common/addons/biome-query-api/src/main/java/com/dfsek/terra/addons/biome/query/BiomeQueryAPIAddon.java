@@ -15,12 +15,14 @@ import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.world.biome.Biome;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class BiomeQueryAPIAddon implements MonadAddonInitializer {
     public static PropertyKey<BiomeTagHolder> BIOME_TAG_KEY = Context.create(BiomeTagHolder.class);
     
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),

@@ -47,6 +47,10 @@ public class Init<T> implements Monad<T, Init<?>> {
         return ofPure(u);
     }
     
+    public static Monad<Void, Init<?>> unit() {
+        return Init.unit(a -> {});
+    }
+    
     public static <T> Init<T> ofPure(T t) {
         return of(Functions.constant(t));
     }

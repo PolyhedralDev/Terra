@@ -26,10 +26,12 @@ import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.world.biome.Biome;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class NoiseChunkGenerator3DAddon implements MonadAddonInitializer {
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         PropertyKey<PaletteInfo> paletteInfoPropertyKey = Context.create(PaletteInfo.class);
         PropertyKey<BiomeNoiseProperties> noisePropertiesPropertyKey = Context.create(BiomeNoiseProperties.class);
         return Do.with(

@@ -36,6 +36,8 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class FeatureGenerationAddon implements MonadAddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<GenerationStage>>> STAGE_TYPE_KEY = new TypeKey<>() {
@@ -47,7 +49,7 @@ public class FeatureGenerationAddon implements MonadAddonInitializer {
     
     @SuppressWarnings("unchecked")
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         PropertyKey<BiomeFeatures> biomeFeaturesKey = Context.create(BiomeFeatures.class);
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),

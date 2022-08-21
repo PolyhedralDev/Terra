@@ -16,6 +16,7 @@ import com.dfsek.terra.addons.manifest.api.monad.Init;
 
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +28,7 @@ public class YamlAddon implements MonadAddonInitializer {
     private static final Logger LOGGER = LoggerFactory.getLogger(YamlAddon.class);
 
     @Override
-    public Monad<?, Init<?>> initialize() {
+    public @NotNull Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),
