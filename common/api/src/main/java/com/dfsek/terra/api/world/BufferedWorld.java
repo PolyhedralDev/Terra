@@ -13,6 +13,8 @@ import com.dfsek.terra.api.world.util.Interceptors;
 import com.dfsek.terra.api.world.util.ReadInterceptor;
 import com.dfsek.terra.api.world.util.WriteInterceptor;
 
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * A {@link WritableWorld} implementation which delegates read/write operations to
@@ -71,18 +73,13 @@ public class BufferedWorld implements WritableWorld {
     }
     
     @Override
-    public ChunkGenerator getGenerator() {
-        return delegate.getGenerator();
+    public @NotNull ChunkGenerator generator() {
+        return delegate.generator();
     }
     
     @Override
-    public BiomeProvider getBiomeProvider() {
-        return delegate.getBiomeProvider();
-    }
-    
-    @Override
-    public ConfigPack getPack() {
-        return delegate.getPack();
+    public @NotNull BiomeProvider biomeProvider() {
+        return delegate.biomeProvider();
     }
     
     @Override

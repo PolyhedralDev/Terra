@@ -4,6 +4,9 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 
 /**
  * Represents a world.
@@ -14,19 +17,16 @@ public interface World extends WorldProperties {
      *
      * @return Chunk generator.
      */
-    ChunkGenerator getGenerator();
+    @NotNull
+    @Contract(pure = true)
+    ChunkGenerator generator();
     
     /**
      * Get the {@link BiomeProvider} this world uses.
      *
      * @return Biome provider.
      */
-    BiomeProvider getBiomeProvider();
-    
-    /**
-     * Get the {@link ConfigPack} this world uses.
-     *
-     * @return Config pack.
-     */
-    ConfigPack getPack();
+    @NotNull
+    @Contract(pure = true)
+    BiomeProvider biomeProvider();
 }

@@ -25,7 +25,6 @@ import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.properties.Context;

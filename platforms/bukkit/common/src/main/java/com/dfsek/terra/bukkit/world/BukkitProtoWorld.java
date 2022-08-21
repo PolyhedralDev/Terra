@@ -2,6 +2,7 @@ package com.dfsek.terra.bukkit.world;
 
 import org.bukkit.Location;
 import org.bukkit.generator.LimitedRegion;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,12 +87,12 @@ public class BukkitProtoWorld implements ProtoWorld {
     }
     
     @Override
-    public ChunkGenerator getGenerator() {
+    public @NotNull ChunkGenerator generator() {
         return ((BukkitChunkGeneratorWrapper) delegate.getWorld().getGenerator()).getHandle();
     }
     
     @Override
-    public BiomeProvider getBiomeProvider() {
+    public @NotNull BiomeProvider biomeProvider() {
         return biomeProvider;
     }
     

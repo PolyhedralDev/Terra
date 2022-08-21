@@ -18,7 +18,6 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.properties.Context;
@@ -26,7 +25,6 @@ import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
 public class NoiseChunkGenerator3DAddon implements MonadAddonInitializer {

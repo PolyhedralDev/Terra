@@ -51,7 +51,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
             for(int chunkZ = 0; chunkZ < 16; chunkZ += resolution) {
                 int tx = cx + chunkX;
                 int tz = cz + chunkZ;
-                world.getBiomeProvider()
+                world.biomeProvider()
                      .getColumn(tx, tz, world)
                      .forRanges(resolution, (min, max, biome) -> {
                          for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {

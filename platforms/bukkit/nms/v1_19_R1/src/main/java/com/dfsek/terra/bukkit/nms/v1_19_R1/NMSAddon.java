@@ -1,6 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.BukkitAddon;

@@ -133,11 +133,7 @@ public class RegistryArgument<T, R> extends CommandArgument<T, R> {
             try {
                 result = registry.get(RegistryKey.parse(input));
             } catch(IllegalArgumentException e) {
-                try {
-                    result = registry.getByID(input);
-                } catch(IllegalArgumentException e1) {
-                    return ArgumentParseResult.failure(e1);
-                }
+                return ArgumentParseResult.failure(e);
             }
             
             return result

@@ -32,6 +32,8 @@ import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public class BukkitServerWorld implements ServerWorld {
     private final org.bukkit.World delegate;
@@ -82,12 +84,12 @@ public class BukkitServerWorld implements ServerWorld {
     }
     
     @Override
-    public ChunkGenerator getGenerator() {
+    public @NotNull ChunkGenerator generator() {
         return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getHandle();
     }
     
     @Override
-    public BiomeProvider getBiomeProvider() {
+    public @NotNull BiomeProvider biomeProvider() {
         return ((BukkitChunkGeneratorWrapper) delegate.getGenerator()).getPack().getBiomeProvider();
     }
     

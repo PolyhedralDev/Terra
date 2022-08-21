@@ -3,6 +3,7 @@ package com.dfsek.terra.cli.world;
 import com.google.common.collect.Streams;
 import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -190,12 +191,12 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     }
     
     @Override
-    public ChunkGenerator getGenerator() {
+    public @NotNull ChunkGenerator generator() {
         return chunkGenerator;
     }
     
     @Override
-    public BiomeProvider getBiomeProvider() {
+    public @NotNull BiomeProvider biomeProvider() {
         return biomeProvider;
     }
     
@@ -265,12 +266,12 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         }
         
         @Override
-        public ChunkGenerator getGenerator() {
+        public @NotNull ChunkGenerator generator() {
             return delegate.chunkGenerator;
         }
         
         @Override
-        public BiomeProvider getBiomeProvider() {
+        public @NotNull BiomeProvider biomeProvider() {
             return biomeProvider;
         }
         

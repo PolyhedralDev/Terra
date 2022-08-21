@@ -43,7 +43,7 @@ public class BiomeFunction implements Function<String> {
                                                arguments.getRotation());
         
         
-        BiomeProvider grid = arguments.getWorld().getBiomeProvider();
+        BiomeProvider grid = arguments.getWorld().biomeProvider();
         
         return grid.getBiome(arguments.getOrigin()
                                       .toVector3()

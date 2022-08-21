@@ -27,7 +27,6 @@ import java.util.List;
 
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
