@@ -19,7 +19,6 @@ import java.util.Set;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.AbstractableTemplate;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.meta.Meta;
 
 

@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.vector.Vector3Int;

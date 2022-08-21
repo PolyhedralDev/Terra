@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;

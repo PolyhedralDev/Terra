@@ -28,8 +28,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
 
-import com.dfsek.terra.api.config.Loader;
-
 
 public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     private final Loader files;

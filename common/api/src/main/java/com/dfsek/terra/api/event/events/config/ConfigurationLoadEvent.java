@@ -12,8 +12,6 @@ import com.dfsek.tectonic.impl.abstraction.AbstractConfiguration;
 
 import java.util.function.Consumer;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;

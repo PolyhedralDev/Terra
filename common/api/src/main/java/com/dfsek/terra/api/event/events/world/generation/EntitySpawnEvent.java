@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.api.event.events.world.generation;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.event.events.PackEvent;
 

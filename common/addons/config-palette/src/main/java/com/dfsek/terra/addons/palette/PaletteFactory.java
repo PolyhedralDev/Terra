@@ -10,7 +10,6 @@ package com.dfsek.terra.addons.palette;
 import com.dfsek.terra.addons.palette.palette.PaletteImpl;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 

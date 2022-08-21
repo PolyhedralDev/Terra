@@ -11,8 +11,6 @@ import com.dfsek.tectonic.api.config.Configuration;
 
 import java.util.function.BiConsumer;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 

@@ -6,7 +6,6 @@ import net.minecraft.util.dynamic.RegistryOps;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;

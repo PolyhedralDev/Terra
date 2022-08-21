@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.stream.StreamSupport;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.data.Codecs;

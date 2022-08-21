@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.event.events.config.type;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.registry.Registry;

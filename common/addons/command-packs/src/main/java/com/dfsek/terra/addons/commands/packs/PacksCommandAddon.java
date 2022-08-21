@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.command.arguments.RegistryArgument;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 

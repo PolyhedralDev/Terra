@@ -32,7 +32,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;

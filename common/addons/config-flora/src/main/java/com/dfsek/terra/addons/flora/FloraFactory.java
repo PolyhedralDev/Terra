@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.flora;
 
 import com.dfsek.terra.addons.flora.flora.gen.TerraFlora;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.structure.Structure;
 
 

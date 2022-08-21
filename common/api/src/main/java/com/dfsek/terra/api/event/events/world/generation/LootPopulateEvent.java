@@ -10,7 +10,6 @@ package com.dfsek.terra.api.event.events.world.generation;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.entity.Container;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.AbstractCancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.structure.LootTable;

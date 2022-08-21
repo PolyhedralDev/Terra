@@ -12,7 +12,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.nms.v1_19_R1.config.VanillaBiomeProperties;
 
 

@@ -5,7 +5,6 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.terra.addons.structure.mutator.config.MutatedStructureTemplate;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.ConfigFactory;
 
 
 public class MutatedStructureFactory implements ConfigFactory<MutatedStructureTemplate, MutatedStructure> {

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.FertilizableConfig;

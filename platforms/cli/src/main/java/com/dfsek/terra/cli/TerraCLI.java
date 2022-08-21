@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.util.vector.Vector2Int;
 import com.dfsek.terra.cli.world.CLIWorld;

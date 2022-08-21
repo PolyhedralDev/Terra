@@ -8,8 +8,6 @@
 package com.dfsek.terra.addons.biome;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 
 

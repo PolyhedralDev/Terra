@@ -3,9 +3,6 @@ package com.dfsek.terra.addons.structure.mutator;
 import com.dfsek.terra.addons.structure.mutator.config.MutatedStructureTemplate;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 

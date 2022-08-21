@@ -30,8 +30,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.dfsek.terra.api.config.Loader;
-
 
 public abstract class LoaderImpl implements Loader {
     private static final Logger logger = LoggerFactory.getLogger(LoaderImpl.class);

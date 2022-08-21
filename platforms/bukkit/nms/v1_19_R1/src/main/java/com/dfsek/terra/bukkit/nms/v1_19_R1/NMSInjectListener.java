@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 
 

@@ -8,9 +8,6 @@
 package com.dfsek.terra.addons.ore;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 

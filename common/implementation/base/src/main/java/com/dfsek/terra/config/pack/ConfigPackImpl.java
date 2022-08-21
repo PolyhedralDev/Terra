@@ -56,10 +56,6 @@ import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.config.ConfigFactory;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;

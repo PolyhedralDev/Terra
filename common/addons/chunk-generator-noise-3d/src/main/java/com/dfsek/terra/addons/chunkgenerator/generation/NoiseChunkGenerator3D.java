@@ -19,7 +19,6 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;

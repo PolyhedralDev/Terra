@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.event.events;
 
-import com.dfsek.terra.api.config.ConfigPack;
-
 
 /**
  * An event with functionality directly linked to a {@link ConfigPack}.

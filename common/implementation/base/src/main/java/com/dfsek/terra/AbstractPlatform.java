@@ -50,7 +50,6 @@ import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -66,7 +65,6 @@ import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
-import com.dfsek.terra.registry.RegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
 

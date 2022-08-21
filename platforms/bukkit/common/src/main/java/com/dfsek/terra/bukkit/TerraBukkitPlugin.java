@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;

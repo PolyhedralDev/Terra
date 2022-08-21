@@ -41,7 +41,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
