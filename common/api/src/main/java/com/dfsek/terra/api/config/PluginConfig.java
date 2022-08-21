@@ -15,19 +15,11 @@ public interface PluginConfig {
     
     boolean dumpDefaultConfig();
     
-    boolean isDebugCommands();
-    
     boolean isDebugProfiler();
     
     boolean isDebugScript();
     
-    int getBiomeSearchResolution();
-    
-    int getStructureCache();
-    
     int getSamplerCache();
     
     int getMaxRecursion();
-    
-    int getProviderCache();
 }

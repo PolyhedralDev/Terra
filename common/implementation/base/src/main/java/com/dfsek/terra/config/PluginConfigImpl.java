@@ -99,11 +99,6 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     }
     
     @Override
-    public boolean isDebugCommands() {
-        return debugCommands;
-    }
-    
-    @Override
     public boolean isDebugProfiler() {
         return debugProfiler;
     }
@@ -111,16 +106,6 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Override
     public boolean isDebugScript() {
         return debugScript;
-    }
-    
-    @Override
-    public int getBiomeSearchResolution() {
-        return biomeSearch;
-    }
-    
-    @Override
-    public int getStructureCache() {
-        return structureCache;
     }
     
     @Override
@@ -133,8 +118,4 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
         return maxRecursion;
     }
     
-    @Override
-    public int getProviderCache() {
-        return providerCache;
-    }
 }
