@@ -1,6 +1,10 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
+import com.dfsek.terra.api.world.World;
+
+import com.dfsek.terra.mod.util.WritableWorldSeedRedirecter;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.brain.task.BoneMealTask;
@@ -14,14 +18,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.mod.config.FertilizableConfig;
 import com.dfsek.terra.mod.util.BiomeUtil;
+import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 
 @Mixin(BoneMealTask.class)
@@ -35,21 +40,20 @@ public class BoneMealTaskMixin {
             Block block = blockState.getBlock();
             FertilizableConfig config = map.get(Registry.BLOCK.getId(block));
             if(config != null) {
-                Boolean villagerFertilizable = config.isVillagerFertilizable();
-                if(villagerFertilizable != null) {
-                    if(villagerFertilizable) {
-                        ConfiguredStructure canGrow = config.getCanGrow();
+                Boolean villagerFarmable = config.isVillagerFarmable();
+                if(villagerFarmable != null) {
+                    if(villagerFarmable) {
+                        Structure canGrow = config.getCanGrow();
                         if(canGrow != null) {
-                            Random random = (Random) world.getRandom();
-                            cir.setReturnValue(canGrow.getStructure().get(random).generate(
-                                    Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), (WritableWorld) world, random, Rotation.NONE));
+                            RandomGenerator random = MinecraftAdapter.adapt(world.getRandom());
+                            cir.setReturnValue(canGrow.generate(
+                                    Vector3Int.of(pos.getX(), pos.getY(), pos.getZ()), new WritableWorldSeedRedirecter((WritableWorld) world, world.getSeed() + random.nextLong(Long.MAX_VALUE)), Rotation.NONE));
                             return;
                         }
                         cir.setReturnValue(true);
                         return;
                     }
                     cir.setReturnValue(false);
-                    return;
                 }
             }
         }

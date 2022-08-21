@@ -67,31 +67,20 @@ public class StructureFunction implements Function<Boolean> {
         
         String app = id.apply(implementationArguments, scope);
         return registry.getByID(app).map(script -> {
-            Rotation rotation1;
-            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).apply(implementationArguments, scope);
-            try {
-                rotation1 = Rotation.valueOf(rotString);
-            } catch(IllegalArgumentException e) {
-                LOGGER.warn("Invalid rotation {}", rotString);
-                return false;
-            }
-            
             if(script instanceof StructureScript structureScript) {
                 return structureScript.generate(arguments.getOrigin(),
                                                 arguments.getWorld()
                                                          .buffer(FastMath.roundToInt(xz.getX()),
                                                                  y.apply(implementationArguments, scope).intValue(),
                                                                  FastMath.roundToInt(xz.getZ())),
-                                                arguments.getRandom(),
-                                                arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+                                                arguments.getRotation(), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
                                             .buffer(FastMath.roundToInt(xz.getX()),
                                                     y.apply(implementationArguments, scope).intValue(),
                                                     FastMath.roundToInt(xz.getZ())),
-                                   arguments.getRandom(),
-                                   arguments.getRotation().rotate(rotation1));
+                                   arguments.getRotation());
         }).orElseGet(() -> {
             LOGGER.error("No such structure {}", app);
             return false;

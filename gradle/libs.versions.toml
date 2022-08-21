@@ -1,0 +1,98 @@
+[versions]
+libraries_tectonic = "4.2.0"
+libraries_paralithic = "0.7.0"
+libraries_strata = "1.3.1"
+libraries_snakeyaml = "1.30"
+libraries_cloud = "1.7.0"
+libraries_slf4j = "1.7.36"
+libraries_caffeine = "3.1.1"
+libraries_vavr = "0.10.4"
+libraries_jafama = "2.3.2"
+libraries_guava = "31.1-jre"
+
+libraries_internal_apache-text = "1.9"
+libraries_internal_apache-io = "2.11.0"
+libraries_internal_fastutil = "8.5.8"
+libraries_internal_shadow = "7.1.2"
+libraries_internal_junit-jupiter = "5.9.0"
+libraries_internal_jetbrains-annotations = "23.0.0"
+libraries_internal_asm = "9.3"
+
+mod_mixin = "0.11.4+mixin.0.8.5"
+mod_minecraft = "1.19.2"
+mod_yarn = "1.19.2+build.4"
+mod_architecury-loom = "0.12.0.299"
+mod_architectury-plugin = "3.4.138"
+mod_loom-quiltflower = "1.7.3"
+mod_lazy-dfu = "0.1.3"
+
+mod_fabric_fabric-loader = "0.14.9"
+mod_fabric_fabric-api = "0.60.0+1.19.2"
+
+mod_quilt_quilt-loader = "0.17.3"
+mod_quilt_fabric-api = "4.0.0-beta.9+0.60.0-1.19.2"
+
+mod_forge_forge = "1.19.2-43.1.1"
+mod_forge_burningwave = "12.59.0"
+
+bukkit_run-paper = "1.0.6"
+bukkit_paperweight = "1.3.8"
+bukkit_paper = "1.19-R0.1-20220725.172700-79"
+bukkit_paper-lib = "1.0.7"
+bukkit_minecraft = "1.19.2"
+bukkit_reflection-remapper = "0.1.0-20220312.202611-7"
+
+cli_nbt = "6.1"
+cli_logback = "1.2.11"
+
+[libraries]
+libraries_tectonic = { module = "com.dfsek.tectonic:common", version.ref = "libraries_tectonic" }
+libraries_tectonic_yaml = { module = "com.dfsek.tectonic:yaml", version.ref = "libraries_tectonic" }
+libraries_paralithic = { module = "com.dfsek:paralithic", version.ref = "libraries_paralithic" }
+libraries_strata = { module = "ca.solo-studios:strata", version.ref = "libraries_strata" }
+libraries_snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "libraries_snakeyaml" }
+libraries_cloud-core = { module = "cloud.commandframework:cloud-core", version.ref = "libraries_cloud" }
+libraries_slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "libraries_slf4j" }
+libraries_caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "libraries_caffeine" }
+libraries_vavr = { module = "io.vavr:vavr", version.ref = "libraries_vavr" }
+libraries_guava = { module = "com.google.guava:guava", version.ref = "libraries_guava" }
+libraries_jafama = { module = "net.jafama:jafama", version.ref = "libraries_jafama" }
+
+libraries_internal_apache-text = { module = "org.apache.commons:commons-text", version.ref = "libraries_internal_apache-text" }
+libraries_internal_apache-io = { module = "commons-io:commons-io", version.ref = "libraries_internal_apache-io" }
+libraries_internal_fastutil = { module = "it.unimi.dsi:fastutil ", version.ref = "libraries_internal_fastutil" }
+libraries_internal_shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "libraries_internal_shadow" }
+libraries_internal_junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "libraries_internal_junit_jupiter" }
+libraries_internal_junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "libraries_internal_junit_jupiter" }
+libraries_internal_jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "libraries_internal_jetbrains_annotations" }
+libraries_internal_asm = { module = "org.ow2.asm:asm", version.ref = "libraries_internal_asm" }
+libraries_internal_asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "libraries_internal_asm" }
+
+mod_mixin = { module = "net.fabricmc:sponge-mixin", version.ref = "mod_mixin" }
+mod_minecraft = { module = "com.mojang:minecraft", version.ref = "mod_minecraft" }
+mod_lazy-dfu = { module = "maven.modrinth:lazydfu", version.ref = "mod_lazy-dfu" }
+mod_cloud-fabric = { module = "cloud.commandframework:cloud-fabric", version.ref = "libraries_cloud" }
+
+mod_fabric_fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "mod_fabric_fabric-loader" }
+
+mod_quilt_quilt-loader = { module = "org.quiltmc:quilt-loader", version.ref = "mod_quilt_quilt-loader" }
+mod_quilt_fabric-api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "mod_quilt_fabric-api" }
+
+mod_forge_forge = { module = "net.minecraftforge:forge", version.ref = "mod_forge_forge" }
+mod_forge_burningwave = { module = "org.burningwave:core", version.ref = "mod_forge_burningwave" }
+
+bukkit_paper-api = { module = "io.papermc.paper:paper-api", version.ref = "bukkit_paper" }
+bukkit_paper-lib = { module = "io.papermc:paperlib", version.ref = "bukkit_paper-lib" }
+bukkit_reflection-remapper = { module = "xyz.jpenilla:reflection-remapper", version.ref = "bukkit_reflection-remapper" }
+bukkit_cloud-paper = { module = "cloud.commandframework:cloud-paper", version.ref = "libraries_cloud" }
+
+cli_nbt = { module = "com.github.Querz:NBT", version.ref = "cli_nbt" }
+cli_logback = { module = "ch.qos.logback:logback-classic", version.ref = "cli_logback" }
+
+[plugins]
+mod_architectury-loom = { id = "dev.architectury.loom", version.ref = "mod_architecury-loom" }
+mod_architectury-plugin = { id = "architectury-plugin", version.ref = "mod_architectury-plugin" }
+mod_loom-quiltflower = { id = "io.github.juuxel.loom-quiltflower", version.ref = "mod_loom-quiltflower" }
+
+bukkit_run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "bukkit_run-paper" }
+bukkit_paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "bukkit_paperweight" }

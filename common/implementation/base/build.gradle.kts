@@ -2,14 +2,14 @@ dependencies {
     api(project(":common:api"))
     api(project(":common:implementation:bootstrap-addon-loader"))
     
-    testImplementation("org.slf4j", "slf4j-api", Versions.Libraries.slf4j)
+    testImplementation(libs.libraries.slf4j.api)
     
-    implementation("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
+    implementation(libs.libraries.internal.apache.io)
     
-    implementation("org.apache.commons", "commons-text", Versions.Libraries.Internal.apacheText)
-    implementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
+    implementation(libs.libraries.internal.apache.text)
+    implementation(libs.libraries.tectonic.yaml)
     
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+    implementation(libs.libraries.jafama)
     
-    implementation("com.dfsek", "paralithic", Versions.Libraries.paralithic)
+    implementation(libs.libraries.paralithic)
 }

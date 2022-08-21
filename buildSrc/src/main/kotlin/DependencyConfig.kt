@@ -5,6 +5,8 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.kotlin.dsl.apply
 
 fun Project.configureDependencies() {
     val testImplementation by configurations.getting
@@ -14,6 +16,8 @@ fun Project.configureDependencies() {
     val implementation by configurations.getting
     
     val shaded by configurations.creating
+    
+    val libs = rootProject.project.versionCatalogs.libs
     
     @Suppress("UNUSED_VARIABLE")
     val shadedApi by configurations.creating {
@@ -48,14 +52,17 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
+        maven("Modrinth") {
+            url = uri("https://api.modrinth.com/maven")
+        }
     }
     
     dependencies {
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-        compileOnly("org.jetbrains:annotations:23.0.0")
-        
-        compileOnly("com.google.guava:guava:30.0-jre")
-        testImplementation("com.google.guava:guava:30.0-jre")
+        testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.api").get())
+        testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.engine").get())
+        compileOnly(libs.findLibrary("libraries.internal.jetbrains.annotations").get())
+    
+        compileOnly(libs.findLibrary("libraries.guava").get())
+        testImplementation(libs.findLibrary("libraries.guava").get())
     }
 }

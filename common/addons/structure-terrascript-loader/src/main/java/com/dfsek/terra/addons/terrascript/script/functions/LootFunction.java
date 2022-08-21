@@ -11,8 +11,6 @@ import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -29,6 +27,9 @@ import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
+
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 
 public class LootFunction implements Function<Void> {
@@ -83,8 +84,7 @@ public class LootFunction implements Function<Void> {
                                          platform.getEventManager().callEvent(event);
                                          if(event.isCancelled()) return;
                 
-                                         event.getTable().fillInventory(container.getInventory(),
-                                                                        new Random(apply.hashCode()));
+                                         event.getTable().fillInventory(container.getInventory());
                                          data.update(false);
                                      } catch(Exception e) {
                                          LOGGER.error("Could not apply loot at {}", apply, e);

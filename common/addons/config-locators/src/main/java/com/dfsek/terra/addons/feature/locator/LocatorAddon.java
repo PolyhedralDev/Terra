@@ -13,10 +13,8 @@ import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.feature.locator.config.AdjacentPatternLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.AndLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.GaussianRandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.OrLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.PatternLocatorTemplate;
-import com.dfsek.terra.addons.feature.locator.config.RandomLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.Sampler3DLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SamplerLocatorTemplate;
 import com.dfsek.terra.addons.feature.locator.config.SurfaceLocatorTemplate;
@@ -37,12 +35,10 @@ import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class LocatorAddon implements MonadAddonInitializer {
@@ -53,7 +49,7 @@ public class LocatorAddon implements MonadAddonInitializer {
     };
 
     @Override
-    public @NotNull Monad<?, Init<?>> initialize() {
+    public Monad<?, Init<?>> initialize() {
         return Do.with(
                 Get.eventManager().map(eventManager -> eventManager.getHandler(FunctionalEventHandler.class)),
                 Get.addon(),
@@ -61,12 +57,9 @@ public class LocatorAddon implements MonadAddonInitializer {
                 ((functionalEventHandler, base, platform) -> Init.ofPure(
                         functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                               .then(event -> {
-                                                  Registry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().createRegistry(LOCATOR_TOKEN);
+                                                  CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                                                   locatorRegistry.register(base.key("SURFACE"), SurfaceLocatorTemplate::new);
                                                   locatorRegistry.register(base.key("TOP"), TopLocatorTemplate::new);
-    
-                                                  locatorRegistry.register(base.key("RANDOM"), RandomLocatorTemplate::new);
-                                                  locatorRegistry.register(base.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
     
                                                   locatorRegistry.register(base.key("PATTERN"), PatternLocatorTemplate::new);
                                                   locatorRegistry.register(base.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
@@ -79,7 +72,7 @@ public class LocatorAddon implements MonadAddonInitializer {
                                                   locatorRegistry.register(base.key("XOR"), XorLocatorTemplate::new);
                                               })
                                               .then(event -> {
-                                                  Registry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().createRegistry(PATTERN_TOKEN);
+                                                  CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
                                                   patternRegistry.register(base.key("MATCH_AIR"), AirMatchPatternTemplate::new);
                                                   patternRegistry.register(base.key("MATCH_SOLID"), SolidMatchPatternTemplate::new);
                                                   patternRegistry.register(base.key("MATCH"), SingleBlockMatchPatternTemplate::new);

@@ -1,14 +1,16 @@
 dependencies {
-    api("ca.solo-studios", "strata", Versions.Libraries.strata)
-    compileOnlyApi("org.slf4j", "slf4j-api", Versions.Libraries.slf4j)
-    testImplementation("org.slf4j", "slf4j-api", Versions.Libraries.slf4j)
-    api("cloud.commandframework", "cloud-core", Versions.Libraries.cloud)
+    api(libs.libraries.strata)
+    compileOnlyApi(libs.libraries.slf4j.api)
+    testImplementation(libs.libraries.slf4j.api)
+    api(libs.libraries.cloud.core)
     
-    api("com.dfsek.tectonic", "common", Versions.Libraries.tectonic)
+    api(libs.libraries.tectonic)
     
-    api("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
+    api(libs.libraries.caffeine)
     
-    api("io.vavr", "vavr", Versions.Libraries.vavr)
+    api(libs.libraries.vavr)
     
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+    api(libs.libraries.jafama)
+    
+    api(libs.libraries.paralithic)
 }

@@ -7,13 +7,14 @@
 
 package com.dfsek.terra.api.structure;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
 public interface Structure {
-    boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation);
+    boolean generate(Vector3Int location, WritableWorld world, Rotation rotation);
 }

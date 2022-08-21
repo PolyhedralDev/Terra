@@ -1,7 +1,7 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    alias(libs.plugins.mod.architectury.loom)
+    alias(libs.plugins.mod.architectury.plugin)
+    alias(libs.plugins.mod.loom.quiltflower)
 }
 
 architectury {
@@ -12,9 +12,6 @@ architectury {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
-    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentQuilt"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionQuilt")) { isTransitive = false }
@@ -23,23 +20,22 @@ dependencies {
     "developmentQuilt"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }
     
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    minecraft(libs.mod.minecraft)
+    mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
     
-    modImplementation("org.quiltmc:quilt-loader:${Versions.Quilt.quiltLoader}")
+    modImplementation(libs.mod.quilt.quilt.loader)
+    modImplementation(libs.mod.quilt.fabric.api)
     
-    modImplementation("org.quiltmc.quilted-fabric-api:quilted-fabric-api:${Versions.Quilt.fabricApi}")
-    
-    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud) {
+    modImplementation(libs.mod.cloud.fabric) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud) {
+    include(libs.mod.cloud.fabric) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
     
-    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}") {
+    modLocalRuntime(libs.mod.lazy.dfu) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }

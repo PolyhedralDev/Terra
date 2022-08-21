@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.mod.generation;
 
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -75,6 +78,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
+    private VanillaWorldProperties vanillaWorldProperties;
+    
     public MinecraftChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, ConfigPack configPack,
                                           RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
         super(noiseRegistry, Optional.empty(), biomeSource);
@@ -85,6 +90,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
+        if (pack.getContext().has(VanillaBiomeProperties.class)) {
+            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
+        } else {
+            vanillaWorldProperties = new VanillaWorldProperties();
+        }
     }
     
     public Registry<StructureSet> getNoiseRegistry() {
@@ -114,7 +124,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     @Override
     public int getWorldHeight() {
-        return settings.value().generationShapeConfig().height();
+        return vanillaWorldProperties.getHeight().getMax();
     }
     
     
@@ -136,7 +146,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
                        PreLoadCompatibilityOptions compatibilityOptions) {
-        StructureWeightSampler structureWeightSampler = StructureWeightSampler.method_42695(structureAccessor, chunk.getPos());
+        StructureWeightSampler structureWeightSampler = StructureWeightSampler.createStructureWeightSampler(structureAccessor, chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
         int xi = chunk.getPos().x << 4;
@@ -173,12 +183,12 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     @Override
     public int getSeaLevel() {
-        return settings.value().seaLevel();
+        return vanillaWorldProperties.getSealevel();
     }
     
     @Override
     public int getMinimumY() {
-        return settings.value().generationShapeConfig().minimumY();
+        return vanillaWorldProperties.getHeight().getMin();
     }
     
     
@@ -208,7 +218,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     @Override
     public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
-    
+        // no op
     }
     
     public ConfigPack getPack() {
@@ -219,6 +229,12 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.pack = pack;
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         biomeSource.setPack(pack);
+    
+        if (pack.getContext().has(VanillaBiomeProperties.class)) {
+            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
+        } else {
+            vanillaWorldProperties = new VanillaWorldProperties();
+        }
         
         logger.debug("Loading world with config pack {}", pack.getID());
     }

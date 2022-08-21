@@ -1,7 +1,7 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    alias(libs.plugins.mod.architectury.loom)
+    alias(libs.plugins.mod.architectury.plugin)
+    alias(libs.plugins.mod.loom.quiltflower)
 }
 
 loom {
@@ -15,16 +15,14 @@ loom {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    modImplementation(libs.mod.fabric.fabric.loader)
     
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    minecraft(libs.mod.minecraft)
+    mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
 }
 
 architectury {
     common("fabric", "forge", "quilt")
-    minecraft = Versions.Mod.minecraft
+    minecraft = libs.versions.mod.minecraft.get()
 }
 

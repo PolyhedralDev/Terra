@@ -1,4 +1,6 @@
-apply(plugin = "io.papermc.paperweight.userdev")
+plugins {
+    alias(libs.plugins.bukkit.paperweight)
+}
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
