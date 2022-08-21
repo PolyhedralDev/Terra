@@ -24,6 +24,7 @@ include(":platforms:bukkit:common")
 
 pluginManagement {
     repositories {
+        mavenCentral()
         gradlePluginPortal()
         maven("https://maven.fabricmc.net") {
             name = "Fabric Maven"
@@ -36,6 +37,9 @@ pluginManagement {
         }
         maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
+        }
+        maven("https://papermc.io/repo/repository/maven-public/") {
+            name = "PaperMC"
         }
     }
 }

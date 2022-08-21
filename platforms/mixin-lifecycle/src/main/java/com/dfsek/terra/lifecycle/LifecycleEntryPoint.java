@@ -16,15 +16,19 @@ public class LifecycleEntryPoint {
     protected static void initialize(String modName, LifecyclePlatform platform) {
         logger.info("Initializing Terra {} mod...", modName);
         
-        FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
-                CommandExecutionCoordinator.simpleCoordinator(),
-                serverCommandSource -> (CommandSender) serverCommandSource,
-                commandSender -> (ServerCommandSource) commandSender
-        );
-        
-        
-        manager.brigadierManager().setNativeNumberSuggestions(false);
-        
-        platform.getEventManager().callEvent(new CommandRegistrationEvent(manager));
+        try {
+            FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
+                    CommandExecutionCoordinator.simpleCoordinator(),
+                    serverCommandSource -> (CommandSender) serverCommandSource,
+                    commandSender -> (ServerCommandSource) commandSender
+            );
+    
+    
+            manager.brigadierManager().setNativeNumberSuggestions(false);
+    
+            platform.getEventManager().callEvent(new CommandRegistrationEvent(manager));
+        } catch (Exception e) {
+            logger.warn("Fabric API not found, Terra commands will not work.");
+        }
     }
 }

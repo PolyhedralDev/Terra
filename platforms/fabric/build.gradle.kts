@@ -1,7 +1,7 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    alias(libs.plugins.mod.architectury.loom)
+    alias(libs.plugins.mod.architectury.plugin)
+    alias(libs.plugins.mod.loom.quiltflower)
 }
 
 architectury {
@@ -12,9 +12,6 @@ architectury {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
-    
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentFabric"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
@@ -22,28 +19,15 @@ dependencies {
     "developmentFabric"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
     
+    minecraft(libs.mod.minecraft)
+    mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
     
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    modImplementation(libs.mod.fabric.fabric.loader)
     
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
+    modImplementation(libs.mod.cloud.fabric)
+    include(libs.mod.cloud.fabric)
     
-    setOf(
-        "fabric-lifecycle-events-v1",
-        "fabric-resource-loader-v0",
-        "fabric-api-base",
-        "fabric-command-api-v2",
-        "fabric-networking-api-v1"
-         ).forEach { apiModule ->
-        val module = fabricApi.module(apiModule, Versions.Fabric.fabricAPI)
-        modImplementation(module)
-        include(module)
-    }
-    
-    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
-    
-    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}")
+    modLocalRuntime(libs.mod.lazy.dfu)
 }
 
 loom {
