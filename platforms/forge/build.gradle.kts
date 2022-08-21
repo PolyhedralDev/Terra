@@ -1,7 +1,7 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
-    id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    alias(libs.plugins.mod.architectury.loom)
+    alias(libs.plugins.mod.architectury.plugin)
+    alias(libs.plugins.mod.loom.quiltflower)
 }
 
 architectury {
@@ -10,9 +10,6 @@ architectury {
 }
 
 dependencies {
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
-    
     shadedApi(project(":common:implementation:base"))
     "forgeRuntimeLibrary"(project(":common:implementation:base"))
     
@@ -20,14 +17,14 @@ dependencies {
     "developmentForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionForge")) { isTransitive = false }
     
-    forge(group = "net.minecraftforge", name = "forge", version = Versions.Forge.forge)
+    forge(libs.mod.forge.forge)
     
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    minecraft(libs.mod.minecraft)
+    mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
     
     //forge is not ok.
-    compileOnly("org.burningwave:core:${Versions.Forge.burningwave}")
-    "forgeRuntimeLibrary"("org.burningwave:core:${Versions.Forge.burningwave}")
+    compileOnly(libs.mod.forge.burningwave)
+    "forgeRuntimeLibrary"(libs.mod.forge.burningwave)
 }
 
 loom {

@@ -1,6 +1,6 @@
 version = version("1.0.0")
 
 dependencies {
-    implementation("com.dfsek.tectonic:yaml:${Versions.Libraries.tectonic}")
+    implementation(libs.libraries.tectonic.yaml)
     compileOnlyApi(project(":common:addons:manifest-addon-loader"))
 }

@@ -7,14 +7,14 @@ import net.minecraft.util.Identifier;
 
 import java.util.Map;
 
-import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
     @Value("strucutres")
     @Default
-    private ProbabilityCollection<ConfiguredStructure> structures = null;
+    private ProbabilityCollection<Structure> structures = null;
     
     @Value("cooldowns")
     @Default
@@ -22,13 +22,13 @@ public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
     
     @Value("can-grow")
     @Default
-    private ConfiguredStructure canGrow = null;
+    private Structure canGrow = null;
     
-    @Value("villager-fertilizable")
+    @Value("villager-farmable")
     @Default
-    private Boolean villagerFertilizable = null;
+    private Boolean villagerFarmable = null;
     
-    public ProbabilityCollection<ConfiguredStructure> getStructures() {
+    public ProbabilityCollection<Structure> getStructures() {
         return structures;
     }
     
@@ -36,12 +36,12 @@ public class FertilizableConfig implements ObjectTemplate<FertilizableConfig> {
         return cooldowns;
     }
     
-    public ConfiguredStructure getCanGrow() {
+    public Structure getCanGrow() {
         return canGrow;
     }
     
-    public Boolean isVillagerFertilizable() {
-        return villagerFertilizable;
+    public Boolean isVillagerFarmable() {
+        return villagerFarmable;
     }
     
     @Override

@@ -7,14 +7,10 @@ val javaMainClass = "com.dfsek.terra.cli.TerraCLI"
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    shadedApi("commons-io:commons-io:${Versions.CLI.commonsIO}")
-    shadedApi("com.github.Querz:NBT:${Versions.CLI.nbt}")
+    shadedApi(libs.libraries.internal.apache.io)
+    shadedApi(libs.cli.nbt)
     
-    shadedImplementation("com.google.guava:guava:${Versions.CLI.guava}")
-    
-    shadedImplementation("ch.qos.logback:logback-classic:${Versions.CLI.logback}")
-    
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+    shadedImplementation(libs.cli.logback)
 }
 
 tasks.withType<Jar> {

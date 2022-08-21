@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.terrascript.script;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.util.Rotation;
@@ -20,16 +20,14 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public class TerraImplementationArguments implements ImplementationArguments {
     private final Rotation rotation;
-    private final Random random;
     private final WritableWorld world;
     private final Map<Vector3, String> marks = new HashMap<>();
     private final int recursions;
     private final Vector3Int origin;
     private boolean waterlog = false;
     
-    public TerraImplementationArguments(Vector3Int origin, Rotation rotation, Random random, WritableWorld world, int recursions) {
+    public TerraImplementationArguments(Vector3Int origin, Rotation rotation, WritableWorld world, int recursions) {
         this.rotation = rotation;
-        this.random = random;
         this.world = world;
         this.recursions = recursions;
         this.origin = origin;
@@ -37,10 +35,6 @@ public class TerraImplementationArguments implements ImplementationArguments {
     
     public int getRecursions() {
         return recursions;
-    }
-    
-    public Random getRandom() {
-        return random;
     }
     
     public Rotation getRotation() {

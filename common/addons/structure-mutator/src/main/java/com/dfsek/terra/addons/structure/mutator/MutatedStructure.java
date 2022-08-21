@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.structure.mutator;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
@@ -32,13 +32,12 @@ public class MutatedStructure implements Structure, Keyed<MutatedStructure> {
     }
     
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, Rotation rotation) {
         return base.generate(location,
                              world
                                      .buffer()
                                      .read(readInterceptor)
                                      .write(writeInterceptor)
-                                     .build(),
-                             random, rotation);
+                                     .build(), rotation);
     }
 }

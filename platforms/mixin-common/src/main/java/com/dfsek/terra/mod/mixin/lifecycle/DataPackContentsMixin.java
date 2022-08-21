@@ -1,5 +1,7 @@
 package com.dfsek.terra.mod.mixin.lifecycle;
 
+import com.dfsek.terra.mod.util.MinecraftUtil;
+
 import net.minecraft.server.DataPackContents;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;

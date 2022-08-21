@@ -1,6 +1,8 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
+import com.dfsek.terra.mod.util.MinecraftAdapter;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -12,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 import com.dfsek.terra.mod.util.FertilizableUtil;
 
+import java.util.random.RandomGenerator;
+
 
 @Mixin(ServerWorld.class)
 public class ServerWorldMixin {
@@ -22,7 +26,7 @@ public class ServerWorldMixin {
                        target = "Lnet/minecraft/block/BlockState;randomTick(Lnet/minecraft/server/world/ServerWorld;" +
                                 "Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/util/math/random/Random;)V"))
     public void injectTickChunk(BlockState instance, ServerWorld serverWorld, BlockPos blockPos, Random random) {
-        Boolean value = FertilizableUtil.grow(serverWorld, blockPos, instance, cooldownId);
+        Boolean value = FertilizableUtil.grow(serverWorld, MinecraftAdapter.adapt(random), blockPos, instance, cooldownId);
         if(value != null) {
             if(!value) {
                 instance.randomTick(serverWorld, blockPos, random);

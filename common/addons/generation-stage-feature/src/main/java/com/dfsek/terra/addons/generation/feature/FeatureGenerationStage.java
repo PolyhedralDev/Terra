@@ -8,7 +8,8 @@
 package com.dfsek.terra.addons.generation.feature;
 
 import java.util.Collections;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
@@ -58,7 +59,6 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                              for(int subChunkZ = 0; subChunkZ < resolution; subChunkZ++) {
                                  int x = subChunkX + tx;
                                  int z = subChunkZ + tz;
-                                 long coordinateSeed = (seed * 31 + x) * 31 + z;
                                  Column<WritableWorld> column = world.column(x, z);
                                  biome.getContext()
                                       .get(biomeFeaturesKey)
@@ -72,7 +72,6 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                      .forEach(y -> feature.getStructure(world, x, y, z)
                                                                           .generate(Vector3Int.of(x, y, z),
                                                                                     world,
-                                                                                    new Random(coordinateSeed * 31 + y),
                                                                                     Rotation.NONE)
                                                              );
                                           }
