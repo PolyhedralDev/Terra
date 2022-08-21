@@ -27,13 +27,9 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.generic.Construct;
@@ -60,20 +56,20 @@ public class BiomePipelineAddon implements MonadAddonInitializer {
                 ((functionalEventHandler, base) -> Init.ofPure(Construct.construct(() -> {
                     functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                           .then(event -> {
-                                              CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
-                                                      event.getPack().getOrCreateRegistry(
+                                              Registry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
+                                                      event.getPack().createRegistry(
                                                               PROVIDER_REGISTRY_KEY);
                                               providerRegistry.register(base.key("PIPELINE"), BiomePipelineTemplate::new);
                                           })
                                           .then(event -> {
-                                              CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry =
-                                                      event.getPack().getOrCreateRegistry(
+                                              Registry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry =
+                                                      event.getPack().createRegistry(
                                                               SOURCE_REGISTRY_KEY);
                                               sourceRegistry.register(base.key("SAMPLER"), SamplerSourceTemplate::new);
                                           })
                                           .then(event -> {
-                                              CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry =
-                                                      event.getPack().getOrCreateRegistry(
+                                              Registry<Supplier<ObjectTemplate<Stage>>> stageRegistry =
+                                                      event.getPack().createRegistry(
                                                               STAGE_REGISTRY_KEY);
                                               stageRegistry.register(base.key("FRACTAL_EXPAND"), ExpanderStageTemplate::new);
                                               stageRegistry.register(base.key("SMOOTH"), SmoothMutatorTemplate::new);

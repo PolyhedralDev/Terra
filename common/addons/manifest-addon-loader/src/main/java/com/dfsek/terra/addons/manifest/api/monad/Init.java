@@ -4,14 +4,24 @@ import com.dfsek.terra.addons.manifest.impl.InitInfo;
 import com.dfsek.terra.api.util.function.Functions;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
+import io.vavr.Function0;
+import io.vavr.Function1;
+
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 
 public class Init<T> implements Monad<T, Init<?>> {
     private final Function<InitInfo, T> get;
     
-    public static <T> Init<T> of(Function<InitInfo, T> get) {
+    protected static <T> Init<T> of(Function<InitInfo, T> get) {
         return new Init<>(get);
+    }
+    protected static Init<Void> unit(Consumer<InitInfo> get) {
+        return new Init<>(info -> {
+            get.accept(info);
+            return null;
+        });
     }
     
     private Init(Function<InitInfo, T> get) {

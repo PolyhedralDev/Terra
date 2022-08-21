@@ -35,12 +35,9 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
@@ -62,7 +59,7 @@ public class LocatorAddon implements MonadAddonInitializer {
                 ((functionalEventHandler, base, platform) -> Init.ofPure(
                         functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                               .then(event -> {
-                                                  CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
+                                                  Registry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().createRegistry(LOCATOR_TOKEN);
                                                   locatorRegistry.register(base.key("SURFACE"), SurfaceLocatorTemplate::new);
                                                   locatorRegistry.register(base.key("TOP"), TopLocatorTemplate::new);
     
@@ -80,7 +77,7 @@ public class LocatorAddon implements MonadAddonInitializer {
                                                   locatorRegistry.register(base.key("XOR"), XorLocatorTemplate::new);
                                               })
                                               .then(event -> {
-                                                  CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
+                                                  Registry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().createRegistry(PATTERN_TOKEN);
                                                   patternRegistry.register(base.key("MATCH_AIR"), AirMatchPatternTemplate::new);
                                                   patternRegistry.register(base.key("MATCH_SOLID"), SolidMatchPatternTemplate::new);
                                                   patternRegistry.register(base.key("MATCH"), SingleBlockMatchPatternTemplate::new);

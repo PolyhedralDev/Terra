@@ -13,4 +13,9 @@ public interface Keyed<T extends Keyed<T>> extends Namespaced, StringIdentifiabl
     default String getID() {
         return getRegistryKey().getID();
     }
+    
+    @SuppressWarnings("unchecked")
+    default T coerce() {
+        return (T) this;
+    }
 }

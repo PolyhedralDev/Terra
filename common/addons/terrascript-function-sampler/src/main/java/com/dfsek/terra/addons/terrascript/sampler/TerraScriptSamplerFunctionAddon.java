@@ -6,11 +6,8 @@ import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.addons.noise.NoiseConfigPackTemplate;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
 
@@ -25,7 +22,7 @@ public class TerraScriptSamplerFunctionAddon implements MonadAddonInitializer {
                                .priority(51)
                                .then(event -> event
                                        .getPack()
-                                       .getOrCreateRegistry(FunctionBuilder.class)
+                                       .createRegistry(FunctionBuilder.class)
                                        .register(base.key("sampler"), new SamplerFunctionBuilder(event.getPack().getContext().get(
                                                NoiseConfigPackTemplate.class).getSamplers())))
                                .failThrough()))

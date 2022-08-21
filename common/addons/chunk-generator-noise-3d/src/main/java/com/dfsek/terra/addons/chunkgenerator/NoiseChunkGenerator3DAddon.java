@@ -45,7 +45,7 @@ public class NoiseChunkGenerator3DAddon implements MonadAddonInitializer {
                                                                      NoiseChunkGeneratorPackConfigTemplate config = event.loadTemplate(new NoiseChunkGeneratorPackConfigTemplate());
     
                                                                      event.getPack()
-                                                                          .getOrCreateRegistry(ChunkGeneratorProvider.class)
+                                                                          .createRegistry(ChunkGeneratorProvider.class)
                                                                           .register(base.key("NOISE_3D"),
                                                                                     pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(),
                                                                                                                       config.getHorizontalRes(),

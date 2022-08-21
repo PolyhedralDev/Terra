@@ -14,12 +14,9 @@ import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
@@ -36,8 +33,8 @@ public class TerraScriptAddon implements MonadAddonInitializer {
                 ((handler, base, platform) -> Init.ofPure(
                         handler.register(base, ConfigPackPreLoadEvent.class)
                                .then(event -> {
-                                   CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                                   CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
+                                   Registry<Structure> structureRegistry = event.getPack().createRegistry(Structure.class);
+                                   Registry<LootTable> lootRegistry = event.getPack().createRegistry(LootTable.class);
                                    event.getPack().getLoader().open("", ".tesf").thenEntries(
                                                 entries ->
                                                         entries.stream()
@@ -50,7 +47,7 @@ public class TerraScriptAddon implements MonadAddonInitializer {
                                                                                                   platform,
                                                                                                   structureRegistry,
                                                                                                   lootRegistry,
-                                                                                                  event.getPack().getOrCreateRegistry(FunctionBuilder.class));
+                                                                                                  event.getPack().createRegistry(FunctionBuilder.class));
                                                                    } catch(ParseException e) {
                                                                        throw new RuntimeException("Failed to load script \"" + entry.getKey() + "\"", e);
                                                                    }

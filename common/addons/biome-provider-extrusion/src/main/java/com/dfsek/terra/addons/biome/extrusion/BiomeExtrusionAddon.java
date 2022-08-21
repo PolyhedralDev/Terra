@@ -17,7 +17,6 @@ import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.generic.Construct;
@@ -49,14 +48,14 @@ public class BiomeExtrusionAddon implements MonadAddonInitializer {
                                           });
                     return functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                                  .then(event -> {
-                                                     CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
+                                                     Registry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry =
                                                              event.getPack()
-                                                                  .getOrCreateRegistry(PROVIDER_REGISTRY_KEY);
+                                                                  .createRegistry(PROVIDER_REGISTRY_KEY);
                                                      providerRegistry.register(base.key("EXTRUSION"), BiomeExtrusionTemplate::new);
                                                  })
                                                  .then(event -> {
-                                                     CheckedRegistry<Supplier<ObjectTemplate<Extrusion>>> extrusionRegistry =
-                                                             event.getPack().getOrCreateRegistry(
+                                                     Registry<Supplier<ObjectTemplate<Extrusion>>> extrusionRegistry =
+                                                             event.getPack().createRegistry(
                                                                      EXTRUSION_REGISTRY_KEY);
                                                      extrusionRegistry.register(base.key("SET"), SetExtrusionTemplate::new);
                                                      extrusionRegistry.register(base.key("REPLACE"), ReplaceExtrusionTemplate::new);

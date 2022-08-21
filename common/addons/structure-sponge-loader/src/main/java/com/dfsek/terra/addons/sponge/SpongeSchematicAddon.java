@@ -32,8 +32,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
 
@@ -59,7 +58,7 @@ public class SpongeSchematicAddon implements MonadAddonInitializer {
                 ((handler, base, platform) -> Init.ofPure(
                         handler.register(base, ConfigPackPreLoadEvent.class)
                                .then(event -> {
-                                   CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
+                                   Registry<Structure> structureRegistry = event.getPack().createRegistry(Structure.class);
                                    event.getPack()
                                         .getLoader()
                                         .open("", ".schem")

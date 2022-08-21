@@ -25,12 +25,9 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
@@ -48,9 +45,9 @@ public class DistributorAddon implements MonadAddonInitializer {
                 ((functionalEventHandler, base) -> Init.ofPure(
                         functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                               .then(event -> {
-                                                  CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event
+                                                  Registry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event
                                                           .getPack()
-                                                          .getOrCreateRegistry(DISTRIBUTOR_TOKEN);
+                                                          .createRegistry(DISTRIBUTOR_TOKEN);
                             
                                                   distributorRegistry.register(base.key("SAMPLER"), SamplerDistributorTemplate::new);
                                                   distributorRegistry.register(base.key("POINTS"), PointSetDistributorTemplate::new);

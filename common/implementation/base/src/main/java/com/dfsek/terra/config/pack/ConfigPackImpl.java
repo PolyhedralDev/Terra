@@ -67,8 +67,6 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.events.config.type.ConfigTypePostLoadEvent;
 import com.dfsek.terra.api.properties.Context;
-import com.dfsek.terra.api.registry.CheckedRegistry;
-import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
@@ -89,8 +87,7 @@ import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
-import com.dfsek.terra.registry.CheckedRegistryImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
+import com.dfsek.terra.registry.RegistryImpl;
 import com.dfsek.terra.registry.ShortcutHolder;
 
 
@@ -113,10 +110,10 @@ public class ConfigPackImpl implements ConfigPack {
     
     private final BiomeProvider seededBiomeProvider;
     
-    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
+    private final Map<Type, RegistryImpl<?>> registryMap = new HashMap<>();
     private final Map<Type, ShortcutHolder<?>> shortcuts = new HashMap<>();
     
-    private final OpenRegistry<ConfigType<?, ?>> configTypeRegistry;
+    private final Registry<ConfigType<?, ?>> configTypeRegistry;
     private final TreeMap<Integer, List<Pair<RegistryKey, ConfigType<?, ?>>>> configTypes = new TreeMap<>();
     
     private final RegistryKey key;
@@ -202,7 +199,7 @@ public class ConfigPackImpl implements ConfigPack {
                 }, ListMultimap::putAll);
         
         configTypeRegistry.forEach(configType -> {
-            CheckedRegistry registry = getCheckedRegistry(configType.getTypeKey());
+            Registry registry = getRegistry(configType.getTypeKey());
             abstractConfigLoader
                     .loadConfigs(multimap.get(configType))
                     .stream()
@@ -311,35 +308,33 @@ public class ConfigPackImpl implements ConfigPack {
     
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> typeKey) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(typeKey.getType(), c -> {
-            OpenRegistry<T> registry = new OpenRegistryImpl<>(typeKey);
-            selfLoader.registerLoader(c, registry);
-            abstractConfigLoader.registerLoader(c, registry);
-            logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
-            
-            if(typeKey.getType() instanceof ParameterizedType param) {
-                Type base = param.getRawType();
-                if(base instanceof Class  // should always be true but we'll check anyways
-                   && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
-                    Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
-                    if(supplied instanceof ParameterizedType suppliedParam) {
-                        Type suppliedBase = suppliedParam.getRawType();
-                        if(suppliedBase instanceof Class // should always be true but we'll check anyways
-                           && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
-                            Type templateType = suppliedParam.getActualTypeArguments()[0];
-                            GenericTemplateSupplierLoader<?> loader = new GenericTemplateSupplierLoader<>(
-                                    (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
-                            selfLoader.registerLoader(templateType, loader);
-                            abstractConfigLoader.registerLoader(templateType, loader);
-                            logger.debug("Registered template loader for registry of class {}", ReflectionUtil.typeToString(templateType));
-                        }
+    public <T> Registry<T> createRegistry(TypeKey<T> typeKey) {
+        Registry<T> registry = RegistryImpl.empty(typeKey);
+        selfLoader.registerLoader(c, registry);
+        abstractConfigLoader.registerLoader(c, registry);
+        logger.debug("Registered loader for registry of class {}", ReflectionUtil.typeToString(c));
+        
+        if(typeKey.getType() instanceof ParameterizedType param) {
+            Type base = param.getRawType();
+            if(base instanceof Class  // should always be true but we'll check anyway
+               && Supplier.class.isAssignableFrom((Class<?>) base)) { // If it's a supplier
+                Type supplied = param.getActualTypeArguments()[0]; // Grab the supplied type
+                if(supplied instanceof ParameterizedType suppliedParam) {
+                    Type suppliedBase = suppliedParam.getRawType();
+                    if(suppliedBase instanceof Class // should always be true but we'll check anyway
+                       && ObjectTemplate.class.isAssignableFrom((Class<?>) suppliedBase)) {
+                        Type templateType = suppliedParam.getActualTypeArguments()[0];
+                        GenericTemplateSupplierLoader<?> loader = new GenericTemplateSupplierLoader<>(
+                                (Registry<Supplier<ObjectTemplate<Supplier<ObjectTemplate<?>>>>>) registry);
+                        selfLoader.registerLoader(templateType, loader);
+                        abstractConfigLoader.registerLoader(templateType, loader);
+                        logger.debug("Registered template loader for registry of class {}", ReflectionUtil.typeToString(templateType));
                     }
                 }
             }
-            
-            return new CheckedRegistryImpl<>(registry);
-        });
+        }
+        return registry;
+        
     }
     
     @Override
@@ -366,7 +361,7 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader) {
         ShortcutHolder<?> holder = shortcuts
-                .computeIfAbsent(clazz.getType(), c -> new ShortcutHolder<>(getOrCreateRegistry(clazz)))
+                .computeIfAbsent(clazz.getType(), c -> new ShortcutHolder<>(createRegistry(clazz)))
                 .register(shortcut, (ShortcutLoader) loader);
         selfLoader.registerLoader(clazz.getType(), holder);
         abstractConfigLoader.registerLoader(clazz.getType(), holder);
@@ -378,17 +373,17 @@ public class ConfigPackImpl implements ConfigPack {
         return template.getGeneratorProvider();
     }
     
-    private OpenRegistry<ConfigType<?, ?>> createConfigRegistry() {
-        return new OpenRegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
+    private Registry<ConfigType<?, ?>> createConfigRegistry() {
+        return new RegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
             @Override
             public boolean register(@NotNull RegistryKey key, @NotNull ConfigType<?, ?> value) {
                 if(!registryMap
                         .containsKey(value.getTypeKey()
                                           .getType())) {
-                    OpenRegistry<?> openRegistry = new OpenRegistryImpl<>(value.getTypeKey());
-                    selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
-                    abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
-                    registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
+                    Registry<?> Registry = new RegistryImpl<>(value.getTypeKey());
+                    selfLoader.registerLoader(value.getTypeKey().getType(), Registry);
+                    abstractConfigLoader.registerLoader(value.getTypeKey().getType(), Registry);
+                    registryMap.put(value.getTypeKey().getType(), new RegistryImpl<>(Registry));
                 }
                 return super.register(key, value);
             }
@@ -396,9 +391,10 @@ public class ConfigPackImpl implements ConfigPack {
     }
     
     private void checkDeadEntries() {
-        registryMap.forEach((clazz, pair) -> ((OpenRegistryImpl<?>) pair.getRegistry())
-                .getDeadEntries()
-                .forEach((id, value) -> logger.debug("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
+        logger.warn("TODO: Dead Entries");
+        //registryMap.forEach((clazz, pair) -> ((RegistryImpl<?>) pair.getRegistry())
+        //        .getDeadEntries()
+        //        .forEach((id, value) -> logger.debug("Dead entry in '{}' registry: '{}'", ReflectionUtil.typeToString(clazz), id)));
     }
     
     public ConfigPackTemplate getTemplate() {
@@ -407,14 +403,14 @@ public class ConfigPackImpl implements ConfigPack {
     
     @Override
     @SuppressWarnings("unchecked")
-    public <T> CheckedRegistry<T> getRegistry(Type type) {
-        return (CheckedRegistry<T>) registryMap.get(type);
+    public <T> Registry<T> getRegistry(Type type) {
+        return (Registry<T>) registryMap.get(type);
     }
     
     @SuppressWarnings("unchecked")
     @Override
-    public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
-        return (CheckedRegistry<T>) registryMap.get(type);
+    public <T> Registry<T> getRegistry(Type type) throws IllegalStateException {
+        return (Registry<T>) registryMap.get(type);
     }
     
     @Override

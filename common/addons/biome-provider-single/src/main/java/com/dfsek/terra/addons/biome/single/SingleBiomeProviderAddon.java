@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -36,7 +36,7 @@ public class SingleBiomeProviderAddon implements MonadAddonInitializer {
                 ((handler, base, platform) -> Init.ofPure(
                         handler.register(base, ConfigPackPreLoadEvent.class)
                                .then(event -> {
-                                   CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                                   Registry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().createRegistry(
                                            PROVIDER_REGISTRY_KEY);
                                    providerRegistry.register(base.key("SINGLE"), SingleBiomeProviderTemplate::new);
                                })

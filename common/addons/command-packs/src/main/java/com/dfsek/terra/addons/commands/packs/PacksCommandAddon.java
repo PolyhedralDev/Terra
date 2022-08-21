@@ -2,31 +2,21 @@ package com.dfsek.terra.addons.commands.packs;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.CommandManager;
-import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
-import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.function.monad.Monad;
-import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-
-import java.util.function.Supplier;
 
 
 public class PacksCommandAddon implements MonadAddonInitializer {

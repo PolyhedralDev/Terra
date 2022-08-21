@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.api;
 
+import com.dfsek.terra.api.registry.meta.RegistryHolder;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +22,6 @@ import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.profiler.Profiler;
-import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 
@@ -27,23 +29,12 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 /**
  * Represents a Terra mod/plugin instance.
  */
-public interface Platform extends LoaderRegistrar {
+public interface Platform extends LoaderRegistrar, RegistryHolder {
     boolean reload();
     
     @NotNull
     @Contract(pure = true)
     String platformName();
-    
-    /**
-     * Runs a task that may or may not be thread safe, depending on platform.
-     * <p>
-     * Allows platforms to define what code is safe to be run asynchronously.
-     *
-     * @param task Task to be run.
-     */
-    default void runPossiblyUnsafeTask(@NotNull Runnable task) {
-        task.run();
-    }
     
     @NotNull
     @Contract(pure = true)
@@ -59,11 +50,7 @@ public interface Platform extends LoaderRegistrar {
     
     @NotNull
     @Contract(pure = true)
-    CheckedRegistry<ConfigPack> getConfigRegistry();
-    
-    @NotNull
-    @Contract(pure = true)
-    Registry<BaseAddon> getAddons();
+    Registry<BaseAddon> addons();
     
     @NotNull
     @Contract(pure = true)

@@ -18,6 +18,9 @@
 package com.dfsek.terra.registry.master;
 
 import com.dfsek.tectonic.api.exception.ConfigException;
+
+import com.dfsek.terra.registry.RegistryImpl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,13 +33,12 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
 
 
 /**
  * Class to hold config packs
  */
-public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
+public class ConfigRegistry extends RegistryImpl<ConfigPack> {
     private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
     
     public ConfigRegistry() {

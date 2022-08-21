@@ -15,12 +15,9 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -40,7 +37,7 @@ public class ImageBiomeProviderAddon implements MonadAddonInitializer {
                 ((functionalEventHandler, base, platform) -> Init.ofPure(
                         functionalEventHandler.register(base, ConfigPackPreLoadEvent.class)
                                               .then(event -> {
-                                                  CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                                                  Registry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().createRegistry(
                                                           PROVIDER_REGISTRY_KEY);
                                                   providerRegistry.register(base.key("IMAGE"),
                                                                             () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));

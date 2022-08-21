@@ -56,7 +56,7 @@ public class GenericLoaders implements LoaderRegistrar {
                 .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
         
         if(platform != null) {
-            registry.registerLoader(BaseAddon.class, platform.getAddons())
+            registry.registerLoader(BaseAddon.class, platform.addons())
                     .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
                             .getWorldHandle().createBlockState((String) object).getBlockType())
                     .registerLoader(BlockState.class, (type, object, configLoader, depthTracker) -> platform

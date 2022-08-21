@@ -17,7 +17,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.registry.meta.CheckedRegistryHolder;
+import com.dfsek.terra.api.registry.meta.RegistryHolder;
 import com.dfsek.terra.api.registry.meta.RegistryProvider;
 import com.dfsek.terra.api.tectonic.ConfigLoadingDelegate;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
@@ -30,7 +30,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorPr
 
 public interface ConfigPack extends LoaderRegistrar,
                                     ConfigLoadingDelegate,
-                                    CheckedRegistryHolder,
+                                    RegistryHolder,
                                     RegistryProvider,
                                     Keyed<ConfigPack>,
                                     PropertyHolder {

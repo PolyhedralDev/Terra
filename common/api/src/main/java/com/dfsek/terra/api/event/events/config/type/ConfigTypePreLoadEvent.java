@@ -9,11 +9,11 @@ package com.dfsek.terra.api.event.events.config.type;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.registry.CheckedRegistry;
+import com.dfsek.terra.api.registry.Registry;
 
 
 public class ConfigTypePreLoadEvent extends ConfigTypeLoadEvent {
-    public ConfigTypePreLoadEvent(ConfigType<?, ?> type, CheckedRegistry<?> registry, ConfigPack pack) {
+    public ConfigTypePreLoadEvent(ConfigType<?, ?> type, Registry<?> registry, ConfigPack pack) {
         super(type, registry, pack);
     }
 }

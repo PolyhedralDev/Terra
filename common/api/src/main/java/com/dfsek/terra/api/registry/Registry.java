@@ -8,16 +8,17 @@
 package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.registry.key.Keyed;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
@@ -65,7 +66,22 @@ public interface Registry<T> extends TypeLoader<T> {
      */
     @NotNull
     @Contract(pure = true)
-    Collection<T> entries();
+    Set<T> entries();
+    
+    /**
+     * Add a value to this registry.
+     *
+     * @param identifier Identifier to assign value.
+     * @param value      Value to register.
+     */
+    @Contract(pure = true, value = "_,_->new")
+    Registry<T> register(@NotNull RegistryKey identifier, @NotNull T value);
+    
+    @SuppressWarnings("unchecked")
+    @Contract(pure = true, value = "_->new")
+    default Registry<T> register(@NotNull Keyed<? extends T> value) {
+        return register(value.getRegistryKey(), (T) value);
+    }
     
     /**
      * Get all the keys in this registry.
@@ -82,31 +98,7 @@ public interface Registry<T> extends TypeLoader<T> {
         return getType().getRawType();
     }
     
-    @Deprecated
-    default Optional<T> getByID(String id) {
-        return getByID(id, map -> {
-            if(map.isEmpty()) return Optional.empty();
-            if(map.size() == 1) {
-                return map.values().stream().findFirst(); // only one value.
-            }
-            throw new IllegalArgumentException("ID \"" + id + "\" is ambiguous; matches: " + map
-                    .keySet()
-                    .stream()
-                    .map(RegistryKey::toString)
-                    .reduce("", (a, b) -> a + "\n - " + b));
-        });
-    }
+    Map<RegistryKey, T> getID(String id);
     
-    default Collection<T> getAllWithID(String id) {
-        return getMatches(id).values();
-    }
-    
-    Map<RegistryKey, T> getMatches(String id);
-    
-    default Optional<T> getByID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
-        if(attempt.contains(":")) {
-            return get(RegistryKey.parse(attempt));
-        }
-        return reduction.apply(getMatches(attempt));
-    }
+    Map<RegistryKey, T> getNamespace(String namespace);
 }

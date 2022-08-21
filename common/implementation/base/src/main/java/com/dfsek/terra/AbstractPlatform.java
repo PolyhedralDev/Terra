@@ -58,19 +58,15 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.impl.InjectorImpl;
 import com.dfsek.terra.api.profiler.Profiler;
-import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
-import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
 import com.dfsek.terra.profiler.ProfilerImpl;
-import com.dfsek.terra.registry.CheckedRegistryImpl;
-import com.dfsek.terra.registry.LockedRegistryImpl;
-import com.dfsek.terra.registry.OpenRegistryImpl;
+import com.dfsek.terra.registry.RegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
@@ -84,9 +80,7 @@ public abstract class AbstractPlatform implements Platform {
     
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl();
-    private final ConfigRegistry configRegistry = new ConfigRegistry();
-    
-    private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
+    private final Registry<ConfigPack> configRegistry = new ConfigRegistry();
     
     private final Profiler profiler = new ProfilerImpl();
     
@@ -94,9 +88,7 @@ public abstract class AbstractPlatform implements Platform {
     
     private final PluginConfigImpl config = new PluginConfigImpl();
     
-    private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
-    
-    private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
+    private final Registry<BaseAddon> addonRegistry = ;
     
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
@@ -321,13 +313,13 @@ public abstract class AbstractPlatform implements Platform {
     }
     
     @Override
-    public @NotNull CheckedRegistry<ConfigPack> getConfigRegistry() {
-        return checkedConfigRegistry;
+    public @NotNull Registry<ConfigPack> getConfigRegistry() {
+        return configRegistry;
     }
     
     @Override
-    public @NotNull Registry<BaseAddon> getAddons() {
-        return lockedAddonRegistry;
+    public @NotNull Registry<BaseAddon> addons() {
+        return addonRegistry;
     }
     
     @Override

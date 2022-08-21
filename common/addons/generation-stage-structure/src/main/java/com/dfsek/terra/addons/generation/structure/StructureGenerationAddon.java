@@ -24,7 +24,7 @@ public class StructureGenerationAddon implements MonadAddonInitializer {
                 ((handler, base, platform) -> Init.ofPure(Construct.construct(() -> {
                     handler.register(base, ConfigPackPreLoadEvent.class)
                            .then(event -> event.getPack()
-                                               .getOrCreateRegistry(GenerationStageProvider.class)
+                                               .createRegistry(GenerationStageProvider.class)
                                                .register(base.key("STRUCTURE"), pack -> new StructureGenerationStage(platform)))
                            .failThrough();
                     return handler.register(base, ConfigurationLoadEvent.class)
