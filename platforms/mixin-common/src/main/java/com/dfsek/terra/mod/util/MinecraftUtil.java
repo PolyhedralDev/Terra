@@ -69,10 +69,6 @@ public final class MinecraftUtil {
         TerraIntProvider.TERRA_RANGE_TYPE_TO_INT_PROVIDER_TYPE.put(ConstantRange.class, CONSTANT);
     }
     
-    public static RegistryKey<Biome> registerKey(Identifier identifier) {
-        return RegistryKey.of(Registry.BIOME_KEY, identifier);
-    }
-    
     public static Biome createBiome(VanillaBiomeProperties vanillaBiomeProperties) {
         
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();

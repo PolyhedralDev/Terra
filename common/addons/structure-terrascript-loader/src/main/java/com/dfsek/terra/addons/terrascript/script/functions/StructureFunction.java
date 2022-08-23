@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.api.util.vector.Vector3Int;
+
 import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,20 +68,24 @@ public class StructureFunction implements Function<Boolean> {
         
         
         String app = id.apply(implementationArguments, scope);
+        int xValue = FastMath.roundToInt(xz.getX());
+        int yValue = y.apply(implementationArguments, scope).intValue();
+        int zValue = FastMath.roundToInt(xz.getZ());
+        Vector3Int origin = Vector3Int.of(xValue, yValue, zValue);
         return registry.getByID(app).map(script -> {
             if(script instanceof StructureScript structureScript) {
-                return structureScript.generate(arguments.getOrigin(),
+                return structureScript.generate(origin,
                                                 arguments.getWorld()
-                                                         .buffer(FastMath.roundToInt(xz.getX()),
-                                                                 y.apply(implementationArguments, scope).intValue(),
-                                                                 FastMath.roundToInt(xz.getZ())),
+                                                         .buffer(xValue,
+                                                                 yValue,
+                                                                 zValue),
                                                 arguments.getRotation(), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
-                                            .buffer(FastMath.roundToInt(xz.getX()),
-                                                    y.apply(implementationArguments, scope).intValue(),
-                                                    FastMath.roundToInt(xz.getZ())),
+                                            .buffer(xValue,
+                                                    yValue,
+                                                    zValue),
                                    arguments.getRotation());
         }).orElseGet(() -> {
             LOGGER.error("No such structure {}", app);

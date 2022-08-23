@@ -22,6 +22,7 @@ import ca.solostudios.strata.version.Version;
 
 import com.dfsek.terra.api.config.ConfigPack;
 
+import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 import com.dfsek.terra.mod.util.MinecraftUtil;
@@ -53,12 +54,8 @@ public abstract class MinecraftAddon implements BaseAddon {
     public void initialize() {
         modPlatform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(ConfigPack.class)) {
-                        event.getLoadedObject(ConfigPack.class).getContext().put(event.load(new VanillaWorldProperties()));
-                    }
-                })
+                .register(this, ConfigPackPreLoadEvent.class)
+                .then(event -> event.loadTemplate(new VanillaWorldProperties()))
                 .global();
         modPlatform.getEventManager()
                    .getHandler(FunctionalEventHandler.class)
