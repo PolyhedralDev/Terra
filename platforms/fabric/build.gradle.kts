@@ -19,6 +19,8 @@ dependencies {
     "developmentFabric"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
     
+    modRuntimeOnly(libs.mod.fabric.fabric.api)
+    
     minecraft(libs.mod.minecraft)
     mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
     
