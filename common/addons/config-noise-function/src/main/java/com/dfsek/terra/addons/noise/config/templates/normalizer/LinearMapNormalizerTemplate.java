@@ -4,6 +4,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.normalizer.LinearMapNormalizer;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -11,17 +12,17 @@ public class LinearMapNormalizerTemplate extends NormalizerTemplate<LinearMapNor
     
     @Value("from.a")
     @Default
-    private double aFrom = -1;
+    private @Meta double aFrom = -1;
     
     @Value("from.b")
     @Default
-    private double bFrom = 1;
+    private @Meta double bFrom = 1;
     
     @Value("to.a")
-    private double aTo;
+    private @Meta double aTo;
     
     @Value("to.b")
-    private double bTo;
+    private @Meta double bTo;
     
     @Override
     public NoiseSampler get() {
