@@ -66,6 +66,6 @@ fun Project.configureDependencies() {
         testImplementation(libs.findLibrary("libraries.guava").get())
     
         "errorprone"(libs.findLibrary("libraries_internal_error-prone").get())
-        //"errorprone"(libs.findLibrary("libraries_internal_nullaway").get())
+        "errorprone"(libs.findLibrary("libraries_internal_nullaway").get())
     }
 }

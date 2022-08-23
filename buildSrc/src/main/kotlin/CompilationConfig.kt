@@ -1,4 +1,6 @@
 import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
+import net.ltgt.gradle.errorprone.errorprone
+import net.ltgt.gradle.nullaway.nullaway
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -21,7 +23,7 @@ fun Project.configureCompilation() {
     apply(plugin = "idea")
     apply<TectonicDocPlugin>()
     apply(plugin = "net.ltgt.errorprone")
-    //apply(plugin = "net.ltgt.nullaway")
+    apply(plugin = "net.ltgt.nullaway")
     
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -32,6 +34,9 @@ fun Project.configureCompilation() {
         options.encoding = "UTF-8"
         doFirst {
             options.compilerArgs.add("-Xlint:all")
+        }
+        options.errorprone.nullaway {
+            annotatedPackages.add("com.dfsek.terra")
         }
     }
     
