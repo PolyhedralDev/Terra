@@ -53,7 +53,7 @@ public class MutableInteger extends MutableNumber<Integer> {
     }
     
     @Override
-    public int compareTo(@NotNull Integer o) {
-        return Integer.compare(value, o);
+    public int compareTo(@NotNull MutablePrimitive<Integer> o) {
+        return Integer.compare(value, o.get());
     }
 }

@@ -20,6 +20,8 @@ fun Project.configureCompilation() {
     apply(plugin = "java-library")
     apply(plugin = "idea")
     apply<TectonicDocPlugin>()
+    apply(plugin = "net.ltgt.errorprone")
+    //apply(plugin = "net.ltgt.nullaway")
     
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17

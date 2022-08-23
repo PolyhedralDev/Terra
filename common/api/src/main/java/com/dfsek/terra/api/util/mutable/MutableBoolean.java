@@ -37,7 +37,7 @@ public class MutableBoolean implements MutablePrimitive<Boolean> {
     }
     
     @Override
-    public int compareTo(@NotNull Boolean o) {
-        return Boolean.compare(value, o);
+    public int compareTo(@NotNull MutablePrimitive<Boolean> o) {
+        return Boolean.compare(value, o.get());
     }
 }

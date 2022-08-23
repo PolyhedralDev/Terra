@@ -51,7 +51,7 @@ public class MutableDouble extends MutableNumber<Double> {
     }
     
     @Override
-    public int compareTo(@NotNull Double o) {
-        return Double.compare(value, o);
+    public int compareTo(@NotNull MutablePrimitive<Double> o) {
+        return Double.compare(value, o.get());
     }
 }
