@@ -52,8 +52,8 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
-        maven("Modrinth") {
-            url = uri("https://api.modrinth.com/maven")
+        maven("https://api.modrinth.com/maven") {
+            name = "Modrinth"
         }
     }
     
