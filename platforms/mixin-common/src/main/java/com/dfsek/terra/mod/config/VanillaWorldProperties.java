@@ -51,7 +51,7 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
     @Default
     private Boolean respawnAnchorWorks = false;
 
-    @Value("minecraft.height")
+    @Value("minecraft.height.range")
     @Default
     private Range height = new ConstantRange(0, 16);
 

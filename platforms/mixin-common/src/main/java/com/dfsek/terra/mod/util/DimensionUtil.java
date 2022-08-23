@@ -18,10 +18,13 @@ import java.util.OptionalLong;
 public class DimensionUtil {
     protected static RegistryKey<DimensionType> registerDimension(Identifier identifier,
                                                                                 DimensionType dimension) {
-        BuiltinRegistries.add(BuiltinRegistries.DIMENSION_TYPE,
-                              registerKey(identifier)
-                                           .getValue(),
-                              dimension);
+        RegistryKey key = registerKey(identifier);
+        if(!BuiltinRegistries.BIOME.contains(key)) {
+            BuiltinRegistries.add(BuiltinRegistries.DIMENSION_TYPE,
+                                  key
+                                          .getValue(),
+                                  dimension);
+        }
         return getDimensionKey(identifier);
     }
     
@@ -34,11 +37,7 @@ public class DimensionUtil {
     
     protected static RegistryKey<DimensionType> registerDimension(ConfigPack pack) {
         VanillaWorldProperties vanillaWorldProperties;
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
-            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
-        } else {
-            vanillaWorldProperties = new VanillaWorldProperties();
-        }
+        vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
     
         DimensionType overworldDimensionType = new DimensionType(
                 vanillaWorldProperties.getFixedTime() == null ? OptionalLong.empty() : OptionalLong.of(vanillaWorldProperties.getFixedTime()),
