@@ -20,7 +20,7 @@ package com.dfsek.terra;
 import com.dfsek.tectonic.api.TypeRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -316,27 +316,27 @@ public abstract class AbstractPlatform implements Platform {
     }
     
     @Override
-    public @NotNull PluginConfig getTerraConfig() {
+    public @NonNull PluginConfig getTerraConfig() {
         return config;
     }
     
     @Override
-    public @NotNull CheckedRegistry<ConfigPack> getConfigRegistry() {
+    public @NonNull CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedConfigRegistry;
     }
     
     @Override
-    public @NotNull Registry<BaseAddon> getAddons() {
+    public @NonNull Registry<BaseAddon> getAddons() {
         return lockedAddonRegistry;
     }
     
     @Override
-    public @NotNull EventManager getEventManager() {
+    public @NonNull EventManager getEventManager() {
         return eventManager;
     }
     
     @Override
-    public @NotNull Profiler getProfiler() {
+    public @NonNull Profiler getProfiler() {
         return profiler;
     }
 }

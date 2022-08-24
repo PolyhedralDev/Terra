@@ -11,6 +11,9 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.biome.pipeline.api.Source;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.PipelineBiomeLoader;
 import com.dfsek.terra.addons.biome.pipeline.config.source.SamplerSourceTemplate;
@@ -20,10 +23,6 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderStageTem
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceStageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothStageTemplate;
-import com.dfsek.terra.addons.biome.pipeline.api.Source;
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
-
 import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;

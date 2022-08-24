@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.structure.mutator;
 
-import java.util.random.RandomGenerator;
-
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;

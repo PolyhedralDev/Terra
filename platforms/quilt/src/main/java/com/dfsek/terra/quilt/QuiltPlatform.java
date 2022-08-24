@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.quilt;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.io.File;
@@ -37,12 +37,12 @@ public class QuiltPlatform extends LifecyclePlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "Quilt";
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return new File(QuiltLoader.getConfigDir().toFile(), "Terra");
     }
     

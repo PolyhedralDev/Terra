@@ -29,9 +29,6 @@ import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
 
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
-
 
 public class LootFunction implements Function<Void> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LootFunction.class);

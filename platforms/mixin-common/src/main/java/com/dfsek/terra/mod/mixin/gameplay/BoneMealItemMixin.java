@@ -1,8 +1,6 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
-import com.dfsek.terra.mod.util.MinecraftAdapter;
-
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -15,8 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.dfsek.terra.mod.util.FertilizableUtil;
-
-import java.util.random.RandomGenerator;
+import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 
 @Mixin(BoneMealItem.class)

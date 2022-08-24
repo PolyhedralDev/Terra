@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.util;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Iterator;
 import java.util.function.Supplier;
@@ -27,7 +27,7 @@ public interface Range extends Iterable<Integer> {
     
     Range sub(int sub);
     
-    @NotNull
+    @NonNull
     @Override
     Iterator<Integer> iterator();
     

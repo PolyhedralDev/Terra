@@ -1,12 +1,8 @@
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-
 import net.jafama.FastMath;
 
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
-
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.util.MathUtil;
 

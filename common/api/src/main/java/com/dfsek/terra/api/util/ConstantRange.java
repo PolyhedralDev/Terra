@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.util;
 
 import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Iterator;
 import java.util.random.RandomGenerator;
@@ -64,7 +64,7 @@ public class ConstantRange implements Range {
         return this;
     }
     
-    @NotNull
+    @NonNull
     @Override
     public Iterator<Integer> iterator() {
         return new RangeIterator(this);

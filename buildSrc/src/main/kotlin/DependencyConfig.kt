@@ -58,12 +58,10 @@ fun Project.configureDependencies() {
     dependencies {
         testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.api").get())
         testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.engine").get())
-        compileOnly(libs.findLibrary("libraries.internal.jetbrains.annotations").get())
         
         compileOnly(libs.findLibrary("libraries.guava").get())
         testImplementation(libs.findLibrary("libraries.guava").get())
         
-        "errorprone"(libs.findLibrary("libraries.internal.jetbrains.annotations").get())
         "errorprone"(libs.findLibrary("libraries_internal_error-prone").get())
         "errorprone"(libs.findLibrary("libraries_internal_nullaway").get())
         "errorprone"(libs.findLibrary("libraries_internal_guava-gradle").get())

@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.palette.palette;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -19,13 +19,13 @@ public class PaletteLayerHolder {
     private final NoiseSampler sampler;
     private final int size;
     
-    public PaletteLayerHolder(@NotNull ProbabilityCollection<BlockState> layer, NoiseSampler sampler, int size) {
+    public PaletteLayerHolder(@NonNull ProbabilityCollection<BlockState> layer, NoiseSampler sampler, int size) {
         this.layer = layer;
         this.sampler = sampler;
         this.size = size;
     }
     
-    @NotNull
+    @NonNull
     public ProbabilityCollection<BlockState> getLayer() {
         return layer;
     }

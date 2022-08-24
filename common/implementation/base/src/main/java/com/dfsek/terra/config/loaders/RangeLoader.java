@@ -21,7 +21,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
@@ -33,7 +33,7 @@ import com.dfsek.terra.api.util.Range;
 @SuppressWarnings("unchecked")
 public class RangeLoader implements TypeLoader<Range> {
     @Override
-    public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
+    public Range load(@NonNull AnnotatedType type, @NonNull Object o, @NonNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
         if(o instanceof Map) {
             Map<String, Integer> map = (Map<String, Integer>) o;

@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
 import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
@@ -66,8 +66,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     
     @Override
     @SuppressWarnings("try")
-    public void generateChunkData(@NotNull ProtoChunk chunk, @NotNull WorldProperties world,
-                                  @NotNull BiomeProvider biomeProvider,
+    public void generateChunkData(@NonNull ProtoChunk chunk, @NonNull WorldProperties world,
+                                  @NonNull BiomeProvider biomeProvider,
                                   int chunkX, int chunkZ) {
         platform.getProfiler().push("chunk_base_3d");
         int xOrig = (chunkX << 4);

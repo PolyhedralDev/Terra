@@ -24,8 +24,8 @@ import cloud.commandframework.paper.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,7 +167,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     @Override
     public @Nullable
-    ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
+    ChunkGenerator getDefaultWorldGenerator(@NonNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
                     () -> new IllegalArgumentException("No such config pack \"" + id + "\""));

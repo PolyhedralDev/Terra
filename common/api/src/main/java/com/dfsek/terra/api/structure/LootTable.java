@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.structure;
 
-import org.jetbrains.annotations.ApiStatus.Experimental;
-
 import java.util.List;
 import java.util.random.RandomGenerator;
 
@@ -16,7 +14,7 @@ import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
 
 
-@Experimental
+//@Experimental
 public interface LootTable {
     /**
      * Fills an Inventory with loot.

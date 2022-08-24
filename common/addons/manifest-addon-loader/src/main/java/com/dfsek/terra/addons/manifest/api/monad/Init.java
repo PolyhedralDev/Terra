@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.manifest.api.monad;
 
+import java.util.function.Function;
+
 import com.dfsek.terra.addons.manifest.impl.InitInfo;
 import com.dfsek.terra.api.util.function.Functions;
 import com.dfsek.terra.api.util.function.monad.Monad;
-
-import java.util.function.Function;
 
 
 public class Init<T> implements Monad<T, Init<?>> {

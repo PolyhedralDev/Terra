@@ -20,8 +20,7 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
-import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Collection;
@@ -50,43 +49,43 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
         this.registry = registry;
     }
     
-    @Internal
+    //@Internal
     public OpenRegistry<T> getRegistry() {
         return registry;
     }
     
     @Override
-    public void register(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException {
+    public void register(@NonNull RegistryKey identifier, @NonNull T value) throws DuplicateEntryException {
         registry.registerChecked(identifier, value);
     }
     
     @Override
-    public Optional<T> get(@NotNull RegistryKey key) {
+    public Optional<T> get(@NonNull RegistryKey key) {
         return registry.get(key);
     }
     
     @Override
-    public boolean contains(@NotNull RegistryKey key) {
+    public boolean contains(@NonNull RegistryKey key) {
         return registry.contains(key);
     }
     
     @Override
-    public void forEach(@NotNull Consumer<T> consumer) {
+    public void forEach(@NonNull Consumer<T> consumer) {
         registry.forEach(consumer);
     }
     
     @Override
-    public void forEach(@NotNull BiConsumer<RegistryKey, T> consumer) {
+    public void forEach(@NonNull BiConsumer<RegistryKey, T> consumer) {
         registry.forEach(consumer);
     }
     
     @Override
-    public @NotNull Collection<T> entries() {
+    public @NonNull Collection<T> entries() {
         return registry.entries();
     }
     
     @Override
-    public @NotNull Set<RegistryKey> keys() {
+    public @NonNull Set<RegistryKey> keys() {
         return registry.keys();
     }
     
@@ -101,7 +100,7 @@ public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    public T load(@NonNull AnnotatedType t, @NonNull Object c, @NonNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
         return registry.load(t, c, loader, depthTracker);
     }

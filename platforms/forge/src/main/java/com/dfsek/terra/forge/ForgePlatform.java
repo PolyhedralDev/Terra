@@ -27,7 +27,7 @@ import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,12 +118,12 @@ public class ForgePlatform extends ModPlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "Forge";
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return dataFolder.value();
     }
     

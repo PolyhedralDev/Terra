@@ -25,7 +25,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,7 +53,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
                 Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
     }
     
-    public void terra$setSpawnedType(@NotNull EntityType creatureType) {
+    public void terra$setSpawnedType(@NonNull EntityType creatureType) {
         getLogic().setEntityId((net.minecraft.entity.EntityType<?>) creatureType);
     }
     

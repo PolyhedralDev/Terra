@@ -8,7 +8,7 @@
 package com.dfsek.terra.api.util.vector;
 
 import net.jafama.FastMath;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.util.MathUtil;
 
@@ -51,7 +51,7 @@ public class Vector3 {
      *
      * @return the distance
      */
-    public double distance(@NotNull Vector3 o) {
+    public double distance(@NonNull Vector3 o) {
         return FastMath.sqrt(FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ()));
     }
     
@@ -62,7 +62,7 @@ public class Vector3 {
      *
      * @return the distance
      */
-    public double distanceSquared(@NotNull Vector3 o) {
+    public double distanceSquared(@NonNull Vector3 o) {
         return FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ());
     }
     
@@ -74,7 +74,7 @@ public class Vector3 {
      *
      * @return dot product
      */
-    public double dot(@NotNull Vector3 other) {
+    public double dot(@NonNull Vector3 other) {
         return x * other.getX() + y * other.getY() + z * other.getZ();
     }
     
@@ -227,7 +227,7 @@ public class Vector3 {
          *
          * @return dot product
          */
-        public double dot(@NotNull Vector3 other) {
+        public double dot(@NonNull Vector3 other) {
             return x * other.getX() + y * other.getY() + z * other.getZ();
         }
         
@@ -293,8 +293,8 @@ public class Vector3 {
          * @throws IllegalArgumentException if the provided axis vector instance is
          *                                  null
          */
-        @NotNull
-        public Mutable rotateAroundAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException {
+        @NonNull
+        public Mutable rotateAroundAxis(@NonNull Vector3 axis, double angle) throws IllegalArgumentException {
             return rotateAroundNonUnitAxis(axis.isNormalized() ? axis : axis.mutable().normalize().immutable(), angle);
         }
         
@@ -318,8 +318,8 @@ public class Vector3 {
          * @throws IllegalArgumentException if the provided axis vector instance is
          *                                  null
          */
-        @NotNull
-        public Mutable rotateAroundNonUnitAxis(@NotNull Vector3 axis, double angle) throws IllegalArgumentException {
+        @NonNull
+        public Mutable rotateAroundNonUnitAxis(@NonNull Vector3 axis, double angle) throws IllegalArgumentException {
             double x = getX(), y = getY(), z = getZ();
             double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
             
@@ -353,7 +353,7 @@ public class Vector3 {
          *
          * @return the same vector
          */
-        @NotNull
+        @NonNull
         public Mutable rotateAroundX(double angle) {
             double angleCos = Math.cos(angle);
             double angleSin = Math.sin(angle);
@@ -376,7 +376,7 @@ public class Vector3 {
          *
          * @return the same vector
          */
-        @NotNull
+        @NonNull
         public Mutable rotateAroundY(double angle) {
             double angleCos = Math.cos(angle);
             double angleSin = Math.sin(angle);
@@ -399,7 +399,7 @@ public class Vector3 {
          *
          * @return the same vector
          */
-        @NotNull
+        @NonNull
         public Mutable rotateAroundZ(double angle) {
             double angleCos = Math.cos(angle);
             double angleSin = Math.sin(angle);

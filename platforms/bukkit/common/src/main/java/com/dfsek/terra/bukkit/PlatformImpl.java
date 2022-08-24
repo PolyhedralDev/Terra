@@ -20,7 +20,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,12 +74,12 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "Bukkit";
     }
     
     @Override
-    public void runPossiblyUnsafeTask(@NotNull Runnable task) {
+    public void runPossiblyUnsafeTask(@NonNull Runnable task) {
         Bukkit.getScheduler().runTask(plugin, task);
     }
     
@@ -89,17 +89,17 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public @NotNull WorldHandle getWorldHandle() {
+    public @NonNull WorldHandle getWorldHandle() {
         return handle;
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return plugin.getDataFolder();
     }
     
     @Override
-    public @NotNull ItemHandle getItemHandle() {
+    public @NonNull ItemHandle getItemHandle() {
         return itemHandle;
     }
     

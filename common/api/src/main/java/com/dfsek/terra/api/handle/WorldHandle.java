@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.api.handle;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.dataflow.qual.Pure;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
@@ -18,14 +18,14 @@ import com.dfsek.terra.api.entity.EntityType;
  * Interface to be implemented for world manipulation.
  */
 public interface WorldHandle {
-    @NotNull
-    @Contract("_ -> new")
-    BlockState createBlockState(@NotNull String data);
+    @NonNull
+    //@Contract("_ -> new")
+    BlockState createBlockState(@NonNull String data);
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     BlockState air();
     
-    @NotNull
-    EntityType getEntity(@NotNull String id);
+    @NonNull
+    EntityType getEntity(@NonNull String id);
 }

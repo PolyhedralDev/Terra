@@ -28,7 +28,7 @@ import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -381,7 +381,7 @@ public class ConfigPackImpl implements ConfigPack {
     private OpenRegistry<ConfigType<?, ?>> createConfigRegistry() {
         return new OpenRegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
             @Override
-            public boolean register(@NotNull RegistryKey key, @NotNull ConfigType<?, ?> value) {
+            public boolean register(@NonNull RegistryKey key, @NonNull ConfigType<?, ?> value) {
                 if(!registryMap
                         .containsKey(value.getTypeKey()
                                           .getType())) {

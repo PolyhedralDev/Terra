@@ -35,17 +35,17 @@ public class SpongeWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
+    public @NonNull BlockState createBlockState(@NonNull String data) {
         return new SpongeBlockState(org.spongepowered.api.block.BlockState.fromString(data));
     }
     
     @Override
-    public @NotNull BlockState air() {
+    public @NonNull BlockState air() {
         return air.value();
     }
     
     @Override
-    public @NotNull EntityType getEntity(@NotNull String id) {
+    public @NonNull EntityType getEntity(@NonNull String id) {
         throw new UnsupportedOperationException();
     }
 }

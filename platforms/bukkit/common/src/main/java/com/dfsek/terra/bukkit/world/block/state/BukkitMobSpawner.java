@@ -18,7 +18,7 @@
 package com.dfsek.terra.bukkit.world.block.state;
 
 import org.bukkit.block.CreatureSpawner;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
@@ -37,7 +37,7 @@ public class BukkitMobSpawner extends BukkitBlockEntity implements MobSpawner {
     }
     
     @Override
-    public void setSpawnedType(@NotNull EntityType creatureType) {
+    public void setSpawnedType(@NonNull EntityType creatureType) {
         ((CreatureSpawner) getHandle()).setSpawnedType(((BukkitEntityType) creatureType).getHandle());
     }
     

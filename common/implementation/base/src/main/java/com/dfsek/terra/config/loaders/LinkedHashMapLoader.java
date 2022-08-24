@@ -21,7 +21,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
@@ -32,7 +32,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Object>> {
     @Override
-    public LinkedHashMap<Object, Object> load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader,
+    public LinkedHashMap<Object, Object> load(@NonNull AnnotatedType t, @NonNull Object c, @NonNull ConfigLoader loader,
                                               DepthTracker depthTracker) throws LoadException {
         Map<String, Object> config = (Map<String, Object>) c;
         LinkedHashMap<Object, Object> map = new LinkedHashMap<>();

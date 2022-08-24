@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.event;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class EventContextImpl<T extends Event> implements EventContext<T>, Compa
     }
     
     @Override
-    public int compareTo(@NotNull EventContextImpl<?> o) {
+    public int compareTo(@NonNull EventContextImpl<?> o) {
         return this.priority - o.priority;
     }
     

@@ -44,18 +44,18 @@ fun Project.configureCompilation() {
     
     configure<CheckerFrameworkExtension> {
         checkers = listOf(
-            "org.checkerframework.checker.nullness.NullnessChecker",
-            "org.checkerframework.checker.units.UnitsChecker",
-            "org.checkerframework.checker.resourceleak.ResourceLeakChecker",
-            "org.checkerframework.checker.lock.LockChecker",
-            "org.checkerframework.checker.index.IndexChecker",
-            "org.checkerframework.checker.formatter.FormatterChecker",
-            "org.checkerframework.checker.optional.OptionalChecker",
-            "org.checkerframework.checker.signature.SignatureChecker",
-            "org.checkerframework.framework.util.PurityChecker",
-            "org.checkerframework.common.value.ValueChecker",
-            "org.checkerframework.common.initializedfields.InitializedFieldsChecker",
-            "org.checkerframework.common.aliasing.AliasingChecker"
+            //"org.checkerframework.checker.nullness.NullnessChecker",
+            //"org.checkerframework.checker.units.UnitsChecker",
+            //"org.checkerframework.checker.resourceleak.ResourceLeakChecker",
+            //"org.checkerframework.checker.lock.LockChecker",
+            //"org.checkerframework.checker.index.IndexChecker",
+            //"org.checkerframework.checker.formatter.FormatterChecker",
+            //"org.checkerframework.checker.optional.OptionalChecker",
+            //"org.checkerframework.checker.signature.SignatureChecker",
+            //"org.checkerframework.framework.util.PurityChecker",
+            //"org.checkerframework.common.value.ValueChecker",
+            //"org.checkerframework.common.initializedfields.InitializedFieldsChecker",
+            //"org.checkerframework.common.aliasing.AliasingChecker"
                          )
     }
     

@@ -22,7 +22,7 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
+    public T load(@NonNull AnnotatedType type, @NonNull Object o, @NonNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
         return getByID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
                                                                        "\" was found in this registry. Registry contains items: " +
@@ -84,12 +84,12 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     }
     
     @Override
-    public boolean register(@NotNull RegistryKey identifier, @NotNull T value) {
+    public boolean register(@NonNull RegistryKey identifier, @NonNull T value) {
         return register(identifier, new Entry<>(value));
     }
     
     @Override
-    public void registerChecked(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException {
+    public void registerChecked(@NonNull RegistryKey identifier, @NonNull T value) throws DuplicateEntryException {
         if(objects.containsKey(identifier))
             throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
         register(identifier, value);
@@ -110,32 +110,32 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public Optional<T> get(@NotNull RegistryKey key) {
+    public Optional<T> get(@NonNull RegistryKey key) {
         return Optional.ofNullable(objects.getOrDefault(key, (Entry<T>) NULL).getValue());
     }
     
     @Override
-    public boolean contains(@NotNull RegistryKey key) {
+    public boolean contains(@NonNull RegistryKey key) {
         return objects.containsKey(key);
     }
     
     @Override
-    public void forEach(@NotNull Consumer<T> consumer) {
+    public void forEach(@NonNull Consumer<T> consumer) {
         objects.forEach((id, obj) -> consumer.accept(obj.getRaw()));
     }
     
     @Override
-    public void forEach(@NotNull BiConsumer<RegistryKey, T> consumer) {
+    public void forEach(@NonNull BiConsumer<RegistryKey, T> consumer) {
         objects.forEach((id, entry) -> consumer.accept(id, entry.getRaw()));
     }
     
     @Override
-    public @NotNull Collection<T> entries() {
+    public @NonNull Collection<T> entries() {
         return objects.values().stream().map(Entry::getRaw).collect(Collectors.toList());
     }
     
     @Override
-    public @NotNull Set<RegistryKey> keys() {
+    public @NonNull Set<RegistryKey> keys() {
         return objects.keySet();
     }
     

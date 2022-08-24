@@ -8,22 +8,16 @@
 package com.dfsek.terra.addons.yaml;
 
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-
-import com.dfsek.terra.api.util.function.monad.Monad;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.util.function.monad.Monad;
 
 
 public class YamlAddon implements MonadAddonInitializer {

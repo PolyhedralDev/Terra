@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl.ViewPoint;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl.ViewPoint;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.vector.Vector2Int;

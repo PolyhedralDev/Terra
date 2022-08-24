@@ -7,17 +7,15 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-
-import com.dfsek.terra.api.util.MathUtil;
-
 import net.jafama.FastMath;
 
 import java.util.Map;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3Int;

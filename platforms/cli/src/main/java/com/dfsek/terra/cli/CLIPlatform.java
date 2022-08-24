@@ -2,7 +2,7 @@ package com.dfsek.terra.cli;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,22 +34,22 @@ public class CLIPlatform extends AbstractPlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "CLI";
     }
     
     @Override
-    public @NotNull WorldHandle getWorldHandle() {
+    public @NonNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return new File("./");
     }
     
     @Override
-    public @NotNull ItemHandle getItemHandle() {
+    public @NonNull ItemHandle getItemHandle() {
         return itemHandle;
     }
     

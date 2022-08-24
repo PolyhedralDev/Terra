@@ -4,9 +4,9 @@ import net.jafama.FastMath;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
+import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 

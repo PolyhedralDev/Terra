@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.terra.api.util.vector.Vector3Int;
-
 import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +23,9 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 public class StructureFunction implements Function<Boolean> {

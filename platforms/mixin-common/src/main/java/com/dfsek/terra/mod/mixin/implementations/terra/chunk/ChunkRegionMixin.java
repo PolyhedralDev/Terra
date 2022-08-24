@@ -19,7 +19,7 @@ package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -38,12 +38,12 @@ public abstract class ChunkRegionMixin {
     @Final
     private net.minecraft.world.chunk.Chunk centerPos;
     
-    public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState blockState, boolean physics) {
+    public void terraChunk$setBlock(int x, int y, int z, @NonNull BlockState blockState, boolean physics) {
         ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)),
                                                     (net.minecraft.block.BlockState) blockState, 0);
     }
     
-    public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
+    public @NonNull BlockState terraChunk$getBlock(int x, int y, int z) {
         return (BlockState) ((ChunkRegion) (Object) this).getBlockState(
                 new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)));
     }

@@ -1,10 +1,6 @@
 package com.dfsek.terra.mod.mixin.gameplay;
 
 
-import com.dfsek.terra.api.world.World;
-
-import com.dfsek.terra.mod.util.WritableWorldSeedRedirecter;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.ai.brain.task.BoneMealTask;
@@ -27,6 +23,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.mod.config.FertilizableConfig;
 import com.dfsek.terra.mod.util.BiomeUtil;
 import com.dfsek.terra.mod.util.MinecraftAdapter;
+import com.dfsek.terra.mod.util.WritableWorldSeedRedirecter;
 
 
 @Mixin(BoneMealTask.class)

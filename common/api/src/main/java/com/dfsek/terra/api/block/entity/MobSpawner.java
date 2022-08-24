@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.block.entity;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.entity.EntityType;
 
@@ -15,7 +15,7 @@ import com.dfsek.terra.api.entity.EntityType;
 public interface MobSpawner extends BlockEntity {
     EntityType getSpawnedType();
     
-    void setSpawnedType(@NotNull EntityType creatureType);
+    void setSpawnedType(@NonNull EntityType creatureType);
     
     int getDelay();
     

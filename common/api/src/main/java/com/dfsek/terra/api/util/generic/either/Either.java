@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.api.util.generic.either;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -26,39 +25,39 @@ public final class Either<L, R> {
         this.leftPresent = leftPresent;
     }
     
-    @NotNull
-    @Contract("_ -> new")
+    @NonNull
+    //@Contract("_ -> new")
     public static <L1, R1> Either<L1, R1> left(L1 left) {
         return new Either<>(Objects.requireNonNull(left), null, true);
     }
     
-    @NotNull
-    @Contract("_ -> new")
+    @NonNull
+    //@Contract("_ -> new")
     public static <L1, R1> Either<L1, R1> right(R1 right) {
         return new Either<>(null, Objects.requireNonNull(right), false);
     }
     
-    @NotNull
-    @Contract("_ -> this")
+    @NonNull
+    //@Contract("_ -> this")
     public Either<L, R> ifLeft(Consumer<L> action) {
         if(leftPresent) action.accept(left);
         return this;
     }
     
-    @NotNull
-    @Contract("_ -> this")
+    @NonNull
+    //@Contract("_ -> this")
     public Either<L, R> ifRight(Consumer<R> action) {
         if(!leftPresent) action.accept(right);
         return this;
     }
     
-    @NotNull
+    @NonNull
     public Optional<L> getLeft() {
         if(leftPresent) return Optional.of(left);
         return Optional.empty();
     }
     
-    @NotNull
+    @NonNull
     public Optional<R> getRight() {
         if(!leftPresent) return Optional.of(right);
         return Optional.empty();

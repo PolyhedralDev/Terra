@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 

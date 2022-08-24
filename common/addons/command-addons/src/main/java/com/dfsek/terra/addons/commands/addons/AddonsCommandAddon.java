@@ -7,13 +7,11 @@ import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
 import com.dfsek.terra.addons.manifest.api.monad.Do;
 import com.dfsek.terra.addons.manifest.api.monad.Get;
 import com.dfsek.terra.addons.manifest.api.monad.Init;
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.util.function.monad.Monad;
 
 

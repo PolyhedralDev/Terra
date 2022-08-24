@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.api.util.generic.pair;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Objects;
 import java.util.function.BiConsumer;
@@ -59,20 +58,19 @@ public final class Pair<L, R> {
         return pair -> pair.left;
     }
     
-    @Contract("_, _ -> new")
+    //@Contract("_, _ -> new")
     public static <L1, R1> Pair<L1, R1> of(L1 left, R1 right) {
         return new Pair<>(left, right);
     }
     
-    @Contract("-> new")
+    //@Contract("-> new")
     @SuppressWarnings("unchecked")
     public static <L1, R1> Pair<L1, R1> ofNull() {
         return (Pair<L1, R1>) NULL;
     }
     
-    @NotNull
-    @Contract("-> new")
-    public Pair.Mutable<L, R> mutable() {
+    //@Contract("-> new")
+    public Pair.@NonNull Mutable<L, R> mutable() {
         return Mutable.of(left, right);
     }
     
@@ -115,14 +113,13 @@ public final class Pair<L, R> {
             this.left = left;
             this.right = right;
         }
-
-        @NotNull
-        @Contract("_, _ -> new")
-        public static <L1, R1> Pair.Mutable<L1, R1> of(L1 left, R1 right) {
+        
+        //@Contract("_, _ -> new")
+        public static <L1, R1> Pair.@NonNull Mutable<L1, R1> of(L1 left, R1 right) {
             return new Mutable<>(left, right);
         }
 
-        @Contract("-> new")
+        //@Contract("-> new")
         public Pair<L, R> immutable() {
             return Pair.of(left, right);
         }

@@ -19,14 +19,6 @@ package com.dfsek.terra.mod;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.api.config.ConfigPack;
-
-import com.dfsek.terra.api.event.events.PackEvent;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
-
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +31,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 
 public abstract class MinecraftAddon implements BaseAddon {

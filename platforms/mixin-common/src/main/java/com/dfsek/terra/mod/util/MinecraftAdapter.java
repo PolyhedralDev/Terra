@@ -21,10 +21,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.HeightLimitView;
 
+import java.util.random.RandomGenerator;
+
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.info.WorldProperties;
-
-import java.util.random.RandomGenerator;
 
 
 public final class MinecraftAdapter {

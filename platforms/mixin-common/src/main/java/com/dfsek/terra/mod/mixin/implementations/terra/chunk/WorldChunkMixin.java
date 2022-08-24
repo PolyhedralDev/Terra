@@ -19,8 +19,8 @@ package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -51,13 +51,13 @@ public abstract class WorldChunkMixin {
         setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) data, false);
     }
     
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+    public void terra$setBlock(int x, int y, int z, @NonNull BlockState blockState) {
         ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
                                                                         false);
     }
     
     @Intrinsic
-    public @NotNull BlockState terra$getBlock(int x, int y, int z) {
+    public @NonNull BlockState terra$getBlock(int x, int y, int z) {
         return (BlockState) getBlockState(new BlockPos(x, y, z));
     }
     

@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.bukkit.world;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
@@ -42,12 +42,12 @@ public class BukkitChunk implements Chunk {
     }
     
     @Override
-    public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+    public void setBlock(int x, int y, int z, @NonNull BlockState blockState) {
         delegate.getBlock(x, y, z).setBlockData(BukkitAdapter.adapt(blockState));
     }
     
     @Override
-    public @NotNull BlockState getBlock(int x, int y, int z) {
+    public @NonNull BlockState getBlock(int x, int y, int z) {
         return BukkitAdapter.adapt(delegate.getBlock(x, y, z).getBlockData());
     }
     

@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.palette.shortcut.block;
 
-import java.util.random.RandomGenerator;
-
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;

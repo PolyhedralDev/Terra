@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.util.mutable;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 
 public class MutableBoolean implements MutablePrimitive<Boolean> {
@@ -37,7 +37,7 @@ public class MutableBoolean implements MutablePrimitive<Boolean> {
     }
     
     @Override
-    public int compareTo(@NotNull MutablePrimitive<Boolean> o) {
+    public int compareTo(@NonNull MutablePrimitive<Boolean> o) {
         return Boolean.compare(value, o.get());
     }
 }

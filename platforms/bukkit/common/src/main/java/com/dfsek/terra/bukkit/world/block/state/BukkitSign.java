@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.bukkit.world.block.state;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.block.entity.Sign;
@@ -30,17 +30,17 @@ public class BukkitSign extends BukkitBlockEntity implements Sign {
     }
     
     @Override
-    public void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
+    public void setLine(int index, @NonNull String line) throws IndexOutOfBoundsException {
         ((org.bukkit.block.Sign) getHandle()).setLine(index, line);
     }
     
     @Override
-    public @NotNull String[] getLines() {
+    public @NonNull String[] getLines() {
         return ((org.bukkit.block.Sign) getHandle()).getLines();
     }
     
     @Override
-    public @NotNull String getLine(int index) throws IndexOutOfBoundsException {
+    public @NonNull String getLine(int index) throws IndexOutOfBoundsException {
         return ((org.bukkit.block.Sign) getHandle()).getLine(index);
     }
     

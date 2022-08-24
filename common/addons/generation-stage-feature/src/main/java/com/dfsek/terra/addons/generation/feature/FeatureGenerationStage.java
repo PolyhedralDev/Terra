@@ -8,8 +8,6 @@
 package com.dfsek.terra.addons.generation.feature;
 
 import java.util.Collections;
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;

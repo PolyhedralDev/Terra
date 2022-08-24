@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.util.mutable;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.Serial;
 
@@ -53,7 +53,7 @@ public class MutableInteger extends MutableNumber<Integer> {
     }
     
     @Override
-    public int compareTo(@NotNull MutablePrimitive<Integer> o) {
+    public int compareTo(@NonNull MutablePrimitive<Integer> o) {
         return Integer.compare(value, o.get());
     }
 }

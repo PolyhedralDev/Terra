@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
-import org.jetbrains.annotations.Contract;
+import org.checkerframework.dataflow.qual.Pure;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -34,7 +34,7 @@ public interface BiomeProvider {
      *
      * @return Biome at the location
      */
-    @Contract(pure = true)
+    @Pure
     Biome getBiome(int x, int y, int z, long seed);
     
     /**
@@ -45,7 +45,7 @@ public interface BiomeProvider {
      *
      * @return Biome at the location
      */
-    @Contract(pure = true)
+    @Pure
     default Biome getBiome(Vector3 vector3, long seed) {
         return getBiome(vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ(), seed);
     }
@@ -58,7 +58,7 @@ public interface BiomeProvider {
      *
      * @return Biome at the location
      */
-    @Contract(pure = true)
+    @Pure
     default Biome getBiome(Vector3Int vector3, long seed) {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
@@ -83,10 +83,10 @@ public interface BiomeProvider {
      *
      * @return {@link Iterable} of all biomes this provider can generate.
      */
-    @Contract(pure = true)
+    @Pure
     Iterable<Biome> getBiomes();
     
-    @Contract(pure = true)
+    @Pure
     default Stream<Biome> stream() {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }

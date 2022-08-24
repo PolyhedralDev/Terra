@@ -22,7 +22,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
@@ -34,7 +34,7 @@ public class MinecraftWorldHandle implements WorldHandle {
     private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
     
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
+    public @NonNull BlockState createBlockState(@NonNull String data) {
         try {
             net.minecraft.block.BlockState state = BlockArgumentParser.block(Registry.BLOCK, data, true).blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
@@ -45,12 +45,12 @@ public class MinecraftWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState air() {
+    public @NonNull BlockState air() {
         return AIR;
     }
     
     @Override
-    public @NotNull EntityType getEntity(@NotNull String id) {
+    public @NonNull EntityType getEntity(@NonNull String id) {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
         return (EntityType) Registry.ENTITY_TYPE.get(identifier);

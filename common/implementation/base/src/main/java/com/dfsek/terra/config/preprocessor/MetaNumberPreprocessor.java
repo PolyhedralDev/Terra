@@ -24,7 +24,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
+    public @NonNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(t.getType() instanceof Class && isNumber((Class<?>) t.getType()) && c instanceof String) {
             String expression = (String) loader.loadType(META_STRING_KEY.getAnnotatedType(), c, depthTracker);
             try {

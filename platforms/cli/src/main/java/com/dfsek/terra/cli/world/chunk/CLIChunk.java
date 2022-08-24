@@ -1,6 +1,6 @@
 package com.dfsek.terra.cli.world.chunk;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
@@ -41,7 +41,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
     }
     
     @Override
-    public @NotNull CLIBlockState getBlock(int x, int y, int z) {
+    public @NonNull CLIBlockState getBlock(int x, int y, int z) {
         CLIBlockState blockState = blocks[x][z][y - minHeight];
         if(blockState == null) return getAIR();
         return blockState;

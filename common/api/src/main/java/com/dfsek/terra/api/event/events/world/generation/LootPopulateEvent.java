@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.event.events.world.generation;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -66,7 +66,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent 
      *
      * @param table New loot table.
      */
-    public void setTable(@NotNull LootTable table) {
+    public void setTable(@NonNull LootTable table) {
         this.table = table;
     }
     

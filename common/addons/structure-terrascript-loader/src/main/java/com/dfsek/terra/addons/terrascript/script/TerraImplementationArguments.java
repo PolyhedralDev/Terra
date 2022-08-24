@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.terrascript.script;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.api.util.Rotation;

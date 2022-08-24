@@ -22,8 +22,8 @@ import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,24 +58,24 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     }
     
     @Override
-    public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
+    public @Nullable BiomeProvider getDefaultBiomeProvider(@NonNull WorldInfo worldInfo) {
         return new BukkitBiomeProvider(pack.getBiomeProvider());
     }
     
     @Override
-    public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull RandomGenerator random, int x, int z, @NotNull ChunkData chunkData) {
+    public void generateNoise(@NonNull WorldInfo worldInfo, @NonNull RandomGenerator random, int x, int z, @NonNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
         delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }
     
     @Override
-    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
+    public @NonNull List<BlockPopulator> getDefaultPopulators(@NonNull World world) {
         return pack.getStages()
                    .stream()
                    .map(generationStage -> new BlockPopulator() {
                        @Override
-                       public void populate(@NotNull WorldInfo worldInfo, @NotNull RandomGenerator random, int x, int z,
-                                            @NotNull LimitedRegion limitedRegion) {
+                       public void populate(@NonNull WorldInfo worldInfo, @NonNull RandomGenerator random, int x, int z,
+                                            @NonNull LimitedRegion limitedRegion) {
                            generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider()));
                        }
                    })

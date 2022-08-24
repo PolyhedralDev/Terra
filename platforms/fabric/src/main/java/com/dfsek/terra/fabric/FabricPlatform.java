@@ -18,7 +18,7 @@
 package com.dfsek.terra.fabric;
 
 import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.util.Collection;
@@ -38,12 +38,12 @@ public class FabricPlatform extends LifecyclePlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "Fabric";
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
     }
     

@@ -22,10 +22,9 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.gen.WorldPreset;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.AbstractPlatform;
@@ -111,12 +110,12 @@ public abstract class ModPlatform extends AbstractPlatform {
     protected abstract BaseAddon getPlatformAddon();
     
     @Override
-    public @NotNull WorldHandle getWorldHandle() {
+    public @NonNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
     
     @Override
-    public @NotNull ItemHandle getItemHandle() {
+    public @NonNull ItemHandle getItemHandle() {
         return itemHandle;
     }
 }

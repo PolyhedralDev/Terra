@@ -19,7 +19,7 @@ package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
 
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -40,11 +40,11 @@ public abstract class SignBlockEntityMixin {
     @Shadow
     public abstract void setTextOnRow(int row, Text text);
     
-    public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
+    public void terra$setLine(int index, @NonNull String line) throws IndexOutOfBoundsException {
         setTextOnRow(index, Text.literal(line));
     }
     
-    public @NotNull String[] terra$getLines() {
+    public @NonNull String[] terra$getLines() {
         String[] lines = new String[texts.length];
         for(int i = 0; i < texts.length; i++) {
             lines[i] = texts[i].getString();
@@ -52,7 +52,7 @@ public abstract class SignBlockEntityMixin {
         return lines;
     }
     
-    public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
+    public @NonNull String terra$getLine(int index) throws IndexOutOfBoundsException {
         return texts[index].getString();
     }
     

@@ -1,6 +1,6 @@
 package com.dfsek.terra.cli.handle;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
@@ -16,17 +16,17 @@ public class CLIWorldHandle implements WorldHandle {
     }
     
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
+    public @NonNull BlockState createBlockState(@NonNull String data) {
         return new CLIBlockState(data);
     }
     
     @Override
-    public @NotNull BlockState air() {
+    public @NonNull BlockState air() {
         return AIR;
     }
     
     @Override
-    public @NotNull EntityType getEntity(@NotNull String id) {
+    public @NonNull EntityType getEntity(@NonNull String id) {
         return null;
     }
 }

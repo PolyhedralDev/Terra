@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.api.block.entity;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 
 public interface Sign extends BlockEntity {
-    void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException;
+    void setLine(int index, @NonNull String line) throws IndexOutOfBoundsException;
     
-    @NotNull String[] getLines();
+    @NonNull String[] getLines();
     
-    @NotNull String getLine(int index) throws IndexOutOfBoundsException;
+    @NonNull String getLine(int index) throws IndexOutOfBoundsException;
 }

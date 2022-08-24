@@ -21,7 +21,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedParameterizedType;
 import java.lang.reflect.AnnotatedType;
@@ -35,7 +35,7 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 @SuppressWarnings("unchecked")
 public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollection<Object>> {
     @Override
-    public ProbabilityCollection<Object> load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader,
+    public ProbabilityCollection<Object> load(@NonNull AnnotatedType type, @NonNull Object o, @NonNull ConfigLoader configLoader,
                                               DepthTracker depthTracker) throws LoadException {
         ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
         

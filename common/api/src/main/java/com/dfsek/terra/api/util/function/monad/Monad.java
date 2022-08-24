@@ -1,8 +1,8 @@
 package com.dfsek.terra.api.util.function.monad;
 
-import com.dfsek.terra.api.util.function.functor.Functor;
-
 import java.util.function.Function;
+
+import com.dfsek.terra.api.util.function.functor.Functor;
 
 
 public interface Monad<T, M extends Monad<?, M>> extends Functor<T, M> {

@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.util.reflection;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 
 public final class ReflectionUtil {
-    public static Field[] getFields(@NotNull Class<?> type) {
+    public static Field[] getFields(@NonNull Class<?> type) {
         Field[] result = type.getDeclaredFields();
         Class<?> parentClass = type.getSuperclass();
         if(parentClass != null) {
@@ -35,7 +35,7 @@ public final class ReflectionUtil {
         return result;
     }
     
-    public static Method[] getMethods(@NotNull Class<?> type) {
+    public static Method[] getMethods(@NonNull Class<?> type) {
         Method[] result = type.getDeclaredMethods();
         Class<?> parentClass = type.getSuperclass();
         if(parentClass != null) {

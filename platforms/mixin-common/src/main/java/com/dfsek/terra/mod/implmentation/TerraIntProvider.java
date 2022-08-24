@@ -1,15 +1,14 @@
 package com.dfsek.terra.mod.implmentation;
 
-import com.dfsek.terra.api.util.Range;
-
-import com.dfsek.terra.mod.util.MinecraftAdapter;
-
 import net.minecraft.util.math.intprovider.IntProvider;
 import net.minecraft.util.math.intprovider.IntProviderType;
 import net.minecraft.util.math.random.Random;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.mod.util.MinecraftAdapter;
 
 
 public class TerraIntProvider extends IntProvider {

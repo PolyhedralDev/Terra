@@ -43,22 +43,22 @@ public class PlatformImpl extends AbstractPlatform {
     }
     
     @Override
-    public @NotNull String platformName() {
+    public @NonNull String platformName() {
         return "Sponge";
     }
     
     @Override
-    public @NotNull WorldHandle getWorldHandle() {
+    public @NonNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
     
     @Override
-    public @NotNull File getDataFolder() {
+    public @NonNull File getDataFolder() {
         return Sponge.configManager().pluginConfig(plugin.getPluginContainer()).directory().toFile();
     }
     
     @Override
-    public @NotNull ItemHandle getItemHandle() {
+    public @NonNull ItemHandle getItemHandle() {
         return null;
     }
 }

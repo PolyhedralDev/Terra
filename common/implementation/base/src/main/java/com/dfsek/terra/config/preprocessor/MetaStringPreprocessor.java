@@ -23,7 +23,7 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
 import org.apache.commons.text.StringSubstitutor;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
@@ -38,7 +38,7 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
+    public @NonNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(String.class.equals(t.getType()) && c instanceof String candidate) { // String is final so we use #equals
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
                 Object meta = getMetaValue(key, depthTracker).getRight();

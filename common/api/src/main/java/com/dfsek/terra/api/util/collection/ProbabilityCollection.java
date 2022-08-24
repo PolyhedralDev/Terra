@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.util.collection;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -108,22 +108,22 @@ public class ProbabilityCollection<E> implements Collection<E> {
         return cont.containsKey(o);
     }
     
-    @NotNull
+    @NonNull
     @Override
     public Iterator<E> iterator() {
         return cont.keySet().iterator();
     }
     
-    @NotNull
+    @NonNull
     @Override
-    public Object @NotNull [] toArray() {
+    public Object @NonNull [] toArray() {
         return cont.keySet().toArray();
     }
     
     @SuppressWarnings("SuspiciousToArrayCall")
-    @NotNull
+    @NonNull
     @Override
-    public <T> T @NotNull [] toArray(@NotNull T @NotNull [] a) {
+    public <T> T @NonNull [] toArray(@NonNull T @NonNull [] a) {
         return cont.keySet().toArray(a);
     }
     
@@ -142,23 +142,23 @@ public class ProbabilityCollection<E> implements Collection<E> {
     }
     
     @Override
-    public boolean containsAll(@NotNull Collection<?> c) {
+    public boolean containsAll(@NonNull Collection<?> c) {
         return cont.keySet().containsAll(c);
     }
     
     @Override
-    public boolean addAll(@NotNull Collection<? extends E> c) {
+    public boolean addAll(@NonNull Collection<? extends E> c) {
         c.forEach(this::add);
         return true;
     }
     
     @Override
-    public boolean removeAll(@NotNull Collection<?> c) {
+    public boolean removeAll(@NonNull Collection<?> c) {
         throw new UnsupportedOperationException("Cannot remove item from ProbabilityCollection!");
     }
     
     @Override
-    public boolean retainAll(@NotNull Collection<?> c) {
+    public boolean retainAll(@NonNull Collection<?> c) {
         throw new UnsupportedOperationException("Cannot remove item from ProbabilityCollection!");
     }
     

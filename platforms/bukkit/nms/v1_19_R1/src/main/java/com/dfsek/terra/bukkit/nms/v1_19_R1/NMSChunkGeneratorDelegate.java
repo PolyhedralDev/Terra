@@ -27,7 +27,7 @@ import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureSet.StructureSelectionEntry;
 import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
 import org.bukkit.craftbukkit.v1_19_R1.block.data.CraftBlockData;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,30 +67,30 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    protected @NotNull Codec<? extends ChunkGenerator> codec() {
+    protected @NonNull Codec<? extends ChunkGenerator> codec() {
         return ChunkGenerator.CODEC;
     }
     
     @Override
-    public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull RandomState noiseConfig, @NotNull BiomeManager world,
-                             @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk, @NotNull Carving carverStep) {
+    public void applyCarvers(@NonNull WorldGenRegion chunkRegion, long seed, @NonNull RandomState noiseConfig, @NonNull BiomeManager world,
+                             @NonNull StructureManager structureAccessor, @NonNull ChunkAccess chunk, @NonNull Carving carverStep) {
         // no-op
     }
     
     @Override
-    public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures, @NotNull RandomState noiseConfig,
-                             @NotNull ChunkAccess chunk) {
+    public void buildSurface(@NonNull WorldGenRegion region, @NonNull StructureManager structures, @NonNull RandomState noiseConfig,
+                             @NonNull ChunkAccess chunk) {
         // no-op
     }
     
     @Override
-    public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk,
-                                     @NotNull StructureManager structureAccessor) {
+    public void applyBiomeDecoration(@NonNull WorldGenLevel world, @NonNull ChunkAccess chunk,
+                                     @NonNull StructureManager structureAccessor) {
         vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
     
     @Override
-    public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
+    public void spawnOriginalMobs(@NonNull WorldGenRegion region) {
         vanilla.spawnOriginalMobs(region);
     }
     
@@ -100,9 +100,9 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
-                                                                 @NotNull RandomState noiseConfig,
-                                                                 @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
+    public @NonNull CompletableFuture<ChunkAccess> fillFromNoise(@NonNull Executor executor, @NonNull Blender blender,
+                                                                 @NonNull RandomState noiseConfig,
+                                                                 @NonNull StructureManager structureAccessor, @NonNull ChunkAccess chunk) {
         return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk);
     }
     
@@ -117,7 +117,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public int getBaseHeight(int x, int z, @NotNull Types heightmap, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
+    public int getBaseHeight(int x, int z, @NonNull Types heightmap, @NonNull LevelHeightAccessor world, @NonNull RandomState noiseConfig) {
         WorldProperties properties = new NMSWorldProperties(seed, world);
         int y = properties.getMaxHeight();
         BiomeProvider biomeProvider = pack.getBiomeProvider();
@@ -129,7 +129,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
+    public @NonNull NoiseColumn getBaseColumn(int x, int z, @NonNull LevelHeightAccessor world, @NonNull RandomState noiseConfig) {
         /*
         BlockState[] array = new BlockState[world.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, world);
@@ -145,12 +145,12 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
+    public void addDebugScreenInfo(@NonNull List<String> text, @NonNull RandomState noiseConfig, @NonNull BlockPos pos) {
     
     }
     
     @Override
-    public void ensureStructuresGenerated(@NotNull RandomState noiseConfig) {
+    public void ensureStructuresGenerated(@NonNull RandomState noiseConfig) {
         if(!this.rings) {
             super.ensureStructuresGenerated(noiseConfig);
             this.populateStrongholdData(noiseConfig);
@@ -160,8 +160,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
     
     @Override
-    public List<ChunkPos> getRingPositionsFor(@NotNull ConcentricRingsStructurePlacement structurePlacement,
-                                              @NotNull RandomState noiseConfig) {
+    public List<ChunkPos> getRingPositionsFor(@NonNull ConcentricRingsStructurePlacement structurePlacement,
+                                              @NonNull RandomState noiseConfig) {
         ensureStructuresGenerated(noiseConfig);
         return ringPositions.get(structurePlacement).value();
     }

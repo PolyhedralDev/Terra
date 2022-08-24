@@ -11,7 +11,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.List;
@@ -23,7 +23,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 public class PaletteHolderLoader implements TypeLoader<PaletteHolder> {
     @SuppressWarnings("unchecked")
     @Override
-    public PaletteHolder load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
+    public PaletteHolder load(@NonNull AnnotatedType type, @NonNull Object o, @NonNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
         List<Map<String, Integer>> palette = (List<Map<String, Integer>>) o;
         PaletteHolderBuilder builder = new PaletteHolderBuilder();

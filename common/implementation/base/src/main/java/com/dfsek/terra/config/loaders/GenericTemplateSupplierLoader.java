@@ -23,7 +23,7 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.impl.MapConfiguration;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
@@ -41,7 +41,7 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public T load(@NotNull AnnotatedType t, @NotNull Object c, ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
+    public T load(@NonNull AnnotatedType t, @NonNull Object c, ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
         String type = (String) map.get("type");
         return loader

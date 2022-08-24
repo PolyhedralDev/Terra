@@ -4,7 +4,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 
@@ -21,7 +21,7 @@ public class PipelineBiomeLoader implements TypeLoader<PipelineBiome> {
     }
     
     @Override
-    public PipelineBiome load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
+    public PipelineBiome load(@NonNull AnnotatedType t, @NonNull Object c, @NonNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
         if(c.equals("SELF")) return PipelineBiome.self();
         return biomeRegistry

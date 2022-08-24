@@ -15,7 +15,6 @@ libraries_internal_apache-io = "2.11.0"
 libraries_internal_fastutil = "8.5.8"
 libraries_internal_shadow = "7.1.2"
 libraries_internal_junit-jupiter = "5.9.0"
-libraries_internal_jetbrains-annotations = "23.0.0"
 libraries_internal_asm = "9.3"
 libraries_internal_error-prone = "2.15.0"
 libraries_internal_error-prone-gradle = "2.0.2"
@@ -70,7 +69,6 @@ libraries_internal_fastutil = { module = "it.unimi.dsi:fastutil ", version.ref =
 libraries_internal_shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "libraries_internal_shadow" }
 libraries_internal_junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "libraries_internal_junit_jupiter" }
 libraries_internal_junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "libraries_internal_junit_jupiter" }
-libraries_internal_jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "libraries_internal_jetbrains_annotations" }
 libraries_internal_asm = { module = "org.ow2.asm:asm", version.ref = "libraries_internal_asm" }
 libraries_internal_asm-tree = { module = "org.ow2.asm:asm-tree", version.ref = "libraries_internal_asm" }
 libraries_internal_error-prone = { module = "com.google.errorprone:error_prone_core", version.ref = "libraries_internal_error-prone" }

@@ -18,7 +18,7 @@
 package com.dfsek.terra.bukkit.generator;
 
 import org.bukkit.generator.ChunkGenerator;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
@@ -45,13 +45,13 @@ public class BukkitProtoChunk implements ProtoChunk {
     
     
     @Override
-    public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
+    public void setBlock(int x, int y, int z, @NonNull BlockState blockState) {
         delegate.setBlock(x, y, z, ((BukkitBlockState) blockState).getHandle());
     }
     
     
     @Override
-    public @NotNull BlockState getBlock(int x, int y, int z) {
+    public @NonNull BlockState getBlock(int x, int y, int z) {
         return BukkitBlockState.newInstance(delegate.getBlockData(x, y, z));
     }
 }

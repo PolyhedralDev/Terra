@@ -15,11 +15,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.manifest.impl.config.AddonManifest;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.inject.Injector;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
 

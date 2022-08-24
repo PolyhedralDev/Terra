@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.api;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.dataflow.qual.Pure;
 
 import java.io.File;
 
@@ -30,8 +30,8 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 public interface Platform extends LoaderRegistrar {
     boolean reload();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     String platformName();
     
     /**
@@ -41,44 +41,44 @@ public interface Platform extends LoaderRegistrar {
      *
      * @param task Task to be run.
      */
-    default void runPossiblyUnsafeTask(@NotNull Runnable task) {
+    default void runPossiblyUnsafeTask(@NonNull Runnable task) {
         task.run();
     }
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     WorldHandle getWorldHandle();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     PluginConfig getTerraConfig();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     File getDataFolder();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     CheckedRegistry<ConfigPack> getConfigRegistry();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     Registry<BaseAddon> getAddons();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     ItemHandle getItemHandle();
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     EventManager getEventManager();
     
-    @Contract(pure = true)
-    default @NotNull String getVersion() {
+    @Pure
+    default @NonNull String getVersion() {
         return "@VERSION@";
     }
     
-    @NotNull
-    @Contract(pure = true)
+    @NonNull
+    @Pure
     Profiler getProfiler();
 }

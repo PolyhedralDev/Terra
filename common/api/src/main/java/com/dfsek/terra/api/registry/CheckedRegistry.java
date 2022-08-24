@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.api.registry;
 
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.key.Keyed;
@@ -23,10 +23,10 @@ public interface CheckedRegistry<T> extends Registry<T> {
      *
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
-    void register(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException;
+    void register(@NonNull RegistryKey identifier, @NonNull T value) throws DuplicateEntryException;
     
     @SuppressWarnings("unchecked")
-    default void register(@NotNull Keyed<? extends T> value) throws DuplicateEntryException {
+    default void register(@NonNull Keyed<? extends T> value) throws DuplicateEntryException {
         register(value.getRegistryKey(), (T) value);
     }
 }

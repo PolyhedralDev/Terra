@@ -4,7 +4,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class ShortcutHolder<T> implements TypeLoader<T> {
     }
     
     @Override
-    public T load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
+    public T load(@NonNull AnnotatedType annotatedType, @NonNull Object o, @NonNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
         String id = (String) o;
         if(id.contains(":")) {

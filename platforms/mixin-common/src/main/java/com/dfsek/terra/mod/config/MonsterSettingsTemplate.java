@@ -2,15 +2,12 @@ package com.dfsek.terra.mod.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import net.minecraft.world.dimension.DimensionType.MonsterSettings;
 
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
-
 import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-
-import net.minecraft.world.dimension.DimensionType.MonsterSettings;
 
 
 public class MonsterSettingsTemplate implements ObjectTemplate<MonsterSettings> {

@@ -1,9 +1,5 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
-
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
@@ -13,6 +9,9 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 
 import java.util.OptionalLong;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 
 public class DimensionUtil {

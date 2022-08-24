@@ -19,7 +19,7 @@ package com.dfsek.terra.bukkit.handles;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Locale;
 
@@ -38,19 +38,19 @@ public class BukkitWorldHandle implements WorldHandle {
     }
     
     @Override
-    public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+    public synchronized @NonNull BlockState createBlockState(@NonNull String data) {
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
                 data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
     }
     
     @Override
-    public @NotNull BlockState air() {
+    public @NonNull BlockState air() {
         return air;
     }
     
     @Override
-    public @NotNull EntityType getEntity(@NotNull String id) {
+    public @NonNull EntityType getEntity(@NonNull String id) {
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
     }

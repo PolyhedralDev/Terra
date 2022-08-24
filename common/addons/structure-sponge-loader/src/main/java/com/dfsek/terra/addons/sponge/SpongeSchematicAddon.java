@@ -7,13 +7,6 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
-import com.dfsek.terra.addons.manifest.api.monad.Do;
-import com.dfsek.terra.addons.manifest.api.monad.Get;
-import com.dfsek.terra.addons.manifest.api.monad.Init;
-
-import com.dfsek.terra.api.util.function.monad.Monad;
-
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -27,15 +20,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
+import com.dfsek.terra.api.util.function.monad.Monad;
 
 
 public class SpongeSchematicAddon implements MonadAddonInitializer {
