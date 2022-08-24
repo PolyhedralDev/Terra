@@ -2,6 +2,7 @@ import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 import org.apache.tools.ant.filters.ReplaceTokens
+import org.checkerframework.gradle.plugin.CheckerFrameworkExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
@@ -24,6 +25,7 @@ fun Project.configureCompilation() {
     apply<TectonicDocPlugin>()
     apply(plugin = "net.ltgt.errorprone")
     apply(plugin = "net.ltgt.nullaway")
+    apply(plugin = "org.checkerframework")
     
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -33,11 +35,28 @@ fun Project.configureCompilation() {
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
         doFirst {
-            options.compilerArgs.add("-Xlint:all")
+            options.compilerArgs.add("-Xlint:all,-serial,-processing")
         }
         options.errorprone.nullaway {
             annotatedPackages.add("com.dfsek.terra")
         }
+    }
+    
+    configure<CheckerFrameworkExtension> {
+        checkers = listOf(
+            "org.checkerframework.checker.nullness.NullnessChecker",
+            "org.checkerframework.checker.units.UnitsChecker",
+            "org.checkerframework.checker.resourceleak.ResourceLeakChecker",
+            "org.checkerframework.checker.lock.LockChecker",
+            "org.checkerframework.checker.index.IndexChecker",
+            "org.checkerframework.checker.formatter.FormatterChecker",
+            "org.checkerframework.checker.optional.OptionalChecker",
+            "org.checkerframework.checker.signature.SignatureChecker",
+            "org.checkerframework.framework.util.PurityChecker",
+            "org.checkerframework.common.value.ValueChecker",
+            "org.checkerframework.common.initializedfields.InitializedFieldsChecker",
+            "org.checkerframework.common.aliasing.AliasingChecker"
+                         )
     }
     
     tasks.withType<ProcessResources> {

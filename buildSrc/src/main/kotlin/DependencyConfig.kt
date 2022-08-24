@@ -5,8 +5,6 @@ import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.getting
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
-import org.gradle.api.artifacts.VersionCatalog
-import org.gradle.kotlin.dsl.apply
 
 fun Project.configureDependencies() {
     val testImplementation by configurations.getting
@@ -33,7 +31,6 @@ fun Project.configureDependencies() {
     
     repositories {
         mavenCentral()
-        gradlePluginPortal()
         maven("https://maven.fabricmc.net/") {
             name = "FabricMC"
         }
@@ -55,17 +52,20 @@ fun Project.configureDependencies() {
         maven("https://api.modrinth.com/maven") {
             name = "Modrinth"
         }
+        //gradlePluginPortal()
     }
     
     dependencies {
         testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.api").get())
         testImplementation(libs.findLibrary("libraries.internal.junit.jupiter.engine").get())
         compileOnly(libs.findLibrary("libraries.internal.jetbrains.annotations").get())
-    
+        
         compileOnly(libs.findLibrary("libraries.guava").get())
         testImplementation(libs.findLibrary("libraries.guava").get())
-    
+        
+        "errorprone"(libs.findLibrary("libraries.internal.jetbrains.annotations").get())
         "errorprone"(libs.findLibrary("libraries_internal_error-prone").get())
         "errorprone"(libs.findLibrary("libraries_internal_nullaway").get())
+        "errorprone"(libs.findLibrary("libraries_internal_guava-gradle").get())
     }
 }

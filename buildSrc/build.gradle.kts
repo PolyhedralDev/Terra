@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.libraries.internal.shadow)
     implementation(libs.libraries.internal.error.prone.gradle)
     implementation(libs.libraries.internal.nullaway.gradle)
+    implementation(libs.libraries.internal.checker.framework.gradle)
     
     implementation(libs.libraries.internal.asm)
     implementation(libs.libraries.internal.asm.tree)

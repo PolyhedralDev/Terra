@@ -17,6 +17,12 @@ dependencies {
     "developmentForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionForge")) { isTransitive = false }
     
+    compileOnly(libs.mod.mixin)
+    compileOnly(libs.mod.fabric.fabric.loader)
+    
+    errorprone(libs.mod.mixin)
+    errorprone(libs.mod.fabric.fabric.loader)
+    
     forge(libs.mod.forge.forge)
     
     minecraft(libs.mod.minecraft)

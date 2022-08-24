@@ -15,7 +15,11 @@ loom {
 dependencies {
     shadedApi(project(":common:implementation:base"))
     
-    modImplementation(libs.mod.fabric.fabric.loader)
+    compileOnly(libs.mod.mixin)
+    compileOnly(libs.mod.fabric.fabric.loader)
+    
+    errorprone(libs.mod.mixin)
+    errorprone(libs.mod.fabric.fabric.loader)
     
     minecraft(libs.mod.minecraft)
     mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")

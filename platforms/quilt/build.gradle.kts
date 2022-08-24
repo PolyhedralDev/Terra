@@ -20,6 +20,12 @@ dependencies {
     "developmentQuilt"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionQuilt")) { isTransitive = false }
     
+    compileOnly(libs.mod.mixin)
+    compileOnly(libs.mod.fabric.fabric.loader)
+    
+    errorprone(libs.mod.mixin)
+    errorprone(libs.mod.fabric.fabric.loader)
+    
     minecraft(libs.mod.minecraft)
     mappings("net.fabricmc", "yarn", libs.versions.mod.yarn.get(), classifier = "v2")
     
