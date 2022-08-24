@@ -33,6 +33,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotio
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractalTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearMapNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
@@ -91,6 +92,7 @@ public class NoiseAddon implements MonadAddonInitializer {
                                                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
     
                                                   noiseRegistry.register(base.key("LINEAR"), LinearNormalizerTemplate::new);
+                                                  noiseRegistry.register(base.key("LINEAR_MAP"), LinearMapNormalizerTemplate::new);
                                                   noiseRegistry.register(base.key("NORMAL"), NormalNormalizerTemplate::new);
                                                   noiseRegistry.register(base.key("CLAMP"), ClampNormalizerTemplate::new);
                                                   noiseRegistry.register(base.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
