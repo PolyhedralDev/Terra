@@ -43,7 +43,7 @@ assignees: ""
   is Terra that is causing the issue.
 - [ ] I have checked that this is an issue with Terra and not an issue with the
   pack I am using.
-  <!-- If this is an issue with the default Terra pack, please open an issue on the pack repo: https://github.com/PolyhedralDev/TerraDefaultConfig/issues/new -->
+  <!-- If this is an issue with the default Terra pack, please open an issue on the pack repo: https://github.com/PolyhedralDev/TerraOverworldConfig/issues/new -->
 - [ ] I have attached a copy of the `latest.log` file
 - [ ] I have filled out and provided all the appropriate information.
 
