@@ -40,12 +40,18 @@ public class BiomeUtil {
         logger.info("Terra biomes registered.");
     }
     
+    public static RegistryKey<net.minecraft.world.biome.Biome> registerKey(Identifier identifier) {
+        return RegistryKey.of(Registry.BIOME_KEY, identifier);
+    }
+    
     protected static RegistryKey<net.minecraft.world.biome.Biome> registerBiome(Identifier identifier,
                                                                                 net.minecraft.world.biome.Biome biome) {
-        BuiltinRegistries.add(BuiltinRegistries.BIOME,
-                              MinecraftUtil.registerKey(identifier)
-                                           .getValue(),
-                              biome);
+        RegistryKey key = registerKey(identifier);
+        if(!BuiltinRegistries.BIOME.contains(key)) {
+            BuiltinRegistries.add(BuiltinRegistries.BIOME,
+                                  key.getValue(),
+                                  biome);
+        }
         return getBiomeKey(identifier);
     }
     
@@ -62,11 +68,7 @@ public class BiomeUtil {
     protected static void registerBiome(Biome biome, ConfigPack pack,
                                         com.dfsek.terra.api.registry.key.RegistryKey id) {
         VanillaBiomeProperties vanillaBiomeProperties;
-        if (biome.getContext().has(VanillaBiomeProperties.class)) {
-            vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-        } else {
-            vanillaBiomeProperties = new VanillaBiomeProperties();
-        }
+        vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
         
         net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(vanillaBiomeProperties);

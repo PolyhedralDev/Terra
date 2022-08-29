@@ -74,6 +74,7 @@ mod_lazy-dfu = { module = "maven.modrinth:lazydfu", version.ref = "mod_lazy-dfu"
 mod_cloud-fabric = { module = "cloud.commandframework:cloud-fabric", version.ref = "libraries_cloud" }
 
 mod_fabric_fabric-loader = { module = "net.fabricmc:fabric-loader", version.ref = "mod_fabric_fabric-loader" }
+mod_fabric_fabric-api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "mod_fabric_fabric-api" }
 
 mod_quilt_quilt-loader = { module = "org.quiltmc:quilt-loader", version.ref = "mod_quilt_quilt-loader" }
 mod_quilt_fabric-api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "mod_quilt_fabric-api" }
