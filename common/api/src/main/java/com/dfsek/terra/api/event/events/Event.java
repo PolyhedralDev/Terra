@@ -7,8 +7,11 @@
 
 package com.dfsek.terra.api.event.events;
 
+import com.dfsek.terra.api.util.function.monad.Monad;
+
+
 /**
  * An event that addons may listen to.
  */
-public interface Event {
+public interface Event<T> extends Monad<T, Event<?>> {
 }

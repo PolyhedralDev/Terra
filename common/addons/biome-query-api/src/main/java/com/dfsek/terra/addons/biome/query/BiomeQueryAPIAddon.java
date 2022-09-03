@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.biome.query;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 
 import com.dfsek.terra.addons.biome.query.impl.BiomeTagFlattener;
@@ -14,8 +16,6 @@ import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.function.monad.Monad;
 import com.dfsek.terra.api.world.biome.Biome;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class BiomeQueryAPIAddon implements MonadAddonInitializer {

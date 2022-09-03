@@ -26,7 +26,6 @@ import java.util.function.Consumer;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.Event;
-import com.dfsek.terra.api.event.events.FailThroughEvent;
 import com.dfsek.terra.api.event.functional.EventContext;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
