@@ -315,18 +315,15 @@ Terra has a global moderation team which is currently comprised of the following
 members:
 
 - solonovamax
-  -
-  discord: [@solonovamax#6983](https://discord.com/channels/@me/566146322273402881)*
+    - discord: [@solonovamax#6983](https://discord.com/channels/@me/566146322273402881)*
     - github: [@solonovamax](https://github.com/solonovamax)
     - email: [solonovamax@12oclockpoint.com](mailto:solonovamax@12oclockpoint.com)
 - dfsek
-  -
-  discord: [@dfsek#4208](https://discord.com/channels/@me/378350362236682240)*
+    - discord: [@dfsek#4208](https://discord.com/channels/@me/378350362236682240)*
     - github: [@dfsek](https://github.com/dfsek)
     - email: [dfsek@protonmail.com](mailto:dfsek@protonmail.com)
 - duplex (duplexsystem)
-  -
-  discord: [@Duplex#0797](https://discord.com/channels/@me/356822848641171456)*
+    - discord: [@Duplex#0797](https://discord.com/channels/@me/356822848641171456)*
     - github: [@duplexsystem](https://github.com/duplexsystem)
     - email: [duplexsys@protonmail.com](mailto:duplexsys@protonmail.com)
 
