@@ -399,25 +399,15 @@ issue on this github repo, or contact a member of the global moderation team.
 This set of guidelines is distributed under a
 [Creative Commons Attribution-ShareAlike license](https://creativecommons.org/licenses/by-sa/3.0/).
 
-These guidelines have been adapted from
-[Mozilla's Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/),
-which were adapted from:
+These guidelines have been adapted with modifications from the following sources:
 
-- Mozilla's original Community Participation Guidelines
+- [Mozilla's Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
 - The [Ubuntu Code of Conduct](https://ubuntu.com/community/code-of-conduct)
 - Mozilla's [View Source Conference Code of Conduct](https://viewsourceconf.org/berlin-2016/code-of-conduct/)
 - The [Rust Language Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct)
-
-which in turn were based on
-[Stumptown Syndicate's Citizen Code of Conduct](http://citizencodeofconduct.org/),
-along with some adapted text from the
-[LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html)
-and the
-[WisCon code of conduct](http://wiscon.net/policies/anti-harassment/code-of-conduct/).
-
-It was then modified by solonovamax with various inclusions from the
-[LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html)
-and several other sources.
+- The [Stumptown Syndicate's Citizen Code of Conduct](http://citizencodeofconduct.org/)
+- The [LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html)
+- The [WisCon code of conduct](http://wiscon.net/policies/anti-harassment/code-of-conduct/)
 
 ## Notes
 
