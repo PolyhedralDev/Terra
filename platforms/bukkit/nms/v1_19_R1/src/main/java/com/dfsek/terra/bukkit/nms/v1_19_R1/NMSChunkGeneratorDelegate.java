@@ -1,5 +1,9 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
+import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
+
+import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
+
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -10,14 +14,21 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.Beardifier;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunction.FunctionContext;
+import net.minecraft.world.level.levelgen.DensityFunction.SinglePointContext;
 import net.minecraft.world.level.levelgen.GenerationStep.Carving;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -103,7 +114,43 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
                                                                  @NotNull RandomState noiseConfig,
                                                                  @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
-        return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk);
+        return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk)
+                .thenApply(c -> {
+                    LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
+                    BiomeProvider biomeProvider = pack.getBiomeProvider();
+                    PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
+                    if(compatibilityOptions.isBeard()) {
+                        beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()), biomeProvider, compatibilityOptions);
+                    }
+                    return c;
+                });
+    }
+    
+    private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
+                       PreLoadCompatibilityOptions compatibilityOptions) {
+        Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor, chunk.getPos());
+        double threshold = compatibilityOptions.getBeardThreshold();
+        double airThreshold = compatibilityOptions.getAirThreshold();
+        int xi = chunk.getPos().x << 4;
+        int zi = chunk.getPos().z << 4;
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                int depth = 0;
+                for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
+                    double noise = structureWeightSampler.compute(new SinglePointContext(x + xi, y, z + zi));
+                    if(noise > threshold) {
+                        chunk.setBlockState(new BlockPos(x, y, z), (BlockState) delegate
+                                .getPalette(x + xi, y, z + zi, world, biomeProvider)
+                                .get(depth, x + xi, y, z + zi, world.getSeed()), false);
+                        depth++;
+                    } else if(noise < airThreshold) {
+                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), false);
+                    } else {
+                        depth = 0;
+                    }
+                }
+            }
+        }
     }
     
     @Override
