@@ -52,7 +52,12 @@ public class BukkitWorldHandle implements WorldHandle {
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
-        return new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
+        String entityID = id.toUpperCase(Locale.ROOT).substring(10);
+        
+        return new BukkitEntityType(switch(entityID) {
+            case "END_CRYSTAL" -> org.bukkit.entity.EntityType.ENDER_CRYSTAL;
+            case "ENDER_CRYSTAL" -> throw new IllegalArgumentException("Invalid entity identifier " + id); // make sure this issue can't happen the other way around.
+            default -> org.bukkit.entity.EntityType.valueOf(entityID);
+        });
     }
-    
 }
