@@ -4,6 +4,8 @@ import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
 
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
 
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
+
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -139,9 +141,9 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                 for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
                     double noise = structureWeightSampler.compute(new SinglePointContext(x + xi, y, z + zi));
                     if(noise > threshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), (BlockState) delegate
+                        chunk.setBlockState(new BlockPos(x, y, z), ((CraftBlockData) ((BukkitBlockState) delegate
                                 .getPalette(x + xi, y, z + zi, world, biomeProvider)
-                                .get(depth, x + xi, y, z + zi, world.getSeed()), false);
+                                .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), false);
                         depth++;
                     } else if(noise < airThreshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), false);
