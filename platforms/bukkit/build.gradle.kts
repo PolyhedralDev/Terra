@@ -29,11 +29,11 @@ tasks {
     }
     
     runServer {
-        minecraftVersion("1.19")
+        minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
     }
 }
 
 
-addonDir(project.file("./target/server/paper/plugins/Terra/addons"), tasks.named("runServer").get())
+addonDir(project.file("./run/plugins/Terra/addons"), tasks.named("runServer").get())

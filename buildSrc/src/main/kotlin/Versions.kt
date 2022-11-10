@@ -50,8 +50,9 @@ object Versions {
     object Bukkit {
         const val paper = "1.18.2-R0.1-SNAPSHOT"
         const val paperLib = "1.0.5"
-        const val minecraft = "1.19"
+        const val minecraft = "1.19.2"
         const val reflectionRemapper = "0.1.0-SNAPSHOT"
+        const val paperDevBundle = "1.19.2-R0.1-SNAPSHOT"
     }
     
     object Sponge {
