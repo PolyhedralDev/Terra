@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
@@ -38,6 +40,8 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomePipelineAddon implements AddonInitializer {
+    
+    private static final Logger logger = LoggerFactory.getLogger(BiomePipelineAddon.class);
     
     public static final TypeKey<Supplier<ObjectTemplate<BiomeSource>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {
     };
@@ -85,5 +89,7 @@ public class BiomePipelineAddon implements AddonInitializer {
                     Registry<Biome> biomeRegistry = event.getPack().getRegistry(Biome.class);
                     event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
                 });
+        
+        logger.warn("The biome-provider-pipeline addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-pipeline-2 addon for future pack development instead.");
     }
 }
