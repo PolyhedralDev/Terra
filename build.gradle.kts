@@ -42,6 +42,7 @@ afterEvaluate {
     forImmediateSubProjects(":platforms") {
         configureDistribution()
     }
+    project(":platforms:bukkit:common").configureDistribution()
     forSubProjects(":common:addons") {
         apply(plugin = "com.github.johnrengelman.shadow")
         
