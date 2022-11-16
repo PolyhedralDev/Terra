@@ -1,7 +1,7 @@
 schema-version: 1
 contributors:
   - Terra contributors
-id: biome-provider-pipeline-2
+id: biome-provider-pipeline-v2
 version: @VERSION@
 entrypoints:
   - "com.dfsek.terra.addons.biome.pipeline.v2.BiomePipelineAddon"
