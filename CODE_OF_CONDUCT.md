@@ -315,19 +315,15 @@ Terra has a global moderation team which is currently comprised of the following
 members:
 
 - solonovamax
-  -
-  discord: [@solonovamax#6983](https://discord.com/channels/@me/566146322273402881)*
+    - discord: [@solonovamax#6983](https://discord.com/channels/@me/566146322273402881)*
     - github: [@solonovamax](https://github.com/solonovamax)
-    -
-  email: [solonovamax@12oclockpoint.com](mailto:solonovamax@12oclockpoint.com)
+    - email: [solonovamax@12oclockpoint.com](mailto:solonovamax@12oclockpoint.com)
 - dfsek
-  -
-  discord: [@dfsek#4208](https://discord.com/channels/@me/378350362236682240)*
+    - discord: [@dfsek#4208](https://discord.com/channels/@me/378350362236682240)*
     - github: [@dfsek](https://github.com/dfsek)
     - email: [dfsek@protonmail.com](mailto:dfsek@protonmail.com)
 - duplex (duplexsystem)
-  -
-  discord: [@Duplex#0797](https://discord.com/channels/@me/356822848641171456)*
+    - discord: [@Duplex#0797](https://discord.com/channels/@me/356822848641171456)*
     - github: [@duplexsystem](https://github.com/duplexsystem)
     - email: [duplexsys@protonmail.com](mailto:duplexsys@protonmail.com)
 
@@ -401,32 +397,17 @@ issue on this github repo, or contact a member of the global moderation team.
 ## License and Attribution
 
 This set of guidelines is distributed under a
-[Creative Commons Attribution-ShareAlike license](https://creativecommons.org/licenses/by-sa/3.0/)
-.
+[Creative Commons Attribution-ShareAlike license](https://creativecommons.org/licenses/by-sa/3.0/).
 
-These guidelines have been adapted from
-[Mozilla's Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
-, which were adapted from:
+These guidelines have been adapted with modifications from the following sources:
 
-- Mozilla's original Community Participation Guidelines
+- [Mozilla's Community Participation Guidelines](https://www.mozilla.org/en-US/about/governance/policies/participation/)
 - The [Ubuntu Code of Conduct](https://ubuntu.com/community/code-of-conduct)
--
-
-Mozilla's [View Source Conference Code of Conduct](https://viewsourceconf.org/berlin-2016/code-of-conduct/)
-
-- And
-  the [Rust Language Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct)
-
-which in turn were based
-on [Stumptown Syndicate's Citizen Code of Conduct](http://citizencodeofconduct.org/)
-, along with some adapted text from
-the [LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html) and
-the [WisCon code of conduct](http://wiscon.net/policies/anti-harassment/code-of-conduct/)
-.
-
-It was then modified by solonovamax with various inclusions from
-the [LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html) and
-a few other sources.
+- Mozilla's [View Source Conference Code of Conduct](https://viewsourceconf.org/berlin-2016/code-of-conduct/)
+- The [Rust Language Code of Conduct](https://www.rust-lang.org/policies/code-of-conduct)
+- The [Stumptown Syndicate's Citizen Code of Conduct](http://citizencodeofconduct.org/)
+- The [LGBTQ in Technology Code of Conduct](https://lgbtq.technology/coc.html)
+- The [WisCon code of conduct](http://wiscon.net/policies/anti-harassment/code-of-conduct/)
 
 ## Notes
 
@@ -443,7 +424,6 @@ people are not comfortable
 using [neopronouns](https://www.mypronouns.org/neopronouns). But if someone
 refuses to use your more common pronouns, you should report them to us.
 Additionally, you may not ask people to use unreasonable pronouns, such as '
-acab/acabself', 'that/bitch', 'ur/mom', or
-'dream/dreamself' (pronouns related to real people, eg. the minecraft youtuber '
-dreamwastaken'). Doing so will be considered mockery of individuals who use
+acab/acabself', 'that/bitch', 'ur/mom', or anything else that may be considered
+disrectful. Doing so will be considered mockery of individuals who use
 non-standard pronouns and is very disrespectful.

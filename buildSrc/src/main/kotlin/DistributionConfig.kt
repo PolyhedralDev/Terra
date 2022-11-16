@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import java.io.File
 import java.io.FileWriter
+import java.net.URI
 import java.net.URL
 import java.nio.file.FileSystems
 import java.nio.file.Files
@@ -8,6 +9,7 @@ import java.nio.file.StandardCopyOption
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
+import org.gradle.kotlin.dsl.TaskContainerScope
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
@@ -43,7 +45,7 @@ fun Project.configureDistribution() {
         
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
-            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toPath()
+            val dest = URI.create("jar:" + tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI())
             
             FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
                 forSubProjects(":common:addons") {
@@ -67,7 +69,6 @@ fun Project.configureDistribution() {
     
     val generateResourceManifest = tasks.create("generateResourceManifest") {
         group = "terra"
-        dependsOn(downloadDefaultPacks)
         doLast {
             val resources = HashMap<String, MutableList<String>>()
             val packsDir = File("${project.buildDir}/resources/main/packs/")
@@ -88,8 +89,7 @@ fun Project.configureDistribution() {
                 val jar = getJarTask().archiveFileName.get()
                 resources.computeIfAbsent(
                     if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "addons/bootstrap"
-                    else "addons"
-                                         ) { ArrayList() }.add(jar)
+                    else "addons") { ArrayList() }.add(jar)
             }
             
             val options = DumperOptions()
@@ -105,12 +105,20 @@ fun Project.configureDistribution() {
             val manifest = File("${project.buildDir}/resources/main/resources.yml")
             
             if (manifest.exists()) manifest.delete()
+            manifest.parentFile.mkdirs()
             manifest.createNewFile()
-            yaml.dump(resources, FileWriter(manifest))
+            FileWriter(manifest).use {
+                yaml.dump(resources, it)
+            }
+
         }
     }
     
-    tasks["processResources"].dependsOn(generateResourceManifest)
+    tasks.named("processResources") {
+        generateResourceManifest.mustRunAfter(downloadDefaultPacks)
+        finalizedBy(downloadDefaultPacks)
+        finalizedBy(generateResourceManifest)
+    }
     
     
     tasks.named<ShadowJar>("shadowJar") {
