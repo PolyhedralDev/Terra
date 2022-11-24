@@ -36,35 +36,35 @@ public class ColorUtil {
     public enum Channel {
         RED {
             @Override
-            public int getChannel(int rgb) {
+            public int from(int rgb) {
                 return getRed(rgb);
             }
         },
         GREEN {
             @Override
-            public int getChannel(int rgb) {
+            public int from(int rgb) {
                 return getGreen(rgb);
             }
         },
         BLUE {
             @Override
-            public int getChannel(int rgb) {
+            public int from(int rgb) {
                 return getBlue(rgb);
             }
         },
         GRAYSCALE {
             @Override
-            public int getChannel(int rgb) {
+            public int from(int rgb) {
                 return getGrayscale(rgb);
             }
         },
         ALPHA {
             @Override
-            public int getChannel(int rgb) {
+            public int from(int rgb) {
                 return getAlpha(rgb);
             }
         };
         
-        public abstract int getChannel(int rgb);
+        public abstract int from(int rgb);
     }
 }

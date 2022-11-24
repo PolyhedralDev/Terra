@@ -31,7 +31,7 @@ public class ImageSampler implements NoiseSampler {
     
     @Override
     public double noise(long seed, double x, double y) {
-        return channel.getChannel(colorPicker.apply(image, (int) (x * frequency), (int) (y * frequency))) / 255D * 2 - 1;
+        return channel.from(colorPicker.apply(image, (int) (x * frequency), (int) (y * frequency))) / 255D * 2 - 1;
     }
     
     @Override
