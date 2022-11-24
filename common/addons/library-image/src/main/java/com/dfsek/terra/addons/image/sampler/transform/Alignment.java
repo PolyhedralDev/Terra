@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.image.picker.transform;
+package com.dfsek.terra.addons.image.sampler.transform;
 
 import java.awt.image.BufferedImage;
 

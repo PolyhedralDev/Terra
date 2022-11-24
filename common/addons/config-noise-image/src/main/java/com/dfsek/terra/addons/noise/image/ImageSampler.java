@@ -7,31 +7,27 @@
 
 package com.dfsek.terra.addons.noise.image;
 
-import java.awt.image.BufferedImage;
-
-import com.dfsek.terra.addons.image.picker.ColorPicker;
+import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ImageSampler implements NoiseSampler {
-    private final BufferedImage image;
     private final Channel channel;
     
     private final double frequency;
     
-    private final ColorPicker colorPicker;
+    private final ColorSampler colorSampler;
     
-    public ImageSampler(BufferedImage image, ColorPicker colorPicker, Channel channel, double frequency) {
-        this.image = image;
+    public ImageSampler(ColorSampler colorSampler, Channel channel, double frequency) {
         this.channel = channel;
         this.frequency = frequency;
-        this.colorPicker = colorPicker;
+        this.colorSampler = colorSampler;
     }
     
     @Override
     public double noise(long seed, double x, double y) {
-        return channel.from(colorPicker.apply(image, (int) (x * frequency), (int) (y * frequency))) / 255D * 2 - 1;
+        return channel.from(colorSampler.apply((int) (x * frequency), (int) (y * frequency))) / 255D * 2 - 1;
     }
     
     @Override

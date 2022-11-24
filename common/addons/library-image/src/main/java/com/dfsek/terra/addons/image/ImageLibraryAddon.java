@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.image.config.BufferedImageLoader;
-import com.dfsek.terra.addons.image.config.picker.SingleColorPickerTemplate;
-import com.dfsek.terra.addons.image.config.picker.TileColorPickerTemplate;
-import com.dfsek.terra.addons.image.picker.ColorPicker;
+import com.dfsek.terra.addons.image.config.sampler.SingleColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.TileColorSamplerTemplate;
+import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -21,7 +21,7 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 public class ImageLibraryAddon implements AddonInitializer {
     
-    public static final TypeKey<Supplier<ObjectTemplate<ColorPicker>>> COLOR_PICKER_REGISTRY_KEY = new TypeKey<>() {
+    public static final TypeKey<Supplier<ObjectTemplate<ColorSampler>>> COLOR_PICKER_REGISTRY_KEY = new TypeKey<>() {
     };
     
     @Inject
@@ -40,10 +40,10 @@ public class ImageLibraryAddon implements AddonInitializer {
                     event.getPack().applyLoader(BufferedImage.class, new BufferedImageLoader(event.getPack().getLoader()));
                 })
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorPicker>>> colorPickerRegistry = event.getPack().getOrCreateRegistry(
+                    CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
                             COLOR_PICKER_REGISTRY_KEY);
-                    colorPickerRegistry.register(addon.key("SINGLE"), SingleColorPickerTemplate::new);
-                    colorPickerRegistry.register(addon.key("TILED"), TileColorPickerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("SINGLE"), SingleColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("TILED"), TileColorSamplerTemplate::new);
         });
     }
 }

@@ -12,11 +12,9 @@ import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.awt.image.BufferedImage;
-
 import com.dfsek.terra.addons.biome.image.ImageBiomeProvider;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
-import com.dfsek.terra.addons.image.picker.ColorPicker;
+import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
@@ -30,16 +28,13 @@ public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
     private int resolution = 1;
     
     @Value("image")
-    private BufferedImage image;
-    
-    @Value("mode")
-    private ColorPicker colorPicker;
+    private ColorSampler colorSampler;
     
     @Value("biomes")
     private ColorConverter<Biome> colorConverter;
     
     @Override
     public BiomeProvider get() {
-        return new ImageBiomeProvider(image, colorConverter, colorPicker, resolution);
+        return new ImageBiomeProvider(colorConverter, colorSampler, resolution);
     }
 }

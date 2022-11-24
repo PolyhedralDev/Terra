@@ -1,22 +1,25 @@
-package com.dfsek.terra.addons.image.picker;
+package com.dfsek.terra.addons.image.sampler;
 
 import net.jafama.FastMath;
 
 import java.awt.image.BufferedImage;
 
-import com.dfsek.terra.addons.image.picker.transform.ImageTransformation;
+import com.dfsek.terra.addons.image.sampler.transform.ImageTransformation;
 
 
-public class TileColorPicker implements ColorPicker {
+public class TileColorSampler implements ColorSampler {
+    
+    private final BufferedImage image;
     
     private final ImageTransformation transformation;
     
-    public TileColorPicker(ImageTransformation transformation) {
+    public TileColorSampler(BufferedImage image, ImageTransformation transformation) {
+        this.image = image;
         this.transformation = transformation;
     }
     
     @Override
-    public Integer apply(BufferedImage image, int x, int z) {
+    public Integer apply(int x, int z) {
         x = transformation.transformX(image, x);
         z = transformation.transformZ(image, z);
         return image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(z, image.getHeight()));
