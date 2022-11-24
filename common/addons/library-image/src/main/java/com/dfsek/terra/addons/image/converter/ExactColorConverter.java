@@ -4,22 +4,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.dfsek.terra.addons.image.util.ColorUtil;
+
 
 public class ExactColorConverter<T> implements ColorConverter<T> {
     private final Map<Integer, T> map;
     
     private final T fallback;
     
-    public ExactColorConverter(Map<Integer, T> map, T fallback) {
+    private final boolean ignoreAlpha;
+    
+    public ExactColorConverter(Map<Integer, T> map, T fallback, boolean ignoreAlpha) {
         this.map = map;
         this.fallback = fallback;
+        this.ignoreAlpha = ignoreAlpha;
     }
     
     @Override
     public T apply(Integer color) {
+        if (ignoreAlpha) {
+            color = ColorUtil.zeroAlpha(color);
+        }
         T lookup = map.get(color);
-        if(lookup != null) return lookup;
-        return fallback;
+        return lookup != null ? lookup : fallback;
     }
     
     @Override

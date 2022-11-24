@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.biome.image.config.converter;
 
+import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.image.config.converter.ExactColorConverterTemplate;
@@ -14,6 +15,10 @@ public class ExactBiomeColorConverterTemplate extends ExactColorConverterTemplat
 
     @Value("fallback")
     private Biome fallback;
+    
+    @Value("ignore-alpha")
+    @Default
+    private boolean ignoreAlpha = true;
 
     @Override
     protected ColorMapping<Biome> getMapping() {
@@ -23,5 +28,10 @@ public class ExactBiomeColorConverterTemplate extends ExactColorConverterTemplat
     @Override
     protected Biome getFallback() {
         return fallback;
+    }
+    
+    @Override
+    protected boolean ignoreAlpha() {
+        return ignoreAlpha;
     }
 }

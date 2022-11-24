@@ -11,8 +11,10 @@ public abstract class ExactColorConverterTemplate<T> implements ColorConverterTe
     
     protected abstract T getFallback();
     
+    protected abstract boolean ignoreAlpha();
+    
     @Override
     public ColorConverter<T> get() {
-        return new ExactColorConverter<T>(getMapping().get(), getFallback());
+        return new ExactColorConverter<T>(getMapping().get(), getFallback(), ignoreAlpha());
     }
 }
