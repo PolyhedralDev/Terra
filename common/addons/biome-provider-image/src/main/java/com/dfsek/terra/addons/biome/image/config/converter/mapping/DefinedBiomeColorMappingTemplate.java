@@ -17,6 +17,7 @@ public class DefinedBiomeColorMappingTemplate implements ObjectTemplate<ColorMap
     
     @Override
     public ColorMapping<Biome> get() {
-        return () -> MapUtil.convertKeysToInt(map);
+        var map = MapUtil.mapKeys(this.map, Integer::decode);
+        return () -> map;
     }
 }
