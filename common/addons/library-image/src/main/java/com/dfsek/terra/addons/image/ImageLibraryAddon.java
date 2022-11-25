@@ -5,6 +5,8 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.image.config.ImageLoader;
+import com.dfsek.terra.addons.image.config.sampler.RotateColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.ConstantColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.SingleColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.TileColorSamplerTemplate;
 import com.dfsek.terra.addons.image.image.Image;
@@ -44,6 +46,8 @@ public class ImageLibraryAddon implements AddonInitializer {
                             COLOR_PICKER_REGISTRY_KEY);
                     colorSamplerRegistry.register(addon.key("SINGLE"), SingleColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("TILED"), TileColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
         });
     }
 }
