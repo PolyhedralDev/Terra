@@ -8,13 +8,13 @@ public class SimpleColorSampler implements ColorSampler {
     
     private final Image image;
     
-    private final Integer fallback;
+    private final ColorSampler fallback;
     
     private final ImageTransformation transformation;
     
     public SimpleColorSampler(Image image, ColorSampler fallback, ImageTransformation transformation) {
         this.image = image;
-        this.fallback = fallbackColor;
+        this.fallback = fallback;
         this.transformation = transformation;
     }
     
@@ -22,7 +22,7 @@ public class SimpleColorSampler implements ColorSampler {
     public Integer apply(int x, int z) {
         x = transformation.transformX(image, x);
         z = transformation.transformZ(image, z);
-        if(x < 0 || z < 0 || x >= image.getWidth() || z >= image.getHeight()) return fallback;
+        if(x < 0 || z < 0 || x >= image.getWidth() || z >= image.getHeight()) return fallback.apply(x, z);
         return image.getRGB(x, z);
     }
 }

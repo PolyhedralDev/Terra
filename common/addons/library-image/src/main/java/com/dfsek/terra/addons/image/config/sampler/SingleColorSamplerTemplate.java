@@ -8,7 +8,7 @@ import com.dfsek.terra.addons.image.sampler.SimpleColorSampler;
 
 public class SingleColorSamplerTemplate extends ColorSamplerTemplate {
     @Value("fallback")
-    private int fallback;
+    private ColorSampler fallback;
 
     @Override
     public ColorSampler get() {
