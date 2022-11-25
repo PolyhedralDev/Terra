@@ -44,8 +44,8 @@ public class ImageLibraryAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
                             COLOR_PICKER_REGISTRY_KEY);
-                    colorSamplerRegistry.register(addon.key("SINGLE"), SingleColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("TILED"), TileColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("SINGLE_IMAGE"), SingleColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("TILED_IMAGE"), TileColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
         });
