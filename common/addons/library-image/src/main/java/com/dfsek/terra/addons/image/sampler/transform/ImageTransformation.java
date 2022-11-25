@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.image.sampler.transform;
 
-import java.awt.image.BufferedImage;
+import com.dfsek.terra.addons.image.image.Image;
 
 
 public interface ImageTransformation {
     
-    int transformX(BufferedImage image, int x);
+    int transformX(Image image, int x);
     
-    int transformZ(BufferedImage image, int z);
+    int transformZ(Image image, int z);
 }

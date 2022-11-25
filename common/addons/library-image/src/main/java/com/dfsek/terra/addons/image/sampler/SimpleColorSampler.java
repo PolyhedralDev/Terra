@@ -1,19 +1,18 @@
 package com.dfsek.terra.addons.image.sampler;
 
-import java.awt.image.BufferedImage;
-
+import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.sampler.transform.ImageTransformation;
 
 
 public class SimpleColorSampler implements ColorSampler {
     
-    private final BufferedImage image;
+    private final Image image;
     
     private final Integer fallback;
     
     private final ImageTransformation transformation;
     
-    public SimpleColorSampler(BufferedImage image, int fallbackColor, ImageTransformation transformation) {
+    public SimpleColorSampler(Image image, ColorSampler fallback, ImageTransformation transformation) {
         this.image = image;
         this.fallback = fallbackColor;
         this.transformation = transformation;

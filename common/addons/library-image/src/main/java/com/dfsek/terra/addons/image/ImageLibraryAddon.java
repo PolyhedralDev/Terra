@@ -2,12 +2,12 @@ package com.dfsek.terra.addons.image;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.awt.image.BufferedImage;
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.image.config.BufferedImageLoader;
+import com.dfsek.terra.addons.image.config.ImageLoader;
 import com.dfsek.terra.addons.image.config.sampler.SingleColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.TileColorSamplerTemplate;
+import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -37,7 +37,7 @@ public class ImageLibraryAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(10)
                 .then(event -> {
-                    event.getPack().applyLoader(BufferedImage.class, new BufferedImageLoader(event.getPack().getLoader()));
+                    event.getPack().applyLoader(Image.class, new ImageLoader(event.getPack().getLoader()));
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(

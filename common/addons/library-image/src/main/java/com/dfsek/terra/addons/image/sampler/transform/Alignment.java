@@ -1,29 +1,29 @@
 package com.dfsek.terra.addons.image.sampler.transform;
 
-import java.awt.image.BufferedImage;
+import com.dfsek.terra.addons.image.image.Image;
 
 
 public enum Alignment implements ImageTransformation {
     
     NONE() {
         @Override
-        public int transformX(BufferedImage image, int x) {
+        public int transformX(Image image, int x) {
             return x;
         }
     
         @Override
-        public int transformZ(BufferedImage image, int z) {
+        public int transformZ(Image image, int z) {
             return z;
         }
     },
     CENTER {
         @Override
-        public int transformX(BufferedImage image, int x) {
+        public int transformX(Image image, int x) {
             return x + image.getWidth() / 2;
         }
     
         @Override
-        public int transformZ(BufferedImage image, int z) {
+        public int transformZ(Image image, int z) {
             return z + image.getHeight() / 2;
         }
     };

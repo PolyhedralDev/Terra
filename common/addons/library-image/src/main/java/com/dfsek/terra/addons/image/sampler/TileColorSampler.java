@@ -2,18 +2,17 @@ package com.dfsek.terra.addons.image.sampler;
 
 import net.jafama.FastMath;
 
-import java.awt.image.BufferedImage;
-
+import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.sampler.transform.ImageTransformation;
 
 
 public class TileColorSampler implements ColorSampler {
     
-    private final BufferedImage image;
+    private final Image image;
     
     private final ImageTransformation transformation;
     
-    public TileColorSampler(BufferedImage image, ImageTransformation transformation) {
+    public TileColorSampler(Image image, ImageTransformation transformation) {
         this.image = image;
         this.transformation = transformation;
     }
