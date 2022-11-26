@@ -1,5 +1,6 @@
-package com.dfsek.terra.addons.image.sampler;
+package com.dfsek.terra.addons.image.sampler.mutate;
 
+import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import net.jafama.FastMath;
 
 

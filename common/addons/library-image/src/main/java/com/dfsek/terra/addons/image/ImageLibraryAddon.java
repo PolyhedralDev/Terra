@@ -5,7 +5,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.image.config.ImageLoader;
-import com.dfsek.terra.addons.image.config.sampler.RotateColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.mutate.RotateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.ConstantColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.image.SingleImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.image.TileImageColorSamplerTemplate;
