@@ -7,8 +7,8 @@ import java.util.function.Supplier;
 import com.dfsek.terra.addons.image.config.ImageLoader;
 import com.dfsek.terra.addons.image.config.sampler.RotateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.ConstantColorSamplerTemplate;
-import com.dfsek.terra.addons.image.config.sampler.SingleColorSamplerTemplate;
-import com.dfsek.terra.addons.image.config.sampler.TileColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.image.SingleImageColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.image.TileImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -44,8 +44,8 @@ public class ImageLibraryAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
                             COLOR_PICKER_REGISTRY_KEY);
-                    colorSamplerRegistry.register(addon.key("SINGLE_IMAGE"), SingleColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("TILED_IMAGE"), TileColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("SINGLE_IMAGE"), SingleImageColorSamplerTemplate::new);
+                    colorSamplerRegistry.register(addon.key("TILED_IMAGE"), TileImageColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
         });

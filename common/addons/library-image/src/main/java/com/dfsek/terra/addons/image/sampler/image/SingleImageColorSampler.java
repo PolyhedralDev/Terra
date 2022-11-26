@@ -1,10 +1,11 @@
-package com.dfsek.terra.addons.image.sampler;
+package com.dfsek.terra.addons.image.sampler.image;
 
 import com.dfsek.terra.addons.image.image.Image;
-import com.dfsek.terra.addons.image.sampler.transform.ImageTransformation;
+import com.dfsek.terra.addons.image.sampler.ColorSampler;
+import com.dfsek.terra.addons.image.sampler.image.transform.ImageTransformation;
 
 
-public class SimpleColorSampler implements ColorSampler {
+public class SingleImageColorSampler implements ColorSampler {
     
     private final Image image;
     
@@ -12,7 +13,7 @@ public class SimpleColorSampler implements ColorSampler {
     
     private final ImageTransformation transformation;
     
-    public SimpleColorSampler(Image image, ColorSampler fallback, ImageTransformation transformation) {
+    public SingleImageColorSampler(Image image, ColorSampler fallback, ImageTransformation transformation) {
         this.image = image;
         this.fallback = fallback;
         this.transformation = transformation;
