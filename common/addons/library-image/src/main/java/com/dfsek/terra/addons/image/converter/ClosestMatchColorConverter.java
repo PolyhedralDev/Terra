@@ -20,11 +20,12 @@ public class ClosestMatchColorConverter<T> implements ColorConverter<T> {
         int closest = 0;
         int smallestDistance = Integer.MAX_VALUE;
         for(int compare : colors) {
-            int distance = ColorUtil.distance(color, compare);
-            if(distance == 0) {
+            if(color == compare) {
                 closest = compare;
                 break;
-            } else if(distance < smallestDistance) {
+            }
+            int distance = ColorUtil.distance(color, compare);
+            if(distance < smallestDistance) {
                 smallestDistance = distance;
                 closest = compare;
             }
