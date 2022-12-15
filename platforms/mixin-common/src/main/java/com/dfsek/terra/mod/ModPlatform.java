@@ -5,13 +5,15 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.registry.BuiltinRegistries;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.village.VillagerType;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
@@ -92,9 +94,9 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
     
-    private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
+    private ProtoPlatformBiome parseBiome(DynamicRegistryManager registryManager, String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
+        if(registryManager.get(RegistryKeys.BIOME).get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
     

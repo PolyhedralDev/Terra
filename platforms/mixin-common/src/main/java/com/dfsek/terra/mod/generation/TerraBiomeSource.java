@@ -18,8 +18,9 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import org.slf4j.Logger;
@@ -45,7 +46,7 @@ public class TerraBiomeSource extends BiomeSource {
                       .stream(pack.getBiomeProvider()
                                   .getBiomes()
                                   .spliterator(), false)
-                      .map(b -> biomes.getOrCreateEntry(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate())));
+                      .map(b -> biomes.entryOf(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate())));
         this.biomeRegistry = biomes;
         this.pack = pack;
         
@@ -58,7 +59,7 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
+    public RegistryEntry<Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return biomeRegistry
                 .entryOf(((ProtoPlatformBiome) pack
                                  .getBiomeProvider()

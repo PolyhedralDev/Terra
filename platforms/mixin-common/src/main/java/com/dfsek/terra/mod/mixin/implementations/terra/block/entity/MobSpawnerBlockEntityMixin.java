@@ -23,7 +23,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.MobSpawnerLogic;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
