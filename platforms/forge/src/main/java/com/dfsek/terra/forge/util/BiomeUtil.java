@@ -2,7 +2,7 @@ package com.dfsek.terra.forge.util;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.village.VillagerType;
 import net.minecraftforge.registries.ForgeRegistries;

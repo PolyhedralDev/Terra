@@ -6,7 +6,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.state.State;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;

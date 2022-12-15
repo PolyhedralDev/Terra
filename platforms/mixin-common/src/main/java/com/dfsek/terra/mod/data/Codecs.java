@@ -2,8 +2,9 @@ package com.dfsek.terra.mod.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.RegistryOps;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryOps;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -35,7 +36,7 @@ public final class Codecs {
                                                                                              id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(RegistryOps.createRegistryCodec(Registry.BIOME_KEY)
+            .create(instance -> instance.group(RegistryOps.getEntryCodec(RegistryKeys.BIOME)
                                                           .fieldOf("biome_registry")
                                                           .stable()
                                                           .forGetter(TerraBiomeSource::getBiomeRegistry),
