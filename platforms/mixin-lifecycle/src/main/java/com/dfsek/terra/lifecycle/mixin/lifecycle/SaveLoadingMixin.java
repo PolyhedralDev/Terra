@@ -22,7 +22,7 @@ public class SaveLoadingMixin {
             ),
             index = 0
     )
-    private DynamicRegistryManager redirect(DynamicRegistryManager in) {
+    private static DynamicRegistryManager grabManager(DynamicRegistryManager in) {
         LifecycleUtil.initialize(in);
         return in;
     }
