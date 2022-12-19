@@ -68,10 +68,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     }
     
     public static void addRegistryManager(DynamicRegistryManager in) {
-        if(DYNAMIC_REGISTRY_MANAGER.get() == null) {
-            DYNAMIC_REGISTRY_MANAGER.set(Objects.requireNonNull(in));
-        }
-        throw new IllegalStateException("Already set!");
+        DYNAMIC_REGISTRY_MANAGER.set(Objects.requireNonNull(in));
     }
     
     @Override
