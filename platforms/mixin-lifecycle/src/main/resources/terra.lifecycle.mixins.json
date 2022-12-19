@@ -6,13 +6,12 @@
     "mixins": [
         "NoiseConfigMixin",
         "RegistryMixin",
+        "lifecycle.SaveLoadingMixin",
         "lifecycle.MinecraftServerMixin"
     ],
     "client": [
-        "lifecycle.client.MinecraftClientMixin"
     ],
     "server": [
-        "lifecycle.server.ServerMainMixin"
     ],
     "injectors": {
         "defaultRequire": 1

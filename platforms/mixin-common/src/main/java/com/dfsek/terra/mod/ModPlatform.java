@@ -7,6 +7,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
@@ -94,9 +96,9 @@ public abstract class ModPlatform extends AbstractPlatform {
                 .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
     
-    private ProtoPlatformBiome parseBiome(DynamicRegistryManager registryManager, String id, DepthTracker tracker) throws LoadException {
+    private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(registryManager.get(RegistryKeys.BIOME).get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
+        if(getMinecraftRegistry(RegistryKeys.BIOME).get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
     
@@ -106,6 +108,8 @@ public abstract class ModPlatform extends AbstractPlatform {
     }
     
     protected abstract BaseAddon getPlatformAddon();
+    
+    public abstract <T> Registry<T> getMinecraftRegistry(RegistryKey<? extends Registry<? extends T>> key);
     
     @Override
     public @NotNull WorldHandle getWorldHandle() {

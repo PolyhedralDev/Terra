@@ -1,5 +1,8 @@
 package com.dfsek.terra.mod.util;
 
+import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.registry.BuiltinRegistries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;
@@ -30,12 +33,15 @@ import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 
+
 public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Identifier> PRESETS = new ArrayList<>();
     
     public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack) {
-        Registry<DimensionType> dimensionTypeRegistry = BuiltinRegistries.DIMENSION_TYPE;
+        
+    
+        Registry<DimensionType> dimensionTypeRegistry = access.;
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = BuiltinRegistries.CHUNK_GENERATOR_SETTINGS;
         Registry<StructureSet> structureSetRegistry = BuiltinRegistries.STRUCTURE_SET;
         Registry<NoiseParameters> noiseParametersRegistry = BuiltinRegistries.NOISE_PARAMETERS;
