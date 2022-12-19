@@ -35,10 +35,7 @@ public final class Codecs {
                                                                                              id)))));
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(RegistryOps.getEntryCodec(RegistryKeys.BIOME)
-                                                          .fieldOf("biome_registry")
-                                                          .stable()
-                                                          .forGetter(TerraBiomeSource::getBiomeRegistry),
+            .create(instance -> instance.group(
                                                CONFIG_PACK.fieldOf("pack")
                                                           .stable()
                                                           .forGetter(TerraBiomeSource::getPack))

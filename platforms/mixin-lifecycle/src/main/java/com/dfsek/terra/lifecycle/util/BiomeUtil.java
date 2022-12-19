@@ -54,7 +54,7 @@ public final class BiomeUtil {
         
         
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
-            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
+            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(registry.getEntry(vanilla).orElseThrow());
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
             
@@ -65,14 +65,12 @@ public final class BiomeUtil {
             
             if(registry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(MinecraftUtil.getEntry(registry, identifier)
-                                                                                         .orElseThrow()
-                                                                                         .getKey()
                                                                                          .orElseThrow());
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(Registry.registerReference(registry,
                                                                                                   MinecraftUtil.registerKey(identifier)
                                                                                                                .getValue(),
-                                                                                                  minecraftBiome).getKey().orElseThrow());
+                                                                                                  minecraftBiome));
             }
             
             Map<RegistryKey<net.minecraft.world.biome.Biome>, VillagerType> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
