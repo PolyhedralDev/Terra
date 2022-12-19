@@ -1,5 +1,6 @@
 package com.dfsek.terra.lifecycle.mixin;
 
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.registry.Registry;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
@@ -24,10 +25,10 @@ public class NoiseConfigMixin {
     @Final
     private MultiNoiseSampler multiNoiseSampler;
     
-    @Inject(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/util/registry/Registry;J)V",
+    @Inject(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/registry/RegistryEntryLookup;J)V",
             at = @At("TAIL"))
-    private void mapMultiNoise(ChunkGeneratorSettings chunkGeneratorSettings,
-                               Registry<DoublePerlinNoiseSampler.NoiseParameters> noiseRegistry, long seed, CallbackInfo ci) {
+    private void mapMultiNoise(ChunkGeneratorSettings chunkGeneratorSettings, RegistryEntryLookup<DoublePerlinNoiseSampler.NoiseParameters> noiseParametersLookup, long seed,
+                               CallbackInfo ci) {
         SeedHack.register(multiNoiseSampler, seed);
     }
 }
