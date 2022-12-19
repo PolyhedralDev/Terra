@@ -21,6 +21,8 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.server.ServerLifecycleHooks;
@@ -86,7 +88,7 @@ public class ForgePlatform extends ModPlatform {
         
         super.platformAddon().forEach(addons::add);
         
-        String mcVersion = MinecraftVersion.CURRENT.getReleaseTarget();
+        String mcVersion = MinecraftVersion.CURRENT.getName();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
         } catch(ParseException e) {
@@ -121,5 +123,10 @@ public class ForgePlatform extends ModPlatform {
     @Override
     public BaseAddon getPlatformAddon() {
         return new ForgeAddon(this);
+    }
+    
+    @Override
+    public <T> Registry<T> getMinecraftRegistry(RegistryKey<T> key) {
+        return null;
     }
 }
