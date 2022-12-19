@@ -2,7 +2,6 @@ package com.dfsek.terra.mod.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -48,10 +47,6 @@ public final class Codecs {
     public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
             .create(
                     instance -> instance.group(
-                            RegistryOps.createRegistryCodec(Registry.STRUCTURE_SET_KEY)
-                                       .fieldOf("structure_registry")
-                                       .stable()
-                                       .forGetter(MinecraftChunkGeneratorWrapper::getNoiseRegistry),
                             TERRA_BIOME_SOURCE.fieldOf("biome_source")
                                               .stable()
                                               .forGetter(MinecraftChunkGeneratorWrapper::getBiomeSource),
@@ -61,6 +56,7 @@ public final class Codecs {
                             ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
                                                                  .stable()
                                                                  .forGetter(MinecraftChunkGeneratorWrapper::getSettings)
-                                              ).apply(instance, instance.stable(MinecraftChunkGeneratorWrapper::new))
+                                              ).apply(instance, instance.stable(
+                            MinecraftChunkGeneratorWrapper::new))
                    );
 }

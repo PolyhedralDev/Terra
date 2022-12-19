@@ -68,7 +68,7 @@ public class PresetUtil {
         PRESETS.add(generatorID);
         
         TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
-        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
+        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
         
         DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
         WorldPreset preset = new WorldPreset(
