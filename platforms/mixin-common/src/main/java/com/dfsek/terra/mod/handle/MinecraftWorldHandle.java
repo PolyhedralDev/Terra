@@ -20,6 +20,7 @@ package com.dfsek.terra.mod.handle;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class MinecraftWorldHandle implements WorldHandle {
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
-            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registry.BLOCK, data, true).blockState();
+            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true).blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             return (BlockState) state;
         } catch(CommandSyntaxException e) {
@@ -53,6 +54,6 @@ public class MinecraftWorldHandle implements WorldHandle {
     public @NotNull EntityType getEntity(@NotNull String id) {
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
-        return (EntityType) Registry.ENTITY_TYPE.get(identifier);
+        return (EntityType) Registries.ENTITY_TYPE.get(identifier);
     }
 }

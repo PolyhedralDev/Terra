@@ -5,10 +5,7 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.BuiltinRegistries;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
@@ -61,7 +58,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
-                .forEach(pack -> PresetUtil.createDefault(pack).apply(registerFunction));
+                .forEach(pack -> PresetUtil.createDefault(pack, getMinecraftRegistry()).apply(registerFunction));
     }
     
     @Override
@@ -98,7 +95,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(getMinecraftRegistry(RegistryKeys.BIOME).get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
+        if(getMinecraftRegistry().get(RegistryKeys.BIOME).get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
     
@@ -109,7 +106,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     
     protected abstract BaseAddon getPlatformAddon();
     
-    public abstract <T> Registry<T> getMinecraftRegistry(RegistryKey<? extends Registry<? extends T>> key);
+    public abstract DynamicRegistryManager getMinecraftRegistry();
     
     @Override
     public @NotNull WorldHandle getWorldHandle() {

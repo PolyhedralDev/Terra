@@ -134,7 +134,7 @@ public final class MinecraftUtil {
         if(vanillaBiomeProperties.getLoopSound() == null) {
             vanilla.getEffects().getLoopSound().ifPresent(effects::loopSound);
         } else {
-            effects.loopSound(vanillaBiomeProperties.getLoopSound());
+            effects.loopSound(Registries.SOUND_EVENT.getEntry(vanillaBiomeProperties.getLoopSound()));
         }
         
         if(vanillaBiomeProperties.getMoodSound() == null) {

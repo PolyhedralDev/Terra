@@ -21,6 +21,9 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 
@@ -38,8 +41,12 @@ public class MinecraftItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
         try {
-            return (Item) new ItemStackArgumentType(new CommandRegistryAccess(
-                    CommonPlatform.get().getServer().getRegistryManager())).parse(new StringReader(data)).getItem();
+            return (Item) new ItemStackArgumentType(new CommandRegistryAccess() {
+                @Override
+                public <T> RegistryWrapper<T> createWrapper(RegistryKey<? extends Registry<T>> registryRef) {
+                    return CommonPlatform.get().getServer().getRegistryManager().getWrapperOrThrow(registryRef);
+                }
+            }).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }
@@ -47,11 +54,11 @@ public class MinecraftItemHandle implements ItemHandle {
     
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Registry.ENCHANTMENT.get(Identifier.tryParse(id)));
+        return (Enchantment) (Registries.ENCHANTMENT.get(Identifier.tryParse(id)));
     }
     
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Registry.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());
+        return Registries.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());
     }
 }

@@ -20,6 +20,7 @@ package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -58,7 +59,7 @@ public abstract class ItemStackMetaMixin {
         
         getEnchantments().forEach(enchantment -> {
             NbtCompound eTag = (NbtCompound) enchantment;
-            map.put((Enchantment) Registry.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));
+            map.put((Enchantment) Registries.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));
         });
         return map;
     }
