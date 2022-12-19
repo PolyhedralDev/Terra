@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
+import net.minecraft.registry.Registries;
 import net.minecraft.state.State;
 import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
@@ -66,7 +67,7 @@ public abstract class BlockStateMixin extends State<Block, net.minecraft.block.B
     
     @Intrinsic
     public String terra$getAsString(boolean properties) {
-        StringBuilder data = new StringBuilder(Registry.BLOCK.getId(getBlock()).toString());
+        StringBuilder data = new StringBuilder(Registries.BLOCK.getId(getBlock()).toString());
         if(properties && !getEntries().isEmpty()) {
             data.append('[');
             data.append(

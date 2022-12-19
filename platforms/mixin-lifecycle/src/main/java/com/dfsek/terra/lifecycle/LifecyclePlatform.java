@@ -4,8 +4,6 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import net.minecraft.MinecraftVersion;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,8 +97,8 @@ public abstract class LifecyclePlatform extends ModPlatform {
     }
     
     @Override
-    public <T> Registry<T> getMinecraftRegistry(RegistryKey<? extends Registry<? extends T>> key) {
-        return DYNAMIC_REGISTRY_MANAGER.get().get(key);
+    public DynamicRegistryManager getMinecraftRegistry() {
+        return DYNAMIC_REGISTRY_MANAGER.get();
     }
     
     protected abstract Collection<BaseAddon> getPlatformMods();
