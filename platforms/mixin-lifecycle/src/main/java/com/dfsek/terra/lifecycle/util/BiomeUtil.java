@@ -30,8 +30,7 @@ public final class BiomeUtil {
     
     }
     
-    public static void registerBiomes(DynamicRegistryManager registryManager) {
-        Registry<net.minecraft.world.biome.Biome> biomeRegistry = registryManager.get(RegistryKeys.BIOME);
+    public static void registerBiomes(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         logger.info("Registering biomes...");
         CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             pack.getCheckedRegistry(Biome.class)
