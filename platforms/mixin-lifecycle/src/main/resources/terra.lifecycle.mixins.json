@@ -5,7 +5,9 @@
     "compatibilityLevel" : "JAVA_17",
     "mixins" : [
         "NoiseConfigMixin",
+        "RegistryEntryReferenceInvoker",
         "RegistryMixin",
+        "SimpleRegistryMixin",
         "lifecycle.MinecraftServerMixin",
         "lifecycle.RegistryLoaderMixin"
     ],
