@@ -2,6 +2,8 @@ package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
 import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
+import com.dfsek.terra.lifecycle.util.RegistryHack;
+
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.registry.MutableRegistry;
 import net.minecraft.registry.RegistryKeys;
@@ -34,32 +36,18 @@ public class RegistryLoaderMixin {
                     )
     )
     private static void grabManager(List<Pair<MutableRegistry<?>, Object>> instance, Consumer<Pair<MutableRegistry<?>, Object>> consumer) {
-        MutableRegistry<Biome> biomeMutableRegistry = (MutableRegistry<Biome>)
-                instance.stream()
-                        .map(Pair::getFirst)
-                        .filter(r -> r.getKey().equals(RegistryKeys.BIOME))
-                        .findFirst()
-                        .orElseThrow();
-        MutableRegistry<WorldPreset> worldPresetMutableRegistry = (MutableRegistry<WorldPreset>)
-                instance.stream()
-                        .map(Pair::getFirst)
-                        .filter(r -> r.getKey().equals(RegistryKeys.WORLD_PRESET))
-                        .findFirst()
-                        .orElseThrow();
-        MutableRegistry<DimensionType> dimensionTypeMutableRegistry = (MutableRegistry<DimensionType>)
-                instance.stream()
-                        .map(Pair::getFirst)
-                        .filter(r -> r.getKey().equals(RegistryKeys.DIMENSION_TYPE))
-                        .findFirst()
-                        .orElseThrow();
-        MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettingsMutableRegistry = (MutableRegistry<ChunkGeneratorSettings>)
-                instance.stream()
-                        .map(Pair::getFirst)
-                        .filter(r -> r.getKey().equals(RegistryKeys.CHUNK_GENERATOR_SETTINGS))
-                        .findFirst()
-                        .orElseThrow();
-        LifecyclePlatform.setRegistries(biomeMutableRegistry, dimensionTypeMutableRegistry, chunkGeneratorSettingsMutableRegistry);
-        LifecycleUtil.initialize(biomeMutableRegistry, worldPresetMutableRegistry);
+        
+        //LifecyclePlatform.setRegistries(biomeMutableRegistry, dimensionTypeMutableRegistry, chunkGeneratorSettingsMutableRegistry);
+        //LifecycleUtil.initialize(biomeMutableRegistry, worldPresetMutableRegistry);
+        instance.forEach(mutableRegistryObjectPair -> {
+            System.out.println(mutableRegistryObjectPair.getFirst());
+            System.out.println(mutableRegistryObjectPair.getFirst().size());
+            if(mutableRegistryObjectPair.getFirst().getKey().equals(RegistryKeys.BIOME)) {
+                ((RegistryHack) mutableRegistryObjectPair.getFirst()).terra_bind();
+                System.out.println("BIOMES: " + mutableRegistryObjectPair.getFirst().stream().toList());
+            }
+            //System.out.println(mutableRegistryObjectPair.getFirst().stream().toList());
+        });
         instance.forEach(consumer);
     }
 }
