@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.util;
 import com.dfsek.terra.mod.ModPlatform;
 
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -38,7 +39,7 @@ public class PresetUtil {
     public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
-    
+        
         RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
         RegistryEntry<ChunkGeneratorSettings>
                 netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER).orElseThrow();
