@@ -15,7 +15,10 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.checkerframework.checker.units.qual.C;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -29,6 +32,10 @@ import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 
 @Mixin(RegistryLoader.class)
 public class RegistryLoaderMixin {
+    @Shadow
+    @Final
+    private static Logger LOGGER;
+    
     @Redirect(
             method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)" +
                      "Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
@@ -39,23 +46,26 @@ public class RegistryLoaderMixin {
                     )
     )
     private static void grabManager(List<Pair<MutableRegistry<?>, Object>> instance, Consumer<Pair<MutableRegistry<?>, Object>> consumer) {
-        instance.forEach(mutableRegistryObjectPair -> {
-            System.out.println(mutableRegistryObjectPair.getFirst());
-            System.out.println(mutableRegistryObjectPair.getFirst().size());
-        });
-        extractRegistry(instance, RegistryKeys.BIOME).ifPresent(biomes -> { // this redirect triggers twice, second time only with dimension registry. dont try extraction second time
-            MutableRegistry<DimensionType> dimensionTypes = extractRegistry(instance, RegistryKeys.DIMENSION_TYPE).orElseThrow();
-            MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
-            MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance, RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
-    
-            LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings);
-            LifecycleUtil.initialize(biomes, worldPresets);
-        });
+        instance.forEach(mutableRegistryObjectPair -> LOGGER.debug("{}: {} entries",
+                                                                   mutableRegistryObjectPair.getFirst().toString(),
+                                                                   mutableRegistryObjectPair.getFirst().size())
+                        );
+        extractRegistry(instance, RegistryKeys.BIOME).ifPresent(
+                biomes -> { // this redirect triggers twice, second time only with dimension registry. don't try extraction second time
+                    MutableRegistry<DimensionType> dimensionTypes = extractRegistry(instance, RegistryKeys.DIMENSION_TYPE).orElseThrow();
+                    MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
+                    MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance,
+                                                                                                     RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
+                    
+                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings);
+                    LifecycleUtil.initialize(biomes, worldPresets);
+                });
         instance.forEach(consumer);
     }
     
     @SuppressWarnings("unchecked")
-    private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance, RegistryKey<Registry<T>> key) {
+    private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance,
+                                                                    RegistryKey<Registry<T>> key) {
         List<? extends MutableRegistry<?>> matches = instance
                 .stream()
                 .map(Pair::getFirst)
