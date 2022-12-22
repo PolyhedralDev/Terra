@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.forge;
 
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
 import net.minecraft.world.biome.Biome;
@@ -71,12 +72,12 @@ public class ForgeEntryPoint {
     public void registerBiomes(RegisterEvent event) {
         event.register(Keys.BLOCKS, helper -> sanityCheck.progress(RegistryStep.BLOCK, () -> logger.debug("Block registration detected.")));
         event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, () -> initialize(helper)));
-        event.register(Registry.WORLD_PRESET_KEY,
+        event.register(RegistryKeys.WORLD_PRESET,
                        helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> TERRA_PLUGIN.registerWorldTypes(helper::register)));
         
         
-        event.register(Registry.CHUNK_GENERATOR_KEY,
+        event.register(RegistryKeys.CHUNK_GENERATOR,
                        helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
-        event.register(Registry.BIOME_SOURCE_KEY, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
+        event.register(RegistryKeys.BIOME_SOURCE, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }

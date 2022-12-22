@@ -21,10 +21,15 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -126,7 +131,17 @@ public class ForgePlatform extends ModPlatform {
     }
     
     @Override
-    public <T> Registry<T> getMinecraftRegistry(RegistryKey<T> key) {
+    public Registry<DimensionType> dimensionTypeRegistry() {
+        return ForgeRegistries.DI;
+    }
+    
+    @Override
+    public Registry<Biome> biomeRegistry() {
         return null;
+    }
+    
+    @Override
+    public Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry() {
+        return Registries.DIM;
     }
 }
