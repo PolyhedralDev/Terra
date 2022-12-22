@@ -6,6 +6,8 @@ import com.dfsek.terra.lifecycle.util.RegistryHack;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.registry.MutableRegistry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryLoader;
 import net.minecraft.world.biome.Biome;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import com.dfsek.terra.lifecycle.util.LifecycleUtil;
@@ -36,18 +39,35 @@ public class RegistryLoaderMixin {
                     )
     )
     private static void grabManager(List<Pair<MutableRegistry<?>, Object>> instance, Consumer<Pair<MutableRegistry<?>, Object>> consumer) {
-        
-        //LifecyclePlatform.setRegistries(biomeMutableRegistry, dimensionTypeMutableRegistry, chunkGeneratorSettingsMutableRegistry);
-        //LifecycleUtil.initialize(biomeMutableRegistry, worldPresetMutableRegistry);
         instance.forEach(mutableRegistryObjectPair -> {
             System.out.println(mutableRegistryObjectPair.getFirst());
             System.out.println(mutableRegistryObjectPair.getFirst().size());
-            if(mutableRegistryObjectPair.getFirst().getKey().equals(RegistryKeys.BIOME)) {
-                ((RegistryHack) mutableRegistryObjectPair.getFirst()).terra_bind();
-                System.out.println("BIOMES: " + mutableRegistryObjectPair.getFirst().stream().toList());
-            }
-            //System.out.println(mutableRegistryObjectPair.getFirst().stream().toList());
+        });
+        extractRegistry(instance, RegistryKeys.BIOME).ifPresent(biomes -> { // this redirect triggers twice, second time only with dimension registry. dont try extraction second time
+            MutableRegistry<DimensionType> dimensionTypes = extractRegistry(instance, RegistryKeys.DIMENSION_TYPE).orElseThrow();
+            MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
+            MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance, RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
+    
+            LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings);
+            LifecycleUtil.initialize(biomes, worldPresets);
         });
         instance.forEach(consumer);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance, RegistryKey<Registry<T>> key) {
+        List<? extends MutableRegistry<?>> matches = instance
+                .stream()
+                .map(Pair::getFirst)
+                .filter(r -> r.getKey().equals(key))
+                .toList();
+        if(matches.size() > 1) {
+            throw new IllegalStateException("Illegal number of registries returned: " + matches);
+        } else if(matches.isEmpty()) {
+            return Optional.empty();
+        }
+        MutableRegistry<T> registry = (MutableRegistry<T>) matches.get(0);
+        ((RegistryHack) registry).terra_bind();
+        return Optional.of(registry);
     }
 }

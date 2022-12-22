@@ -36,7 +36,6 @@ public final class BiomeUtil {
             pack.getCheckedRegistry(Biome.class)
                 .forEach((id, biome) -> registerBiome(biome, pack, id, biomeRegistry));
         });
-        MinecraftUtil.registerFlora(biomeRegistry);
         logger.info("Terra biomes registered.");
     }
     
