@@ -43,7 +43,7 @@ public class ProtoPlatformBiome implements PlatformBiome {
     }
     
     @Override
-    public Object getHandle() {
+    public Identifier getHandle() {
         return identifier;
     }
     
