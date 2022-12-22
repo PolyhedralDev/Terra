@@ -17,6 +17,7 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.checkerframework.checker.units.qual.C;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
@@ -28,7 +29,6 @@ import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 
 @Mixin(RegistryLoader.class)
 public class RegistryLoaderMixin {
-    @SuppressWarnings("unchecked")
     @Redirect(
             method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)" +
                      "Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
