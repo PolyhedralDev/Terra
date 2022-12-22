@@ -132,7 +132,7 @@ public class ForgePlatform extends ModPlatform {
     
     @Override
     public Registry<DimensionType> dimensionTypeRegistry() {
-        return ForgeRegistries.DI;
+        return null;
     }
     
     @Override
@@ -142,6 +142,6 @@ public class ForgePlatform extends ModPlatform {
     
     @Override
     public Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry() {
-        return Registries.DIM;
+        return null;
     }
 }
