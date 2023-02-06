@@ -49,7 +49,6 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     @Override
     public BufferedImage load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
-        System.out.println(pack.getContext().get(ImageCache.class).map);
         return pack.getContext().get(ImageCache.class).map.computeIfAbsent((String) c, s -> {
             try {
                 return ImageIO.read(files.get(s));
