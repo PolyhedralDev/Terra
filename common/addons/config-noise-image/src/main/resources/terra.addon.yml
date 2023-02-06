@@ -12,4 +12,3 @@ website:
 license: MIT License
 depends:
   library-image: "1.+"
-  config-noise-function: "2.+"

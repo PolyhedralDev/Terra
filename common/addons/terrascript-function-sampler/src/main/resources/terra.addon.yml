@@ -12,4 +12,4 @@ website:
 license: MIT License
 depends:
   structure-terrascript-loader: "1.+"
-  config-noise-function: "2.+"
+  config-noise-function: "1.+"
