@@ -5,16 +5,16 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.biome.image;
+package com.dfsek.terra.addons.biome.image.v2;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.biome.image.config.ImageProviderTemplate;
-import com.dfsek.terra.addons.biome.image.config.converter.ClosestBiomeColorConverterTemplate;
-import com.dfsek.terra.addons.biome.image.config.converter.ExactBiomeColorConverterTemplate;
-import com.dfsek.terra.addons.biome.image.config.converter.mapping.DefinedBiomeColorMappingTemplate;
+import com.dfsek.terra.addons.biome.image.v2.config.ImageProviderTemplate;
+import com.dfsek.terra.addons.biome.image.v2.config.converter.ClosestBiomeColorConverterTemplate;
+import com.dfsek.terra.addons.biome.image.v2.config.converter.ExactBiomeColorConverterTemplate;
+import com.dfsek.terra.addons.biome.image.v2.config.converter.mapping.DefinedBiomeColorMappingTemplate;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.addons.image.converter.mapping.BiomeDefinedColorMapping;
 import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;

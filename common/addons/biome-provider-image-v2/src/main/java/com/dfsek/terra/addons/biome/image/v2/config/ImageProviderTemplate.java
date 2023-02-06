@@ -5,14 +5,14 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.biome.image.config;
+package com.dfsek.terra.addons.biome.image.v2.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import com.dfsek.terra.addons.biome.image.ImageBiomeProvider;
+import com.dfsek.terra.addons.biome.image.v2.ImageBiomeProvider;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.api.world.biome.Biome;

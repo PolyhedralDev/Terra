@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.biome.image;
+package com.dfsek.terra.addons.biome.image.v2;
 
 import java.util.Optional;
 

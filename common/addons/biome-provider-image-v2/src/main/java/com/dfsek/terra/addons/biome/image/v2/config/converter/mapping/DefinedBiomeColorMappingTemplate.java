@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.biome.image.config.converter.mapping;
+package com.dfsek.terra.addons.biome.image.v2.config.converter.mapping;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
