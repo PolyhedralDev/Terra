@@ -1,11 +1,13 @@
 package com.dfsek.terra.mod.util;
 
-import net.minecraft.structure.StructureSet;
+import com.dfsek.terra.mod.ModPlatform;
+
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.TheEndBiomeSource;
@@ -34,41 +36,39 @@ public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Identifier> PRESETS = new ArrayList<>();
     
-    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack) {
-        Registry<DimensionType> dimensionTypeRegistry = BuiltinRegistries.DIMENSION_TYPE;
-        Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = BuiltinRegistries.CHUNK_GENERATOR_SETTINGS;
-        Registry<StructureSet> structureSetRegistry = BuiltinRegistries.STRUCTURE_SET;
-        Registry<NoiseParameters> noiseParametersRegistry = BuiltinRegistries.NOISE_PARAMETERS;
-        Registry<Biome> biomeRegistry = BuiltinRegistries.BIOME;
+    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform) {
+        Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
+        Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         
-        RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.THE_NETHER);
+        RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
         RegistryEntry<ChunkGeneratorSettings>
-                netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.NETHER);
+                netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER).orElseThrow();
         DimensionOptions netherDimensionOptions = new DimensionOptions(theNetherDimensionType,
-                                                                       new NoiseChunkGenerator(structureSetRegistry,
-                                                                                               noiseParametersRegistry,
-                                                                                               MultiNoiseBiomeSource.Preset.NETHER.getBiomeSource(
-                                                                                                       biomeRegistry),
-                                                                                               netherChunkGeneratorSettings));
-        RegistryEntry<DimensionType> theEndDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.THE_END);
-        RegistryEntry<ChunkGeneratorSettings> endChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getOrCreateEntry(
-                ChunkGeneratorSettings.END);
+                                                                       new NoiseChunkGenerator(
+                                                                               MultiNoiseBiomeSource.Preset.NETHER.getBiomeSource(
+                                                                                       platform.biomeRegistry().getReadOnlyWrapper()),
+                                                                               netherChunkGeneratorSettings));
+        RegistryEntry<DimensionType> theEndDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_END).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> endChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
+                ChunkGeneratorSettings.END).orElseThrow();
         DimensionOptions endDimensionOptions = new DimensionOptions(theEndDimensionType,
-                                                                    new NoiseChunkGenerator(structureSetRegistry, noiseParametersRegistry,
-                                                                                            new TheEndBiomeSource(biomeRegistry),
-                                                                                            endChunkGeneratorSettings));
+                                                                    new NoiseChunkGenerator(
+                                                                            TheEndBiomeSource.createVanilla(
+                                                                                    platform.biomeRegistry().getReadOnlyWrapper()),
+                                                                            endChunkGeneratorSettings));
         
-        RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getOrCreateEntry(DimensionTypes.OVERWORLD);
+        RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.OVERWORLD).orElseThrow();
         
-        RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getOrCreateEntry(ChunkGeneratorSettings.OVERWORLD);
+        RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD)
+                                                                                        .orElseThrow();
         
         Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
                 Locale.ROOT));
         
         PRESETS.add(generatorID);
         
-        TerraBiomeSource biomeSource = new TerraBiomeSource(biomeRegistry, pack);
-        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(structureSetRegistry, biomeSource, pack, overworld);
+        TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
+        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
         
         DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
         WorldPreset preset = new WorldPreset(

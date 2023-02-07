@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 
@@ -29,7 +30,7 @@ public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
         if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
             return null;
         } else {
-            return new MusicSound(sound, minDelay, maxDelay, replaceCurrentMusic);
+            return new MusicSound(Registries.SOUND_EVENT.getEntry(sound), minDelay, maxDelay, replaceCurrentMusic);
         }
     }
 }
