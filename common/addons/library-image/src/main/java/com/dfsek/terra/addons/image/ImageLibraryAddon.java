@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.image.sampler.ColorSampler;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
@@ -40,7 +41,8 @@ public class ImageLibraryAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(10)
                 .then(event -> {
-                    event.getPack().applyLoader(Image.class, new ImageLoader(event.getPack().getLoader()));
+                    ConfigPack pack = event.getPack();
+                    pack.applyLoader(Image.class, new ImageLoader(pack.getLoader(), pack));
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
