@@ -72,28 +72,36 @@ public class SpongeSchematicAddon implements AddonInitializer {
     public SpongeStructure convert(InputStream in, String id) {
         try {
             CompoundTag baseTag = (CompoundTag) new NBTDeserializer(false).fromStream(detectDecompression(in)).getTag();
+            int ver = baseTag.getInt("Version");
             int wid = baseTag.getShort("Width");
             int len = baseTag.getShort("Length");
             int hei = baseTag.getShort("Height");
-            
+    
             CompoundTag metadata = baseTag.getCompoundTag("Metadata");
             
-            Vector3Int offset;
-            // Use WorldEdit relative offset if it exists in schematic metadata
-            IntTag worldEditOffsetX = metadata.getIntTag("WEOffsetX");
-            IntTag worldEditOffsetY = metadata.getIntTag("WEOffsetY");
-            IntTag worldEditOffsetZ = metadata.getIntTag("WEOffsetZ");
-            if (worldEditOffsetX != null || worldEditOffsetY != null || worldEditOffsetZ != null) {
-                if (worldEditOffsetX == null || worldEditOffsetY == null || worldEditOffsetZ == null) {
-                    throw new IllegalArgumentException("Failed to parse Sponge schematic: Malformed WorldEdit offset");
+            Vector3Int offset = switch(ver) {
+                case 2 -> {
+                    // Use WorldEdit defined legacy relative offset if it exists in schematic metadata
+                    IntTag worldEditOffsetX = metadata.getIntTag("WEOffsetX");
+                    IntTag worldEditOffsetY = metadata.getIntTag("WEOffsetY");
+                    IntTag worldEditOffsetZ = metadata.getIntTag("WEOffsetZ");
+                    if(worldEditOffsetX != null || worldEditOffsetY != null || worldEditOffsetZ != null) {
+                        if(worldEditOffsetX == null || worldEditOffsetY == null || worldEditOffsetZ == null) {
+                            throw new IllegalArgumentException("Failed to parse Sponge schematic: Malformed WorldEdit offset");
+                        }
+                        yield Vector3Int.of(worldEditOffsetX.asInt(), worldEditOffsetY.asInt(), worldEditOffsetZ.asInt());
+                    } else {
+                        // Relative offset handling via 'Offset' field is ambiguous in spec 2 so just apply no offset
+                        yield Vector3Int.zero();
+                    }
                 }
-                offset = Vector3Int.of(worldEditOffsetX.asInt(), worldEditOffsetY.asInt(), worldEditOffsetZ.asInt());
-            } else {
-                // Set offset based on the 'Offset' field, not clear on if this is correct behaviour according to spec so left commented for now
-                //int[] offsetArray = baseTag.getIntArray("Offset");
-                //offset = Vector3Int.of(offsetArray[0], offsetArray[1], offsetArray[2]);
-                offset = Vector3Int.zero();
-            }
+                case 3 -> {
+                    // Relative offset is more concretely defined in spec 3 to use 'Offset' field
+                    int[] offsetArray = baseTag.getIntArray("Offset");
+                    yield Vector3Int.of(offsetArray[0], offsetArray[1], offsetArray[2]);
+                }
+                default -> throw new IllegalArgumentException("Failed to parse Sponge schematic: Unsupported format version: " + ver);
+            };
             
             ByteArrayTag blocks = baseTag.getByteArrayTag("BlockData");
             
