@@ -30,6 +30,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.StringUtil;
+import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 public class SpongeSchematicAddon implements AddonInitializer {
@@ -75,6 +76,25 @@ public class SpongeSchematicAddon implements AddonInitializer {
             int len = baseTag.getShort("Length");
             int hei = baseTag.getShort("Height");
             
+            CompoundTag metadata = baseTag.getCompoundTag("Metadata");
+            
+            Vector3Int offset;
+            // Use WorldEdit relative offset if it exists in schematic metadata
+            IntTag worldEditOffsetX = metadata.getIntTag("WEOffsetX");
+            IntTag worldEditOffsetY = metadata.getIntTag("WEOffsetY");
+            IntTag worldEditOffsetZ = metadata.getIntTag("WEOffsetZ");
+            if (worldEditOffsetX != null || worldEditOffsetY != null || worldEditOffsetZ != null) {
+                if (worldEditOffsetX == null || worldEditOffsetY == null || worldEditOffsetZ == null) {
+                    throw new IllegalArgumentException("Failed to parse Sponge schematic: Malformed WorldEdit offset");
+                }
+                offset = Vector3Int.of(worldEditOffsetX.asInt(), worldEditOffsetY.asInt(), worldEditOffsetZ.asInt());
+            } else {
+                // Set offset based on the 'Offset' field, not clear on if this is correct behaviour according to spec so left commented for now
+                //int[] offsetArray = baseTag.getIntArray("Offset");
+                //offset = Vector3Int.of(offsetArray[0], offsetArray[1], offsetArray[2]);
+                offset = Vector3Int.zero();
+            }
+            
             ByteArrayTag blocks = baseTag.getByteArrayTag("BlockData");
             
             CompoundTag palette = (CompoundTag) baseTag.get("Palette");
@@ -97,7 +117,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 }
             }
             
-            return new SpongeStructure(states, addon.key(id));
+            return new SpongeStructure(states, offset, addon.key(id));
         } catch(IOException e) {
             throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);
         }
