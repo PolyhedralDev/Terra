@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.image.sampler.image.transform.Alignment;
 
 public abstract class ImageColorSamplerTemplate implements ObjectTemplate<ColorSampler> {
     
-    @Value("path")
+    @Value("image")
     protected Image image;
     
     @Value("align")
