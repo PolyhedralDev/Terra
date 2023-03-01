@@ -5,6 +5,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
+import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
 import com.dfsek.terra.addons.image.config.sampler.ConstantColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.image.SingleImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.sampler.image.TileImageColorSamplerTemplate;
@@ -47,6 +48,7 @@ public class ImageLibraryAddon implements AddonInitializer {
                     ConfigPack pack = event.getPack();
                     CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
                     imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
+                    imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
