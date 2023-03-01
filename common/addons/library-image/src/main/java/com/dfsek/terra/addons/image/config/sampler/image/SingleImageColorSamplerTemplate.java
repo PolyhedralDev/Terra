@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.image.sampler.image.SingleImageColorSampler;
 
 
 public class SingleImageColorSamplerTemplate extends ImageColorSamplerTemplate {
-    @Value("outside-image")
+    @Value("outside-sampler")
     private ColorSampler fallback;
 
     @Override

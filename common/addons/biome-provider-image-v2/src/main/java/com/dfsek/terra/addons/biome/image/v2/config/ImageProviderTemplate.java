@@ -27,10 +27,10 @@ public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
     @Description("Sets the resolution at which to sample the image.")
     private int resolution = 1;
     
-    @Value("image")
+    @Value("color-sampler")
     private ColorSampler colorSampler;
     
-    @Value("biomes")
+    @Value("color-conversion")
     private ColorConverter<Biome> colorConverter;
     
     @Override

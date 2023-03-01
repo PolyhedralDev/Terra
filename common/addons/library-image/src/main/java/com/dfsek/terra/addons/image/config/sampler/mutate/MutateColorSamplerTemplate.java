@@ -8,6 +8,6 @@ import com.dfsek.terra.addons.image.sampler.ColorSampler;
 
 public abstract class MutateColorSamplerTemplate implements ObjectTemplate<ColorSampler> {
     
-    @Value("image")
+    @Value("color-sampler")
     protected ColorSampler sampler;
 }
