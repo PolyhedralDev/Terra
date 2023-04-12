@@ -16,6 +16,7 @@ import java.util.function.Function;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
+import static net.minecraft.world.level.biome.Biome.ClimateSettings;
 import static net.minecraft.world.level.biome.Biome.Precipitation;
 
 public class NMSBiomeInjector {
@@ -31,6 +32,7 @@ public class NMSBiomeInjector {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
 
         builder
+                .downfall(vanilla.climateSettings.downfall())
                 .temperature(vanilla.getBaseTemperature())
                 .mobSpawnSettings(vanilla.getMobSettings())
                 .generationSettings(vanilla.getGenerationSettings());
