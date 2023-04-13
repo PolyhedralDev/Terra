@@ -4,7 +4,7 @@ object Versions {
         const val paralithic = "0.7.0"
         const val strata = "1.1.1"
         
-        const val cloud = "1.7.0"
+        const val cloud = "1.8.0"
         
         const val slf4j = "1.7.36"
         const val log4j_slf4j_impl = "2.14.1"
@@ -19,7 +19,7 @@ object Versions {
     
     object Fabric {
         const val fabricLoader = "0.14.8"
-        const val fabricAPI = "0.57.0+1.19"
+        const val fabricAPI = "0.69.1+1.19.3"
     }
     
     object Quilt {
@@ -50,7 +50,7 @@ object Versions {
     object Bukkit {
         const val paper = "1.18.2-R0.1-SNAPSHOT"
         const val paperLib = "1.0.5"
-        const val minecraft = "1.19.2"
+        const val minecraft = "1.19.4"
         const val reflectionRemapper = "0.1.0-SNAPSHOT"
         const val paperDevBundle = "1.19.4-R0.1-SNAPSHOT"
     }

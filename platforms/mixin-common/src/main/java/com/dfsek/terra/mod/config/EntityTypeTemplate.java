@@ -4,8 +4,9 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 
 public class EntityTypeTemplate implements ObjectTemplate<EntityType<?>> {
@@ -15,6 +16,6 @@ public class EntityTypeTemplate implements ObjectTemplate<EntityType<?>> {
     
     @Override
     public EntityType<?> get() {
-        return Registry.ENTITY_TYPE.get(id);
+        return Registries.ENTITY_TYPE.get(id);
     }
 }

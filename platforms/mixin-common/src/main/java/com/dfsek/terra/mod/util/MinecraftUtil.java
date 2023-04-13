@@ -3,11 +3,13 @@ package com.dfsek.terra.mod.util;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Builder;
@@ -23,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -46,7 +49,7 @@ public final class MinecraftUtil {
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
         return registry.getOrEmpty(identifier)
                        .flatMap(registry::getKey)
-                       .map(registry::getOrCreateEntry);
+                       .flatMap(registry::getEntry);
     }
     
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
@@ -91,7 +94,7 @@ public final class MinecraftUtil {
     }
     
     public static RegistryKey<Biome> registerKey(Identifier identifier) {
-        return RegistryKey.of(Registry.BIOME_KEY, identifier);
+        return RegistryKey.of(RegistryKeys.BIOME, identifier);
     }
     
     public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla,
@@ -131,7 +134,7 @@ public final class MinecraftUtil {
         if(vanillaBiomeProperties.getLoopSound() == null) {
             vanilla.getEffects().getLoopSound().ifPresent(effects::loopSound);
         } else {
-            effects.loopSound(vanillaBiomeProperties.getLoopSound());
+            effects.loopSound(Registries.SOUND_EVENT.getEntry(vanillaBiomeProperties.getLoopSound()));
         }
         
         if(vanillaBiomeProperties.getMoodSound() == null) {

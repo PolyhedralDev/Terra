@@ -18,8 +18,9 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import org.slf4j.Logger;
@@ -37,16 +38,14 @@ import com.dfsek.terra.mod.util.SeedHack;
 public class TerraBiomeSource extends BiomeSource {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(TerraBiomeSource.class);
-    private final Registry<net.minecraft.world.biome.Biome> biomeRegistry;
     private ConfigPack pack;
     
-    public TerraBiomeSource(Registry<net.minecraft.world.biome.Biome> biomes, ConfigPack pack) {
+    public TerraBiomeSource(ConfigPack pack) {
         super(StreamSupport
                       .stream(pack.getBiomeProvider()
                                   .getBiomes()
                                   .spliterator(), false)
-                      .map(b -> biomes.getOrCreateEntry(((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate())));
-        this.biomeRegistry = biomes;
+                      .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate()));
         this.pack = pack;
         
         LOGGER.debug("Biomes: " + getBiomes());
@@ -58,21 +57,15 @@ public class TerraBiomeSource extends BiomeSource {
     }
     
     @Override
-    public RegistryEntry<net.minecraft.world.biome.Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
-        return biomeRegistry
-                .entryOf(((ProtoPlatformBiome) pack
+    public RegistryEntry<Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
+        return ((ProtoPlatformBiome) pack
                                  .getBiomeProvider()
                                  .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
-                                 .getPlatformBiome()).getDelegate()
-                        );
+                                 .getPlatformBiome()).getDelegate();
     }
     
     public BiomeProvider getProvider() {
         return pack.getBiomeProvider();
-    }
-    
-    public Registry<net.minecraft.world.biome.Biome> getBiomeRegistry() {
-        return biomeRegistry;
     }
     
     public ConfigPack getPack() {

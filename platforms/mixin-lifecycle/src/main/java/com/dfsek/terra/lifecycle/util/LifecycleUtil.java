@@ -1,9 +1,17 @@
 package com.dfsek.terra.lifecycle.util;
 
-import net.minecraft.util.registry.BuiltinRegistries;
+import com.dfsek.terra.lifecycle.LifecyclePlatform;
+
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.MutableRegistry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.mod.CommonPlatform;
+
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.WorldPreset;
 
 
 public final class LifecycleUtil {
@@ -11,9 +19,9 @@ public final class LifecycleUtil {
 
     }
     
-    public static void initialize() {
+    public static void initialize(MutableRegistry<Biome> biomeMutableRegistry, MutableRegistry<WorldPreset> worldPresetMutableRegistry) {
         CommonPlatform.get().getEventManager().callEvent(new PlatformInitializationEvent());
-        BiomeUtil.registerBiomes();
-        CommonPlatform.get().registerWorldTypes((id, preset) -> BuiltinRegistries.add(BuiltinRegistries.WORLD_PRESET, id, preset));
+        BiomeUtil.registerBiomes(biomeMutableRegistry);
+        CommonPlatform.get().registerWorldTypes((id, preset) -> Registry.register(worldPresetMutableRegistry, id, preset));
     }
 }

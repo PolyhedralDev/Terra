@@ -15,25 +15,23 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolderBuilder;
-import com.dfsek.terra.addons.chunkgenerator.palette.SlantHolder;
+import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
-public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
+public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {
     private final Platform platform;
     
     @Value("slant")
     @Default
     @Description("The slant palettes to use in this biome.")
-    private @Meta List<@Meta SlantLayer> slant = Collections.emptyList();
+    private @Meta List<SlantHolder.@Meta Layer> slantLayers = Collections.emptyList();
     
     @Value("slant-depth")
     @Default
@@ -63,27 +61,16 @@ public class BiomePaletteTemplate implements ObjectTemplate<PaletteInfo> {
     @Default
     private @Meta boolean updatePalette = false;
     
-    public BiomePaletteTemplate(Platform platform) { this.platform = platform; }
+    private final SlantHolder.CalculationMethod slantCalculationMethod;
+    
+    public BiomePaletteTemplate(Platform platform, SlantHolder.CalculationMethod slantCalculationMethod) {
+        this.platform = platform;
+        this.slantCalculationMethod = slantCalculationMethod;
+    }
     
     @Override
-    public PaletteInfo get() {
-        PaletteHolderBuilder builder = new PaletteHolderBuilder();
-        for(Map<Palette, Integer> layer : palettes) {
-            for(Entry<Palette, Integer> entry : layer.entrySet()) {
-                builder.add(entry.getValue(), entry.getKey());
-            }
-        }
-        
-        TreeMap<Double, PaletteHolder> slantLayers = new TreeMap<>();
-        double minThreshold = Double.MAX_VALUE;
-        
-        for(SlantLayer layer : slant) {
-            double threshold = layer.getThreshold();
-            if(threshold < minThreshold) minThreshold = threshold;
-            slantLayers.put(threshold, layer.getPalette());
-        }
-        
-        return new PaletteInfo(builder.build(), SlantHolder.of(slantLayers, minThreshold), oceanPalette, seaLevel, slantDepth,
-                               updatePalette);
+    public BiomePaletteInfo get() {
+        return new BiomePaletteInfo(PaletteHolder.of(palettes), SlantHolder.of(slantLayers, slantDepth, slantCalculationMethod),
+                                    oceanPalette, seaLevel, updatePalette);
     }
 }

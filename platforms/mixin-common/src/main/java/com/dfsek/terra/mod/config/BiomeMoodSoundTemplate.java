@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import net.minecraft.registry.Registries;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.SoundEvent;
 
@@ -29,7 +30,7 @@ public class BiomeMoodSoundTemplate implements ObjectTemplate<BiomeMoodSound> {
         if(sound == null || soundCultivationTicks == null || soundSpawnRange == null || soundExtraDistance == null) {
             return null;
         } else {
-            return new BiomeMoodSound(sound, soundCultivationTicks, soundSpawnRange, soundExtraDistance);
+            return new BiomeMoodSound(Registries.SOUND_EVENT.getEntry(sound), soundCultivationTicks, soundSpawnRange, soundExtraDistance);
         }
     }
 }
