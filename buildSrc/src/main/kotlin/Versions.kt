@@ -19,7 +19,7 @@ object Versions {
     
     object Fabric {
         const val fabricLoader = "0.14.8"
-        const val fabricAPI = "0.69.1+1.19.3"
+        const val fabricAPI = "0.78.0+1.19.4"
     }
     
     object Quilt {
