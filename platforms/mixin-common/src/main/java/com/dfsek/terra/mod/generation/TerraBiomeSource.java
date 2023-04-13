@@ -26,6 +26,7 @@ import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -41,11 +42,6 @@ public class TerraBiomeSource extends BiomeSource {
     private ConfigPack pack;
     
     public TerraBiomeSource(ConfigPack pack) {
-        super(StreamSupport
-                      .stream(pack.getBiomeProvider()
-                                  .getBiomes()
-                                  .spliterator(), false)
-                      .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate()));
         this.pack = pack;
         
         LOGGER.debug("Biomes: " + getBiomes());
@@ -54,6 +50,15 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     protected Codec<? extends BiomeSource> getCodec() {
         return Codecs.TERRA_BIOME_SOURCE;
+    }
+    
+    @Override
+    protected Stream<RegistryEntry<Biome>> biomeStream() {
+        return StreamSupport
+                .stream(pack.getBiomeProvider()
+                            .getBiomes()
+                            .spliterator(), false)
+                .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate());
     }
     
     @Override
