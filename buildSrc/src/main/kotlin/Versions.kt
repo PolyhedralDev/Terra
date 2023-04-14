@@ -38,8 +38,6 @@ object Versions {
         const val architecturyPlugin = "3.4-SNAPSHOT"
         
         const val loomQuiltflower = "1.7.1"
-        
-        const val lazyDfu = "0.1.2"
     }
     
     object Forge {

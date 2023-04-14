@@ -39,11 +39,6 @@ dependencies {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
-    
-    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}") {
-        exclude("net.fabricmc")
-        exclude("net.fabricmc.fabric-api")
-    }
 }
 
 loom {
