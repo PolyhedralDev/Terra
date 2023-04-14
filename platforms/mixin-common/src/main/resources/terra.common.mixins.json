@@ -9,6 +9,7 @@
         "access.StateAccessor",
         "access.StructureAccessorAccessor",
         "access.VillagerTypeAccessor",
+        "access.WorldPresetsRegistrarAccessor",
         "fix.BeeMoveGoalsUnsynchronizedRandomAccessFix",
         "fix.NetherFossilOptimization",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
@@ -36,7 +37,8 @@
         "implementations.terra.inventory.meta.ItemStackMetaMixin",
         "implementations.terra.world.ChunkRegionMixin",
         "implementations.terra.world.ServerWorldMixin",
-        "lifecycle.DataPackContentsMixin"
+        "lifecycle.DataPackContentsMixin",
+        "lifecycle.WorldPresetsRegistrarMixin"
     ],
     "client": [
     ],

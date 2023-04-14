@@ -2,19 +2,26 @@ package com.dfsek.terra.mod.util;
 
 import com.dfsek.terra.mod.ModPlatform;
 
+import com.dfsek.terra.mod.mixin.access.WorldPresetsRegistrarAccessor;
+import com.dfsek.terra.mod.mixin_ifaces.RegistrarInstance;
+
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
+import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterLists;
 import net.minecraft.world.biome.source.TheEndBiomeSource;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.WorldPreset;
+import net.minecraft.world.gen.WorldPresets;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
@@ -40,25 +47,7 @@ public class PresetUtil {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         
-        RegistryEntry<DimensionType> theNetherDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
-        RegistryEntry<ChunkGeneratorSettings>
-                netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER).orElseThrow();
-        DimensionOptions netherDimensionOptions = new DimensionOptions(theNetherDimensionType,
-                                                                       new NoiseChunkGenerator(
-                                                                               MultiNoiseBiomeSource.Preset.NETHER.getBiomeSource(
-                                                                                       platform.biomeRegistry().getReadOnlyWrapper()),
-                                                                               netherChunkGeneratorSettings));
-        RegistryEntry<DimensionType> theEndDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_END).orElseThrow();
-        RegistryEntry<ChunkGeneratorSettings> endChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
-                ChunkGeneratorSettings.END).orElseThrow();
-        DimensionOptions endDimensionOptions = new DimensionOptions(theEndDimensionType,
-                                                                    new NoiseChunkGenerator(
-                                                                            TheEndBiomeSource.createVanilla(
-                                                                                    platform.biomeRegistry().getReadOnlyWrapper()),
-                                                                            endChunkGeneratorSettings));
-        
         RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.OVERWORLD).orElseThrow();
-        
         RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD)
                                                                                         .orElseThrow();
         
@@ -71,13 +60,7 @@ public class PresetUtil {
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
         
         DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
-        WorldPreset preset = new WorldPreset(
-                Map.of(
-                        DimensionOptions.OVERWORLD, dimensionOptions,
-                        DimensionOptions.NETHER, netherDimensionOptions,
-                        DimensionOptions.END, endDimensionOptions
-                      )
-        );
+        WorldPreset preset = ((WorldPresetsRegistrarAccessor) RegistrarInstance.INSTANCE).callCreatePreset(dimensionOptions);
         LOGGER.info("Created world type \"{}\"", generatorID);
         return Pair.of(generatorID, preset);
     }
