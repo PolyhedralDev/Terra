@@ -7,6 +7,9 @@ import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
+
+
 /**
  * Computes a 2D distance transform of a given image and stores the result in a 2D array of distances.
  * Implementation based on the algorithm described in the paper
@@ -188,10 +191,6 @@ public class DistanceTransform {
         }
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
-    }
-    
-    private static double lerp(double x, double x1, double y1, double x2, double y2) {
-        return (((y1-y2)*(x-x1))/(x1-x2))+y1;
     }
     
     public enum CostFunction {
