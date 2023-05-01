@@ -1,8 +1,8 @@
-package com.dfsek.terra.addons.image.sampler.image;
+package com.dfsek.terra.addons.image.colorsampler.image;
 
 import com.dfsek.terra.addons.image.image.Image;
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
-import com.dfsek.terra.addons.image.sampler.image.transform.ImageTransformation;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.image.transform.ImageTransformation;
 
 
 public class SingleImageColorSampler implements ColorSampler {

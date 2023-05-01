@@ -1,12 +1,12 @@
-package com.dfsek.terra.addons.image.config.sampler.image;
+package com.dfsek.terra.addons.image.config.colorsampler.image;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.image.image.Image;
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
-import com.dfsek.terra.addons.image.sampler.image.transform.Alignment;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 
 
 public abstract class ImageColorSamplerTemplate implements ObjectTemplate<ColorSampler> {

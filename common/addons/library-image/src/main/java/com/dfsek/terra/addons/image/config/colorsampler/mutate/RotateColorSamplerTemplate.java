@@ -1,10 +1,10 @@
-package com.dfsek.terra.addons.image.config.sampler.mutate;
+package com.dfsek.terra.addons.image.config.colorsampler.mutate;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import net.jafama.FastMath;
 
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
-import com.dfsek.terra.addons.image.sampler.mutate.RotateColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.mutate.RotateColorSampler;
 
 
 public class RotateColorSamplerTemplate extends MutateColorSamplerTemplate {

@@ -1,6 +1,6 @@
-package com.dfsek.terra.addons.image.sampler.mutate;
+package com.dfsek.terra.addons.image.colorsampler.mutate;
 
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 
 
 public class TranslateColorSampler implements ColorSampler {

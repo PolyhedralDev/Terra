@@ -1,10 +1,10 @@
-package com.dfsek.terra.addons.image.sampler.image;
+package com.dfsek.terra.addons.image.colorsampler.image;
 
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.image.image.Image;
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
-import com.dfsek.terra.addons.image.sampler.image.transform.ImageTransformation;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.image.transform.ImageTransformation;
 
 
 public class TileImageColorSampler implements ColorSampler {

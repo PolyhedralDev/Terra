@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.image.sampler;
+package com.dfsek.terra.addons.image.colorsampler;
 
 @FunctionalInterface
 public interface ColorSampler {

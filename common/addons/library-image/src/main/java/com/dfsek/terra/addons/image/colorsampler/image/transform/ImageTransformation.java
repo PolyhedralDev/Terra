@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.image.sampler.image.transform;
+package com.dfsek.terra.addons.image.colorsampler.image.transform;
 
 import com.dfsek.terra.addons.image.image.Image;
 

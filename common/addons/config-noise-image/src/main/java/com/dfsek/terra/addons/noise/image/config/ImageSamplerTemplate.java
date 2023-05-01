@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.noise.image.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.image.ImageSampler;

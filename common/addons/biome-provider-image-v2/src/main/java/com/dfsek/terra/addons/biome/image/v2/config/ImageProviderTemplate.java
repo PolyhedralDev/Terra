@@ -14,7 +14,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.biome.image.v2.ImageBiomeProvider;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 

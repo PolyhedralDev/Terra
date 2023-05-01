@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.noise.image;
 
-import com.dfsek.terra.addons.image.sampler.ColorSampler;
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
