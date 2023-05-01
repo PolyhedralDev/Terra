@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.image.config.image;
+package com.dfsek.terra.addons.image.config.noisesampler;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;

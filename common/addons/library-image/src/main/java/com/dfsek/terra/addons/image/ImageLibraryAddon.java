@@ -4,7 +4,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.image.config.image.DistanceTransformNoiseSamplerTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
 import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.ConstantColorSamplerTemplate;
@@ -54,7 +54,6 @@ public class ImageLibraryAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
                     imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
                     imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
-//                    imageRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformTemplate::new);
                 })
                 .then(event -> {
                     event.getPack()
