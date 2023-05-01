@@ -61,6 +61,29 @@ public class ColorUtil {
         return channel.zero(rgb);
     }
     
+    /*
+     * Multiply each color channel by the alpha channel
+     */
+    public static int premultiply(int rgb) {
+        int alpha = getAlpha(rgb);
+        int red = (getRed(rgb) * alpha + 127) / 255;
+        int green = (getGreen(rgb) * alpha + 127) / 255;
+        int blue = (getBlue(rgb) * alpha + 127) / 255;
+        return rgb(alpha, red, green, blue);
+    }
+    
+    public static int rgb(int alpha, int red, int green, int blue) {
+        return rgbAlpha(alpha) | rgbRed(red) | rgbGreen(green) | rgbBlue(blue);
+    }
+    
+    public static int rgbAlpha(int alpha) { return alpha << 24; }
+    
+    public static int rgbRed(int red) { return red << 16; }
+    
+    public static int rgbGreen(int green) { return green << 8; }
+    
+    public static int rgbBlue(int blue) { return blue; }
+    
     public enum Channel {
         RED {
             @Override
