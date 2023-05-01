@@ -4,6 +4,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
 import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
@@ -65,6 +66,7 @@ public class ImageLibraryAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
                             NOISE_SAMPLER_TOKEN);
                     noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformNoiseSamplerTemplate::new);
+                    noiseRegistry.register(addon.key("CHANNEL"), ChannelNoiseSamplerTemplate::new);
                 })
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
