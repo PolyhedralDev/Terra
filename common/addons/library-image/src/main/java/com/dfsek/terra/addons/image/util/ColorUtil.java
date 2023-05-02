@@ -76,6 +76,15 @@ public class ColorUtil {
         return rgbAlpha(alpha) | rgbRed(red) | rgbGreen(green) | rgbBlue(blue);
     }
     
+    public static int rgbValidated(int alpha, int red, int green, int blue) throws IllegalArgumentException {
+        if (alpha < 0 || alpha > 255 ||
+            red < 0 || red > 255 ||
+            green < 0 || green > 255 ||
+            blue < 0 || blue > 255
+        ) throw new IllegalArgumentException("Channel values must be in range 0-255");
+        return rgb(alpha, red, green, blue);
+    }
+    
     public static int rgbAlpha(int alpha) { return alpha << 24; }
     
     public static int rgbRed(int red) { return red << 16; }
