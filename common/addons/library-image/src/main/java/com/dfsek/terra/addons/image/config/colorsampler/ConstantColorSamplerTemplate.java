@@ -14,6 +14,6 @@ public class ConstantColorSamplerTemplate implements ObjectTemplate<ColorSampler
     
     @Override
     public ColorSampler get() {
-        return ((x, z) -> color.argb());
+        return ((x, z) -> color.getColor());
     }
 }
