@@ -17,26 +17,52 @@ public class DistanceTransformNoiseSamplerTemplate implements ObjectTemplate<Noi
     @Value("image")
     private Image image;
     
+    /**
+     * The threshold value applied to the channel specified in the 'channel' parameter that splits
+     * the image into a binary image. This parameter is only used for cost functions that utilize
+     * a binary image.
+     */
     @Value("threshold")
     @Default
     private int threshold = 127;
     
+    /**
+     * If set to true, distances calculated will be clamped to stay above the largest
+     * distance calculated on the edges of the image. This ensures output values do not
+     * appear to be cut off at the image boundaries. It is recommended to leave padding
+     * around the image if this is in use, such that larger evaluated distances do not
+     * get cut out by smaller evaluated distances close to borders. Doing so will yield
+     * better results.
+     */
     @Value("clamp-to-max-edge")
     @Default
     private boolean clampToEdge = false;
     
+    /**
+     * The target channel to run distance calculations on.
+     */
     @Value("channel")
     @Default
     private Channel channel = Channel.GRAYSCALE;
     
+    /**
+     * The method of image processing applied to the specified image prior to calculating
+     * distances.
+     */
     @Value("cost-function")
     @Default
     private CostFunction costFunction = CostFunction.Channel;
     
+    /**
+     * Inverts the resulting binary image that may be used as a cost function.
+     */
     @Value("invert-threshold")
     @Default
     private boolean invertThreshold = false;
     
+    /**
+     * How the final distance calculation should be redistributed.
+     */
     @Value("normalization")
     @Default
     private Normalization normalization = Normalization.None;

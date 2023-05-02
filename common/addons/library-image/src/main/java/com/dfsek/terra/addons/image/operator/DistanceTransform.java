@@ -201,8 +201,21 @@ public class DistanceTransform {
     }
     
     public enum Normalization {
+        /**
+         * Return the raw calculated distances.
+         */
         None,
+        
+        /**
+         * Redistribute the output values to fit in the range [-1, 1]
+         */
         Linear,
+        
+        /**
+         * Redistributes smoothly to the range [-1, 1], such that areas where distance = 0 stay 0.
+         * This is only really applicable to signed distance calculations, and will fall back to linear
+         * redistribution if the input range does not contain both positive and negative values.
+         */
         SmoothPreserveZero,
     }
     
