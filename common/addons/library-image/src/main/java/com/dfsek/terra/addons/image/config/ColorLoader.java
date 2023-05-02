@@ -70,7 +70,7 @@ public class ColorLoader implements TypeLoader<ColorString> {
                 green = Integer.parseInt(hex.substring(2, 4), 16);
                 blue = Integer.parseInt(hex.substring(4, 6), 16);
                 
-                return ColorUtil.rgbValidated(alpha, red, green, blue);
+                return ColorUtil.argbValidated(alpha, red, green, blue);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Failed to parse hex color", e);
             }
@@ -83,7 +83,7 @@ public class ColorLoader implements TypeLoader<ColorString> {
                 int g = Integer.decode(green);
                 int b = Integer.decode(blue);
                 
-                return ColorUtil.rgbValidated(a, r, g, b);
+                return ColorUtil.argbValidated(a, r, g, b);
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Invalid channel value", e);
             }
