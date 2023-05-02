@@ -93,6 +93,8 @@ public class ColorUtil {
     
     public static int argbBlue(int blue) { return blue; }
     
+    public static int argbGrayscale(int value) { return argb(value, value, value, value); }
+    
     public enum Channel {
         RED {
             @Override
@@ -103,6 +105,11 @@ public class ColorUtil {
             @Override
             public int zero(int argb) {
                 return zeroRed(argb);
+            }
+            
+            @Override
+            public int argb(int value) {
+                return argbRed(value);
             }
         },
         GREEN {
@@ -115,6 +122,11 @@ public class ColorUtil {
             public int zero(int argb) {
                 return zeroGreen(argb);
             }
+            
+            @Override
+            public int argb(int value) {
+                return argbGreen(value);
+            }
         },
         BLUE {
             @Override
@@ -125,6 +137,11 @@ public class ColorUtil {
             @Override
             public int zero(int argb) {
                 return zeroBlue(argb);
+            }
+            
+            @Override
+            public int argb(int value) {
+                return argbBlue(value);
             }
         },
         GRAYSCALE {
@@ -137,6 +154,11 @@ public class ColorUtil {
             public int zero(int argb) {
                 return zeroGrayscale(argb);
             }
+            
+            @Override
+            public int argb(int value) {
+                return argbAlpha(value);
+            }
         },
         ALPHA {
             @Override
@@ -148,10 +170,17 @@ public class ColorUtil {
             public int zero(int argb) {
                 return zeroAlpha(argb);
             }
+            
+            @Override
+            public int argb(int value) {
+                return argbAlpha(value);
+            }
         };
         
         public abstract int from(int argb);
         
         public abstract int zero(int argb);
+        
+        public abstract int argb(int value);
     }
 }
