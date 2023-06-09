@@ -11,6 +11,7 @@ import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
@@ -95,6 +96,11 @@ public class PipelineBiomeProvider implements BiomeProvider {
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
+    }
+    
+    @Override
+    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+        return Optional.of(getBiome(x, z, seed));
     }
     
     @Override

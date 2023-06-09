@@ -1,18 +1,8 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.mod.ModPlatform;
-
-import com.dfsek.terra.mod.mixin.access.WorldPresetsRegistrarAccessor;
-import com.dfsek.terra.mod.mixin_ifaces.RegistrarInstance;
-
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryEntryLookup;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterLists;
@@ -21,7 +11,6 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.WorldPreset;
-import net.minecraft.world.gen.WorldPresets;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
@@ -35,6 +24,7 @@ import java.util.Map;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
