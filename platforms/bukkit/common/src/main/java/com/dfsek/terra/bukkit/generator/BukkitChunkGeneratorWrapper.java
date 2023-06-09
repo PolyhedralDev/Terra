@@ -45,12 +45,14 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final BlockState air;
     private ChunkGenerator delegate;
     private ConfigPack pack;
+    private final BukkitBlockPopulator blockPopulator;
     
 
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
         this.air = air;
+        this.blockPopulator = new BukkitBlockPopulator(pack, air);
     }
     
     public void setDelegate(ChunkGenerator delegate) {
@@ -70,16 +72,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
-        return pack.getStages()
-                   .stream()
-                   .map(generationStage -> new BlockPopulator() {
-                       @Override
-                       public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z,
-                                            @NotNull LimitedRegion limitedRegion) {
-                           generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider()));
-                       }
-                   })
-                   .collect(Collectors.toList());
+        return List.of(blockPopulator);
     }
     
     @Override
