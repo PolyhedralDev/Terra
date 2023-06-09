@@ -37,8 +37,7 @@
         "implementations.terra.inventory.meta.ItemStackMetaMixin",
         "implementations.terra.world.ChunkRegionMixin",
         "implementations.terra.world.ServerWorldMixin",
-        "lifecycle.DataPackContentsMixin",
-        "lifecycle.WorldPresetsRegistrarMixin"
+        "lifecycle.DataPackContentsMixin"
     ],
     "client": [
     ],
