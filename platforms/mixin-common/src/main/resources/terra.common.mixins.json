@@ -9,7 +9,6 @@
         "access.StateAccessor",
         "access.StructureAccessorAccessor",
         "access.VillagerTypeAccessor",
-        "access.WorldPresetsRegistrarAccessor",
         "fix.BeeMoveGoalsUnsynchronizedRandomAccessFix",
         "fix.NetherFossilOptimization",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
