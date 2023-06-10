@@ -155,11 +155,11 @@ public final class MinecraftUtil {
             effects.music(vanillaBiomeProperties.getMusic());
         }
         
-        builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.getPrecipitation()));
+        builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.hasPrecipitation()));
         
         builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getTemperature()));
         
-        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), vanilla.getDownfall()));
+        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), ((BiomeAccessor) ((Object) vanilla)).getWeather().downfall()));
         
         builder.temperatureModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(),
                                                                ((BiomeAccessor) ((Object) vanilla)).getWeather().temperatureModifier()));

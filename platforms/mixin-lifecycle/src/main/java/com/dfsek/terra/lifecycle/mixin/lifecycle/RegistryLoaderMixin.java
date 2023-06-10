@@ -1,33 +1,29 @@
 package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
-import com.dfsek.terra.lifecycle.LifecyclePlatform;
-
-import com.dfsek.terra.lifecycle.util.RegistryHack;
-
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.registry.MutableRegistry;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryLoader;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import org.checkerframework.checker.units.qual.C;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.dfsek.terra.lifecycle.LifecyclePlatform;
 import com.dfsek.terra.lifecycle.util.LifecycleUtil;
+import com.dfsek.terra.lifecycle.util.RegistryHack;
 
 
 @Mixin(RegistryLoader.class)
@@ -56,8 +52,9 @@ public class RegistryLoaderMixin {
                     MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
                     MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance,
                                                                                                      RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
+                    MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance, RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
                     
-                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings);
+                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists);
                     LifecycleUtil.initialize(biomes, worldPresets);
                 });
         instance.forEach(consumer);

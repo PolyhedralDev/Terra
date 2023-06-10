@@ -52,7 +52,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     
     @Value("climate.precipitation")
     @Default
-    private Precipitation precipitation = null;
+    private Boolean precipitation = true;
     
     @Value("climate.temperature")
     @Default
@@ -122,7 +122,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return particleConfig;
     }
     
-    public Precipitation getPrecipitation() {
+    public Boolean getPrecipitation() {
         return precipitation;
     }
     
