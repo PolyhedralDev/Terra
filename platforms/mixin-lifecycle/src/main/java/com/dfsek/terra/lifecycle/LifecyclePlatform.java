@@ -2,8 +2,13 @@ package com.dfsek.terra.lifecycle;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
+
+import com.dfsek.terra.lifecycle.util.BiomeUtil;
+
 import net.minecraft.MinecraftVersion;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
@@ -55,6 +60,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
         
         
         if(server != null) {
+            BiomeUtil.registerBiomes(server.getRegistryManager().get(RegistryKeys.BIOME));
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
