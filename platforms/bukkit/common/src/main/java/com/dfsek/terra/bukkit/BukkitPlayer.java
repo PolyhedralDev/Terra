@@ -45,14 +45,14 @@ public class BukkitPlayer implements Player {
     
     @Override
     public void position(Vector3 location) {
-        delegate.teleport(BukkitAdapter.adapt(location).toLocation(delegate.getWorld()));
+        delegate.teleportAsync(BukkitAdapter.adapt(location).toLocation(delegate.getWorld()));
     }
     
     @Override
     public void world(ServerWorld world) {
         Location newLoc = delegate.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
-        delegate.teleport(newLoc);
+        delegate.teleportAsync(newLoc);
     }
     
     @Override

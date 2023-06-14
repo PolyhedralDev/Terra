@@ -85,7 +85,7 @@ public class PlatformImpl extends AbstractPlatform {
     
     @Override
     public void runPossiblyUnsafeTask(@NotNull Runnable task) {
-        Bukkit.getScheduler().runTask(plugin, task);
+        FoliaUtil.runGlobalTask(plugin, task);
     }
     
     @Override

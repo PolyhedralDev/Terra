@@ -44,14 +44,14 @@ public class BukkitEntity implements Entity {
     
     @Override
     public void position(Vector3 location) {
-        entity.teleport(BukkitAdapter.adapt(location).toLocation(entity.getWorld()));
+        entity.teleportAsync(BukkitAdapter.adapt(location).toLocation(entity.getWorld()));
     }
     
     @Override
     public void world(ServerWorld world) {
         Location newLoc = entity.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
-        entity.teleport(newLoc);
+        entity.teleportAsync(newLoc);
     }
     
     @Override

@@ -150,7 +150,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
+                FoliaUtil.runGlobalTaskDelayed(this, runnable, 200L);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
