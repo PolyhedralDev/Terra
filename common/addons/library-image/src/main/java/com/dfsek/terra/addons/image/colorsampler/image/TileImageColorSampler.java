@@ -19,7 +19,7 @@ public class TileImageColorSampler implements ColorSampler {
     }
     
     @Override
-    public Integer apply(int x, int z) {
+    public int apply(int x, int z) {
         x = transformation.transformX(image, x);
         z = transformation.transformZ(image, z);
         return image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(z, image.getHeight()));

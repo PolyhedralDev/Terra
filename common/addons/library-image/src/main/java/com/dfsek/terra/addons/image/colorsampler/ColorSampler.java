@@ -8,5 +8,5 @@ public interface ColorSampler {
      * @param z World z coordinate
      * @return Integer representing a web color
      */
-    Integer apply(int x, int z);
+    int apply(int x, int z);
 }

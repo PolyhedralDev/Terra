@@ -15,7 +15,7 @@ public class TranslateColorSampler implements ColorSampler {
     }
     
     @Override
-    public Integer apply(int x, int z) {
+    public int apply(int x, int z) {
         return sampler.apply(x - translateX, z - translateZ);
     }
 }

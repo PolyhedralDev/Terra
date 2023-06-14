@@ -25,7 +25,7 @@ public class ExactColorConverter<T> implements ColorConverter<T> {
     }
     
     @Override
-    public T apply(Integer color) {
+    public T apply(int color) {
         if (ignoreAlpha) {
             color = ColorUtil.zeroAlpha(color);
         }

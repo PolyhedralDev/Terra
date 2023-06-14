@@ -20,7 +20,7 @@ public class SingleImageColorSampler implements ColorSampler {
     }
     
     @Override
-    public Integer apply(int x, int z) {
+    public int apply(int x, int z) {
         var nx = transformation.transformX(image, x);
         var nz = transformation.transformZ(image, z);
         if(nx < 0 || nz < 0 || nx >= image.getWidth() || nz >= image.getHeight()) return fallback.apply(x, z);

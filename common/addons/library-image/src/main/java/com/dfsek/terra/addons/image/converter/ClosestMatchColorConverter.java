@@ -16,7 +16,7 @@ public class ClosestMatchColorConverter<T> implements ColorConverter<T> {
     }
 
     @Override
-    public T apply(Integer color) {
+    public T apply(int color) {
         int closest = 0;
         int smallestDistance = Integer.MAX_VALUE;
         for(int compare : colors) {
