@@ -26,6 +26,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -142,6 +143,11 @@ public class ForgePlatform extends ModPlatform {
     
     @Override
     public Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry() {
+        return null;
+    }
+    
+    @Override
+    public Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry() {
         return null;
     }
 }
