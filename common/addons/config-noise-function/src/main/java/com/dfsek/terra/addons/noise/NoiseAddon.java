@@ -92,9 +92,9 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
-            
+    
                   noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
-            
+    
                   noiseRegistry.register(addon.key("DOMAIN_WARP"), DomainWarpTemplate::new);
             
                   noiseRegistry.register(addon.key("FBM"), BrownianMotionTemplate::new);
