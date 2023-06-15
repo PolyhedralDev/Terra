@@ -5,21 +5,31 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.village.VillagerType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
+import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
+import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -57,7 +67,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
-                .forEach(pack -> PresetUtil.createDefault(pack).apply(registerFunction));
+                .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
     }
     
     @Override
@@ -94,7 +104,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(BuiltinRegistries.BIOME.get(identifier) == null) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
+        if(!biomeRegistry().containsId(identifier)) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
     
@@ -104,6 +114,11 @@ public abstract class ModPlatform extends AbstractPlatform {
     }
     
     protected abstract BaseAddon getPlatformAddon();
+    
+    public abstract Registry<DimensionType> dimensionTypeRegistry();
+    public abstract Registry<Biome> biomeRegistry();
+    public abstract Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry();
+    public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
     
     @Override
     public @NotNull WorldHandle getWorldHandle() {

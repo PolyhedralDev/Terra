@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.biome.image;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
@@ -24,6 +26,9 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class ImageBiomeProviderAddon implements AddonInitializer {
+    
+    private static final Logger logger = LoggerFactory.getLogger(ImageBiomeProviderAddon.class);
+    
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
     
@@ -45,5 +50,6 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                                               () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
                 })
                 .failThrough();
+        logger.warn("The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-image-v2 addon for future pack development instead.");
     }
 }

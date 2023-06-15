@@ -12,7 +12,7 @@ import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.addons.chunkgenerator.config.palette.PaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
@@ -40,13 +40,13 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final int carverHorizontalResolution;
     private final int carverVerticalResolution;
     
-    private final PropertyKey<PaletteInfo> paletteInfoPropertyKey;
+    private final PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     
     public NoiseChunkGenerator3D(ConfigPack pack, Platform platform, int elevationBlend, int carverHorizontalResolution,
                                  int carverVerticalResolution,
                                  PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
-                                 PropertyKey<PaletteInfo> paletteInfoPropertyKey) {
+                                 PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
@@ -97,7 +97,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
                 for(int y = world.getMaxHeight() - 1; y >= world.getMinHeight(); y--) {
                     Biome biome = biomeColumn.get(y);
                     
-                    PaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
+                    BiomePaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
                     
                     int sea = paletteInfo.seaLevel();
                     Palette seaPalette = paletteInfo.ocean();
@@ -131,7 +131,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         Biome biome = biomeProvider.getBiome(x, y, z, world.getSeed());
         Sampler3D sampler = samplerCache.get(x, z, world, biomeProvider);
         
-        PaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
+        BiomePaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
         
         int fdX = FastMath.floorMod(x, 16);
         int fdZ = FastMath.floorMod(z, 16);

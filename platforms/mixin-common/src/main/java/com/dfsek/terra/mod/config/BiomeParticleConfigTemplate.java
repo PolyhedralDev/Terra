@@ -6,6 +6,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.ParticleEffectArgumentType;
+import net.minecraft.registry.Registries;
 import net.minecraft.world.biome.BiomeParticleConfig;
 
 
@@ -25,7 +26,7 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
         }
         
         try {
-            return new BiomeParticleConfig(ParticleEffectArgumentType.readParameters(new StringReader(particle)), probability);
+            return new BiomeParticleConfig(ParticleEffectArgumentType.readParameters(new StringReader(particle), Registries.PARTICLE_TYPE.getReadOnlyWrapper()), probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -283,7 +283,7 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ConfigType.class, configTypeRegistry)
-                .registerLoader(BufferedImage.class, new BufferedImageLoader(loader));
+                .registerLoader(BufferedImage.class, new BufferedImageLoader(loader, this));
         registryMap.forEach(registry::registerLoader);
         shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
     }
