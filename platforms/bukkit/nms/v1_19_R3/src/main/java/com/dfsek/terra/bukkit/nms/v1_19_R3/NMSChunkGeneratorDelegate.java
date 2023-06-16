@@ -10,6 +10,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Beardifier;
@@ -152,18 +153,14 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
-        /*
         BlockState[] array = new BlockState[world.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, world);
-        BiomeProvider biomeProvider = pack.getBiomeProvider().caching(properties);
+        BiomeProvider biomeProvider = pack.getBiomeProvider();
         for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
             array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider)
                                                                              .getHandle()).getState();
         }
         return new NoiseColumn(getMinY(), array);
-
-         */
-        return vanilla.getBaseColumn(x, z, world, noiseConfig);
     }
 
     @Override
