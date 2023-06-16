@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_19_R3;
+package com.dfsek.terra.bukkit.nms.v1_20_R1;
 
 import net.minecraft.world.level.LevelHeightAccessor;
 
