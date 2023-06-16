@@ -18,6 +18,7 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
 
 import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -34,17 +35,17 @@ import com.dfsek.terra.api.block.entity.Sign;
 @Implements(@Interface(iface = Sign.class, prefix = "terra$"))
 public abstract class SignBlockEntityMixin {
     @Shadow
-    @Final
-    private Text[] texts;
+    private SignText frontText;
     
     @Shadow
-    public abstract void setTextOnRow(int row, Text text);
+    public abstract boolean setText(SignText text, boolean front);
     
     public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
-        setTextOnRow(index, Text.literal(line));
+        setText(frontText.withMessage(index, Text.literal(line)), true);
     }
     
     public @NotNull String[] terra$getLines() {
+        Text[] texts = frontText.getMessages(false);
         String[] lines = new String[texts.length];
         for(int i = 0; i < texts.length; i++) {
             lines[i] = texts[i].getString();
@@ -53,7 +54,7 @@ public abstract class SignBlockEntityMixin {
     }
     
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
-        return texts[index].getString();
+        return frontText.getMessage(index, false).getString();
     }
     
     public void terra$applyState(String state) {
