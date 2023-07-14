@@ -19,7 +19,7 @@ object Versions {
     
     object Fabric {
         const val fabricLoader = "0.14.8"
-        const val fabricAPI = "0.78.0+1.19.4"
+        const val fabricAPI = "0.83.1+1.20.1"
     }
     
     object Quilt {
@@ -30,9 +30,9 @@ object Versions {
     object Mod {
         const val mixin = "0.11.2+mixin.0.8.5"
         
-        const val minecraft = "1.19.4"
+        const val minecraft = "1.20.1"
         const val yarn = "$minecraft+build.2"
-        const val fabricLoader = "0.14.2"
+        const val fabricLoader = "0.14.21"
         
         const val architecuryLoom = "0.12.0.290"
         const val architecturyPlugin = "3.4-SNAPSHOT"
@@ -41,16 +41,16 @@ object Versions {
     }
     
     object Forge {
-        const val forge = "${Mod.minecraft}-45.0.43"
+        const val forge = "${Mod.minecraft}-47.0.3"
         const val burningwave = "12.53.0"
     }
     
     object Bukkit {
         const val paper = "1.18.2-R0.1-SNAPSHOT"
         const val paperLib = "1.0.5"
-        const val minecraft = "1.19.4"
+        const val minecraft = "1.20.1"
         const val reflectionRemapper = "0.1.0-SNAPSHOT"
-        const val paperDevBundle = "1.19.4-R0.1-SNAPSHOT"
+        const val paperDevBundle = "1.20.1-R0.1-SNAPSHOT"
     }
     
     object Sponge {

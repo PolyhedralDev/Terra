@@ -38,17 +38,17 @@ import com.dfsek.terra.api.entity.Player;
 @Implements(@Interface(iface = CommandSender.class, prefix = "terra$"))
 public abstract class ServerCommandSourceMixin {
     @Shadow
-    public abstract void sendFeedback(Text message, boolean broadcastToOps);
-    
-    @Shadow
     public abstract ServerPlayerEntity getPlayer() throws CommandSyntaxException;
     
     @Shadow
     @Nullable
     public abstract net.minecraft.entity.@Nullable Entity getEntity();
     
+    @Shadow
+    public abstract void sendMessage(Text message);
+    
     public void terra$sendMessage(String message) {
-        sendFeedback(Text.literal(message), true);
+        sendMessage(Text.literal(message));
     }
     
     @Nullable
