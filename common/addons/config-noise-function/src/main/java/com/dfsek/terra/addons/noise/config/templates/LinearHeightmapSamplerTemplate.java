@@ -4,6 +4,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.samplers.LinearHeightmapSampler;
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -11,14 +12,14 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class LinearHeightmapSamplerTemplate extends SamplerTemplate<LinearHeightmapSampler> {
     @Value("sampler")
     @Default
-    private NoiseSampler sampler = NoiseSampler.zero();
+    private @Meta NoiseSampler sampler = NoiseSampler.zero();
     
     @Value("base")
-    private double base;
+    private @Meta double base;
     
     @Value("scale")
     @Default
-    private double scale = 1;
+    private @Meta double scale = 1;
     
     @Override
     public NoiseSampler get() {
