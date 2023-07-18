@@ -21,6 +21,7 @@ import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
 import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.TranslateSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
@@ -117,12 +118,15 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("GAUSSIAN"), () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+                  
+                  noiseRegistry.register(addon.key("DISTANCE"), DistanceSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("CONSTANT"), ConstantNoiseTemplate::new);
             
                   noiseRegistry.register(addon.key("KERNEL"), KernelTemplate::new);
             
                   noiseRegistry.register(addon.key("LINEAR_HEIGHTMAP"), LinearHeightmapSamplerTemplate::new);
+                  noiseRegistry.register(addon.key("TRANSLATE"), TranslateSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("ADD"), () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register(addon.key("SUB"), () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
