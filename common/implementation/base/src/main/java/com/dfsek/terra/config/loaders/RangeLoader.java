@@ -24,13 +24,14 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
+import com.dfsek.tectonic.impl.MapConfiguration;
+
 import com.dfsek.terra.api.config.meta.Meta;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
@@ -42,19 +43,17 @@ public class RangeLoader implements TypeLoader<Range> {
     public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
         if(o instanceof Map) {
-            return configLoader.loadType(RangeMap.class, o, depthTracker).get();
+            return configLoader.load(new RangeMapTemplate(), new MapConfiguration((Map<String, Object>) o), depthTracker).get();
         } else {
             int h = configLoader.loadType(Integer.class, o, depthTracker);
             return new ConstantRange(h, h + 1);
         }
     }
     
-    public interface RangeMap extends Supplier<Range> {}
-    
     /*
      * Template needed so keys can be meta annotated, otherwise the loader could just grab keys directly from the object
      */
-    public static class RangeMapTemplate implements ObjectTemplate<RangeMap> {
+    public static class RangeMapTemplate implements ObjectTemplate<Range> {
         @Value("min")
         private @Meta int min;
         
@@ -62,8 +61,8 @@ public class RangeLoader implements TypeLoader<Range> {
         private @Meta int max;
         
         @Override
-        public RangeMap get() {
-            return () -> new ConstantRange(min, max);
+        public Range get() {
+            return new ConstantRange(min, max);
         }
     }
 }
