@@ -24,6 +24,7 @@ import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTempl
 import com.dfsek.terra.addons.noise.config.templates.TranslateSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.DistanceSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.GaborNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.SimpleNoiseTemplate;
@@ -44,6 +45,7 @@ import com.dfsek.terra.addons.noise.samplers.arithmetic.MinSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.addons.noise.samplers.noise.DistanceSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.PositiveWhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
@@ -85,6 +87,8 @@ public class NoiseAddon implements AddonInitializer {
                                     (type, o, loader, depthTracker) -> CellularSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(CellularSampler.ReturnType.class,
                                     (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
+                       .applyLoader(DistanceSampler.DistanceFunction.class,
+                                    (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
             
