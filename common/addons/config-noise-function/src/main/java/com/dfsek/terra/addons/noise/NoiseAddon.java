@@ -30,6 +30,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotio
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractalTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
@@ -134,7 +135,7 @@ public class NoiseAddon implements AddonInitializer {
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
                   noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
-            
+                  noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"), () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions));
             
                   NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                   packSamplers.putAll(template.getSamplers());
