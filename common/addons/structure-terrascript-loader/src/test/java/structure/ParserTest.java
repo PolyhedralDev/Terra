@@ -20,11 +20,11 @@ import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ParserTest {
@@ -35,7 +35,7 @@ public class ParserTest {
         
         parser.registerFunction("test", new FunctionBuilder<Test1>() {
             @Override
-            public Test1 build(List<Returnable<?>> argumentList, Position position) {
+            public Test1 build(List<Expression<?>> argumentList, SourcePosition position) {
                 return new Test1(argumentList.get(0), argumentList.get(1), position);
             }
             
@@ -45,10 +45,10 @@ public class ParserTest {
             }
             
             @Override
-            public Returnable.ReturnType getArgument(int position) {
+            public Expression.ReturnType getArgument(int position) {
                 return switch(position) {
-                    case 0 -> Returnable.ReturnType.STRING;
-                    case 1 -> Returnable.ReturnType.NUMBER;
+                    case 0 -> Expression.ReturnType.STRING;
+                    case 1 -> Expression.ReturnType.NUMBER;
                     default -> null;
                 };
             }
@@ -66,25 +66,25 @@ public class ParserTest {
     }
     
     private static class Test1 implements Function<Void> {
-        private final Returnable<?> a;
-        private final Returnable<?> b;
-        private final Position position;
+        private final Expression<?> a;
+        private final Expression<?> b;
+        private final SourcePosition position;
         
-        public Test1(Returnable<?> a, Returnable<?> b, Position position) {
+        public Test1(Expression<?> a, Expression<?> b, SourcePosition position) {
             this.a = a;
             this.b = b;
             this.position = position;
         }
         
         @Override
-        public Void apply(ImplementationArguments implementationArguments, Scope scope) {
-            System.out.println("string: " + a.apply(implementationArguments, scope) + ", double: " +
-                               b.apply(implementationArguments, scope));
+        public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+            System.out.println("string: " + a.invoke(implementationArguments, scope) + ", double: " +
+                               b.invoke(implementationArguments, scope));
             return null;
         }
         
         @Override
-        public Position getPosition() {
+        public SourcePosition getPosition() {
             return position;
         }
         

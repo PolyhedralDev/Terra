@@ -10,35 +10,35 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 import static com.dfsek.terra.api.util.MathUtil.EPSILON;
 
 
 public class EqualsStatement extends BinaryOperation<Object, Boolean> {
     
-    public EqualsStatement(Returnable<Object> left, Returnable<Object> right, Position position) {
+    public EqualsStatement(Expression<Object> left, Expression<Object> right, SourcePosition position) {
         super(left, right, position);
     }
     
     
     @Override
-    public Returnable.ReturnType returnType() {
-        return Returnable.ReturnType.BOOLEAN;
+    public Expression.ReturnType returnType() {
+        return Expression.ReturnType.BOOLEAN;
     }
     
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
-        Object leftValue = left.apply(implementationArguments, scope);
-        Object rightValue = right.apply(implementationArguments, scope);
+        Object leftValue = left.invoke(implementationArguments, scope);
+        Object rightValue = right.invoke(implementationArguments, scope);
         if(leftValue instanceof Number l && rightValue instanceof Number r) {
             return FastMath.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }

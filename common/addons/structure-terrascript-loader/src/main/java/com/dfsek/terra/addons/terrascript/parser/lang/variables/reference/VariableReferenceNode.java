@@ -7,16 +7,16 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables.reference;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public abstract class VariableReferenceNode<T> implements Returnable<T> {
+public abstract class VariableReferenceNode<T> implements Expression<T> {
     protected final int index;
-    private final Position position;
+    private final SourcePosition position;
     private final ReturnType type;
     
-    public VariableReferenceNode(Position position, ReturnType type, int index) {
+    public VariableReferenceNode(SourcePosition position, ReturnType type, int index) {
         this.position = position;
         this.type = type;
         this.index = index;
@@ -28,7 +28,7 @@ public abstract class VariableReferenceNode<T> implements Returnable<T> {
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

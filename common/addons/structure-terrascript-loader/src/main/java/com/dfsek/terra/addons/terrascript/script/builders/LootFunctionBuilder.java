@@ -9,11 +9,11 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.functions.LootFunction;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.LootTable;
@@ -32,9 +32,9 @@ public class LootFunctionBuilder implements FunctionBuilder<LootFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public LootFunction build(List<Returnable<?>> argumentList, Position position) {
-        return new LootFunction(registry, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position,
+    public LootFunction build(List<Expression<?>> argumentList, SourcePosition position) {
+        return new LootFunction(registry, (Expression<Number>) argumentList.get(0), (Expression<Number>) argumentList.get(1),
+                                (Expression<Number>) argumentList.get(2), (Expression<String>) argumentList.get(3), platform, position,
                                 script);
     }
     
@@ -44,10 +44,10 @@ public class LootFunctionBuilder implements FunctionBuilder<LootFunction> {
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
+    public Expression.ReturnType getArgument(int position) {
         return switch(position) {
-            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
-            case 3 -> Returnable.ReturnType.STRING;
+            case 0, 1, 2 -> Expression.ReturnType.NUMBER;
+            case 3 -> Expression.ReturnType.STRING;
             default -> null;
         };
     }

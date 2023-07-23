@@ -14,6 +14,6 @@ public class Executable {
     }
 
     public boolean execute(ImplementationArguments arguments) {
-        return script.apply(arguments, scope.get()).getLevel() != Block.ReturnLevel.FAIL;
+        return script.invoke(arguments, scope.get()).getLevel() != Block.ReturnLevel.FAIL;
     }
 }

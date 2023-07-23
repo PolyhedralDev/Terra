@@ -8,27 +8,27 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public abstract class ConstantExpression<T> implements Returnable<T> {
+public abstract class ConstantExpression<T> implements Expression<T> {
     private final T constant;
-    private final Position position;
+    private final SourcePosition position;
     
-    public ConstantExpression(T constant, Position position) {
+    public ConstantExpression(T constant, SourcePosition position) {
         this.constant = constant;
         this.position = position;
     }
     
     @Override
-    public T apply(ImplementationArguments implementationArguments, Scope scope) {
+    public T invoke(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

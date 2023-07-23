@@ -17,14 +17,14 @@ import java.util.List;
 /**
  * Stream-like data structure that allows viewing future elements without consuming current.
  */
-public class Lookahead {
+public class LookaheadStream {
     private final List<Char> buffer = new ArrayList<>();
     private final Reader input;
     private int index = 0;
     private int line = 0;
     private boolean end = false;
     
-    public Lookahead(Reader r) {
+    public LookaheadStream(Reader r) {
         this.input = r;
     }
     
@@ -88,7 +88,7 @@ public class Lookahead {
         }
     }
     
-    public boolean matches(String check, boolean consume) {
+    public boolean matchesString(String check, boolean consume) {
         if(check == null) return false;
         
         for(int i = 0; i < check.length(); i++) {
@@ -120,11 +120,7 @@ public class Lookahead {
         }
     }
     
-    public int getLine() {
-        return line;
-    }
-    
-    public int getIndex() {
-        return index;
+    public SourcePosition getPosition() {
+        return new SourcePosition(line, index);
     }
 }

@@ -8,24 +8,24 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class GreaterOrEqualsThanStatement extends BinaryOperation<Number, Boolean> {
-    public GreaterOrEqualsThanStatement(Returnable<Number> left, Returnable<Number> right, Position position) {
+    public GreaterOrEqualsThanStatement(Expression<Number> left, Expression<Number> right, SourcePosition position) {
         super(left, right, position);
     }
     
     @Override
-    public Returnable.ReturnType returnType() {
-        return Returnable.ReturnType.BOOLEAN;
+    public Expression.ReturnType returnType() {
+        return Expression.ReturnType.BOOLEAN;
     }
     
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     

@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.terrascript.tokenizer;
 
-public class Position {
+public class SourcePosition {
     private final int line;
     private final int index;
     
-    public Position(int line, int index) {
+    public SourcePosition(int line, int index) {
         this.line = line;
         this.index = index;
     }

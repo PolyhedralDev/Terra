@@ -2,16 +2,16 @@ package com.dfsek.terra.addons.terrascript.parser.lang.variables.reference;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class BoolVariableReferenceNode extends VariableReferenceNode<Boolean> {
-    public BoolVariableReferenceNode(Position position, ReturnType type, int index) {
+    public BoolVariableReferenceNode(SourcePosition position, ReturnType type, int index) {
         super(position, type, index);
     }
     
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
         return scope.getBool(index);
     }
     

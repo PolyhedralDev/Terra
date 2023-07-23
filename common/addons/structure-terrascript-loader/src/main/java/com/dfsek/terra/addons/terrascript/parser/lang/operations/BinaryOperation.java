@@ -7,23 +7,23 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public abstract class BinaryOperation<I, O> implements Returnable<O> {
-    protected final Returnable<I> left;
-    protected final Returnable<I> right;
-    private final Position start;
+public abstract class BinaryOperation<I, O> implements Expression<O> {
+    protected final Expression<I> left;
+    protected final Expression<I> right;
+    private final SourcePosition start;
     
-    public BinaryOperation(Returnable<I> left, Returnable<I> right, Position start) {
+    public BinaryOperation(Expression<I> left, Expression<I> right, SourcePosition start) {
         this.left = left;
         this.right = right;
         this.start = start;
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return start;
     }
 }

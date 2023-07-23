@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
-public interface Returnable<T> extends Item<T> {
+public interface Expression<T> extends Statement<T> {
     ReturnType returnType();
     
     enum ReturnType {

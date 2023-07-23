@@ -3,30 +3,30 @@ package com.dfsek.terra.addons.terrascript.sampler;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class SamplerFunction implements Function<Number> {
-    private final Returnable<Number> x, y, z;
-    private final Returnable<String> function;
+    private final Expression<Number> x, y, z;
+    private final Expression<String> function;
     
     private final java.util.function.Function<Supplier<String>, NoiseSampler> samplerFunction;
     
     private final boolean twoD;
-    private final Position position;
+    private final SourcePosition position;
     
-    public SamplerFunction(Returnable<String> function,
-                           Returnable<Number> x,
-                           Returnable<Number> y,
-                           Returnable<Number> z,
+    public SamplerFunction(Expression<String> function,
+                           Expression<Number> x,
+                           Expression<Number> y,
+                           Expression<Number> z,
                            java.util.function.Function<Supplier<String>, NoiseSampler> samplerFunction,
                            boolean twoD,
-                           Position position) {
+                           SourcePosition position) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -37,23 +37,23 @@ public class SamplerFunction implements Function<Number> {
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        double x = this.x.apply(implementationArguments, scope).doubleValue();
+        double x = this.x.invoke(implementationArguments, scope).doubleValue();
         
-        double z = this.z.apply(implementationArguments, scope).doubleValue();
+        double z = this.z.invoke(implementationArguments, scope).doubleValue();
         
-        NoiseSampler sampler = samplerFunction.apply(() -> function.apply(implementationArguments, scope));
+        NoiseSampler sampler = samplerFunction.apply(() -> function.invoke(implementationArguments, scope));
         if(twoD) {
             return sampler.noise(arguments.getWorld().getSeed(), x, z);
         } else {
-            double y = this.y.apply(implementationArguments, scope).doubleValue();
+            double y = this.y.invoke(implementationArguments, scope).doubleValue();
             return sampler.noise(arguments.getWorld().getSeed(), x, y, z);
         }
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

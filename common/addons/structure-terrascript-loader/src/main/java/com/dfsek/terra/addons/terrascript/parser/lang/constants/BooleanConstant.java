@@ -9,13 +9,13 @@ package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class BooleanConstant extends ConstantExpression<Boolean> {
     private final boolean constant;
 
-    public BooleanConstant(Boolean constant, Position position) {
+    public BooleanConstant(Boolean constant, SourcePosition position) {
         super(constant, position);
         this.constant = constant;
     }

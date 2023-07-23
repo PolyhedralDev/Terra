@@ -8,18 +8,18 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class RandomFunction implements Function<Integer> {
-    private final Returnable<Number> numberReturnable;
-    private final Position position;
+    private final Expression<Number> numberReturnable;
+    private final SourcePosition position;
     
-    public RandomFunction(Returnable<Number> numberReturnable, Position position) {
+    public RandomFunction(Expression<Number> numberReturnable, SourcePosition position) {
         this.numberReturnable = numberReturnable;
         this.position = position;
     }
@@ -31,13 +31,13 @@ public class RandomFunction implements Function<Integer> {
     }
     
     @Override
-    public Integer apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Integer invoke(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRandom().nextInt(
-                numberReturnable.apply(implementationArguments, scope).intValue());
+                numberReturnable.invoke(implementationArguments, scope).intValue());
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

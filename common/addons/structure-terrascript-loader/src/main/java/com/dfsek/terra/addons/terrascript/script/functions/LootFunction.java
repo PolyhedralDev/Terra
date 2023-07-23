@@ -14,12 +14,12 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -35,14 +35,14 @@ import com.dfsek.terra.api.util.vector.Vector3;
 public class LootFunction implements Function<Void> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LootFunction.class);
     private final Registry<LootTable> registry;
-    private final Returnable<String> data;
-    private final Returnable<Number> x, y, z;
-    private final Position position;
+    private final Expression<String> data;
+    private final Expression<Number> x, y, z;
+    private final SourcePosition position;
     private final Platform platform;
     private final StructureScript script;
     
-    public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
-                        Returnable<String> data, Platform platform, Position position, StructureScript script) {
+    public LootFunction(Registry<LootTable> registry, Expression<Number> x, Expression<Number> y, Expression<Number> z,
+                        Expression<String> data, Platform platform, SourcePosition position, StructureScript script) {
         this.registry = registry;
         this.position = position;
         this.data = data;
@@ -54,20 +54,20 @@ public class LootFunction implements Function<Void> {
     }
     
     @Override
-    public Void apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()),
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
+                                                          z.invoke(implementationArguments, scope).doubleValue()),
                                                arguments.getRotation());
         
         
-        String id = data.apply(implementationArguments, scope);
+        String id = data.invoke(implementationArguments, scope);
         
         
         registry.get(RegistryKey.parse(id))
                 .ifPresentOrElse(table -> {
                                      Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                y.apply(implementationArguments, scope)
+                                                                y.invoke(implementationArguments, scope)
                                                                  .intValue(),
                                                                 FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
             
@@ -97,7 +97,7 @@ public class LootFunction implements Function<Void> {
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

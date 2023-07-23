@@ -7,15 +7,15 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class NumberVariable implements Variable<Number> {
-    private final Position position;
+    private final SourcePosition position;
     private Number value;
     
-    public NumberVariable(Number value, Position position) {
+    public NumberVariable(Number value, SourcePosition position) {
         this.value = value;
         this.position = position;
     }
@@ -31,12 +31,12 @@ public class NumberVariable implements Variable<Number> {
     }
     
     @Override
-    public Returnable.ReturnType getType() {
-        return Returnable.ReturnType.NUMBER;
+    public Expression.ReturnType getType() {
+        return Expression.ReturnType.NUMBER;
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

@@ -10,12 +10,12 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import java.util.List;
 
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.BlockFunction;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 
 
@@ -28,17 +28,17 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public BlockFunction build(List<Returnable<?>> argumentList, Position position) {
+    public BlockFunction build(List<Expression<?>> argumentList, SourcePosition position) {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
-        Returnable<Boolean> booleanReturnable = new BooleanConstant(true, position);
-        if(argumentList.size() == 5) booleanReturnable = (Returnable<Boolean>) argumentList.get(4);
+        Expression<Boolean> booleanReturnable = new BooleanConstant(true, position);
+        if(argumentList.size() == 5) booleanReturnable = (Expression<Boolean>) argumentList.get(4);
         if(argumentList.get(3) instanceof StringConstant) {
-            return new BlockFunction.Constant((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                              (Returnable<Number>) argumentList.get(2), (StringConstant) argumentList.get(3),
+            return new BlockFunction.Constant((Expression<Number>) argumentList.get(0), (Expression<Number>) argumentList.get(1),
+                                              (Expression<Number>) argumentList.get(2), (StringConstant) argumentList.get(3),
                                               booleanReturnable, platform, position);
         }
-        return new BlockFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                 (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), booleanReturnable,
+        return new BlockFunction((Expression<Number>) argumentList.get(0), (Expression<Number>) argumentList.get(1),
+                                 (Expression<Number>) argumentList.get(2), (Expression<String>) argumentList.get(3), booleanReturnable,
                                  platform, position);
     }
     
@@ -48,11 +48,11 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
+    public Expression.ReturnType getArgument(int position) {
         return switch(position) {
-            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
-            case 3 -> Returnable.ReturnType.STRING;
-            case 4 -> Returnable.ReturnType.BOOLEAN;
+            case 0, 1, 2 -> Expression.ReturnType.NUMBER;
+            case 3 -> Expression.ReturnType.STRING;
+            case 4 -> Expression.ReturnType.BOOLEAN;
             default -> null;
         };
     }

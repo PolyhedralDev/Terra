@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
 import java.io.Serial;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class FormatException extends TokenizerException {
@@ -17,11 +17,11 @@ public class FormatException extends TokenizerException {
     @Serial
     private static final long serialVersionUID = -791308012940744455L;
     
-    public FormatException(String message, Position position) {
+    public FormatException(String message, SourcePosition position) {
         super(message, position);
     }
     
-    public FormatException(String message, Position position, Throwable cause) {
+    public FormatException(String message, SourcePosition position, Throwable cause) {
         super(message, position, cause);
     }
 }

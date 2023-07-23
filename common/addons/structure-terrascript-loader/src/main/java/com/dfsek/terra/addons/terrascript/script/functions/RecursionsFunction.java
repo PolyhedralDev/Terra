@@ -11,13 +11,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class RecursionsFunction implements Function<Number> {
-    private final Position position;
+    private final SourcePosition position;
     
-    public RecursionsFunction(Position position) {
+    public RecursionsFunction(SourcePosition position) {
         this.position = position;
     }
     
@@ -27,12 +27,12 @@ public class RecursionsFunction implements Function<Number> {
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

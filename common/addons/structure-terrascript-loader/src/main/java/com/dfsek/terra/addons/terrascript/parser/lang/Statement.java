@@ -7,5 +7,19 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
-public interface Statement extends Item<Boolean> {
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+
+
+public interface Statement<T> {
+    T invoke(ImplementationArguments implementationArguments, Scope scope);
+    
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    SourcePosition getPosition();
 }

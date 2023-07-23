@@ -10,26 +10,26 @@ package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
-    private final Returnable<Boolean> statement;
-    private final Position position;
+    private final Expression<Boolean> statement;
+    private final SourcePosition position;
     
-    public WhileKeyword(Block conditional, Returnable<Boolean> statement, Position position) {
+    public WhileKeyword(Block conditional, Expression<Boolean> statement, SourcePosition position) {
         this.conditional = conditional;
         this.statement = statement;
         this.position = position;
     }
     
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
-        while(statement.apply(implementationArguments, scope)) {
-            Block.ReturnInfo<?> level = conditional.apply(implementationArguments, scope);
+    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
+        while(statement.invoke(implementationArguments, scope)) {
+            Block.ReturnInfo<?> level = conditional.invoke(implementationArguments, scope);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }
@@ -37,7 +37,7 @@ public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

@@ -11,23 +11,23 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class BreakKeyword implements Keyword<Block.ReturnInfo<?>> {
-    private final Position position;
+    private final SourcePosition position;
     
-    public BreakKeyword(Position position) {
+    public BreakKeyword(SourcePosition position) {
         this.position = position;
     }
     
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
         return new Block.ReturnInfo<>(Block.ReturnLevel.BREAK, null);
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

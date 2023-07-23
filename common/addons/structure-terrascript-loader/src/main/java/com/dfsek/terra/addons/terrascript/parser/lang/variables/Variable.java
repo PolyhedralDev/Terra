@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public interface Variable<T> {
@@ -16,7 +16,7 @@ public interface Variable<T> {
     
     void setValue(T value);
     
-    Returnable.ReturnType getType();
+    Expression.ReturnType getType();
     
-    Position getPosition();
+    SourcePosition getPosition();
 }

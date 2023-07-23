@@ -8,13 +8,13 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class NegationOperation extends UnaryOperation<Number> {
-    public NegationOperation(Returnable<Number> input, Position position) {
+    public NegationOperation(Expression<Number> input, SourcePosition position) {
         super(input, position);
     }
     
@@ -24,7 +24,7 @@ public class NegationOperation extends UnaryOperation<Number> {
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
     

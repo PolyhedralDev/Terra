@@ -14,21 +14,21 @@ import java.util.List;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
-    private final Returnable<Boolean> statement;
-    private final Position position;
-    private final List<Pair<Returnable<Boolean>, Block>> elseIf;
+    private final Expression<Boolean> statement;
+    private final SourcePosition position;
+    private final List<Pair<Expression<Boolean>, Block>> elseIf;
     private final Block elseBlock;
     
-    public IfKeyword(Block conditional, Returnable<Boolean> statement, List<Pair<Returnable<Boolean>, Block>> elseIf,
-                     @Nullable Block elseBlock, Position position) {
+    public IfKeyword(Block conditional, Expression<Boolean> statement, List<Pair<Expression<Boolean>, Block>> elseIf,
+                     @Nullable Block elseBlock, SourcePosition position) {
         this.conditional = conditional;
         this.statement = statement;
         this.position = position;
@@ -37,21 +37,21 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
-        if(statement.apply(implementationArguments, scope)) return conditional.apply(implementationArguments, scope);
+    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
+        if(statement.invoke(implementationArguments, scope)) return conditional.invoke(implementationArguments, scope);
         else {
-            for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(implementationArguments, scope)) {
-                    return pair.getRight().apply(implementationArguments, scope);
+            for(Pair<Expression<Boolean>, Block> pair : elseIf) {
+                if(pair.getLeft().invoke(implementationArguments, scope)) {
+                    return pair.getRight().invoke(implementationArguments, scope);
                 }
             }
-            if(elseBlock != null) return elseBlock.apply(implementationArguments, scope);
+            if(elseBlock != null) return elseBlock.invoke(implementationArguments, scope);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

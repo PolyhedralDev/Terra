@@ -10,11 +10,11 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import java.util.List;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Number>> {
@@ -26,7 +26,7 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
     }
     
     @Override
-    public Function<Number> build(List<Returnable<?>> argumentList, Position position) {
+    public Function<Number> build(List<Expression<?>> argumentList, SourcePosition position) {
         return new Function<>() {
             @Override
             public ReturnType returnType() {
@@ -35,12 +35,12 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
             
             @SuppressWarnings("unchecked")
             @Override
-            public Number apply(ImplementationArguments implementationArguments, Scope scope) {
-                return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments, scope));
+            public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
+                return function.apply(((Expression<Number>) argumentList.get(0)).invoke(implementationArguments, scope));
             }
             
             @Override
-            public Position getPosition() {
+            public SourcePosition getPosition() {
                 return position;
             }
         };
@@ -52,8 +52,8 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
-        if(position == 0) return Returnable.ReturnType.NUMBER;
+    public Expression.ReturnType getArgument(int position) {
+        if(position == 0) return Expression.ReturnType.NUMBER;
         return null;
     }
 }

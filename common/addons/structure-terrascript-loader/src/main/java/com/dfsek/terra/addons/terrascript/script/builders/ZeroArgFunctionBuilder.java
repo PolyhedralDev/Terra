@@ -10,25 +10,25 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import java.util.List;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
     private final java.util.function.Function<TerraImplementationArguments, T> function;
-    private final Returnable.ReturnType type;
+    private final Expression.ReturnType type;
     
-    public ZeroArgFunctionBuilder(java.util.function.Function<TerraImplementationArguments, T> function, Returnable.ReturnType type) {
+    public ZeroArgFunctionBuilder(java.util.function.Function<TerraImplementationArguments, T> function, Expression.ReturnType type) {
         this.function = function;
         this.type = type;
     }
     
     @Override
-    public Function<T> build(List<Returnable<?>> argumentList, Position position) {
+    public Function<T> build(List<Expression<?>> argumentList, SourcePosition position) {
         return new Function<>() {
             @Override
             public ReturnType returnType() {
@@ -36,12 +36,12 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
             }
             
             @Override
-            public T apply(ImplementationArguments implementationArguments, Scope scope) {
+            public T invoke(ImplementationArguments implementationArguments, Scope scope) {
                 return function.apply((TerraImplementationArguments) implementationArguments);
             }
             
             @Override
-            public Position getPosition() {
+            public SourcePosition getPosition() {
                 return position;
             }
         };
@@ -53,7 +53,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
+    public Expression.ReturnType getArgument(int position) {
         if(position == 0) return type;
         return null;
     }

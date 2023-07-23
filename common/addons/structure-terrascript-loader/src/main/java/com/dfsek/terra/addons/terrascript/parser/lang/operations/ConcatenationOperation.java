@@ -8,13 +8,13 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ConcatenationOperation extends BinaryOperation<Object, Object> {
-    public ConcatenationOperation(Returnable<Object> left, Returnable<Object> right, Position position) {
+    public ConcatenationOperation(Expression<Object> left, Expression<Object> right, SourcePosition position) {
         super(left, right, position);
     }
     
@@ -30,12 +30,12 @@ public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     }
     
     @Override
-    public Returnable.ReturnType returnType() {
-        return Returnable.ReturnType.STRING;
+    public Expression.ReturnType returnType() {
+        return Expression.ReturnType.STRING;
     }
     
     @Override
-    public Object apply(ImplementationArguments implementationArguments, Scope scope) {
-        return toString(left.apply(implementationArguments, scope)) + toString(right.apply(implementationArguments, scope));
+    public Object invoke(ImplementationArguments implementationArguments, Scope scope) {
+        return toString(left.invoke(implementationArguments, scope)) + toString(right.invoke(implementationArguments, scope));
     }
 }

@@ -8,18 +8,18 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class BooleanOrOperation extends BinaryOperation<Boolean, Boolean> {
-    public BooleanOrOperation(Returnable<Boolean> left, Returnable<Boolean> right, Position start) {
+    public BooleanOrOperation(Expression<Boolean> left, Expression<Boolean> right, SourcePosition start) {
         super(left, right, start);
     }
     
     @Override
-    public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     

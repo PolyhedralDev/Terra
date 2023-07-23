@@ -8,18 +8,18 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ModuloOperation extends BinaryOperation<Number, Number> {
-    public ModuloOperation(Returnable<Number> left, Returnable<Number> right, Position start) {
+    public ModuloOperation(Expression<Number> left, Expression<Number> right, SourcePosition start) {
         super(left, right, start);
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
     

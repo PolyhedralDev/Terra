@@ -2,16 +2,16 @@ package com.dfsek.terra.addons.terrascript.parser.lang.variables.reference;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class NumVariableReferenceNode extends VariableReferenceNode<Number> {
-    public NumVariableReferenceNode(Position position, ReturnType type, int index) {
+    public NumVariableReferenceNode(SourcePosition position, ReturnType type, int index) {
         super(position, type, index);
     }
     
     @Override
-    public Number apply(ImplementationArguments implementationArguments, Scope scope) {
+    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
         return scope.getNum(index);
     }
     

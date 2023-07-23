@@ -7,25 +7,25 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables.assign;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Item;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Statement;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public abstract class VariableAssignmentNode<T> implements Item<T> {
-    protected final Returnable<T> value;
+public abstract class VariableAssignmentNode<T> implements Statement<T> {
+    protected final Expression<T> value;
     protected final int index;
-    private final Position position;
+    private final SourcePosition position;
     
     
-    public VariableAssignmentNode(Returnable<T> value, Position position, int index) {
+    public VariableAssignmentNode(Expression<T> value, SourcePosition position, int index) {
         this.value = value;
         this.index = index;
         this.position = position;
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

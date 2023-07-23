@@ -9,17 +9,17 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.RandomFunction;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {
     @SuppressWarnings("unchecked")
     @Override
-    public RandomFunction build(List<Returnable<?>> argumentList, Position position) {
-        return new RandomFunction((Returnable<Number>) argumentList.get(0), position);
+    public RandomFunction build(List<Expression<?>> argumentList, SourcePosition position) {
+        return new RandomFunction((Expression<Number>) argumentList.get(0), position);
     }
     
     @Override
@@ -28,8 +28,8 @@ public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
-        if(position == 0) return Returnable.ReturnType.NUMBER;
+    public Expression.ReturnType getArgument(int position) {
+        if(position == 0) return Expression.ReturnType.NUMBER;
         return null;
     }
 }

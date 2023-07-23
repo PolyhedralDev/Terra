@@ -6,7 +6,7 @@ import net.jafama.FastMath;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 
 
@@ -56,31 +56,31 @@ public class ParserUtil {
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
     }
     
-    public static void checkReturnType(Returnable<?> returnable, Returnable.ReturnType... types) {
-        for(Returnable.ReturnType type : types) if(returnable.returnType().equals(type)) return;
+    public static void checkReturnType(Expression<?> returnable, Expression.ReturnType... types) {
+        for(Expression.ReturnType type : types) if(returnable.returnType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType(), returnable.getPosition());
     }
     
-    public static void checkArithmeticOperation(Returnable<?> left, Returnable<?> right, Token operation) {
-        if(!left.returnType().equals(Returnable.ReturnType.NUMBER) || !right.returnType().equals(Returnable.ReturnType.NUMBER)) {
+    public static void checkArithmeticOperation(Expression<?> left, Expression<?> right, Token operation) {
+        if(!left.returnType().equals(Expression.ReturnType.NUMBER) || !right.returnType().equals(Expression.ReturnType.NUMBER)) {
             throw new ParseException(
                     "Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType(),
                     operation.getPosition());
         }
     }
     
-    public static void checkBooleanOperation(Returnable<?> left, Returnable<?> right, Token operation) {
-        if(!left.returnType().equals(Returnable.ReturnType.BOOLEAN) || !right.returnType().equals(Returnable.ReturnType.BOOLEAN)) {
+    public static void checkBooleanOperation(Expression<?> left, Expression<?> right, Token operation) {
+        if(!left.returnType().equals(Expression.ReturnType.BOOLEAN) || !right.returnType().equals(Expression.ReturnType.BOOLEAN)) {
             throw new ParseException(
                     "Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType(),
                     operation.getPosition());
         }
     }
     
-    public static void checkVarType(Token token, Returnable.ReturnType returnType) {
-        if(returnType.equals(Returnable.ReturnType.STRING) && token.getType().equals(Token.Type.STRING_VARIABLE)) return;
-        if(returnType.equals(Returnable.ReturnType.NUMBER) && token.getType().equals(Token.Type.NUMBER_VARIABLE)) return;
-        if(returnType.equals(Returnable.ReturnType.BOOLEAN) && token.getType().equals(Token.Type.BOOLEAN_VARIABLE)) return;
+    public static void checkVarType(Token token, Expression.ReturnType returnType) {
+        if(returnType.equals(Expression.ReturnType.STRING) && token.getType().equals(Token.Type.STRING_VARIABLE)) return;
+        if(returnType.equals(Expression.ReturnType.NUMBER) && token.getType().equals(Token.Type.NUMBER_VARIABLE)) return;
+        if(returnType.equals(Expression.ReturnType.BOOLEAN) && token.getType().equals(Token.Type.BOOLEAN_VARIABLE)) return;
         throw new ParseException("Type mismatch, cannot convert from " + returnType + " to " + token.getType(), token.getPosition());
     }
     
@@ -96,11 +96,11 @@ public class ParserUtil {
             throw new ParseException("Expected binary operator, found " + token.getType(), token.getPosition());
     }
     
-    public static Returnable.ReturnType getVariableReturnType(Token varToken) {
+    public static Expression.ReturnType getVariableReturnType(Token varToken) {
         return switch(varToken.getType()) {
-            case NUMBER_VARIABLE -> Returnable.ReturnType.NUMBER;
-            case STRING_VARIABLE -> Returnable.ReturnType.STRING;
-            case BOOLEAN_VARIABLE -> Returnable.ReturnType.BOOLEAN;
+            case NUMBER_VARIABLE -> Expression.ReturnType.NUMBER;
+            case STRING_VARIABLE -> Expression.ReturnType.STRING;
+            case BOOLEAN_VARIABLE -> Expression.ReturnType.BOOLEAN;
             default -> throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration",
                                                 varToken.getPosition());
         };

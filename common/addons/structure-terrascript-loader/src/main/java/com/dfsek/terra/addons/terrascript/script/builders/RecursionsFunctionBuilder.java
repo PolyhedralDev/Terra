@@ -9,15 +9,15 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.RecursionsFunction;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class RecursionsFunctionBuilder implements FunctionBuilder<RecursionsFunction> {
     @Override
-    public RecursionsFunction build(List<Returnable<?>> argumentList, Position position) {
+    public RecursionsFunction build(List<Expression<?>> argumentList, SourcePosition position) {
         return new RecursionsFunction(position);
     }
     
@@ -27,7 +27,7 @@ public class RecursionsFunctionBuilder implements FunctionBuilder<RecursionsFunc
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
+    public Expression.ReturnType getArgument(int position) {
         return null;
     }
 }

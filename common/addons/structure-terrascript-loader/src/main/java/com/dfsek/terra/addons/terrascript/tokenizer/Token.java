@@ -10,9 +10,9 @@ package com.dfsek.terra.addons.terrascript.tokenizer;
 public class Token {
     private final String content;
     private final Type type;
-    private final Position start;
+    private final SourcePosition start;
     
-    public Token(String content, Type type, Position start) {
+    public Token(String content, Type type, SourcePosition start) {
         this.content = content;
         this.type = type;
         this.start = start;
@@ -31,7 +31,7 @@ public class Token {
         return content;
     }
     
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return start;
     }
     
@@ -232,6 +232,10 @@ public class Token {
         /**
          * Else keyword
          */
-        ELSE
+        ELSE,
+        /**
+         * End of file
+         */
+        END_OF_FILE
     }
 }

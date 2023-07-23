@@ -19,7 +19,7 @@ import java.util.Random;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BiomeFunctionBuilder;
@@ -58,12 +58,12 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     private final Platform platform;
     
     @SuppressWarnings("rawtypes")
-    public StructureScript(InputStream inputStream, RegistryKey id, Platform platform, Registry<Structure> registry,
+    public StructureScript(InputStream source, RegistryKey id, Platform platform, Registry<Structure> structureRegistry,
                            Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder> functionRegistry) {
         Parser parser;
         try {
-            parser = new Parser(IOUtils.toString(inputStream, Charset.defaultCharset()));
+            parser = new Parser(IOUtils.toString(source, Charset.defaultCharset()));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +76,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         parser
                 .registerFunction("block", new BlockFunctionBuilder(platform))
                 .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
-                .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
+                .registerFunction("structure", new StructureFunctionBuilder(structureRegistry, platform))
                 .registerFunction("randomInt", new RandomFunctionBuilder())
                 .registerFunction("recursions", new RecursionsFunctionBuilder())
                 .registerFunction("setMark", new SetMarkFunctionBuilder())
@@ -89,15 +89,15 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("state", new StateFunctionBuilder(platform))
                 .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
                 .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getX(),
-                                                                                Returnable.ReturnType.NUMBER))
+                                                                                Expression.ReturnType.NUMBER))
                 .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getY(),
-                                                                                Returnable.ReturnType.NUMBER))
+                                                                                Expression.ReturnType.NUMBER))
                 .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getZ(),
-                                                                                Returnable.ReturnType.NUMBER))
+                                                                                Expression.ReturnType.NUMBER))
                 .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(),
-                                                                           Returnable.ReturnType.STRING))
+                                                                           Expression.ReturnType.STRING))
                 .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
-                                                                                  Returnable.ReturnType.NUMBER))
+                                                                                  Expression.ReturnType.NUMBER))
                 .registerFunction("print",
                                   new UnaryStringFunctionBuilder(string -> LOGGER.info("[TerraScript:{}] {}", id, string)))
                 .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))

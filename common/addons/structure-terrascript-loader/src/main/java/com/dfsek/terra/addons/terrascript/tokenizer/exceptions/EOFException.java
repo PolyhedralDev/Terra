@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
 
 import java.io.Serial;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class EOFException extends TokenizerException {
@@ -17,11 +17,11 @@ public class EOFException extends TokenizerException {
     @Serial
     private static final long serialVersionUID = 3980047409902809440L;
     
-    public EOFException(String message, Position position) {
+    public EOFException(String message, SourcePosition position) {
         super(message, position);
     }
     
-    public EOFException(String message, Position position, Throwable cause) {
+    public EOFException(String message, SourcePosition position, Throwable cause) {
         super(message, position, cause);
     }
 }

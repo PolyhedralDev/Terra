@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Void>> {
@@ -28,7 +28,7 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
     }
     
     @Override
-    public Function<Void> build(List<Returnable<?>> argumentList, Position position) {
+    public Function<Void> build(List<Expression<?>> argumentList, SourcePosition position) {
         return new Function<>() {
             @Override
             public ReturnType returnType() {
@@ -37,14 +37,14 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
             
             @SuppressWarnings("unchecked")
             @Override
-            public Void apply(ImplementationArguments implementationArguments, Scope scope) {
-                function.accept(((Returnable<Boolean>) argumentList.get(0)).apply(implementationArguments, scope),
+            public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+                function.accept(((Expression<Boolean>) argumentList.get(0)).invoke(implementationArguments, scope),
                                 (TerraImplementationArguments) implementationArguments);
                 return null;
             }
             
             @Override
-            public Position getPosition() {
+            public SourcePosition getPosition() {
                 return position;
             }
         };
@@ -56,8 +56,8 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
-        if(position == 0) return Returnable.ReturnType.BOOLEAN;
+    public Expression.ReturnType getArgument(int position) {
+        if(position == 0) return Expression.ReturnType.BOOLEAN;
         return null;
     }
 }

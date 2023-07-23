@@ -9,22 +9,23 @@ package com.dfsek.terra.addons.terrascript.parser.lang;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.ReturnInfo;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public class Block implements Item<Block.ReturnInfo<?>> {
-    private final List<Item<?>> items;
-    private final Position position;
+public class Block implements Statement<ReturnInfo<?>> {
+    private final List<Statement<?>> items;
+    private final SourcePosition position;
     
-    public Block(List<Item<?>> items, Position position) {
+    public Block(List<Statement<?>> items, SourcePosition position) {
         this.items = items;
         this.position = position;
     }
     
     @Override
-    public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
-        for(Item<?> item : items) {
-            Object result = item.apply(implementationArguments, scope);
+    public ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
+        for(Statement<?> item : items) {
+            Object result = item.invoke(implementationArguments, scope);
             if(result instanceof ReturnInfo<?> level) {
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
             }
@@ -33,7 +34,7 @@ public class Block implements Item<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
     

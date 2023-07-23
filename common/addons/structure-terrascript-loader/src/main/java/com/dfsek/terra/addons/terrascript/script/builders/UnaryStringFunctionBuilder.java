@@ -10,11 +10,11 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import java.util.List;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void>> {
@@ -26,7 +26,7 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
     }
     
     @Override
-    public Function<Void> build(List<Returnable<?>> argumentList, Position position) {
+    public Function<Void> build(List<Expression<?>> argumentList, SourcePosition position) {
         return new Function<>() {
             @Override
             public ReturnType returnType() {
@@ -35,13 +35,13 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
             
             @SuppressWarnings("unchecked")
             @Override
-            public Void apply(ImplementationArguments implementationArguments, Scope scope) {
-                function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments, scope));
+            public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+                function.accept(((Expression<String>) argumentList.get(0)).invoke(implementationArguments, scope));
                 return null;
             }
             
             @Override
-            public Position getPosition() {
+            public SourcePosition getPosition() {
                 return position;
             }
         };
@@ -53,8 +53,8 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
     }
     
     @Override
-    public Returnable.ReturnType getArgument(int position) {
-        if(position == 0) return Returnable.ReturnType.STRING;
+    public Expression.ReturnType getArgument(int position) {
+        if(position == 0) return Expression.ReturnType.STRING;
         return null;
     }
 }

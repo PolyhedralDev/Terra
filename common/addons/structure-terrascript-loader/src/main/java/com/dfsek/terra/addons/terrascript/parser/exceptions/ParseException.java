@@ -9,20 +9,20 @@ package com.dfsek.terra.addons.terrascript.parser.exceptions;
 
 import java.io.Serial;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ParseException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 6744390543046766386L;
-    private final Position position;
+    private final SourcePosition position;
     
-    public ParseException(String message, Position position) {
+    public ParseException(String message, SourcePosition position) {
         super(message);
         this.position = position;
     }
     
-    public ParseException(String message, Position position, Throwable cause) {
+    public ParseException(String message, SourcePosition position, Throwable cause) {
         super(message, cause);
         this.position = position;
     }
@@ -32,7 +32,7 @@ public class ParseException extends RuntimeException {
         return super.getMessage() + ": " + position;
     }
     
-    public Position getPosition() {
+    public SourcePosition getPosition() {
         return position;
     }
 }

@@ -16,10 +16,10 @@ import java.util.Map;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
-import com.dfsek.terra.addons.terrascript.parser.lang.Item;
+import com.dfsek.terra.addons.terrascript.parser.lang.Statement;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
@@ -58,7 +58,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.assign.VariableA
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.BoolVariableReferenceNode;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.NumVariableReferenceNode;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.StrVariableReferenceNode;
-import com.dfsek.terra.addons.terrascript.tokenizer.Position;
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
 import com.dfsek.terra.api.util.generic.pair.Pair;
@@ -66,12 +66,12 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 
 @SuppressWarnings("unchecked")
 public class Parser {
-    private final String data;
+    private final String source;
     private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
     private final List<String> ignoredFunctions = new ArrayList<>();
     
-    public Parser(String data) {
-        this.data = data;
+    public Parser(String source) {
+        this.source = source;
     }
     
     public Parser registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
@@ -93,7 +93,7 @@ public class Parser {
      */
     public Executable parse() {
         ScopeBuilder scopeBuilder = new ScopeBuilder();
-        return new Executable(parseBlock(new Tokenizer(data), false, scopeBuilder), scopeBuilder);
+        return new Executable(parseBlock(new Tokenizer(source), false, scopeBuilder), scopeBuilder);
     }
     
     private Keyword<?> parseLoopLike(Tokenizer tokens, boolean loop, ScopeBuilder scopeBuilder) throws ParseException {
@@ -112,102 +112,102 @@ public class Parser {
         };
     }
     
-    private WhileKeyword parseWhileLoop(Tokenizer tokens, Position start, ScopeBuilder scopeBuilder) {
-        Returnable<?> first = parseExpression(tokens, true, scopeBuilder);
-        ParserUtil.checkReturnType(first, Returnable.ReturnType.BOOLEAN);
+    private WhileKeyword parseWhileLoop(Tokenizer tokens, SourcePosition start, ScopeBuilder scopeBuilder) {
+        Expression<?> first = parseExpression(tokens, true, scopeBuilder);
+        ParserUtil.checkReturnType(first, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         
-        return new WhileKeyword(parseStatementBlock(tokens, true, scopeBuilder), (Returnable<Boolean>) first, start); // While loop
+        return new WhileKeyword(parseStatementBlock(tokens, true, scopeBuilder), (Expression<Boolean>) first, start); // While loop
     }
     
-    private IfKeyword parseIfStatement(Tokenizer tokens, Position start, boolean loop, ScopeBuilder scopeBuilder) {
-        Returnable<?> condition = parseExpression(tokens, true, scopeBuilder);
-        ParserUtil.checkReturnType(condition, Returnable.ReturnType.BOOLEAN);
+    private IfKeyword parseIfStatement(Tokenizer tokens, SourcePosition start, boolean loop, ScopeBuilder scopeBuilder) {
+        Expression<?> condition = parseExpression(tokens, true, scopeBuilder);
+        ParserUtil.checkReturnType(condition, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         
         Block elseBlock = null;
         Block statement = parseStatementBlock(tokens, loop, scopeBuilder);
         
-        List<Pair<Returnable<Boolean>, Block>> elseIf = new ArrayList<>();
+        List<Pair<Expression<Boolean>, Block>> elseIf = new ArrayList<>();
         
-        while(tokens.hasNext() && tokens.get().getType().equals(Token.Type.ELSE)) {
+        while(tokens.hasNext() && tokens.current().getType().equals(Token.Type.ELSE)) {
             tokens.consume(); // Consume else.
-            if(tokens.get().getType().equals(Token.Type.IF_STATEMENT)) {
+            if(tokens.current().getType().equals(Token.Type.IF_STATEMENT)) {
                 tokens.consume(); // Consume if.
-                Returnable<?> elseCondition = parseExpression(tokens, true, scopeBuilder);
-                ParserUtil.checkReturnType(elseCondition, Returnable.ReturnType.BOOLEAN);
-                elseIf.add(Pair.of((Returnable<Boolean>) elseCondition, parseStatementBlock(tokens, loop, scopeBuilder)));
+                Expression<?> elseCondition = parseExpression(tokens, true, scopeBuilder);
+                ParserUtil.checkReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
+                elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(tokens, loop, scopeBuilder)));
             } else {
                 elseBlock = parseStatementBlock(tokens, loop, scopeBuilder);
                 break; // Else must be last.
             }
         }
         
-        return new IfKeyword(statement, (Returnable<Boolean>) condition, elseIf, elseBlock, start); // If statement
+        return new IfKeyword(statement, (Expression<Boolean>) condition, elseIf, elseBlock, start); // If statement
     }
     
     private Block parseStatementBlock(Tokenizer tokens, boolean loop, ScopeBuilder scopeBuilder) {
         
-        if(tokens.get().getType().equals(Token.Type.BLOCK_BEGIN)) {
+        if(tokens.current().getType().equals(Token.Type.BLOCK_BEGIN)) {
             ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_BEGIN);
             Block block = parseBlock(tokens, loop, scopeBuilder);
             ParserUtil.checkType(tokens.consume(), Token.Type.BLOCK_END);
             return block;
         } else {
-            Position position = tokens.get().getPosition();
-            Block block = new Block(Collections.singletonList(parseItem(tokens, loop, scopeBuilder)), position);
+            SourcePosition position = tokens.current().getPosition();
+            Block block = new Block(Collections.singletonList(parseStatement(tokens, loop, scopeBuilder)), position);
             ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
             return block;
         }
     }
     
-    private ForKeyword parseForLoop(Tokenizer tokens, Position start, ScopeBuilder scopeBuilder) {
+    private ForKeyword parseForLoop(Tokenizer tokens, SourcePosition start, ScopeBuilder scopeBuilder) {
         scopeBuilder = scopeBuilder.sub(); // new scope
-        Token f = tokens.get();
+        Token f = tokens.current();
         ParserUtil.checkType(f, Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.IDENTIFIER);
-        Item<?> initializer;
+        Statement<?> initializer;
         if(f.isVariableDeclaration()) {
             VariableAssignmentNode<?> forVar = parseVariableDeclaration(tokens, scopeBuilder);
-            Token name = tokens.get();
+            Token name = tokens.current();
             if(functions.containsKey(name.getContent()) || scopeBuilder.contains(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
             initializer = forVar;
         } else initializer = parseExpression(tokens, true, scopeBuilder);
         ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
-        Returnable<?> conditional = parseExpression(tokens, true, scopeBuilder);
-        ParserUtil.checkReturnType(conditional, Returnable.ReturnType.BOOLEAN);
+        Expression<?> conditional = parseExpression(tokens, true, scopeBuilder);
+        ParserUtil.checkReturnType(conditional, Expression.ReturnType.BOOLEAN);
         ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         
-        Item<?> incrementer;
-        Token token = tokens.get();
+        Statement<?> incrementer;
+        Token token = tokens.current();
         if(scopeBuilder.contains(token.getContent())) { // Assume variable assignment
             incrementer = parseAssignment(tokens, scopeBuilder);
         } else incrementer = parseFunction(tokens, true, scopeBuilder);
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         
-        return new ForKeyword(parseStatementBlock(tokens, true, scopeBuilder), initializer, (Returnable<Boolean>) conditional, incrementer,
+        return new ForKeyword(parseStatementBlock(tokens, true, scopeBuilder), initializer, (Expression<Boolean>) conditional, incrementer,
                               start);
     }
     
-    private Returnable<?> parseExpression(Tokenizer tokens, boolean full, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseExpression(Tokenizer tokens, boolean full, ScopeBuilder scopeBuilder) {
         boolean booleanInverted = false; // Check for boolean not operator
         boolean negate = false;
-        if(tokens.get().getType().equals(Token.Type.BOOLEAN_NOT)) {
+        if(tokens.current().getType().equals(Token.Type.BOOLEAN_NOT)) {
             booleanInverted = true;
             tokens.consume();
-        } else if(tokens.get().getType().equals(Token.Type.SUBTRACTION_OPERATOR)) {
+        } else if(tokens.current().getType().equals(Token.Type.SUBTRACTION_OPERATOR)) {
             negate = true;
             tokens.consume();
         }
         
-        Token id = tokens.get();
+        Token id = tokens.current();
         
         ParserUtil.checkType(id, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.GROUP_BEGIN);
         
-        Returnable<?> expression;
+        Expression<?> expression;
         if(id.isConstant()) {
             expression = parseConstantExpression(tokens);
         } else if(id.getType().equals(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
@@ -230,14 +230,14 @@ public class Parser {
         }
         
         if(booleanInverted) { // Invert operation if boolean not detected
-            ParserUtil.checkReturnType(expression, Returnable.ReturnType.BOOLEAN);
-            expression = new BooleanNotOperation((Returnable<Boolean>) expression, expression.getPosition());
+            ParserUtil.checkReturnType(expression, Expression.ReturnType.BOOLEAN);
+            expression = new BooleanNotOperation((Expression<Boolean>) expression, expression.getPosition());
         } else if(negate) {
-            ParserUtil.checkReturnType(expression, Returnable.ReturnType.NUMBER);
-            expression = new NegationOperation((Returnable<Number>) expression, expression.getPosition());
+            ParserUtil.checkReturnType(expression, Expression.ReturnType.NUMBER);
+            expression = new NegationOperation((Expression<Number>) expression, expression.getPosition());
         }
         
-        if(full && tokens.get().isBinaryOperator()) { // Parse binary operations
+        if(full && tokens.current().isBinaryOperator()) { // Parse binary operations
             return parseBinaryOperation(expression, tokens, scopeBuilder);
         }
         return expression;
@@ -245,7 +245,7 @@ public class Parser {
     
     private ConstantExpression<?> parseConstantExpression(Tokenizer tokens) {
         Token constantToken = tokens.consume();
-        Position position = constantToken.getPosition();
+        SourcePosition position = constantToken.getPosition();
         switch(constantToken.getType()) {
             case NUMBER:
                 String content = constantToken.getContent();
@@ -260,21 +260,21 @@ public class Parser {
         }
     }
     
-    private Returnable<?> parseGroup(Tokenizer tokens, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseGroup(Tokenizer tokens, ScopeBuilder scopeBuilder) {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN);
-        Returnable<?> expression = parseExpression(tokens, true, scopeBuilder); // Parse inside of group as a separate expression
+        Expression<?> expression = parseExpression(tokens, true, scopeBuilder); // Parse inside of group as a separate expression
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END);
         return expression;
     }
     
-    private BinaryOperation<?, ?> parseBinaryOperation(Returnable<?> left, Tokenizer tokens,
+    private BinaryOperation<?, ?> parseBinaryOperation(Expression<?> left, Tokenizer tokens,
                                                        ScopeBuilder scopeBuilder) {
         Token binaryOperator = tokens.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
         
-        Returnable<?> right = parseExpression(tokens, false, scopeBuilder);
+        Expression<?> right = parseExpression(tokens, false, scopeBuilder);
         
-        Token other = tokens.get();
+        Token other = tokens.current();
         if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType())) {
             return assemble(left, parseBinaryOperation(right, tokens, scopeBuilder), binaryOperator);
         } else if(other.isBinaryOperator()) {
@@ -283,41 +283,41 @@ public class Parser {
         return assemble(left, right, binaryOperator);
     }
     
-    private BinaryOperation<?, ?> assemble(Returnable<?> left, Returnable<?> right, Token binaryOperator) {
+    private BinaryOperation<?, ?> assemble(Expression<?> left, Expression<?> right, Token binaryOperator) {
         if(binaryOperator.isStrictNumericOperator())
             ParserUtil.checkArithmeticOperation(left, right, binaryOperator); // Numeric type checking
         if(binaryOperator.isStrictBooleanOperator()) ParserUtil.checkBooleanOperation(left, right, binaryOperator); // Boolean type checking
         switch(binaryOperator.getType()) {
             case ADDITION_OPERATOR:
-                if(left.returnType().equals(Returnable.ReturnType.NUMBER) && right.returnType().equals(Returnable.ReturnType.NUMBER)) {
-                    return new NumberAdditionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                if(left.returnType().equals(Expression.ReturnType.NUMBER) && right.returnType().equals(Expression.ReturnType.NUMBER)) {
+                    return new NumberAdditionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
                 }
-                return new ConcatenationOperation((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+                return new ConcatenationOperation((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
             case SUBTRACTION_OPERATOR:
-                return new SubtractionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new SubtractionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case MULTIPLICATION_OPERATOR:
-                return new MultiplicationOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new MultiplicationOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case DIVISION_OPERATOR:
-                return new DivisionOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new DivisionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case EQUALS_OPERATOR:
-                return new EqualsStatement((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+                return new EqualsStatement((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
             case NOT_EQUALS_OPERATOR:
-                return new NotEqualsStatement((Returnable<Object>) left, (Returnable<Object>) right, binaryOperator.getPosition());
+                return new NotEqualsStatement((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
             case GREATER_THAN_OPERATOR:
-                return new GreaterThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new GreaterThanStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case LESS_THAN_OPERATOR:
-                return new LessThanStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new LessThanStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case GREATER_THAN_OR_EQUALS_OPERATOR:
-                return new GreaterOrEqualsThanStatement((Returnable<Number>) left, (Returnable<Number>) right,
+                return new GreaterOrEqualsThanStatement((Expression<Number>) left, (Expression<Number>) right,
                                                         binaryOperator.getPosition());
             case LESS_THAN_OR_EQUALS_OPERATOR:
-                return new LessThanOrEqualsStatement((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new LessThanOrEqualsStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             case BOOLEAN_AND:
-                return new BooleanAndOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
+                return new BooleanAndOperation((Expression<Boolean>) left, (Expression<Boolean>) right, binaryOperator.getPosition());
             case BOOLEAN_OR:
-                return new BooleanOrOperation((Returnable<Boolean>) left, (Returnable<Boolean>) right, binaryOperator.getPosition());
+                return new BooleanOrOperation((Expression<Boolean>) left, (Expression<Boolean>) right, binaryOperator.getPosition());
             case MODULO_OPERATOR:
-                return new ModuloOperation((Returnable<Number>) left, (Returnable<Number>) right, binaryOperator.getPosition());
+                return new ModuloOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
             default:
                 throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
         }
@@ -327,7 +327,7 @@ public class Parser {
         Token type = tokens.consume();
         ParserUtil.checkType(type, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE, Token.Type.NUMBER_VARIABLE);
         
-        Returnable.ReturnType returnType = ParserUtil.getVariableReturnType(type);
+        Expression.ReturnType returnType = ParserUtil.getVariableReturnType(type);
         
         ParserUtil.checkVarType(type, returnType); // Check for type mismatch
         Token identifier = tokens.consume();
@@ -336,40 +336,40 @@ public class Parser {
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         ParserUtil.checkType(tokens.consume(), Token.Type.ASSIGNMENT);
         
-        Returnable<?> value = parseExpression(tokens, true, scopeBuilder);
+        Expression<?> value = parseExpression(tokens, true, scopeBuilder);
         ParserUtil.checkReturnType(value, returnType);
 
         String id = identifier.getContent();
 
         return switch(value.returnType()) {
-            case NUMBER -> new NumAssignmentNode((Returnable<Number>) value, identifier.getPosition(), scopeBuilder.num(id));
-            case STRING -> new StrAssignmentNode((Returnable<String>) value, identifier.getPosition(), scopeBuilder.str(id));
-            case BOOLEAN -> new BoolAssignmentNode((Returnable<Boolean>) value, identifier.getPosition(), scopeBuilder.bool(id));
+            case NUMBER -> new NumAssignmentNode((Expression<Number>) value, identifier.getPosition(), scopeBuilder.num(id));
+            case STRING -> new StrAssignmentNode((Expression<String>) value, identifier.getPosition(), scopeBuilder.str(id));
+            case BOOLEAN -> new BoolAssignmentNode((Expression<Boolean>) value, identifier.getPosition(), scopeBuilder.bool(id));
             default -> throw new ParseException("Illegal type for variable declaration: " + type, value.getPosition());
         };
     }
     
     private Block parseBlock(Tokenizer tokens, boolean loop, ScopeBuilder scopeBuilder) {
-        List<Item<?>> parsedItems = new ArrayList<>();
+        List<Statement<?>> statements = new ArrayList<>();
         
         scopeBuilder = scopeBuilder.sub();
         
-        Token first = tokens.get();
+        Token first = tokens.current();
         
         while(tokens.hasNext()) {
-            Token token = tokens.get();
+            Token token = tokens.current();
             if(token.getType().equals(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
-            Item<?> parsedItem = parseItem(tokens, loop, scopeBuilder);
-            if(parsedItem != Function.NULL) {
-                parsedItems.add(parsedItem);
+            Statement<?> statement = parseStatement(tokens, loop, scopeBuilder);
+            if(statement != Function.NULL) {
+                statements.add(statement);
             }
             if(tokens.hasNext() && !token.isLoopLike()) ParserUtil.checkType(tokens.consume(), Token.Type.STATEMENT_END);
         }
-        return new Block(parsedItems, first.getPosition());
+        return new Block(statements, first.getPosition());
     }
     
-    private Item<?> parseItem(Tokenizer tokens, boolean loop, ScopeBuilder scopeBuilder) {
-        Token token = tokens.get();
+    private Statement<?> parseStatement(Tokenizer tokens, boolean loop, ScopeBuilder scopeBuilder) {
+        Token token = tokens.current();
         if(loop) ParserUtil.checkType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
                                       Token.Type.NUMBER_VARIABLE, Token.Type.STRING_VARIABLE, Token.Type.BOOLEAN_VARIABLE,
                                       Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
@@ -384,9 +384,7 @@ public class Parser {
                 return parseAssignment(tokens, scopeBuilder);
             } else return parseFunction(tokens, true, scopeBuilder);
         } else if(token.isVariableDeclaration()) {
-            
             return parseVariableDeclaration(tokens, scopeBuilder);
-            
         } else if(token.getType().equals(Token.Type.RETURN)) return new ReturnKeyword(tokens.consume().getPosition());
         else if(token.getType().equals(Token.Type.BREAK)) return new BreakKeyword(tokens.consume().getPosition());
         else if(token.getType().equals(Token.Type.CONTINUE)) return new ContinueKeyword(tokens.consume().getPosition());
@@ -401,7 +399,7 @@ public class Parser {
         
         ParserUtil.checkType(tokens.consume(), Token.Type.ASSIGNMENT);
         
-        Returnable<?> value = parseExpression(tokens, true, scopeBuilder);
+        Expression<?> value = parseExpression(tokens, true, scopeBuilder);
         
         String id = identifier.getContent();
         
@@ -410,9 +408,9 @@ public class Parser {
         ReturnType type = value.returnType();
         
         return switch(type) {
-            case NUMBER -> new NumAssignmentNode((Returnable<Number>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
-            case STRING -> new StrAssignmentNode((Returnable<String>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
-            case BOOLEAN -> new BoolAssignmentNode((Returnable<Boolean>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
+            case NUMBER -> new NumAssignmentNode((Expression<Number>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
+            case STRING -> new StrAssignmentNode((Expression<String>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
+            case BOOLEAN -> new BoolAssignmentNode((Expression<Boolean>) value, identifier.getPosition(), scopeBuilder.getIndex(id));
             default -> throw new ParseException("Illegal type for variable assignment: " + type, value.getPosition());
         };
     }
@@ -427,11 +425,11 @@ public class Parser {
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
         
         
-        List<Returnable<?>> args = getArgs(tokens, scopeBuilder); // Extract arguments, consume the rest.
+        List<Expression<?>> args = getArgs(tokens, scopeBuilder); // Extract arguments, consume the rest.
         
         ParserUtil.checkType(tokens.consume(), Token.Type.GROUP_END); // Remove body end
         
-        if(fullStatement) ParserUtil.checkType(tokens.get(), Token.Type.STATEMENT_END);
+        if(fullStatement) ParserUtil.checkType(tokens.current(), Token.Type.STATEMENT_END);
         
         if(ignoredFunctions.contains(identifier.getContent())) {
             return Function.NULL;
@@ -444,7 +442,7 @@ public class Parser {
                 throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size(), identifier.getPosition());
             
             for(int i = 0; i < args.size(); i++) {
-                Returnable<?> argument = args.get(i);
+                Expression<?> argument = args.get(i);
                 if(builder.getArgument(i) == null)
                     throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent(),
                                              identifier.getPosition());
@@ -455,13 +453,13 @@ public class Parser {
         throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
     }
     
-    private List<Returnable<?>> getArgs(Tokenizer tokens, ScopeBuilder scopeBuilder) {
-        List<Returnable<?>> args = new ArrayList<>();
+    private List<Expression<?>> getArgs(Tokenizer tokens, ScopeBuilder scopeBuilder) {
+        List<Expression<?>> args = new ArrayList<>();
         
-        while(!tokens.get().getType().equals(Token.Type.GROUP_END)) {
+        while(!tokens.current().getType().equals(Token.Type.GROUP_END)) {
             args.add(parseExpression(tokens, true, scopeBuilder));
-            ParserUtil.checkType(tokens.get(), Token.Type.SEPARATOR, Token.Type.GROUP_END);
-            if(tokens.get().getType().equals(Token.Type.SEPARATOR)) tokens.consume();
+            ParserUtil.checkType(tokens.current(), Token.Type.SEPARATOR, Token.Type.GROUP_END);
+            if(tokens.current().getType().equals(Token.Type.SEPARATOR)) tokens.consume();
         }
         return args;
     }
