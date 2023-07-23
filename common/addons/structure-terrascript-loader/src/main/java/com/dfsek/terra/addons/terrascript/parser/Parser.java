@@ -139,9 +139,7 @@ public class Parser {
             return block;
         } else {
             SourcePosition position = tokenizer.current().getPosition();
-            Block block = new Block(Collections.singletonList(parseExpression(tokenizer, controlStructure, scopeBuilder)), position);
-            ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
-            return block;
+            return new Block(Collections.singletonList(parseExpression(tokenizer, controlStructure, scopeBuilder)), position);
         }
     }
     
@@ -345,7 +343,6 @@ public class Parser {
             if(expression != Function.NULL) {
                 expressions.add(expression);
             }
-            if(tokenizer.hasNext() && !token.isControlStructure()) ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
         }
         return new Block(expressions, first.getPosition());
     }
@@ -381,6 +378,7 @@ public class Parser {
             case FAIL -> new FailKeyword(tokenizer.consume().getPosition());
             default -> throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
         };
+        if(!token.isControlStructure()) ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
         return expression;
     }
     
