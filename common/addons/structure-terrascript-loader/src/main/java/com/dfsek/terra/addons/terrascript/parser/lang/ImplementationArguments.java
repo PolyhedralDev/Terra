@@ -8,7 +8,7 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 /**
- * Arguments passed to {@link Statement}s by the implementation
+ * Arguments passed to {@link Expression}s by the implementation
  */
 public interface ImplementationArguments {
 }

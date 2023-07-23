@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables.assign;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Statement;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
