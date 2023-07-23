@@ -31,14 +31,14 @@ public class EqualsStatement extends BinaryOperation<Object, Boolean> {
     }
     
     @Override
-    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
-        Object leftValue = left.invoke(implementationArguments, scope);
-        Object rightValue = right.invoke(implementationArguments, scope);
+        Object leftValue = left.evaluate(implementationArguments, scope);
+        Object rightValue = right.evaluate(implementationArguments, scope);
         if(leftValue instanceof Number l && rightValue instanceof Number r) {
             return FastMath.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }

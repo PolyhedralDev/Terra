@@ -11,7 +11,7 @@ public class StrVariableReferenceNode extends VariableReferenceNode<String> {
     }
     
     @Override
-    public String invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public String evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return scope.getStr(index);
     }
 }

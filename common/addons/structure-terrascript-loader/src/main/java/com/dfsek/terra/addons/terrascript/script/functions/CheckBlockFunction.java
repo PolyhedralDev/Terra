@@ -33,11 +33,11 @@ public class CheckBlockFunction implements Function<String> {
     
     
     @Override
-    public String invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public String evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()),
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()),
                                                arguments.getRotation());
         
         
@@ -46,7 +46,7 @@ public class CheckBlockFunction implements Function<String> {
                                                        .toVector3()
                                                        .mutable()
                                                        .add(Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                       y.invoke(implementationArguments, scope)
+                                                                       y.evaluate(implementationArguments, scope)
                                                                         .doubleValue(), FastMath.roundToInt(xz.getZ()))))
                                .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties

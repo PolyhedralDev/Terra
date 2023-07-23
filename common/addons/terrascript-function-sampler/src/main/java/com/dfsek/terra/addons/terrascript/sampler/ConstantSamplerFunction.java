@@ -32,16 +32,16 @@ public class ConstantSamplerFunction implements Function<Number> {
     }
     
     @Override
-    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        double x = this.x.invoke(implementationArguments, scope).doubleValue();
+        double x = this.x.evaluate(implementationArguments, scope).doubleValue();
         
-        double z = this.z.invoke(implementationArguments, scope).doubleValue();
+        double z = this.z.evaluate(implementationArguments, scope).doubleValue();
         
         if(twoD) {
             return sampler.noise(arguments.getWorld().getSeed(), x, z);
         } else {
-            double y = this.y.invoke(implementationArguments, scope).doubleValue();
+            double y = this.y.evaluate(implementationArguments, scope).doubleValue();
             return sampler.noise(arguments.getWorld().getSeed(), x, y, z);
         }
     }

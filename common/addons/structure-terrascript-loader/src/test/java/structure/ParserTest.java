@@ -77,9 +77,9 @@ public class ParserTest {
         }
         
         @Override
-        public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
-            System.out.println("string: " + a.invoke(implementationArguments, scope) + ", double: " +
-                               b.invoke(implementationArguments, scope));
+        public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
+            System.out.println("string: " + a.evaluate(implementationArguments, scope) + ", double: " +
+                               b.evaluate(implementationArguments, scope));
             return null;
         }
         

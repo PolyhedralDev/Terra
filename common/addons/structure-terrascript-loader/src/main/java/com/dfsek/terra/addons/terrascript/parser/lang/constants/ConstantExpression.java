@@ -23,7 +23,7 @@ public abstract class ConstantExpression<T> implements Expression<T> {
     }
     
     @Override
-    public T invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public T evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
     

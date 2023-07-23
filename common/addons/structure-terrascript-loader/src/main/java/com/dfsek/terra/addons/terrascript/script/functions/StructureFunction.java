@@ -55,20 +55,20 @@ public class StructureFunction implements Function<Boolean> {
     }
     
     @Override
-    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
         
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
         
-        String app = id.invoke(implementationArguments, scope);
+        String app = id.evaluate(implementationArguments, scope);
         return registry.getByID(app).map(script -> {
             Rotation rotation1;
-            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).invoke(implementationArguments, scope);
+            String rotString = rotations.get(arguments.getRandom().nextInt(rotations.size())).evaluate(implementationArguments, scope);
             try {
                 rotation1 = Rotation.valueOf(rotString);
             } catch(IllegalArgumentException e) {
@@ -80,7 +80,7 @@ public class StructureFunction implements Function<Boolean> {
                 return structureScript.generate(arguments.getOrigin(),
                                                 arguments.getWorld()
                                                          .buffer(FastMath.roundToInt(xz.getX()),
-                                                                 y.invoke(implementationArguments, scope).intValue(),
+                                                                 y.evaluate(implementationArguments, scope).intValue(),
                                                                  FastMath.roundToInt(xz.getZ())),
                                                 arguments.getRandom(),
                                                 arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
@@ -88,7 +88,7 @@ public class StructureFunction implements Function<Boolean> {
             return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
                                             .buffer(FastMath.roundToInt(xz.getX()),
-                                                    y.invoke(implementationArguments, scope).intValue(),
+                                                    y.evaluate(implementationArguments, scope).intValue(),
                                                     FastMath.roundToInt(xz.getZ())),
                                    arguments.getRandom(),
                                    arguments.getRotation().rotate(rotation1));

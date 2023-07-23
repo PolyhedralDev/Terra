@@ -54,20 +54,20 @@ public class LootFunction implements Function<Void> {
     }
     
     @Override
-    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()),
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()),
                                                arguments.getRotation());
         
         
-        String id = data.invoke(implementationArguments, scope);
+        String id = data.evaluate(implementationArguments, scope);
         
         
         registry.get(RegistryKey.parse(id))
                 .ifPresentOrElse(table -> {
                                      Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                                                y.invoke(implementationArguments, scope)
+                                                                y.evaluate(implementationArguments, scope)
                                                                  .intValue(),
                                                                 FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
             

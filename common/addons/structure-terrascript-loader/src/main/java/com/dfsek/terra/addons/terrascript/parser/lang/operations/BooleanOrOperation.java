@@ -19,7 +19,7 @@ public class BooleanOrOperation extends BinaryOperation<Boolean, Boolean> {
     }
     
     @Override
-    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     

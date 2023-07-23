@@ -37,15 +37,15 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
-        if(statement.invoke(implementationArguments, scope)) return conditional.invoke(implementationArguments, scope);
+    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        if(statement.evaluate(implementationArguments, scope)) return conditional.evaluate(implementationArguments, scope);
         else {
             for(Pair<Expression<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().invoke(implementationArguments, scope)) {
-                    return pair.getRight().invoke(implementationArguments, scope);
+                if(pair.getLeft().evaluate(implementationArguments, scope)) {
+                    return pair.getRight().evaluate(implementationArguments, scope);
                 }
             }
-            if(elseBlock != null) return elseBlock.invoke(implementationArguments, scope);
+            if(elseBlock != null) return elseBlock.evaluate(implementationArguments, scope);
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }

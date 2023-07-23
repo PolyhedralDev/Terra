@@ -27,9 +27,9 @@ public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
-        while(statement.invoke(implementationArguments, scope)) {
-            Block.ReturnInfo<?> level = conditional.invoke(implementationArguments, scope);
+    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        while(statement.evaluate(implementationArguments, scope)) {
+            Block.ReturnInfo<?> level = conditional.evaluate(implementationArguments, scope);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

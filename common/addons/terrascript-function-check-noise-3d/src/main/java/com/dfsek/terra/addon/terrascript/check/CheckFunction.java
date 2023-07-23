@@ -37,19 +37,19 @@ public class CheckFunction implements Function<String> {
     
     
     @Override
-    public String invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public String evaluate(ImplementationArguments implementationArguments, Scope scope) {
         
         
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         
         
-        Vector2 xz = Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                z.invoke(implementationArguments, scope).doubleValue());
+        Vector2 xz = Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                z.evaluate(implementationArguments, scope).doubleValue());
         
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         Vector3 location = arguments.getOrigin().toVector3Mutable().add(
-                Vector3.of(FastMath.roundToInt(xz.getX()), y.invoke(implementationArguments, scope).doubleValue(),
+                Vector3.of(FastMath.roundToInt(xz.getX()), y.evaluate(implementationArguments, scope).doubleValue(),
                            FastMath.roundToInt(xz.getZ()))).immutable();
         
         return apply(location, arguments.getWorld());

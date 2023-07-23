@@ -36,9 +36,9 @@ public class BinaryNumberFunctionBuilder implements FunctionBuilder<Function<Num
             
             @SuppressWarnings("unchecked")
             @Override
-            public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
-                return function.apply(((Expression<Number>) argumentList.get(0)).invoke(implementationArguments, scope),
-                                      ((Expression<Number>) argumentList.get(1)).invoke(implementationArguments, scope));
+            public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
+                return function.apply(((Expression<Number>) argumentList.get(0)).evaluate(implementationArguments, scope),
+                                      ((Expression<Number>) argumentList.get(1)).evaluate(implementationArguments, scope));
             }
             
             @Override

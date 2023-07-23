@@ -7,8 +7,23 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
-public interface Expression<T> extends Statement<T> {
+import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+
+
+public interface Expression<T> {
     ReturnType returnType();
+    
+    T evaluate(ImplementationArguments implementationArguments, Scope scope);
+    
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    SourcePosition getPosition();
     
     enum ReturnType {
         NUMBER(true),

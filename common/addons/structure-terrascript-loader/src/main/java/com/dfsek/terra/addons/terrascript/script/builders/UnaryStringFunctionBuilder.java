@@ -35,8 +35,8 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
             
             @SuppressWarnings("unchecked")
             @Override
-            public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
-                function.accept(((Expression<String>) argumentList.get(0)).invoke(implementationArguments, scope));
+            public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
+                function.accept(((Expression<String>) argumentList.get(0)).evaluate(implementationArguments, scope));
                 return null;
             }
             

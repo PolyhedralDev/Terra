@@ -34,17 +34,17 @@ public class SetMarkFunction implements Function<Void> {
     }
     
     @Override
-    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
         
         arguments.setMark(Vector3.of(FastMath.floorToInt(xz.getX()),
                                      FastMath.floorToInt(
-                                             y.invoke(implementationArguments, scope).doubleValue()),
+                                             y.evaluate(implementationArguments, scope).doubleValue()),
                                      FastMath.floorToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
-                          mark.invoke(implementationArguments, scope));
+                          mark.evaluate(implementationArguments, scope));
         return null;
     }
     

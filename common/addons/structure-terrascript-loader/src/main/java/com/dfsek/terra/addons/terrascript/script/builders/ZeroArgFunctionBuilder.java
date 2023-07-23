@@ -36,7 +36,7 @@ public class ZeroArgFunctionBuilder<T> implements FunctionBuilder<Function<T>> {
             }
             
             @Override
-            public T invoke(ImplementationArguments implementationArguments, Scope scope) {
+            public T evaluate(ImplementationArguments implementationArguments, Scope scope) {
                 return function.apply((TerraImplementationArguments) implementationArguments);
             }
             

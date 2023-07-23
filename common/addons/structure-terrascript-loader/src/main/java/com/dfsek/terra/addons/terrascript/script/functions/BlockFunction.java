@@ -49,7 +49,7 @@ public class BlockFunction implements Function<Void> {
     }
     
     @Override
-    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         BlockState rot = getBlockState(implementationArguments, scope);
         setBlock(implementationArguments, scope, arguments, rot);
@@ -68,14 +68,14 @@ public class BlockFunction implements Function<Void> {
     
     void setBlock(ImplementationArguments implementationArguments, Scope scope,
                   TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
         try {
             Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
-                                             y.invoke(implementationArguments, scope).doubleValue(),
+                                             y.evaluate(implementationArguments, scope).doubleValue(),
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
-            if(overwrite.invoke(implementationArguments, scope) || current.isAir()) {
+            if(overwrite.evaluate(implementationArguments, scope) || current.isAir()) {
                 arguments.getWorld().setBlockState(set, rot);
             }
         } catch(RuntimeException e) {
@@ -84,7 +84,7 @@ public class BlockFunction implements Function<Void> {
     }
     
     protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
-        return data.computeIfAbsent(blockData.invoke(arguments, scope), platform.getWorldHandle()::createBlockState);
+        return data.computeIfAbsent(blockData.evaluate(arguments, scope), platform.getWorldHandle()::createBlockState);
     }
     
     

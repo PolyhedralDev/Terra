@@ -31,9 +31,9 @@ public class RandomFunction implements Function<Integer> {
     }
     
     @Override
-    public Integer invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Integer evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRandom().nextInt(
-                numberReturnable.invoke(implementationArguments, scope).intValue());
+                numberReturnable.evaluate(implementationArguments, scope).intValue());
     }
     
     @Override

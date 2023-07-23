@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.PeekableStream;
+import com.dfsek.terra.addons.terrascript.tokenizer.LookaheadStream;
 
 
-public class PeekableStreamTest {
+public class LookaheadStreamTest {
     @Test
     public void lookahead() {
-        PeekableStream lookahead = new PeekableStream(new StringReader("Test string..."));
+        LookaheadStream lookahead = new LookaheadStream(new StringReader("Test string..."));
         
         for(int i = 0; lookahead.next(i) != null; i++) {
             System.out.print(lookahead.next(i).getCharacter());

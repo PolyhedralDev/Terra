@@ -19,7 +19,7 @@ public class NumberAdditionOperation extends BinaryOperation<Number, Number> {
     }
     
     @Override
-    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
     

@@ -12,7 +12,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public abstract class VariableAssignmentNode<T> implements Statement<T> {
+public abstract class VariableAssignmentNode<T> implements Expression<T> {
     protected final Expression<T> value;
     protected final int index;
     private final SourcePosition position;

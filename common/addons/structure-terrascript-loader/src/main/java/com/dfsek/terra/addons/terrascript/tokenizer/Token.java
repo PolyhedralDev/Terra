@@ -39,6 +39,10 @@ public class Token {
         return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
     }
     
+    public boolean isType(Type type) {
+        return type == getType();
+    }
+    
     public boolean isBinaryOperator() {
         return type.equals(Type.ADDITION_OPERATOR)
                || type.equals(Type.SUBTRACTION_OPERATOR)
@@ -77,14 +81,10 @@ public class Token {
                || type.equals(Type.NUMBER_VARIABLE);
     }
     
-    public boolean isLoopLike() {
+    public boolean isControlStructure() {
         return type.equals(Type.IF_STATEMENT)
                || type.equals(Type.WHILE_LOOP)
                || type.equals(Type.FOR_LOOP);
-    }
-    
-    public boolean isIdentifier() {
-        return type.equals(Type.IDENTIFIER);
     }
     
     public enum Type {

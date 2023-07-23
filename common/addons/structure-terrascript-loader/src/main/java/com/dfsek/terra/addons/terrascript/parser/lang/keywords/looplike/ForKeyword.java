@@ -18,12 +18,12 @@ import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
-    private final Statement<?> initializer;
+    private final Expression<?> initializer;
     private final Expression<Boolean> statement;
-    private final Statement<?> incrementer;
+    private final Expression<?> incrementer;
     private final SourcePosition position;
     
-    public ForKeyword(Block conditional, Statement<?> initializer, Expression<Boolean> statement, Statement<?> incrementer, SourcePosition position) {
+    public ForKeyword(Block conditional, Expression<?> initializer, Expression<Boolean> statement, Expression<?> incrementer, SourcePosition position) {
         this.conditional = conditional;
         this.initializer = initializer;
         this.statement = statement;
@@ -32,11 +32,11 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
-        for(initializer.invoke(implementationArguments, scope);
-            statement.invoke(implementationArguments, scope);
-            incrementer.invoke(implementationArguments, scope)) {
-            Block.ReturnInfo<?> level = conditional.invoke(implementationArguments, scope);
+    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        for(initializer.evaluate(implementationArguments, scope);
+            statement.evaluate(implementationArguments, scope);
+            incrementer.evaluate(implementationArguments, scope)) {
+            Block.ReturnInfo<?> level = conditional.evaluate(implementationArguments, scope);
             if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
             if(level.getLevel().isReturnFast()) return level;
         }

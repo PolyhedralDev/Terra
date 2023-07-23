@@ -13,19 +13,24 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Block.ReturnInfo;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public class Block implements Statement<ReturnInfo<?>> {
-    private final List<Statement<?>> items;
+public class Block implements Expression<ReturnInfo<?>> {
+    private final List<Expression<?>> items;
     private final SourcePosition position;
     
-    public Block(List<Statement<?>> items, SourcePosition position) {
+    public Block(List<Expression<?>> items, SourcePosition position) {
         this.items = items;
         this.position = position;
     }
     
     @Override
-    public ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
-        for(Statement<?> item : items) {
-            Object result = item.invoke(implementationArguments, scope);
+    public ReturnType returnType() {
+        return ReturnType.VOID;
+    }
+    
+    @Override
+    public ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        for(Expression<?> item : items) {
+            Object result = item.evaluate(implementationArguments, scope);
             if(result instanceof ReturnInfo<?> level) {
                 if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
             }

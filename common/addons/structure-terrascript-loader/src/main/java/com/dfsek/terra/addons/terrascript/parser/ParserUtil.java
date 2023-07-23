@@ -51,7 +51,7 @@ public class ParserUtil {
         PRECEDENCE.put(Token.Type.BOOLEAN_OR, booleanOps);
     }
     
-    public static void checkType(Token token, Token.Type... expected) {
+    public static void ensureType(Token token, Token.Type... expected) {
         for(Token.Type type : expected) if(token.getType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
     }

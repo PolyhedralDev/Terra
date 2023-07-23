@@ -21,7 +21,7 @@ public class LessThanStatement extends BinaryOperation<Number, Boolean> {
     
     
     @Override
-    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Boolean evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     

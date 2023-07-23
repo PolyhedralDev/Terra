@@ -12,8 +12,13 @@ public class StrAssignmentNode extends VariableAssignmentNode<String> {
     }
     
     @Override
-    public String invoke(ImplementationArguments implementationArguments, Scope scope) {
-        String val = value.invoke(implementationArguments, scope);
+    public ReturnType returnType() {
+        return ReturnType.STRING;
+    }
+    
+    @Override
+    public String evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        String val = value.evaluate(implementationArguments, scope);
         scope.setStr(index, val);
         return val;
     }

@@ -35,8 +35,8 @@ public class UnaryNumberFunctionBuilder implements FunctionBuilder<Function<Numb
             
             @SuppressWarnings("unchecked")
             @Override
-            public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
-                return function.apply(((Expression<Number>) argumentList.get(0)).invoke(implementationArguments, scope));
+            public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
+                return function.apply(((Expression<Number>) argumentList.get(0)).evaluate(implementationArguments, scope));
             }
             
             @Override

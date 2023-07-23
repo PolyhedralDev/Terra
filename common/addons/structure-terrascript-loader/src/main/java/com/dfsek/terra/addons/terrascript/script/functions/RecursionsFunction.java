@@ -27,7 +27,7 @@ public class RecursionsFunction implements Function<Number> {
     }
     
     @Override
-    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
     

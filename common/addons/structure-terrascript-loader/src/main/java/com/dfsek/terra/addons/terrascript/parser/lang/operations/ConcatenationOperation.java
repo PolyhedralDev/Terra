@@ -35,7 +35,7 @@ public class ConcatenationOperation extends BinaryOperation<Object, Object> {
     }
     
     @Override
-    public Object invoke(ImplementationArguments implementationArguments, Scope scope) {
-        return toString(left.invoke(implementationArguments, scope)) + toString(right.invoke(implementationArguments, scope));
+    public Object evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        return toString(left.evaluate(implementationArguments, scope)) + toString(right.evaluate(implementationArguments, scope));
     }
 }

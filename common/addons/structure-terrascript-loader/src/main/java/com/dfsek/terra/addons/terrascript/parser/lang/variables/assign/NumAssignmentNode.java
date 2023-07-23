@@ -12,7 +12,12 @@ public class NumAssignmentNode extends VariableAssignmentNode<Number> {
     }
     
     @Override
-    public Number invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public ReturnType returnType() {
+        return ReturnType.NUMBER;
+    }
+    
+    @Override
+    public Number evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
     

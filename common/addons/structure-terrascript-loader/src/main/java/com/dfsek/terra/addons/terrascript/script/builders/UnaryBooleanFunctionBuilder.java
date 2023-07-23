@@ -37,8 +37,8 @@ public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Voi
             
             @SuppressWarnings("unchecked")
             @Override
-            public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
-                function.accept(((Expression<Boolean>) argumentList.get(0)).invoke(implementationArguments, scope),
+            public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
+                function.accept(((Expression<Boolean>) argumentList.get(0)).evaluate(implementationArguments, scope),
                                 (TerraImplementationArguments) implementationArguments);
                 return null;
             }

@@ -43,12 +43,12 @@ public class EntityFunction implements Function<Void> {
     }
     
     @Override
-    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
-        Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.invoke(implementationArguments, scope).doubleValue(),
+        Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.evaluate(implementationArguments, scope).doubleValue(),
                                                                     xz.getZ())
                                                                 .mutable()
                                                                 .add(arguments.getOrigin())

@@ -12,7 +12,12 @@ public class BoolAssignmentNode extends VariableAssignmentNode<Boolean> {
     }
     
     @Override
-    public Boolean invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public ReturnType returnType() {
+        return ReturnType.BOOLEAN;
+    }
+    
+    @Override
+    public Boolean evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
     

@@ -41,12 +41,12 @@ public class PullFunction implements Function<Void> {
     }
     
     @Override
-    public Void invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.invoke(implementationArguments, scope).doubleValue(),
-                                                          z.invoke(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
+                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
-        Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.invoke(implementationArguments, scope).intValue(),
+        Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.evaluate(implementationArguments, scope).intValue(),
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {

@@ -21,7 +21,7 @@ public interface Function<T> extends Expression<T> {
         }
 
         @Override
-        public Object invoke(ImplementationArguments implementationArguments, Scope scope) {
+        public Object evaluate(ImplementationArguments implementationArguments, Scope scope) {
             return null;
         }
 
@@ -33,11 +33,11 @@ public interface Function<T> extends Expression<T> {
     
     @Override
     default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
-        return ((Number) invoke(implementationArguments, scope)).doubleValue();
+        return ((Number) evaluate(implementationArguments, scope)).doubleValue();
     }
     
     @Override
     default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
-        return (Boolean) invoke(implementationArguments, scope);
+        return (Boolean) evaluate(implementationArguments, scope);
     }
 }

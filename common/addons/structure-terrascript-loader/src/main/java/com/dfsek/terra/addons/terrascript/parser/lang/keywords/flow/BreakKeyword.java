@@ -22,7 +22,7 @@ public class BreakKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> invoke(ImplementationArguments implementationArguments, Scope scope) {
+    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
         return new Block.ReturnInfo<>(Block.ReturnLevel.BREAK, null);
     }
     
