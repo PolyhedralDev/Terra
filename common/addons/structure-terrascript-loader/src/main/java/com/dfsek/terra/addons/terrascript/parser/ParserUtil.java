@@ -56,7 +56,7 @@ public class ParserUtil {
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
     }
     
-    public static void checkReturnType(Expression<?> returnable, Expression.ReturnType... types) {
+    public static void ensureReturnType(Expression<?> returnable, Expression.ReturnType... types) {
         for(Expression.ReturnType type : types) if(returnable.returnType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType(), returnable.getPosition());
     }

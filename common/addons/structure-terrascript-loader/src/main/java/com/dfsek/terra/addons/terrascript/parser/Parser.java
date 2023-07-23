@@ -96,7 +96,7 @@ public class Parser {
     
     private WhileKeyword parseWhileLoop(Tokenizer tokenizer, SourcePosition start, ScopeBuilder scopeBuilder) {
         Expression<?> first = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.checkReturnType(first, Expression.ReturnType.BOOLEAN);
+        ParserUtil.ensureReturnType(first, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
         
@@ -105,7 +105,7 @@ public class Parser {
     
     private IfKeyword parseIfStatement(Tokenizer tokenizer, SourcePosition start, boolean controlStructure, ScopeBuilder scopeBuilder) {
         Expression<?> condition = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.checkReturnType(condition, Expression.ReturnType.BOOLEAN);
+        ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
         
@@ -119,7 +119,7 @@ public class Parser {
             if(tokenizer.current().isType(Token.Type.IF_STATEMENT)) {
                 tokenizer.consume(); // Consume if.
                 Expression<?> elseCondition = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-                ParserUtil.checkReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
+                ParserUtil.ensureReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
                 elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(tokenizer, controlStructure, scopeBuilder)));
             } else {
                 elseBlock = parseStatementBlock(tokenizer, controlStructure, scopeBuilder);
@@ -157,7 +157,7 @@ public class Parser {
         } else initializer = parseLogicMathExpression(tokenizer, true, scopeBuilder);
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
         Expression<?> conditional = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.checkReturnType(conditional, Expression.ReturnType.BOOLEAN);
+        ParserUtil.ensureReturnType(conditional, Expression.ReturnType.BOOLEAN);
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
         
         Expression<?> incrementer;
@@ -210,10 +210,10 @@ public class Parser {
         }
         
         if(booleanInverted) { // Invert operation if boolean not detected
-            ParserUtil.checkReturnType(expression, Expression.ReturnType.BOOLEAN);
+            ParserUtil.ensureReturnType(expression, Expression.ReturnType.BOOLEAN);
             expression = new BooleanNotOperation((Expression<Boolean>) expression, expression.getPosition());
         } else if(negate) {
-            ParserUtil.checkReturnType(expression, Expression.ReturnType.NUMBER);
+            ParserUtil.ensureReturnType(expression, Expression.ReturnType.NUMBER);
             expression = new NegationOperation((Expression<Number>) expression, expression.getPosition());
         }
         
@@ -317,7 +317,7 @@ public class Parser {
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.ASSIGNMENT);
         
         Expression<?> value = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.checkReturnType(value, returnType);
+        ParserUtil.ensureReturnType(value, returnType);
 
         String id = identifier.getContent();
 
@@ -393,7 +393,7 @@ public class Parser {
         
         String id = identifier.getContent();
         
-        ParserUtil.checkReturnType(value, scopeBuilder.getType(id));
+        ParserUtil.ensureReturnType(value, scopeBuilder.getType(id));
         
         ReturnType type = value.returnType();
         
@@ -435,7 +435,7 @@ public class Parser {
                 if(builder.getArgument(i) == null)
                     throw new ParseException("Unexpected argument at position " + i + " in function " + identifier.getContent(),
                                              identifier.getPosition());
-                ParserUtil.checkReturnType(argument, builder.getArgument(i));
+                ParserUtil.ensureReturnType(argument, builder.getArgument(i));
             }
             return builder.build(args, identifier.getPosition());
         }
