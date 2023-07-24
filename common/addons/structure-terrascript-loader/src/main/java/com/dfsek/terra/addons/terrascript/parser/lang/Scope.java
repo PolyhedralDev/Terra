@@ -50,16 +50,19 @@ public class Scope {
         private int numSize, boolSize, strSize = 0;
         private ScopeBuilder parent;
         
+        private boolean inLoop;
+        
         public ScopeBuilder() {
             this.indices = new HashMap<>();
         }
         
-        private ScopeBuilder(ScopeBuilder parent) {
+        private ScopeBuilder(ScopeBuilder parent, boolean inLoop) {
             this.parent = parent;
             this.numSize = parent.numSize;
             this.boolSize = parent.boolSize;
             this.strSize = parent.strSize;
             this.indices = new HashMap<>(parent.indices);
+            this.inLoop = inLoop;
         }
         
         public Scope build() {
@@ -67,14 +70,20 @@ public class Scope {
         }
         
         public ScopeBuilder sub() {
-            return new ScopeBuilder(this);
+            return new ScopeBuilder(this, inLoop);
         }
+        
+        public ScopeBuilder subInLoop() { return new ScopeBuilder(this, true); }
         
         private String check(String id) {
             if(indices.containsKey(id)) {
                 throw new IllegalArgumentException("Variable with ID " + id + " already registered.");
             }
             return id;
+        }
+        
+        public boolean isInLoop() {
+            return inLoop;
         }
 
         public int num(String id) {
