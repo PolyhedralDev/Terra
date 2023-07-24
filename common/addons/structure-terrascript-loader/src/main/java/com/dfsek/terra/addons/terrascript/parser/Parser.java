@@ -98,16 +98,16 @@ public class Parser {
         SourcePosition start = tokenizer.consume().getPosition();
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
         scopeBuilder = scopeBuilder.subInLoop();
-        Expression<?> first = parseLogicMathExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.ensureReturnType(first, Expression.ReturnType.BOOLEAN);
+        Expression<?> condition = parseExpression(tokenizer, true, scopeBuilder);
+        ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
-        return new WhileKeyword(parseStatementBlock(tokenizer, scopeBuilder), (Expression<Boolean>) first, start); // While loop
+        return new WhileKeyword(parseStatementBlock(tokenizer, scopeBuilder), (Expression<Boolean>) condition, start); // While loop
     }
     
     private IfKeyword parseIfStatement(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
         SourcePosition start = tokenizer.consume().getPosition();
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
-        Expression<?> condition = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+        Expression<?> condition = parseExpression(tokenizer, true, scopeBuilder);
         ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
@@ -121,7 +121,7 @@ public class Parser {
             tokenizer.consume(); // Consume else.
             if(tokenizer.current().isType(Token.Type.IF_STATEMENT)) {
                 tokenizer.consume(); // Consume if.
-                Expression<?> elseCondition = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+                Expression<?> elseCondition = parseExpression(tokenizer, true, scopeBuilder);
                 ParserUtil.ensureReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
                 elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(tokenizer, scopeBuilder)));
             } else {
@@ -141,7 +141,7 @@ public class Parser {
             return block;
         } else {
             SourcePosition position = tokenizer.current().getPosition();
-            return new Block(Collections.singletonList(parseExpression(tokenizer, scopeBuilder)), position);
+            return new Block(Collections.singletonList(parseStatement(tokenizer, scopeBuilder)), position);
         }
     }
     
@@ -158,9 +158,9 @@ public class Parser {
             if(functions.containsKey(name.getContent()) || scopeBuilder.contains(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
             initializer = forVar;
-        } else initializer = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+        } else initializer = parseExpression(tokenizer, true, scopeBuilder);
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
-        Expression<?> conditional = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+        Expression<?> conditional = parseExpression(tokenizer, true, scopeBuilder);
         ParserUtil.ensureReturnType(conditional, Expression.ReturnType.BOOLEAN);
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
         
@@ -168,7 +168,7 @@ public class Parser {
         Token token = tokenizer.current();
         if(scopeBuilder.contains(token.getContent())) { // Assume variable assignment
             incrementer = parseAssignment(tokenizer, scopeBuilder);
-        } else incrementer = parseFunction(tokenizer, true, scopeBuilder);
+        } else incrementer = parseFunctionInvocation(tokenizer, true, scopeBuilder);
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
         
@@ -176,7 +176,7 @@ public class Parser {
                               start);
     }
     
-    private Expression<?> parseLogicMathExpression(Tokenizer tokenizer, boolean full, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseExpression(Tokenizer tokenizer, boolean full, ScopeBuilder scopeBuilder) {
         boolean booleanInverted = false; // Check for boolean not operator
         boolean negate = false;
         if(tokenizer.current().isType(Token.Type.BOOLEAN_NOT)) {
@@ -195,10 +195,10 @@ public class Parser {
         if(id.isConstant()) {
             expression = parseConstantExpression(tokenizer);
         } else if(id.isType(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
-            expression = parseMathLogicGroup(tokenizer, scopeBuilder);
+            expression = parseExpressionGroup(tokenizer, scopeBuilder);
         } else {
             if(functions.containsKey(id.getContent()))
-                expression = parseFunction(tokenizer, false, scopeBuilder);
+                expression = parseFunctionInvocation(tokenizer, false, scopeBuilder);
             else if(scopeBuilder.contains(id.getContent())) {
                 ParserUtil.ensureType(tokenizer.consume(), Token.Type.IDENTIFIER);
                 String varId = id.getContent();
@@ -241,9 +241,9 @@ public class Parser {
         };
     }
     
-    private Expression<?> parseMathLogicGroup(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseExpressionGroup(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
-        Expression<?> expression = parseLogicMathExpression(tokenizer, true, scopeBuilder); // Parse inside of group as a separate expression
+        Expression<?> expression = parseExpression(tokenizer, true, scopeBuilder); // Parse inside of group as a separate expression
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
         return expression;
     }
@@ -253,14 +253,16 @@ public class Parser {
         Token binaryOperator = tokenizer.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
         
-        Expression<?> right = parseLogicMathExpression(tokenizer, false, scopeBuilder);
+        Expression<?> right = parseExpression(tokenizer, false, scopeBuilder);
         
         Token other = tokenizer.current();
-        if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType())) {
+        
+        if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType()))
             return assemble(left, parseBinaryOperation(right, tokenizer, scopeBuilder), binaryOperator);
-        } else if(other.isBinaryOperator()) {
+            
+        if(other.isBinaryOperator())
             return parseBinaryOperation(assemble(left, right, binaryOperator), tokenizer, scopeBuilder);
-        }
+        
         return assemble(left, right, binaryOperator);
     }
     
@@ -317,7 +319,7 @@ public class Parser {
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.ASSIGNMENT);
         
-        Expression<?> value = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+        Expression<?> value = parseExpression(tokenizer, true, scopeBuilder);
         ParserUtil.ensureReturnType(value, returnType);
 
         String id = identifier.getContent();
@@ -339,7 +341,7 @@ public class Parser {
         while(tokenizer.hasNext()) {
             Token token = tokenizer.current();
             if(token.isType(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
-            Expression<?> expression = parseExpression(tokenizer, scopeBuilder);
+            Expression<?> expression = parseStatement(tokenizer, scopeBuilder);
             if(expression != Function.NULL) {
                 expressions.add(expression);
             }
@@ -348,7 +350,7 @@ public class Parser {
         return new Block(expressions, startPosition);
     }
     
-    private Expression<?> parseExpression(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseStatement(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
         Token token = tokenizer.current();
         
         // Include BREAK and CONTINUE as valid token types if scope is within a loop
@@ -365,7 +367,7 @@ public class Parser {
             case WHILE_LOOP -> parseWhileLoop(tokenizer, scopeBuilder);
             case IDENTIFIER -> {
                 if(scopeBuilder.contains(token.getContent())) yield parseAssignment(tokenizer, scopeBuilder); // Assume variable assignment
-                else yield parseFunction(tokenizer, true, scopeBuilder);
+                else yield parseFunctionInvocation(tokenizer, true, scopeBuilder);
             }
             case NUMBER_VARIABLE, STRING_VARIABLE, BOOLEAN_VARIABLE -> parseVariableDeclaration(tokenizer, scopeBuilder);
             case RETURN -> new ReturnKeyword(tokenizer.consume().getPosition());
@@ -385,7 +387,7 @@ public class Parser {
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.ASSIGNMENT);
         
-        Expression<?> value = parseLogicMathExpression(tokenizer, true, scopeBuilder);
+        Expression<?> value = parseExpression(tokenizer, true, scopeBuilder);
         
         String id = identifier.getContent();
         
@@ -401,7 +403,7 @@ public class Parser {
         };
     }
     
-    private Function<?> parseFunction(Tokenizer tokenizer, boolean fullStatement, ScopeBuilder scopeBuilder) {
+    private Function<?> parseFunctionInvocation(Tokenizer tokenizer, boolean fullStatement, ScopeBuilder scopeBuilder) {
         Token identifier = tokenizer.consume();
         ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
         
@@ -442,7 +444,7 @@ public class Parser {
         List<Expression<?>> args = new ArrayList<>();
         
         while(!tokenizer.current().isType(Token.Type.GROUP_END)) {
-            args.add(parseLogicMathExpression(tokenizer, true, scopeBuilder));
+            args.add(parseExpression(tokenizer, true, scopeBuilder));
             ParserUtil.ensureType(tokenizer.current(), Token.Type.SEPARATOR, Token.Type.GROUP_END);
             if(tokenizer.current().isType(Token.Type.SEPARATOR)) tokenizer.consume();
         }
