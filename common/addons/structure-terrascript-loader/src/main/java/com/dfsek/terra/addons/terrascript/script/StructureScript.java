@@ -51,7 +51,7 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
-    private final Executable block;
+    private final Executable executable;
     private final RegistryKey id;
     
     private final String profile;
@@ -124,7 +124,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             parser.ignoreFunction("debugBlock");
         }
         
-        block = parser.parse();
+        executable = parser.parse();
         this.platform = platform;
     }
     
@@ -132,21 +132,21 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     @SuppressWarnings("try")
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         platform.getProfiler().push(profile);
-        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
+        boolean result = execute(new TerraImplementationArguments(location, rotation, random, world, 0));
         platform.getProfiler().pop(profile);
         return result;
     }
     
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation, int recursions) {
         platform.getProfiler().push(profile);
-        boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
+        boolean result = execute(new TerraImplementationArguments(location, rotation, random, world, recursions));
         platform.getProfiler().pop(profile);
         return result;
     }
     
-    private boolean applyBlock(TerraImplementationArguments arguments) {
+    private boolean execute(TerraImplementationArguments arguments) {
         try {
-            return block.execute(arguments);
+            return executable.execute(arguments);
         } catch(RuntimeException e) {
             LOGGER.error("Failed to generate structure at {}", arguments.getOrigin(), e);
             return false;
