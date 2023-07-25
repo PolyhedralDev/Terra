@@ -7,6 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
+
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
+
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -70,10 +74,12 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         this.id = id;
         this.profile = "terrascript_direct:" + id;
         
-        //noinspection unchecked
-        functionRegistry.forEach((key, function) -> parser.registerFunction(key.getID(), function)); // Register registry functions.
+        ScopeBuilder scope = new ScopeBuilder();
         
-        parser
+        //noinspection unchecked
+        functionRegistry.forEach((key, function) -> scope.registerFunction(key.getID(), function)); // Register registry functions.
+        
+        scope
                 .registerFunction("block", new BlockFunctionBuilder(platform))
                 .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
                 .registerFunction("structure", new StructureFunctionBuilder(structureRegistry, platform))
@@ -120,11 +126,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("min", new BinaryNumberFunctionBuilder(
                         (number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
         
-        if(!platform.getTerraConfig().isDebugScript()) {
-            parser.ignoreFunction("debugBlock");
-        }
-        
-        executable = parser.parse();
+        executable = parser.parse(scope);
         this.platform = platform;
     }
     

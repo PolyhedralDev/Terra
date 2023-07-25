@@ -1,6 +1,10 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 
+import com.dfsek.terra.addons.terrascript.parser.Parser;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+
 import net.jafama.FastMath;
 
 import java.util.HashMap;
@@ -46,6 +50,8 @@ public class Scope {
     }
     
     public static final class ScopeBuilder {
+        
+        private final Map<String, FunctionBuilder<? extends Function<?>>> functions;
         private final Map<String, Pair<Integer, ReturnType>> indices;
         private int numSize, boolSize, strSize = 0;
         private ScopeBuilder parent;
@@ -53,6 +59,7 @@ public class Scope {
         private boolean inLoop;
         
         public ScopeBuilder() {
+            this.functions = new HashMap<>();
             this.indices = new HashMap<>();
         }
         
@@ -61,6 +68,7 @@ public class Scope {
             this.numSize = parent.numSize;
             this.boolSize = parent.boolSize;
             this.strSize = parent.strSize;
+            this.functions = new HashMap<>(parent.functions);
             this.indices = new HashMap<>(parent.indices);
             this.inLoop = inLoop;
         }
@@ -74,6 +82,19 @@ public class Scope {
         }
         
         public ScopeBuilder subInLoop() { return new ScopeBuilder(this, true); }
+        
+        public ScopeBuilder registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
+            functions.put(name, functionBuilder);
+            return this;
+        }
+        
+        public boolean containsKey(String functionName) {
+            return functions.containsKey(functionName);
+        }
+        
+        public FunctionBuilder<?> get(String functionName) {
+            return functions.get(functionName);
+        }
         
         private String check(String id) {
             if(indices.containsKey(id)) {

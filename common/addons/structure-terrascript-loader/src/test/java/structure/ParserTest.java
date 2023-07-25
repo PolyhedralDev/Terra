@@ -8,6 +8,8 @@
 package structure;
 
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +35,8 @@ public class ParserTest {
         Parser parser = new Parser(
                 IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
         
-        parser.registerFunction("test", new FunctionBuilder<Test1>() {
+        ScopeBuilder scope = new ScopeBuilder();
+        scope.registerFunction("test", new FunctionBuilder<Test1>() {
             @Override
             public Test1 build(List<Expression<?>> argumentList, SourcePosition position) {
                 return new Test1(argumentList.get(0), argumentList.get(1), position);
@@ -56,7 +59,7 @@ public class ParserTest {
         });
         
         long l = System.nanoTime();
-        Executable block = parser.parse();
+        Executable block = parser.parse(scope);
         long t = System.nanoTime() - l;
         System.out.println("Took " + (double) t / 1000000);
         

@@ -9,9 +9,7 @@ package com.dfsek.terra.addons.terrascript.parser;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
@@ -65,21 +63,10 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 @SuppressWarnings("unchecked")
 public class Parser {
     private final String source;
-    private final Map<String, FunctionBuilder<? extends Function<?>>> functions = new HashMap<>();
     private final List<String> ignoredFunctions = new ArrayList<>();
     
     public Parser(String source) {
         this.source = source;
-    }
-    
-    public Parser registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
-        functions.put(name, functionBuilder);
-        return this;
-    }
-    
-    public Parser ignoreFunction(String name) {
-        ignoredFunctions.add(name);
-        return this;
     }
     
     /**
@@ -89,8 +76,7 @@ public class Parser {
      *
      * @throws ParseException If parsing fails.
      */
-    public Executable parse() {
-        ScopeBuilder scopeBuilder = new ScopeBuilder();
+    public Executable parse(ScopeBuilder scopeBuilder) {
         return new Executable(parseBlock(new Tokenizer(source), scopeBuilder), scopeBuilder);
     }
     
@@ -155,7 +141,7 @@ public class Parser {
         if(f.isVariableDeclaration()) {
             VariableAssignmentNode<?> forVar = parseVariableDeclaration(tokenizer, scopeBuilder);
             Token name = tokenizer.current();
-            if(functions.containsKey(name.getContent()) || scopeBuilder.contains(name.getContent()))
+            if(scopeBuilder.containsKey(name.getContent()) || scopeBuilder.contains(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
             initializer = forVar;
         } else initializer = parseExpression(tokenizer, true, scopeBuilder);
@@ -197,7 +183,7 @@ public class Parser {
         } else if(id.isType(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
             expression = parseExpressionGroup(tokenizer, scopeBuilder);
         } else {
-            if(functions.containsKey(id.getContent()))
+            if(scopeBuilder.containsKey(id.getContent()))
                 expression = parseFunctionInvocation(tokenizer, false, scopeBuilder);
             else if(scopeBuilder.contains(id.getContent())) {
                 ParserUtil.ensureType(tokenizer.consume(), Token.Type.IDENTIFIER);
@@ -315,7 +301,7 @@ public class Parser {
         ParserUtil.checkVarType(type, returnType); // Check for type mismatch
         Token identifier = tokenizer.consume();
         ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER);
-        if(functions.containsKey(identifier.getContent()) || scopeBuilder.contains(identifier.getContent()))
+        if(scopeBuilder.containsKey(identifier.getContent()) || scopeBuilder.contains(identifier.getContent()))
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.ASSIGNMENT);
         
@@ -407,7 +393,7 @@ public class Parser {
         Token identifier = tokenizer.consume();
         ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
         
-        if(!functions.containsKey(identifier.getContent()))
+        if(!scopeBuilder.containsKey(identifier.getContent()))
             throw new ParseException("No such function \"" + identifier.getContent() + "\"", identifier.getPosition());
         
         ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
@@ -422,8 +408,8 @@ public class Parser {
             return Function.NULL;
         }
         
-        if(functions.containsKey(identifier.getContent())) {
-            FunctionBuilder<?> builder = functions.get(identifier.getContent());
+        if(scopeBuilder.containsKey(identifier.getContent())) {
+            FunctionBuilder<?> builder = scopeBuilder.get(identifier.getContent());
             
             if(builder.argNumber() != -1 && args.size() != builder.argNumber())
                 throw new ParseException("Expected " + builder.argNumber() + " arguments, found " + args.size(), identifier.getPosition());
