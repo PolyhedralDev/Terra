@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationLevel;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
-public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
+public class IfKeyword implements Keyword<Block.EvaluationInfo<?>> {
     private final Block conditional;
     private final Expression<Boolean> statement;
     private final SourcePosition position;
@@ -37,7 +39,7 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+    public Block.EvaluationInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
         if(statement.evaluate(implementationArguments, scope)) return conditional.evaluate(implementationArguments, scope);
         else {
             for(Pair<Expression<Boolean>, Block> pair : elseIf) {
@@ -47,7 +49,7 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
             }
             if(elseBlock != null) return elseBlock.evaluate(implementationArguments, scope);
         }
-        return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
+        return new Block.EvaluationInfo<>(EvaluationLevel.NONE, null);
     }
     
     @Override

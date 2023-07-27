@@ -182,11 +182,13 @@ public class Tokenizer {
             return new Token(tokenString, Token.Type.BOOLEAN, reader.getPosition());
         
         if(tokenString.equals("num"))
-            return new Token(tokenString, Token.Type.NUMBER_VARIABLE, reader.getPosition());
+            return new Token(tokenString, Token.Type.TYPE_NUMBER, reader.getPosition());
         if(tokenString.equals("str"))
-            return new Token(tokenString, Token.Type.STRING_VARIABLE, reader.getPosition());
+            return new Token(tokenString, Token.Type.TYPE_STRING, reader.getPosition());
         if(tokenString.equals("bool"))
-            return new Token(tokenString, Token.Type.BOOLEAN_VARIABLE, reader.getPosition());
+            return new Token(tokenString, Token.Type.TYPE_BOOLEAN, reader.getPosition());
+        if(tokenString.equals("void"))
+            return new Token(tokenString, Token.Type.TYPE_VOID, reader.getPosition());
         
         if(tokenString.equals("if"))
             return new Token(tokenString, Token.Type.IF_STATEMENT, reader.getPosition());

@@ -76,9 +76,9 @@ public class Token {
     }
     
     public boolean isVariableDeclaration() {
-        return type.equals(Type.STRING_VARIABLE)
-               || type.equals(Type.BOOLEAN_VARIABLE)
-               || type.equals(Type.NUMBER_VARIABLE);
+        return type.equals(Type.TYPE_STRING)
+               || type.equals(Type.TYPE_BOOLEAN)
+               || type.equals(Type.TYPE_NUMBER);
     }
     
     public boolean isControlStructure() {
@@ -192,15 +192,19 @@ public class Token {
         /**
          * Numeric variable declaration
          */
-        NUMBER_VARIABLE,
+        TYPE_NUMBER,
         /**
          * String variable declaration
          */
-        STRING_VARIABLE,
+        TYPE_STRING,
         /**
          * Boolean variable declaration
          */
-        BOOLEAN_VARIABLE,
+        TYPE_BOOLEAN,
+        /**
+         * Void type declaration
+         */
+        TYPE_VOID,
         /**
          * If statement declaration
          */

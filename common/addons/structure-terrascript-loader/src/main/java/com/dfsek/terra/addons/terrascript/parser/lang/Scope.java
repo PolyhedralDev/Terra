@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 
-import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 
@@ -73,26 +72,33 @@ public class Scope {
             this.inLoop = inLoop;
         }
         
+        private ScopeBuilder(Map<String, FunctionBuilder<? extends Function<?>>> functions) {
+            this.functions = new HashMap<>(functions);
+            this.indices = new HashMap<>();
+        }
+        
         public Scope build() {
             return new Scope(numSize, boolSize, strSize);
         }
         
-        public ScopeBuilder sub() {
+        public ScopeBuilder innerScope() {
             return new ScopeBuilder(this, inLoop);
         }
         
-        public ScopeBuilder subInLoop() { return new ScopeBuilder(this, true); }
+        public ScopeBuilder innerLoopScope() { return new ScopeBuilder(this, true); }
+        
+        public ScopeBuilder functionScope() { return new ScopeBuilder(functions); }
         
         public ScopeBuilder registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
             functions.put(name, functionBuilder);
             return this;
         }
         
-        public boolean containsKey(String functionName) {
+        public boolean containsFunction(String functionName) {
             return functions.containsKey(functionName);
         }
         
-        public FunctionBuilder<?> get(String functionName) {
+        public FunctionBuilder<?> getFunction(String functionName) {
             return functions.get(functionName);
         }
         
@@ -106,8 +112,8 @@ public class Scope {
         public boolean isInLoop() {
             return inLoop;
         }
-
-        public int num(String id) {
+        
+        public int declareNum(String id) {
             int num = numSize;
             indices.put(check(id), Pair.of(num, ReturnType.NUMBER));
             numSize++;
@@ -115,7 +121,7 @@ public class Scope {
             return num;
         }
         
-        public int str(String id) {
+        public int declareStr(String id) {
             int str = strSize;
             indices.put(check(id), Pair.of(str, ReturnType.STRING));
             strSize++;
@@ -123,7 +129,7 @@ public class Scope {
             return str;
         }
         
-        public int bool(String id) {
+        public int declareBool(String id) {
             int bool = boolSize;
             indices.put(check(id), Pair.of(bool, ReturnType.BOOLEAN));
             boolSize++;

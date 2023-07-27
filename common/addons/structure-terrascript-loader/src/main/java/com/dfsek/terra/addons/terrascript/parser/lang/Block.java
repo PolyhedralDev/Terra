@@ -9,33 +9,36 @@ package com.dfsek.terra.addons.terrascript.parser.lang;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Block.ReturnInfo;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationInfo;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public class Block implements Expression<ReturnInfo<?>> {
+public class Block implements Expression<EvaluationInfo<?>> {
     private final List<Expression<?>> items;
     private final SourcePosition position;
+    private final ReturnType returnType;
     
-    public Block(List<Expression<?>> items, SourcePosition position) {
+    public Block(List<Expression<?>> items, SourcePosition position, ReturnType returnType) {
         this.items = items;
         this.position = position;
+        this.returnType = returnType;
     }
     
     @Override
     public ReturnType returnType() {
-        return ReturnType.VOID;
+        return returnType;
     }
     
     @Override
-    public ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+    public EvaluationInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
         for(Expression<?> item : items) {
             Object result = item.evaluate(implementationArguments, scope);
-            if(result instanceof ReturnInfo<?> level) {
-                if(!level.getLevel().equals(ReturnLevel.NONE)) return level;
+            if(result instanceof EvaluationInfo<?> evalInfo) {
+                if(!evalInfo.level().equals(EvaluationLevel.NONE)) return evalInfo;
             }
         }
-        return new ReturnInfo<>(ReturnLevel.NONE, null);
+        return new EvaluationInfo<>(EvaluationLevel.NONE, Expression.NOOP);
     }
     
     @Override
@@ -43,7 +46,7 @@ public class Block implements Expression<ReturnInfo<?>> {
         return position;
     }
     
-    public enum ReturnLevel {
+    public enum EvaluationLevel {
         NONE(false),
         BREAK(false),
         CONTINUE(false),
@@ -52,7 +55,7 @@ public class Block implements Expression<ReturnInfo<?>> {
         
         private final boolean returnFast;
         
-        ReturnLevel(boolean returnFast) {
+        EvaluationLevel(boolean returnFast) {
             this.returnFast = returnFast;
         }
         
@@ -62,21 +65,6 @@ public class Block implements Expression<ReturnInfo<?>> {
     }
     
     
-    public static class ReturnInfo<T> {
-        private final ReturnLevel level;
-        private final T data;
-        
-        public ReturnInfo(ReturnLevel level, T data) {
-            this.level = level;
-            this.data = data;
-        }
-        
-        public ReturnLevel getLevel() {
-            return level;
-        }
-        
-        public T getData() {
-            return data;
-        }
+    public record EvaluationInfo<T extends Expression<?>>(EvaluationLevel level, T data) {
     }
 }

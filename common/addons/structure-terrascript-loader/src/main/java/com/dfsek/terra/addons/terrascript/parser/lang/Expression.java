@@ -25,6 +25,23 @@ public interface Expression<T> {
     
     SourcePosition getPosition();
     
+    Expression<Void> NOOP = new Expression<>() {
+        @Override
+        public ReturnType returnType() {
+            return ReturnType.VOID;
+        }
+        
+        @Override
+        public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
+            return null;
+        }
+        
+        @Override
+        public SourcePosition getPosition() {
+            return null;
+        }
+    };
+    
     enum ReturnType {
         NUMBER(true),
         STRING(true),

@@ -78,9 +78,9 @@ public class ParserUtil {
     }
     
     public static void checkVarType(Token token, Expression.ReturnType returnType) {
-        if(returnType.equals(Expression.ReturnType.STRING) && token.getType().equals(Token.Type.STRING_VARIABLE)) return;
-        if(returnType.equals(Expression.ReturnType.NUMBER) && token.getType().equals(Token.Type.NUMBER_VARIABLE)) return;
-        if(returnType.equals(Expression.ReturnType.BOOLEAN) && token.getType().equals(Token.Type.BOOLEAN_VARIABLE)) return;
+        if(returnType.equals(Expression.ReturnType.STRING) && token.getType().equals(Token.Type.TYPE_STRING)) return;
+        if(returnType.equals(Expression.ReturnType.NUMBER) && token.getType().equals(Token.Type.TYPE_NUMBER)) return;
+        if(returnType.equals(Expression.ReturnType.BOOLEAN) && token.getType().equals(Token.Type.TYPE_BOOLEAN)) return;
         throw new ParseException("Type mismatch, cannot convert from " + returnType + " to " + token.getType(), token.getPosition());
     }
     
@@ -98,9 +98,10 @@ public class ParserUtil {
     
     public static Expression.ReturnType getVariableReturnType(Token varToken) {
         return switch(varToken.getType()) {
-            case NUMBER_VARIABLE -> Expression.ReturnType.NUMBER;
-            case STRING_VARIABLE -> Expression.ReturnType.STRING;
-            case BOOLEAN_VARIABLE -> Expression.ReturnType.BOOLEAN;
+            case TYPE_NUMBER -> Expression.ReturnType.NUMBER;
+            case TYPE_STRING -> Expression.ReturnType.STRING;
+            case TYPE_BOOLEAN -> Expression.ReturnType.BOOLEAN;
+            case TYPE_VOID -> Expression.ReturnType.VOID;
             default -> throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration",
                                                 varToken.getPosition());
         };

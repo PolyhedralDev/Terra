@@ -7,14 +7,15 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationInfo;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationLevel;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public class BreakKeyword implements Keyword<Block.ReturnInfo<?>> {
+public class BreakKeyword implements Keyword<EvaluationInfo<?>> {
     private final SourcePosition position;
     
     public BreakKeyword(SourcePosition position) {
@@ -22,8 +23,8 @@ public class BreakKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
-        return new Block.ReturnInfo<>(Block.ReturnLevel.BREAK, null);
+    public EvaluationInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+        return new EvaluationInfo<>(EvaluationLevel.BREAK, null);
     }
     
     @Override

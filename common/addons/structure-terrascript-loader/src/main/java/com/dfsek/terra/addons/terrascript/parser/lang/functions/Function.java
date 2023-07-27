@@ -10,26 +10,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.functions;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
-
 
 public interface Function<T> extends Expression<T> {
-    Function<?> NULL = new Function<>() {
-        @Override
-        public ReturnType returnType() {
-            return null;
-        }
-
-        @Override
-        public Object evaluate(ImplementationArguments implementationArguments, Scope scope) {
-            return null;
-        }
-
-        @Override
-        public SourcePosition getPosition() {
-            return null;
-        }
-    };
     
     @Override
     default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {

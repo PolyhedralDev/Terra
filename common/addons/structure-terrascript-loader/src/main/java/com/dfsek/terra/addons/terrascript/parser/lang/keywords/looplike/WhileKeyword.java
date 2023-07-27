@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationInfo;
+import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationLevel;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
@@ -15,7 +17,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
-public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
+public class WhileKeyword implements Keyword<EvaluationInfo<?>> {
     private final Block conditional;
     private final Expression<Boolean> statement;
     private final SourcePosition position;
@@ -27,13 +29,13 @@ public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     }
     
     @Override
-    public Block.ReturnInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
+    public EvaluationInfo<?> evaluate(ImplementationArguments implementationArguments, Scope scope) {
         while(statement.evaluate(implementationArguments, scope)) {
-            Block.ReturnInfo<?> level = conditional.evaluate(implementationArguments, scope);
-            if(level.getLevel().equals(Block.ReturnLevel.BREAK)) break;
-            if(level.getLevel().isReturnFast()) return level;
+            EvaluationInfo<?> level = conditional.evaluate(implementationArguments, scope);
+            if(level.level().equals(EvaluationLevel.BREAK)) break;
+            if(level.level().isReturnFast()) return level;
         }
-        return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
+        return new EvaluationInfo<>(EvaluationLevel.NONE, null);
     }
     
     @Override
