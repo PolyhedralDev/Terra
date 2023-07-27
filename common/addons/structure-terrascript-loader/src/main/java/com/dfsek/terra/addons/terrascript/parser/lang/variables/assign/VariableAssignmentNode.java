@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables.assign;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public abstract class VariableAssignmentNode<T> implements Expression<T> {

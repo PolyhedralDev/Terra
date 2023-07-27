@@ -10,13 +10,13 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class UnaryBooleanFunctionBuilder implements FunctionBuilder<Function<Void>> {

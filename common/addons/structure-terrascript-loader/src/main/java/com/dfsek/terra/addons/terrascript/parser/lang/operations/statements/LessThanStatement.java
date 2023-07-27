@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class LessThanStatement extends BinaryOperation<Number, Boolean> {
@@ -29,7 +29,7 @@ public class LessThanStatement extends BinaryOperation<Number, Boolean> {
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) < right.applyDouble(implementationArguments, scope);
     }
-
+    
     @Override
     public Expression.ReturnType returnType() {
         return Expression.ReturnType.BOOLEAN;

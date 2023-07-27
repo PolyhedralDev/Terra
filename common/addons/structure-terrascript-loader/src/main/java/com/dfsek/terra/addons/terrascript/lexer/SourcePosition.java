@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.tokenizer;
+package com.dfsek.terra.addons.terrascript.lexer;
 
 public class SourcePosition {
     private final int line;

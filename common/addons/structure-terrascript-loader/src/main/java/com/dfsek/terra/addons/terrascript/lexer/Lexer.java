@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.tokenizer;
+package com.dfsek.terra.addons.terrascript.lexer;
 
 import com.google.common.collect.Sets;
 
@@ -13,20 +13,21 @@ import java.io.StringReader;
 import java.util.Set;
 import java.util.Stack;
 
+import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
+import com.dfsek.terra.addons.terrascript.lexer.exceptions.EOFException;
+import com.dfsek.terra.addons.terrascript.lexer.exceptions.FormatException;
+import com.dfsek.terra.addons.terrascript.lexer.exceptions.TokenizerException;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.tokenizer.exceptions.EOFException;
-import com.dfsek.terra.addons.terrascript.tokenizer.exceptions.FormatException;
-import com.dfsek.terra.addons.terrascript.tokenizer.exceptions.TokenizerException;
 
 
-public class Tokenizer {
+public class Lexer {
     public static final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/',
                                                                            '>', '<', '!'); // Reserved chars
     private final LookaheadStream reader;
     private final Stack<Token> bracketStack = new Stack<>();
     private Token current;
     
-    public Tokenizer(String data) {
+    public Lexer(String data) {
         reader = new LookaheadStream(new StringReader(data + '\0'));
         current = tokenize();
     }
@@ -50,7 +51,7 @@ public class Tokenizer {
      * @throws ParseException If token does not exist
      */
     public Token consume() {
-        if (current.getType() == Token.Type.END_OF_FILE) return current;
+        if(current.getType() == TokenType.END_OF_FILE) return current;
         Token temp = current;
         current = tokenize();
         return temp;
@@ -62,7 +63,7 @@ public class Tokenizer {
      * @return {@code true} if more tokens are present, otherwise {@code false}
      */
     public boolean hasNext() {
-        return current.getType() != Token.Type.END_OF_FILE;
+        return current.getType() != TokenType.END_OF_FILE;
     }
     
     private Token tokenize() throws TokenizerException {
@@ -76,29 +77,29 @@ public class Tokenizer {
         
         // Reached end of file
         if(reader.current().isEOF()) {
-            if (!bracketStack.isEmpty()) throw new ParseException("Dangling closing brace", bracketStack.peek().getPosition());
-            return new Token(reader.consume().toString(), Token.Type.END_OF_FILE, reader.getPosition());
+            if(!bracketStack.isEmpty()) throw new ParseException("Dangling closing brace", bracketStack.peek().getPosition());
+            return new Token(reader.consume().toString(), TokenType.END_OF_FILE, reader.getPosition());
         }
         
         // Check if operator token
         if(reader.matchesString("==", true))
-            return new Token("==", Token.Type.EQUALS_OPERATOR, reader.getPosition());
+            return new Token("==", TokenType.EQUALS_OPERATOR, reader.getPosition());
         if(reader.matchesString("!=", true))
-            return new Token("!=", Token.Type.NOT_EQUALS_OPERATOR, reader.getPosition());
+            return new Token("!=", TokenType.NOT_EQUALS_OPERATOR, reader.getPosition());
         if(reader.matchesString(">=", true))
-            return new Token(">=", Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
+            return new Token(">=", TokenType.GREATER_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
         if(reader.matchesString("<=", true))
-            return new Token("<=", Token.Type.LESS_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
+            return new Token("<=", TokenType.LESS_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
         if(reader.matchesString(">", true))
-            return new Token(">", Token.Type.GREATER_THAN_OPERATOR, reader.getPosition());
+            return new Token(">", TokenType.GREATER_THAN_OPERATOR, reader.getPosition());
         if(reader.matchesString("<", true))
-            return new Token("<", Token.Type.LESS_THAN_OPERATOR, reader.getPosition());
+            return new Token("<", TokenType.LESS_THAN_OPERATOR, reader.getPosition());
         
         // Check if logical operator
         if(reader.matchesString("||", true))
-            return new Token("||", Token.Type.BOOLEAN_OR, reader.getPosition());
+            return new Token("||", TokenType.BOOLEAN_OR, reader.getPosition());
         if(reader.matchesString("&&", true))
-            return new Token("&&", Token.Type.BOOLEAN_AND, reader.getPosition());
+            return new Token("&&", TokenType.BOOLEAN_AND, reader.getPosition());
         
         // Check if number
         if(isNumberStart()) {
@@ -106,7 +107,7 @@ public class Tokenizer {
             while(!reader.current().isEOF() && isNumberLike()) {
                 num.append(reader.consume());
             }
-            return new Token(num.toString(), Token.Type.NUMBER, reader.getPosition());
+            return new Token(num.toString(), TokenType.NUMBER, reader.getPosition());
         }
         
         // Check if string literal
@@ -126,45 +127,45 @@ public class Tokenizer {
             }
             reader.consume(); // Consume last quote
             
-            return new Token(string.toString(), Token.Type.STRING, reader.getPosition());
+            return new Token(string.toString(), TokenType.STRING, reader.getPosition());
         }
         
         if(reader.current().is('('))
-            return new Token(reader.consume().toString(), Token.Type.GROUP_BEGIN, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.GROUP_BEGIN, reader.getPosition());
         if(reader.current().is(')'))
-            return new Token(reader.consume().toString(), Token.Type.GROUP_END, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.GROUP_END, reader.getPosition());
         if(reader.current().is(';'))
-            return new Token(reader.consume().toString(), Token.Type.STATEMENT_END, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.STATEMENT_END, reader.getPosition());
         if(reader.current().is(','))
-            return new Token(reader.consume().toString(), Token.Type.SEPARATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.SEPARATOR, reader.getPosition());
         
         if(reader.current().is('{')) {
-            Token token = new Token(reader.consume().toString(), Token.Type.BLOCK_BEGIN, reader.getPosition());
+            Token token = new Token(reader.consume().toString(), TokenType.BLOCK_BEGIN, reader.getPosition());
             bracketStack.push(token);
             return token;
         }
         if(reader.current().is('}')) {
             if(bracketStack.isEmpty()) throw new ParseException("Dangling opening brace", new SourcePosition(0, 0));
             bracketStack.pop();
-            return new Token(reader.consume().toString(), Token.Type.BLOCK_END, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.BLOCK_END, reader.getPosition());
         }
         
         if(reader.current().is('='))
-            return new Token(reader.consume().toString(), Token.Type.ASSIGNMENT, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.ASSIGNMENT, reader.getPosition());
         if(reader.current().is('+'))
-            return new Token(reader.consume().toString(), Token.Type.ADDITION_OPERATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.ADDITION_OPERATOR, reader.getPosition());
         if(reader.current().is('-'))
-            return new Token(reader.consume().toString(), Token.Type.SUBTRACTION_OPERATOR,
+            return new Token(reader.consume().toString(), TokenType.SUBTRACTION_OPERATOR,
                              reader.getPosition());
         if(reader.current().is('*'))
-            return new Token(reader.consume().toString(), Token.Type.MULTIPLICATION_OPERATOR,
+            return new Token(reader.consume().toString(), TokenType.MULTIPLICATION_OPERATOR,
                              reader.getPosition());
         if(reader.current().is('/'))
-            return new Token(reader.consume().toString(), Token.Type.DIVISION_OPERATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.DIVISION_OPERATOR, reader.getPosition());
         if(reader.current().is('%'))
-            return new Token(reader.consume().toString(), Token.Type.MODULO_OPERATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.MODULO_OPERATOR, reader.getPosition());
         if(reader.current().is('!'))
-            return new Token(reader.consume().toString(), Token.Type.BOOLEAN_NOT, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.BOOLEAN_NOT, reader.getPosition());
         
         // Read word
         StringBuilder token = new StringBuilder();
@@ -177,39 +178,39 @@ public class Tokenizer {
         
         // Check if word is a keyword
         if(tokenString.equals("true"))
-            return new Token(tokenString, Token.Type.BOOLEAN, reader.getPosition());
+            return new Token(tokenString, TokenType.BOOLEAN, reader.getPosition());
         if(tokenString.equals("false"))
-            return new Token(tokenString, Token.Type.BOOLEAN, reader.getPosition());
+            return new Token(tokenString, TokenType.BOOLEAN, reader.getPosition());
         
         if(tokenString.equals("num"))
-            return new Token(tokenString, Token.Type.TYPE_NUMBER, reader.getPosition());
+            return new Token(tokenString, TokenType.TYPE_NUMBER, reader.getPosition());
         if(tokenString.equals("str"))
-            return new Token(tokenString, Token.Type.TYPE_STRING, reader.getPosition());
+            return new Token(tokenString, TokenType.TYPE_STRING, reader.getPosition());
         if(tokenString.equals("bool"))
-            return new Token(tokenString, Token.Type.TYPE_BOOLEAN, reader.getPosition());
+            return new Token(tokenString, TokenType.TYPE_BOOLEAN, reader.getPosition());
         if(tokenString.equals("void"))
-            return new Token(tokenString, Token.Type.TYPE_VOID, reader.getPosition());
+            return new Token(tokenString, TokenType.TYPE_VOID, reader.getPosition());
         
         if(tokenString.equals("if"))
-            return new Token(tokenString, Token.Type.IF_STATEMENT, reader.getPosition());
+            return new Token(tokenString, TokenType.IF_STATEMENT, reader.getPosition());
         if(tokenString.equals("else"))
-            return new Token(tokenString, Token.Type.ELSE, reader.getPosition());
+            return new Token(tokenString, TokenType.ELSE, reader.getPosition());
         if(tokenString.equals("while"))
-            return new Token(tokenString, Token.Type.WHILE_LOOP, reader.getPosition());
+            return new Token(tokenString, TokenType.WHILE_LOOP, reader.getPosition());
         if(tokenString.equals("for"))
-            return new Token(tokenString, Token.Type.FOR_LOOP, reader.getPosition());
+            return new Token(tokenString, TokenType.FOR_LOOP, reader.getPosition());
         
         if(tokenString.equals("return"))
-            return new Token(tokenString, Token.Type.RETURN, reader.getPosition());
+            return new Token(tokenString, TokenType.RETURN, reader.getPosition());
         if(tokenString.equals("continue"))
-            return new Token(tokenString, Token.Type.CONTINUE, reader.getPosition());
+            return new Token(tokenString, TokenType.CONTINUE, reader.getPosition());
         if(tokenString.equals("break"))
-            return new Token(tokenString, Token.Type.BREAK, reader.getPosition());
+            return new Token(tokenString, TokenType.BREAK, reader.getPosition());
         if(tokenString.equals("fail"))
-            return new Token(tokenString, Token.Type.FAIL, reader.getPosition());
+            return new Token(tokenString, TokenType.FAIL, reader.getPosition());
         
         // If not keyword, assume it is an identifier
-        return new Token(tokenString, Token.Type.IDENTIFIER, reader.getPosition());
+        return new Token(tokenString, TokenType.IDENTIFIER, reader.getPosition());
     }
     
     private void skipLine() {

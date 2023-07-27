@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.constants;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class StringConstant extends ConstantExpression<String> {

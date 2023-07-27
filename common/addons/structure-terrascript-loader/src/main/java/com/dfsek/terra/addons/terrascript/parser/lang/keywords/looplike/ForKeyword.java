@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationLevel;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ForKeyword implements Keyword<Block.EvaluationInfo<?>> {
@@ -23,7 +23,8 @@ public class ForKeyword implements Keyword<Block.EvaluationInfo<?>> {
     private final Expression<?> incrementer;
     private final SourcePosition position;
     
-    public ForKeyword(Block conditional, Expression<?> initializer, Expression<Boolean> statement, Expression<?> incrementer, SourcePosition position) {
+    public ForKeyword(Block conditional, Expression<?> initializer, Expression<Boolean> statement, Expression<?> incrementer,
+                      SourcePosition position) {
         this.conditional = conditional;
         this.initializer = initializer;
         this.statement = statement;

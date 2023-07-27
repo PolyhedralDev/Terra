@@ -9,11 +9,11 @@ package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
 import net.jafama.FastMath;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 import static com.dfsek.terra.api.util.MathUtil.EPSILON;
 

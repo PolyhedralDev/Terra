@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.dfsek.terra.addons.terrascript.lexer.Lexer;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.lexer.Token;
+import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
@@ -54,9 +58,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.assign.VariableA
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.BoolVariableReferenceNode;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.NumVariableReferenceNode;
 import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.StrVariableReferenceNode;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
-import com.dfsek.terra.addons.terrascript.tokenizer.Token;
-import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
@@ -77,41 +78,42 @@ public class Parser {
      * @throws ParseException If parsing fails.
      */
     public Executable parse(ScopeBuilder scopeBuilder) {
-        return new Executable(parseBlock(new Tokenizer(source), scopeBuilder, ReturnType.VOID), scopeBuilder);
+        return new Executable(parseBlock(new Lexer(source), scopeBuilder, ReturnType.VOID), scopeBuilder);
     }
     
-    private WhileKeyword parseWhileLoop(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        SourcePosition start = tokenizer.consume().getPosition();
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
+    private WhileKeyword parseWhileLoop(Lexer lexer, ScopeBuilder scopeBuilder) {
+        SourcePosition start = lexer.consume().getPosition();
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_BEGIN);
         scopeBuilder = scopeBuilder.innerLoopScope();
-        Expression<?> condition = parseExpression(tokenizer, true, scopeBuilder);
+        Expression<?> condition = parseExpression(lexer, true, scopeBuilder);
         ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
-        return new WhileKeyword(parseStatementBlock(tokenizer, scopeBuilder, ReturnType.VOID), (Expression<Boolean>) condition, start); // While loop
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END);
+        return new WhileKeyword(parseStatementBlock(lexer, scopeBuilder, ReturnType.VOID), (Expression<Boolean>) condition,
+                                start); // While loop
     }
     
-    private IfKeyword parseIfStatement(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        SourcePosition start = tokenizer.consume().getPosition();
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
-        Expression<?> condition = parseExpression(tokenizer, true, scopeBuilder);
+    private IfKeyword parseIfStatement(Lexer lexer, ScopeBuilder scopeBuilder) {
+        SourcePosition start = lexer.consume().getPosition();
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_BEGIN);
+        Expression<?> condition = parseExpression(lexer, true, scopeBuilder);
         ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END);
         
         Block elseBlock = null;
-        Block statement = parseStatementBlock(tokenizer, scopeBuilder, ReturnType.VOID);
+        Block statement = parseStatementBlock(lexer, scopeBuilder, ReturnType.VOID);
         
         List<Pair<Expression<Boolean>, Block>> elseIf = new ArrayList<>();
         
-        while(tokenizer.hasNext() && tokenizer.current().isType(Token.Type.ELSE)) {
-            tokenizer.consume(); // Consume else.
-            if(tokenizer.current().isType(Token.Type.IF_STATEMENT)) {
-                tokenizer.consume(); // Consume if.
-                Expression<?> elseCondition = parseExpression(tokenizer, true, scopeBuilder);
+        while(lexer.hasNext() && lexer.current().isType(TokenType.ELSE)) {
+            lexer.consume(); // Consume else.
+            if(lexer.current().isType(TokenType.IF_STATEMENT)) {
+                lexer.consume(); // Consume if.
+                Expression<?> elseCondition = parseExpression(lexer, true, scopeBuilder);
                 ParserUtil.ensureReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
-                elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(tokenizer, scopeBuilder, ReturnType.VOID)));
+                elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(lexer, scopeBuilder, ReturnType.VOID)));
             } else {
-                elseBlock = parseStatementBlock(tokenizer, scopeBuilder, ReturnType.VOID);
+                elseBlock = parseStatementBlock(lexer, scopeBuilder, ReturnType.VOID);
                 break; // Else must be last.
             }
         }
@@ -119,74 +121,75 @@ public class Parser {
         return new IfKeyword(statement, (Expression<Boolean>) condition, elseIf, elseBlock, start); // If statement
     }
     
-    private Block parseStatementBlock(Tokenizer tokenizer, ScopeBuilder scopeBuilder, ReturnType blockReturnType) {
-        if(tokenizer.current().isType(Token.Type.BLOCK_BEGIN)) {
-            ParserUtil.ensureType(tokenizer.consume(), Token.Type.BLOCK_BEGIN);
-            Block block = parseBlock(tokenizer, scopeBuilder, blockReturnType);
-            ParserUtil.ensureType(tokenizer.consume(), Token.Type.BLOCK_END);
+    private Block parseStatementBlock(Lexer lexer, ScopeBuilder scopeBuilder, ReturnType blockReturnType) {
+        if(lexer.current().isType(TokenType.BLOCK_BEGIN)) {
+            ParserUtil.ensureType(lexer.consume(), TokenType.BLOCK_BEGIN);
+            Block block = parseBlock(lexer, scopeBuilder, blockReturnType);
+            ParserUtil.ensureType(lexer.consume(), TokenType.BLOCK_END);
             return block;
         } else {
-            SourcePosition position = tokenizer.current().getPosition();
-            return new Block(Collections.singletonList(parseStatement(tokenizer, scopeBuilder)), position, blockReturnType);
+            SourcePosition position = lexer.current().getPosition();
+            return new Block(Collections.singletonList(parseStatement(lexer, scopeBuilder)), position, blockReturnType);
         }
     }
     
-    private ForKeyword parseForLoop(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        SourcePosition start = tokenizer.consume().getPosition();
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
+    private ForKeyword parseForLoop(Lexer lexer, ScopeBuilder scopeBuilder) {
+        SourcePosition start = lexer.consume().getPosition();
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_BEGIN);
         scopeBuilder = scopeBuilder.innerLoopScope(); // new scope
-        Token f = tokenizer.current();
-        ParserUtil.ensureType(f, Token.Type.TYPE_NUMBER, Token.Type.TYPE_STRING, Token.Type.TYPE_BOOLEAN, Token.Type.IDENTIFIER);
+        Token f = lexer.current();
+        ParserUtil.ensureType(f, TokenType.TYPE_NUMBER, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.IDENTIFIER);
         Expression<?> initializer;
         if(f.isVariableDeclaration()) {
-            Expression<?> forVar = parseDeclaration(tokenizer, scopeBuilder);
-            Token name = tokenizer.current();
+            Expression<?> forVar = parseDeclaration(lexer, scopeBuilder);
+            Token name = lexer.current();
             if(scopeBuilder.containsFunction(name.getContent()) || scopeBuilder.contains(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
             initializer = forVar;
-        } else initializer = parseExpression(tokenizer, true, scopeBuilder);
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
-        Expression<?> conditional = parseExpression(tokenizer, true, scopeBuilder);
+        } else initializer = parseExpression(lexer, true, scopeBuilder);
+        ParserUtil.ensureType(lexer.consume(), TokenType.STATEMENT_END);
+        Expression<?> conditional = parseExpression(lexer, true, scopeBuilder);
         ParserUtil.ensureReturnType(conditional, Expression.ReturnType.BOOLEAN);
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
+        ParserUtil.ensureType(lexer.consume(), TokenType.STATEMENT_END);
         
         Expression<?> incrementer;
-        Token token = tokenizer.current();
+        Token token = lexer.current();
         if(scopeBuilder.contains(token.getContent())) { // Assume variable assignment
-            incrementer = parseAssignment(tokenizer, scopeBuilder);
-        } else incrementer = parseFunctionInvocation(tokenizer, true, scopeBuilder);
+            incrementer = parseAssignment(lexer, scopeBuilder);
+        } else incrementer = parseFunctionInvocation(lexer, true, scopeBuilder);
         
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END);
         
-        return new ForKeyword(parseStatementBlock(tokenizer, scopeBuilder, ReturnType.VOID), initializer, (Expression<Boolean>) conditional, incrementer,
+        return new ForKeyword(parseStatementBlock(lexer, scopeBuilder, ReturnType.VOID), initializer, (Expression<Boolean>) conditional,
+                              incrementer,
                               start);
     }
     
-    private Expression<?> parseExpression(Tokenizer tokenizer, boolean full, ScopeBuilder scopeBuilder) {
+    private Expression<?> parseExpression(Lexer lexer, boolean full, ScopeBuilder scopeBuilder) {
         boolean booleanInverted = false; // Check for boolean not operator
         boolean negate = false;
-        if(tokenizer.current().isType(Token.Type.BOOLEAN_NOT)) {
+        if(lexer.current().isType(TokenType.BOOLEAN_NOT)) {
             booleanInverted = true;
-            tokenizer.consume();
-        } else if(tokenizer.current().isType(Token.Type.SUBTRACTION_OPERATOR)) {
+            lexer.consume();
+        } else if(lexer.current().isType(TokenType.SUBTRACTION_OPERATOR)) {
             negate = true;
-            tokenizer.consume();
+            lexer.consume();
         }
         
-        Token id = tokenizer.current();
+        Token id = lexer.current();
         
-        ParserUtil.ensureType(id, Token.Type.IDENTIFIER, Token.Type.BOOLEAN, Token.Type.STRING, Token.Type.NUMBER, Token.Type.GROUP_BEGIN);
+        ParserUtil.ensureType(id, TokenType.IDENTIFIER, TokenType.BOOLEAN, TokenType.STRING, TokenType.NUMBER, TokenType.GROUP_BEGIN);
         
         Expression<?> expression;
         if(id.isConstant()) {
-            expression = parseConstantExpression(tokenizer);
-        } else if(id.isType(Token.Type.GROUP_BEGIN)) { // Parse grouped expression
-            expression = parseExpressionGroup(tokenizer, scopeBuilder);
+            expression = parseConstantExpression(lexer);
+        } else if(id.isType(TokenType.GROUP_BEGIN)) { // Parse grouped expression
+            expression = parseExpressionGroup(lexer, scopeBuilder);
         } else {
             if(scopeBuilder.containsFunction(id.getContent()))
-                expression = parseFunctionInvocation(tokenizer, false, scopeBuilder);
+                expression = parseFunctionInvocation(lexer, false, scopeBuilder);
             else if(scopeBuilder.contains(id.getContent())) {
-                ParserUtil.ensureType(tokenizer.consume(), Token.Type.IDENTIFIER);
+                ParserUtil.ensureType(lexer.consume(), TokenType.IDENTIFIER);
                 String varId = id.getContent();
                 ReturnType varType = scopeBuilder.getType(varId);
                 expression = switch(varType) {
@@ -207,14 +210,14 @@ public class Parser {
             expression = new NegationOperation((Expression<Number>) expression, expression.getPosition());
         }
         
-        if(full && tokenizer.current().isBinaryOperator()) { // Parse binary operations
-            return parseBinaryOperation(expression, tokenizer, scopeBuilder);
+        if(full && lexer.current().isBinaryOperator()) { // Parse binary operations
+            return parseBinaryOperation(expression, lexer, scopeBuilder);
         }
         return expression;
     }
     
-    private ConstantExpression<?> parseConstantExpression(Tokenizer tokenizer) {
-        Token constantToken = tokenizer.consume();
+    private ConstantExpression<?> parseConstantExpression(Lexer lexer) {
+        Token constantToken = lexer.consume();
         SourcePosition position = constantToken.getPosition();
         return switch(constantToken.getType()) {
             case NUMBER -> {
@@ -223,31 +226,32 @@ public class Parser {
             }
             case STRING -> new StringConstant(constantToken.getContent(), position);
             case BOOLEAN -> new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
-            default -> throw new UnsupportedOperationException("Unsupported constant token: " + constantToken.getType() + " at position: " + position);
+            default -> throw new UnsupportedOperationException(
+                    "Unsupported constant token: " + constantToken.getType() + " at position: " + position);
         };
     }
     
-    private Expression<?> parseExpressionGroup(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN);
-        Expression<?> expression = parseExpression(tokenizer, true, scopeBuilder); // Parse inside of group as a separate expression
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
+    private Expression<?> parseExpressionGroup(Lexer lexer, ScopeBuilder scopeBuilder) {
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_BEGIN);
+        Expression<?> expression = parseExpression(lexer, true, scopeBuilder); // Parse inside of group as a separate expression
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END);
         return expression;
     }
     
-    private BinaryOperation<?, ?> parseBinaryOperation(Expression<?> left, Tokenizer tokenizer,
+    private BinaryOperation<?, ?> parseBinaryOperation(Expression<?> left, Lexer lexer,
                                                        ScopeBuilder scopeBuilder) {
-        Token binaryOperator = tokenizer.consume();
+        Token binaryOperator = lexer.consume();
         ParserUtil.checkBinaryOperator(binaryOperator);
         
-        Expression<?> right = parseExpression(tokenizer, false, scopeBuilder);
+        Expression<?> right = parseExpression(lexer, false, scopeBuilder);
         
-        Token other = tokenizer.current();
+        Token other = lexer.current();
         
         if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType()))
-            return assemble(left, parseBinaryOperation(right, tokenizer, scopeBuilder), binaryOperator);
-            
+            return assemble(left, parseBinaryOperation(right, lexer, scopeBuilder), binaryOperator);
+        
         if(other.isBinaryOperator())
-            return parseBinaryOperation(assemble(left, right, binaryOperator), tokenizer, scopeBuilder);
+            return parseBinaryOperation(assemble(left, right, binaryOperator), lexer, scopeBuilder);
         
         return assemble(left, right, binaryOperator);
     }
@@ -292,43 +296,46 @@ public class Parser {
         }
     }
     
-    private Expression<?> parseDeclaration(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        Token type = tokenizer.consume();
+    private Expression<?> parseDeclaration(Lexer lexer, ScopeBuilder scopeBuilder) {
+        Token type = lexer.consume();
         
-        Token identifier = tokenizer.consume();
-        ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER);
+        Token identifier = lexer.consume();
+        ParserUtil.ensureType(identifier, TokenType.IDENTIFIER);
         
-        Token declarationType = tokenizer.consume();
-        ParserUtil.ensureType(declarationType, Token.Type.ASSIGNMENT, Token.Type.GROUP_BEGIN);
+        Token declarationType = lexer.consume();
+        ParserUtil.ensureType(declarationType, TokenType.ASSIGNMENT, TokenType.GROUP_BEGIN);
         
         return switch(declarationType.getType()) {
-            case ASSIGNMENT -> parseVariableDeclaration(tokenizer, scopeBuilder, type, identifier);
-            case GROUP_BEGIN -> parseFunctionDeclaration(tokenizer, scopeBuilder, type, identifier);
+            case ASSIGNMENT -> parseVariableDeclaration(lexer, scopeBuilder, type, identifier);
+            case GROUP_BEGIN -> parseFunctionDeclaration(lexer, scopeBuilder, type, identifier);
             default -> throw new ParseException("Illegal type for declaration: " + type, declarationType.getPosition());
         };
     }
     
     
-    private Expression<?> parseVariableDeclaration(Tokenizer tokenizer, ScopeBuilder scopeBuilder, Token type, Token identifier) {
-        ParserUtil.ensureType(type, Token.Type.TYPE_STRING, Token.Type.TYPE_BOOLEAN, Token.Type.TYPE_NUMBER);
+    private Expression<?> parseVariableDeclaration(Lexer lexer, ScopeBuilder scopeBuilder, Token type, Token identifier) {
+        ParserUtil.ensureType(type, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.TYPE_NUMBER);
         
         if(scopeBuilder.contains(identifier.getContent()))
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         
-        Expression<?> value = parseExpression(tokenizer, true, scopeBuilder);
+        Expression<?> value = parseExpression(lexer, true, scopeBuilder);
         ParserUtil.ensureReturnType(value, ParserUtil.getVariableReturnType(type));
         
         String variableName = identifier.getContent();
         return switch(value.returnType()) {
-            case NUMBER -> new NumAssignmentNode((Expression<Number>) value, identifier.getPosition(), scopeBuilder.declareNum(variableName));
-            case STRING -> new StrAssignmentNode((Expression<String>) value, identifier.getPosition(), scopeBuilder.declareStr(variableName));
-            case BOOLEAN -> new BoolAssignmentNode((Expression<Boolean>) value, identifier.getPosition(), scopeBuilder.declareBool(variableName));
+            case NUMBER -> new NumAssignmentNode((Expression<Number>) value, identifier.getPosition(),
+                                                 scopeBuilder.declareNum(variableName));
+            case STRING -> new StrAssignmentNode((Expression<String>) value, identifier.getPosition(),
+                                                 scopeBuilder.declareStr(variableName));
+            case BOOLEAN -> new BoolAssignmentNode((Expression<Boolean>) value, identifier.getPosition(),
+                                                   scopeBuilder.declareBool(variableName));
             default -> throw new ParseException("Illegal type for variable declaration: " + type, value.getPosition());
         };
     }
     
-    private Expression<?> parseFunctionDeclaration(Tokenizer tokenizer, ScopeBuilder scopeBuilder, Token type, Token identifier) {
-        ParserUtil.ensureType(type, Token.Type.TYPE_STRING, Token.Type.TYPE_BOOLEAN, Token.Type.TYPE_NUMBER, Token.Type.TYPE_VOID);
+    private Expression<?> parseFunctionDeclaration(Lexer lexer, ScopeBuilder scopeBuilder, Token type, Token identifier) {
+        ParserUtil.ensureType(type, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.TYPE_NUMBER, TokenType.TYPE_VOID);
         
         if(scopeBuilder.contains(identifier.getContent()))
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
@@ -338,14 +345,15 @@ public class Parser {
         ScopeBuilder functionBodyScope = scopeBuilder.functionScope();
         
         // Declare argument names into function body scope
-        List<Pair<Integer, ReturnType>> argumentInfo = getFunctionArgumentsDeclaration(tokenizer).stream().map(arg -> Pair.of(switch(arg.getRight()) {
-            case NUMBER -> functionBodyScope.declareNum(arg.getLeft());
-            case BOOLEAN -> functionBodyScope.declareBool(arg.getLeft());
-            case STRING -> functionBodyScope.declareStr(arg.getLeft());
-            default -> throw new IllegalArgumentException("Unsupported argument type: " + arg.getRight());
-        }, arg.getRight())).toList();
+        List<Pair<Integer, ReturnType>> argumentInfo = getFunctionArgumentsDeclaration(lexer).stream().map(
+                arg -> Pair.of(switch(arg.getRight()) {
+                    case NUMBER -> functionBodyScope.declareNum(arg.getLeft());
+                    case BOOLEAN -> functionBodyScope.declareBool(arg.getLeft());
+                    case STRING -> functionBodyScope.declareStr(arg.getLeft());
+                    default -> throw new IllegalArgumentException("Unsupported argument type: " + arg.getRight());
+                }, arg.getRight())).toList();
         
-        Block body = parseStatementBlock(tokenizer, functionBodyScope, returnType);
+        Block body = parseStatementBlock(lexer, functionBodyScope, returnType);
         
         FunctionBuilder<?> functionBuilder = new UserDefinedFunctionBuilder<>(returnType, argumentInfo, body, functionBodyScope);
         
@@ -353,104 +361,109 @@ public class Parser {
         return Expression.NOOP;
     }
     
-    private List<Pair<String, ReturnType>> getFunctionArgumentsDeclaration(Tokenizer tokenizer) {
+    private List<Pair<String, ReturnType>> getFunctionArgumentsDeclaration(Lexer lexer) {
         List<Pair<String, ReturnType>> arguments = new ArrayList<>();
-        while (tokenizer.current().getType() != Token.Type.GROUP_END) {
+        while(lexer.current().getType() != TokenType.GROUP_END) {
             // Parse argument type
-            Token typeToken = tokenizer.consume();
-            ParserUtil.ensureType(typeToken, Token.Type.TYPE_BOOLEAN, Token.Type.TYPE_STRING, Token.Type.TYPE_NUMBER);
+            Token typeToken = lexer.consume();
+            ParserUtil.ensureType(typeToken, TokenType.TYPE_BOOLEAN, TokenType.TYPE_STRING, TokenType.TYPE_NUMBER);
             ReturnType argType = ParserUtil.getVariableReturnType(typeToken);
             
             // Parse argument name
-            Token identifierToken = tokenizer.consume();
-            ParserUtil.ensureType(identifierToken, Token.Type.IDENTIFIER);
+            Token identifierToken = lexer.consume();
+            ParserUtil.ensureType(identifierToken, TokenType.IDENTIFIER);
             String argName = identifierToken.getContent();
             
             arguments.add(Pair.of(argName, argType));
             
             // Consume separator if present, trailing separators are allowed
-            if (tokenizer.current().isType(Token.Type.SEPARATOR)) tokenizer.consume();
+            if(lexer.current().isType(TokenType.SEPARATOR)) lexer.consume();
         }
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END);
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END);
         return arguments;
     }
     
-    private Block parseBlock(Tokenizer tokenizer, ScopeBuilder scopeBuilder, ReturnType blockReturnType) {
+    private Block parseBlock(Lexer lexer, ScopeBuilder scopeBuilder, ReturnType blockReturnType) {
         List<Expression<?>> expressions = new ArrayList<>();
         scopeBuilder = scopeBuilder.innerScope();
-        SourcePosition startPosition = tokenizer.current().getPosition();
+        SourcePosition startPosition = lexer.current().getPosition();
         
         boolean hasReturn = false;
         
         // Parse each statement
-        while(tokenizer.hasNext()) {
-            Token token = tokenizer.current();
-            if(token.isType(Token.Type.BLOCK_END)) break; // Stop parsing at block end.
-            Expression<?> expression = parseStatement(tokenizer, scopeBuilder);
+        while(lexer.hasNext()) {
+            Token token = lexer.current();
+            if(token.isType(TokenType.BLOCK_END)) break; // Stop parsing at block end.
+            Expression<?> expression = parseStatement(lexer, scopeBuilder);
             if(expression != Expression.NOOP) {
                 expressions.add(expression);
             }
             if(expression instanceof ReturnKeyword returnKeyword) {
                 hasReturn = true;
-                if (returnKeyword.dataReturnType() != blockReturnType)
-                    throw new ParseException("Invalid return type, expected " + blockReturnType + ", found " + returnKeyword.dataReturnType(), expression.getPosition());
+                if(returnKeyword.dataReturnType() != blockReturnType)
+                    throw new ParseException(
+                            "Invalid return type, expected " + blockReturnType + ", found " + returnKeyword.dataReturnType(),
+                            expression.getPosition());
             }
         }
         
-        if (blockReturnType != ReturnType.VOID && !hasReturn)
+        if(blockReturnType != ReturnType.VOID && !hasReturn)
             throw new ParseException("Block does not contain a return statement, must return type " + blockReturnType, startPosition);
         
         return new Block(expressions, startPosition, blockReturnType);
     }
     
-    private Expression<?> parseStatement(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        Token token = tokenizer.current();
+    private Expression<?> parseStatement(Lexer lexer, ScopeBuilder scopeBuilder) {
+        Token token = lexer.current();
         
         // Include BREAK and CONTINUE as valid token types if scope is within a loop
-        if(scopeBuilder.isInLoop()) ParserUtil.ensureType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
-                                                          Token.Type.TYPE_NUMBER, Token.Type.TYPE_STRING, Token.Type.TYPE_BOOLEAN, Token.Type.TYPE_VOID,
-                                                          Token.Type.RETURN, Token.Type.BREAK, Token.Type.CONTINUE, Token.Type.FAIL);
-        else ParserUtil.ensureType(token, Token.Type.IDENTIFIER, Token.Type.IF_STATEMENT, Token.Type.WHILE_LOOP, Token.Type.FOR_LOOP,
-                                   Token.Type.TYPE_NUMBER, Token.Type.TYPE_STRING, Token.Type.TYPE_BOOLEAN, Token.Type.TYPE_VOID, Token.Type.RETURN,
-                                   Token.Type.FAIL);
+        if(scopeBuilder.isInLoop()) ParserUtil.ensureType(token, TokenType.IDENTIFIER, TokenType.IF_STATEMENT, TokenType.WHILE_LOOP,
+                                                          TokenType.FOR_LOOP,
+                                                          TokenType.TYPE_NUMBER, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN,
+                                                          TokenType.TYPE_VOID,
+                                                          TokenType.RETURN, TokenType.BREAK, TokenType.CONTINUE, TokenType.FAIL);
+        else ParserUtil.ensureType(token, TokenType.IDENTIFIER, TokenType.IF_STATEMENT, TokenType.WHILE_LOOP, TokenType.FOR_LOOP,
+                                   TokenType.TYPE_NUMBER, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.TYPE_VOID,
+                                   TokenType.RETURN,
+                                   TokenType.FAIL);
         
         Expression<?> expression = switch(token.getType()) {
-            case FOR_LOOP -> parseForLoop(tokenizer, scopeBuilder);
-            case IF_STATEMENT -> parseIfStatement(tokenizer, scopeBuilder);
-            case WHILE_LOOP -> parseWhileLoop(tokenizer, scopeBuilder);
+            case FOR_LOOP -> parseForLoop(lexer, scopeBuilder);
+            case IF_STATEMENT -> parseIfStatement(lexer, scopeBuilder);
+            case WHILE_LOOP -> parseWhileLoop(lexer, scopeBuilder);
             case IDENTIFIER -> {
-                if(scopeBuilder.contains(token.getContent())) yield parseAssignment(tokenizer, scopeBuilder); // Assume variable assignment
-                else yield parseFunctionInvocation(tokenizer, true, scopeBuilder);
+                if(scopeBuilder.contains(token.getContent())) yield parseAssignment(lexer, scopeBuilder); // Assume variable assignment
+                else yield parseFunctionInvocation(lexer, true, scopeBuilder);
             }
-            case TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN, TYPE_VOID -> parseDeclaration(tokenizer, scopeBuilder);
-            case RETURN -> parseReturn(tokenizer, scopeBuilder);
-            case BREAK -> new BreakKeyword(tokenizer.consume().getPosition());
-            case CONTINUE -> new ContinueKeyword(tokenizer.consume().getPosition());
-            case FAIL -> new FailKeyword(tokenizer.consume().getPosition());
+            case TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN, TYPE_VOID -> parseDeclaration(lexer, scopeBuilder);
+            case RETURN -> parseReturn(lexer, scopeBuilder);
+            case BREAK -> new BreakKeyword(lexer.consume().getPosition());
+            case CONTINUE -> new ContinueKeyword(lexer.consume().getPosition());
+            case FAIL -> new FailKeyword(lexer.consume().getPosition());
             default -> throw new UnsupportedOperationException("Unexpected token " + token.getType() + ": " + token.getPosition());
         };
-        if(!token.isControlStructure() && expression != Expression.NOOP) ParserUtil.ensureType(tokenizer.consume(), Token.Type.STATEMENT_END);
+        if(!token.isControlStructure() && expression != Expression.NOOP) ParserUtil.ensureType(lexer.consume(), TokenType.STATEMENT_END);
         return expression;
     }
     
-    private ReturnKeyword parseReturn(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        Token returnToken = tokenizer.consume();
-        ParserUtil.ensureType(returnToken, Token.Type.RETURN);
+    private ReturnKeyword parseReturn(Lexer lexer, ScopeBuilder scopeBuilder) {
+        Token returnToken = lexer.consume();
+        ParserUtil.ensureType(returnToken, TokenType.RETURN);
         Expression<?> data = null;
-        if (!tokenizer.current().isType(Token.Type.STATEMENT_END)) {
-            data = parseExpression(tokenizer, true, scopeBuilder);
+        if(!lexer.current().isType(TokenType.STATEMENT_END)) {
+            data = parseExpression(lexer, true, scopeBuilder);
         }
         return new ReturnKeyword(data, returnToken.getPosition());
     }
     
-    private VariableAssignmentNode<?> parseAssignment(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
-        Token identifier = tokenizer.consume();
+    private VariableAssignmentNode<?> parseAssignment(Lexer lexer, ScopeBuilder scopeBuilder) {
+        Token identifier = lexer.consume();
         
-        ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER);
+        ParserUtil.ensureType(identifier, TokenType.IDENTIFIER);
         
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.ASSIGNMENT);
+        ParserUtil.ensureType(lexer.consume(), TokenType.ASSIGNMENT);
         
-        Expression<?> value = parseExpression(tokenizer, true, scopeBuilder);
+        Expression<?> value = parseExpression(lexer, true, scopeBuilder);
         
         String id = identifier.getContent();
         
@@ -466,20 +479,20 @@ public class Parser {
         };
     }
     
-    private Expression<?> parseFunctionInvocation(Tokenizer tokenizer, boolean fullStatement, ScopeBuilder scopeBuilder) {
-        Token identifier = tokenizer.consume();
-        ParserUtil.ensureType(identifier, Token.Type.IDENTIFIER); // First token must be identifier
+    private Expression<?> parseFunctionInvocation(Lexer lexer, boolean fullStatement, ScopeBuilder scopeBuilder) {
+        Token identifier = lexer.consume();
+        ParserUtil.ensureType(identifier, TokenType.IDENTIFIER); // First token must be identifier
         
         if(!scopeBuilder.containsFunction(identifier.getContent()))
             throw new ParseException("Function \"" + identifier.getContent() + "\" is not defined in this scope", identifier.getPosition());
         
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_BEGIN); // Second is body begin
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_BEGIN); // Second is body begin
         
-        List<Expression<?>> args = getFunctionArgs(tokenizer, scopeBuilder); // Extract arguments, consume the rest.
+        List<Expression<?>> args = getFunctionArgs(lexer, scopeBuilder); // Extract arguments, consume the rest.
         
-        ParserUtil.ensureType(tokenizer.consume(), Token.Type.GROUP_END); // Remove body end
+        ParserUtil.ensureType(lexer.consume(), TokenType.GROUP_END); // Remove body end
         
-        if(fullStatement) ParserUtil.ensureType(tokenizer.current(), Token.Type.STATEMENT_END);
+        if(fullStatement) ParserUtil.ensureType(lexer.current(), TokenType.STATEMENT_END);
         
         if(ignoredFunctions.contains(identifier.getContent())) {
             return Expression.NOOP;
@@ -503,13 +516,13 @@ public class Parser {
         throw new UnsupportedOperationException("Unsupported function: " + identifier.getContent());
     }
     
-    private List<Expression<?>> getFunctionArgs(Tokenizer tokenizer, ScopeBuilder scopeBuilder) {
+    private List<Expression<?>> getFunctionArgs(Lexer lexer, ScopeBuilder scopeBuilder) {
         List<Expression<?>> args = new ArrayList<>();
         
-        while(!tokenizer.current().isType(Token.Type.GROUP_END)) {
-            args.add(parseExpression(tokenizer, true, scopeBuilder));
-            ParserUtil.ensureType(tokenizer.current(), Token.Type.SEPARATOR, Token.Type.GROUP_END);
-            if(tokenizer.current().isType(Token.Type.SEPARATOR)) tokenizer.consume();
+        while(!lexer.current().isType(TokenType.GROUP_END)) {
+            args.add(parseExpression(lexer, true, scopeBuilder));
+            ParserUtil.ensureType(lexer.current(), TokenType.SEPARATOR, TokenType.GROUP_END);
+            if(lexer.current().isType(TokenType.SEPARATOR)) lexer.consume();
         }
         return args;
     }

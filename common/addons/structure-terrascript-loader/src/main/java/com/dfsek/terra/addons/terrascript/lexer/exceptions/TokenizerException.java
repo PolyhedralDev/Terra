@@ -5,12 +5,12 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
+package com.dfsek.terra.addons.terrascript.lexer.exceptions;
 
 import java.io.Serial;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public abstract class TokenizerException extends ParseException {

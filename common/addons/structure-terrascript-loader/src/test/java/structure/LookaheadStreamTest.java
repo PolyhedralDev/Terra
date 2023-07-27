@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.StringReader;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.LookaheadStream;
+import com.dfsek.terra.addons.terrascript.lexer.LookaheadStream;
 
 
 public class LookaheadStreamTest {

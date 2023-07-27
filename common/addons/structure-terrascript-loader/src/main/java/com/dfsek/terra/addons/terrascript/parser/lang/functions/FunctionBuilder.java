@@ -9,8 +9,8 @@ package com.dfsek.terra.addons.terrascript.parser.lang.functions;
 
 import java.util.List;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public interface FunctionBuilder<T extends Function<?>> {

@@ -12,47 +12,48 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dfsek.terra.addons.terrascript.lexer.Token;
+import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 
 
 public class ParserUtil {
     
-    private static final Map<Token.Type, Map<Token.Type, Boolean>> PRECEDENCE = new HashMap<>(); // If second has precedence, true.
-    private static final List<Token.Type> ARITHMETIC = Arrays.asList(Token.Type.ADDITION_OPERATOR, Token.Type.SUBTRACTION_OPERATOR,
-                                                                     Token.Type.MULTIPLICATION_OPERATOR, Token.Type.DIVISION_OPERATOR,
-                                                                     Token.Type.MODULO_OPERATOR);
-    private static final List<Token.Type> COMPARISON = Arrays.asList(Token.Type.EQUALS_OPERATOR, Token.Type.NOT_EQUALS_OPERATOR,
-                                                                     Token.Type.LESS_THAN_OPERATOR, Token.Type.LESS_THAN_OR_EQUALS_OPERATOR,
-                                                                     Token.Type.GREATER_THAN_OPERATOR,
-                                                                     Token.Type.GREATER_THAN_OR_EQUALS_OPERATOR);
+    private static final Map<TokenType, Map<TokenType, Boolean>> PRECEDENCE = new HashMap<>(); // If second has precedence, true.
+    private static final List<TokenType> ARITHMETIC = Arrays.asList(TokenType.ADDITION_OPERATOR, TokenType.SUBTRACTION_OPERATOR,
+                                                                    TokenType.MULTIPLICATION_OPERATOR, TokenType.DIVISION_OPERATOR,
+                                                                    TokenType.MODULO_OPERATOR);
+    private static final List<TokenType> COMPARISON = Arrays.asList(TokenType.EQUALS_OPERATOR, TokenType.NOT_EQUALS_OPERATOR,
+                                                                    TokenType.LESS_THAN_OPERATOR, TokenType.LESS_THAN_OR_EQUALS_OPERATOR,
+                                                                    TokenType.GREATER_THAN_OPERATOR,
+                                                                    TokenType.GREATER_THAN_OR_EQUALS_OPERATOR);
     
     static { // Setup precedence
-        Map<Token.Type, Boolean> add = new HashMap<>(); // Addition/subtraction before Multiplication/division.
-        add.put(Token.Type.MULTIPLICATION_OPERATOR, true);
-        add.put(Token.Type.DIVISION_OPERATOR, true);
+        Map<TokenType, Boolean> add = new HashMap<>(); // Addition/subtraction before Multiplication/division.
+        add.put(TokenType.MULTIPLICATION_OPERATOR, true);
+        add.put(TokenType.DIVISION_OPERATOR, true);
         
-        PRECEDENCE.put(Token.Type.ADDITION_OPERATOR, add);
-        PRECEDENCE.put(Token.Type.SUBTRACTION_OPERATOR, add);
+        PRECEDENCE.put(TokenType.ADDITION_OPERATOR, add);
+        PRECEDENCE.put(TokenType.SUBTRACTION_OPERATOR, add);
         
-        Map<Token.Type, Boolean> numericBoolean = new HashMap<>();
+        Map<TokenType, Boolean> numericBoolean = new HashMap<>();
         
         ARITHMETIC.forEach(op -> numericBoolean.put(op, true)); // Numbers before comparison
         COMPARISON.forEach(op -> PRECEDENCE.put(op, numericBoolean));
         
         
-        Map<Token.Type, Boolean> booleanOps = new HashMap<>();
+        Map<TokenType, Boolean> booleanOps = new HashMap<>();
         ARITHMETIC.forEach(op -> booleanOps.put(op, true)); // Everything before boolean
         COMPARISON.forEach(op -> booleanOps.put(op, true));
         
         
-        PRECEDENCE.put(Token.Type.BOOLEAN_AND, booleanOps);
-        PRECEDENCE.put(Token.Type.BOOLEAN_OR, booleanOps);
+        PRECEDENCE.put(TokenType.BOOLEAN_AND, booleanOps);
+        PRECEDENCE.put(TokenType.BOOLEAN_OR, booleanOps);
     }
     
-    public static void ensureType(Token token, Token.Type... expected) {
-        for(Token.Type type : expected) if(token.getType().equals(type)) return;
+    public static void ensureType(Token token, TokenType... expected) {
+        for(TokenType type : expected) if(token.getType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
     }
     
@@ -75,13 +76,6 @@ public class ParserUtil {
                     "Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType(),
                     operation.getPosition());
         }
-    }
-    
-    public static void checkVarType(Token token, Expression.ReturnType returnType) {
-        if(returnType.equals(Expression.ReturnType.STRING) && token.getType().equals(Token.Type.TYPE_STRING)) return;
-        if(returnType.equals(Expression.ReturnType.NUMBER) && token.getType().equals(Token.Type.TYPE_NUMBER)) return;
-        if(returnType.equals(Expression.ReturnType.BOOLEAN) && token.getType().equals(Token.Type.TYPE_BOOLEAN)) return;
-        throw new ParseException("Type mismatch, cannot convert from " + returnType + " to " + token.getType(), token.getPosition());
     }
     
     /**
@@ -107,9 +101,9 @@ public class ParserUtil {
         };
     }
     
-    public static boolean hasPrecedence(Token.Type first, Token.Type second) {
+    public static boolean hasPrecedence(TokenType first, TokenType second) {
         if(!PRECEDENCE.containsKey(first)) return false;
-        Map<Token.Type, Boolean> pre = PRECEDENCE.get(first);
+        Map<TokenType, Boolean> pre = PRECEDENCE.get(first);
         if(!pre.containsKey(second)) return false;
         return pre.get(second);
     }

@@ -26,7 +26,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 
 
 public class ParserTest {

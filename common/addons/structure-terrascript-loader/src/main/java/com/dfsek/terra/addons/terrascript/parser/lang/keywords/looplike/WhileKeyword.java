@@ -7,14 +7,14 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationInfo;
 import com.dfsek.terra.addons.terrascript.parser.lang.Block.EvaluationLevel;
+import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class WhileKeyword implements Keyword<EvaluationInfo<?>> {

@@ -7,24 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 
 
 public interface Expression<T> {
-    ReturnType returnType();
-    
-    T evaluate(ImplementationArguments implementationArguments, Scope scope);
-    
-    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
-        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
-    }
-    
-    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
-        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
-    }
-    
-    SourcePosition getPosition();
-    
     Expression<Void> NOOP = new Expression<>() {
         @Override
         public ReturnType returnType() {
@@ -41,6 +27,21 @@ public interface Expression<T> {
             return null;
         }
     };
+    
+    ReturnType returnType();
+    
+    T evaluate(ImplementationArguments implementationArguments, Scope scope);
+    
+    default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
+        throw new UnsupportedOperationException("Cannot apply " + this + " as double");
+    }
+    
+    SourcePosition getPosition();
+    
     
     enum ReturnType {
         NUMBER(true),

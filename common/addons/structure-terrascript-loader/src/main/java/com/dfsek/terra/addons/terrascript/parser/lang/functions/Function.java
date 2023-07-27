@@ -7,9 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.functions;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
+
 
 public interface Function<T> extends Expression<T> {
     

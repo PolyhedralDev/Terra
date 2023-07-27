@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
@@ -62,7 +62,8 @@ public class StructureFunction implements Function<Boolean> {
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
         
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
-                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
+                                                          z.evaluate(implementationArguments, scope).doubleValue()),
+                                               arguments.getRotation());
         
         
         String app = id.evaluate(implementationArguments, scope);

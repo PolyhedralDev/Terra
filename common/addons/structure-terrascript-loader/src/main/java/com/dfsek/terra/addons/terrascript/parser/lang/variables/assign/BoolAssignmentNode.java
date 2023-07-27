@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.parser.lang.variables.assign;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class BoolAssignmentNode extends VariableAssignmentNode<Boolean> {

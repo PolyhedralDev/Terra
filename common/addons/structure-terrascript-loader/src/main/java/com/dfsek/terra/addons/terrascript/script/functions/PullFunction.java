@@ -9,14 +9,14 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 
 import net.jafama.FastMath;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.RotationUtil;
@@ -44,7 +44,8 @@ public class PullFunction implements Function<Void> {
     public Void evaluate(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.evaluate(implementationArguments, scope).doubleValue(),
-                                                          z.evaluate(implementationArguments, scope).doubleValue()), arguments.getRotation());
+                                                          z.evaluate(implementationArguments, scope).doubleValue()),
+                                               arguments.getRotation());
         
         Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.evaluate(implementationArguments, scope).intValue(),
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());

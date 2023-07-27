@@ -1,15 +1,14 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-
 import net.jafama.FastMath;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
@@ -87,7 +86,7 @@ public class Scope {
         
         public ScopeBuilder innerLoopScope() { return new ScopeBuilder(this, true); }
         
-        public ScopeBuilder functionScope() { return new ScopeBuilder(functions); }
+        public ScopeBuilder functionScope()  { return new ScopeBuilder(functions); }
         
         public ScopeBuilder registerFunction(String name, FunctionBuilder<? extends Function<?>> functionBuilder) {
             functions.put(name, functionBuilder);
@@ -143,14 +142,14 @@ public class Scope {
                 parent.updateBoolSize(size);
             }
         }
-
+        
         private void updateNumSize(int size) {
             this.numSize = FastMath.max(numSize, size);
             if(parent != null) {
                 parent.updateNumSize(size);
             }
         }
-
+        
         private void updateStrSize(int size) {
             this.strSize = FastMath.max(strSize, size);
             if(parent != null) {

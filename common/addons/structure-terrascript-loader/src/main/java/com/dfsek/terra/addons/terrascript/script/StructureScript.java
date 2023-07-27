@@ -7,10 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
-
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -24,6 +20,7 @@ import java.util.Random;
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.builders.BiomeFunctionBuilder;

@@ -5,14 +5,14 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.tokenizer;
+package com.dfsek.terra.addons.terrascript.lexer;
 
 public class Token {
     private final String content;
-    private final Type type;
+    private final TokenType type;
     private final SourcePosition start;
     
-    public Token(String content, Type type, SourcePosition start) {
+    public Token(String content, TokenType type, SourcePosition start) {
         this.content = content;
         this.type = type;
         this.start = start;
@@ -23,7 +23,7 @@ public class Token {
         return type + ": '" + content + "'";
     }
     
-    public Type getType() {
+    public TokenType getType() {
         return type;
     }
     
@@ -36,58 +36,58 @@ public class Token {
     }
     
     public boolean isConstant() {
-        return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
+        return this.type.equals(TokenType.NUMBER) || this.type.equals(TokenType.STRING) || this.type.equals(TokenType.BOOLEAN);
     }
     
-    public boolean isType(Type type) {
+    public boolean isType(TokenType type) {
         return type == getType();
     }
     
     public boolean isBinaryOperator() {
-        return type.equals(Type.ADDITION_OPERATOR)
-               || type.equals(Type.SUBTRACTION_OPERATOR)
-               || type.equals(Type.MULTIPLICATION_OPERATOR)
-               || type.equals(Type.DIVISION_OPERATOR)
-               || type.equals(Type.EQUALS_OPERATOR)
-               || type.equals(Type.NOT_EQUALS_OPERATOR)
-               || type.equals(Type.LESS_THAN_OPERATOR)
-               || type.equals(Type.GREATER_THAN_OPERATOR)
-               || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(Type.BOOLEAN_OR)
-               || type.equals(Type.BOOLEAN_AND)
-               || type.equals(Type.MODULO_OPERATOR);
+        return type.equals(TokenType.ADDITION_OPERATOR)
+               || type.equals(TokenType.SUBTRACTION_OPERATOR)
+               || type.equals(TokenType.MULTIPLICATION_OPERATOR)
+               || type.equals(TokenType.DIVISION_OPERATOR)
+               || type.equals(TokenType.EQUALS_OPERATOR)
+               || type.equals(TokenType.NOT_EQUALS_OPERATOR)
+               || type.equals(TokenType.LESS_THAN_OPERATOR)
+               || type.equals(TokenType.GREATER_THAN_OPERATOR)
+               || type.equals(TokenType.LESS_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(TokenType.GREATER_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(TokenType.BOOLEAN_OR)
+               || type.equals(TokenType.BOOLEAN_AND)
+               || type.equals(TokenType.MODULO_OPERATOR);
     }
     
     public boolean isStrictNumericOperator() {
-        return type.equals(Type.SUBTRACTION_OPERATOR)
-               || type.equals(Type.MULTIPLICATION_OPERATOR)
-               || type.equals(Type.DIVISION_OPERATOR)
-               || type.equals(Type.GREATER_THAN_OPERATOR)
-               || type.equals(Type.LESS_THAN_OPERATOR)
-               || type.equals(Type.LESS_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(Type.MODULO_OPERATOR);
+        return type.equals(TokenType.SUBTRACTION_OPERATOR)
+               || type.equals(TokenType.MULTIPLICATION_OPERATOR)
+               || type.equals(TokenType.DIVISION_OPERATOR)
+               || type.equals(TokenType.GREATER_THAN_OPERATOR)
+               || type.equals(TokenType.LESS_THAN_OPERATOR)
+               || type.equals(TokenType.LESS_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(TokenType.GREATER_THAN_OR_EQUALS_OPERATOR)
+               || type.equals(TokenType.MODULO_OPERATOR);
     }
     
     public boolean isStrictBooleanOperator() {
-        return type.equals(Type.BOOLEAN_AND)
-               || type.equals(Type.BOOLEAN_OR);
+        return type.equals(TokenType.BOOLEAN_AND)
+               || type.equals(TokenType.BOOLEAN_OR);
     }
     
     public boolean isVariableDeclaration() {
-        return type.equals(Type.TYPE_STRING)
-               || type.equals(Type.TYPE_BOOLEAN)
-               || type.equals(Type.TYPE_NUMBER);
+        return type.equals(TokenType.TYPE_STRING)
+               || type.equals(TokenType.TYPE_BOOLEAN)
+               || type.equals(TokenType.TYPE_NUMBER);
     }
     
     public boolean isControlStructure() {
-        return type.equals(Type.IF_STATEMENT)
-               || type.equals(Type.WHILE_LOOP)
-               || type.equals(Type.FOR_LOOP);
+        return type.equals(TokenType.IF_STATEMENT)
+               || type.equals(TokenType.WHILE_LOOP)
+               || type.equals(TokenType.FOR_LOOP);
     }
     
-    public enum Type {
+    public enum TokenType {
         /**
          * Function identifier or language keyword
          */

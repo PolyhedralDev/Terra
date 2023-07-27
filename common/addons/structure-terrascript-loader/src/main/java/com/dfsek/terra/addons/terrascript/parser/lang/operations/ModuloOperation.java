@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class ModuloOperation extends BinaryOperation<Number, Number> {
@@ -27,7 +27,7 @@ public class ModuloOperation extends BinaryOperation<Number, Number> {
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) % right.applyDouble(implementationArguments, scope);
     }
-
+    
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;

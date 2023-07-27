@@ -9,10 +9,10 @@ package com.dfsek.terra.addons.terrascript.script.builders;
 
 import java.util.List;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.script.functions.RandomFunction;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {

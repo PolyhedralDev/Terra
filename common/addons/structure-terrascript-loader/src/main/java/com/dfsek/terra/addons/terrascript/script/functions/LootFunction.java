@@ -13,13 +13,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.StructureScript;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.entity.Container;
@@ -70,7 +70,7 @@ public class LootFunction implements Function<Void> {
                                                                 y.evaluate(implementationArguments, scope)
                                                                  .intValue(),
                                                                 FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
-            
+                                     
                                      try {
                                          BlockEntity data = arguments.getWorld().getBlockEntity(apply);
                                          if(!(data instanceof Container container)) {
@@ -78,12 +78,12 @@ public class LootFunction implements Function<Void> {
                                                           apply, data);
                                              return;
                                          }
-                
+                                         
                                          LootPopulateEvent event = new LootPopulateEvent(container, table,
                                                                                          arguments.getWorld().getPack(), script);
                                          platform.getEventManager().callEvent(event);
                                          if(event.isCancelled()) return;
-                
+                                         
                                          event.getTable().fillInventory(container.getInventory(),
                                                                         new Random(apply.hashCode()));
                                          data.update(false);

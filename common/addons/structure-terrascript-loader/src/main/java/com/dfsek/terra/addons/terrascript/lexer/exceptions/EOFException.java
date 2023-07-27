@@ -5,11 +5,11 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.tokenizer.exceptions;
+package com.dfsek.terra.addons.terrascript.lexer.exceptions;
 
 import java.io.Serial;
 
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 
 
 public class EOFException extends TokenizerException {

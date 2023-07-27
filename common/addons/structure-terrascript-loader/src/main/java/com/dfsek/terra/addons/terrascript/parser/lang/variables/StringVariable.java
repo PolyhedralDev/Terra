@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.variables;
 
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
 
 
 public class StringVariable implements Variable<String> {

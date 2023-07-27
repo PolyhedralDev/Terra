@@ -11,7 +11,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.tokenizer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 
 
 public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number>> {
