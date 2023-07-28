@@ -21,21 +21,21 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 public class ParserUtil {
     
     private static final Map<TokenType, Map<TokenType, Boolean>> PRECEDENCE = new HashMap<>(); // If second has precedence, true.
-    private static final List<TokenType> ARITHMETIC = Arrays.asList(TokenType.ADDITION_OPERATOR, TokenType.SUBTRACTION_OPERATOR,
-                                                                    TokenType.MULTIPLICATION_OPERATOR, TokenType.DIVISION_OPERATOR,
+    private static final List<TokenType> ARITHMETIC = Arrays.asList(TokenType.PLUS, TokenType.MINUS,
+                                                                    TokenType.STAR, TokenType.FORWARD_SLASH,
                                                                     TokenType.MODULO_OPERATOR);
-    private static final List<TokenType> COMPARISON = Arrays.asList(TokenType.EQUALS_OPERATOR, TokenType.NOT_EQUALS_OPERATOR,
-                                                                    TokenType.LESS_THAN_OPERATOR, TokenType.LESS_THAN_OR_EQUALS_OPERATOR,
-                                                                    TokenType.GREATER_THAN_OPERATOR,
-                                                                    TokenType.GREATER_THAN_OR_EQUALS_OPERATOR);
+    private static final List<TokenType> COMPARISON = Arrays.asList(TokenType.EQUALS_EQUALS, TokenType.BANG_EQUALS,
+                                                                    TokenType.LESS, TokenType.LESS_EQUALS,
+                                                                    TokenType.GREATER,
+                                                                    TokenType.GREATER_EQUAL);
     
     static { // Setup precedence
         Map<TokenType, Boolean> add = new HashMap<>(); // Addition/subtraction before Multiplication/division.
-        add.put(TokenType.MULTIPLICATION_OPERATOR, true);
-        add.put(TokenType.DIVISION_OPERATOR, true);
+        add.put(TokenType.STAR, true);
+        add.put(TokenType.FORWARD_SLASH, true);
         
-        PRECEDENCE.put(TokenType.ADDITION_OPERATOR, add);
-        PRECEDENCE.put(TokenType.SUBTRACTION_OPERATOR, add);
+        PRECEDENCE.put(TokenType.PLUS, add);
+        PRECEDENCE.put(TokenType.MINUS, add);
         
         Map<TokenType, Boolean> numericBoolean = new HashMap<>();
         

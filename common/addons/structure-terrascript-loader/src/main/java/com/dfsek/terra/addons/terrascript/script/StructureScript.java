@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.terra.addons.terrascript.lexer.Lexer;
+
 import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -62,18 +64,18 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     public StructureScript(InputStream source, RegistryKey id, Platform platform, Registry<Structure> structureRegistry,
                            Registry<LootTable> lootRegistry,
                            Registry<FunctionBuilder> functionRegistry) {
-        Parser parser;
+        Lexer lexer;
         try {
-            parser = new Parser(IOUtils.toString(source, Charset.defaultCharset()));
+            lexer = new Lexer(IOUtils.toString(source, Charset.defaultCharset()));
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
+        Parser parser = new Parser(lexer);
         this.id = id;
         this.profile = "terrascript_direct:" + id;
         
         ScopeBuilder scope = new ScopeBuilder();
         
-        //noinspection unchecked
         functionRegistry.forEach((key, function) -> scope.registerFunction(key.getID(), function)); // Register registry functions.
         
         scope

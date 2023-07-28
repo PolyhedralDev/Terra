@@ -44,29 +44,29 @@ public class Token {
     }
     
     public boolean isBinaryOperator() {
-        return type.equals(TokenType.ADDITION_OPERATOR)
-               || type.equals(TokenType.SUBTRACTION_OPERATOR)
-               || type.equals(TokenType.MULTIPLICATION_OPERATOR)
-               || type.equals(TokenType.DIVISION_OPERATOR)
-               || type.equals(TokenType.EQUALS_OPERATOR)
-               || type.equals(TokenType.NOT_EQUALS_OPERATOR)
-               || type.equals(TokenType.LESS_THAN_OPERATOR)
-               || type.equals(TokenType.GREATER_THAN_OPERATOR)
-               || type.equals(TokenType.LESS_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(TokenType.GREATER_THAN_OR_EQUALS_OPERATOR)
+        return type.equals(TokenType.PLUS)
+               || type.equals(TokenType.MINUS)
+               || type.equals(TokenType.STAR)
+               || type.equals(TokenType.FORWARD_SLASH)
+               || type.equals(TokenType.EQUALS_EQUALS)
+               || type.equals(TokenType.BANG_EQUALS)
+               || type.equals(TokenType.LESS)
+               || type.equals(TokenType.GREATER)
+               || type.equals(TokenType.LESS_EQUALS)
+               || type.equals(TokenType.GREATER_EQUAL)
                || type.equals(TokenType.BOOLEAN_OR)
                || type.equals(TokenType.BOOLEAN_AND)
                || type.equals(TokenType.MODULO_OPERATOR);
     }
     
     public boolean isStrictNumericOperator() {
-        return type.equals(TokenType.SUBTRACTION_OPERATOR)
-               || type.equals(TokenType.MULTIPLICATION_OPERATOR)
-               || type.equals(TokenType.DIVISION_OPERATOR)
-               || type.equals(TokenType.GREATER_THAN_OPERATOR)
-               || type.equals(TokenType.LESS_THAN_OPERATOR)
-               || type.equals(TokenType.LESS_THAN_OR_EQUALS_OPERATOR)
-               || type.equals(TokenType.GREATER_THAN_OR_EQUALS_OPERATOR)
+        return type.equals(TokenType.MINUS)
+               || type.equals(TokenType.STAR)
+               || type.equals(TokenType.FORWARD_SLASH)
+               || type.equals(TokenType.GREATER)
+               || type.equals(TokenType.LESS)
+               || type.equals(TokenType.LESS_EQUALS)
+               || type.equals(TokenType.GREATER_EQUAL)
                || type.equals(TokenType.MODULO_OPERATOR);
     }
     
@@ -108,11 +108,11 @@ public class Token {
         /**
          * Beginning of group
          */
-        GROUP_BEGIN,
+        OPEN_PAREN,
         /**
          * Ending of group
          */
-        GROUP_END,
+        CLOSE_PAREN,
         /**
          * End of statement
          */
@@ -136,43 +136,43 @@ public class Token {
         /**
          * Boolean equals operator
          */
-        EQUALS_OPERATOR,
+        EQUALS_EQUALS,
         /**
          * Boolean not equals operator
          */
-        NOT_EQUALS_OPERATOR,
+        BANG_EQUALS,
         /**
          * Boolean greater than operator
          */
-        GREATER_THAN_OPERATOR,
+        GREATER,
         /**
          * Boolean less than operator
          */
-        LESS_THAN_OPERATOR,
+        LESS,
         /**
          * Boolean greater than or equal to operator
          */
-        GREATER_THAN_OR_EQUALS_OPERATOR,
+        GREATER_EQUAL,
         /**
          * Boolean less than or equal to operator
          */
-        LESS_THAN_OR_EQUALS_OPERATOR,
+        LESS_EQUALS,
         /**
          * Addition/concatenation operator
          */
-        ADDITION_OPERATOR,
+        PLUS,
         /**
          * Subtraction operator
          */
-        SUBTRACTION_OPERATOR,
+        MINUS,
         /**
          * Multiplication operator
          */
-        MULTIPLICATION_OPERATOR,
+        STAR,
         /**
          * Division operator
          */
-        DIVISION_OPERATOR,
+        FORWARD_SLASH,
         /**
          * Modulo operator.
          */
@@ -180,7 +180,7 @@ public class Token {
         /**
          * Boolean not operator
          */
-        BOOLEAN_NOT,
+        BANG,
         /**
          * Boolean or
          */

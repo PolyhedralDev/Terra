@@ -8,6 +8,7 @@
 package structure;
 
 
+import com.dfsek.terra.addons.terrascript.lexer.Lexer;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
 
 import org.apache.commons.io.IOUtils;
@@ -32,8 +33,8 @@ import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 public class ParserTest {
     @Test
     public void parse() throws IOException, ParseException {
-        Parser parser = new Parser(
-                IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
+        Lexer lexer = new Lexer(IOUtils.toString(Objects.requireNonNull(getClass().getResourceAsStream("/test.tesf")), Charset.defaultCharset()));
+        Parser parser = new Parser(lexer);
         
         ScopeBuilder scope = new ScopeBuilder();
         scope.registerFunction("test", new FunctionBuilder<Test1>() {

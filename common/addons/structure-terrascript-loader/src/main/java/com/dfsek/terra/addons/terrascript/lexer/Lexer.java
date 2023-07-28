@@ -83,17 +83,17 @@ public class Lexer {
         
         // Check if operator token
         if(reader.matchesString("==", true))
-            return new Token("==", TokenType.EQUALS_OPERATOR, reader.getPosition());
+            return new Token("==", TokenType.EQUALS_EQUALS, reader.getPosition());
         if(reader.matchesString("!=", true))
-            return new Token("!=", TokenType.NOT_EQUALS_OPERATOR, reader.getPosition());
+            return new Token("!=", TokenType.BANG_EQUALS, reader.getPosition());
         if(reader.matchesString(">=", true))
-            return new Token(">=", TokenType.GREATER_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
+            return new Token(">=", TokenType.GREATER_EQUAL, reader.getPosition());
         if(reader.matchesString("<=", true))
-            return new Token("<=", TokenType.LESS_THAN_OR_EQUALS_OPERATOR, reader.getPosition());
+            return new Token("<=", TokenType.LESS_EQUALS, reader.getPosition());
         if(reader.matchesString(">", true))
-            return new Token(">", TokenType.GREATER_THAN_OPERATOR, reader.getPosition());
+            return new Token(">", TokenType.GREATER, reader.getPosition());
         if(reader.matchesString("<", true))
-            return new Token("<", TokenType.LESS_THAN_OPERATOR, reader.getPosition());
+            return new Token("<", TokenType.LESS, reader.getPosition());
         
         // Check if logical operator
         if(reader.matchesString("||", true))
@@ -131,9 +131,9 @@ public class Lexer {
         }
         
         if(reader.current().is('('))
-            return new Token(reader.consume().toString(), TokenType.GROUP_BEGIN, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.OPEN_PAREN, reader.getPosition());
         if(reader.current().is(')'))
-            return new Token(reader.consume().toString(), TokenType.GROUP_END, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.CLOSE_PAREN, reader.getPosition());
         if(reader.current().is(';'))
             return new Token(reader.consume().toString(), TokenType.STATEMENT_END, reader.getPosition());
         if(reader.current().is(','))
@@ -153,19 +153,19 @@ public class Lexer {
         if(reader.current().is('='))
             return new Token(reader.consume().toString(), TokenType.ASSIGNMENT, reader.getPosition());
         if(reader.current().is('+'))
-            return new Token(reader.consume().toString(), TokenType.ADDITION_OPERATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.PLUS, reader.getPosition());
         if(reader.current().is('-'))
-            return new Token(reader.consume().toString(), TokenType.SUBTRACTION_OPERATOR,
+            return new Token(reader.consume().toString(), TokenType.MINUS,
                              reader.getPosition());
         if(reader.current().is('*'))
-            return new Token(reader.consume().toString(), TokenType.MULTIPLICATION_OPERATOR,
+            return new Token(reader.consume().toString(), TokenType.STAR,
                              reader.getPosition());
         if(reader.current().is('/'))
-            return new Token(reader.consume().toString(), TokenType.DIVISION_OPERATOR, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.FORWARD_SLASH, reader.getPosition());
         if(reader.current().is('%'))
             return new Token(reader.consume().toString(), TokenType.MODULO_OPERATOR, reader.getPosition());
         if(reader.current().is('!'))
-            return new Token(reader.consume().toString(), TokenType.BOOLEAN_NOT, reader.getPosition());
+            return new Token(reader.consume().toString(), TokenType.BANG, reader.getPosition());
         
         // Read word
         StringBuilder token = new StringBuilder();
