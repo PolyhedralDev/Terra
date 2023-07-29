@@ -7,17 +7,26 @@
 
 package com.dfsek.terra.addons.terrascript.lexer;
 
-public class SourcePosition {
-    private final int line;
-    private final int index;
-    
-    public SourcePosition(int line, int index) {
-        this.line = line;
-        this.index = index;
-    }
+import java.util.Objects;
+
+
+public record SourcePosition(int line, int column) {
     
     @Override
     public String toString() {
-        return (line + 1) + ":" + index;
+        return "line " + line + ", column " + column;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        SourcePosition that = (SourcePosition) o;
+        return line == that.line && column == that.column;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(line, column);
     }
 }

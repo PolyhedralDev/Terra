@@ -20,14 +20,14 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 
 public class ParserUtil {
     
-    public static void ensureType(Token token, TokenType... expected) {
-        for(TokenType type : expected) if(token.getType().equals(type)) return;
-        throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
-    }
+//    public static void ensureType(Token token, TokenType... expected) {
+//        for(TokenType type : expected) if(token.getType().equals(type)) return;
+//        throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
+//    }
     
     public static void ensureReturnType(Expression<?> returnable, Expression.ReturnType... types) {
         for(Expression.ReturnType type : types) if(returnable.returnType().equals(type)) return;
-        throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType(), returnable.getPosition());
+        throw new ParseException("Invalid type " + returnable.returnType() + ", expected " + (types.length == 1 ? types[0].toString() : "one of " + Arrays.toString(types)), returnable.getPosition());
     }
     
     public static Expression.ReturnType getVariableReturnType(Token varToken) {

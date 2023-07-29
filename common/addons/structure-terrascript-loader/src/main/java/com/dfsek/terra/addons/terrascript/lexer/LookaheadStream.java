@@ -1,31 +1,17 @@
-/*
- * Copyright (c) 2020-2021 Polyhedral Development
- *
- * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
- * reference the LICENSE file in this module's root directory.
- */
-
 package com.dfsek.terra.addons.terrascript.lexer;
 
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
-
-/**
- * Stream-like data structure that allows viewing future elements without consuming current.
- */
 public class LookaheadStream {
-    private final List<Char> buffer = new ArrayList<>();
-    private final Reader input;
-    private int index = 0;
-    private int line = 0;
-    private boolean end = false;
     
-    public LookaheadStream(Reader r) {
-        this.input = r;
+    private final String source;
+    
+    private int index;
+    
+    private SourcePosition position = new SourcePosition(1, 1);
+    
+    public LookaheadStream(String source) {
+        this.source = source;
     }
     
     /**
@@ -34,9 +20,8 @@ public class LookaheadStream {
      * @return current character
      */
     public Char current() {
-        return next(0);
+        return new Char(source.charAt(index), position);
     }
-    
     
     /**
      * Consume and return one character.
@@ -45,82 +30,55 @@ public class LookaheadStream {
      */
     public Char consume() {
         Char consumed = current();
-        consume(1);
+        incrementIndex(1);
         return consumed;
     }
     
     /**
-     * Fetch a future character without consuming it.
-     *
-     * @param ahead Distance ahead to peek
-     *
-     * @return Character
+     * @return The next character in sequence.
      */
-    public Char next(int ahead) {
-        if(ahead < 0) throw new IllegalArgumentException();
-        
-        while(buffer.size() <= ahead && !end) {
-            Char item = fetch();
-            if(item != null) {
-                buffer.add(item);
-            } else end = true;
-        }
-        
-        if(ahead >= buffer.size()) {
-            return null;
-        } else return buffer.get(ahead);
+    public Char peek() {
+        int index = this.index + 1;
+        if (index + 1 >= source.length()) return null;
+        return new Char(source.charAt(index), getPositionAfter(1));
     }
     
     /**
-     * Consume an amount of characters
+     * Determines if the contained sequence of characters matches the string
      *
-     * @param amount Number of characters to consume
+     * @param check Input string to check against
+     * @param consumeIfMatched Whether to consume the string if there is a match
+     * @return If the string matches
      */
-    public void consume(int amount) {
-        if(amount < 0) throw new IllegalArgumentException();
-        while(amount-- > 0) {
-            if(!buffer.isEmpty()) buffer.remove(0); // Remove top item from buffer.
-            else {
-                if(end) return;
-                Char item = fetch();
-                if(item == null) end = true;
-            }
-        }
-    }
-    
-    public boolean matchesString(String check, boolean consume) {
-        if(check == null) return false;
-        
-        for(int i = 0; i < check.length(); i++) {
-            if(!next(i).is(check.charAt(i))) return false;
-        }
-        
-        if(consume) consume(check.length()); // Consume string
-        return true;
+    public boolean matchesString(String check, boolean consumeIfMatched) {
+        boolean matches = check.equals(source.substring(index, Math.min(index + check.length(), source.length())));
+        if (matches && consumeIfMatched) incrementIndex(check.length());
+        return matches;
     }
     
     /**
-     * Fetch the next character.
-     *
-     * @return Next character
+     * @return Current position within the source file
      */
-    private Char fetch() {
-        try {
-            int c = input.read();
-            if(c == -1) return null;
-            if(c == '\n') {
-                line++;
-                index = 0;
-            }
-            index++;
-            return new Char((char) c, line, index);
-        } catch(IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
     public SourcePosition getPosition() {
-        return new SourcePosition(line, index);
+        return position;
+    }
+    
+    private void incrementIndex(int amount) {
+        position = getPositionAfter(amount);
+        index = Math.min(index + amount, source.length() - 1);
+    }
+    
+    private SourcePosition getPositionAfter(int chars) {
+        if (chars < 0) throw new IllegalArgumentException("Negative values are not allowed");
+        int line = position.line();
+        int column = position.column();
+        for (int i = index; i < Math.min(index + chars, source.length() - 1); i++) {
+            if (source.charAt(i) == '\n') {
+                line++;
+                column = 0;
+            }
+            column++;
+        }
+        return new SourcePosition(line, column);
     }
 }

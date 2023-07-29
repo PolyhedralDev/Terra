@@ -29,7 +29,7 @@ public class ParseException extends RuntimeException {
     
     @Override
     public String getMessage() {
-        return super.getMessage() + ": " + position;
+        return "Error at " + position + ": " + super.getMessage();
     }
     
     public SourcePosition getPosition() {

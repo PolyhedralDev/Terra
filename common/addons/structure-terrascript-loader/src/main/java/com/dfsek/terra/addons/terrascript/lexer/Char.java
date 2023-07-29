@@ -7,16 +7,17 @@
 
 package com.dfsek.terra.addons.terrascript.lexer;
 
+import java.util.Objects;
+
+
 public class Char {
     private final char character;
-    private final int index;
-    private final int line;
+    private final SourcePosition position;
     
     
-    public Char(char character, int index, int line) {
+    public Char(char character, SourcePosition position) {
         this.character = character;
-        this.index = index;
-        this.line = line;
+        this.position = position;
     }
     
     public boolean is(char... tests) {
@@ -33,16 +34,21 @@ public class Char {
         return Character.toString(character);
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Char other = (Char) o;
+        return character == other.character && Objects.equals(position, other.position);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(character, position);
+    }
+    
     public char getCharacter() {
         return character;
-    }
-    
-    public int getIndex() {
-        return index;
-    }
-    
-    public int getLine() {
-        return line;
     }
     
     public boolean isWhitespace() {

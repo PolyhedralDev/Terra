@@ -1,3 +1,20 @@
+str myFunction(str functionString, num functionNumber) {
+    test(functionString, functionNumber);
+    void nestedFunction() {
+        test("Hello from nested function", 69);
+    }
+    nestedFunction();
+    return "Return to sender";
+}
+
+str functionResult = myFunction("Hello from myFunction", 535);
+
+test(functionResult, 58);
+
+void noReturn() test("Single statement function", 42);
+
+noReturn();
+
 bool thing1 = 2 > (2+2) || false;
 
 if(2 > 2 || 3 + 4 <= 2 && 4 + 5 > 2 / 3) {
@@ -29,7 +46,9 @@ test("-2 = " + thing, 2);
 thing = -thing;
 test("--2 = " + thing, 2);
 
-
+for(;;) {
+    break;
+}
 
 for(num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);

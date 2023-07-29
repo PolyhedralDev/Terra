@@ -16,6 +16,9 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 public interface FunctionBuilder<T extends Function<?>> {
     T build(List<Expression<?>> argumentList, SourcePosition position);
     
+    /**
+     * @return Number of function arguments, -1 if the function uses a vararg at the end
+     */
     int argNumber();
     
     Expression.ReturnType getArgument(int position);

@@ -15,16 +15,16 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 public class UserDefinedFunctionBuilder<T extends Function<?>> implements FunctionBuilder<T> {
     
     private final ReturnType returnType;
-    private final List<Pair<Integer, ReturnType>> argumentInfo;
+    private final List<Pair<Integer, ReturnType>> parameterInfo;
     private final ScopeBuilder bodyScopeBuilder;
     private final Block body;
     
-    public UserDefinedFunctionBuilder(ReturnType returnType, List<Pair<Integer, ReturnType>> argumentInfo, Block body,
+    public UserDefinedFunctionBuilder(ReturnType returnType, List<Pair<Integer, ReturnType>> parameterInfo, Block body,
                                       ScopeBuilder functionBodyScope) {
         this.returnType = returnType;
         this.bodyScopeBuilder = functionBodyScope;
         this.body = body;
-        this.argumentInfo = argumentInfo;
+        this.parameterInfo = parameterInfo;
     }
     
     @Override
@@ -44,12 +44,12 @@ public class UserDefinedFunctionBuilder<T extends Function<?>> implements Functi
                 Scope bodyScope = threadLocalScope.get();
                 // Pass arguments into scope of function body
                 for(int i = 0; i < argumentList.size(); i++) {
-                    Pair<Integer, ReturnType> argInfo = argumentInfo.get(i);
+                    Pair<Integer, ReturnType> paramInfo = parameterInfo.get(i);
                     Expression<?> argExpression = argumentList.get(i);
-                    switch(argInfo.getRight()) {
-                        case NUMBER -> bodyScope.setNum(argInfo.getLeft(), argExpression.applyDouble(implementationArguments, scope));
-                        case BOOLEAN -> bodyScope.setBool(argInfo.getLeft(), argExpression.applyBoolean(implementationArguments, scope));
-                        case STRING -> bodyScope.setStr(argInfo.getLeft(), (String) argExpression.evaluate(implementationArguments, scope));
+                    switch(paramInfo.getRight()) {
+                        case NUMBER -> bodyScope.setNum(paramInfo.getLeft(), argExpression.applyDouble(implementationArguments, scope));
+                        case BOOLEAN -> bodyScope.setBool(paramInfo.getLeft(), argExpression.applyBoolean(implementationArguments, scope));
+                        case STRING -> bodyScope.setStr(paramInfo.getLeft(), (String) argExpression.evaluate(implementationArguments, scope));
                     }
                 }
                 return body.evaluate(implementationArguments, bodyScope).data().evaluate(implementationArguments, scope);
@@ -64,11 +64,11 @@ public class UserDefinedFunctionBuilder<T extends Function<?>> implements Functi
     
     @Override
     public int argNumber() {
-        return argumentInfo.size();
+        return parameterInfo.size();
     }
     
     @Override
     public ReturnType getArgument(int position) {
-        return argumentInfo.get(position).getRight();
+        return parameterInfo.get(position).getRight();
     }
 }
