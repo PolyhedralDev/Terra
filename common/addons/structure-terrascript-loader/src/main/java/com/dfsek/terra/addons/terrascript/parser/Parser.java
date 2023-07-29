@@ -10,6 +10,9 @@ package com.dfsek.terra.addons.terrascript.parser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import com.dfsek.terra.addons.terrascript.lexer.Lexer;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
@@ -22,7 +25,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope.ScopeBuilder;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.ConstantExpression;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
@@ -34,7 +36,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.keywords.flow.ReturnKeywor
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike.ForKeyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike.IfKeyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.keywords.looplike.WhileKeyword;
-import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BooleanAndOperation;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BooleanNotOperation;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BooleanOrOperation;
@@ -61,7 +62,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.StrVar
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
-@SuppressWarnings("unchecked")
 public class Parser {
     private final List<String> ignoredFunctions = new ArrayList<>();
     
@@ -86,7 +86,7 @@ public class Parser {
         SourcePosition start = lexer.consume().getPosition();
         ParserUtil.ensureType(lexer.consume(), TokenType.OPEN_PAREN);
         scopeBuilder = scopeBuilder.innerLoopScope();
-        Expression<?> condition = parseExpression(true, scopeBuilder);
+        Expression<?> condition = parseExpression(scopeBuilder);
         ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         ParserUtil.ensureType(lexer.consume(), TokenType.CLOSE_PAREN);
         return new WhileKeyword(parseStatementBlock(scopeBuilder, ReturnType.VOID), (Expression<Boolean>) condition,
@@ -96,7 +96,7 @@ public class Parser {
     private IfKeyword parseIfStatement(ScopeBuilder scopeBuilder) {
         SourcePosition start = lexer.consume().getPosition();
         ParserUtil.ensureType(lexer.consume(), TokenType.OPEN_PAREN);
-        Expression<?> condition = parseExpression(true, scopeBuilder);
+        Expression<?> condition = parseExpression(scopeBuilder);
         ParserUtil.ensureReturnType(condition, Expression.ReturnType.BOOLEAN);
         
         ParserUtil.ensureType(lexer.consume(), TokenType.CLOSE_PAREN);
@@ -110,7 +110,7 @@ public class Parser {
             lexer.consume(); // Consume else.
             if(lexer.current().isType(TokenType.IF_STATEMENT)) {
                 lexer.consume(); // Consume if.
-                Expression<?> elseCondition = parseExpression(true, scopeBuilder);
+                Expression<?> elseCondition = parseExpression(scopeBuilder);
                 ParserUtil.ensureReturnType(elseCondition, Expression.ReturnType.BOOLEAN);
                 elseIf.add(Pair.of((Expression<Boolean>) elseCondition, parseStatementBlock(scopeBuilder, ReturnType.VOID)));
             } else {
@@ -144,20 +144,20 @@ public class Parser {
         if(f.isVariableDeclaration()) {
             Expression<?> forVar = parseDeclaration(scopeBuilder);
             Token name = lexer.current();
-            if(scopeBuilder.containsFunction(name.getContent()) || scopeBuilder.contains(name.getContent()))
+            if(scopeBuilder.containsFunction(name.getContent()) || scopeBuilder.containsVariable(name.getContent()))
                 throw new ParseException(name.getContent() + " is already defined in this scope", name.getPosition());
             initializer = forVar;
-        } else initializer = parseExpression(true, scopeBuilder);
+        } else initializer = parseExpression(scopeBuilder);
         ParserUtil.ensureType(lexer.consume(), TokenType.STATEMENT_END);
-        Expression<?> conditional = parseExpression(true, scopeBuilder);
+        Expression<?> conditional = parseExpression(scopeBuilder);
         ParserUtil.ensureReturnType(conditional, Expression.ReturnType.BOOLEAN);
         ParserUtil.ensureType(lexer.consume(), TokenType.STATEMENT_END);
         
         Expression<?> incrementer;
-        Token token = lexer.current();
-        if(scopeBuilder.contains(token.getContent())) { // Assume variable assignment
-            incrementer = parseAssignment(scopeBuilder);
-        } else incrementer = parseFunctionInvocation(true, scopeBuilder);
+        Token incrementerToken = lexer.consume();
+        if(scopeBuilder.containsVariable(incrementerToken.getContent())) { // Assume variable assignment
+            incrementer = parseAssignment(incrementerToken, scopeBuilder);
+        } else incrementer = parseFunctionInvocation(true, incrementerToken, scopeBuilder);
         
         ParserUtil.ensureType(lexer.consume(), TokenType.CLOSE_PAREN);
         
@@ -166,135 +166,140 @@ public class Parser {
                               start);
     }
     
-    private Expression<?> parseExpression(boolean full, ScopeBuilder scopeBuilder) {
-        boolean booleanInverted = false; // Check for boolean not operator
-        boolean negate = false;
-        if(lexer.current().isType(TokenType.BANG)) {
-            booleanInverted = true;
-            lexer.consume();
-        } else if(lexer.current().isType(TokenType.MINUS)) {
-            negate = true;
-            lexer.consume();
-        }
-        
-        Token id = lexer.current();
-        
-        ParserUtil.ensureType(id, TokenType.IDENTIFIER, TokenType.BOOLEAN, TokenType.STRING, TokenType.NUMBER, TokenType.OPEN_PAREN);
-        
-        Expression<?> expression;
-        if(id.isConstant()) {
-            expression = parseConstantExpression(lexer);
-        } else if(id.isType(TokenType.OPEN_PAREN)) { // Parse grouped expression
-            expression = parseExpressionGroup(scopeBuilder);
-        } else {
-            if(scopeBuilder.containsFunction(id.getContent()))
-                expression = parseFunctionInvocation(false, scopeBuilder);
-            else if(scopeBuilder.contains(id.getContent())) {
-                ParserUtil.ensureType(lexer.consume(), TokenType.IDENTIFIER);
-                String varId = id.getContent();
-                ReturnType varType = scopeBuilder.getType(varId);
-                expression = switch(varType) {
-                    case NUMBER -> new NumVariableReferenceNode(id.getPosition(), varType, scopeBuilder.getIndex(varId));
-                    case STRING -> new StrVariableReferenceNode(id.getPosition(), varType, scopeBuilder.getIndex(varId));
-                    case BOOLEAN -> new BoolVariableReferenceNode(id.getPosition(), varType, scopeBuilder.getIndex(varId));
-                    default -> throw new ParseException("Illegal type for variable reference: " + varType, id.getPosition());
-                };
-                
-            } else throw new ParseException("Unexpected token \"" + id.getContent() + "\"", id.getPosition());
-        }
-        
-        if(booleanInverted) { // Invert operation if boolean not detected
-            ParserUtil.ensureReturnType(expression, Expression.ReturnType.BOOLEAN);
-            expression = new BooleanNotOperation((Expression<Boolean>) expression, expression.getPosition());
-        } else if(negate) {
-            ParserUtil.ensureReturnType(expression, Expression.ReturnType.NUMBER);
-            expression = new NegationOperation((Expression<Number>) expression, expression.getPosition());
-        }
-        
-        if(full && lexer.current().isBinaryOperator()) { // Parse binary operations
-            return parseBinaryOperation(expression, scopeBuilder);
-        }
-        return expression;
+    private Expression<?> parseExpression(ScopeBuilder scopeBuilder) {
+        return parseLogicOr(scopeBuilder);
     }
     
-    private ConstantExpression<?> parseConstantExpression(Lexer lexer) {
-        Token constantToken = lexer.consume();
-        SourcePosition position = constantToken.getPosition();
-        return switch(constantToken.getType()) {
+    private Expression<?> parseLogicOr(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseLogicAnd, scopeBuilder, (op) -> {
+            ParserUtil.ensureReturnType(op.left, ReturnType.BOOLEAN);
+            ParserUtil.ensureReturnType(op.right, ReturnType.BOOLEAN);
+        }, Map.of(TokenType.BOOLEAN_OR, (op) -> new BooleanOrOperation((Expression<Boolean>) op.left, (Expression<Boolean>) op.right, op.operator.getPosition())));
+    }
+    
+    private Expression<?> parseLogicAnd(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseEquality, scopeBuilder, (op) -> {
+            ParserUtil.ensureReturnType(op.left, ReturnType.BOOLEAN);
+            ParserUtil.ensureReturnType(op.right, ReturnType.BOOLEAN);
+        }, Map.of(TokenType.BOOLEAN_AND, (op) -> new BooleanAndOperation((Expression<Boolean>) op.left, (Expression<Boolean>) op.right, op.operator.getPosition())));
+    }
+    
+    private Expression<?> parseEquality(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseComparison, scopeBuilder, Map.of(
+            TokenType.EQUALS_EQUALS, (op) -> new EqualsStatement((Expression<Object>) op.left, (Expression<Object>) op.right, op.operator.getPosition()),
+            TokenType.BANG_EQUALS, (op) -> new NotEqualsStatement((Expression<Object>) op.left, (Expression<Object>) op.right, op.operator.getPosition())
+        ));
+    }
+    
+    private Expression<?> parseComparison(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseTerm, scopeBuilder, (op) -> {
+            ParserUtil.ensureReturnType(op.left, ReturnType.NUMBER);
+            ParserUtil.ensureReturnType(op.right, ReturnType.NUMBER);
+        }, Map.of(
+            TokenType.LESS, (op) -> new LessThanStatement((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition()),
+            TokenType.LESS_EQUALS, (op) -> new LessThanOrEqualsStatement((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition()),
+            TokenType.GREATER, (op) -> new GreaterThanStatement((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition()),
+            TokenType.GREATER_EQUAL, (op) -> new GreaterOrEqualsThanStatement((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition())
+        ));
+    }
+    
+    private Expression<?> parseTerm(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseFactor, scopeBuilder, Map.of(
+        TokenType.MINUS, (op) -> {
+            ParserUtil.ensureReturnType(op.left, ReturnType.NUMBER);
+            ParserUtil.ensureReturnType(op.right, ReturnType.NUMBER);
+            return new SubtractionOperation((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition());
+        },
+        TokenType.PLUS, (op) -> {
+            if (op.left.returnType() == ReturnType.NUMBER && op.right.returnType() == ReturnType.NUMBER)
+                return new NumberAdditionOperation((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition());
+            else
+                return new ConcatenationOperation((Expression<Object>) op.left, (Expression<Object>) op.right, op.operator.getPosition());
+        }));
+    }
+    
+    private Expression<?> parseFactor(ScopeBuilder scopeBuilder) {
+        return parseLeftAssociativeBinaryOperation(this::parseUnary, scopeBuilder, (op) -> {
+           ParserUtil.ensureReturnType(op.left, ReturnType.NUMBER);
+           ParserUtil.ensureReturnType(op.right, ReturnType.NUMBER);
+        }, Map.of(
+            TokenType.STAR, (op) -> new MultiplicationOperation((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition()),
+            TokenType.FORWARD_SLASH, (op) -> new DivisionOperation((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition()),
+            TokenType.MODULO_OPERATOR, (op) -> new ModuloOperation((Expression<Number>) op.left, (Expression<Number>) op.right, op.operator.getPosition())
+        ));
+    }
+    
+    private Expression<?> parseUnary(ScopeBuilder scopeBuilder) {
+        if (lexer.current().isType(TokenType.BANG, TokenType.MINUS)) {
+            Token operator = lexer.consume();
+            Expression<?> right = parseUnary(scopeBuilder);
+            return switch(operator.getType()) {
+                case BANG -> {
+                    ParserUtil.ensureReturnType(right, ReturnType.BOOLEAN);
+                    yield new BooleanNotOperation((Expression<Boolean>) right, operator.getPosition());
+                }
+                case MINUS -> {
+                    ParserUtil.ensureReturnType(right, ReturnType.NUMBER);
+                    yield new NegationOperation((Expression<Number>) right, operator.getPosition());
+                }
+                default -> throw new IllegalStateException();
+            };
+        }
+        return parsePrimary(scopeBuilder);
+    }
+    
+    private Expression<?> parsePrimary(ScopeBuilder scopeBuilder) {
+        Token token = lexer.consume();
+        return switch(token.getType()) {
             case NUMBER -> {
-                String content = constantToken.getContent();
-                yield new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), position);
+                String content = token.getContent();
+                yield new NumericConstant(content.contains(".") ? Double.parseDouble(content) : Integer.parseInt(content), token.getPosition());
             }
-            case STRING -> new StringConstant(constantToken.getContent(), position);
-            case BOOLEAN -> new BooleanConstant(Boolean.parseBoolean(constantToken.getContent()), position);
-            default -> throw new UnsupportedOperationException(
-                    "Unsupported constant token: " + constantToken.getType() + " at position: " + position);
+            case STRING -> new StringConstant(token.getContent(), token.getPosition());
+            case BOOLEAN -> new BooleanConstant(Boolean.parseBoolean(token.getContent()), token.getPosition());
+            case OPEN_PAREN -> {
+                Expression<?> expr = parseExpression(scopeBuilder);
+                ParserUtil.ensureType(lexer.consume(), TokenType.CLOSE_PAREN);
+                yield expr;
+            }
+            case IDENTIFIER -> {
+                if (scopeBuilder.containsFunction(token.getContent()))
+                    yield parseFunctionInvocation(false, token, scopeBuilder);
+                else if (scopeBuilder.containsVariable(token.getContent())) {
+                    ReturnType variableType = scopeBuilder.getVaraibleType(token.getContent());
+                    yield switch(variableType) {
+                        case NUMBER -> new NumVariableReferenceNode(token.getPosition(), variableType, scopeBuilder.getIndex(token.getContent()));
+                        case BOOLEAN -> new BoolVariableReferenceNode(token.getPosition(), variableType, scopeBuilder.getIndex(token.getContent()));
+                        case STRING -> new StrVariableReferenceNode(token.getPosition(), variableType, scopeBuilder.getIndex(token.getContent()));
+                        default -> throw new ParseException("Illegal type for variable reference: " + variableType, token.getPosition());
+                    };
+                }
+                throw new ParseException("Identifier " + token.getContent() + " is not defined in this scope", token.getPosition());
+            }
+            default -> throw new ParseException("Unexpected token " + token.getType(), token.getPosition());
         };
     }
     
-    private Expression<?> parseExpressionGroup(ScopeBuilder scopeBuilder) {
-        ParserUtil.ensureType(lexer.consume(), TokenType.OPEN_PAREN);
-        Expression<?> expression = parseExpression(true, scopeBuilder); // Parse inside of group as a separate expression
-        ParserUtil.ensureType(lexer.consume(), TokenType.CLOSE_PAREN);
-        return expression;
-    }
-    
-    private BinaryOperation<?, ?> parseBinaryOperation(Expression<?> left, ScopeBuilder scopeBuilder) {
-        Token binaryOperator = lexer.consume();
-        ParserUtil.checkBinaryOperator(binaryOperator);
-        
-        Expression<?> right = parseExpression(false, scopeBuilder);
-        
-        Token other = lexer.current();
-        
-        if(ParserUtil.hasPrecedence(binaryOperator.getType(), other.getType()))
-            return assemble(left, parseBinaryOperation(right, scopeBuilder), binaryOperator);
-        
-        if(other.isBinaryOperator())
-            return parseBinaryOperation(assemble(left, right, binaryOperator), scopeBuilder);
-        
-        return assemble(left, right, binaryOperator);
-    }
-    
-    private BinaryOperation<?, ?> assemble(Expression<?> left, Expression<?> right, Token binaryOperator) {
-        if(binaryOperator.isStrictNumericOperator())
-            ParserUtil.checkArithmeticOperation(left, right, binaryOperator); // Numeric type checking
-        if(binaryOperator.isStrictBooleanOperator()) ParserUtil.checkBooleanOperation(left, right, binaryOperator); // Boolean type checking
-        switch(binaryOperator.getType()) {
-            case PLUS:
-                if(left.returnType().equals(Expression.ReturnType.NUMBER) && right.returnType().equals(Expression.ReturnType.NUMBER)) {
-                    return new NumberAdditionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-                }
-                return new ConcatenationOperation((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
-            case MINUS:
-                return new SubtractionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case STAR:
-                return new MultiplicationOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case FORWARD_SLASH:
-                return new DivisionOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case EQUALS_EQUALS:
-                return new EqualsStatement((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
-            case BANG_EQUALS:
-                return new NotEqualsStatement((Expression<Object>) left, (Expression<Object>) right, binaryOperator.getPosition());
-            case GREATER:
-                return new GreaterThanStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case LESS:
-                return new LessThanStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case GREATER_EQUAL:
-                return new GreaterOrEqualsThanStatement((Expression<Number>) left, (Expression<Number>) right,
-                                                        binaryOperator.getPosition());
-            case LESS_EQUALS:
-                return new LessThanOrEqualsStatement((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            case BOOLEAN_AND:
-                return new BooleanAndOperation((Expression<Boolean>) left, (Expression<Boolean>) right, binaryOperator.getPosition());
-            case BOOLEAN_OR:
-                return new BooleanOrOperation((Expression<Boolean>) left, (Expression<Boolean>) right, binaryOperator.getPosition());
-            case MODULO_OPERATOR:
-                return new ModuloOperation((Expression<Number>) left, (Expression<Number>) right, binaryOperator.getPosition());
-            default:
-                throw new UnsupportedOperationException("Unsupported binary operator: " + binaryOperator.getType());
+    private Expression<?> parseLeftAssociativeBinaryOperation(Function<ScopeBuilder, Expression<?>> higherPrecedence, ScopeBuilder scopeBuilder,
+                                                              Consumer<BinaryOperationInfo> init,
+                                                              Map<TokenType, Function<BinaryOperationInfo, Expression<?>>> operators) {
+        Expression<?> expr = higherPrecedence.apply(scopeBuilder);
+        TokenType[] opTypes = operators.keySet().toArray(new TokenType[0]);
+        while (lexer.current().isType(opTypes)) {
+            Token operator = lexer.consume();
+            Expression<?> right = higherPrecedence.apply(scopeBuilder);
+            BinaryOperationInfo op = new BinaryOperationInfo(expr, operator, right);
+            init.accept(op);
+            expr = operators.get(operator.getType()).apply(op);
         }
+        return expr;
     }
+    
+    private Expression<?> parseLeftAssociativeBinaryOperation(Function<ScopeBuilder, Expression<?>> higherPrecedence, ScopeBuilder scopeBuilder, Map<TokenType, Function<BinaryOperationInfo, Expression<?>>> operators) {
+        return parseLeftAssociativeBinaryOperation(higherPrecedence, scopeBuilder, (op) -> {}, operators);
+    }
+    
+    private record BinaryOperationInfo(Expression<?> left, Token operator, Expression<?> right) {}
     
     private Expression<?> parseDeclaration(ScopeBuilder scopeBuilder) {
         Token type = lexer.consume();
@@ -316,10 +321,10 @@ public class Parser {
     private Expression<?> parseVariableDeclaration(ScopeBuilder scopeBuilder, Token type, Token identifier) {
         ParserUtil.ensureType(type, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.TYPE_NUMBER);
         
-        if(scopeBuilder.contains(identifier.getContent()))
+        if(scopeBuilder.containsVariable(identifier.getContent()))
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         
-        Expression<?> value = parseExpression(true, scopeBuilder);
+        Expression<?> value = parseExpression(scopeBuilder);
         ParserUtil.ensureReturnType(value, ParserUtil.getVariableReturnType(type));
         
         String variableName = identifier.getContent();
@@ -337,7 +342,7 @@ public class Parser {
     private Expression<?> parseFunctionDeclaration(ScopeBuilder scopeBuilder, Token type, Token identifier) {
         ParserUtil.ensureType(type, TokenType.TYPE_STRING, TokenType.TYPE_BOOLEAN, TokenType.TYPE_NUMBER, TokenType.TYPE_VOID);
         
-        if(scopeBuilder.contains(identifier.getContent()))
+        if(scopeBuilder.containsVariable(identifier.getContent()))
             throw new ParseException(identifier.getContent() + " is already defined in this scope", identifier.getPosition());
         
         ReturnType returnType = ParserUtil.getVariableReturnType(type);
@@ -385,15 +390,13 @@ public class Parser {
     
     private Block parseBlock(ScopeBuilder scopeBuilder, ReturnType blockReturnType) {
         List<Expression<?>> expressions = new ArrayList<>();
-        scopeBuilder = scopeBuilder.innerScope();
+        scopeBuilder = scopeBuilder.innerScope(); // Create new inner scope for the block
         SourcePosition startPosition = lexer.current().getPosition();
         
         boolean hasReturn = false;
         
         // Parse each statement
-        while(lexer.hasNext()) {
-            Token token = lexer.current();
-            if(token.isType(TokenType.BLOCK_END)) break; // Stop parsing at block end.
+        while(lexer.hasNext() && !lexer.current().isType(TokenType.BLOCK_END)) {
             Expression<?> expression = parseStatement(lexer, scopeBuilder);
             if(expression != Expression.NOOP) {
                 expressions.add(expression);
@@ -432,8 +435,8 @@ public class Parser {
             case IF_STATEMENT -> parseIfStatement(scopeBuilder);
             case WHILE_LOOP -> parseWhileLoop(scopeBuilder);
             case IDENTIFIER -> {
-                if(scopeBuilder.contains(token.getContent())) yield parseAssignment(scopeBuilder); // Assume variable assignment
-                else yield parseFunctionInvocation(true, scopeBuilder);
+                if(scopeBuilder.containsVariable(token.getContent())) yield parseAssignment(lexer.consume(), scopeBuilder); // Assume variable assignment
+                else yield parseFunctionInvocation(true, lexer.consume(), scopeBuilder);
             }
             case TYPE_NUMBER, TYPE_STRING, TYPE_BOOLEAN, TYPE_VOID -> parseDeclaration(scopeBuilder);
             case RETURN -> parseReturn(scopeBuilder);
@@ -451,23 +454,21 @@ public class Parser {
         ParserUtil.ensureType(returnToken, TokenType.RETURN);
         Expression<?> data = null;
         if(!lexer.current().isType(TokenType.STATEMENT_END)) {
-            data = parseExpression(true, scopeBuilder);
+            data = parseExpression(scopeBuilder);
         }
         return new ReturnKeyword(data, returnToken.getPosition());
     }
     
-    private VariableAssignmentNode<?> parseAssignment(ScopeBuilder scopeBuilder) {
-        Token identifier = lexer.consume();
-        
+    private VariableAssignmentNode<?> parseAssignment(Token identifier, ScopeBuilder scopeBuilder) {
         ParserUtil.ensureType(identifier, TokenType.IDENTIFIER);
         
         ParserUtil.ensureType(lexer.consume(), TokenType.ASSIGNMENT);
         
-        Expression<?> value = parseExpression(true, scopeBuilder);
+        Expression<?> value = parseExpression(scopeBuilder);
         
         String id = identifier.getContent();
         
-        ParserUtil.ensureReturnType(value, scopeBuilder.getType(id));
+        ParserUtil.ensureReturnType(value, scopeBuilder.getVaraibleType(id));
         
         ReturnType type = value.returnType();
         
@@ -479,14 +480,11 @@ public class Parser {
         };
     }
     
-    private Expression<?> parseFunctionInvocation(boolean fullStatement, ScopeBuilder scopeBuilder) {
-        Token identifier = lexer.consume();
-        ParserUtil.ensureType(identifier, TokenType.IDENTIFIER); // First token must be identifier
-        
+    private Expression<?> parseFunctionInvocation(boolean fullStatement, Token identifier, ScopeBuilder scopeBuilder) {
         if(!scopeBuilder.containsFunction(identifier.getContent()))
             throw new ParseException("Function \"" + identifier.getContent() + "\" is not defined in this scope", identifier.getPosition());
         
-        ParserUtil.ensureType(lexer.consume(), TokenType.OPEN_PAREN); // Second is body begin
+        ParserUtil.ensureType(lexer.consume(), TokenType.OPEN_PAREN); // Invocation starts with open paren
         
         List<Expression<?>> args = getFunctionArgs(scopeBuilder); // Extract arguments, consume the rest.
         
@@ -520,7 +518,7 @@ public class Parser {
         List<Expression<?>> args = new ArrayList<>();
         
         while(!lexer.current().isType(TokenType.CLOSE_PAREN)) {
-            args.add(parseExpression(true, scopeBuilder));
+            args.add(parseExpression(scopeBuilder));
             ParserUtil.ensureType(lexer.current(), TokenType.SEPARATOR, TokenType.CLOSE_PAREN);
             if(lexer.current().isType(TokenType.SEPARATOR)) lexer.consume();
         }

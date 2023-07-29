@@ -161,12 +161,11 @@ public class Scope {
             return indices.get(id).getLeft();
         }
         
-        public ReturnType getType(String id) {
+        public ReturnType getVaraibleType(String id) {
             return indices.get(id).getRight();
         }
         
-        
-        public boolean contains(String id) {
+        public boolean containsVariable(String id) {
             return indices.containsKey(id);
         }
     }

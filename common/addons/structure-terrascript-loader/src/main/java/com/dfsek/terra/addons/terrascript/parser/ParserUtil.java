@@ -20,38 +20,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
 
 public class ParserUtil {
     
-    private static final Map<TokenType, Map<TokenType, Boolean>> PRECEDENCE = new HashMap<>(); // If second has precedence, true.
-    private static final List<TokenType> ARITHMETIC = Arrays.asList(TokenType.PLUS, TokenType.MINUS,
-                                                                    TokenType.STAR, TokenType.FORWARD_SLASH,
-                                                                    TokenType.MODULO_OPERATOR);
-    private static final List<TokenType> COMPARISON = Arrays.asList(TokenType.EQUALS_EQUALS, TokenType.BANG_EQUALS,
-                                                                    TokenType.LESS, TokenType.LESS_EQUALS,
-                                                                    TokenType.GREATER,
-                                                                    TokenType.GREATER_EQUAL);
-    
-    static { // Setup precedence
-        Map<TokenType, Boolean> add = new HashMap<>(); // Addition/subtraction before Multiplication/division.
-        add.put(TokenType.STAR, true);
-        add.put(TokenType.FORWARD_SLASH, true);
-        
-        PRECEDENCE.put(TokenType.PLUS, add);
-        PRECEDENCE.put(TokenType.MINUS, add);
-        
-        Map<TokenType, Boolean> numericBoolean = new HashMap<>();
-        
-        ARITHMETIC.forEach(op -> numericBoolean.put(op, true)); // Numbers before comparison
-        COMPARISON.forEach(op -> PRECEDENCE.put(op, numericBoolean));
-        
-        
-        Map<TokenType, Boolean> booleanOps = new HashMap<>();
-        ARITHMETIC.forEach(op -> booleanOps.put(op, true)); // Everything before boolean
-        COMPARISON.forEach(op -> booleanOps.put(op, true));
-        
-        
-        PRECEDENCE.put(TokenType.BOOLEAN_AND, booleanOps);
-        PRECEDENCE.put(TokenType.BOOLEAN_OR, booleanOps);
-    }
-    
     public static void ensureType(Token token, TokenType... expected) {
         for(TokenType type : expected) if(token.getType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(expected) + " but found " + token.getType(), token.getPosition());
@@ -60,34 +28,6 @@ public class ParserUtil {
     public static void ensureReturnType(Expression<?> returnable, Expression.ReturnType... types) {
         for(Expression.ReturnType type : types) if(returnable.returnType().equals(type)) return;
         throw new ParseException("Expected " + Arrays.toString(types) + " but found " + returnable.returnType(), returnable.getPosition());
-    }
-    
-    public static void checkArithmeticOperation(Expression<?> left, Expression<?> right, Token operation) {
-        if(!left.returnType().equals(Expression.ReturnType.NUMBER) || !right.returnType().equals(Expression.ReturnType.NUMBER)) {
-            throw new ParseException(
-                    "Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType(),
-                    operation.getPosition());
-        }
-    }
-    
-    public static void checkBooleanOperation(Expression<?> left, Expression<?> right, Token operation) {
-        if(!left.returnType().equals(Expression.ReturnType.BOOLEAN) || !right.returnType().equals(Expression.ReturnType.BOOLEAN)) {
-            throw new ParseException(
-                    "Operation " + operation.getType() + " not supported between " + left.returnType() + " and " + right.returnType(),
-                    operation.getPosition());
-        }
-    }
-    
-    /**
-     * Checks if token is a binary operator
-     *
-     * @param token Token to check
-     *
-     * @throws ParseException If token isn't a binary operator
-     */
-    public static void checkBinaryOperator(Token token) {
-        if(!token.isBinaryOperator())
-            throw new ParseException("Expected binary operator, found " + token.getType(), token.getPosition());
     }
     
     public static Expression.ReturnType getVariableReturnType(Token varToken) {
@@ -99,12 +39,5 @@ public class ParserUtil {
             default -> throw new ParseException("Unexpected token " + varToken.getType() + "; expected variable declaration",
                                                 varToken.getPosition());
         };
-    }
-    
-    public static boolean hasPrecedence(TokenType first, TokenType second) {
-        if(!PRECEDENCE.containsKey(first)) return false;
-        Map<TokenType, Boolean> pre = PRECEDENCE.get(first);
-        if(!pre.containsKey(second)) return false;
-        return pre.get(second);
     }
 }

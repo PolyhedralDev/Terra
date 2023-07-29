@@ -43,6 +43,11 @@ public class Token {
         return type == getType();
     }
     
+    public boolean isType(TokenType... types) {
+        for (TokenType t : types) if (isType(t)) return true;
+        return false;
+    }
+    
     public boolean isBinaryOperator() {
         return type.equals(TokenType.PLUS)
                || type.equals(TokenType.MINUS)
