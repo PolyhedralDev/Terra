@@ -9,27 +9,37 @@ package com.dfsek.terra.addons.terrascript.lexer;
 
 import com.google.common.collect.Sets;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 
+import com.dfsek.terra.addons.terrascript.exception.lexer.EOFException;
+import com.dfsek.terra.addons.terrascript.exception.lexer.FormatException;
+import com.dfsek.terra.addons.terrascript.exception.lexer.TokenizerException;
+import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
-import com.dfsek.terra.addons.terrascript.lexer.exceptions.EOFException;
-import com.dfsek.terra.addons.terrascript.lexer.exceptions.FormatException;
-import com.dfsek.terra.addons.terrascript.lexer.exceptions.TokenizerException;
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 
 
 public class Lexer {
-    public static final Set<Character> syntaxSignificant = Sets.newHashSet(';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*', '/',
+    public static final Set<Character> syntaxSignificant = Sets.newHashSet(':', ';', '(', ')', '"', ',', '\\', '=', '{', '}', '+', '-', '*',
+                                                                           '/',
                                                                            '>', '<', '!'); // Reserved chars
     private final LookaheadStream reader;
-    private final Stack<Token> bracketStack = new Stack<>();
     private Token current;
     
     public Lexer(String data) {
         reader = new LookaheadStream(data + '\0');
         current = tokenize();
+    }
+    
+    public List<Token> analyze() {
+        List<Token> tokens = new ArrayList<>();
+        while(hasNext()) {
+            tokens.add(consumeUnchecked());
+        }
+        tokens.add(current()); // Add EOF token
+        return tokens;
     }
     
     /**
@@ -51,12 +61,13 @@ public class Lexer {
      * @throws ParseException If token does not exist
      */
     public Token consume(String wrongTypeMessage, TokenType expected, TokenType... more) {
-        if(!current.isType(expected) && Arrays.stream(more).noneMatch(t -> t == current.getType())) throw new ParseException(wrongTypeMessage, current.getPosition());
+        if(!current.isType(expected) && Arrays.stream(more).noneMatch(t -> t == current.type())) throw new ParseException(wrongTypeMessage,
+                                                                                                                          current.position());
         return consumeUnchecked();
     }
     
     public Token consumeUnchecked() {
-        if(current.getType() == TokenType.END_OF_FILE) return current;
+        if(current.type() == TokenType.END_OF_FILE) return current;
         Token temp = current;
         current = tokenize();
         return temp;
@@ -68,7 +79,7 @@ public class Lexer {
      * @return {@code true} if more tokens are present, otherwise {@code false}
      */
     public boolean hasNext() {
-        return current.getType() != TokenType.END_OF_FILE;
+        return current.type() != TokenType.END_OF_FILE;
     }
     
     private Token tokenize() throws TokenizerException {
@@ -82,10 +93,7 @@ public class Lexer {
         if(reader.matchesString("/*", true)) skipTo("*/");
         
         // Reached end of file
-        if(reader.current().isEOF()) {
-            if(!bracketStack.isEmpty()) throw new ParseException("Dangling open brace", bracketStack.peek().getPosition());
-            return new Token(reader.consume().toString(), TokenType.END_OF_FILE, position);
-        }
+        if(reader.current().isEOF()) return new Token(reader.consume().toString(), TokenType.END_OF_FILE, position);
         
         // Check if operator token
         if(reader.matchesString("==", true))
@@ -140,21 +148,15 @@ public class Lexer {
             return new Token(reader.consume().toString(), TokenType.OPEN_PAREN, position);
         if(reader.current().is(')'))
             return new Token(reader.consume().toString(), TokenType.CLOSE_PAREN, position);
+        if(reader.current().is(':'))
+            return new Token(reader.consume().toString(), TokenType.COLON, position);
         if(reader.current().is(';'))
             return new Token(reader.consume().toString(), TokenType.STATEMENT_END, position);
         if(reader.current().is(','))
             return new Token(reader.consume().toString(), TokenType.SEPARATOR, position);
         
-        if(reader.current().is('{')) {
-            Token token = new Token(reader.consume().toString(), TokenType.BLOCK_BEGIN, position);
-            bracketStack.push(token);
-            return token;
-        }
-        if(reader.current().is('}')) {
-            if(bracketStack.isEmpty()) throw new ParseException("Dangling close brace", position);
-            bracketStack.pop();
-            return new Token(reader.consume().toString(), TokenType.BLOCK_END, position);
-        }
+        if(reader.current().is('{')) return new Token(reader.consume().toString(), TokenType.BLOCK_BEGIN, position);
+        if(reader.current().is('}')) return new Token(reader.consume().toString(), TokenType.BLOCK_END, position);
         
         if(reader.current().is('='))
             return new Token(reader.consume().toString(), TokenType.ASSIGNMENT, position);
@@ -196,6 +198,9 @@ public class Lexer {
             return new Token(tokenString, TokenType.TYPE_BOOLEAN, position);
         if(tokenString.equals("void"))
             return new Token(tokenString, TokenType.TYPE_VOID, position);
+        
+        if(tokenString.equals("fun"))
+            return new Token(tokenString, TokenType.FUNCTION, position);
         
         if(tokenString.equals("if"))
             return new Token(tokenString, TokenType.IF_STATEMENT, position);

@@ -9,8 +9,9 @@ package com.dfsek.terra.addon.terrascript.check;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.Type;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.api.Platform;
 
@@ -35,9 +36,9 @@ public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     }
     
     @Override
-    public Expression.ReturnType getArgument(int position) {
+    public Type getArgument(int position) {
         return switch(position) {
-            case 0, 1, 2 -> Expression.ReturnType.NUMBER;
+            case 0, 1, 2 -> Type.NUMBER;
             default -> null;
         };
     }

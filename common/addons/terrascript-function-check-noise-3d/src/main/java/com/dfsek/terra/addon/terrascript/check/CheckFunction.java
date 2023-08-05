@@ -7,15 +7,17 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
+import com.dfsek.terra.addons.terrascript.Type;
+
 import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
-import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
-import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.ImplementationArguments;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.Scope;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.Function;
+import com.dfsek.terra.addons.terrascript.legacy.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
@@ -61,8 +63,8 @@ public class CheckFunction implements Function<String> {
     }
     
     @Override
-    public ReturnType returnType() {
-        return ReturnType.STRING;
+    public Type returnType() {
+        return Type.STRING;
     }
     
     private String apply(Vector3 vector, WritableWorld world) {

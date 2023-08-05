@@ -1,6 +1,6 @@
-str myFunction(str functionString, num functionNumber) {
+fun myFunction(functionString: str, functionNumber: num): str {
     test(functionString, functionNumber);
-    void nestedFunction() {
+    fun nestedFunction() {
         test("Hello from nested function", 69);
     }
     nestedFunction();
@@ -11,7 +11,7 @@ str functionResult = myFunction("Hello from myFunction", 535);
 
 test(functionResult, 58);
 
-void noReturn() test("Single statement function", 42);
+fun noReturn() test("Single statement function", 42);
 
 noReturn();
 

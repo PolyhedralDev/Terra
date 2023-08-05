@@ -7,44 +7,65 @@
 
 package com.dfsek.terra.addons.terrascript.lexer;
 
+import java.util.Objects;
+
+import com.dfsek.terra.addons.terrascript.parser.BinaryOperator;
+import com.dfsek.terra.addons.terrascript.parser.UnaryOperator;
+
+
 public class Token {
-    private final String content;
+    private final String lexeme;
     private final TokenType type;
     private final SourcePosition start;
     
-    public Token(String content, TokenType type, SourcePosition start) {
-        this.content = content;
+    public Token(String lexeme, TokenType type, SourcePosition start) {
+        this.lexeme = type == TokenType.END_OF_FILE ? "END OF FILE" : lexeme;
         this.type = type;
         this.start = start;
     }
     
     @Override
-    public String toString() {
-        return type + ": '" + content + "'";
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Token token = (Token) o;
+        return Objects.equals(lexeme, token.lexeme) && type == token.type && Objects.equals(start, token.start);
     }
     
-    public TokenType getType() {
+    @Override
+    public int hashCode() {
+        return Objects.hash(lexeme, type, start);
+    }
+    
+    @Override
+    public String toString() {
+        return type + ": '" + lexeme + "'";
+    }
+    
+    public TokenType type() {
         return type;
     }
     
-    public String getContent() {
-        return content;
+    public String lexeme() {
+        return lexeme;
     }
     
-    public SourcePosition getPosition() {
+    public SourcePosition position() {
         return start;
     }
     
-    public boolean isConstant() {
-        return this.type.equals(TokenType.NUMBER) || this.type.equals(TokenType.STRING) || this.type.equals(TokenType.BOOLEAN);
-    }
-    
-    public boolean isType(TokenType type) {
-        return type == getType();
-    }
-    
     public boolean isType(TokenType... types) {
-        for (TokenType t : types) if (isType(t)) return true;
+        for(TokenType t : types) if(t == type) return true;
+        return false;
+    }
+    
+    public boolean isOperator(BinaryOperator... operators) {
+        for(BinaryOperator o : operators) if(o.tokenType == type) return true;
+        return false;
+    }
+    
+    public boolean isOperator(UnaryOperator... operators) {
+        for(UnaryOperator o : operators) if(o.tokenType == type) return true;
         return false;
     }
     
@@ -210,6 +231,11 @@ public class Token {
          * Void type declaration
          */
         TYPE_VOID,
+        /**
+         * Function declaration
+         */
+        FUNCTION,
+        COLON,
         /**
          * If statement declaration
          */

@@ -6,15 +6,16 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.parser.lang.Expression.ReturnType;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
-import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.Function;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.Expression;
+import com.dfsek.terra.addons.terrascript.Type;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.constants.NumericConstant;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.constants.StringConstant;
+import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 
 
-public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number>> {
+public class SamplerFunctionBuilder implements FunctionBuilder<Function<Number>> {
     private final Map<String, DimensionApplicableNoiseSampler> samplers2d;
     private final Map<String, DimensionApplicableNoiseSampler> samplers3d;
     
@@ -33,8 +34,8 @@ public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.a
     
     @SuppressWarnings("unchecked")
     @Override
-    public com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number> build(List<Expression<?>> argumentList,
-                                                                                           SourcePosition position) {
+    public Function<Number> build(List<Expression<?>> argumentList,
+                                  SourcePosition position) {
         Expression<String> arg = (Expression<String>) argumentList.get(0);
         
         if(argumentList.size() == 3) { // 2D
@@ -87,10 +88,10 @@ public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.a
     }
     
     @Override
-    public ReturnType getArgument(int position) {
+    public Type getArgument(int position) {
         return switch(position) {
-            case 0 -> ReturnType.STRING;
-            case 1, 2, 3 -> ReturnType.NUMBER;
+            case 0 -> Type.STRING;
+            case 1, 2, 3 -> Type.NUMBER;
             default -> null;
         };
     }
