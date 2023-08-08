@@ -4,6 +4,7 @@ version = version("1.1.0")
 
 dependencies {
     api("commons-io:commons-io:2.7")
+    api("org.ow2.asm:asm:9.5")
     compileOnlyApi(project(":common:addons:manifest-addon-loader"))
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
     testImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
