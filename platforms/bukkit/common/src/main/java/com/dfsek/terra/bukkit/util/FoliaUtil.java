@@ -16,6 +16,9 @@
  */
 
 package com.dfsek.terra.bukkit.util;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
 
 public class FoliaUtil {
     private static boolean isFolia() {
@@ -36,7 +39,7 @@ public class FoliaUtil {
     @SuppressWarnings("deprecation")
     public static void runGlobalTask(Plugin plugin, Runnable task) {
         if (isFolia()) {
-            Bukkit.getGlobalRegionScheduler().runTask(plugin, task);
+            Bukkit.getGlobalRegionScheduler().run(plugin, thisTask -> task.run());
         } else {
             Bukkit.getScheduler().runTask(plugin, task);
         }
@@ -51,7 +54,7 @@ public class FoliaUtil {
     @SuppressWarnings("deprecation")
     public static void runGlobalTaskDelayed(Plugin plugin, Runnable task, long delay) {
         if (isFolia()) {
-            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, task, delay);
+            Bukkit.getGlobalRegionScheduler().runDelayed(plugin, thisTask -> task.run(), delay);
         } else {
             Bukkit.getScheduler().scheduleAsyncDelayedTask(plugin, task, delay);
         }

@@ -42,7 +42,7 @@ import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-
+import com.dfsek.terra.bukkit.util.FoliaUtil;
 
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);

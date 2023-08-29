@@ -40,6 +40,7 @@ import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.bukkit.util.FoliaUtil;
 
 
 public class PlatformImpl extends AbstractPlatform {
