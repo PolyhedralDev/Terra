@@ -60,7 +60,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitCallExpr(Call expr) {
-        expr.setEnvironment(currentScope);
+        expr.setSymbol(currentScope.getFunction(expr.identifier));
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }
@@ -76,7 +76,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         } catch(SymbolTypeMismatchException e) {
             errorHandler.add(new ParseException("Identifier '" + id + "' is not defined as a variable", expr.position));
         }
-        expr.setEnvironment(currentScope);
+        expr.setSymbol(currentScope.getVariable(expr.identifier));
         return null;
     }
     
@@ -136,7 +136,6 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
             errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
                                                                     stmt.position));
         }
-        stmt.setEnvironment(currentScope);
         return null;
     }
     

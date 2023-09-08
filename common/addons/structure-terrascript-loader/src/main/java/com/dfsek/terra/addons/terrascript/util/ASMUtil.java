@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.terrascript.util;
 
+import com.dfsek.terra.addons.terrascript.Type;
+
+
 public class ASMUtil {
     
     /**
@@ -9,5 +12,9 @@ public class ASMUtil {
      */
     public static String dynamicName(Class<?> clazz) {
         return clazz.getCanonicalName().replace('.', '/');
+    }
+    
+    public static org.objectweb.asm.Type tsTypeToAsmType(Type type) {
+        return org.objectweb.asm.Type.getType((Class<?>) type.javaType());
     }
 }

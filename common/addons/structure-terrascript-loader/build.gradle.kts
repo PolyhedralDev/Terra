@@ -1,10 +1,12 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import java.util.*
 
 version = version("1.1.0")
 
 dependencies {
     api("commons-io:commons-io:2.7")
     api("org.ow2.asm:asm:9.5")
+    api("org.ow2.asm:asm-commons:9.5")
     compileOnlyApi(project(":common:addons:manifest-addon-loader"))
     implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
     testImplementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
@@ -18,44 +20,38 @@ tasks.named<ShadowJar>("shadowJar") {
 val astSourceSet = buildDir.resolve("generated/ast")
 val astPackage = astSourceSet.resolve("com/dfsek/terra/addons/terrascript/ast")
 
+data class ASTClass(val name: String, val imports: List<String>, val nodes: List<ASTNode>)
+
+data class ASTNode(val name: String, val constructorFields: List<Pair<String, String>>, val mutableFields: List<Pair<String, String>> = emptyList())
+
 // Auto generate AST classes rather than writing them by hand
 tasks.register("genTerrascriptAstClasses") {
+
+
     val packageName = astPackage.toRelativeString(astSourceSet).replace('/', '.')
-    fun generateClass(name: String, imports: List<String>, nodes: List<Pair<String, List<String>>>) {
+    fun generateClass(clazz: ASTClass) {
         val src = StringBuilder()
         src.appendLine("package $packageName;\n");
-        for (imprt in imports) src.appendLine("import $imprt;")
+        for (imprt in clazz.imports) src.appendLine("import $imprt;")
         src.appendLine("""
         import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
-        import com.dfsek.terra.addons.terrascript.Environment;
         
         /**
          * Auto-generated class via genTerrascriptAstClasses gradle task
          */
-        public abstract class $name {
+        public abstract class ${clazz.name} {
         
             public final SourcePosition position;
-            private Environment environment;
             
-            public $name(SourcePosition position) {
+            public ${clazz.name}(SourcePosition position) {
                 this.position = position;
-            }
-            
-            public Environment getEnvironment() {
-                if (this.environment == null) throw new RuntimeException("Compilation bug! environment has not been set yet for AST node");
-                return environment;
-            }
-            
-            public void setEnvironment(Environment environment) {
-                if (this.environment != null) throw new RuntimeException("Compilation bug! environment has already been set for AST node and cannot be changed");
-                this.environment = environment;
             }
         
             public interface Visitor<R> {
                 
         """.trimIndent())
-        for (node in nodes) {
-            src.appendLine("        R visit${node.first}$name(${node.first} ${name.toLowerCase()});")
+        for (node in clazz.nodes) {
+            src.appendLine("        R visit${node.name}${clazz.name}(${node.name} ${clazz.name.toLowerCase()});")
         }
 
         src.appendLine("""
@@ -65,79 +61,98 @@ tasks.register("genTerrascriptAstClasses") {
             |    public abstract <R> R accept(Visitor<R> visitor);
         """.trimMargin())
 
-        for (node in nodes) {
+        for (node in clazz.nodes) {
             src.appendLine()
             // Inner class declaration
-            src.appendLine("    public static class ${node.first} extends $name {\n")
+            src.appendLine("    public static class ${node.name} extends ${clazz.name} {\n")
 
             // Add fields
-            for (field in node.second) {
-                src.appendLine("        public final $field;")
+            for (field in node.constructorFields) {
+                src.appendLine("        public final ${field.second} ${field.first};")
+            }
+            for (field in node.mutableFields) {
+                src.appendLine("        private ${field.second} ${field.first};")
             }
             src.appendLine()
 
             // Add constructor
-            src.append("        public ${node.first}(")
-            for (field in node.second)
-                src.append("$field, ")
+            src.append("        public ${node.name}(")
+            for (field in node.constructorFields)
+                src.append("${field.second} ${field.first}, ")
             src.appendLine("SourcePosition position) {\n            super(position);")
-            for (field in node.second) {
-                val fieldName = field.split(' ').last()
-                src.appendLine("            this.$fieldName = $fieldName;")
+            for (field in node.constructorFields) {
+                src.appendLine("            this.${field.first} = ${field.first};")
+            }
+            src.appendLine("        }")
+
+            // Add getters and setters for mutable fields
+            for (field in node.mutableFields) {
+                src.appendLine("""
+                    |        
+                    |        public void set${field.first.capitalize()}(${field.second} value) {
+                    |            this.${field.first} = value;
+                    |        }
+                    |        
+                    |        public ${field.second} get${field.first.capitalize()}() {
+                    |            if (this.${field.first} == null) throw new RuntimeException("Compilation bug! Field ${field.first} has not been set yet");
+                    |            return this.${field.first};
+                    |        }
+                """.trimMargin())
             }
 
             src.appendLine("""
-                |        }
                 |        
                 |        @Override
                 |        public <R> R accept(Visitor<R> visitor) {
-                |            return visitor.visit${node.first}$name(this);
+                |            return visitor.visit${node.name}${clazz.name}(this);
                 |        }
                 |    }
             """.trimMargin())
         }
         src.appendLine("}")
-        val outputFile = astPackage.resolve("$name.java")
+        val outputFile = astPackage.resolve("${clazz.name}.java")
         outputFile.writeText(src.toString())
     }
 
     doLast {
         astSourceSet.deleteRecursively()
         astPackage.mkdirs()
-        generateClass("Expr", listOf(
+        generateClass(ASTClass("Expr", listOf(
             "com.dfsek.terra.addons.terrascript.Type",
             "com.dfsek.terra.addons.terrascript.parser.UnaryOperator",
             "com.dfsek.terra.addons.terrascript.parser.BinaryOperator",
+            "com.dfsek.terra.addons.terrascript.Environment.Symbol",
             "java.util.List",
         ),
         listOf(
-            Pair("Binary", listOf("Expr left", "BinaryOperator operator", "Expr right",)),
-            Pair("Grouping", listOf("Expr expression")),
-            Pair("Literal", listOf("Object value", "Type type")),
-            Pair("Unary", listOf("UnaryOperator operator", "Expr operand")),
-            Pair("Call", listOf("String identifier", "List<Expr> arguments")),
-            Pair("Variable", listOf("String identifier")),
-            Pair("Assignment", listOf("Variable lValue", "Expr rValue")),
-            Pair("Void", listOf()),
-        ))
-        generateClass("Stmt", listOf(
+            ASTNode("Binary", listOf("left" to "Expr", "operator" to "BinaryOperator", "right" to "Expr",), listOf("type" to "Type")),
+            ASTNode("Grouping", listOf("expression" to "Expr")),
+            ASTNode("Literal", listOf("value" to "Object", "type" to "Type")),
+            ASTNode("Unary", listOf("operator" to "UnaryOperator", "operand" to "Expr")),
+            ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<Expr>"), listOf("symbol" to "Symbol.Function")),
+            ASTNode("Variable", listOf("identifier" to "String"), listOf("symbol" to "Symbol.Variable")),
+            ASTNode("Assignment", listOf("lValue" to "Variable", "rValue" to "Expr")),
+            ASTNode("Void", listOf()),
+        )))
+        generateClass(ASTClass("Stmt", listOf(
             "com.dfsek.terra.addons.terrascript.Type",
             "com.dfsek.terra.api.util.generic.pair.Pair",
+            "com.dfsek.terra.addons.terrascript.Environment.Symbol",
             "java.util.List",
         ),
         listOf(
-            Pair("Expression", listOf("Expr expression")),
-            Pair("Block", listOf("List<Stmt> statements")),
-            Pair("FunctionDeclaration", listOf("String identifier", "List<Pair<String, Type>> parameters", "Type type", "Block body")),
-            Pair("VariableDeclaration", listOf("Type type", "String identifier", "Expr value")),
-            Pair("Return", listOf("Expr value")),
-            Pair("If", listOf("Expr condition", "Block trueBody", "List<Pair<Expr, Block>> elseIfClauses", "Block elseBody")),
-            Pair("For", listOf("Stmt initializer", "Expr condition", "Expr incrementer", "Block body")),
-            Pair("While", listOf("Expr condition", "Block body")),
-            Pair("NoOp", listOf()),
-            Pair("Break", listOf()),
-            Pair("Continue", listOf()),
-        ))
+            ASTNode("Expression", listOf("expression" to "Expr")),
+            ASTNode("Block", listOf("statements" to "List<Stmt>")),
+            ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "type" to "Type", "body" to "Block"), listOf("symbol" to "Symbol.Function")),
+            ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "Expr")),
+            ASTNode("Return", listOf("value" to "Expr"), listOf("type" to "Type")),
+            ASTNode("If", listOf("condition" to "Expr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<Expr, Block>>", "elseBody" to "Block")),
+            ASTNode("For", listOf("initializer" to "Stmt", "condition" to "Expr", "incrementer" to "Expr", "body" to "Block")),
+            ASTNode("While", listOf("condition" to "Expr", "body" to "Block")),
+            ASTNode("NoOp", listOf()),
+            ASTNode("Break", listOf()),
+            ASTNode("Continue", listOf()),
+        )))
     }
 }
 

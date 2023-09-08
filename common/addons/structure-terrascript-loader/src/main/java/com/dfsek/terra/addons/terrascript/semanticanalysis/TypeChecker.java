@@ -51,8 +51,14 @@ public class TypeChecker implements Visitor<Type>, Stmt.Visitor<Type> {
                 yield Type.BOOLEAN;
             }
             case ADD -> {
-                if(left == Type.NUMBER && right == Type.NUMBER) yield Type.NUMBER;
-                if(left == Type.STRING || right == Type.STRING) yield Type.STRING;
+                if(left == Type.NUMBER && right == Type.NUMBER) {
+                    expr.setType(Type.NUMBER);
+                    yield Type.NUMBER;
+                }
+                if(left == Type.STRING || right == Type.STRING) {
+                    expr.setType(Type.STRING);
+                    yield Type.STRING;
+                }
                 throw new RuntimeException("Addition operands must be either both numbers, or one of type string");
             }
             case SUBTRACT, MULTIPLY, DIVIDE, MODULO -> {
@@ -92,10 +98,10 @@ public class TypeChecker implements Visitor<Type>, Stmt.Visitor<Type> {
     public Type visitCallExpr(Call expr) {
         String id = expr.identifier;
         
-        Environment.Symbol.Function signature = expr.getEnvironment().getFunction(id);
+        Environment.Symbol.Function signature = expr.getSymbol();
         
         List<Type> argumentTypes = expr.arguments.stream().map(a -> a.accept(this)).toList();
-        List<Pair<String, Type>> parameters = signature.parameters;
+        List<Type> parameters = signature.parameters.stream().map(Pair::getRight).toList();
         
         if(argumentTypes.size() != parameters.size())
             errorHandler.add(new ParseException(
@@ -103,7 +109,7 @@ public class TypeChecker implements Visitor<Type>, Stmt.Visitor<Type> {
                     " arguments", expr.position));
         
         for(int i = 0; i < parameters.size(); i++) {
-            Type expectedType = parameters.get(i).getRight();
+            Type expectedType = parameters.get(i);
             Type providedType = argumentTypes.get(i);
             if(expectedType != providedType)
                 errorHandler.add(new InvalidTypeException(
@@ -116,7 +122,7 @@ public class TypeChecker implements Visitor<Type>, Stmt.Visitor<Type> {
     
     @Override
     public Type visitVariableExpr(Variable expr) {
-        return expr.getEnvironment().getVariable(expr.identifier).type;
+        return expr.getSymbol().type;
     }
     
     @Override
@@ -182,7 +188,7 @@ public class TypeChecker implements Visitor<Type>, Stmt.Visitor<Type> {
     
     @Override
     public Type visitReturnStmt(Stmt.Return stmt) {
-        stmt.value.accept(this);
+        stmt.setType(stmt.value.accept(this));
         return Type.VOID;
     }
     

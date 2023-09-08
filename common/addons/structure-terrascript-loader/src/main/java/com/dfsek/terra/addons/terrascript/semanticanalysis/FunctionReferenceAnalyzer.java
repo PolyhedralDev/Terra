@@ -63,7 +63,7 @@ public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visit
     public Void visitCallExpr(Call expr) {
         String id = expr.identifier;
         try {
-            expr.getEnvironment().getFunction(id);
+            expr.getSymbol();
         } catch(NonexistentSymbolException e) {
             errorHandler.add(
                     new UndefinedReferenceException("No function by the name '" + id + "' is defined in this scope", expr.position));
