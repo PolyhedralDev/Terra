@@ -46,6 +46,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_EQUALS;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.BOOL_FALSE;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_GREATER_EQUALS;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_GREATER_THAN;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_LESS_EQUALS;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_LESS_THAN;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_NOT_EQUALS;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.BOOL_TRUE;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.INTEGERS_EQUAL;
+import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.INTEGERS_NOT_EQUAL;
 import static com.dfsek.terra.addons.terrascript.util.ASMUtil.dynamicName;
 
 public class TerraScriptClassGenerator {
@@ -162,7 +172,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitBinaryTypedExpr(Binary expr) {
             switch(expr.operator) {
-                case EQUALS, NOT_EQUALS, BOOLEAN_AND, BOOLEAN_OR, GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> pushComparisonResult(expr);
+                case EQUALS, NOT_EQUALS, BOOLEAN_AND, BOOLEAN_OR, GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> pushComparisonBool(expr);
                 case ADD -> {
                     pushBinaryOperands(expr);
                     switch(expr.type) {
@@ -175,7 +185,6 @@ public class TerraScriptClassGenerator {
                 case SUBTRACT -> binaryInsn(expr, Opcodes.DSUB);
                 case MULTIPLY -> binaryInsn(expr, Opcodes.DMUL);
                 case DIVIDE -> binaryInsn(expr, Opcodes.DDIV);
-//                case MODULO ->
                 default -> throw new RuntimeException("Unhandled binary operator " + expr.operator);
             }
             return null;
@@ -190,7 +199,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitLiteralTypedExpr(Literal expr) {
             switch (expr.type) {
-                case BOOLEAN -> method.visitInsn((boolean) expr.value ? Opcodes.ICONST_1 : Opcodes.ICONST_0);
+                case BOOLEAN -> { if ((boolean) expr.value) pushTrue(); else pushFalse(); }
                 case NUMBER, STRING -> method.visitLdcInsn(expr.value);
             }
             return null;
@@ -265,6 +274,11 @@ public class TerraScriptClassGenerator {
             return null;
         }
         
+        /**
+         * Writes function as a private static method of the current class
+         * @param stmt
+         * @return
+         */
         @Override
         public Void visitFunctionDeclarationTypedStmt(FunctionDeclaration stmt) {
             List<Type> parameterTypes = stmt.parameters.stream().map(Pair::getRight).toList();
@@ -281,7 +295,7 @@ public class TerraScriptClassGenerator {
             int lvidx = 0;
             for (Pair<String, Type> parameter : stmt.parameters) {
                 funcGenerator.lvTable.put(parameter.getLeft(), lvidx);
-                lvidx += switch(parameter.getRight()) {
+                lvidx += switch(parameter.getRight()) { // Increment by how many slots data type takes
                     case NUMBER -> 2;
                     case STRING, BOOLEAN -> 1;
                     default -> throw new RuntimeException("Unable to register local variable index for parameter, unknown parameter type '" + parameter.getRight() + "'");
@@ -332,7 +346,7 @@ public class TerraScriptClassGenerator {
                 conditionalStmt(elseIfClause.getLeft(), elseIfClause.getRight(), endIf);
             }
             stmt.elseBody.ifPresent(b -> b.accept(this));
-            method.visitLabel(endIf);
+            label(endIf);
             return null;
         }
         
@@ -343,15 +357,15 @@ public class TerraScriptClassGenerator {
             Label loopEnd = new Label();
             
             stmt.initializer.accept(this);
-            method.visitJumpInsn(Opcodes.GOTO, loopBody); // Skip over incrementer on first loop
+            jump(loopBody); // Skip over incrementer on first loop
             
-            method.visitLabel(loopStart);
+            label(loopStart);
             stmt.incrementer.accept(this);
-            method.visitLabel(loopBody);
+            label(loopBody);
             loopStack.push(Pair.of(loopStart, loopEnd));
             conditionalStmt(stmt.condition, stmt.body, loopStart);
             loopStack.pop();
-            method.visitLabel(loopEnd);
+            label(loopEnd);
             return null;
         }
         
@@ -360,11 +374,11 @@ public class TerraScriptClassGenerator {
             Label loopStart = new Label();
             Label loopEnd = new Label();
             
-            method.visitLabel(loopStart);
+            label(loopStart);
             loopStack.push(Pair.of(loopStart, loopEnd));
             conditionalStmt(stmt.condition, stmt.body, loopStart);
             loopStack.pop();
-            method.visitLabel(loopEnd);
+            label(loopEnd);
             return null;
         }
         
@@ -375,13 +389,13 @@ public class TerraScriptClassGenerator {
         
         @Override
         public Void visitBreakTypedStmt(Break stmt) {
-            method.visitJumpInsn(Opcodes.GOTO, loopStack.getFirst().getRight());
+            jump(loopStack.getFirst().getRight());
             return null;
         }
         
         @Override
         public Void visitContinueTypedStmt(Continue stmt) {
-            method.visitJumpInsn(Opcodes.GOTO, loopStack.getFirst().getLeft());
+            jump(loopStack.getFirst().getLeft());
             return null;
         }
         
@@ -402,15 +416,15 @@ public class TerraScriptClassGenerator {
         private void invertBool() {
             Label invertToFalse = new Label();
             Label finished = new Label();
-            method.visitJumpInsn(Opcodes.IFNE, invertToFalse);
+            jumpIf(BOOL_TRUE, invertToFalse);
             
-            method.visitInsn(Opcodes.ICONST_1);
-            method.visitJumpInsn(Opcodes.GOTO, finished);
+            pushFalse();
+            jump(finished);
             
-            method.visitLabel(invertToFalse);
-            method.visitInsn(Opcodes.ICONST_0);
+            label(invertToFalse);
+            pushFalse();
             
-            method.visitLabel(finished);
+            label(finished);
         }
         
         private void pushBinaryOperands(Binary expr) {
@@ -427,11 +441,11 @@ public class TerraScriptClassGenerator {
          * Pushes boolean on to the stack based on comparison result
          * @param condition
          */
-        private void pushComparisonResult(TypedExpr condition) {
+        private void pushComparisonBool(TypedExpr condition) {
             Label trueFinished = new Label();
-            conditionalRunnable(condition, () -> method.visitInsn(Opcodes.ICONST_1), trueFinished);
-            method.visitInsn(Opcodes.ICONST_0);
-            method.visitLabel(trueFinished);
+            conditionalRunnable(condition, this::pushTrue, trueFinished);
+            pushFalse();
+            label(trueFinished);
         }
         
         /**
@@ -444,57 +458,77 @@ public class TerraScriptClassGenerator {
             conditionalRunnable(condition, () -> stmt.accept(this), exit);
         }
         
-        private void conditionalRunnable(TypedExpr condition, Runnable trueSection, Label trueFinished) {
+        private void pushTrue() {
+            method.visitInsn(Opcodes.ICONST_1);
+        }
+        
+        private void pushFalse() {
+            method.visitInsn(Opcodes.ICONST_0);
+        }
+        
+        private void jumpIf(OpcodeAlias insn, Label label) {
+            method.visitJumpInsn(insn.opcode, label);
+        }
+        
+        private void jump(Label label) {
+            method.visitJumpInsn(Opcodes.GOTO, label);
+        }
+        
+        private void label(Label label) {
+            method.visitLabel(label);
+        }
+        
+        private void conditionalRunnable(TypedExpr condition, Runnable trueBlock, Label trueFinished) {
             Label exit = new Label(); // If the first conditional is false, jump over statement and don't execute it
             if (condition instanceof Binary binaryCondition) {
                 switch(binaryCondition.operator) {
                     case BOOLEAN_AND -> {
                         // Operands assumed booleans
                         binaryCondition.left.accept(this);
-                        method.visitJumpInsn(Opcodes.IFEQ, exit); // If left is false, short circuit, don't evaluate right
+                        jumpIf(BOOL_FALSE, exit); // If left is false, short circuit, don't evaluate right
                         binaryCondition.right.accept(this);
-                        method.visitJumpInsn(Opcodes.IFEQ, exit);
+                        jumpIf(BOOL_FALSE, exit);
                     }
                     case BOOLEAN_OR -> {
                         Label skipRight = new Label();
                         // Operands assumed booleans
                         binaryCondition.left.accept(this);
-                        method.visitJumpInsn(Opcodes.IFNE, skipRight); // If left is true, skip evaluating right
+                        jumpIf(BOOL_TRUE, skipRight);
                         binaryCondition.right.accept(this);
-                        method.visitJumpInsn(Opcodes.IFEQ, exit);
-                        method.visitLabel(skipRight);
+                        jumpIf(BOOL_FALSE, exit);
+                        label(skipRight);
                     }
                     case EQUALS -> {
                         if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
                             pushBinaryOperands(binaryCondition);
-                            method.visitJumpInsn(Opcodes.IF_ICMPNE, exit);
+                            jumpIf(INTEGERS_NOT_EQUAL, exit);
                             
                         } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
                             pushBinaryOperands(binaryCondition);
                             method.visitInsn(Opcodes.DCMPG);
-                            method.visitJumpInsn(Opcodes.IFNE, exit);
+                            jumpIf(CMP_NOT_EQUALS, exit);
                             
                         } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) {
                             pushBinaryOperands(binaryCondition);
                             method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
-                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                            jumpIf(BOOL_FALSE, exit);
                         } else throw new CompilerBugException();
                     }
                     case NOT_EQUALS -> {
                         if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
                             pushBinaryOperands(binaryCondition);
-                            method.visitJumpInsn(Opcodes.IF_ICMPEQ, exit);
+                            jumpIf(INTEGERS_EQUAL, exit);
                             
                         } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
                             pushBinaryOperands(binaryCondition);
                             method.visitInsn(Opcodes.DCMPG);
-                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                            jumpIf(CMP_EQUALS, exit);
                             
                         } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) { // Operands assumed references
                             pushBinaryOperands(binaryCondition);
                             method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
                             invertBool();
-                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                            jumpIf(CMP_EQUALS, exit);
                         } else throw new CompilerBugException();
                     }
                     case GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> {
@@ -507,11 +541,11 @@ public class TerraScriptClassGenerator {
                             default -> throw new IllegalStateException();
                         });
                         
-                        method.visitJumpInsn(switch(binaryCondition.operator) {
-                            case GREATER -> Opcodes.IFLE;
-                            case GREATER_EQUALS -> Opcodes.IFLT;
-                            case LESS -> Opcodes.IFGE;
-                            case LESS_EQUALS -> Opcodes.IFGT;
+                        jumpIf(switch(binaryCondition.operator) {
+                            case GREATER -> CMP_LESS_EQUALS;
+                            case GREATER_EQUALS -> CMP_LESS_THAN;
+                            case LESS -> CMP_GREATER_EQUALS;
+                            case LESS_EQUALS -> CMP_GREATER_THAN;
                             default -> throw new IllegalStateException();
                         }, exit);
                     }
@@ -520,11 +554,11 @@ public class TerraScriptClassGenerator {
             } else {
                 // Assume condition returns bool
                 condition.accept(this);
-                method.visitJumpInsn(Opcodes.IFEQ, exit);
+                jumpIf(BOOL_FALSE, exit);
             }
-            trueSection.run();
-            method.visitJumpInsn(Opcodes.GOTO, trueFinished); // Jump to end of statement after execution
-            method.visitLabel(exit);
+            trueBlock.run();
+            jump(trueFinished); // Jump to end of statement after execution
+            label(exit);
         }
         
         private String getFunctionDescriptor(List<Type> parameters, Type returnType) {
