@@ -60,7 +60,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitCallExpr(Call expr) {
-        expr.setSymbol(currentScope.getFunction(expr.identifier));
+        expr.setEnvironment(currentScope);
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }
@@ -69,14 +69,13 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     public Void visitVariableExpr(Variable expr) {
         String id = expr.identifier;
         try {
-            currentScope.getVariable(id); // Ensure variable has been declared in current scope
+            expr.setSymbol(currentScope.getVariable(id));
         } catch(NonexistentSymbolException e) {
             errorHandler.add(
                     new UndefinedReferenceException("No variable by the name '" + id + "' is defined in this scope", expr.position));
         } catch(SymbolTypeMismatchException e) {
             errorHandler.add(new ParseException("Identifier '" + id + "' is not defined as a variable", expr.position));
         }
-        expr.setSymbol(currentScope.getVariable(expr.identifier));
         return null;
     }
     
@@ -120,7 +119,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         stmt.body.accept(this);
         currentScope = currentScope.outer();
         try {
-            currentScope.put(stmt.identifier, new Environment.Symbol.Function(stmt.type, stmt.parameters));
+            currentScope.put(stmt.identifier, new Environment.Symbol.Function(stmt.returnType, stmt.parameters));
         } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
             errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
                                                                     stmt.position));
@@ -130,6 +129,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
+        stmt.value.accept(this);
         try {
             currentScope.put(stmt.identifier, new Environment.Symbol.Variable(stmt.type));
         } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
@@ -153,9 +153,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
             clause.getLeft().accept(this);
             clause.getRight().accept(this);
         }
-        if(stmt.elseBody != null) {
-            stmt.elseBody.accept(this);
-        }
+        stmt.elseBody.ifPresent(b -> b.accept(this));
         return null;
     }
     

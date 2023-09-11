@@ -387,8 +387,10 @@ public class Parser {
     
     private Expression<?> parseVariableDeclaration(Scope.ScopeBuilder scopeBuilder, Token type, Token identifier) {
         lexer.consume("Expected '=' after identifier '" + identifier.lexeme() + "' for variable declaration", TokenType.ASSIGNMENT);
-        
-        if(!type.isVariableDeclaration()) throw new ParseException("Expected type specification at beginning of variable declaration",
+
+        if(!(type.isType(TokenType.TYPE_STRING)
+                || type.isType(TokenType.TYPE_BOOLEAN)
+                || type.isType(TokenType.TYPE_NUMBER))) throw new ParseException("Expected type specification at beginning of variable declaration",
                                                                    type.position());
         
         if(scopeBuilder.containsVariable(identifier.lexeme()))
@@ -514,8 +516,10 @@ public class Parser {
             case STATEMENT_END -> Expression.NOOP;
             default -> throw new ParseException("Unexpected token '" + token.lexeme() + "' while parsing statement", token.position());
         };
-        if(!token.isControlStructure() && expression != Expression.NOOP) lexer.consume("Expected ';' at end of statement",
-                                                                                       TokenType.STATEMENT_END);
+        if(!(token.isType(TokenType.IF_STATEMENT)
+             || token.isType(TokenType.WHILE_LOOP)
+             || token.isType(TokenType.FOR_LOOP)) && expression != Expression.NOOP) lexer.consume("Expected ';' at end of statement",
+                                                                                                       TokenType.STATEMENT_END);
         return expression;
     }
     

@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import java.util.*
 
 version = version("1.1.0")
 
@@ -20,9 +19,19 @@ tasks.named<ShadowJar>("shadowJar") {
 val astSourceSet = buildDir.resolve("generated/ast")
 val astPackage = astSourceSet.resolve("com/dfsek/terra/addons/terrascript/ast")
 
-data class ASTClass(val name: String, val imports: List<String>, val nodes: List<ASTNode>)
+data class ASTClass(
+        val name: String,
+        val imports: List<String>,
+        val nodes: List<ASTNode>,
+        val constructorFields: List<Pair<String, String>> = emptyList(),
+)
 
-data class ASTNode(val name: String, val constructorFields: List<Pair<String, String>>, val mutableFields: List<Pair<String, String>> = emptyList())
+data class ASTNode(
+        val name: String,
+        val constructorFields: List<Pair<String, String>>,
+        val mutableFields: List<Pair<String, String>> = emptyList() // TODO - Remove mutability from AST nodes
+
+)
 
 // Auto generate AST classes rather than writing them by hand
 tasks.register("genTerrascriptAstClasses") {
@@ -34,22 +43,33 @@ tasks.register("genTerrascriptAstClasses") {
         src.appendLine("package $packageName;\n");
         for (imprt in clazz.imports) src.appendLine("import $imprt;")
         src.appendLine("""
-        import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
         
         /**
          * Auto-generated class via genTerrascriptAstClasses gradle task
          */
         public abstract class ${clazz.name} {
         
-            public final SourcePosition position;
-            
-            public ${clazz.name}(SourcePosition position) {
-                this.position = position;
-            }
-        
-            public interface Visitor<R> {
-                
         """.trimIndent())
+
+        for (field in clazz.constructorFields) {
+            src.appendLine("    public final ${field.second} ${field.first};")
+        }
+
+        src.appendLine("""
+        | 
+        |    public ${clazz.name}(${clazz.constructorFields.joinToString { "${it.second} ${it.first}" }}) {
+        """.trimMargin())
+
+        for (field in clazz.constructorFields) {
+            src.appendLine("        this.${field.first} = ${field.first};")
+        }
+
+        src.appendLine("""
+        |    }
+        |
+        |    public interface Visitor<R> {
+        |        
+        """.trimMargin())
         for (node in clazz.nodes) {
             src.appendLine("        R visit${node.name}${clazz.name}(${node.name} ${clazz.name.toLowerCase()});")
         }
@@ -76,10 +96,11 @@ tasks.register("genTerrascriptAstClasses") {
             src.appendLine()
 
             // Add constructor
-            src.append("        public ${node.name}(")
-            for (field in node.constructorFields)
-                src.append("${field.second} ${field.first}, ")
-            src.appendLine("SourcePosition position) {\n            super(position);")
+            src.appendLine("""
+            |        public ${node.name}(${node.constructorFields.plus(clazz.constructorFields).joinToString { "${it.second} ${it.first}" }}) {
+            |            super(${clazz.constructorFields.joinToString { it.first }});
+            """.trimMargin())
+
             for (field in node.constructorFields) {
                 src.appendLine("            this.${field.first} = ${field.first};")
             }
@@ -117,42 +138,99 @@ tasks.register("genTerrascriptAstClasses") {
     doLast {
         astSourceSet.deleteRecursively()
         astPackage.mkdirs()
-        generateClass(ASTClass("Expr", listOf(
-            "com.dfsek.terra.addons.terrascript.Type",
-            "com.dfsek.terra.addons.terrascript.parser.UnaryOperator",
-            "com.dfsek.terra.addons.terrascript.parser.BinaryOperator",
-            "com.dfsek.terra.addons.terrascript.Environment.Symbol",
-            "java.util.List",
-        ),
+
         listOf(
-            ASTNode("Binary", listOf("left" to "Expr", "operator" to "BinaryOperator", "right" to "Expr",), listOf("type" to "Type")),
-            ASTNode("Grouping", listOf("expression" to "Expr")),
-            ASTNode("Literal", listOf("value" to "Object", "type" to "Type")),
-            ASTNode("Unary", listOf("operator" to "UnaryOperator", "operand" to "Expr")),
-            ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<Expr>"), listOf("symbol" to "Symbol.Function")),
-            ASTNode("Variable", listOf("identifier" to "String"), listOf("symbol" to "Symbol.Variable")),
-            ASTNode("Assignment", listOf("lValue" to "Variable", "rValue" to "Expr")),
-            ASTNode("Void", listOf()),
-        )))
-        generateClass(ASTClass("Stmt", listOf(
-            "com.dfsek.terra.addons.terrascript.Type",
-            "com.dfsek.terra.api.util.generic.pair.Pair",
-            "com.dfsek.terra.addons.terrascript.Environment.Symbol",
-            "java.util.List",
-        ),
-        listOf(
-            ASTNode("Expression", listOf("expression" to "Expr")),
-            ASTNode("Block", listOf("statements" to "List<Stmt>")),
-            ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "type" to "Type", "body" to "Block"), listOf("symbol" to "Symbol.Function")),
-            ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "Expr")),
-            ASTNode("Return", listOf("value" to "Expr"), listOf("type" to "Type")),
-            ASTNode("If", listOf("condition" to "Expr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<Expr, Block>>", "elseBody" to "Block")),
-            ASTNode("For", listOf("initializer" to "Stmt", "condition" to "Expr", "incrementer" to "Expr", "body" to "Block")),
-            ASTNode("While", listOf("condition" to "Expr", "body" to "Block")),
-            ASTNode("NoOp", listOf()),
-            ASTNode("Break", listOf()),
-            ASTNode("Continue", listOf()),
-        )))
+            ASTClass(
+                "Expr",
+                listOf(
+                    "com.dfsek.terra.addons.terrascript.Type",
+                    "com.dfsek.terra.addons.terrascript.parser.UnaryOperator",
+                    "com.dfsek.terra.addons.terrascript.parser.BinaryOperator",
+                    "com.dfsek.terra.addons.terrascript.Environment",
+                    "com.dfsek.terra.addons.terrascript.Environment.Symbol",
+                    "com.dfsek.terra.addons.terrascript.lexer.SourcePosition",
+                    "java.util.List",
+                ),
+                listOf(
+                    ASTNode("Binary", listOf("left" to "Expr", "operator" to "BinaryOperator", "right" to "Expr")),
+                    ASTNode("Grouping", listOf("expression" to "Expr")),
+                    ASTNode("Literal", listOf("value" to "Object", "type" to "Type")),
+                    ASTNode("Unary", listOf("operator" to "UnaryOperator", "operand" to "Expr")),
+                    ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<Expr>"), listOf("environment" to "Environment", "symbol" to "Symbol.Function")),
+                    ASTNode("Variable", listOf("identifier" to "String"), listOf("symbol" to "Symbol.Variable")),
+                    ASTNode("Assignment", listOf("lValue" to "Variable", "rValue" to "Expr")),
+                    ASTNode("Void", listOf()),
+                ),
+                listOf("position" to "SourcePosition")
+            ),
+            ASTClass(
+                "Stmt",
+                listOf(
+                    "com.dfsek.terra.addons.terrascript.Type",
+                    "com.dfsek.terra.api.util.generic.pair.Pair",
+                    "com.dfsek.terra.addons.terrascript.Environment.Symbol",
+                    "com.dfsek.terra.addons.terrascript.lexer.SourcePosition",
+                    "java.util.List",
+                    "java.util.Optional",
+                ),
+                listOf(
+                    ASTNode("Expression", listOf("expression" to "Expr")),
+                    ASTNode("Block", listOf("statements" to "List<Stmt>")),
+                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block")),
+                    ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "Expr")),
+                    ASTNode("Return", listOf("value" to "Expr"), listOf("type" to "Type")),
+                    ASTNode("If", listOf("condition" to "Expr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<Expr, Block>>", "elseBody" to "Optional<Block>")),
+                    ASTNode("For", listOf("initializer" to "Stmt", "condition" to "Expr", "incrementer" to "Expr", "body" to "Block")),
+                    ASTNode("While", listOf("condition" to "Expr", "body" to "Block")),
+                    ASTNode("NoOp", listOf()),
+                    ASTNode("Break", listOf()),
+                    ASTNode("Continue", listOf()),
+                ),
+                listOf("position" to "SourcePosition")
+            ),
+            ASTClass(
+                "TypedExpr",
+                listOf(
+                    "com.dfsek.terra.addons.terrascript.Type",
+                    "com.dfsek.terra.addons.terrascript.parser.UnaryOperator",
+                    "com.dfsek.terra.addons.terrascript.parser.BinaryOperator",
+                    "java.util.List",
+                ),
+                listOf(
+                    ASTNode("Binary", listOf("left" to "TypedExpr", "operator" to "BinaryOperator", "right" to "TypedExpr")),
+                    ASTNode("Grouping", listOf("expression" to "TypedExpr")),
+                    ASTNode("Literal", listOf("value" to "Object")),
+                    ASTNode("Unary", listOf("operator" to "UnaryOperator", "operand" to "TypedExpr")),
+                    ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<TypedExpr>")),
+                    ASTNode("Variable", listOf("identifier" to "String")),
+                    ASTNode("Assignment", listOf("lValue" to "Variable", "rValue" to "TypedExpr")),
+                    ASTNode("Void", listOf()),
+                ),
+                listOf("type" to "Type")
+            ),
+            ASTClass(
+                "TypedStmt",
+                listOf(
+                    "com.dfsek.terra.addons.terrascript.Type",
+                    "com.dfsek.terra.api.util.generic.pair.Pair",
+                    "java.util.List",
+                    "java.util.Optional",
+                ),
+                listOf(
+                    ASTNode("Expression", listOf("expression" to "TypedExpr")),
+                    ASTNode("Block", listOf("statements" to "List<TypedStmt>")),
+                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block")),
+                    ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "TypedExpr")),
+                    ASTNode("Return", listOf("value" to "TypedExpr")),
+                    ASTNode("If", listOf("condition" to "TypedExpr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<TypedExpr, Block>>", "elseBody" to "Optional<Block>")),
+                    ASTNode("For", listOf("initializer" to "TypedStmt", "condition" to "TypedExpr", "incrementer" to "TypedExpr", "body" to "Block")),
+                    ASTNode("While", listOf("condition" to "TypedExpr", "body" to "Block")),
+                    ASTNode("NoOp", listOf()),
+                    ASTNode("Break", listOf()),
+                    ASTNode("Continue", listOf()),
+                ),
+            ),
+        ).forEach(::generateClass)
     }
 }
 

@@ -9,9 +9,6 @@ package com.dfsek.terra.addons.terrascript.lexer;
 
 import java.util.Objects;
 
-import com.dfsek.terra.addons.terrascript.parser.BinaryOperator;
-import com.dfsek.terra.addons.terrascript.parser.UnaryOperator;
-
 
 public class Token {
     private final String lexeme;
@@ -57,60 +54,6 @@ public class Token {
     public boolean isType(TokenType... types) {
         for(TokenType t : types) if(t == type) return true;
         return false;
-    }
-    
-    public boolean isOperator(BinaryOperator... operators) {
-        for(BinaryOperator o : operators) if(o.tokenType == type) return true;
-        return false;
-    }
-    
-    public boolean isOperator(UnaryOperator... operators) {
-        for(UnaryOperator o : operators) if(o.tokenType == type) return true;
-        return false;
-    }
-    
-    public boolean isBinaryOperator() {
-        return type.equals(TokenType.PLUS)
-               || type.equals(TokenType.MINUS)
-               || type.equals(TokenType.STAR)
-               || type.equals(TokenType.FORWARD_SLASH)
-               || type.equals(TokenType.EQUALS_EQUALS)
-               || type.equals(TokenType.BANG_EQUALS)
-               || type.equals(TokenType.LESS)
-               || type.equals(TokenType.GREATER)
-               || type.equals(TokenType.LESS_EQUALS)
-               || type.equals(TokenType.GREATER_EQUAL)
-               || type.equals(TokenType.BOOLEAN_OR)
-               || type.equals(TokenType.BOOLEAN_AND)
-               || type.equals(TokenType.MODULO_OPERATOR);
-    }
-    
-    public boolean isStrictNumericOperator() {
-        return type.equals(TokenType.MINUS)
-               || type.equals(TokenType.STAR)
-               || type.equals(TokenType.FORWARD_SLASH)
-               || type.equals(TokenType.GREATER)
-               || type.equals(TokenType.LESS)
-               || type.equals(TokenType.LESS_EQUALS)
-               || type.equals(TokenType.GREATER_EQUAL)
-               || type.equals(TokenType.MODULO_OPERATOR);
-    }
-    
-    public boolean isStrictBooleanOperator() {
-        return type.equals(TokenType.BOOLEAN_AND)
-               || type.equals(TokenType.BOOLEAN_OR);
-    }
-    
-    public boolean isVariableDeclaration() {
-        return type.equals(TokenType.TYPE_STRING)
-               || type.equals(TokenType.TYPE_BOOLEAN)
-               || type.equals(TokenType.TYPE_NUMBER);
-    }
-    
-    public boolean isControlStructure() {
-        return type.equals(TokenType.IF_STATEMENT)
-               || type.equals(TokenType.WHILE_LOOP)
-               || type.equals(TokenType.FOR_LOOP);
     }
     
     public enum TokenType {

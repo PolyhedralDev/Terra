@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.terrascript.Type;
@@ -178,7 +179,7 @@ public class Parser {
             elseIfClauses.add(Pair.of(elseIfCondition, elseIfBody));
         }
         
-        return new Stmt.If(condition, trueBody, elseIfClauses, elseBody, position);
+        return new Stmt.If(condition, trueBody, elseIfClauses, Optional.ofNullable(elseBody), position);
     }
     
     private Stmt.For forLoop() {

@@ -12,6 +12,7 @@ public interface TerraScript {
     Map<String, Method> BUILTIN_FUNCTIONS = new HashMap<>() {{
         try {
             put("print", System.out.getClass().getMethod("println", String.class));
+            put("printNum", System.out.getClass().getMethod("println", double.class));
         } catch(NoSuchMethodException e) {
             throw new RuntimeException(e);
         }

@@ -242,7 +242,7 @@ public class Lexer {
             }
             reader.consume();
         }
-        throw new EOFException("No end of expression found.", begin);
+        throw new EOFException("Reached end of file without matching '" + s + "'", begin);
     }
     
     private boolean isNumberLike() {

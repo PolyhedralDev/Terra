@@ -1,30 +1,30 @@
 package com.dfsek.terra.addons.terrascript.codegen.asm;
 
-import com.dfsek.terra.addons.terrascript.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.Type;
-import com.dfsek.terra.addons.terrascript.ast.Expr;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Assignment;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Binary;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Call;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Grouping;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Literal;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Unary;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Variable;
-import com.dfsek.terra.addons.terrascript.ast.Expr.Void;
-import com.dfsek.terra.addons.terrascript.ast.Stmt;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.Block;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.Break;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.Continue;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.Expression;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.For;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.FunctionDeclaration;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.If;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.NoOp;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.Return;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.VariableDeclaration;
-import com.dfsek.terra.addons.terrascript.ast.Stmt.While;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Assignment;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Binary;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Call;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Grouping;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Literal;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Unary;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Variable;
+import com.dfsek.terra.addons.terrascript.ast.TypedExpr.Void;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Block;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Break;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Continue;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Expression;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.For;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.FunctionDeclaration;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.If;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.NoOp;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Return;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.VariableDeclaration;
+import com.dfsek.terra.addons.terrascript.ast.TypedStmt.While;
 
 import com.dfsek.terra.addons.terrascript.codegen.TerraScript;
+import com.dfsek.terra.addons.terrascript.exception.CompilerBugException;
 import com.dfsek.terra.addons.terrascript.util.ASMUtil;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
@@ -39,6 +39,9 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,7 +130,7 @@ public class TerraScriptClassGenerator {
         }
     }
     
-    private static class MethodBytecodeGenerator implements Stmt.Visitor<Void>, Expr.Visitor<Void> {
+    private static class MethodBytecodeGenerator implements TypedStmt.Visitor<Void>, TypedExpr.Visitor<Void> {
         
         private final ClassWriter classWriter;
         
@@ -141,6 +144,8 @@ public class TerraScriptClassGenerator {
         
         private final Map<String, Integer> lvTable = new HashMap<>();
         
+        private final Deque<Pair<Label, Label>> loopStack = new ArrayDeque<>();
+        
         public MethodBytecodeGenerator(ClassWriter classWriter, String className, MethodVisitor method, int access, String descriptor) {
             this.classWriter = classWriter;
             this.className = className;
@@ -150,101 +155,61 @@ public class TerraScriptClassGenerator {
         }
         
         public void generate(Block root) {
-            this.visitBlockStmt(root);
+            this.visitBlockTypedStmt(root);
             
         }
         
         @Override
-        public Void visitBinaryExpr(Binary expr) {
-            expr.left.accept(this);
-            expr.right.accept(this);
+        public Void visitBinaryTypedExpr(Binary expr) {
             switch(expr.operator) {
-                // TODO - Short circuit binary operators
-                case BOOLEAN_OR -> method.visitInsn(Opcodes.IOR);
-                case BOOLEAN_AND -> method.visitInsn(Opcodes.IAND);
-//                case EQUALS -> null;
-//                case NOT_EQUALS -> null;
-                case GREATER -> {
-                    Label falseLabel = new Label();
-                    Label finished = new Label();
-                    method.visitInsn(Opcodes.DCMPL);
-                    method.visitJumpInsn(Opcodes.IFLE, falseLabel);
-                    method.visitInsn(Opcodes.ICONST_1);
-                    method.visitJumpInsn(Opcodes.GOTO, finished);
-                    method.visitLabel(falseLabel);
-                    method.visitInsn(Opcodes.ICONST_0);
-                    method.visitLabel(finished);
-                }
-                case GREATER_EQUALS -> {
-                    Label falseLabel = new Label();
-                    Label finished = new Label();
-                    method.visitInsn(Opcodes.DCMPL);
-                    method.visitJumpInsn(Opcodes.IFLT, falseLabel);
-                    method.visitInsn(Opcodes.ICONST_1);
-                    method.visitJumpInsn(Opcodes.GOTO, finished);
-                    method.visitLabel(falseLabel);
-                    method.visitInsn(Opcodes.ICONST_0);
-                    method.visitLabel(finished);
-                }
-                case LESS -> {
-                    Label falseLabel = new Label();
-                    Label finished = new Label();
-                    method.visitInsn(Opcodes.DCMPG);
-                    method.visitJumpInsn(Opcodes.IFGE, falseLabel);
-                    method.visitInsn(Opcodes.ICONST_1);
-                    method.visitJumpInsn(Opcodes.GOTO, finished);
-                    method.visitLabel(falseLabel);
-                    method.visitInsn(Opcodes.ICONST_0);
-                    method.visitLabel(finished);
-                }
-                case LESS_EQUALS -> {
-                    Label falseLabel = new Label();
-                    Label finished = new Label();
-                    method.visitInsn(Opcodes.DCMPG);
-                    method.visitJumpInsn(Opcodes.IFGT, falseLabel);
-                    method.visitInsn(Opcodes.ICONST_1);
-                    method.visitJumpInsn(Opcodes.GOTO, finished);
-                    method.visitLabel(falseLabel);
-                    method.visitInsn(Opcodes.ICONST_0);
-                    method.visitLabel(finished);
-                }
+                case EQUALS, NOT_EQUALS, BOOLEAN_AND, BOOLEAN_OR, GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> pushComparisonResult(expr);
                 case ADD -> {
-                    switch(expr.getType()) {
+                    pushBinaryOperands(expr);
+                    switch(expr.type) {
                         case NUMBER -> method.visitInsn(Opcodes.DADD);
                         // TODO - Optimize string concatenation
                         case STRING -> method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "concat", "(Ljava/lang/String;)Ljava/lang/String;", false);
-                        default -> throw new RuntimeException("Could not generate bytecode for ADD binary operator returning type " + expr.getType());
+                        default -> throw new RuntimeException("Could not generate bytecode for ADD binary operator returning type " + expr.type);
                     }
                 }
-                case SUBTRACT -> method.visitInsn(Opcodes.DSUB);
-                case MULTIPLY -> method.visitInsn(Opcodes.DMUL);
-                case DIVIDE -> method.visitInsn(Opcodes.DDIV);
+                case SUBTRACT -> binaryInsn(expr, Opcodes.DSUB);
+                case MULTIPLY -> binaryInsn(expr, Opcodes.DMUL);
+                case DIVIDE -> binaryInsn(expr, Opcodes.DDIV);
 //                case MODULO ->
+                default -> throw new RuntimeException("Unhandled binary operator " + expr.operator);
             }
             return null;
         }
         
         @Override
-        public Void visitGroupingExpr(Grouping expr) {
+        public Void visitGroupingTypedExpr(Grouping expr) {
             expr.expression.accept(this);
             return null;
         }
         
         @Override
-        public Void visitLiteralExpr(Literal expr) {
-            method.visitLdcInsn(expr.value);
+        public Void visitLiteralTypedExpr(Literal expr) {
+            switch (expr.type) {
+                case BOOLEAN -> method.visitInsn((boolean) expr.value ? Opcodes.ICONST_1 : Opcodes.ICONST_0);
+                case NUMBER, STRING -> method.visitLdcInsn(expr.value);
+            }
             return null;
         }
         
         @Override
-        public Void visitUnaryExpr(Unary expr) {
+        public Void visitUnaryTypedExpr(Unary expr) {
+            expr.operand.accept(this);
+            switch (expr.operator) {
+                case NOT -> invertBool();
+                case NEGATE -> method.visitInsn(Opcodes.DNEG);
+            }
             return null;
         }
         
         @Override
-        public Void visitCallExpr(Call expr) {
-            Symbol.Function function = expr.getSymbol();
+        public Void visitCallTypedExpr(Call expr) {
             if (TerraScript.BUILTIN_FUNCTIONS.containsKey(expr.identifier)) {
+                Method m = TerraScript.BUILTIN_FUNCTIONS.get(expr.identifier);
                 if (expr.identifier.equals("print")) { // TODO - remove quick dirty print function call
                     method.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
                     expr.arguments.get(0).accept(this);
@@ -253,76 +218,60 @@ public class TerraScriptClassGenerator {
                 return null;
             }
             expr.arguments.forEach(a -> a.accept(this));
-            List<Type> parameters = function.parameters.stream().map(Pair::getRight).toList();
-            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, expr.identifier, getFunctionDescriptor(parameters, function.type), false);
+            List<Type> parameters = expr.arguments.stream().map(e -> e.type).toList();
+            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, expr.identifier, getFunctionDescriptor(parameters, expr.type), false);
             return null;
         }
         
         @Override
-        public Void visitVariableExpr(Variable expr) {
-            Type varType = expr.getSymbol().type;
+        public Void visitVariableTypedExpr(Variable expr) {
+            Type varType = expr.type;
             method.visitVarInsn(switch(varType) {
                 case NUMBER -> Opcodes.DLOAD;
                 case STRING -> Opcodes.ALOAD;
                 case BOOLEAN -> Opcodes.ILOAD;
-                default -> throw new RuntimeException("Unable to load local variable, unknown parameter type '" + varType + "'");
+                default -> throw new RuntimeException("Unable to load local variable, unhandled type '" + varType + "'");
             }, lvTable.get(expr.identifier));
             return null;
         }
         
         @Override
-        public Void visitAssignmentExpr(Assignment expr) {
+        public Void visitAssignmentTypedExpr(Assignment expr) {
             expr.rValue.accept(this);
-            Type type = expr.lValue.getSymbol().type;
+            Type type = expr.lValue.type;
             method.visitVarInsn(switch(type) {
                 case NUMBER -> Opcodes.DSTORE;
                 case STRING -> Opcodes.ASTORE;
                 case BOOLEAN -> Opcodes.ISTORE;
-                default -> throw new RuntimeException("Unable to assign local variable, unknown parameter type '" + type + "'");
+                default -> throw new RuntimeException("Unable to assign local variable, unhandled type '" + type + "'");
             }, lvTable.get(expr.lValue.identifier));
             return null;
         }
         
         @Override
-        public Void visitVoidExpr(Void expr) {
+        public Void visitVoidTypedExpr(Void expr) {
             return null;
         }
         
         @Override
-        public Void visitExpressionStmt(Expression stmt) {
+        public Void visitExpressionTypedStmt(Expression stmt) {
             stmt.expression.accept(this);
             return null;
         }
         
         @Override
-        public Void visitBlockStmt(Block stmt) {
+        public Void visitBlockTypedStmt(Block stmt) {
             stmt.statements.forEach(s -> s.accept(this));
             return null;
         }
         
-        private String getFunctionDescriptor(List<Type> parameters, Type returnType) {
-            StringBuilder sb = new StringBuilder().append("(");
-            parameters.stream().map(p -> switch (p) {
-                case NUMBER -> "D";
-                case STRING -> "Ljava/lang/String;";
-                case BOOLEAN -> "Z";
-                default -> throw new RuntimeException("Unable to generate method descriptor, unknown parameter type '" + p + "'");
-            }).forEach(sb::append);
-            sb.append(")");
-            sb.append(switch (returnType) {
-                case NUMBER -> "D";
-                case STRING -> "Ljava/lang/String;";
-                case BOOLEAN -> "Z";
-                case VOID -> "V";
-            });
-            return sb.toString();
-        }
-        
         @Override
-        public Void visitFunctionDeclarationStmt(FunctionDeclaration stmt) {
-            int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
+        public Void visitFunctionDeclarationTypedStmt(FunctionDeclaration stmt) {
             List<Type> parameterTypes = stmt.parameters.stream().map(Pair::getRight).toList();
-            MethodVisitor method = classWriter.visitMethod(access, stmt.identifier, getFunctionDescriptor(parameterTypes, stmt.type), null, null);
+            
+            int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
+            // TODO - Mangle identifier based on scope to avoid issues with using the same identifier in different scopes
+            MethodVisitor method = classWriter.visitMethod(access, stmt.identifier, getFunctionDescriptor(parameterTypes, stmt.returnType), null, null);
             
             method.visitCode(); // Start method body
             
@@ -351,7 +300,7 @@ public class TerraScriptClassGenerator {
         }
         
         @Override
-        public Void visitVariableDeclarationStmt(VariableDeclaration stmt) {
+        public Void visitVariableDeclarationTypedStmt(VariableDeclaration stmt) {
             stmt.value.accept(this);
             lvTable.put(stmt.identifier, lvs.newLocal(ASMUtil.tsTypeToAsmType(stmt.type)));
             method.visitVarInsn(switch(stmt.type) {
@@ -364,44 +313,236 @@ public class TerraScriptClassGenerator {
         }
         
         @Override
-        public Void visitReturnStmt(Return stmt) {
+        public Void visitReturnTypedStmt(Return stmt) {
             stmt.value.accept(this);
-            switch(stmt.getType()) {
+            switch(stmt.value.type) {
                 case NUMBER -> method.visitInsn(Opcodes.DRETURN);
                 case STRING -> method.visitInsn(Opcodes.ARETURN);
                 case BOOLEAN -> method.visitInsn(Opcodes.IRETURN);
+                default -> throw new CompilerBugException();
             }
             return null;
         }
         
         @Override
-        public Void visitIfStmt(If stmt) {
+        public Void visitIfTypedStmt(If stmt) {
+            Label endIf = new Label();
+            conditionalStmt(stmt.condition, stmt.trueBody, endIf);
+            for(Pair<TypedExpr, Block> elseIfClause : stmt.elseIfClauses) {
+                conditionalStmt(elseIfClause.getLeft(), elseIfClause.getRight(), endIf);
+            }
+            stmt.elseBody.ifPresent(b -> b.accept(this));
+            method.visitLabel(endIf);
             return null;
         }
         
         @Override
-        public Void visitForStmt(For stmt) {
+        public Void visitForTypedStmt(For stmt) {
+            Label loopStart = new Label();
+            Label loopBody = new Label();
+            Label loopEnd = new Label();
+            
+            stmt.initializer.accept(this);
+            method.visitJumpInsn(Opcodes.GOTO, loopBody); // Skip over incrementer on first loop
+            
+            method.visitLabel(loopStart);
+            stmt.incrementer.accept(this);
+            method.visitLabel(loopBody);
+            loopStack.push(Pair.of(loopStart, loopEnd));
+            conditionalStmt(stmt.condition, stmt.body, loopStart);
+            loopStack.pop();
+            method.visitLabel(loopEnd);
             return null;
         }
         
         @Override
-        public Void visitWhileStmt(While stmt) {
+        public Void visitWhileTypedStmt(While stmt) {
+            Label loopStart = new Label();
+            Label loopEnd = new Label();
+            
+            method.visitLabel(loopStart);
+            loopStack.push(Pair.of(loopStart, loopEnd));
+            conditionalStmt(stmt.condition, stmt.body, loopStart);
+            loopStack.pop();
+            method.visitLabel(loopEnd);
             return null;
         }
         
         @Override
-        public Void visitNoOpStmt(NoOp stmt) {
+        public Void visitNoOpTypedStmt(NoOp stmt) {
             return null;
         }
         
         @Override
-        public Void visitBreakStmt(Break stmt) {
+        public Void visitBreakTypedStmt(Break stmt) {
+            method.visitJumpInsn(Opcodes.GOTO, loopStack.getFirst().getRight());
             return null;
         }
         
         @Override
-        public Void visitContinueStmt(Continue stmt) {
+        public Void visitContinueTypedStmt(Continue stmt) {
+            method.visitJumpInsn(Opcodes.GOTO, loopStack.getFirst().getLeft());
             return null;
+        }
+        
+        private boolean binaryOperandsSameType(Type type, Binary expr) {
+            return exprTypesEqual(type, expr.left, expr.right);
+        }
+        
+        private static boolean exprTypesEqual(Type type, TypedExpr... exprs) {
+            for(TypedExpr expr : exprs) {
+                if (expr.type != type) return false;
+            }
+            return true;
+        }
+        
+        /**
+         * Inverts a boolean on the stack
+         */
+        private void invertBool() {
+            Label invertToFalse = new Label();
+            Label finished = new Label();
+            method.visitJumpInsn(Opcodes.IFNE, invertToFalse);
+            
+            method.visitInsn(Opcodes.ICONST_1);
+            method.visitJumpInsn(Opcodes.GOTO, finished);
+            
+            method.visitLabel(invertToFalse);
+            method.visitInsn(Opcodes.ICONST_0);
+            
+            method.visitLabel(finished);
+        }
+        
+        private void pushBinaryOperands(Binary expr) {
+            expr.left.accept(this);
+            expr.right.accept(this);
+        }
+        
+        private void binaryInsn(Binary expr, int insn) {
+            pushBinaryOperands(expr);
+            method.visitInsn(insn);
+        }
+        
+        /**
+         * Pushes boolean on to the stack based on comparison result
+         * @param condition
+         */
+        private void pushComparisonResult(TypedExpr condition) {
+            Label trueFinished = new Label();
+            conditionalRunnable(condition, () -> method.visitInsn(Opcodes.ICONST_1), trueFinished);
+            method.visitInsn(Opcodes.ICONST_0);
+            method.visitLabel(trueFinished);
+        }
+        
+        /**
+         * Executes a statement then jumps to the exit label if the condition is true, jumps over the statement if false
+         * @param condition
+         * @param stmt
+         * @param exit
+         */
+        private void conditionalStmt(TypedExpr condition, TypedStmt stmt, Label exit) {
+            conditionalRunnable(condition, () -> stmt.accept(this), exit);
+        }
+        
+        private void conditionalRunnable(TypedExpr condition, Runnable trueSection, Label trueFinished) {
+            Label exit = new Label(); // If the first conditional is false, jump over statement and don't execute it
+            if (condition instanceof Binary binaryCondition) {
+                switch(binaryCondition.operator) {
+                    case BOOLEAN_AND -> {
+                        // Operands assumed booleans
+                        binaryCondition.left.accept(this);
+                        method.visitJumpInsn(Opcodes.IFEQ, exit); // If left is false, short circuit, don't evaluate right
+                        binaryCondition.right.accept(this);
+                        method.visitJumpInsn(Opcodes.IFEQ, exit);
+                    }
+                    case BOOLEAN_OR -> {
+                        Label skipRight = new Label();
+                        // Operands assumed booleans
+                        binaryCondition.left.accept(this);
+                        method.visitJumpInsn(Opcodes.IFNE, skipRight); // If left is true, skip evaluating right
+                        binaryCondition.right.accept(this);
+                        method.visitJumpInsn(Opcodes.IFEQ, exit);
+                        method.visitLabel(skipRight);
+                    }
+                    case EQUALS -> {
+                        if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
+                            pushBinaryOperands(binaryCondition);
+                            method.visitJumpInsn(Opcodes.IF_ICMPNE, exit);
+                            
+                        } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
+                            pushBinaryOperands(binaryCondition);
+                            method.visitInsn(Opcodes.DCMPG);
+                            method.visitJumpInsn(Opcodes.IFNE, exit);
+                            
+                        } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) {
+                            pushBinaryOperands(binaryCondition);
+                            method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
+                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                        } else throw new CompilerBugException();
+                    }
+                    case NOT_EQUALS -> {
+                        if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
+                            pushBinaryOperands(binaryCondition);
+                            method.visitJumpInsn(Opcodes.IF_ICMPEQ, exit);
+                            
+                        } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
+                            pushBinaryOperands(binaryCondition);
+                            method.visitInsn(Opcodes.DCMPG);
+                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                            
+                        } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) { // Operands assumed references
+                            pushBinaryOperands(binaryCondition);
+                            method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
+                            invertBool();
+                            method.visitJumpInsn(Opcodes.IFEQ, exit);
+                        } else throw new CompilerBugException();
+                    }
+                    case GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> {
+                        // Left and right assumed double
+                        pushBinaryOperands(binaryCondition);
+                        
+                        method.visitInsn(switch(binaryCondition.operator) {
+                            case GREATER, GREATER_EQUALS -> Opcodes.DCMPL;
+                            case LESS, LESS_EQUALS -> Opcodes.DCMPG;
+                            default -> throw new IllegalStateException();
+                        });
+                        
+                        method.visitJumpInsn(switch(binaryCondition.operator) {
+                            case GREATER -> Opcodes.IFLE;
+                            case GREATER_EQUALS -> Opcodes.IFLT;
+                            case LESS -> Opcodes.IFGE;
+                            case LESS_EQUALS -> Opcodes.IFGT;
+                            default -> throw new IllegalStateException();
+                        }, exit);
+                    }
+                    default -> throw new CompilerBugException();
+                }
+            } else {
+                // Assume condition returns bool
+                condition.accept(this);
+                method.visitJumpInsn(Opcodes.IFEQ, exit);
+            }
+            trueSection.run();
+            method.visitJumpInsn(Opcodes.GOTO, trueFinished); // Jump to end of statement after execution
+            method.visitLabel(exit);
+        }
+        
+        private String getFunctionDescriptor(List<Type> parameters, Type returnType) {
+            StringBuilder sb = new StringBuilder().append("(");
+            parameters.stream().map(p -> switch (p) {
+                case NUMBER -> "D";
+                case STRING -> "Ljava/lang/String;";
+                case BOOLEAN -> "Z";
+                default -> throw new RuntimeException("Unable to generate method descriptor, unknown parameter type '" + p + "'");
+            }).forEach(sb::append);
+            sb.append(")");
+            sb.append(switch (returnType) {
+                case NUMBER -> "D";
+                case STRING -> "Ljava/lang/String;";
+                case BOOLEAN -> "Z";
+                case VOID -> "V";
+            });
+            return sb.toString();
         }
     }
     

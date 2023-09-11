@@ -63,7 +63,7 @@ public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visit
     public Void visitCallExpr(Call expr) {
         String id = expr.identifier;
         try {
-            expr.getSymbol();
+            expr.setSymbol(expr.getEnvironment().getFunction(expr.identifier));
         } catch(NonexistentSymbolException e) {
             errorHandler.add(
                     new UndefinedReferenceException("No function by the name '" + id + "' is defined in this scope", expr.position));
@@ -129,9 +129,7 @@ public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visit
             clause.getLeft().accept(this);
             clause.getRight().accept(this);
         }
-        if(stmt.elseBody != null) {
-            stmt.elseBody.accept(this);
-        }
+        stmt.elseBody.ifPresent(b -> b.accept(this));
         return null;
     }
     
