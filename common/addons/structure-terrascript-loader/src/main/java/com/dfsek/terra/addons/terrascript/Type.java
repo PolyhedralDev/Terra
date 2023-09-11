@@ -4,6 +4,7 @@ import java.util.Optional;
 
 
 // TODO - Make not enum
+// TODO - Add integer type
 public enum Type {
     NUMBER,
     STRING,

@@ -504,8 +504,7 @@ public class TerraScriptClassGenerator {
                             jumpIf(INTEGERS_NOT_EQUAL, exit);
                             
                         } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
-                            pushBinaryOperands(binaryCondition);
-                            method.visitInsn(Opcodes.DCMPG);
+                            binaryInsn(binaryCondition, Opcodes.DCMPG);
                             jumpIf(CMP_NOT_EQUALS, exit);
                             
                         } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) {
@@ -520,8 +519,7 @@ public class TerraScriptClassGenerator {
                             jumpIf(INTEGERS_EQUAL, exit);
                             
                         } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
-                            pushBinaryOperands(binaryCondition);
-                            method.visitInsn(Opcodes.DCMPG);
+                            binaryInsn(binaryCondition, Opcodes.DCMPG);
                             jumpIf(CMP_EQUALS, exit);
                             
                         } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) { // Operands assumed references
@@ -533,9 +531,7 @@ public class TerraScriptClassGenerator {
                     }
                     case GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> {
                         // Left and right assumed double
-                        pushBinaryOperands(binaryCondition);
-                        
-                        method.visitInsn(switch(binaryCondition.operator) {
+                        binaryInsn(binaryCondition, switch(binaryCondition.operator) {
                             case GREATER, GREATER_EQUALS -> Opcodes.DCMPL;
                             case LESS, LESS_EQUALS -> Opcodes.DCMPG;
                             default -> throw new IllegalStateException();
