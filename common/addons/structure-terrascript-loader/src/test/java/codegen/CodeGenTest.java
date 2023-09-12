@@ -73,7 +73,10 @@ public class CodeGenTest {
                   }
                   
                   fun concatThree(a: str, b: str, c: str): str {
-                      return a + b + c;
+                      fun concatTwo(a: str, b: str): str {
+                          return a + b;
+                      }
+                      return concatTwo(a, b) + c;
                   }
                   
                   fun retStr(): str {

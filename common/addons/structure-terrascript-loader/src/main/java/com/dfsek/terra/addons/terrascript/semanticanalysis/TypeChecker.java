@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.dfsek.terra.addons.terrascript.Environment;
+import com.dfsek.terra.addons.terrascript.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.Type;
 import com.dfsek.terra.addons.terrascript.ast.Expr.Assignment;
@@ -32,6 +33,10 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     private final ErrorHandler errorHandler;
     
     TypeChecker(ErrorHandler errorHandler) { this.errorHandler = errorHandler; }
+    
+    private static String scopedIdentifier(String identifier, Symbol.Function symbol) {
+        return identifier + "$" + symbol.scope.name;
+    }
     
     @Override
     public TypedExpr visitBinaryExpr(Binary expr) {
@@ -124,7 +129,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                         providedType + " instead", expr.position));
         }
         
-        return new TypedExpr.Call(expr.identifier, arguments, signature.type);
+        return new TypedExpr.Call(expr.identifier, arguments, scopedIdentifier(expr.identifier, expr.getSymbol()), signature.type);
     }
     
     @Override
@@ -179,7 +184,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                     new InvalidFunctionDeclarationException("Function body for '" + stmt.identifier + "' does not contain return statement",
                                                             stmt.position));
         }
-        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body);
+        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body, scopedIdentifier(stmt.identifier, stmt.getSymbol()));
     }
     
     @Override

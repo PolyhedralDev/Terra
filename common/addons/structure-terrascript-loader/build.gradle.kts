@@ -176,7 +176,7 @@ tasks.register("genTerrascriptAstClasses") {
                 listOf(
                     ASTNode("Expression", listOf("expression" to "Expr")),
                     ASTNode("Block", listOf("statements" to "List<Stmt>")),
-                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block")),
+                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block"), listOf("symbol" to "Symbol.Function")),
                     ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "Expr")),
                     ASTNode("Return", listOf("value" to "Expr"), listOf("type" to "Type")),
                     ASTNode("If", listOf("condition" to "Expr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<Expr, Block>>", "elseBody" to "Optional<Block>")),
@@ -201,7 +201,7 @@ tasks.register("genTerrascriptAstClasses") {
                     ASTNode("Grouping", listOf("expression" to "TypedExpr")),
                     ASTNode("Literal", listOf("value" to "Object")),
                     ASTNode("Unary", listOf("operator" to "UnaryOperator", "operand" to "TypedExpr")),
-                    ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<TypedExpr>")),
+                    ASTNode("Call", listOf("identifier" to "String", "arguments" to "List<TypedExpr>", "scopedIdentifier" to "String")),
                     ASTNode("Variable", listOf("identifier" to "String")),
                     ASTNode("Assignment", listOf("lValue" to "Variable", "rValue" to "TypedExpr")),
                     ASTNode("Void", listOf()),
@@ -219,7 +219,7 @@ tasks.register("genTerrascriptAstClasses") {
                 listOf(
                     ASTNode("Expression", listOf("expression" to "TypedExpr")),
                     ASTNode("Block", listOf("statements" to "List<TypedStmt>")),
-                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block")),
+                    ASTNode("FunctionDeclaration", listOf("identifier" to "String", "parameters" to "List<Pair<String, Type>>", "returnType" to "Type", "body" to "Block", "scopedIdentifier" to "String")),
                     ASTNode("VariableDeclaration", listOf("type" to "Type", "identifier" to "String", "value" to "TypedExpr")),
                     ASTNode("Return", listOf("value" to "TypedExpr")),
                     ASTNode("If", listOf("condition" to "TypedExpr", "trueBody" to "Block", "elseIfClauses" to "List<Pair<TypedExpr, Block>>", "elseBody" to "Optional<Block>")),

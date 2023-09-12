@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.terrascript;
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -31,33 +32,50 @@ public class Environment {
     
     private final boolean inLoop;
     
-    private Environment(@Nullable Environment outer, boolean canAccessOuterVariables, boolean inLoop) {
+    private final int index;
+    
+    private int innerCount = 0;
+    
+    public final String name;
+    
+    private Environment(@Nullable Environment outer, boolean canAccessOuterVariables, boolean inLoop, int index) {
         this.outer = outer;
         this.canAccessOuterVariables = canAccessOuterVariables;
         this.inLoop = inLoop;
+        this.index = index;
+        this.name = String.join("_", getNestedIndexes().stream().map(Object::toString).toList());
         // Populate symbol tables with built-in Java implemented methods
         TerraScript.BUILTIN_FUNCTIONS.forEach((name, method) -> symbolTable
                 .put(name,
                      new Function(
                              Type.from(method.getReturnType()).orElseThrow(() -> new RuntimeException("")),
                              // Map Java classes to TerraScript types
-                             IntStream.range(0, method.getParameterCount()).mapToObj(i -> Pair.of("param" + i, Type.from(method.getParameterTypes()[i]).orElseThrow(() -> new RuntimeException("")))).toList())));
+                             IntStream.range(0, method.getParameterCount()).mapToObj(i -> Pair.of("param" + i, Type.from(method.getParameterTypes()[i]).orElseThrow(() -> new RuntimeException("")))).toList(),
+                             this)));
     }
     
     public static Environment global() {
-        return new Environment(null, false, false);
+        return new Environment(null, false, false, 0);
     }
     
     public Environment lexicalInner() {
-        return new Environment(this, true, inLoop);
+        return new Environment(this, true, inLoop, innerCount++);
     }
     
     public Environment loopInner() {
-        return new Environment(this, true, true);
+        return new Environment(this, true, true, innerCount++);
     }
     
     public Environment functionalInner() {
-        return new Environment(this, false, inLoop);
+        return new Environment(this, false, inLoop, innerCount++);
+    }
+    
+    private List<Integer> getNestedIndexes() {
+        List<Integer> idxs = new ArrayList<>();
+        for (Environment env = this; env.outer != null; env = env.outer) {
+            idxs.add(0, env.index);
+        }
+        return idxs;
     }
     
     public Environment outer() {
@@ -117,9 +135,12 @@ public class Environment {
             
             public final List<Pair<String, Type>> parameters;
             
-            public Function(Type type, List<Pair<String, Type>> parameters) {
+            public final Environment scope;
+            
+            public Function(Type type, List<Pair<String, Type>> parameters, Environment scope) {
                 this.type = type;
                 this.parameters = parameters;
+                this.scope = scope;
             }
         }
         

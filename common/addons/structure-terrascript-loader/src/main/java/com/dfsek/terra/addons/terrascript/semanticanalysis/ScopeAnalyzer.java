@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.terrascript.semanticanalysis;
 import com.dfsek.terra.addons.terrascript.Environment;
 import com.dfsek.terra.addons.terrascript.Environment.ScopeException.NonexistentSymbolException;
 import com.dfsek.terra.addons.terrascript.Environment.ScopeException.SymbolTypeMismatchException;
+import com.dfsek.terra.addons.terrascript.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.Type;
 import com.dfsek.terra.addons.terrascript.ast.Expr;
@@ -119,7 +120,9 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         stmt.body.accept(this);
         currentScope = currentScope.outer();
         try {
-            currentScope.put(stmt.identifier, new Environment.Symbol.Function(stmt.returnType, stmt.parameters));
+            Symbol.Function symbol = new Symbol.Function(stmt.returnType, stmt.parameters, currentScope);
+            stmt.setSymbol(symbol);
+            currentScope.put(stmt.identifier, symbol);
         } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
             errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
                                                                     stmt.position));

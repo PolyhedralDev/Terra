@@ -228,7 +228,7 @@ public class TerraScriptClassGenerator {
             }
             expr.arguments.forEach(a -> a.accept(this));
             List<Type> parameters = expr.arguments.stream().map(e -> e.type).toList();
-            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, expr.identifier, getFunctionDescriptor(parameters, expr.type), false);
+            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, expr.scopedIdentifier, getFunctionDescriptor(parameters, expr.type), false);
             return null;
         }
         
@@ -284,8 +284,8 @@ public class TerraScriptClassGenerator {
             List<Type> parameterTypes = stmt.parameters.stream().map(Pair::getRight).toList();
             
             int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
-            // TODO - Mangle identifier based on scope to avoid issues with using the same identifier in different scopes
-            MethodVisitor method = classWriter.visitMethod(access, stmt.identifier, getFunctionDescriptor(parameterTypes, stmt.returnType), null, null);
+            
+            MethodVisitor method = classWriter.visitMethod(access, stmt.scopedIdentifier, getFunctionDescriptor(parameterTypes, stmt.returnType), null, null);
             
             method.visitCode(); // Start method body
             
