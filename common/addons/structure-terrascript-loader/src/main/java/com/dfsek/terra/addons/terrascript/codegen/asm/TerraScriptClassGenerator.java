@@ -466,8 +466,8 @@ public class TerraScriptClassGenerator {
             method.visitInsn(Opcodes.ICONST_0);
         }
         
-        private void jumpIf(OpcodeAlias insn, Label label) {
-            method.visitJumpInsn(insn.opcode, label);
+        private void jumpIf(int opcode, Label label) {
+            method.visitJumpInsn(opcode, label);
         }
         
         private void jump(Label label) {
