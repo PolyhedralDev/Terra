@@ -120,7 +120,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         stmt.body.accept(this);
         currentScope = currentScope.outer();
         try {
-            Symbol.Function symbol = new Symbol.Function(stmt.returnType, stmt.parameters, currentScope);
+            Symbol.Function symbol = new Symbol.Function(stmt.returnType, stmt.parameters.stream().map(Pair::getRight).toList(), currentScope);
             stmt.setSymbol(symbol);
             currentScope.put(stmt.identifier, symbol);
         } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {

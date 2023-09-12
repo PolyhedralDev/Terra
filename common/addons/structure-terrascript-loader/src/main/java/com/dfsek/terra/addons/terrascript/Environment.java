@@ -1,25 +1,17 @@
 package com.dfsek.terra.addons.terrascript;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.dfsek.terra.addons.terrascript.Environment.ScopeException.NonexistentSymbolException;
 import com.dfsek.terra.addons.terrascript.Environment.ScopeException.SymbolAlreadyExistsException;
 import com.dfsek.terra.addons.terrascript.Environment.ScopeException.SymbolTypeMismatchException;
 import com.dfsek.terra.addons.terrascript.Environment.Symbol.Function;
 import com.dfsek.terra.addons.terrascript.Environment.Symbol.Variable;
-import com.dfsek.terra.addons.terrascript.codegen.TerraScript;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.addons.terrascript.codegen.NativeFunction;
 
 
 public class Environment {
@@ -45,13 +37,7 @@ public class Environment {
         this.index = index;
         this.name = String.join("_", getNestedIndexes().stream().map(Object::toString).toList());
         // Populate symbol tables with built-in Java implemented methods
-        TerraScript.BUILTIN_FUNCTIONS.forEach((name, method) -> symbolTable
-                .put(name,
-                     new Function(
-                             Type.from(method.getReturnType()).orElseThrow(() -> new RuntimeException("")),
-                             // Map Java classes to TerraScript types
-                             IntStream.range(0, method.getParameterCount()).mapToObj(i -> Pair.of("param" + i, Type.from(method.getParameterTypes()[i]).orElseThrow(() -> new RuntimeException("")))).toList(),
-                             this)));
+        NativeFunction.BUILTIN_FUNCTIONS.forEach((name, function) -> symbolTable.put(name, new Symbol.Function(function.getReturnType(), function.getParameterTypes(), this)));
     }
     
     public static Environment global() {
@@ -133,11 +119,11 @@ public class Environment {
             
             public final Type type;
             
-            public final List<Pair<String, Type>> parameters;
+            public final List<Type> parameters;
             
             public final Environment scope;
             
-            public Function(Type type, List<Pair<String, Type>> parameters, Environment scope) {
+            public Function(Type type, List<Type> parameters, Environment scope) {
                 this.type = type;
                 this.parameters = parameters;
                 this.scope = scope;

@@ -113,7 +113,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         Environment.Symbol.Function signature = expr.getSymbol();
         
         List<TypedExpr> arguments = expr.arguments.stream().map(a -> a.accept(this)).toList();
-        List<Type> parameters = signature.parameters.stream().map(Pair::getRight).toList();
+        List<Type> parameters = signature.parameters;
         
         if(arguments.size() != parameters.size())
             errorHandler.add(new ParseException(

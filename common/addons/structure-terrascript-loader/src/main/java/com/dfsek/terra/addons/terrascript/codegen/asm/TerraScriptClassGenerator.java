@@ -23,6 +23,7 @@ import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Return;
 import com.dfsek.terra.addons.terrascript.ast.TypedStmt.VariableDeclaration;
 import com.dfsek.terra.addons.terrascript.ast.TypedStmt.While;
 
+import com.dfsek.terra.addons.terrascript.codegen.NativeFunction;
 import com.dfsek.terra.addons.terrascript.codegen.TerraScript;
 import com.dfsek.terra.addons.terrascript.exception.CompilerBugException;
 import com.dfsek.terra.addons.terrascript.util.ASMUtil;
@@ -39,7 +40,6 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.HashMap;
@@ -217,13 +217,11 @@ public class TerraScriptClassGenerator {
         
         @Override
         public Void visitCallTypedExpr(Call expr) {
-            if (TerraScript.BUILTIN_FUNCTIONS.containsKey(expr.identifier)) {
-                Method m = TerraScript.BUILTIN_FUNCTIONS.get(expr.identifier);
-                if (expr.identifier.equals("print")) { // TODO - remove quick dirty print function call
-                    method.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                    expr.arguments.get(0).accept(this);
-                    method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-                }
+            if (NativeFunction.BUILTIN_FUNCTIONS.containsKey(expr.identifier)) {
+                NativeFunction function = NativeFunction.BUILTIN_FUNCTIONS.get(expr.identifier);
+                function.pushInstance(method);
+                expr.arguments.forEach(a -> a.accept(this));
+                function.callMethod(method);
                 return null;
             }
             expr.arguments.forEach(a -> a.accept(this));

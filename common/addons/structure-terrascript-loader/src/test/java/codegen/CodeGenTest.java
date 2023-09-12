@@ -19,6 +19,7 @@ public class CodeGenTest {
     @Test
     public void test() {
         testValid("""
+                  printNum(12345);
                   
                   if (1 == 1) print("Dis is true");
                   
