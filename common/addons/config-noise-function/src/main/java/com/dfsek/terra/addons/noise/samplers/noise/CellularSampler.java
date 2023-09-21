@@ -351,6 +351,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
             case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY);
+            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -514,6 +515,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
             case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY, centerZ);
+            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY, z / frequency - centerZ);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -540,6 +542,7 @@ public class CellularSampler extends NoiseFunction {
         Distance2Mul,
         Distance2Div,
         NoiseLookup,
+        LocalNoiseLookup,
         Distance3,
         Distance3Add,
         Distance3Sub,
