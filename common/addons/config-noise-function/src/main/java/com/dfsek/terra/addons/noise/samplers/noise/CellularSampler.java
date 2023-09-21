@@ -542,7 +542,7 @@ public class CellularSampler extends NoiseFunction {
         Distance2Mul,
         Distance2Div,
         NoiseLookup,
-        OffsetNoiseLookup,
+        LocalNoiseLookup,
         Distance3,
         Distance3Add,
         Distance3Sub,
