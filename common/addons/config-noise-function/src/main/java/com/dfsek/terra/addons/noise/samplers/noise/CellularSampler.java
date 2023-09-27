@@ -240,99 +240,37 @@ public class CellularSampler extends NoiseFunction {
         double centerX = x;
         double centerY = y;
         
-        switch(distanceFunction) {
-            default:
-            case Euclidean:
-            case EuclideanSq:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
-                    
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int hash = hash(seed, xPrimed, yPrimed);
-                        int idx = hash & (255 << 1);
-                        
-                        double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
-                        double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-                        
-                        double newDistance = vecX * vecX + vecY * vecY;
-                        
-                        distance1 = fastMax(fastMin(distance1, newDistance), distance0);
-                        if(newDistance < distance0) {
-                            distance0 = newDistance;
-                            closestHash = hash;
-                            centerX = ((xi + RAND_VECS_2D[idx] * cellularJitter) / frequency);
-                            centerY = ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / frequency);
-                        } else if(newDistance < distance1) {
-                            distance2 = distance1;
-                            distance1 = newDistance;
-                        } else if(newDistance < distance2) {
-                            distance2 = newDistance;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
+        for(int xi = xr - 1; xi <= xr + 1; xi++) {
+            int yPrimed = yPrimedBase;
+            
+            for(int yi = yr - 1; yi <= yr + 1; yi++) {
+                int hash = hash(seed, xPrimed, yPrimed);
+                int idx = hash & (255 << 1);
+                
+                double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
+                double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
+                
+                double newDistance = switch(distanceFunction) {
+                    case Manhattan -> fastAbs(vecX) + fastAbs(vecY);
+                    case Hybrid -> (fastAbs(vecX) + fastAbs(vecY)) + (vecX * vecX + vecY * vecY);
+                    default -> vecX * vecX + vecY * vecY;
+                };
+                
+                distance1 = fastMax(fastMin(distance1, newDistance), distance0);
+                if(newDistance < distance0) {
+                    distance0 = newDistance;
+                    closestHash = hash;
+                    centerX = ((xi + RAND_VECS_2D[idx] * cellularJitter) / frequency);
+                    centerY = ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / frequency);
+                } else if(newDistance < distance1) {
+                    distance2 = distance1;
+                    distance1 = newDistance;
+                } else if(newDistance < distance2) {
+                    distance2 = newDistance;
                 }
-                break;
-            case Manhattan:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
-                    
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int hash = hash(seed, xPrimed, yPrimed);
-                        int idx = hash & (255 << 1);
-                        
-                        double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
-                        double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-                        
-                        double newDistance = fastAbs(vecX) + fastAbs(vecY);
-                        
-                        distance1 = fastMax(fastMin(distance1, newDistance), distance0);
-                        if(newDistance < distance0) {
-                            distance0 = newDistance;
-                            closestHash = hash;
-                            centerX = ((xi + RAND_VECS_2D[idx] * cellularJitter) / frequency);
-                            centerY = ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / frequency);
-                        } else if(newDistance < distance1) {
-                            distance2 = distance1;
-                            distance1 = newDistance;
-                        } else if(newDistance < distance2) {
-                            distance2 = newDistance;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
-                }
-                break;
-            case Hybrid:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
-                    
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int hash = hash(seed, xPrimed, yPrimed);
-                        int idx = hash & (255 << 1);
-                        
-                        double vecX = (xi - x) + RAND_VECS_2D[idx] * cellularJitter;
-                        double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
-                        
-                        double newDistance = (fastAbs(vecX) + fastAbs(vecY)) + (vecX * vecX + vecY * vecY);
-                        
-                        distance1 = fastMax(fastMin(distance1, newDistance), distance0);
-                        if(newDistance < distance0) {
-                            distance0 = newDistance;
-                            closestHash = hash;
-                            centerX = ((xi + RAND_VECS_2D[idx] * cellularJitter) / frequency);
-                            centerY = ((yi + RAND_VECS_2D[idx | 1] * cellularJitter) / frequency);
-                        } else if(newDistance < distance1) {
-                            distance2 = distance1;
-                            distance1 = newDistance;
-                        } else if(newDistance < distance2) {
-                            distance2 = newDistance;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
-                }
-                break;
+                yPrimed += PRIME_Y;
+            }
+            xPrimed += PRIME_X;
         }
         
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
@@ -383,120 +321,47 @@ public class CellularSampler extends NoiseFunction {
         double centerY = y;
         double centerZ = z;
         
-        switch(distanceFunction) {
-            case Euclidean:
-            case EuclideanSq:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
+        for(int xi = xr - 1; xi <= xr + 1; xi++) {
+            int yPrimed = yPrimedBase;
+            
+            for(int yi = yr - 1; yi <= yr + 1; yi++) {
+                int zPrimed = zPrimedBase;
+                
+                for(int zi = zr - 1; zi <= zr + 1; zi++) {
+                    int hash = hash(seed, xPrimed, yPrimed, zPrimed);
+                    int idx = hash & (255 << 2);
                     
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int zPrimed = zPrimedBase;
-                        
-                        for(int zi = zr - 1; zi <= zr + 1; zi++) {
-                            int hash = hash(seed, xPrimed, yPrimed, zPrimed);
-                            int idx = hash & (255 << 2);
-                            
-                            double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
-                            double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
-                            double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-                            
-                            double newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
-                            
-                            if(newDistance < distance0) {
-                                distance0 = newDistance;
-                                closestHash = hash;
-                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
-                            } else if(newDistance < distance1) {
-                                distance2 = distance1;
-                                distance1 = newDistance;
-                            } else if(newDistance < distance2) {
-                                distance2 = newDistance;
-                            }
-                            zPrimed += PRIME_Z;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
-                }
-                break;
-            case Manhattan:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
+                    double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
+                    double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
+                    double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
                     
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int zPrimed = zPrimedBase;
-                        
-                        for(int zi = zr - 1; zi <= zr + 1; zi++) {
-                            int hash = hash(seed, xPrimed, yPrimed, zPrimed);
-                            int idx = hash & (255 << 2);
-                            
-                            double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
-                            double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
-                            double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-                            
-                            double newDistance = fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ);
-                            
-                            if(newDistance < distance0) {
-                                distance0 = newDistance;
-                                closestHash = hash;
-                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
-                            } else if(newDistance < distance1) {
-                                distance2 = distance1;
-                                distance1 = newDistance;
-                            } else if(newDistance < distance2) {
-                                distance2 = newDistance;
-                            }
-                            zPrimed += PRIME_Z;
-                        }
-                        yPrimed += PRIME_Y;
-                    }
-                    xPrimed += PRIME_X;
-                }
-                break;
-            case Hybrid:
-                for(int xi = xr - 1; xi <= xr + 1; xi++) {
-                    int yPrimed = yPrimedBase;
-                    
-                    for(int yi = yr - 1; yi <= yr + 1; yi++) {
-                        int zPrimed = zPrimedBase;
-                        
-                        for(int zi = zr - 1; zi <= zr + 1; zi++) {
-                            int hash = hash(seed, xPrimed, yPrimed, zPrimed);
-                            int idx = hash & (255 << 2);
-                            
-                            double vecX = (xi - x) + RAND_VECS_3D[idx] * cellularJitter;
-                            double vecY = (yi - y) + RAND_VECS_3D[idx | 1] * cellularJitter;
-                            double vecZ = (zi - z) + RAND_VECS_3D[idx | 2] * cellularJitter;
-                            
-                            double newDistance = (fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ)) +
-                                                 (vecX * vecX + vecY * vecY + vecZ * vecZ);
-                            
+                    double newDistance = 0;
+                    switch(distanceFunction) {
+                        case Euclidean, EuclideanSq -> newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
+                        case Manhattan -> newDistance = fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ);
+                        case Hybrid -> {
+                            newDistance = (fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ)) + (vecX * vecX + vecY * vecY + vecZ * vecZ);
                             distance1 = fastMax(fastMin(distance1, newDistance), distance0);
-                            if(newDistance < distance0) {
-                                distance0 = newDistance;
-                                closestHash = hash;
-                                centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
-                                centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
-                                centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
-                            } else if(newDistance < distance1) {
-                                distance2 = distance1;
-                                distance1 = newDistance;
-                            } else if(newDistance < distance2) {
-                                distance2 = newDistance;
-                            }
-                            zPrimed += PRIME_Z;
                         }
-                        yPrimed += PRIME_Y;
                     }
-                    xPrimed += PRIME_X;
+                    
+                    if(newDistance < distance0) {
+                        distance0 = newDistance;
+                        closestHash = hash;
+                        centerX = ((xi + RAND_VECS_3D[idx] * cellularJitter) / frequency);
+                        centerY = ((yi + RAND_VECS_3D[idx | 1] * cellularJitter) / frequency);
+                        centerZ = ((zi + RAND_VECS_3D[idx | 2] * cellularJitter) / frequency);
+                    } else if(newDistance < distance1) {
+                        distance2 = distance1;
+                        distance1 = newDistance;
+                    } else if(newDistance < distance2) {
+                        distance2 = newDistance;
+                    }
+                    zPrimed += PRIME_Z;
                 }
-                break;
-            default:
-                break;
+                yPrimed += PRIME_Y;
+            }
+            xPrimed += PRIME_X;
         }
         
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
