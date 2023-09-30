@@ -54,7 +54,7 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
         return switch(position) {
             case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
             case 3 -> Returnable.ReturnType.STRING;
-            case 4 -> Returnable.ReturnType.BOOLEAN;
+            case 4, 5 -> Returnable.ReturnType.BOOLEAN;
             default -> null;
         };
     }
