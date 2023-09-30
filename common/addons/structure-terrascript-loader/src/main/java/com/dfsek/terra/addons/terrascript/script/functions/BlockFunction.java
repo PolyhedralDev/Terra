@@ -35,10 +35,11 @@ public class BlockFunction implements Function<Void> {
     protected final Platform platform;
     private final Map<String, BlockState> data = new HashMap<>();
     private final Returnable<Boolean> overwrite;
+    private final Returnable<Boolean> physics;
     private final Position position;
     
     public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> blockData,
-                         Returnable<Boolean> overwrite, Platform platform, Position position) {
+                         Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -46,6 +47,7 @@ public class BlockFunction implements Function<Void> {
         this.overwrite = overwrite;
         this.platform = platform;
         this.position = position;
+        this.physics = physics;
     }
     
     @Override
@@ -76,7 +78,7 @@ public class BlockFunction implements Function<Void> {
                                              FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
-                arguments.getWorld().setBlockState(set, rot);
+                arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));
             }
         } catch(RuntimeException e) {
             logger.error("Failed to place block at location {}", arguments.getOrigin(), e);
@@ -92,8 +94,8 @@ public class BlockFunction implements Function<Void> {
         private final BlockState state;
         
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData,
-                        Returnable<Boolean> overwrite, Platform platform, Position position) {
-            super(x, y, z, blockData, overwrite, platform, position);
+                        Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
+            super(x, y, z, blockData, overwrite, physics, platform, position);
             this.state = platform.getWorldHandle().createBlockState(blockData.getConstant());
         }
         
