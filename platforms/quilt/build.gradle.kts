@@ -50,10 +50,10 @@ loom {
     
     launches {
         named("client") {
-            property("fabric.log.level", "debug")
+            property("fabric.log.level", "info")
         }
         named("server") {
-            property("fabric.log.level", "debug")
+            property("fabric.log.level", "info")
         }
     }
 }
