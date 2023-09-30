@@ -17,35 +17,16 @@
 
 package com.dfsek.terra.fabric;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.fabric.FabricServerCommandManager;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.server.command.ServerCommandSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
 
 
-public class FabricEntryPoint implements ModInitializer {
-    private static final Logger logger = LoggerFactory.getLogger(FabricEntryPoint.class);
-    
+public class FabricEntryPoint extends LifecycleEntryPoint implements ModInitializer {
     private static final FabricPlatform TERRA_PLUGIN = new FabricPlatform();
     
     @Override
     public void onInitialize() {
-        logger.info("Initializing Terra Fabric mod...");
-        
-        FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
-                CommandExecutionCoordinator.simpleCoordinator(),
-                serverCommandSource -> (CommandSender) serverCommandSource,
-                commandSender -> (ServerCommandSource) commandSender
-        );
-        
-        
-        manager.brigadierManager().setNativeNumberSuggestions(false);
-        
-        TERRA_PLUGIN.getEventManager().callEvent(new CommandRegistrationEvent(manager));
+        initialize("Fabric", TERRA_PLUGIN);
     }
 }

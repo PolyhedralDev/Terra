@@ -2,6 +2,7 @@ package com.dfsek.terra.lifecycle;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
+import ca.solostudios.strata.version.Version;
 
 import com.dfsek.terra.lifecycle.util.BiomeUtil;
 
@@ -20,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.dfsek.terra.addon.EphemeralAddon;
@@ -103,10 +105,24 @@ public abstract class LifecyclePlatform extends ModPlatform {
                 LOGGER.warn("Failed to parse Minecraft version", e);
             }
         }
-        
+    
         addons.addAll(getPlatformMods());
-        
+    
         return addons;
+    }
+    
+    protected Stream<EphemeralAddon> parseModData(String id, String modVersion) {
+        if(id.equals("terra") || id.equals("minecraft") || id.equals("java")) return Stream.empty();
+        try {
+            Version version = Versions.parseVersion(modVersion);
+            return Stream.of(new EphemeralAddon(version, "quilt:" + id));
+        } catch(ParseException e) {
+            LOGGER.warn(
+                    "Mod {}, version {} does not follow semantic versioning specification, Terra addons will be unable to depend on " +
+                    "it.",
+                    id, modVersion);
+        }
+        return Stream.empty();
     }
     
     @Override

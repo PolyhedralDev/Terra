@@ -1,6 +1,9 @@
 package com.dfsek.terra.bukkit.world;
 
+import com.dfsek.terra.bukkit.util.BukkitUtils;
+
 import org.bukkit.Location;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +50,14 @@ public class BukkitProtoWorld implements ProtoWorld {
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         access(x, y, z, () -> {
-            delegate.setBlockData(x, y, z, BukkitAdapter.adapt(data));
+            BlockData bukkitData = BukkitAdapter.adapt(data);
+            delegate.setBlockData(x, y, z, bukkitData);
             if(physics) {
-                delegate.scheduleBlockUpdate(x, y, z);
+                if (BukkitUtils.isLiquid(bukkitData)) {
+                    delegate.scheduleFluidUpdate(x, y, z);
+                } else {
+                    delegate.scheduleBlockUpdate(x, y, z);
+                }
             }
         });
     }
