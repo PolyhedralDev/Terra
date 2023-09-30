@@ -32,7 +32,7 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
         if(argumentList.size() < 4) throw new ParseException("Expected data", position);
         Returnable<Boolean> overwrite = new BooleanConstant(true, position);
         if(argumentList.size() >= 5) overwrite = (Returnable<Boolean>) argumentList.get(4);
-        Returnable<Boolean> physics = new BooleanConstant(true, position);
+        Returnable<Boolean> physics = new BooleanConstant(false, position);
         if(argumentList.size() == 6) physics = (Returnable<Boolean>) argumentList.get(5);
         if(argumentList.get(3) instanceof StringConstant) {
             return new BlockFunction.Constant((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
@@ -40,7 +40,7 @@ public class BlockFunctionBuilder implements FunctionBuilder<BlockFunction> {
                                               overwrite, physics, platform, position);
         }
         return new BlockFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                 (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), booleanReturnable,
+                                 (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), overwrite, physics,
                                  platform, position);
     }
     
