@@ -28,8 +28,12 @@ public class SpawnSettingsTemplate implements ObjectTemplate<SpawnSettings> {
         SpawnSettings.Builder builder = new SpawnSettings.Builder();
         for(SpawnTypeConfig spawn : spawns) {
             SpawnGroup group = spawn.getGroup();
-            for (SpawnEntry entry : spawn.getEntry()) {
-                builder.spawn(group, entry);
+            if (spawn.getEntries() != null) {
+                for (SpawnEntry entry : spawn.getEntries()) {
+                    builder.spawn(group, entry);
+                }
+            } else if (spawn.getEntry() != null) {
+                builder.spawn(group, spawn.getEntry());
             }
         }
         for(SpawnCostConfig cost : costs) {
