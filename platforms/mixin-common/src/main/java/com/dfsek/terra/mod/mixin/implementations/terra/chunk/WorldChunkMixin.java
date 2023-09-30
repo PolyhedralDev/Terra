@@ -17,8 +17,11 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
+import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.chunk.Chunk.TickSchedulers;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -47,8 +50,21 @@ public abstract class WorldChunkMixin {
     @Nullable
     public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, boolean moved);
     
+    @Shadow
+    public abstract TickSchedulers getTickSchedulers();
+    
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
-        setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) data, false);
+        BlockPos blockPos = new BlockPos(x, y, z);
+        setBlockState(blockPos, (net.minecraft.block.BlockState) data, false);
+        if (physics) {
+            net.minecraft.block.BlockState state = ((net.minecraft.block.BlockState) data);
+            if (state.isLiquid()) {
+                world.getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
+            } else {
+                world.getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
+            }
+            
+        }
     }
     
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
