@@ -17,9 +17,12 @@
 
 package com.dfsek.terra.mod.generation;
 
+import com.dfsek.terra.mod.util.SeedHack;
+
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -27,8 +30,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.util.math.random.ChunkRandom;
 import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.Registry;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.HeightLimitView;
 import net.minecraft.world.Heightmap.Type;
@@ -71,25 +73,19 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     private static final Logger logger = LoggerFactory.getLogger(MinecraftChunkGeneratorWrapper.class);
     
     private final TerraBiomeSource biomeSource;
-    private final Registry<StructureSet> noiseRegistry;
     private final RegistryEntry<ChunkGeneratorSettings> settings;
     private ChunkGenerator delegate;
     private ConfigPack pack;
     
-    public MinecraftChunkGeneratorWrapper(Registry<StructureSet> noiseRegistry, TerraBiomeSource biomeSource, ConfigPack configPack,
+    public MinecraftChunkGeneratorWrapper(TerraBiomeSource biomeSource, ConfigPack configPack,
                                           RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
-        super(noiseRegistry, Optional.empty(), biomeSource);
-        this.noiseRegistry = noiseRegistry;
+        super(biomeSource);
         this.pack = configPack;
         this.settings = settingsSupplier;
         
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
-    }
-    
-    public Registry<StructureSet> getNoiseRegistry() {
-        return noiseRegistry;
     }
     
     @Override
@@ -137,7 +133,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
                        PreLoadCompatibilityOptions compatibilityOptions) {
-        StructureWeightSampler structureWeightSampler = StructureWeightSampler.method_42695(structureAccessor, chunk.getPos());
+        StructureWeightSampler structureWeightSampler = StructureWeightSampler.createStructureWeightSampler(structureAccessor, chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
         int xi = chunk.getPos().x << 4;
@@ -185,7 +181,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
-        WorldProperties properties = MinecraftAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
+        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         int min = height.getBottomY();
         for(int y = height.getTopY() - 1; y >= min; y--) {
@@ -199,7 +195,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     @Override
     public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height, NoiseConfig noiseConfig) {
         BlockState[] array = new BlockState[height.getHeight()];
-        WorldProperties properties = MinecraftAdapter.adapt(height, noiseConfig.getLegacyWorldSeed());
+        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
             array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);

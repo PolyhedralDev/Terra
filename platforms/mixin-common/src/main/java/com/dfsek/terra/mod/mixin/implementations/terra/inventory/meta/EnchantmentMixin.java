@@ -18,7 +18,9 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
 import net.minecraft.enchantment.Enchantment;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -48,6 +50,6 @@ public abstract class EnchantmentMixin {
     }
     
     public String terra$getID() {
-        return Objects.requireNonNull(Registry.ENCHANTMENT.getId((Enchantment) (Object) this)).toString();
+        return Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object) this)).toString();
     }
 }

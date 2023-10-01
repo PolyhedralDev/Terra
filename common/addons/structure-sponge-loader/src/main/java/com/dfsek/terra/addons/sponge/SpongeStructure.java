@@ -23,10 +23,15 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
     
     private final BlockState[][][] blocks;
     
+    private final int offsetX, offsetY, offsetZ;
+    
     private final RegistryKey id;
     
-    public SpongeStructure(BlockState[][][] blocks, RegistryKey id) {
+    public SpongeStructure(BlockState[][][] blocks, Vector3Int offset, RegistryKey id) {
         this.blocks = blocks;
+        this.offsetX = offset.getX();
+        this.offsetY = offset.getY();
+        this.offsetZ = offset.getZ();
         this.id = id;
     }
     
@@ -37,13 +42,15 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
         int bZ = location.getZ();
         for(int x = 0; x < blocks.length; x++) {
             for(int z = 0; z < blocks[x].length; z++) {
-                Vector2Int r = Vector2Int.of(x, z).rotate(rotation);
+                int oX = x + offsetX;
+                int oZ = z + offsetZ;
+                Vector2Int r = Vector2Int.of(oX, oZ).rotate(rotation);
                 int rX = r.getX();
                 int rZ = r.getZ();
                 for(int y = 0; y < blocks[x][z].length; y++) {
                     BlockState state = blocks[x][z][y];
                     if(state == null) continue;
-                    world.setBlockState(bX + rX, bY + y, bZ + rZ, state);
+                    world.setBlockState(bX + rX, bY + y + offsetY, bZ + rZ, state);
                 }
             }
         }

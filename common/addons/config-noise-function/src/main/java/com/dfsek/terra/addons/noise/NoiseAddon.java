@@ -21,8 +21,10 @@ import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
 import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.TranslateSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.DistanceSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.GaborNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.SimpleNoiseTemplate;
@@ -30,6 +32,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotio
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractalTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
@@ -42,6 +45,7 @@ import com.dfsek.terra.addons.noise.samplers.arithmetic.MinSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
+import com.dfsek.terra.addons.noise.samplers.noise.DistanceSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.PositiveWhiteNoiseSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
@@ -83,6 +87,8 @@ public class NoiseAddon implements AddonInitializer {
                                     (type, o, loader, depthTracker) -> CellularSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(CellularSampler.ReturnType.class,
                                     (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
+                       .applyLoader(DistanceSampler.DistanceFunction.class,
+                                    (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
             
@@ -92,9 +98,9 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
-            
+    
                   noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
-            
+    
                   noiseRegistry.register(addon.key("DOMAIN_WARP"), DomainWarpTemplate::new);
             
                   noiseRegistry.register(addon.key("FBM"), BrownianMotionTemplate::new);
@@ -116,12 +122,15 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("GAUSSIAN"), () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+                  
+                  noiseRegistry.register(addon.key("DISTANCE"), DistanceSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("CONSTANT"), ConstantNoiseTemplate::new);
             
                   noiseRegistry.register(addon.key("KERNEL"), KernelTemplate::new);
             
                   noiseRegistry.register(addon.key("LINEAR_HEIGHTMAP"), LinearHeightmapSamplerTemplate::new);
+                  noiseRegistry.register(addon.key("TRANSLATE"), TranslateSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("ADD"), () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register(addon.key("SUB"), () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
@@ -134,7 +143,7 @@ public class NoiseAddon implements AddonInitializer {
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
                   noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
-            
+                  noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"), () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions));
             
                   NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                   packSamplers.putAll(template.getSamplers());

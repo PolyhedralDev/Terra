@@ -1,10 +1,10 @@
 package com.dfsek.terra.mod.util;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.tag.TagKey;
-import net.minecraft.tag.WorldPresetTags;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.registry.tag.WorldPresetTags;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.WorldPreset;
 import org.slf4j.Logger;

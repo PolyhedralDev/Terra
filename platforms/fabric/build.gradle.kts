@@ -39,8 +39,6 @@ dependencies {
     
     modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
     include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
-    
-    modLocalRuntime("com.github.astei:lazydfu:${Versions.Mod.lazyDfu}")
 }
 
 loom {
