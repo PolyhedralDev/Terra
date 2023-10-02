@@ -155,6 +155,16 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         return biomeProvider.getBiome(x, y, z, world.getSeed()).getContext().get(paletteInfoPropertyKey).paletteHolder().getPalette(y);
     }
     
+    public double getSlant(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
+        int fdX = FastMath.floorMod(x, 16);
+        int fdZ = FastMath.floorMod(z, 16);
+        return biomeProvider.getBiome(x, y, z, world.getSeed())
+                            .getContext()
+                            .get(paletteInfoPropertyKey)
+                            .slantHolder()
+                            .calculateSlant(samplerCache.get(x, z, world, biomeProvider), fdX, y, fdZ);
+    }
+    
     public SamplerProvider samplerProvider() {
         return samplerCache;
     }
