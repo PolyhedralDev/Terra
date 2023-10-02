@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.noise.config.CubicSplinePointTemplate;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.BinaryArithmeticTemplate;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
@@ -32,12 +33,14 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotio
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractalTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.CubicSplineNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
+import com.dfsek.terra.addons.noise.math.CubicSpline;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.DivisionSampler;
 import com.dfsek.terra.addons.noise.samplers.arithmetic.MaxSampler;
@@ -90,7 +93,8 @@ public class NoiseAddon implements AddonInitializer {
                        .applyLoader(DistanceSampler.DistanceFunction.class,
                                     (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
-                       .applyLoader(FunctionTemplate.class, FunctionTemplate::new);
+                       .applyLoader(FunctionTemplate.class, FunctionTemplate::new)
+                       .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new);
             
                   noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
@@ -98,6 +102,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
+                  noiseRegistry.register(addon.key("CUBIC_SPLINE"), CubicSplineNormalizerTemplate::new);
     
                   noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
     
