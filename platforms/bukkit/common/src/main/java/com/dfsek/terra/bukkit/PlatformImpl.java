@@ -20,6 +20,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -85,7 +87,7 @@ public class PlatformImpl extends AbstractPlatform {
     
     @Override
     public void runPossiblyUnsafeTask(@NotNull Runnable task) {
-        Bukkit.getScheduler().runTask(plugin, task);
+        plugin.getFoliaLib().getImpl().runAsync(task);
     }
     
     @Override

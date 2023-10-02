@@ -48,6 +48,9 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
+        maven("https://nexuslite.gcnt.net/repos/other/") {
+            name = "devmart-other"
+        }
     }
     
     dependencies {
