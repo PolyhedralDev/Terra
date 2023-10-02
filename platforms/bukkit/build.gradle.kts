@@ -1,5 +1,5 @@
 plugins {
-    id("xyz.jpenilla.run-paper") version "1.0.6"
+    id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
 repositories {
@@ -13,6 +13,7 @@ dependencies {
     shaded(project(":platforms:bukkit:nms:v1_19_R2", configuration = "reobf"))
     shaded(project(":platforms:bukkit:nms:v1_19_R3", configuration = "reobf"))
     shaded(project(":platforms:bukkit:nms:v1_20_R1", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_20_R2", configuration = "reobf"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
