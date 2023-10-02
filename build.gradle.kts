@@ -20,7 +20,7 @@ allprojects {
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
         
-        maxHeapSize = "2G"
+        maxHeapSize = "4G"
         ignoreFailures = false
         failFast = true
         maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
