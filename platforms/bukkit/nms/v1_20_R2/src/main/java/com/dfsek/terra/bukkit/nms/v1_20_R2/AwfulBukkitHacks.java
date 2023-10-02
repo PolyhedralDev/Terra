@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R1;
+package com.dfsek.terra.bukkit.nms.v1_20_R2;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Lifecycle;
