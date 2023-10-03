@@ -14,8 +14,13 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class OreAddon implements AddonInitializer {
+    private static final Logger logger = LoggerFactory.getLogger(OreAddon.class);
+    
     @Inject
     private Platform platform;
     
@@ -29,5 +34,7 @@ public class OreAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack().registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
                 .failThrough();
+        
+        logger.warn("The ore-config addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the ore-config-v2 addon for future pack development instead.");
     }
 }
