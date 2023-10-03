@@ -11,4 +11,4 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-  chunk-generator-noise-3d: "1.+"
+  chunk-generator-noise-3d: "1.3+"
