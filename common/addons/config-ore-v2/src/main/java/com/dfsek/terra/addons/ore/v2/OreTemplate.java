@@ -47,8 +47,8 @@ public class OreTemplate implements AbstractableTemplate {
     
     @Value("exposed")
     @Default
-    @Description("The chance that ore blocks bordering air will be exposed. 0 = 0%, 1 = 100%")
-    private @Meta double exposed = 1;
+    @Description("The chance that ore blocks bordering air will be discarded as candidates for ore. 0 = 0%, 1 = 100%")
+    private @Meta double exposed = 0.0f;
     
     public boolean doPhysics() {
         return physics;
