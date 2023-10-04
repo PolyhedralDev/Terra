@@ -4,7 +4,7 @@ contributors:
 id: config-ore-v2
 version: @VERSION@
 entrypoints:
-  - "com.dfsek.terra.addons.ore.OreAddon"
+  - "com.dfsek.terra.addons.ore.v2.OreAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra/issues
   source: https://github.com/PolyhedralDev/Terra
