@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.ore.ores;
+package com.dfsek.terra.addons.ore.v2.ores;
 
 import net.jafama.FastMath;
 

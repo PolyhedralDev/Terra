@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.ore;
+package com.dfsek.terra.addons.ore.v2;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Description;

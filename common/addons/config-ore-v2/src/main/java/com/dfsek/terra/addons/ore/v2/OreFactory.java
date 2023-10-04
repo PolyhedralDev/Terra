@@ -5,9 +5,9 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.ore;
+package com.dfsek.terra.addons.ore.v2;
 
-import com.dfsek.terra.addons.ore.ores.VanillaOre;
+import com.dfsek.terra.addons.ore.v2.ores.VanillaOre;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigFactory;

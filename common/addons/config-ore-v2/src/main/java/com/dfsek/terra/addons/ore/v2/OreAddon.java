@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.ore;
+package com.dfsek.terra.addons.ore.v2;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
