@@ -28,6 +28,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate
 import com.dfsek.terra.addons.noise.config.templates.noise.DistanceSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.GaborNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.PseudoErosionSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.SimpleNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
@@ -123,6 +124,7 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
             
                   noiseRegistry.register(addon.key("CELLULAR"), CellularNoiseTemplate::new);
+                  noiseRegistry.register(addon.key("PSEUDOEROSION"), PseudoErosionSamplerTemplate::new);
             
                   noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
