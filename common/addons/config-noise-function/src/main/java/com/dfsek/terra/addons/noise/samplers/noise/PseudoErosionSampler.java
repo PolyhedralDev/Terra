@@ -13,6 +13,7 @@ import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastAbs;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastFloor;
+import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastMin;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastRound;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastSqrt;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.hash;
@@ -280,7 +281,7 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
                 
                 // Set final return to the lowest computed distance
-                if(distance < finalDistance) finalDistance = distance;
+                finalDistance = fastMin(finalDistance, distance);
             }
         }
         
@@ -296,10 +297,14 @@ public class PseudoErosionSampler implements NoiseSampler {
      * Signed distance function of a line segment determined by two points
      */
     private static double lineSdf2D(double x, double y, double x1, double y1, double x2, double y2) {
-        double ldx = x1 - x2;
-        double ldy = y1 - y2;
         double x1dx = x - x1;
         double y1dx = y - y1;
+        
+        if(x1 == x2 && y1 == y2) // If positions are the same just return distance from point
+            return fastSqrt(pow2(x1dx) + pow2(y1dx));
+        
+        double ldx = x1 - x2;
+        double ldy = y1 - y2;
         double x2dx = x - x2;
         double y2dx = y - y2;
         double lt = (ldy * y1dx + ldx * x1dx) / (pow2(ldy) + pow2(ldx)); // Position along line
