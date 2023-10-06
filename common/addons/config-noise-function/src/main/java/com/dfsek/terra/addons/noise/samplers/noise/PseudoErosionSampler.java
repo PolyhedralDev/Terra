@@ -311,20 +311,33 @@ public class PseudoErosionSampler implements NoiseSampler {
         double x1dx = x - x1;
         double y1dx = y - y1;
         
-        if(x1 == x2 && y1 == y2) // If positions are the same just return distance from point
-            return fastSqrt(pow2(x1dx) + pow2(y1dx));
+        double x1dxSquared = pow2(x1dx);
+        double y1dxSquared = pow2(y1dx);
+        
+        if (x1 == x2 && y1 == y2) {
+            // If positions are the same, just return the distance from the point
+            return fastSqrt(x1dxSquared + y1dxSquared);
+        }
         
         double ldx = x1 - x2;
         double ldy = y1 - y2;
+        
+        double ldxSquared = pow2(ldx);
+        double ldySquared = pow2(ldy);
+        
         double x2dx = x - x2;
         double y2dx = y - y2;
-        double lt = (ldy * y1dx + ldx * x1dx) / (pow2(ldy) + pow2(ldx)); // Position along line
-        if(lt > 0) {
-            return fastSqrt(pow2(x1dx) + pow2(y1dx)); // Distance between point 1 and position
-        } else if(lt < -1) {
+        
+        double dotProduct = ldy * y1dx + ldx * x1dx;
+        double lt = dotProduct / (ldySquared + ldxSquared); // Position along the line
+        
+        if (lt > 0) {
+            return fastSqrt(x1dxSquared + y1dxSquared); // Distance between point 1 and position
+        } else if (lt < -1) {
             return fastSqrt(pow2(x2dx) + pow2(y2dx)); // Distance between point 2 and position
         } else {
-            return fastAbs((ldy * x1dx - ldx * y1dx) / fastSqrt(pow2(ldx) + pow2(ldy))); // Distance from line
+            double distance = (ldy * x1dx - ldx * y1dx) / fastSqrt(ldxSquared + ldySquared);
+            return fastAbs(distance); // Distance from the line
         }
     }
     
