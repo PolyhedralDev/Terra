@@ -310,13 +310,10 @@ public class PseudoErosionSampler implements NoiseSampler {
     private static double lineSdf2D(double x, double y, double x1, double y1, double x2, double y2) {
         double x1dx = x - x1;
         double y1dx = y - y1;
-        
-        double x1dxSquared = pow2(x1dx);
-        double y1dxSquared = pow2(y1dx);
-        
+
         if (x1 == x2 && y1 == y2) {
             // If positions are the same, just return the distance from the point
-            return fastSqrt(x1dxSquared + y1dxSquared);
+            return fastSqrt(pow2(x1dx) + pow2(y1dx));
         }
         
         double ldx = x1 - x2;
@@ -332,7 +329,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         double lt = dotProduct / (ldySquared + ldxSquared); // Position along the line
         
         if (lt > 0) {
-            return fastSqrt(x1dxSquared + y1dxSquared); // Distance between point 1 and position
+            return fastSqrt(pow2(x1dx) + pow2(y1dx)); // Distance between point 1 and position
         } else if (lt < -1) {
             return fastSqrt(pow2(x2dx) + pow2(y2dx)); // Distance between point 2 and position
         } else {
