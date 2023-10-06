@@ -208,6 +208,14 @@ public class PseudoErosionSampler implements NoiseSampler {
             -0.146637214d, -0.9891903394d, -0.782318098d, 0.6228791163d, -0.5039610839d, -0.8637263605d, -0.7743120191d, -0.6328039957d,
             };
     
+    private static final int PRECOMPUTE_RADIUS = 3;
+    
+    private static final int PRECOMPUTE_SIZE = 1 + 2 * PRECOMPUTE_RADIUS;
+    
+    private static final int NEARBY_CELLS_RADIUS = 2;
+    
+    private static final int MAX_CONNECTION_RADIUS = 1;
+    
     private final long salt;
     
     private final double frequency;
@@ -231,10 +239,10 @@ public class PseudoErosionSampler implements NoiseSampler {
         int gridX = fastRound(x);
         int gridY = fastRound(y);
         
-        // Precompute cell positions and lookup values for 5x5 area centered on current grid coordinates
-        double[][][] cellData = new double[7][7][3];
-        for(int xi = -3; xi <= 3; xi++) {
-            for(int yi = -3; yi <= 3; yi++) {
+        // Precompute cell positions and lookup values
+        double[][][] cellData = new double[PRECOMPUTE_SIZE][PRECOMPUTE_SIZE][3];
+        for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
+            for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
                 int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
                 double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
                 double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
@@ -247,23 +255,24 @@ public class PseudoErosionSampler implements NoiseSampler {
                 
                 double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
                 
-                cellData[xi+3][yi+3][0] = cellX;
-                cellData[xi+3][yi+3][1] = cellY;
-                cellData[xi+3][yi+3][2] = lookup;
+                double[] data = cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS];
+                data[0] = cellX;
+                data[1] = cellY;
+                data[2] = lookup;
             }
         }
         
         // Iterate over nearby cells
-        for(int xi = -2; xi <= 2; xi++) {
-            for(int yi = -2; yi <= 2; yi++) {
+        for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
+            for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
                 
                 // Find cell position with the lowest lookup value within moore neighborhood of neighbor
                 double lowestLookup = Double.MAX_VALUE;
                 double connectedCellX = 0;
                 double connectedCellY = 0;
-                for(int xni = xi - 1; xni <= xi + 1; xni++) {
-                    for(int yni = yi - 1; yni <= yi + 1; yni++) {
-                        double[] data = cellData[xni+3][yni+3];
+                for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
+                        double[] data = cellData[xni+PRECOMPUTE_RADIUS][yni+PRECOMPUTE_RADIUS];
                         double lookup = data[2];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
@@ -273,7 +282,7 @@ public class PseudoErosionSampler implements NoiseSampler {
                     }
                 }
                 
-                double[] data = cellData[xi+3][yi+3];
+                double[] data = cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS];
                 double cellX = data[0];
                 double cellY = data[1];
                 
