@@ -250,8 +250,8 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double cellY = gridY + yi + jitterY;
                 
                 // Transform to actual coordinates for lookup
-                double actualCellX = cellX / frequency;
-                double actualCellY = cellY / frequency;
+                double actualCellX = cellX * 1 / frequency;
+                double actualCellY = cellY * 1 / frequency;
                 
                 double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
                 
