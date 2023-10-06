@@ -7,12 +7,16 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise;
 
+import com.dfsek.terra.addons.noise.samplers.noise.PseudoErosionSampler.CellChunk2D.ChunkPos;
 import com.dfsek.terra.api.noise.NoiseSampler;
+
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+import net.jafama.FastMath;
 
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastAbs;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastFloor;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastMin;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastRound;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastSqrt;
@@ -222,13 +226,15 @@ public class PseudoErosionSampler implements NoiseSampler {
     
     private final double cellularJitter;
     
-    private final NoiseSampler lookup;
+    private final LoadingCache<ChunkPos, CellChunk2D> cache;
     
     public PseudoErosionSampler(long salt, double frequency, NoiseSampler lookup, double jitterModifier) {
         this.salt = salt;
         this.frequency = frequency;
-        this.lookup = lookup;
         this.cellularJitter = 0.43701595 * jitterModifier;
+        this.cache = Caffeine.newBuilder()
+            .maximumSize(64)
+            .build(v -> CellChunk2D.create(v, lookup, frequency, this.cellularJitter));
     }
     
     public double getNoiseRaw(long sl, double x, double y) {
@@ -239,26 +245,10 @@ public class PseudoErosionSampler implements NoiseSampler {
         int gridX = fastRound(x);
         int gridY = fastRound(y);
         
-        // Precompute cell positions and lookup values
         double[][][] cellData = new double[PRECOMPUTE_SIZE][PRECOMPUTE_SIZE][3];
         for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
             for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
-                int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
-                double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
-                double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
-                double cellX = gridX + xi + jitterX;
-                double cellY = gridY + yi + jitterY;
-                
-                // Transform to actual coordinates for lookup
-                double actualCellX = cellX / frequency;
-                double actualCellY = cellY / frequency;
-                
-                double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
-                
-                double[] data = cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS];
-                data[0] = cellX;
-                data[1] = cellY;
-                data[2] = lookup;
+                cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS] = getData(seed, gridX+xi, gridY + yi);
             }
         }
         
@@ -302,6 +292,14 @@ public class PseudoErosionSampler implements NoiseSampler {
         return finalDistance;
     }
     
+    private double[] getData(int seed, int x, int y) {
+        int chunkX = FastMath.floorDiv(x, CellChunk2D.SIZE);
+        int chunkY = FastMath.floorDiv(y, CellChunk2D.SIZE);
+        int xInChunk = x - chunkX * CellChunk2D.SIZE;
+        int yInChunk = y - chunkY * CellChunk2D.SIZE;
+        return cache.get(new ChunkPos(seed, chunkX, chunkY)).data[xInChunk][yInChunk];
+    }
+    
     /**
      * Signed distance function of a line segment determined by two points
      */
@@ -343,5 +341,44 @@ public class PseudoErosionSampler implements NoiseSampler {
     @Override
     public double noise(long seed, double x, double y, double z) {
         return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency);
+    }
+    
+    protected record CellChunk2D(double[][][] data) {
+        private static final int SIZE = 128;
+        
+        public static CellChunk2D create(ChunkPos vec, NoiseSampler lookup, double frequency, double cellularJitter) {
+            double[][][] data = new double[SIZE][SIZE][3];
+            
+            int chunkWorldX = vec.chunkX * SIZE;
+            int chunkWorldY = vec.chunkY * SIZE;
+            
+            int x, y;
+            for(int lx = 0; lx < SIZE; lx++) {
+                x = chunkWorldX + lx;
+                for(int ly = 0; ly < SIZE; ly++) {
+                    y = chunkWorldY + ly;
+                    int jitterIdx = jitterIdx2D(vec.seed, x, y);
+                    double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
+                    double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
+                    double cellX = x + jitterX;
+                    double cellY = y + jitterY;
+                    
+                    // Transform to actual coordinates for lookup
+                    double actualCellX = cellX / frequency;
+                    double actualCellY = cellY / frequency;
+                    
+                    double value = lookup.noise(vec.seed, actualCellX, actualCellY);
+                    
+                    double[] d = data[lx][ly];
+                    d[0] = cellX;
+                    d[1] = cellY;
+                    d[2] = value;
+                }
+            }
+            return new CellChunk2D(data);
+        }
+        
+        public record ChunkPos(int seed, int chunkX, int chunkY) {
+        }
     }
 }
