@@ -325,7 +325,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         double x2dx = x - x2;
         double y2dx = y - y2;
         
-        double dotProduct = ldy * y1dx + ldx * x1dx;
+        double dotProduct = Math.fma(ldy, y1dx, (ldx * x1dx));
         double lt = dotProduct / (ldySquared + ldxSquared); // Position along the line
         
         if (lt > 0) {
