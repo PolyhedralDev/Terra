@@ -333,7 +333,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         } else if (lt < -1) {
             return fastSqrt(pow2(x2dx) + pow2(y2dx)); // Distance between point 2 and position
         } else {
-            double distance = (ldy * x1dx - ldx * y1dx) / fastSqrt(ldxSquared + ldySquared);
+            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / fastSqrt(ldxSquared + ldySquared);
             return fastAbs(distance); // Distance from the line
         }
     }
