@@ -240,7 +240,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         int gridY = fastRound(y);
         
         // Precompute cell positions and lookup values
-        double[][][] cellData = new double[PRECOMPUTE_SIZE][PRECOMPUTE_SIZE][3];
+        double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
         for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
             for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
                 int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
@@ -255,10 +255,12 @@ public class PseudoErosionSampler implements NoiseSampler {
                 
                 double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
                 
-                double[] data = cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS];
-                data[0] = cellX;
-                data[1] = cellY;
-                data[2] = lookup;
+                // Calculate linear index for flattened array
+                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
+                
+                cellData[linearIndex] = cellX;
+                cellData[linearIndex + 1] = cellY;
+                cellData[linearIndex + 2] = lookup;
             }
         }
         
@@ -272,19 +274,19 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double connectedCellY = 0;
                 for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
                     for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
-                        double[] data = cellData[xni+PRECOMPUTE_RADIUS][yni+PRECOMPUTE_RADIUS];
-                        double lookup = data[2];
+                        int linearIndex = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yni + PRECOMPUTE_RADIUS)) * 3;
+                        double lookup = cellData[linearIndex + 2];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
-                            connectedCellX = data[0];
-                            connectedCellY = data[1];
+                            connectedCellX = cellData[linearIndex];
+                            connectedCellY = cellData[linearIndex + 1];
                         }
                     }
                 }
                 
-                double[] data = cellData[xi+PRECOMPUTE_RADIUS][yi+PRECOMPUTE_RADIUS];
-                double cellX = data[0];
-                double cellY = data[1];
+                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
+                double cellX = cellData[linearIndex];
+                double cellY = cellData[linearIndex + 1];
                 
                 // Calculate SDF for line between the current cell position and the surrounding cell with the lowest lookup
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
