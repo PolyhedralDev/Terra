@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
 
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
@@ -214,6 +215,8 @@ public class PseudoErosionSampler implements NoiseSampler {
     
     private final double frequency;
     
+    private final double inverseFrequency;
+    
     private final double cellularJitter;
     
     private final NoiseSampler lookup;
@@ -221,6 +224,7 @@ public class PseudoErosionSampler implements NoiseSampler {
     public PseudoErosionSampler(long salt, double frequency, NoiseSampler lookup, double jitterModifier) {
         this.salt = salt;
         this.frequency = frequency;
+        this.inverseFrequency = 1 / frequency;
         this.lookup = lookup;
         this.cellularJitter = 0.43701595 * jitterModifier;
     }
@@ -236,21 +240,27 @@ public class PseudoErosionSampler implements NoiseSampler {
         // Precompute cell positions and lookup values
         double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
         for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
+            int gridXi = gridX + xi;
+            int gridXiPrimed = gridXi * PRIME_X;
+            int xiKey = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
+            
             for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
-                int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
+                int gridYi = gridY + yi;
+                
+                int jitterIdx = hash(seed, gridXiPrimed, gridYi * PRIME_Y) & (255 << 1);
                 double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
                 double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
-                double cellX = gridX + xi + jitterX;
-                double cellY = gridY + yi + jitterY;
+                double cellX = gridXi + jitterX;
+                double cellY = gridYi + jitterY;
                 
                 // Transform to actual coordinates for lookup
-                double actualCellX = cellX * 1 / frequency;
-                double actualCellY = cellY * 1 / frequency;
+                double actualCellX = cellX * inverseFrequency;
+                double actualCellY = cellY * inverseFrequency;
                 
                 double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
                 
                 // Calculate linear index for flattened array
-                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
+                int linearIndex = (xiKey + yi) * 3;
                 
                 cellData[linearIndex] = cellX;
                 cellData[linearIndex + 1] = cellY;
@@ -260,6 +270,8 @@ public class PseudoErosionSampler implements NoiseSampler {
         
         // Iterate over nearby cells
         for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
+            int xiKey = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
+            
             for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
                 
                 // Find cell position with the lowest lookup value within moore neighborhood of neighbor
@@ -267,8 +279,10 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double connectedCellX = 0;
                 double connectedCellY = 0;
                 for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    int xniKey = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
+                    
                     for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
-                        int linearIndex = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yni + PRECOMPUTE_RADIUS)) * 3;
+                        int linearIndex = (xniKey + yni) * 3;
                         double lookup = cellData[linearIndex + 2];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
@@ -278,7 +292,7 @@ public class PseudoErosionSampler implements NoiseSampler {
                     }
                 }
                 
-                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
+                int linearIndex = (xiKey + yi) * 3;
                 double cellX = cellData[linearIndex];
                 double cellY = cellData[linearIndex + 1];
                 
@@ -307,34 +321,30 @@ public class PseudoErosionSampler implements NoiseSampler {
 
         if (x1 == x2 && y1 == y2) {
             // If positions are the same, just return the distance from the point
-            return Math.sqrt(Math.pow(x1dx, 2) + Math.pow(y1dx, 2));
+            return MathUtil.hypot(x1dx, y1dx);
         }
         
         double ldx = x1 - x2;
         double ldy = y1 - y2;
         
-        double ldxSquared = Math.pow(ldx, 2);
-        double ldySquared = Math.pow(ldy, 2);
+        double lineLengthSquared = Math.pow(ldx, 2) + Math.pow(ldy, 2);
         
         double x2dx = x - x2;
         double y2dx = y - y2;
         
         double dotProduct = Math.fma(ldy, y1dx, (ldx * x1dx));
-        double lt = dotProduct / (ldySquared + ldxSquared); // Position along the line
+        double lt = dotProduct / lineLengthSquared; // Position along the line
         
         if (lt > 0) {
-            return Math.sqrt(Math.pow(x1dx, 2) + Math.pow(y1dx, 2)); // Distance between point 1 and position
+            return MathUtil.hypot(x1dx, y1dx); // Distance between point 1 and position
         } else if (lt < -1) {
-            return Math.sqrt(Math.pow(x2dx, 2) + Math.pow(y2dx, 2)); // Distance between point 2 and position
+            return MathUtil.hypot(x2dx, y2dx); // Distance between point 2 and position
         } else {
-            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / Math.sqrt(ldxSquared + ldySquared);
+            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / Math.sqrt(lineLengthSquared);
             return Math.abs(distance); // Distance from the line
         }
     }
-    
-    private static int jitterIdx2D(int seed, int x, int y) {
-        return hash(seed, x * PRIME_X, y * PRIME_Y) & (255 << 1);
-    }
+ 
     
     public double getNoiseRaw(long sl, double x, double y, double z) {
         // TODO

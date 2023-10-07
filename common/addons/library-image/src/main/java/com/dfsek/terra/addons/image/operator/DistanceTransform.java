@@ -4,8 +4,7 @@ import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.api.noise.NoiseSampler;
-
-import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
+import com.dfsek.terra.api.util.MathUtil;
 
 
 /**
@@ -157,11 +156,11 @@ public class DistanceTransform {
                 double d = distances[x][y];
                 distances[x][y] = switch(normalization) {
                     case None -> distances[x][y];
-                    case Linear -> lerp(d, minDistance, -1, maxDistance, 1);
+                    case Linear -> MathUtil.linearMap(d, minDistance, -1, maxDistance, 1);
                     case SmoothPreserveZero -> {
                         if(minDistance > 0 || maxDistance < 0) {
                             // Can't preserve zero if it is not contained in range so just lerp
-                            yield lerp(distances[x][y], minDistance, -1, maxDistance, 1);
+                            yield MathUtil.linearMap(distances[x][y], minDistance, -1, maxDistance, 1);
                         } else {
                             if(d > 0) {
                                 yield Math.pow(d/maxDistance, 2);

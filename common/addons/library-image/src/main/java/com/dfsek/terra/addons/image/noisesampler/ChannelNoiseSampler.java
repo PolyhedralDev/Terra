@@ -4,8 +4,7 @@ import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
 import com.dfsek.terra.api.noise.NoiseSampler;
-
-import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
+import com.dfsek.terra.api.util.MathUtil;
 
 
 public class ChannelNoiseSampler implements NoiseSampler {
@@ -30,7 +29,7 @@ public class ChannelNoiseSampler implements NoiseSampler {
         int sample = colorSampler.apply((int) x, (int) y);
         int premultiplied = premultiply ? ColorUtil.premultiply(sample) : sample;
         double channelValue = channel.from(premultiplied);
-        return normalize ? lerp(channelValue, 0, -1, 255, 1) : channelValue;
+        return normalize ? MathUtil.linearMap(channelValue, 0, -1, 255, 1) : channelValue;
     }
     
     @Override
