@@ -1,10 +1,9 @@
 package com.dfsek.terra.lifecycle.util;
 
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import net.minecraft.village.VillagerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

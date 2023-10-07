@@ -1,8 +1,6 @@
 package com.dfsek.terra.addons.terrascript.parser.lang;
 
 
-import net.jafama.FastMath;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,21 +100,21 @@ public class Scope {
         }
         
         private void updateBoolSize(int size) {
-            this.boolSize = FastMath.max(boolSize, size);
+            this.boolSize = Math.max(boolSize, size);
             if(parent != null) {
                 parent.updateBoolSize(size);
             }
         }
 
         private void updateNumSize(int size) {
-            this.numSize = FastMath.max(numSize, size);
+            this.numSize = Math.max(numSize, size);
             if(parent != null) {
                 parent.updateNumSize(size);
             }
         }
 
         private void updateStrSize(int size) {
-            this.strSize = FastMath.max(strSize, size);
+            this.strSize = Math.max(strSize, size);
             if(parent != null) {
                 parent.updateStrSize(size);
             }

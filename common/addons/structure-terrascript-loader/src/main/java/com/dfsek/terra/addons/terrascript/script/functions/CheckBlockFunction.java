@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -45,9 +43,9 @@ public class CheckBlockFunction implements Function<String> {
                                .getBlockState(arguments.getOrigin()
                                                        .toVector3()
                                                        .mutable()
-                                                       .add(Vector3.of(FastMath.roundToInt(xz.getX()),
+                                                       .add(Vector3.of((int) Math.round(xz.getX()),
                                                                        y.apply(implementationArguments, scope)
-                                                                        .doubleValue(), FastMath.roundToInt(xz.getZ()))))
+                                                                        .doubleValue(), (int) Math.round(xz.getZ()))))
                                .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;

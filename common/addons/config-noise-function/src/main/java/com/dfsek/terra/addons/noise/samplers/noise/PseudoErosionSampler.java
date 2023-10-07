@@ -11,14 +11,8 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastAbs;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastFloor;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastMin;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastRound;
-import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.fastSqrt;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.hash;
-import static net.jafama.FastMath.pow2;
-import static net.jafama.FastMath.round;
+
 
 /**
  * Pseudo-erosion algorithm based on <a href="https://www.reddit.com/r/proceduralgeneration/comments/797fgw/iterative_pseudoerosion/">a reddit post</a>
@@ -236,13 +230,13 @@ public class PseudoErosionSampler implements NoiseSampler {
         double finalDistance = Double.MAX_VALUE;
         
         // Round sampled position to integers to derive grid coordinates
-        int gridX = fastRound(x);
-        int gridY = fastRound(y);
+        int gridX = (int) Math.round(x);
+        int gridY = (int) Math.round(y);
         
         // Precompute cell positions and lookup values
         double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
-        for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
-            for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
+        for (int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
+            for (int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
                 int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
                 double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
                 double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
@@ -264,42 +258,23 @@ public class PseudoErosionSampler implements NoiseSampler {
             }
         }
         
-        // Iterate over nearby cells
-        for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
-            for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
-                
-                // Find cell position with the lowest lookup value within moore neighborhood of neighbor
-                double lowestLookup = Double.MAX_VALUE;
-                double connectedCellX = 0;
-                double connectedCellY = 0;
-                for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
-                    for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
-                        int linearIndex = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yni + PRECOMPUTE_RADIUS)) * 3;
-                        double lookup = cellData[linearIndex + 2];
-                        if(lookup < lowestLookup) {
-                            lowestLookup = lookup;
-                            connectedCellX = cellData[linearIndex];
-                            connectedCellY = cellData[linearIndex + 1];
-                        }
-                    }
-                }
-                
-                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
-                double cellX = cellData[linearIndex];
-                double cellY = cellData[linearIndex + 1];
-                
-                // Calculate SDF for line between the current cell position and the surrounding cell with the lowest lookup
+        // Iterate over nearby cells and compute the minimum distance
+        for (int i = 0; i < cellData.length; i += 3) {
+            double cellX = cellData[i];
+            double cellY = cellData[i + 1];
+            
+            // Compute SDF for the line between the current cell position and the surrounding cell with the lowest lookup
+            double lowestLookup = Double.MAX_VALUE;
+            for (int j = 0; j < cellData.length; j += 3) {
+                double connectedCellX = cellData[j];
+                double connectedCellY = cellData[j + 1];
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
-                
-                // Set final return to the lowest computed distance
-                finalDistance = fastMin(finalDistance, distance);
+                lowestLookup = Math.min(lowestLookup, distance);
             }
+            
+            // Set final return to the lowest computed distance
+            finalDistance = Math.min(finalDistance, lowestLookup);
         }
-        
-        // Shows grid
-//        if(fastAbs(x-round(x)) > 0.5d - 0.01d || fastAbs(y-round(y)) > 0.5d - 0.01d) {
-//            return 0;
-//        }
         
         return finalDistance;
     }
@@ -313,14 +288,14 @@ public class PseudoErosionSampler implements NoiseSampler {
 
         if (x1 == x2 && y1 == y2) {
             // If positions are the same, just return the distance from the point
-            return fastSqrt(pow2(x1dx) + pow2(y1dx));
+            return Math.sqrt(Math.pow(x1dx, 2) + Math.pow(y1dx, 2));
         }
         
         double ldx = x1 - x2;
         double ldy = y1 - y2;
         
-        double ldxSquared = pow2(ldx);
-        double ldySquared = pow2(ldy);
+        double ldxSquared = Math.pow(ldx, 2);
+        double ldySquared = Math.pow(ldy, 2);
         
         double x2dx = x - x2;
         double y2dx = y - y2;
@@ -329,12 +304,12 @@ public class PseudoErosionSampler implements NoiseSampler {
         double lt = dotProduct / (ldySquared + ldxSquared); // Position along the line
         
         if (lt > 0) {
-            return fastSqrt(pow2(x1dx) + pow2(y1dx)); // Distance between point 1 and position
+            return Math.sqrt(Math.pow(x1dx, 2) + Math.pow(y1dx, 2)); // Distance between point 1 and position
         } else if (lt < -1) {
-            return fastSqrt(pow2(x2dx) + pow2(y2dx)); // Distance between point 2 and position
+            return Math.sqrt(Math.pow(x2dx, 2) + Math.pow(y2dx, 2)); // Distance between point 2 and position
         } else {
-            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / fastSqrt(ldxSquared + ldySquared);
-            return fastAbs(distance); // Distance from the line
+            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / Math.sqrt(ldxSquared + ldySquared);
+            return Math.abs(distance); // Distance from the line
         }
     }
     

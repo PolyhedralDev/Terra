@@ -20,7 +20,6 @@ package com.dfsek.terra.bukkit.generator;
 import org.bukkit.World;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +28,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
 
 

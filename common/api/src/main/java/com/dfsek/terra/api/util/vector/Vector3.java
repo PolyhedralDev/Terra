@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.api.util.vector;
 
-import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.util.MathUtil;
@@ -33,11 +32,11 @@ public class Vector3 {
     }
     
     public double length() {
-        return FastMath.sqrt(lengthSquared());
+        return Math.sqrt(lengthSquared());
     }
     
     public double inverseLength() {
-        return FastMath.invSqrtQuick(lengthSquared());
+        return MathUtil.invSqrt(lengthSquared());
     }
     
     /**
@@ -52,7 +51,7 @@ public class Vector3 {
      * @return the distance
      */
     public double distance(@NotNull Vector3 o) {
-        return FastMath.sqrt(FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ()));
+        return Math.sqrt(Math.pow(x - o.getX(), 2) + Math.pow(y - o.getY(), 2) + Math.pow(z - o.getZ(), 2));
     }
     
     /**
@@ -63,7 +62,7 @@ public class Vector3 {
      * @return the distance
      */
     public double distanceSquared(@NotNull Vector3 o) {
-        return FastMath.pow2(x - o.getX()) + FastMath.pow2(y - o.getY()) + FastMath.pow2(z - o.getZ());
+        return Math.pow(x - o.getX(), 2) + Math.pow(y - o.getY(), 2) + Math.pow(z - o.getZ(), 2);
     }
     
     /**
@@ -94,15 +93,15 @@ public class Vector3 {
     
     
     public int getBlockX() {
-        return FastMath.floorToInt(x);
+        return (int) Math.floor(x);
     }
     
     public int getBlockY() {
-        return FastMath.floorToInt(y);
+        return (int) Math.floor(y);
     }
     
     public int getBlockZ() {
-        return FastMath.floorToInt(z);
+        return (int) Math.floor(z);
     }
     
     /**
@@ -201,11 +200,11 @@ public class Vector3 {
         }
         
         public double length() {
-            return FastMath.sqrt(lengthSquared());
+            return Math.sqrt(lengthSquared());
         }
         
         public double inverseLength() {
-            return FastMath.invSqrtQuick(lengthSquared());
+            return MathUtil.invSqrt(lengthSquared());
         }
         
         public Mutable normalize() {
@@ -323,8 +322,8 @@ public class Vector3 {
             double x = getX(), y = getY(), z = getZ();
             double x2 = axis.getX(), y2 = axis.getY(), z2 = axis.getZ();
             
-            double cosTheta = Math.cos(angle);
-            double sinTheta = Math.sin(angle);
+            double cosTheta = MathUtil.cos(angle);
+            double sinTheta = MathUtil.sin(angle);
             double dotProduct = this.dot(axis);
             
             double xPrime = x2 * dotProduct * (1d - cosTheta)
@@ -355,8 +354,8 @@ public class Vector3 {
          */
         @NotNull
         public Mutable rotateAroundX(double angle) {
-            double angleCos = Math.cos(angle);
-            double angleSin = Math.sin(angle);
+            double angleCos = MathUtil.cos(angle);
+            double angleSin = MathUtil.sin(angle);
             
             double y = angleCos * getY() - angleSin * getZ();
             double z = angleSin * getY() + angleCos * getZ();
@@ -378,8 +377,8 @@ public class Vector3 {
          */
         @NotNull
         public Mutable rotateAroundY(double angle) {
-            double angleCos = Math.cos(angle);
-            double angleSin = Math.sin(angle);
+            double angleCos = MathUtil.cos(angle);
+            double angleSin = MathUtil.sin(angle);
             
             double x = angleCos * getX() + angleSin * getZ();
             double z = -angleSin * getX() + angleCos * getZ();
@@ -401,8 +400,8 @@ public class Vector3 {
          */
         @NotNull
         public Mutable rotateAroundZ(double angle) {
-            double angleCos = Math.cos(angle);
-            double angleSin = Math.sin(angle);
+            double angleCos = MathUtil.cos(angle);
+            double angleSin = MathUtil.sin(angle);
             
             double x = angleCos * getX() - angleSin * getY();
             double y = angleSin * getX() + angleCos * getY();
@@ -420,15 +419,15 @@ public class Vector3 {
         }
         
         public int getBlockX() {
-            return FastMath.floorToInt(x);
+            return (int) Math.floor(x);
         }
         
         public int getBlockY() {
-            return FastMath.floorToInt(y);
+            return (int) Math.floor(y);
         }
         
         public int getBlockZ() {
-            return FastMath.floorToInt(z);
+            return (int) Math.floor(z);
         }
     }
 }

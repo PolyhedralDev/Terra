@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,9 +72,9 @@ public class BlockFunction implements Function<Void> {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
         try {
-            Vector3.Mutable set = Vector3.of(FastMath.roundToInt(xz.getX()),
+            Vector3.Mutable set = Vector3.of((int) Math.round(xz.getX()),
                                              y.apply(implementationArguments, scope).doubleValue(),
-                                             FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
+                                             (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));

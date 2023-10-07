@@ -19,7 +19,6 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.Platform;
@@ -45,8 +44,8 @@ public class SamplerProvider {
     }
     
     public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
-        int cx = FastMath.floorDiv(x, 16);
-        int cz = FastMath.floorDiv(z, 16);
+        int cx = Math.floorDiv(x, 16);
+        int cz = Math.floorDiv(z, 16);
         return getChunk(cx, cz, world, provider);
     }
     

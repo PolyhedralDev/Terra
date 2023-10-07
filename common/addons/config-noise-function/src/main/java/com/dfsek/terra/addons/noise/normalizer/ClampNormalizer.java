@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.noise.normalizer;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -24,6 +22,6 @@ public class ClampNormalizer extends Normalizer {
     
     @Override
     public double normalize(double in) {
-        return FastMath.max(FastMath.min(in, max), min);
+        return Math.max(Math.min(in, max), min);
     }
 }

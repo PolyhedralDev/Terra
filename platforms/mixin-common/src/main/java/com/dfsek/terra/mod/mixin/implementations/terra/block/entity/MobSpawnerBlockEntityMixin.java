@@ -24,7 +24,6 @@ import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.MobSpawnerLogic;
 import org.jetbrains.annotations.NotNull;

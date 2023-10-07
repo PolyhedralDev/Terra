@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
@@ -27,8 +25,8 @@ public class PatternLocator implements Locator {
     
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        int min = FastMath.max(column.getMinY(), search.getMin());
-        int max = FastMath.min(column.getMaxY(), search.getMax());
+        int min = Math.max(column.getMinY(), search.getMin());
+        int max = Math.min(column.getMaxY(), search.getMax());
         if(min >= max) return BinaryColumn.getNull();
         return new BinaryColumn(min, max, y -> pattern.matches(y, column));
     }

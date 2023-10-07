@@ -1,9 +1,7 @@
 package com.dfsek.terra.bukkit.nms.v1_20_R1;
 
 import net.minecraft.core.Holder;
-import java.util.stream.Stream;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -11,13 +9,9 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-
-import static net.minecraft.world.level.biome.Biome.ClimateSettings;
-import static net.minecraft.world.level.biome.Biome.Precipitation;
 
 public class NMSBiomeInjector {
 

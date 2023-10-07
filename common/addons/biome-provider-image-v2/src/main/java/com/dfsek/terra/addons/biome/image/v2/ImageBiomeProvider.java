@@ -9,8 +9,8 @@ package com.dfsek.terra.addons.biome.image.v2;
 
 import java.util.Optional;
 
-import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 

@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.noise.normalizer;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
@@ -41,8 +39,8 @@ public class NormalNormalizer extends Normalizer {
                 end = mid;
             }
         }
-        double left = FastMath.abs(lookup[start] - in);
-        double right = FastMath.abs(lookup[end] - in);
+        double left = Math.abs(lookup[start] - in);
+        double right = Math.abs(lookup[end] - in);
         
         double fin;
         if(left <= right) {

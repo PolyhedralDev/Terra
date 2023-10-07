@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
-import net.jafama.FastMath;
-
 import java.util.Random;
 
 import com.dfsek.terra.api.structure.feature.Distributor;
@@ -21,21 +19,12 @@ public class PaddedGridDistributor implements Distributor {
         this.cellWidth = width + padding;
     }
     
-    private static long murmur64(long h) {
-        h ^= h >>> 33;
-        h *= 0xff51afd7ed558ccdL;
-        h ^= h >>> 33;
-        h *= 0xc4ceb9fe1a85ec53L;
-        h ^= h >>> 33;
-        return h;
-    }
-    
     @Override
     public boolean matches(int x, int z, long seed) {
-        int cellX = FastMath.floorDiv(x, cellWidth);
-        int cellZ = FastMath.floorDiv(z, cellWidth);
+        int cellX = Math.floorDiv(x, cellWidth);
+        int cellZ = Math.floorDiv(z, cellWidth);
         
-        Random random = new Random((murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
+        Random random = new Random((MathUtil.murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
         
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;

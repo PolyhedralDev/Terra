@@ -7,9 +7,8 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
 
 
 public class GaborNoiseSampler extends NoiseFunction {
@@ -17,11 +16,11 @@ public class GaborNoiseSampler extends NoiseFunction {
     private double k = 1.0;
     private double a = 0.1;
     private double f0 = 0.625;
-    private double kernelRadius = (FastMath.sqrt(-FastMath.log(0.05) / Math.PI) / a);
+    private double kernelRadius = (Math.sqrt(-Math.log(0.05) / Math.PI) / a);
     private double impulsesPerKernel = 64d;
     private double impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
     private double impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
-    private double g = FastMath.exp(-impulsesPerCell);
+    private double g = Math.exp(-impulsesPerCell);
     
     private double omega0 = Math.PI * 0.25;
     private boolean isotropic = true;
@@ -32,17 +31,17 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     private void recalculateRadiusAndDensity() {
-        kernelRadius = (FastMath.sqrt(-FastMath.log(0.05) / Math.PI) / this.a);
+        kernelRadius = (Math.sqrt(-Math.log(0.05) / Math.PI) / this.a);
         impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
         impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
-        g = FastMath.exp(-impulsesPerCell);
+        g = Math.exp(-impulsesPerCell);
     }
     
     private double gaborNoise(long seed, double x, double y) {
         x /= kernelRadius;
         y /= kernelRadius;
-        int xi = fastFloor(x);
-        int yi = fastFloor(y);
+        int xi = (int) Math.floor(x);
+        int yi = (int) Math.floor(y);
         double xf = x - xi;
         double yf = y - yi;
         double noise = 0;
@@ -55,7 +54,7 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     private double calculateCell(long seed, int xi, int yi, double x, double y) {
-        long mashedSeed = murmur64(31L * xi + yi) + seed;
+        long mashedSeed = MathUtil.murmur64(31L * xi + yi) + seed;
         
         double gaussianSource = (rand.getNoiseRaw(mashedSeed++) + 1) / 2;
         int impulses = 0;
@@ -73,7 +72,7 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     private double gabor(double omega_0, double x, double y) {
-        return k * (FastMath.exp(-Math.PI * (a * a) * (x * x + y * y)) * fastCos(2 * Math.PI * f0 * (x * fastCos(omega_0) + y * fastSin(
+        return k * (Math.exp(-Math.PI * (a * a) * (x * x + y * y)) * MathUtil.cos(2 * Math.PI * f0 * (x * MathUtil.cos(omega_0) + y * MathUtil.sin(
                 omega_0))));
     }
     

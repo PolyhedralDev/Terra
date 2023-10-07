@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -48,9 +46,9 @@ public class BiomeFunction implements Function<String> {
         return grid.getBiome(arguments.getOrigin()
                                       .toVector3()
                                       .mutable()
-                                      .add(Vector3.of(FastMath.roundToInt(xz.getX()),
+                                      .add(Vector3.of((int) Math.round(xz.getX()),
                                                       y.apply(implementationArguments, scope).intValue(),
-                                                      FastMath.roundToInt(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
+                                                      (int) Math.round(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
     }
     
     @Override

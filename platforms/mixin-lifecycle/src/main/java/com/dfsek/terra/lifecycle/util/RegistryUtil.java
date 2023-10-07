@@ -1,8 +1,8 @@
 package com.dfsek.terra.lifecycle.util;
 
 import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
 
 import com.dfsek.terra.mod.data.Codecs;
 
