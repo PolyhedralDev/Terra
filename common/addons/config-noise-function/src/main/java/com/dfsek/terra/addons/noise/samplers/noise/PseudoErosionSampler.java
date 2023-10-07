@@ -235,8 +235,8 @@ public class PseudoErosionSampler implements NoiseSampler {
         
         // Precompute cell positions and lookup values
         double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
-        for (int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
-            for (int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
+        for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
+            for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
                 int jitterIdx = jitterIdx2D(seed, gridX + xi, gridY + yi);
                 double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
                 double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
@@ -258,23 +258,42 @@ public class PseudoErosionSampler implements NoiseSampler {
             }
         }
         
-        // Iterate over nearby cells and compute the minimum distance
-        for (int i = 0; i < cellData.length; i += 3) {
-            double cellX = cellData[i];
-            double cellY = cellData[i + 1];
-            
-            // Compute SDF for the line between the current cell position and the surrounding cell with the lowest lookup
-            double lowestLookup = Double.MAX_VALUE;
-            for (int j = 0; j < cellData.length; j += 3) {
-                double connectedCellX = cellData[j];
-                double connectedCellY = cellData[j + 1];
+        // Iterate over nearby cells
+        for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
+            for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
+                
+                // Find cell position with the lowest lookup value within moore neighborhood of neighbor
+                double lowestLookup = Double.MAX_VALUE;
+                double connectedCellX = 0;
+                double connectedCellY = 0;
+                for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
+                        int linearIndex = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yni + PRECOMPUTE_RADIUS)) * 3;
+                        double lookup = cellData[linearIndex + 2];
+                        if(lookup < lowestLookup) {
+                            lowestLookup = lookup;
+                            connectedCellX = cellData[linearIndex];
+                            connectedCellY = cellData[linearIndex + 1];
+                        }
+                    }
+                }
+                
+                int linearIndex = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE + (yi + PRECOMPUTE_RADIUS)) * 3;
+                double cellX = cellData[linearIndex];
+                double cellY = cellData[linearIndex + 1];
+                
+                // Calculate SDF for line between the current cell position and the surrounding cell with the lowest lookup
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
-                lowestLookup = Math.min(lowestLookup, distance);
+                
+                // Set final return to the lowest computed distance
+                finalDistance = Math.min(finalDistance, distance);
             }
-            
-            // Set final return to the lowest computed distance
-            finalDistance = Math.min(finalDistance, lowestLookup);
         }
+        
+        // Shows grid
+        //        if(fastAbs(x-round(x)) > 0.5d - 0.01d || fastAbs(y-round(y)) > 0.5d - 0.01d) {
+        //            return 0;
+        //        }
         
         return finalDistance;
     }
