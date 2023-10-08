@@ -317,20 +317,20 @@ public class PseudoErosionSampler implements NoiseSampler {
         double ldx = x1 - x2;
         double ldy = y1 - y2;
         
-        double lineLengthSquared = Math.pow(ldx, 2) + Math.pow(ldy, 2);
+        double invLineLengthSquared = 1 / (Math.pow(ldx, 2) + Math.pow(ldy, 2));
         
         double x2dx = x - x2;
         double y2dx = y - y2;
         
         double dotProduct = Math.fma(ldy, y1dx, (ldx * x1dx));
-        double lt = dotProduct / lineLengthSquared; // Position along the line
+        double lt = dotProduct * invLineLengthSquared; // Position along the line
         
         if (lt > 0) {
             return MathUtil.hypot(x1dx, y1dx); // Distance between point 1 and position
         } else if (lt < -1) {
             return MathUtil.hypot(x2dx, y2dx); // Distance between point 2 and position
         } else {
-            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) / Math.sqrt(lineLengthSquared);
+            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) * Math.sqrt(invLineLengthSquared);
             return Math.abs(distance); // Distance from the line
         }
     }
