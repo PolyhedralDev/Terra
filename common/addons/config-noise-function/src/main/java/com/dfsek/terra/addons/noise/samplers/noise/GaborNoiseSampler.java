@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
+import java.util.List;
+
 
 public class GaborNoiseSampler extends NoiseFunction {
     private final WhiteNoiseSampler rand;
@@ -103,12 +105,12 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double z) {
+    public double getNoiseRaw(long seed, double x, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return gaborNoise(seed, x, z);
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return gaborNoise(seed, x, z);
     }
 }

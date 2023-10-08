@@ -12,6 +12,8 @@ import com.dfsek.terra.api.util.MathUtil;
 
 import com.google.errorprone.annotations.InlineMe;
 
+import java.util.List;
+
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.hash;
@@ -28,7 +30,7 @@ import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.hash;
  * The algorithm iterates through the cells near the sample point, calculates the distance between the position and the line segment
  * between the cell and its connected cell, and returns the minimum of these distances.
  */
-public class PseudoErosionSampler implements NoiseSampler {
+public class PseudoErosionSampler extends NoiseFunction {
     private static final double[] RAND_VECS_3D = {
             -0.7292736885d, -0.6618439697d, 0.1735581948d, 0, 0.790292081d, -0.5480887466d, -0.2739291014d, 0, 0.7217578935d, 0.6226212466d,
             -0.3023380997d, 0, 0.565683137d, -0.8208298145d, -0.0790000257d, 0, 0.760049034d, -0.5555979497d, -0.3370999617d, 0,
@@ -232,22 +234,29 @@ public class PseudoErosionSampler implements NoiseSampler {
     }
     
     
-    public double getNoiseRaw(long sl, double x, double y) {
+    public void generateContextRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
-        double finalDistance = Double.MAX_VALUE;
         
         // Round sampled position to integers to derive grid coordinates
         int gridX = (int) Math.round(x);
         int gridY = (int) Math.round(y);
         
+        int nextContextLayer = contextLayer + 1;
+        int nextContextRadius = contextRadius + getContextRadius();
+        
+        context.add(contextLayer, new double[0]);
+        this.lookup.generateContext(seed, x, y, context, nextContextLayer, nextContextRadius);
+        
+        int contextCircumference = (contextRadius * 2 + 1);
+        int contextSizeArraySize = contextCircumference * contextCircumference * 3;
         // Precompute cell positions and lookup values
-        double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
+        double[] cellData = new double[contextSizeArraySize];
         int cellDataIndex = 0;
-        for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
+        for(int xi = -contextRadius; xi <= contextRadius; xi++) {
             int gridXi = gridX + xi;
             int gridXiPrimed = gridXi * PRIME_X;
             
-            for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
+            for(int yi = -contextRadius; yi <= contextRadius; yi++) {
                 int gridYi = gridY + yi;
                 
                 int jitterIdx = hash(seed, gridXiPrimed, gridYi * PRIME_Y) & (255 << 1);
@@ -258,7 +267,7 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double actualCellX = cellX * inverseFrequency;
                 double actualCellY = cellY * inverseFrequency;
                 
-                double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
+                double lookup = this.lookup.noise(seed, actualCellX, actualCellY, context, nextContextLayer, nextContextRadius);
                 
                 cellData[cellDataIndex++] = cellX;
                 cellData[cellDataIndex++] = cellY;
@@ -266,16 +275,34 @@ public class PseudoErosionSampler implements NoiseSampler {
             }
         }
         
+        context.add(contextLayer, cellData);
+    }
+    
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+        double finalDistance = Double.MAX_VALUE;
+        
+        double[] cellData = context.get(contextLayer);
+        
+        int xIndexSize = (contextRadius * 6) + 3;
+
+        int deltaRadius = (contextRadius - NEARBY_CELLS_RADIUS);
+        
+        int xIndex = xIndexSize * deltaRadius;
+        int yIndex = 3 * deltaRadius;
+        
         // Iterate over nearby cells
-        cellDataIndex = 21;
+        int cellDataIndex = xIndex;
+        //int cellDataIndex = 21;
         for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
-            cellDataIndex += 3;
+            cellDataIndex += yIndex;
+            //cellDataIndex += 3;
             for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
                 
                 // Find cell position with the lowest lookup value within moore neighborhood of neighbor
                 double lowestLookup = Double.MAX_VALUE;
                 double connectedCellX = 0;
                 double connectedCellY = 0;
+                //int cellDataIndexN = cellDataIndex - xIndex - 1;
                 int cellDataIndexN = cellDataIndex - 22;
                 int yniMin = yi - MAX_CONNECTION_RADIUS;
                 int yniMax = yi + MAX_CONNECTION_RADIUS;
@@ -304,7 +331,8 @@ public class PseudoErosionSampler implements NoiseSampler {
                 
                 cellDataIndex += 3;
             }
-            cellDataIndex += 3;
+            cellDataIndex += yIndex;
+            //cellDataIndex += 3;
         }
         
         return finalDistance;
@@ -344,18 +372,33 @@ public class PseudoErosionSampler implements NoiseSampler {
     }
  
     
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         // TODO
         return 0;
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
-        return getNoiseRaw(seed + salt, x * frequency, y * frequency);
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency, context, contextLayer, contextRadius);
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
-        return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency);
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency, context, contextLayer, contextRadius);
+    }
+    
+    @Override
+    public void generateContext(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+        generateContextRaw(seed + salt, x * frequency, y * frequency, context, contextLayer, contextRadius);
+    }
+    
+    @Override
+    public void generateContext(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+        //no-op
+    }
+    
+    @Override
+    public int getContextRadius() {
+        return PRECOMPUTE_RADIUS;
     }
 }

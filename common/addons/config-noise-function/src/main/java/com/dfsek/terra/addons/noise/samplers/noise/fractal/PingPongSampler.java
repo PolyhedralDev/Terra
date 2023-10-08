@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
+import java.util.List;
+
 
 public class PingPongSampler extends FractalNoiseFunction {
     private double pingPongStrength = 2.0;
@@ -29,7 +31,7 @@ public class PingPongSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
@@ -47,7 +49,7 @@ public class PingPongSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         

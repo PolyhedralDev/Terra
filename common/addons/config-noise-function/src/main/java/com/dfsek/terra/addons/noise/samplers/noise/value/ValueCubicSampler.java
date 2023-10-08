@@ -9,10 +9,12 @@ package com.dfsek.terra.addons.noise.samplers.noise.value;
 
 import com.dfsek.terra.api.util.MathUtil;
 
+import java.util.List;
+
 
 public class ValueCubicSampler extends ValueStyleNoise {
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int x1 = (int) Math.floor(x);
         int y1 = (int) Math.floor(y);
@@ -42,7 +44,7 @@ public class ValueCubicSampler extends ValueStyleNoise {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int x1 = (int) Math.floor(x);
         int y1 = (int) Math.floor(y);

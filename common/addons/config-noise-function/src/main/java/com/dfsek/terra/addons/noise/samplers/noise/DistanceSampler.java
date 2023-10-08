@@ -1,6 +1,9 @@
 package com.dfsek.terra.addons.noise.samplers.noise;
 
 
+import java.util.List;
+
+
 public class DistanceSampler extends NoiseFunction {
     
     private final DistanceFunction distanceFunction;
@@ -22,7 +25,7 @@ public class DistanceSampler extends NoiseFunction {
     }
    
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double dx = x - ox;
         double dy = y - oz;
         if (normalize && (Math.abs(dx) > radius || Math.abs(dy) > radius)) return 1;
@@ -32,7 +35,7 @@ public class DistanceSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double dx = x - ox;
         double dy = y - oy;
         double dz = z - oz;

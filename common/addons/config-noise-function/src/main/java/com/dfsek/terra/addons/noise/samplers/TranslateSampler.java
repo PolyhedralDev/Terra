@@ -2,6 +2,8 @@ package com.dfsek.terra.addons.noise.samplers;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 public class TranslateSampler implements NoiseSampler {
     
@@ -16,12 +18,12 @@ public class TranslateSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return sampler.noise(seed, x - dx, y - dz);
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return sampler.noise(seed, x - dx, y - dy, z - dz);
     }
 }

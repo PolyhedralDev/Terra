@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.noise.normalizer;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 public abstract class Normalizer implements NoiseSampler {
     private final NoiseSampler sampler;
@@ -20,12 +22,12 @@ public abstract class Normalizer implements NoiseSampler {
     public abstract double normalize(double in);
     
     @Override
-    public double noise(long seed, double x, double y) {
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return normalize(sampler.noise(seed, x, y));
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return normalize(sampler.noise(seed, x, y, z));
     }
 }

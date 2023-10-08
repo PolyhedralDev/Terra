@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import java.util.List;
+
+
 public class SimplexSampler extends SimplexStyleSampler {
     private static final Double2[] GRAD_2D = {
             new Double2(-1, -1), new Double2(1, -1), new Double2(-1, 1), new Double2(1, 1),
@@ -58,7 +61,7 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y) * F2;
         int i = (int) Math.floor(x + t);
@@ -115,7 +118,7 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y + z) * F3;
         int i = (int) Math.floor(x + t);

@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise;
 
+import java.util.List;
+
+
 /**
  * Sampler3D implementation that returns a constant.
  */
@@ -18,12 +21,12 @@ public class ConstantSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return constant;
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return constant;
     }
 }

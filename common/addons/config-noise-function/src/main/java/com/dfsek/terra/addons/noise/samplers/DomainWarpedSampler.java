@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.noise.samplers;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 public class DomainWarpedSampler implements NoiseSampler {
     private final NoiseSampler function;
@@ -22,7 +24,7 @@ public class DomainWarpedSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return function.noise(seed++,
                               x + warp.noise(seed++, x, y) * amplitude,
                               y + warp.noise(seed, x, y) * amplitude
@@ -30,7 +32,7 @@ public class DomainWarpedSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return function.noise(seed++,
                               x + warp.noise(seed++, x, y, z) * amplitude,
                               y + warp.noise(seed++, x, y, z) * amplitude,

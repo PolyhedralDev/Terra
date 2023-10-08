@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 /**
  * NoiseSampler implementation for Cellular (Voronoi/Worley) Noise.
@@ -219,7 +221,7 @@ public class CellularSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int xr = (int) Math.round(x);
         int yr = (int) Math.round(y);
@@ -273,9 +275,7 @@ public class CellularSampler extends NoiseFunction {
         
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
             distance0 = Math.sqrt(distance0);
-            if(returnType != ReturnType.CellValue) {
-                distance1 = Math.sqrt(distance1);
-            }
+            distance1 = Math.sqrt(distance1);
         }
         
         return switch(returnType) {
@@ -298,7 +298,7 @@ public class CellularSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int xr = (int) Math.round(x);
         int yr = (int) Math.round(y);

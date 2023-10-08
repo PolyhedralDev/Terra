@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.noise.samplers;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 public class KernelSampler implements NoiseSampler {
     private final double[][] kernel;
@@ -25,7 +27,7 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         x *= frequency;
         y *= frequency;
         double accumulator = 0;
@@ -43,7 +45,7 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         x *= frequency;
         y *= frequency;
         z *= frequency;

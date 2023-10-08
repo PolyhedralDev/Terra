@@ -9,6 +9,9 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public abstract class NoiseFunction implements NoiseSampler {
     // Hashing
@@ -50,16 +53,32 @@ public abstract class NoiseFunction implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
-        return getNoiseRaw(seed + salt, x * frequency, y * frequency);
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency, context, contextLayer, contextRadius);
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
-        return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency);
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+        return getNoiseRaw(seed + salt, x * frequency, y * frequency, z * frequency, context, contextLayer, contextRadius);
     }
     
-    public abstract double getNoiseRaw(long seed, double x, double y);
+    public double getNoiseRaw(long seed, double x, double y) {
+        int contextRadius = getContextRadius();
+        
+        ArrayList<double[]> list = new ArrayList<>();
+        generateContext(seed, x, y, list, 0, contextRadius);
+        return getNoiseRaw(seed, x, y, list, 0, getContextRadius());
+    }
     
-    public abstract double getNoiseRaw(long seed, double x, double y, double z);
+    public double getNoiseRaw(long seed, double x, double y, double z) {
+        int contextRadius = getContextRadius();
+        
+        ArrayList<double[]> list = new ArrayList<>();
+        generateContext(seed, x, y, z, list, 0, contextRadius);
+        return getNoiseRaw(seed, x, y, z, list, 0, getContextRadius());
+    }
+    
+    public abstract double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius);
+    
+    public abstract double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius);
 }

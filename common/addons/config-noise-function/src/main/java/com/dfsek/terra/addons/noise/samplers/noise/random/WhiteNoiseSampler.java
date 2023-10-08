@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.noise.samplers.noise.random;
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.util.MathUtil;
 
+import java.util.List;
+
 
 /**
  * NoiseSampler implementation to produce random, uniformly distributed (white) noise.
@@ -40,12 +42,12 @@ public class WhiteNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return (getNoiseUnmapped(seed, x, y) - 1.5) * 2;
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return (getNoiseUnmapped(seed, x, y, z) - 1.5) * 2;
     }
     

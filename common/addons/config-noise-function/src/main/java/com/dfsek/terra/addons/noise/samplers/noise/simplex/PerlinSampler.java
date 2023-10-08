@@ -9,13 +9,15 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
 import com.dfsek.terra.api.util.MathUtil;
 
+import java.util.List;
+
 
 /**
  * NoiseSampler implementation to provide Perlin Noise.
  */
 public class PerlinSampler extends SimplexStyleSampler {
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int x0 = (int) Math.floor(x);
         int y0 = (int) Math.floor(y);
@@ -40,7 +42,7 @@ public class PerlinSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         int x0 = (int) Math.floor(x);
         int y0 = (int) Math.floor(y);
