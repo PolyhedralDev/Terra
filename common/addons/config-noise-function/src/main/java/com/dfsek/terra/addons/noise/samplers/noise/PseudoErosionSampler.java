@@ -239,10 +239,10 @@ public class PseudoErosionSampler implements NoiseSampler {
         
         // Precompute cell positions and lookup values
         double[] cellData = new double[PRECOMPUTE_SIZE * PRECOMPUTE_SIZE * 3];
+        int cellDataIndex = 0;
         for(int xi = -PRECOMPUTE_RADIUS; xi <= PRECOMPUTE_RADIUS; xi++) {
             int gridXi = gridX + xi;
             int gridXiPrimed = gridXi * PRIME_X;
-            int xiKey = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
             
             for(int yi = -PRECOMPUTE_RADIUS; yi <= PRECOMPUTE_RADIUS; yi++) {
                 int gridYi = gridY + yi;
@@ -259,12 +259,9 @@ public class PseudoErosionSampler implements NoiseSampler {
                 
                 double lookup = this.lookup.noise(seed, actualCellX, actualCellY);
                 
-                // Calculate linear index for flattened array
-                int linearIndex = (xiKey + yi) * 3;
-                
-                cellData[linearIndex] = cellX;
-                cellData[linearIndex + 1] = cellY;
-                cellData[linearIndex + 2] = lookup;
+                cellData[cellDataIndex++] = cellX;
+                cellData[cellDataIndex++] = cellY;
+                cellData[cellDataIndex++] = lookup;
             }
         }
         
