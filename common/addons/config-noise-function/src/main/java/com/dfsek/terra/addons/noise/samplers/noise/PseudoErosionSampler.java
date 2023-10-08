@@ -276,17 +276,19 @@ public class PseudoErosionSampler implements NoiseSampler {
                 double lowestLookup = Double.MAX_VALUE;
                 double connectedCellX = 0;
                 double connectedCellY = 0;
-                for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
-                    int xniKey = ((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
-                    
-                    for(int yni = yi - MAX_CONNECTION_RADIUS; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
-                        int linearIndex = (xniKey + yni) * 3;
-                        double lookup = cellData[linearIndex + 2];
+                int xni = xi - MAX_CONNECTION_RADIUS;
+                int yni = yi - MAX_CONNECTION_RADIUS;
+                int linearIndexIterator = (((((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS) + yni) * 3) + 2;
+                
+                for(; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    for(; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
+                        double lookup = cellData[linearIndexIterator];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
-                            connectedCellX = cellData[linearIndex];
-                            connectedCellY = cellData[linearIndex + 1];
+                            connectedCellX = cellData[linearIndexIterator - 2];
+                            connectedCellY = cellData[linearIndexIterator - 1];
                         }
+                        linearIndexIterator += 3;
                     }
                 }
                 
