@@ -13,6 +13,7 @@ object Versions {
             const val apacheText = "1.9"
             const val apacheIO = "2.6"
             const val fastutil = "8.5.6"
+            const val cpuFeaturesJava = "1.0.1"
         }
     }
     

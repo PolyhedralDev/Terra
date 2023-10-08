@@ -8,4 +8,8 @@ dependencies {
     
     api("com.github.ben-manes.caffeine:caffeine:3.1.0")
 
+    api("io.github.aecsocket", "cpu-features-jni", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-linux", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-windows", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-macos", Versions.Libraries.Internal.cpuFeaturesJava)
 }

@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
+import com.google.errorprone.annotations.InlineMe;
+
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_X;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.PRIME_Y;
 import static com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction.hash;
@@ -229,6 +231,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         this.cellularJitter = 0.43701595 * jitterModifier;
     }
     
+    
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
         double finalDistance = Double.MAX_VALUE;
@@ -248,8 +251,8 @@ public class PseudoErosionSampler implements NoiseSampler {
                 int gridYi = gridY + yi;
                 
                 int jitterIdx = hash(seed, gridXiPrimed, gridYi * PRIME_Y) & (255 << 1);
-                double cellX = Math.fma(RAND_VECS_2D[jitterIdx], cellularJitter, gridXi);
-                double cellY = Math.fma(RAND_VECS_2D[jitterIdx | 1], cellularJitter, gridYi);
+                double cellX = MathUtil.fma(RAND_VECS_2D[jitterIdx], cellularJitter, gridXi);
+                double cellY = MathUtil.fma(RAND_VECS_2D[jitterIdx | 1], cellularJitter, gridYi);
                 
                 // Transform to actual coordinates for lookup
                 double actualCellX = cellX * inverseFrequency;
@@ -322,7 +325,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         double x2dx = x - x2;
         double y2dx = y - y2;
         
-        double dotProduct = Math.fma(ldy, y1dx, (ldx * x1dx));
+        double dotProduct = MathUtil.fma(ldy, y1dx, (ldx * x1dx));
         double lt = dotProduct * invLineLengthSquared; // Position along the line
         
         if (lt > 0) {
@@ -330,7 +333,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         } else if (lt < -1) {
             return MathUtil.hypot(x2dx, y2dx); // Distance between point 2 and position
         } else {
-            double distance = Math.fma(ldy, x1dx, (-(ldx * y1dx))) * Math.sqrt(invLineLengthSquared);
+            double distance = MathUtil.fma(ldy, x1dx, (-(ldx * y1dx))) * Math.sqrt(invLineLengthSquared);
             return Math.abs(distance); // Distance from the line
         }
     }

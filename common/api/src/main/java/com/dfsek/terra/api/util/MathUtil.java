@@ -7,6 +7,11 @@
 
 package com.dfsek.terra.api.util;
 
+import cpufeatures.CpuFeatures;
+import cpufeatures.aarch64.Aarch64Feature;
+import cpufeatures.arm.ArmFeature;
+import cpufeatures.x86.X86Feature;
+
 import java.util.List;
 
 
@@ -18,6 +23,26 @@ public final class MathUtil {
     private static final double radFull, radToIndex;
     private static final double degFull, degToIndex;
     private static final double[] sin, cos;
+    
+    public static final boolean hasFMA;
+    
+    static {
+        boolean configHasFMA = false;
+        try {
+                CpuFeatures.load();
+                configHasFMA = switch (CpuFeatures.getArchitecture()) {
+                    case UNSUPPORTED -> false;
+                    case AARCH64 -> CpuFeatures.getAarch64Info().has(Aarch64Feature.ASIMD);
+                    case ARM -> CpuFeatures.getArmInfo().has(ArmFeature.NEON);
+                    case RISCV -> true;
+                    case X86 -> CpuFeatures.getX86Info().has(X86Feature.FMA3);
+                };
+        } catch (Throwable t) {
+            System.err.println("Failed to determine FMA support, assuming no FMA support");
+        }
+        hasFMA = configHasFMA;
+        System.out.println("FMA: " + configHasFMA);
+    }
     
     static {
         SIN_BITS = 12;
@@ -258,5 +283,13 @@ public final class MathUtil {
     
     public static double hypot(double x, double y) {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+    
+    public static double fma(double a, double b, double c) {
+        if (hasFMA) {
+            return Math.fma(a, b, c);
+        } else {
+            return a * b + c;
+        }
     }
 }
