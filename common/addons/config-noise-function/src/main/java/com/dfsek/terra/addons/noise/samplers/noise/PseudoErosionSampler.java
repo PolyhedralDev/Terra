@@ -325,7 +325,7 @@ public class PseudoErosionSampler implements NoiseSampler {
         double ldx = x1 - x2;
         double ldy = y1 - y2;
         
-        double invLineLengthSquared = 1 / (Math.pow(ldx, 2) + Math.pow(ldy, 2));
+        double invLineLengthSquared = Math.pow((Math.pow(ldx, 2) + Math.pow(ldy, 2)), -1);
         
         double x2dx = x - x2;
         double y2dx = y - y2;
