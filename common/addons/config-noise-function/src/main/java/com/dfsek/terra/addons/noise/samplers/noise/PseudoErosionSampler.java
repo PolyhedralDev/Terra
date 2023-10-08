@@ -248,10 +248,8 @@ public class PseudoErosionSampler implements NoiseSampler {
                 int gridYi = gridY + yi;
                 
                 int jitterIdx = hash(seed, gridXiPrimed, gridYi * PRIME_Y) & (255 << 1);
-                double jitterX = RAND_VECS_2D[jitterIdx] * cellularJitter;
-                double jitterY = RAND_VECS_2D[jitterIdx | 1] * cellularJitter;
-                double cellX = gridXi + jitterX;
-                double cellY = gridYi + jitterY;
+                double cellX = Math.fma(RAND_VECS_2D[jitterIdx], cellularJitter, gridXi);
+                double cellY = Math.fma(RAND_VECS_2D[jitterIdx | 1], cellularJitter, gridYi);
                 
                 // Transform to actual coordinates for lookup
                 double actualCellX = cellX * inverseFrequency;
@@ -300,11 +298,6 @@ public class PseudoErosionSampler implements NoiseSampler {
                 finalDistance = Math.min(finalDistance, distance);
             }
         }
-        
-        // Shows grid
-        //        if(fastAbs(x-round(x)) > 0.5d - 0.01d || fastAbs(y-round(y)) > 0.5d - 0.01d) {
-        //            return 0;
-        //        }
         
         return finalDistance;
     }
