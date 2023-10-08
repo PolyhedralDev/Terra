@@ -267,41 +267,44 @@ public class PseudoErosionSampler implements NoiseSampler {
         }
         
         // Iterate over nearby cells
+        cellDataIndex = 21;
         for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
-            int xiKey = ((xi + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS;
-            
+            cellDataIndex += 3;
             for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
                 
                 // Find cell position with the lowest lookup value within moore neighborhood of neighbor
                 double lowestLookup = Double.MAX_VALUE;
                 double connectedCellX = 0;
                 double connectedCellY = 0;
-                int xni = xi - MAX_CONNECTION_RADIUS;
-                int yni = yi - MAX_CONNECTION_RADIUS;
-                int linearIndexIterator = (((((xni + PRECOMPUTE_RADIUS) * PRECOMPUTE_SIZE)  + PRECOMPUTE_RADIUS) + yni) * 3) + 2;
+                int cellDataIndexN = cellDataIndex - 22;
+                int yniMin = yi - MAX_CONNECTION_RADIUS;
+                int yniMax = yi + MAX_CONNECTION_RADIUS;
                 
-                for(; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
-                    for(; yni <= yi + MAX_CONNECTION_RADIUS; yni++) {
-                        double lookup = cellData[linearIndexIterator];
+                for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    for(int yni = yniMin; yni <= yniMax; yni++) {
+                        double lookup = cellData[cellDataIndexN];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
-                            connectedCellX = cellData[linearIndexIterator - 2];
-                            connectedCellY = cellData[linearIndexIterator - 1];
+                            connectedCellX = cellData[cellDataIndexN - 2];
+                            connectedCellY = cellData[cellDataIndexN - 1];
                         }
-                        linearIndexIterator += 3;
+                        cellDataIndexN += 3;
                     }
+                    cellDataIndexN += 12;
                 }
                 
-                int linearIndex = (xiKey + yi) * 3;
-                double cellX = cellData[linearIndex];
-                double cellY = cellData[linearIndex + 1];
+                double cellX = cellData[cellDataIndex];
+                double cellY = cellData[cellDataIndex + 1];
                 
                 // Calculate SDF for line between the current cell position and the surrounding cell with the lowest lookup
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
                 
                 // Set final return to the lowest computed distance
                 finalDistance = Math.min(finalDistance, distance);
+                
+                cellDataIndex += 3;
             }
+            cellDataIndex += 3;
         }
         
         return finalDistance;
