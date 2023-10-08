@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import java.util.List;
+
+
 public class SimplexSampler extends SimplexStyleSampler {
     private static final Double2[] GRAD_2D = {
             new Double2(-1, -1), new Double2(1, -1), new Double2(-1, 1), new Double2(1, 1),
@@ -58,11 +61,11 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y) * F2;
-        int i = fastFloor(x + t);
-        int j = fastFloor(y + t);
+        int i = (int) Math.floor(x + t);
+        int j = (int) Math.floor(y + t);
         
         t = (i + j) * G2;
         double X0 = i - t;
@@ -115,12 +118,12 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y + z) * F3;
-        int i = fastFloor(x + t);
-        int j = fastFloor(y + t);
-        int k = fastFloor(z + t);
+        int i = (int) Math.floor(x + t);
+        int j = (int) Math.floor(y + t);
+        int k = (int) Math.floor(z + t);
         
         t = (i + j + k) * G3;
         double x0 = x - (i - t);

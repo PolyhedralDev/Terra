@@ -4,20 +4,20 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.config.ColorLoader;
 import com.dfsek.terra.addons.image.config.ColorLoader.ColorString;
-import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
-import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
-import com.dfsek.terra.addons.image.config.image.ImageTemplate;
-import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.ConstantColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.image.SingleImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.image.TileImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.RotateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.TranslateColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.image.ImageTemplate;
+import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.operator.DistanceTransform;
-import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;

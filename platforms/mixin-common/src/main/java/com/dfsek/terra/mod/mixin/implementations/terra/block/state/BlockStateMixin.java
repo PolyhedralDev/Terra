@@ -7,7 +7,6 @@ import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
 import net.minecraft.state.State;
-import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;

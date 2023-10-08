@@ -8,6 +8,9 @@
 package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
+
+import java.util.List;
 
 
 public class RidgedFractalSampler extends FractalNoiseFunction {
@@ -17,14 +20,14 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
-            double noise = fastAbs(input.noise(seed++, x, y));
+            double noise = Math.abs(input.noise(seed++, x, y));
             sum += (noise * -2 + 1) * amp;
-            amp *= lerp(1.0, 1 - noise, weightedStrength);
+            amp *= MathUtil.lerp(1.0, 1 - noise, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;
@@ -35,14 +38,14 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
-            double noise = fastAbs(input.noise(seed++, x, y, z));
+            double noise = Math.abs(input.noise(seed++, x, y, z));
             sum += (noise * -2 + 1) * amp;
-            amp *= lerp(1.0, 1 - noise, weightedStrength);
+            amp *= MathUtil.lerp(1.0, 1 - noise, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;

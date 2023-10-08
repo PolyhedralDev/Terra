@@ -1,10 +1,8 @@
 package com.dfsek.terra.addons.image.colorsampler.image;
 
-import net.jafama.FastMath;
-
-import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.colorsampler.image.transform.ImageTransformation;
+import com.dfsek.terra.addons.image.image.Image;
 
 
 public class TileImageColorSampler implements ColorSampler {
@@ -22,6 +20,6 @@ public class TileImageColorSampler implements ColorSampler {
     public int apply(int x, int z) {
         x = transformation.transformX(image, x);
         z = transformation.transformZ(image, z);
-        return image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(z, image.getHeight()));
+        return image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(z, image.getHeight()));
     }
 }

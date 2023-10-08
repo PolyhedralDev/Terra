@@ -1,6 +1,9 @@
 package com.dfsek.terra.addons.noise.samplers.noise;
 
 
+import java.util.List;
+
+
 public class DistanceSampler extends NoiseFunction {
     
     private final DistanceFunction distanceFunction;
@@ -22,39 +25,39 @@ public class DistanceSampler extends NoiseFunction {
     }
    
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double dx = x - ox;
         double dy = y - oz;
-        if (normalize && (fastAbs(dx) > radius || fastAbs(dy) > radius)) return 1;
+        if (normalize && (Math.abs(dx) > radius || Math.abs(dy) > radius)) return 1;
         double dist = distance2d(distanceFunction, dx, dy);
-        if (normalize) return fastMin(((2*dist)/distanceAtRadius)-1, 1);
+        if (normalize) return Math.min(((2*dist)/distanceAtRadius)-1, 1);
         return dist;
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double dx = x - ox;
         double dy = y - oy;
         double dz = z - oz;
-        if(normalize && (fastAbs(dx) > radius || fastAbs(dy) > radius || fastAbs(dz) > radius)) return 1;
+        if(normalize && (Math.abs(dx) > radius || Math.abs(dy) > radius || Math.abs(dz) > radius)) return 1;
         double dist = distance3d(distanceFunction, dx, dy, dz);
-        if (normalize) return fastMin(((2*dist)/distanceAtRadius)-1, 1);
+        if (normalize) return Math.min(((2*dist)/distanceAtRadius)-1, 1);
         return dist;
     }
     
     private static double distance2d(DistanceFunction distanceFunction, double x, double z) {
         return switch(distanceFunction) {
-            case Euclidean -> fastSqrt(x*x + z*z);
+            case Euclidean -> Math.sqrt(x*x + z*z);
             case EuclideanSq -> x*x + z*z;
-            case Manhattan -> fastAbs(x) + fastAbs(z);
+            case Manhattan -> Math.abs(x) + Math.abs(z);
         };
     }
     
     private static double distance3d(DistanceFunction distanceFunction, double x, double y, double z) {
         return switch(distanceFunction) {
-            case Euclidean -> fastSqrt(x*x + y*y + z*z);
+            case Euclidean -> Math.sqrt(x*x + y*y + z*z);
             case EuclideanSq -> x*x + y*y + z*z;
-            case Manhattan -> fastAbs(x) + fastAbs(y) + fastAbs(z);
+            case Manhattan -> Math.abs(x) + Math.abs(y) + Math.abs(z);
         };
     }
     

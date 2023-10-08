@@ -7,9 +7,8 @@
 
 package com.dfsek.terra.addons.noise.samplers;
 
-import net.jafama.FastMath;
-
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
@@ -27,14 +26,14 @@ public class ImageSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y) {
-        return ((channel.getChannel(image.getRGB(FastMath.floorMod(FastMath.floorToInt(x * frequency), image.getWidth()),
-                                                 FastMath.floorMod(FastMath.floorToInt(y * frequency), image.getHeight()))) / 255D) - 0.5) *
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+        return ((channel.getChannel(image.getRGB(Math.floorMod((int) Math.floor(x * frequency), image.getWidth()),
+                                                 Math.floorMod((int) Math.floor(y * frequency), image.getHeight()))) / 255D) - 0.5) *
                2;
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return noise(seed, x, y);
     }
     

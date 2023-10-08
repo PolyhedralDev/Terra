@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -37,16 +36,16 @@ public class Pool {
         entries = new ProbabilityCollection<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
-            max = FastMath.toIntExact((Long) amount);
-            min = FastMath.toIntExact((Long) amount);
+            max = Math.toIntExact((Long) amount);
+            min = Math.toIntExact((Long) amount);
         } else {
-            max = FastMath.toIntExact((Long) ((JSONObject) amount).get("max"));
-            min = FastMath.toIntExact((Long) ((JSONObject) amount).get("min"));
+            max = Math.toIntExact((Long) ((JSONObject) amount).get("max"));
+            min = Math.toIntExact((Long) ((JSONObject) amount).get("min"));
         }
         
         for(Object entryJSON : (JSONArray) pool.get("entries")) {
             Entry entry = new Entry((JSONObject) entryJSON, platform);
-            entries.add(entry, FastMath.toIntExact(entry.getWeight()));
+            entries.add(entry, Math.toIntExact(entry.getWeight()));
         }
     }
     

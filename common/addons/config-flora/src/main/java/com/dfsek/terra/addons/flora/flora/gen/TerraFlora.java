@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.flora.flora.gen;
 
-import net.jafama.FastMath;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -60,7 +58,7 @@ public class TerraFlora implements Structure {
     }
     
     private ProbabilityCollection<BlockState> getStateCollection(int layer) {
-        return layers.get(FastMath.max(FastMath.min(layer, layers.size() - 1), 0));
+        return layers.get(Math.max(Math.min(layer, layers.size() - 1), 0));
     }
     
     private EnumSet<Direction> getFaces(Vector3Int b, WritableWorld world) {
@@ -82,8 +80,8 @@ public class TerraFlora implements Structure {
                 Direction.class);
         if(doRotation && faces.size() == 0) return false; // Don't plant if no faces are valid.
         
-        for(int i = 0; FastMath.abs(i) < size; i += c) { // Down if ceiling, up if floor
-            int lvl = (FastMath.abs(i));
+        for(int i = 0; Math.abs(i) < size; i += c) { // Down if ceiling, up if floor
+            int lvl = (Math.abs(i));
             BlockState data = getStateCollection((ceiling ? lvl : size - lvl - 1)).get(distribution, location.getX(), location.getY(),
                                                                                        location.getZ(), world.getSeed());
             if(doRotation) {

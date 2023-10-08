@@ -11,9 +11,8 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
-import com.dfsek.terra.addons.noise.samplers.noise.random.WhiteNoiseSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.addons.noise.samplers.noise.PseudoErosionSampler;
+import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
@@ -41,9 +40,9 @@ public class PseudoErosionSamplerTemplate extends SamplerTemplate<PseudoErosionS
     @Override
     public NoiseSampler get() {
         if(lookup == null) {
-//            OpenSimplex2Sampler l = new OpenSimplex2Sampler();
-//            l.setFrequency(0.0005);
-            lookup = new WhiteNoiseSampler();
+            OpenSimplex2Sampler lookup = new OpenSimplex2Sampler();
+            lookup.setFrequency(0.0005);
+            this.lookup = lookup;
         }
         return new PseudoErosionSampler(salt, frequency, lookup, jitter);
     }

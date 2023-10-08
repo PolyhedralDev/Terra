@@ -8,6 +8,9 @@
 package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
+
+import java.util.List;
 
 
 public class PingPongSampler extends FractalNoiseFunction {
@@ -28,14 +31,14 @@ public class PingPongSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
             double noise = pingPong((input.noise(seed++, x, y) + 1) * pingPongStrength);
             sum += (noise - 0.5) * 2 * amp;
-            amp *= lerp(1.0, noise, weightedStrength);
+            amp *= MathUtil.lerp(1.0, noise, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;
@@ -46,14 +49,14 @@ public class PingPongSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
         for(int i = 0; i < octaves; i++) {
             double noise = pingPong((input.noise(seed++, x, y, z) + 1) * pingPongStrength);
             sum += (noise - 0.5) * 2 * amp;
-            amp *= lerp(1.0, noise, weightedStrength);
+            amp *= MathUtil.lerp(1.0, noise, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;

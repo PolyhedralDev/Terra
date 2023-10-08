@@ -1,11 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R1;
 
-import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
-
-import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
-
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
-
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -24,12 +18,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Beardifier;
-import net.minecraft.world.level.levelgen.DensityFunction;
-import net.minecraft.world.level.levelgen.DensityFunction.FunctionContext;
 import net.minecraft.world.level.levelgen.DensityFunction.SinglePointContext;
 import net.minecraft.world.level.levelgen.GenerationStep.Carving;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
@@ -55,9 +46,13 @@ import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
+import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
@@ -262,8 +257,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         
         for(int j1 = 0; j1 < j; ++j1) {
             double d1 = (double) (4 * i + i * i1 * 6) + (randomsource.nextDouble() - 0.5D) * (double) i * 2.5D;
-            int k1 = (int) Math.round(Math.cos(d0) * d1);
-            int l1 = (int) Math.round(Math.sin(d0) * d1);
+            int k1 = (int) Math.round(MathUtil.cos(d0) * d1);
+            int l1 = (int) Math.round(MathUtil.sin(d0) * d1);
             int i2 = SectionPos.sectionToBlockCoord(k1, 8);
             int j2 = SectionPos.sectionToBlockCoord(l1, 8);
             

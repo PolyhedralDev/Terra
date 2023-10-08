@@ -15,9 +15,9 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import java.util.List;
 
 import com.dfsek.terra.addons.biome.pipeline.v2.PipelineBiomeProvider;
-import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.PipelineImpl;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.PipelineImpl;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;

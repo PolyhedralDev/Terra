@@ -18,7 +18,6 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;

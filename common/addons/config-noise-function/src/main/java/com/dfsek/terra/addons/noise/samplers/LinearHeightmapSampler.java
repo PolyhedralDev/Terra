@@ -2,6 +2,8 @@ package com.dfsek.terra.addons.noise.samplers;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.List;
+
 
 public class LinearHeightmapSampler implements NoiseSampler {
     private final NoiseSampler sampler;
@@ -16,12 +18,12 @@ public class LinearHeightmapSampler implements NoiseSampler {
     
     
     @Override
-    public double noise(long seed, double x, double y) {
+    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return noise(seed, x, 0, y);
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z) {
+    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return -y + base + sampler.noise(seed, x, y, z) * scale;
     }
 }

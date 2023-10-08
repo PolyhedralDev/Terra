@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
+import static com.dfsek.terra.api.util.MathUtil.lerp;
+
 
 public class CubicSpline {
     
@@ -74,11 +76,7 @@ public class CubicSpline {
         }
         return left;
     }
-    
-    private static double lerp(double t, double a, double b) {
-        return a + t * (b - a);
-    }
-    
+
     public record Point(double from, double to, double gradient) implements Comparable<Point> {
         
         @Override

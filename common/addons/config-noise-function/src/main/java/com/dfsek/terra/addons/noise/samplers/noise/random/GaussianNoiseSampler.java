@@ -9,6 +9,8 @@ package com.dfsek.terra.addons.noise.samplers.noise.random;
 
 import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 
+import java.util.List;
+
 
 /**
  * NoiseSampler implementation to provide random, normally distributed (Gaussian) noise.
@@ -21,7 +23,7 @@ public class GaussianNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.noise(seed++, x, y);
@@ -33,7 +35,7 @@ public class GaussianNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.noise(seed++, x, y, z);

@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import java.util.List;
+
+
 /**
  * NoiseSampler implementation to provide OpenSimplex2 noise.
  */
@@ -14,7 +17,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
         final double G2 = (3 - SQRT3) / 6;
@@ -25,8 +28,8 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
         y += s;
         
         
-        int i = fastFloor(x);
-        int j = fastFloor(y);
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
         double xi = x - i;
         double yi = y - j;
         
@@ -75,7 +78,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         // 3D OpenSimplex2Sampler case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
@@ -85,9 +88,9 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
         z = r - z;
         
         
-        int i = fastRound(x);
-        int j = fastRound(y);
-        int k = fastRound(z);
+        int i = (int) Math.round(x);
+        int j = (int) Math.round(y);
+        int k = (int) Math.round(z);
         double x0 = x - i;
         double y0 = y - j;
         double z0 = z - k;

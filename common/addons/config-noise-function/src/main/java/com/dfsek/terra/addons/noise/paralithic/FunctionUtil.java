@@ -3,14 +3,14 @@ package com.dfsek.terra.addons.noise.paralithic;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class FunctionUtil {

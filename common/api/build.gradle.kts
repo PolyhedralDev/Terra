@@ -7,5 +7,9 @@ dependencies {
     api("com.dfsek.tectonic", "common", Versions.Libraries.tectonic)
     
     api("com.github.ben-manes.caffeine:caffeine:3.1.0")
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+
+    api("io.github.aecsocket", "cpu-features-jni", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-linux", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-windows", Versions.Libraries.Internal.cpuFeaturesJava)
+    api("io.github.aecsocket", "cpu-features-jni-natives-macos", Versions.Libraries.Internal.cpuFeaturesJava)
 }

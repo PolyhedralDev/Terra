@@ -13,6 +13,7 @@ import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 
+import java.util.List;
 import java.util.Map;
 
 import com.dfsek.terra.addons.noise.paralithic.noise.SeedContext;
@@ -41,12 +42,12 @@ public class ExpressionFunction extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         return expression.evaluate(new SeedContext(seed), x, 0, y);
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z) {
+    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         return expression.evaluate(new SeedContext(seed), x, y, z);
     }
 }

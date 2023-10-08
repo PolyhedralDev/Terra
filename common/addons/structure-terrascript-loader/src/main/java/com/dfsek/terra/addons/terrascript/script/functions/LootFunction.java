@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,10 +65,10 @@ public class LootFunction implements Function<Void> {
         
         registry.get(RegistryKey.parse(id))
                 .ifPresentOrElse(table -> {
-                                     Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
+                                     Vector3 apply = Vector3.of((int) Math.round(xz.getX()),
                                                                 y.apply(implementationArguments, scope)
                                                                  .intValue(),
-                                                                FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+                                                                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
             
                                      try {
                                          BlockEntity data = arguments.getWorld().getBlockEntity(apply);

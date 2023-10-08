@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -30,8 +28,8 @@ public class LazilyEvaluatedInterpolator {
                                        PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {
         this.noisePropertiesKey = noisePropertiesKey;
-        int hSamples = FastMath.ceilToInt(16.0 / horizontalRes);
-        int vSamples = FastMath.ceilToInt((double) (max - min) / verticalRes);
+        int hSamples = (int) Math.ceil(16.0 / horizontalRes);
+        int vSamples = (int) Math.ceil((double) (max - min) / verticalRes);
         this.zMul = (hSamples + 1);
         this.yMul = zMul * zMul;
         samples = new Double[yMul * (vSamples + 1)];
@@ -52,7 +50,7 @@ public class LazilyEvaluatedInterpolator {
             int xi = ox + chunkX;
             int zi = oz + chunkZ;
             
-            int y = FastMath.min(max, oy);
+            int y = Math.min(max, oy);
             
             sample = biomeProvider
                     .getBiome(xi, y, zi, seed)
@@ -93,7 +91,7 @@ public class LazilyEvaluatedInterpolator {
             return lerp_bottom;
         }
         
-        double yFrac = (double) FastMath.floorMod(y, verticalRes) / verticalRes;
+        double yFrac = (double) Math.floorMod(y, verticalRes) / verticalRes;
         
         
         double sample_0_1_0 = sample(xIndex, yIndex + 1, zIndex, x, y + verticalRes, z);

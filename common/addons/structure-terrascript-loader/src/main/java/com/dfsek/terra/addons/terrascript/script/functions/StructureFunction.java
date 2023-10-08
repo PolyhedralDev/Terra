@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,17 +78,17 @@ public class StructureFunction implements Function<Boolean> {
             if(script instanceof StructureScript structureScript) {
                 return structureScript.generate(arguments.getOrigin(),
                                                 arguments.getWorld()
-                                                         .buffer(FastMath.roundToInt(xz.getX()),
+                                                         .buffer((int) Math.round(xz.getX()),
                                                                  y.apply(implementationArguments, scope).intValue(),
-                                                                 FastMath.roundToInt(xz.getZ())),
+                                                                 (int) Math.round(xz.getZ())),
                                                 arguments.getRandom(),
                                                 arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
                                    arguments.getWorld()
-                                            .buffer(FastMath.roundToInt(xz.getX()),
+                                            .buffer((int) Math.round(xz.getX()),
                                                     y.apply(implementationArguments, scope).intValue(),
-                                                    FastMath.roundToInt(xz.getZ())),
+                                                    (int) Math.round(xz.getZ())),
                                    arguments.getRandom(),
                                    arguments.getRotation().rotate(rotation1));
         }).orElseGet(() -> {

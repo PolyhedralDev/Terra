@@ -11,9 +11,9 @@ object Versions {
         
         object Internal {
             const val apacheText = "1.9"
-            const val jafama = "2.3.2"
             const val apacheIO = "2.6"
             const val fastutil = "8.5.6"
+            const val cpuFeaturesJava = "1.0.1"
         }
     }
     

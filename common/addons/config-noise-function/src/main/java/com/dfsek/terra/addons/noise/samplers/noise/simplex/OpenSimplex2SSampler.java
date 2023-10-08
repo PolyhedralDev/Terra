@@ -7,13 +7,16 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import java.util.List;
+
+
 /**
  * NoiseSampler implementation to provide OpenSimplex2 (Smooth Variant) noise.
  */
 public class OpenSimplex2SSampler extends SimplexStyleSampler {
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(long sl, double x, double y) {
+    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         // 2D OpenSimplex2S case is a modified 2D simplex noise.
         
@@ -26,8 +29,8 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         y += s;
         
         
-        int i = fastFloor(x);
-        int j = fastFloor(y);
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
         double xi = x - i;
         double yi = y - j;
         
@@ -121,7 +124,7 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
     
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(long sl, double x, double y, double z) {
+    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         int seed = (int) sl;
         // 3D OpenSimplex2S case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);
@@ -131,9 +134,9 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         z = r - z;
         
         
-        int i = fastFloor(x);
-        int j = fastFloor(y);
-        int k = fastFloor(z);
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
+        int k = (int) Math.floor(z);
         double xi = x - i;
         double yi = y - j;
         double zi = z - k;

@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
@@ -49,8 +47,8 @@ public class CheckFunction implements Function<String> {
         RotationUtil.rotateVector(xz, arguments.getRotation());
         
         Vector3 location = arguments.getOrigin().toVector3Mutable().add(
-                Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
-                           FastMath.roundToInt(xz.getZ()))).immutable();
+                Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
+                           (int) Math.round(xz.getZ()))).immutable();
         
         return apply(location, arguments.getWorld());
     }
@@ -82,8 +80,8 @@ public class CheckFunction implements Function<String> {
     }
     
     private double sample(double x, double y, double z, SamplerProvider cache, World world) {
-        int cx = FastMath.floorDiv((int) x, 16);
-        int cz = FastMath.floorDiv((int) z, 16);
+        int cx = Math.floorDiv((int) x, 16);
+        int cz = Math.floorDiv((int) z, 16);
         return cache.getChunk(cx, cz, world, world.getBiomeProvider()).sample(x - (cx << 4), y, z - (cz << 4));
     }
 }

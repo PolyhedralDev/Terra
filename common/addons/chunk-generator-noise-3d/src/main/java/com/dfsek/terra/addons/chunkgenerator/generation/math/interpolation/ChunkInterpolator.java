@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.util.Column;
@@ -134,7 +132,7 @@ public class ChunkInterpolator {
     }
     
     private static int reRange(int value, int high) {
-        return FastMath.max(FastMath.min(value, high), 0);
+        return Math.max(Math.min(value, high), 0);
     }
     
     /**
@@ -146,7 +144,7 @@ public class ChunkInterpolator {
      * @return double - The interpolated noise at the coordinates.
      */
     public double getNoise(double x, double y, double z) {
-        return interpGrid[reRange(((int) x) / 4, 3)][(FastMath.max(FastMath.min(((int) y), max), min) - min) / 4][reRange(((int) z) / 4,
+        return interpGrid[reRange(((int) x) / 4, 3)][(Math.max(Math.min(((int) y), max), min) - min) / 4][reRange(((int) z) / 4,
                                                                                                                           3)].trilerp(
                 (x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
     }

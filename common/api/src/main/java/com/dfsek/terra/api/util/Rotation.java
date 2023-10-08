@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.api.util;
 
-import net.jafama.FastMath;
-
-
 public enum Rotation {
     
     CW_90(90),
@@ -23,7 +20,7 @@ public enum Rotation {
     }
     
     public static Rotation fromDegrees(int deg) {
-        return switch(FastMath.floorMod(deg, 360)) {
+        return switch(Math.floorMod(deg, 360)) {
             case 0 -> Rotation.NONE;
             case 90 -> Rotation.CW_90;
             case 180 -> Rotation.CW_180;

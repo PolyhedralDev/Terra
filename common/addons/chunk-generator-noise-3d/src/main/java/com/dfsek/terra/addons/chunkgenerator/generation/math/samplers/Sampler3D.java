@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ChunkInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.ElevationInterpolator;
@@ -28,10 +26,10 @@ public class Sampler3D {
     }
     
     public double sample(double x, double y, double z) {
-        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
+        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation((int) Math.round(x), (int) Math.round(z));
     }
     
     public double sample(int x, int y, int z) {
-        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FastMath.roundToInt(x), FastMath.roundToInt(z));
+        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(x, z);
     }
 }

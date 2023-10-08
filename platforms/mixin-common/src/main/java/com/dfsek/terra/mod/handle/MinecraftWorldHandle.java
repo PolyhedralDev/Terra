@@ -22,7 +22,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;

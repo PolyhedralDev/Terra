@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.biome.pipeline;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -86,8 +85,8 @@ public class BiomePipelineProvider implements BiomeProvider {
         x /= resolution;
         z /= resolution;
 
-        int fdX = FastMath.floorDiv(x, pipeline.getSize());
-        int fdZ = FastMath.floorDiv(z, pipeline.getSize());
+        int fdX = Math.floorDiv(x, pipeline.getSize());
+        int fdZ = Math.floorDiv(z, pipeline.getSize());
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
                                                                           z - fdZ * pipeline.getSize()).getBiome();
     }

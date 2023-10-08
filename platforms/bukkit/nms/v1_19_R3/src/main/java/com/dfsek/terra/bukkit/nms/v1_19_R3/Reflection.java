@@ -12,8 +12,6 @@ import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldSetter;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.MethodName;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies;
 
-import java.util.Objects;
-
 
 public class Reflection {
     public static final MappedRegistryProxy MAPPED_REGISTRY;

@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.biome.pipeline.v2.config.stage.mutator;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.v2.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.v2.stage.mutators.SmoothStage;
 
 

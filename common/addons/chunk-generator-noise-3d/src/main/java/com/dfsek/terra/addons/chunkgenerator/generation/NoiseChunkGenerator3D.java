@@ -8,15 +8,14 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
-import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
+import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -133,8 +132,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         
         BiomePaletteInfo paletteInfo = biome.getContext().get(paletteInfoPropertyKey);
         
-        int fdX = FastMath.floorMod(x, 16);
-        int fdZ = FastMath.floorMod(z, 16);
+        int fdX = Math.floorMod(x, 16);
+        int fdZ = Math.floorMod(z, 16);
         
         Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo, 0);
         double noise = sampler.sample(fdX, y, fdZ);
@@ -156,8 +155,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     }
     
     public double getSlant(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
-        int fdX = FastMath.floorMod(x, 16);
-        int fdZ = FastMath.floorMod(z, 16);
+        int fdX = Math.floorMod(x, 16);
+        int fdZ = Math.floorMod(z, 16);
         return biomeProvider.getBiome(x, y, z, world.getSeed())
                             .getContext()
                             .get(paletteInfoPropertyKey)

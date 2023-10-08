@@ -42,6 +42,7 @@ import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.generic.Lazy;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
@@ -215,8 +216,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         
         for(int j1 = 0; j1 < j; ++j1) {
             double d1 = (double) (4 * i + i * i1 * 6) + (random.nextDouble() - 0.5D) * (double) i * 2.5D;
-            int k1 = (int) Math.round(Math.cos(d0) * d1);
-            int l1 = (int) Math.round(Math.sin(d0) * d1);
+            int k1 = (int) Math.round(MathUtil.cos(d0) * d1);
+            int l1 = (int) Math.round(MathUtil.sin(d0) * d1);
             int i2 = SectionPos.sectionToBlockCoord(k1, 8);
             int j2 = SectionPos.sectionToBlockCoord(l1, 8);
             

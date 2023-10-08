@@ -23,16 +23,13 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
 import com.dfsek.tectonic.impl.MapConfiguration;
-
-import com.dfsek.terra.api.config.meta.Meta;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
+import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 
