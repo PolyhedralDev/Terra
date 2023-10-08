@@ -124,17 +124,32 @@ public interface NoiseSampler {
     default void generateContext(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
         //no-op
     }
+    default void generateContext(long seed, double x, double y, List<double[]> context) {
+        generateContext(seed, x, y, context, 0, getContextRadius());
+    }
     
     default void generateContext(long seed, int x, int y, List<double[]> context, int contextLayer, int contextRadius) {
         generateContext(seed, (double) x, y, context, contextLayer, contextRadius);
+    }
+    
+    default void generateContext(long seed, int x, int y, List<double[]> context) {
+        generateContext(seed, (double) x, y, context, 0, getContextRadius());
     }
     
     default void generateContext(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
         //no-op
     }
     
+    default void generateContext(long seed, double x, double y, double z, List<double[]> context) {
+        generateContext(seed, x, y, z, context, 0, getContextRadius());
+    }
+    
     default void generateContext(long seed, int x, int y, int z, List<double[]> context, int contextLayer, int contextRadius) {
         generateContext(seed, (double) x, y, z, context, contextLayer, contextRadius);
+    }
+    
+    default void generateContext(long seed, int x, int y, int z, List<double[]> context) {
+        generateContext(seed, (double) x, y, z, context, 0, getContextRadius());
     }
     
     default int getContextRadius() {
