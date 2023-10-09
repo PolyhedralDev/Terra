@@ -25,7 +25,7 @@ public class DistanceSampler extends NoiseFunction {
     }
    
     @Override
-    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double[] context, int contextRadius) {
         double dx = x - ox;
         double dy = y - oz;
         if (normalize && (Math.abs(dx) > radius || Math.abs(dy) > radius)) return 1;
@@ -35,7 +35,7 @@ public class DistanceSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         double dx = x - ox;
         double dy = y - oy;
         double dz = z - oz;

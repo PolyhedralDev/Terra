@@ -27,7 +27,7 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         x *= frequency;
         y *= frequency;
         double accumulator = 0;
@@ -45,7 +45,7 @@ public class KernelSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         x *= frequency;
         y *= frequency;
         z *= frequency;

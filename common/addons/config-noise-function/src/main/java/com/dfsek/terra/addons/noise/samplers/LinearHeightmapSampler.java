@@ -18,12 +18,12 @@ public class LinearHeightmapSampler implements NoiseSampler {
     
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         return noise(seed, x, 0, y);
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return -y + base + sampler.noise(seed, x, y, z) * scale;
     }
 }

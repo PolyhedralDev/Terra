@@ -17,7 +17,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double[] context, int contextRadius) {
         int seed = (int) sl;
         // 2D OpenSimplex2 case uses the same algorithm as ordinary Simplex.
         final double G2 = (3 - SQRT3) / 6;
@@ -78,7 +78,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double z, double[] context, int contextRadius) {
         int seed = (int) sl;
         // 3D OpenSimplex2Sampler case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);

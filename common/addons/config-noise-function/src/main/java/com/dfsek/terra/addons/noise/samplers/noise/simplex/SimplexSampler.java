@@ -61,7 +61,7 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double[] context, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y) * F2;
         int i = (int) Math.floor(x + t);
@@ -118,7 +118,7 @@ public class SimplexSampler extends SimplexStyleSampler {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double z, double[] context, int contextRadius) {
         int seed = (int) sl;
         double t = (x + y + z) * F3;
         int i = (int) Math.floor(x + t);

@@ -21,12 +21,12 @@ public class ConstantSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double[] context, int contextRadius) {
         return constant;
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return constant;
     }
 }

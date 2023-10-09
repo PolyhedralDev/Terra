@@ -22,12 +22,12 @@ public abstract class Normalizer implements NoiseSampler {
     public abstract double normalize(double in);
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         return normalize(sampler.noise(seed, x, y));
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return normalize(sampler.noise(seed, x, y, z));
     }
 }

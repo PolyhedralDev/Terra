@@ -26,14 +26,14 @@ public class ImageSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         return ((channel.getChannel(image.getRGB(Math.floorMod((int) Math.floor(x * frequency), image.getWidth()),
                                                  Math.floorMod((int) Math.floor(y * frequency), image.getHeight()))) / 255D) - 0.5) *
                2;
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return noise(seed, x, y);
     }
     

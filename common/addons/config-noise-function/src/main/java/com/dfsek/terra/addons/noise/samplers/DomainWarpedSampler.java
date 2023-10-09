@@ -24,7 +24,7 @@ public class DomainWarpedSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         return function.noise(seed++,
                               x + warp.noise(seed++, x, y) * amplitude,
                               y + warp.noise(seed, x, y) * amplitude
@@ -32,7 +32,7 @@ public class DomainWarpedSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return function.noise(seed++,
                               x + warp.noise(seed++, x, y, z) * amplitude,
                               y + warp.noise(seed++, x, y, z) * amplitude,

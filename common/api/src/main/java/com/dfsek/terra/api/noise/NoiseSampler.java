@@ -21,29 +21,16 @@ import java.util.List;
 public interface NoiseSampler {
     static NoiseSampler zero() {
         return new NoiseSampler() {
-            
-            
             @Override
-            public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+            public double noise(long seed, double x, double y, double[] context, int contextRadius) {
                 return 0;
             }
             
             @Override
-            public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+            public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
                 return 0;
             }
-            
-            @Override
-            public void generateContext(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
-                //no-op
-            }
-            
-            @Override
-            public void generateContext(long seed, double x, double y, double z, List<double[]> context, int contextLayer,
-                                            int contextRadius) {
-                //no-op
-            }
-            
+
             @Override
             public int getContextRadius() {
                 return 0;
@@ -68,29 +55,28 @@ public interface NoiseSampler {
         return noise(seed, vector2.getX(), vector2.getZ());
     }
     
-    default double noise(Vector3 vector3, long seed, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ(), context, contextLayer, contextRadius);
+    default double noise(Vector3 vector3, long seed, double[] context, int contextRadius) {
+        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ(), context, contextRadius);
     }
     
-    default double noise(Vector3Int vector3, long seed, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ(), context, contextLayer, contextRadius);
+    default double noise(Vector3Int vector3, long seed, double[] context, int contextRadius) {
+        return noise(seed, vector3.getX(), vector3.getY(), vector3.getZ(), context, contextRadius);
     }
     
     
-    default double noise(Vector2 vector2, long seed, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, vector2.getX(), vector2.getZ(), context, contextLayer, contextRadius);
+    default double noise(Vector2 vector2, long seed, double[] context, int contextRadius) {
+        return noise(seed, vector2.getX(), vector2.getZ(), context, contextRadius);
     }
     
-    default double noise(Vector2Int vector2, long seed, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, vector2.getX(), vector2.getZ(), context, contextLayer, contextRadius);
+    default double noise(Vector2Int vector2, long seed, double[] context, int contextRadius) {
+        return noise(seed, vector2.getX(), vector2.getZ(), context, contextRadius);
     }
     
     default double noise(long seed, double x, double y) {
         int contextRadius = getContextRadius();
         
-        ArrayList<double[]> list = new ArrayList<>();
-        generateContext(seed, x, y, list, 0, contextRadius);
-        return noise(seed, x, y, list, 0, contextRadius);
+        double[] context = generateContext(seed, x, y, contextRadius);
+        return noise(seed, x, y, context, contextRadius);
     }
     
     default double noise(long seed, int x, int y) {
@@ -100,87 +86,82 @@ public interface NoiseSampler {
     default double noise(long seed, double x, double y, double z) {
         int contextRadius = getContextRadius();
         
-        ArrayList<double[]> list = new ArrayList<>();
-        generateContext(seed, x, y, z, list, 0, contextRadius);
-        return noise(seed, x, y, z, list, 0, contextRadius);
+        double[] context = generateContext(seed, x, y, z, contextRadius);
+        return noise(seed, x, y, z, context, contextRadius);
     }
     
     default double noise(long seed, int x, int y, int z) {
         return noise(seed, (double) x, y, z);
     }
     
-    double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius);
+    double noise(long seed, double x, double y, double[] context, int contextRadius);
     
-    default double noise(long seed, int x, int y, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, (double) x, y, context, contextLayer, contextRadius);
+    default double noise(long seed, int x, int y, double[] context, int contextRadius) {
+        return noise(seed, (double) x, y, context, contextRadius);
     }
     
-    double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius);
+    double noise(long seed, double x, double y, double z, double[] context, int contextRadius);
     
-    default double noise(long seed, int x, int y, int z, List<double[]> context, int contextLayer, int contextRadius) {
-        return noise(seed, (double) x, y, z, context, contextLayer, contextRadius);
-    }
-    
-    default void generateContext(long seed, Vector2 vector2, List<double[]> context, int contextLayer, int contextRadius) {
-        //no-op
-    }
-    default void generateContext(long seed, Vector2 vector2, List<double[]> context) {
-        generateContext(seed, vector2.getX(), vector2.getZ(), context);
+    default double noise(long seed, int x, int y, int z, double[] context, int contextRadius) {
+        return noise(seed, (double) x, y, z, context, contextRadius);
     }
     
-    default void generateContext(long seed, Vector2Int vector2, List<double[]> context, int contextLayer, int contextRadius) {
-        generateContext(seed, (double) vector2.getX(), vector2.getZ(), context, contextLayer, contextRadius);
+    default double[] generateContext(long seed, Vector2 vector2, int contextRadius) {
+        return new double[0];
+    }
+    default double[] generateContext(long seed, Vector2 vector2) {
+        return generateContext(seed, vector2.getX(), vector2.getZ());
     }
     
-    default void generateContext(long seed, Vector2Int vector2, List<double[]> context) {
-        generateContext(seed, (double) vector2.getX(), vector2.getZ(), context);
+    default double[] generateContext(long seed, Vector2Int vector2, int contextRadius) {
+        return generateContext(seed, (double) vector2.getX(), vector2.getZ(), contextRadius);
     }
     
-    default void generateContext(long seed, Vector3 vector3, List<double[]> context, int contextLayer, int contextRadius) {
-        //no-op
+    default double[] generateContext(long seed, Vector2Int vector2) {
+        return generateContext(seed, (double) vector2.getX(), vector2.getZ());
     }
     
-    default void generateContext(long seed, Vector3 vector3, List<double[]> context) {
-        generateContext(seed, vector3.getX(), vector3.getY(), vector3.getZ(), context);
+    default double[] generateContext(long seed, Vector3 vector3, int contextRadius) {
+        return new double[0];
     }
     
-    default void generateContext(long seed, Vector3Int vector3, List<double[]> context, int contextLayer, int contextRadius) {
-        generateContext(seed, (double) vector3.getX(), vector3.getY(), vector3.getZ(), context, contextLayer, contextRadius);
+    default double[] generateContext(long seed, Vector3 vector3) {
+        return generateContext(seed, vector3.getX(), vector3.getY(), vector3.getZ());
     }
     
-    default void generateContext(long seed, Vector3Int vector3, List<double[]> context) {
-        generateContext(seed, (double) vector3.getX(), vector3.getY(), vector3.getZ(), context);
+    default double[] generateContext(long seed, Vector3Int vector3, int contextRadius) {
+        return generateContext(seed, (double) vector3.getX(), vector3.getY(), vector3.getZ(), contextRadius);
     }
     
-    default void generateContext(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
-        //no-op
-    }
-    default void generateContext(long seed, double x, double y, List<double[]> context) {
-        generateContext(seed, x, y, context, 0, getContextRadius());
+    default double[] generateContext(long seed, Vector3Int vector3) {
+        return generateContext(seed, (double) vector3.getX(), vector3.getY(), vector3.getZ());
     }
     
-    default void generateContext(long seed, int x, int y, List<double[]> context, int contextLayer, int contextRadius) {
-        generateContext(seed, (double) x, y, context, contextLayer, contextRadius);
+    default double[] generateContext(long seed, double x, double y, int contextRadius) {
+        return new double[0];
+    }
+    default double[] generateContext(long seed, double x, double y) {
+        return generateContext(seed, x, y, getContextRadius());
     }
     
-    default void generateContext(long seed, int x, int y, List<double[]> context) {
-        generateContext(seed, (double) x, y, context);
+    default double[] generateContext(long seed, int x, int y) {
+        return generateContext(seed, (double) x, y);
     }
     
-    default void generateContext(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
-        //no-op
+    default double[] generateContext(long seed, double x, double y, double z, int contextRadius) {
+        return new double[0];
     }
     
-    default void generateContext(long seed, double x, double y, double z, List<double[]> context) {
-        generateContext(seed, x, y, z, context, 0, getContextRadius());
+    default double[] generateContext(long seed, double x, double y, double z) {
+        return generateContext(seed, x, y, z, getContextRadius());
     }
     
-    default void generateContext(long seed, int x, int y, int z, List<double[]> context, int contextLayer, int contextRadius) {
-        generateContext(seed, (double) x, y, z, context, contextLayer, contextRadius);
+    default double[] generateContext(long seed, int x, int y, int z, int contextRadius) {
+        return generateContext(seed, (double) x, y, z, contextRadius);
     }
     
-    default void generateContext(long seed, int x, int y, int z, List<double[]> context) {
-        generateContext(seed, (double) x, y, z, context);
+    default double[] generateContext(long seed, int x, int y, int z) {
+        return generateContext(seed, (double) x, y, z);
     }
     
     default int getContextRadius() {

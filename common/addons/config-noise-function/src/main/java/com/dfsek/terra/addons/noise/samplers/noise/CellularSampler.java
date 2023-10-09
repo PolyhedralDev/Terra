@@ -221,7 +221,7 @@ public class CellularSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double[] context, int contextRadius) {
         int seed = (int) sl;
         int xr = (int) Math.round(x);
         int yr = (int) Math.round(y);
@@ -298,7 +298,7 @@ public class CellularSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double z, double[] context, int contextRadius) {
         int seed = (int) sl;
         int xr = (int) Math.round(x);
         int yr = (int) Math.round(y);

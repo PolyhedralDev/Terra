@@ -42,12 +42,12 @@ public class WhiteNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double[] context, int contextRadius) {
         return (getNoiseUnmapped(seed, x, y) - 1.5) * 2;
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return (getNoiseUnmapped(seed, x, y, z) - 1.5) * 2;
     }
     

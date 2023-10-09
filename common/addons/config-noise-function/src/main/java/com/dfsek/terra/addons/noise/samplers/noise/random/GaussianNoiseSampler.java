@@ -23,7 +23,7 @@ public class GaussianNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double[] context, int contextRadius) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.noise(seed++, x, y);
@@ -35,7 +35,7 @@ public class GaussianNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         double v1, v2, s;
         do {
             v1 = whiteNoiseSampler.noise(seed++, x, y, z);

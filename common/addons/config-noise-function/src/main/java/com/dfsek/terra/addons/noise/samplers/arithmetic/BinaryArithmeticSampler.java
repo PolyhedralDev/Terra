@@ -15,12 +15,12 @@ public abstract class BinaryArithmeticSampler implements NoiseSampler {
     }
     
     @Override
-    public double noise(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double[] context, int contextRadius) {
         return operate(left.noise(seed, x, y), right.noise(seed, x, y));
     }
     
     @Override
-    public double noise(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double noise(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return operate(left.noise(seed, x, y, z), right.noise(seed, x, y, z));
     }
     

@@ -105,12 +105,12 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double z, double[] context, int contextRadius) {
         return gaborNoise(seed, x, z);
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         return gaborNoise(seed, x, z);
     }
 }

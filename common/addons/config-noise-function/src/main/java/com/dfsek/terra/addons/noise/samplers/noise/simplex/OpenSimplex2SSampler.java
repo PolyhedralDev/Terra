@@ -16,7 +16,7 @@ import java.util.List;
 public class OpenSimplex2SSampler extends SimplexStyleSampler {
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(long sl, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double[] context, int contextRadius) {
         int seed = (int) sl;
         // 2D OpenSimplex2S case is a modified 2D simplex noise.
         
@@ -124,7 +124,7 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
     
     @Override
     @SuppressWarnings("NumericOverflow")
-    public double getNoiseRaw(long sl, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long sl, double x, double y, double z, double[] context, int contextRadius) {
         int seed = (int) sl;
         // 3D OpenSimplex2S case uses two offset rotated cube grids.
         final double R3 = (2.0 / 3.0);

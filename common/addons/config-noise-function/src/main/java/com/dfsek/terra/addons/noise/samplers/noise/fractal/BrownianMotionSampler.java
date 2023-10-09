@@ -19,7 +19,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double[] context, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
@@ -37,7 +37,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
     }
     
     @Override
-    public double getNoiseRaw(long seed, double x, double y, double z, List<double[]> context, int contextLayer, int contextRadius) {
+    public double getNoiseRaw(long seed, double x, double y, double z, double[] context, int contextRadius) {
         double sum = 0;
         double amp = fractalBounding;
         
