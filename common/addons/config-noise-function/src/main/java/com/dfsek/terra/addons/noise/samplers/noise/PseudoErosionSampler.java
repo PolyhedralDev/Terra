@@ -241,15 +241,17 @@ public class PseudoErosionSampler extends NoiseFunction {
         int gridX = (int) Math.round(x);
         int gridY = (int) Math.round(y);
         
-        int nextContextRadius = contextRadius + getContextRadius();
+        int nextContextRadius = contextRadius + this.lookup.getContextRadius();
         
         double[] context = this.lookup.generateContext(seed, x, y, nextContextRadius);
         
         int contextCircumference = (contextRadius * 2 + 1);
         int contextSizeArraySize = contextCircumference * contextCircumference * 3;
         // Precompute cell positions and lookup values
-        double[] cellData = new double[contextSizeArraySize];
-        int cellDataIndex = 0;
+        double[] cellData = new double[contextSizeArraySize + 2];
+        cellData[0] = x;
+        cellData[1] = y;
+        int cellDataIndex = 2;
         for(int xi = -contextRadius; xi <= contextRadius; xi++) {
             int gridXi = gridX + xi;
             int gridXiPrimed = gridXi * PRIME_X;
@@ -279,42 +281,64 @@ public class PseudoErosionSampler extends NoiseFunction {
     public double getNoiseRaw(long sl, double x, double y, double[] cellData, int contextRadius) {
         double finalDistance = Double.MAX_VALUE;
 
-        int xIndexSize = (contextRadius * 6) + 3;
-
-        int deltaRadius = (contextRadius - NEARBY_CELLS_RADIUS);
+//        int xIndexSize = (contextRadius * 6) + 3;
+//
+//        int deltaRadius = (contextRadius - NEARBY_CELLS_RADIUS);
+//
+//        int deltaConnectionRadius = (contextRadius - MAX_CONNECTION_RADIUS);
+//
+//        int xIndex = xIndexSize * deltaRadius;
+//        int yIndex = 3 * deltaRadius;
+//
+//        int yConnectionIndex = 3 * deltaConnectionRadius;
+//
+//        int yIndex2 = yIndex * 2;
+//
+//        int yConnectionIndex2 = yConnectionIndex * 2;
         
-        int xIndex = xIndexSize * deltaRadius;
-        int yIndex = 3 * deltaRadius;
+        int computesize = (contextRadius * 2 + 1);
         
         // Iterate over nearby cells
-        int cellDataIndex = xIndex;
-        for(int xi = -NEARBY_CELLS_RADIUS; xi <= NEARBY_CELLS_RADIUS; xi++) {
-            cellDataIndex += yIndex;
-            for(int yi = -NEARBY_CELLS_RADIUS; yi <= NEARBY_CELLS_RADIUS; yi++) {
+//        int cellDataIndex = xIndex + yIndex;
+        int deltax = (int) (x - cellData[0]);
+        int deltay = (int) (y - cellData[1]);
+        for(int xi = deltax - NEARBY_CELLS_RADIUS; xi <= deltax + NEARBY_CELLS_RADIUS; xi++) {
+            int xiKey = ((xi + contextRadius) * computesize)  + contextRadius;
+            for(int yi = deltay - NEARBY_CELLS_RADIUS; yi <= deltay + NEARBY_CELLS_RADIUS; yi++) {
                 
                 // Find cell position with the lowest lookup value within moore neighborhood of neighbor
                 double lowestLookup = Double.MAX_VALUE;
                 double connectedCellX = 0;
                 double connectedCellY = 0;
-                int cellDataIndexN = cellDataIndex - 22;
+//                int cellDataIndexN = cellDataIndex - xIndex - 1;
                 int yniMin = yi - MAX_CONNECTION_RADIUS;
                 int yniMax = yi + MAX_CONNECTION_RADIUS;
                 
                 for(int xni = xi - MAX_CONNECTION_RADIUS; xni <= xi + MAX_CONNECTION_RADIUS; xni++) {
+                    int xniKey = ((xni + contextRadius) * computesize)  + contextRadius;
                     for(int yni = yniMin; yni <= yniMax; yni++) {
-                        double lookup = cellData[cellDataIndexN];
+//                        double lookup = cellData[cellDataIndexN];
+//                        if(lookup < lowestLookup) {
+//                            lowestLookup = lookup;
+//                            connectedCellX = cellData[cellDataIndexN - 2];
+//                            connectedCellY = cellData[cellDataIndexN - 1];
+//                        }
+//                        cellDataIndexN += 3;
+                        int linearIndex = ((xniKey + yni) * 3) + 2;
+                        double lookup = cellData[linearIndex + 2];
                         if(lookup < lowestLookup) {
                             lowestLookup = lookup;
-                            connectedCellX = cellData[cellDataIndexN - 2];
-                            connectedCellY = cellData[cellDataIndexN - 1];
+                            connectedCellX = cellData[linearIndex];
+                            connectedCellY = cellData[linearIndex + 1];
                         }
-                        cellDataIndexN += 3;
                     }
-                    cellDataIndexN += 12;
+//                    cellDataIndexN += yConnectionIndex2;
                 }
-                
-                double cellX = cellData[cellDataIndex];
-                double cellY = cellData[cellDataIndex + 1];
+                int linearIndex = ((xiKey + yi) * 3) + 2;
+                double cellX = cellData[linearIndex];
+                double cellY = cellData[linearIndex + 1];
+//                double cellX = cellData[cellDataIndex];
+//                double cellY = cellData[cellDataIndex + 1];
                 
                 // Calculate SDF for line between the current cell position and the surrounding cell with the lowest lookup
                 double distance = lineSdf2D(x, y, cellX, cellY, connectedCellX, connectedCellY);
@@ -322,9 +346,9 @@ public class PseudoErosionSampler extends NoiseFunction {
                 // Set final return to the lowest computed distance
                 finalDistance = Math.min(finalDistance, distance);
                 
-                cellDataIndex += 3;
+//                cellDataIndex += 3;
             }
-            cellDataIndex += yIndex;
+//            cellDataIndex += yIndex2;
         }
         
         return finalDistance;
