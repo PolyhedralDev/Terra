@@ -1,7 +1,7 @@
 object Versions {
     object Libraries {
-        const val tectonic = "4.2.0"
-        const val paralithic = "0.7.0"
+        const val tectonic = "4.2.1"
+        const val paralithic = "0.7.1"
         const val strata = "1.3.2"
         
         const val cloud = "1.8.4"
@@ -14,14 +14,14 @@ object Versions {
             const val apacheText = "1.10.0"
             const val jafama = "2.3.2"
             const val apacheIO = "2.14.0"
-            const val guava = "32.1.2-jre"
+            const val guava = "32.1.3-jre"
             const val asm = "9.5"
             const val snakeYml = "2.2"
         }
     }
     
     object Fabric {
-        const val fabricAPI = "0.89.3+${Mod.minecraft}"
+        const val fabricAPI = "0.90.0+${Mod.minecraft}"
     }
     
     object Quilt {
@@ -33,8 +33,8 @@ object Versions {
         const val mixin = "0.12.5+mixin.0.8.5"
         
         const val minecraft = "1.20.2"
-        const val yarn = "$minecraft+build.2"
-        const val fabricLoader = "0.14.22"
+        const val yarn = "$minecraft+build.4"
+        const val fabricLoader = "0.14.23"
         
         const val architecuryLoom = "1.3.357"
         const val architecturyPlugin = "3.4.146"
