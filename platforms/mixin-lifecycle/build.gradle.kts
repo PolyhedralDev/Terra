@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 dependencies {

@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 architectury {
@@ -37,16 +37,16 @@ loom {
         defaultRefmapName.set("terra.forge.refmap.json")
     }
     
-    launches {
-        named("client") {
-            property("fabric.log.level", "info")
-            property("mixin.env.disableRefMap", "true")
-        }
-        named("server") {
-            property("fabric.log.level", "info")
-            property("mixin.env.disableRefMap", "true")
-        }
-    }
+//    launches {
+//        named("client") {
+//            property("fabric.log.level", "info")
+//            property("mixin.env.disableRefMap", "true")
+//        }
+//        named("server") {
+//            property("fabric.log.level", "info")
+//            property("mixin.env.disableRefMap", "true")
+//        }
+//    }
     
     forge {
         convertAccessWideners.set(true)

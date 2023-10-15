@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 architectury {
@@ -46,15 +46,6 @@ loom {
     
     mixin {
         defaultRefmapName.set("terra.quilt.refmap.json")
-    }
-    
-    launches {
-        named("client") {
-            property("fabric.log.level", "info")
-        }
-        named("server") {
-            property("fabric.log.level", "info")
-        }
     }
 }
 

@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 architectury {
@@ -23,7 +23,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
     
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Fabric.fabricLoader}")
+    modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
     
     setOf(
         "fabric-lifecycle-events-v1",
@@ -47,15 +47,7 @@ loom {
     mixin {
         defaultRefmapName.set("terra.fabric.refmap.json")
     }
-    
-    launches {
-        named("client") {
-            property("fabric.log.level", "info")
-        }
-        named("server") {
-            property("fabric.log.level", "info")
-        }
-    }
+
 }
 
 
