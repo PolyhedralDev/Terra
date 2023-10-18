@@ -4,7 +4,7 @@ plugins {
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-        name = "sonatype"
+        name = "Sonatype"
     }
 }
 
