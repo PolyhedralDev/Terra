@@ -49,7 +49,7 @@ fun Project.configureDependencies() {
             name = "JitPack"
         }
         maven("https://nexuslite.gcnt.net/repos/other/") {
-            name = "devmart-other"
+            name = "GCNT"
         }
     }
     
