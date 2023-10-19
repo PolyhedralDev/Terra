@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.bukkit;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Entity;
@@ -44,14 +45,14 @@ public class BukkitEntity implements Entity {
     
     @Override
     public void position(Vector3 location) {
-        entity.teleport(BukkitAdapter.adapt(location).toLocation(entity.getWorld()));
+        PaperLib.teleportAsync(entity, BukkitAdapter.adapt(location).toLocation(entity.getWorld()));
     }
     
     @Override
     public void world(ServerWorld world) {
         Location newLoc = entity.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
-        entity.teleport(newLoc);
+        PaperLib.teleportAsync(entity, newLoc);
     }
     
     @Override

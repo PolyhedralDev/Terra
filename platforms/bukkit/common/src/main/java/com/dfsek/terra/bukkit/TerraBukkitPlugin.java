@@ -42,6 +42,7 @@ import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+import com.tcoded.folialib.FoliaLib;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
@@ -49,6 +50,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
     
     private final PlatformImpl platform = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
+    
+    private final FoliaLib foliaLib = new FoliaLib(this);
     
     @Override
     public void onEnable() {
@@ -150,7 +153,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
+                getFoliaLib().getImpl().runLaterAsync(runnable, 200L);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
@@ -176,5 +179,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
                     () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
         }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+    }
+    
+    public FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 }

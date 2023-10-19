@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.bukkit;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Player;
@@ -45,14 +46,14 @@ public class BukkitPlayer implements Player {
     
     @Override
     public void position(Vector3 location) {
-        delegate.teleport(BukkitAdapter.adapt(location).toLocation(delegate.getWorld()));
+        PaperLib.teleportAsync(delegate, BukkitAdapter.adapt(location).toLocation(delegate.getWorld()));
     }
     
     @Override
     public void world(ServerWorld world) {
         Location newLoc = delegate.getLocation().clone();
         newLoc.setWorld(BukkitAdapter.adapt(world));
-        delegate.teleport(newLoc);
+        PaperLib.teleportAsync(delegate, newLoc);
     }
     
     @Override
