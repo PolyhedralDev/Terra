@@ -35,6 +35,7 @@ public class OreAddon implements AddonInitializer {
                 .then(event -> event.getPack().registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
                 .failThrough();
         
-        logger.warn("The ore-config addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the ore-config-v2 addon for future pack development instead.");
+        if(platform.getTerraConfig().isDebugLog())
+            logger.warn("The ore-config addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the ore-config-v2 addon for future pack development instead.");
     }
 }

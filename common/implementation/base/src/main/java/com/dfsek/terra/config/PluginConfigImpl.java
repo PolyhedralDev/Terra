@@ -51,6 +51,10 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Default
     private boolean debugScript = false;
     
+    @Value("debug.log")
+    @Default
+    private boolean debugLog = false;
+    
     @Value("biome-search-resolution")
     @Default
     private int biomeSearch = 4;
@@ -91,6 +95,8 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
             logger.info("Debug profiler enabled.");
         if(debugScript)
             logger.info("Script debug blocks enabled.");
+        if(debugLog)
+            logger.info("Debug logging enabled.");
     }
     
     @Override
@@ -111,6 +117,11 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Override
     public boolean isDebugScript() {
         return debugScript;
+    }
+    
+    @Override
+    public boolean isDebugLog() {
+        return debugLog;
     }
     
     @Override

@@ -90,6 +90,7 @@ public class BiomePipelineAddon implements AddonInitializer {
                     event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
                 });
         
-        logger.warn("The biome-provider-pipeline addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-pipeline-v2 addon for future pack development instead.");
+        if(platform.getTerraConfig().isDebugLog())
+            logger.warn("The biome-provider-pipeline addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-pipeline-v2 addon for future pack development instead.");
     }
 }
