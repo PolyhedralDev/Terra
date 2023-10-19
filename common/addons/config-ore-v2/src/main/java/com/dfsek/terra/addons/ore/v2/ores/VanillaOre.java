@@ -138,7 +138,7 @@ public class VanillaOre implements Structure {
                                         if(!bitSet.get(ac)) {
                                             bitSet.set(ac);
                                             
-                                            BlockType block = world.getBlockState(x, y, z).getBlockType();
+                                            BlockType block = world.getBlockState(t1, v1, aa).getBlockType();
                                             
                                             if(shouldPlace(block, random, world, t1, v1, aa)) {
                                                 world.setBlockState(t1, v1, aa, getMaterial(block), isApplyGravity());
