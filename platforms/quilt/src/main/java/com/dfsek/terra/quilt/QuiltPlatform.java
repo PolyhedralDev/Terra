@@ -32,7 +32,7 @@ public class QuiltPlatform extends LifecyclePlatform {
     
     @Override
     protected Collection<BaseAddon> getPlatformMods() {
-        return QuiltLoader.getAllMods().stream().flatMap(mod -> parseModData(mod.metadata().id(), mod.metadata().version().raw())).collect(
+        return QuiltLoader.getAllMods().stream().flatMap(mod -> parseModData(mod.metadata().id(), mod.metadata().version().raw(), "quilt")).collect(
                 Collectors.toList());
     }
     

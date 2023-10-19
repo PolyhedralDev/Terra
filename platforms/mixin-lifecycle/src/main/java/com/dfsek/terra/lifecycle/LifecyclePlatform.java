@@ -111,11 +111,11 @@ public abstract class LifecyclePlatform extends ModPlatform {
         return addons;
     }
     
-    protected Stream<EphemeralAddon> parseModData(String id, String modVersion) {
+    protected Stream<EphemeralAddon> parseModData(String id, String modVersion, String platform) {
         if(id.equals("terra") || id.equals("minecraft") || id.equals("java")) return Stream.empty();
         try {
             Version version = Versions.parseVersion(modVersion);
-            return Stream.of(new EphemeralAddon(version, "quilt:" + id));
+            return Stream.of(new EphemeralAddon(version, platform + ":" + id));
         } catch(ParseException e) {
             LOGGER.warn(
                     "Mod {}, version {} does not follow semantic versioning specification, Terra addons will be unable to depend on " +

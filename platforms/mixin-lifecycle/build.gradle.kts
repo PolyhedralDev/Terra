@@ -41,6 +41,7 @@ tasks {
 }
 
 architectury {
-    common("fabric", "quilt")
+//    common("fabric", "quilt")
+    common("fabric")
     minecraft = Versions.Mod.minecraft
 }
