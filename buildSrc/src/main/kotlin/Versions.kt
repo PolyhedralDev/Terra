@@ -23,11 +23,11 @@ object Versions {
     object Fabric {
         const val fabricAPI = "0.90.0+${Mod.minecraft}"
     }
-    
-    object Quilt {
-        const val quiltLoader = "0.20.2"
-        const val fabricApi = "7.3.1+0.89.3-1.20.1"
-    }
+//
+//    object Quilt {
+//        const val quiltLoader = "0.20.2"
+//        const val fabricApi = "7.3.1+0.89.3-1.20.1"
+//    }
     
     object Mod {
         const val mixin = "0.12.5+mixin.0.8.5"
@@ -57,13 +57,13 @@ object Versions {
         const val runPaper = "2.2.0"
         const val paperWeight = "1.5.6"
     }
-    
-    object Sponge {
-        const val sponge = "9.0.0-SNAPSHOT"
-        const val mixin = "0.8.2"
-        const val minecraft = "1.17.1"
-    }
-    
+//
+//    object Sponge {
+//        const val sponge = "9.0.0-SNAPSHOT"
+//        const val mixin = "0.8.2"
+//        const val minecraft = "1.17.1"
+//    }
+//
     object CLI {
         const val nbt = "6.1"
         const val logback = "1.4.11"

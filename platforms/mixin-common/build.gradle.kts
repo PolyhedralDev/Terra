@@ -24,7 +24,8 @@ dependencies {
 }
 
 architectury {
-    common("fabric", "forge", "quilt")
+//    common("fabric", "forge", "quilt")
+    common("fabric", "forge")
     minecraft = Versions.Mod.minecraft
 }
 
