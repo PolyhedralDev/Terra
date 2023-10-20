@@ -92,9 +92,51 @@ public class SemanticAnalyzerTest {
         testValid("fun returnVoid() { return (); }");
     }
     
-    //Not implemented yet @Test
-    public void testControlFlowAnalysis() {
+    @Test
+    public void testFunctionReturnControlFlowAnalysis() {
+        // Non-void returning function bodies must contain at least one statement that always returns
+        testInvalid("""
+                    fun returnsNum(): num {
+                    }
+                    """, InvalidFunctionDeclarationException.class);
         
+        testValid("""
+                  fun returnsNum(): num {
+                      return 1;
+                  }
+                  """);
+        
+        testValid("""
+                  fun returnsNum(): num {
+                      1 + 1;
+                      return 1;
+                  }
+                  """);
+        
+        // Statements after the first always-return-statement are unreachable, unreachable code is legal
+        testValid("""
+                  fun returnsNum(): num {
+                      return 1;
+                      1 + 1; // Unreachable
+                  }
+                  """);
+        
+        // Void returning functions can omit returns
+        testValid("""
+                  fun returnsNothing() {
+                  }
+                  """);
+        
+        // Returns can still be explicitly used for void returning functions
+        testValid("""
+                    fun returnsNum(p: bool) {
+                        if (p) {
+                            return;
+                        }
+                    }
+                    """);
+        
+        // If all if-statement bodies always return, then the statement is considered as always returning
         testValid("""
                   fun returnsNum(p: bool): num {
                       if (p) {
@@ -105,32 +147,85 @@ public class SemanticAnalyzerTest {
                   }
                   """);
         
+        testValid("""
+                  fun returnsNum(p1: bool, p2: bool): num {
+                      if (p1) {
+                          return 1;
+                      } else if (p2) {
+                          return 2;
+                      } else {
+                          return 3;
+                      }
+                  }
+                  """);
         
-        // All paths of execution must return a value if return type is not void
+        // If no else body is defined, an if-statement does not always return, therefore the function does not contain any always-return-statements
         testInvalid("""
                     fun returnsNum(p: bool): num {
                         if (p) {
                             return 1;
                         }
                     }
-                    """, null);
+                    """, InvalidFunctionDeclarationException.class);
         
-        // Not all paths require explicit return for void functions, implicitly returns void at end of execution
-        testValid("""
-                    fun returnsNum(p: bool) {
-                        if (p) {
-                            return;
+        testInvalid("""
+                    fun returnsNum(p1: bool, p2: bool): num {
+                        if (p1) {
+                            return 1;
+                        } else if (p2) {
+                            return 2;
                         }
+                    }
+                    """, InvalidFunctionDeclarationException.class);
+        
+        // Nested ifs should work
+        testValid("""
+                  fun returnsNum(p1: bool, p2: bool): num {
+                      if (p1) {
+                          if (p2) {
+                              return 1;
+                          } else {
+                              return 2;
+                          }
+                      } else {
+                          return 3;
+                      }
+                  }
+                  """);
+        
+        testInvalid("""
+                  fun returnsNum(p1: bool, p2: bool): num {
+                      if (p1) {
+                          if (p2) {
+                              return 1;
+                          }
+                          // No else clause here, so will not always return
+                      } else {
+                          return 3;
+                      }
+                  }
+                  """, InvalidFunctionDeclarationException.class);
+        
+        // If-statement may not always return but a return statement after it means function will always return
+        testValid("""
+                    fun returnsNum(p: bool): num {
+                        if (p) {
+                            return 1;
+                        }
+                        return 2;
                     }
                     """);
         
-        // Static analysis of if statement always being true
+        // Same applies when statements are swapped
         testValid("""
-                  fun returnsNum(): num {
-                      if (true) {
-                          return 1;
-                      }
-                  """);
+                    fun returnsNum(p: bool): num {
+                        return 1;
+                        // Unreachable
+                        if (p) {
+                            return 2;
+                        }
+                    }
+                    """);
     }
     
     @Test

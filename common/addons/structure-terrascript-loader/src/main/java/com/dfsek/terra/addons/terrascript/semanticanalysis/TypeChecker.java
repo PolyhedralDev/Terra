@@ -2,7 +2,6 @@ package com.dfsek.terra.addons.terrascript.semanticanalysis;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.dfsek.terra.addons.terrascript.Environment;
 import com.dfsek.terra.addons.terrascript.Environment.Symbol;
@@ -167,24 +166,31 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     
     @Override
     public TypedStmt visitFunctionDeclarationStmt(Stmt.FunctionDeclaration stmt) {
-        AtomicBoolean hasReturn = new AtomicBoolean(false);
-        TypedStmt.Block body = new TypedStmt.Block(stmt.body.statements.stream().map(s -> {
-            TypedStmt bodyStmt = s.accept(this);
-            if(bodyStmt instanceof TypedStmt.Return ret) {
-                hasReturn.set(true);
-                if(ret.value.type != stmt.returnType)
-                    errorHandler.add(new InvalidTypeException(
-                            "Return statement must match function's return type. Function '" + stmt.identifier + "' expects " +
-                            stmt.returnType + ", found " + ret.value.type + " instead", s.position));
-            }
-            return bodyStmt;
-        }).toList());
-        if(stmt.returnType != Type.VOID && !hasReturn.get()) {
+        TypedStmt.Block body = new TypedStmt.Block(stmt.body.statements.stream().map(s -> s.accept(this)).toList());
+        boolean hasReturn = alwaysReturns(body, stmt);
+        if(stmt.returnType != Type.VOID && !hasReturn) {
             errorHandler.add(
                     new InvalidFunctionDeclarationException("Function body for '" + stmt.identifier + "' does not contain return statement",
                                                             stmt.position));
         }
         return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body, scopedIdentifier(stmt.identifier, stmt.getSymbol()));
+    }
+    
+    private boolean alwaysReturns(TypedStmt stmt, Stmt.FunctionDeclaration function) {
+        if(stmt instanceof TypedStmt.Return ret) {
+            if(ret.value.type != function.returnType)
+                errorHandler.add(new InvalidTypeException(
+                        "Return statement must match function's return type. Function '" + function.identifier + "' expects " +
+                        function.returnType + ", found " + ret.value.type + " instead", function.position));
+            return true;
+        } else if (stmt instanceof TypedStmt.If ifStmt) {
+            return alwaysReturns(ifStmt.trueBody, function) &&
+                   ifStmt.elseIfClauses.stream().map(Pair::getRight).allMatch(s -> alwaysReturns(s, function)) &&
+                   ifStmt.elseBody.map(body -> alwaysReturns(body, function)).orElse(false); // If else body is not defined then statement does not always return
+        } else if (stmt instanceof TypedStmt.Block block) {
+            return block.statements.stream().anyMatch(s -> alwaysReturns(s, function));
+        }
+        return false;
     }
     
     @Override
