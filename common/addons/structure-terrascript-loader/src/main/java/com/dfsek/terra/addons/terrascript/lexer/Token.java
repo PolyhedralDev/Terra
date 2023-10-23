@@ -159,21 +159,9 @@ public class Token {
          */
         BOOLEAN_AND,
         /**
-         * Numeric variable declaration
+         * Variable declaration
          */
-        TYPE_NUMBER,
-        /**
-         * String variable declaration
-         */
-        TYPE_STRING,
-        /**
-         * Boolean variable declaration
-         */
-        TYPE_BOOLEAN,
-        /**
-         * Void type declaration
-         */
-        TYPE_VOID,
+        VARIABLE,
         /**
          * Function declaration
          */

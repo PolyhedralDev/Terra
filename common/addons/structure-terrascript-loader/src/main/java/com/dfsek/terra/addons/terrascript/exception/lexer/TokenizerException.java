@@ -9,8 +9,8 @@ package com.dfsek.terra.addons.terrascript.exception.lexer;
 
 import java.io.Serial;
 
-import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.parser.ParseException;
 
 
 public abstract class TokenizerException extends ParseException {

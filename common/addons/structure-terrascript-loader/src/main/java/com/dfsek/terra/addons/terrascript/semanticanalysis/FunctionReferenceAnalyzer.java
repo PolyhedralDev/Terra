@@ -25,7 +25,7 @@ import com.dfsek.terra.addons.terrascript.ast.Stmt.Return;
 import com.dfsek.terra.addons.terrascript.ast.Stmt.VariableDeclaration;
 import com.dfsek.terra.addons.terrascript.ast.Stmt.While;
 import com.dfsek.terra.addons.terrascript.exception.semanticanalysis.UndefinedReferenceException;
-import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.parser.ParseException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 

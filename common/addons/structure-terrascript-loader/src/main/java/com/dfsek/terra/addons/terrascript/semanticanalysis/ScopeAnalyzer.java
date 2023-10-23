@@ -19,7 +19,7 @@ import com.dfsek.terra.addons.terrascript.ast.Expr.Void;
 import com.dfsek.terra.addons.terrascript.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
 import com.dfsek.terra.addons.terrascript.exception.semanticanalysis.UndefinedReferenceException;
-import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.parser.ParseException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 

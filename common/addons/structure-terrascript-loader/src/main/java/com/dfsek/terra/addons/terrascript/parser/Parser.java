@@ -8,12 +8,11 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.terrascript.Type;
+import com.dfsek.terra.addons.terrascript.Type.TypeException;
 import com.dfsek.terra.addons.terrascript.ast.Expr;
 import com.dfsek.terra.addons.terrascript.ast.Expr.Variable;
 import com.dfsek.terra.addons.terrascript.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.ast.Stmt.Block;
-import com.dfsek.terra.addons.terrascript.legacy.parser.ParserUtil;
-import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
 import com.dfsek.terra.addons.terrascript.lexer.Token;
 import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
@@ -77,7 +76,7 @@ public class Parser {
         return switch(current().type()) {
             case BLOCK_BEGIN -> block();
             case FUNCTION -> functionDeclaration();
-            case TYPE_STRING, TYPE_BOOLEAN, TYPE_NUMBER -> variableDeclaration();
+            case VARIABLE -> variableDeclaration();
             case RETURN -> returnStmt();
             case IF_STATEMENT -> ifStmt();
             case FOR_LOOP -> forLoop();
@@ -104,7 +103,7 @@ public class Parser {
                                          paramToken.position());
             
             consume("Expected type declaration after parameter name. Example: '" + paramId + ": <type>'", TokenType.COLON);
-            Type paramType = ParserUtil.getVariableReturnType(consumeUnchecked());
+            Type paramType = typeExpr();
             
             params.add(Pair.of(paramId, paramType));
             
@@ -118,7 +117,7 @@ public class Parser {
                 TokenType.CLOSE_PAREN);
         if(current().isType(TokenType.COLON)) {
             consumeUnchecked();
-            funcReturn = ParserUtil.getVariableReturnType(consumeUnchecked());
+            funcReturn = typeExpr();
         }
         
         Stmt.Block body = blockOrSingleStatement();
@@ -127,20 +126,24 @@ public class Parser {
     }
     
     private Stmt.VariableDeclaration variableDeclaration() {
-        Token typeToken = consumeUnchecked();
-        SourcePosition position = typeToken.position();
-        Type type = switch(typeToken.type()) {
-            case TYPE_BOOLEAN -> Type.BOOLEAN;
-            case TYPE_NUMBER -> Type.NUMBER;
-            case TYPE_STRING -> Type.STRING;
-            default -> throw new ParseException("Invalid token '" + typeToken.lexeme() + "' specified as variable type", position);
-        };
+        SourcePosition position = consume("Expected 'var' keyword at start of variable declaration", TokenType.VARIABLE).position();
         String id = consume("Expected variable name after type for variable declaration", TokenType.IDENTIFIER).lexeme();
-        consume("Expected '=' following variable name '" + id + "' for variable declaration", TokenType.ASSIGNMENT);
+        consume("Expected ':' after variable name", TokenType.COLON);
+        Type type = typeExpr();
+        consume("Expected '=' following variable type declaration", TokenType.ASSIGNMENT);
         Expr expr = expression();
         consumeStatementEnd("variable declaration");
         
         return new Stmt.VariableDeclaration(type, id, expr, position);
+    }
+    
+    private Type typeExpr() {
+        Token typeToken = consume("Expected " + TokenType.IDENTIFIER + " specified as variable type", TokenType.IDENTIFIER);
+        try {
+            return Type.fromString(typeToken.lexeme());
+        } catch(TypeException e) {
+            throw new ParseException("Failed to parse type expression", typeToken.position());
+        }
     }
     
     private Stmt.Return returnStmt() {
@@ -371,4 +374,6 @@ public class Parser {
     private Expr variable(Token identifier) {
         return new Expr.Variable(identifier.lexeme(), identifier.position());
     }
+    
+    
 }

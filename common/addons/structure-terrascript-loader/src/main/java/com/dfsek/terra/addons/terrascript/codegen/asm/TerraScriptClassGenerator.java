@@ -23,6 +23,8 @@ import com.dfsek.terra.addons.terrascript.ast.TypedStmt.Return;
 import com.dfsek.terra.addons.terrascript.ast.TypedStmt.VariableDeclaration;
 import com.dfsek.terra.addons.terrascript.ast.TypedStmt.While;
 
+import com.dfsek.terra.addons.terrascript.codegen.CodegenType;
+import com.dfsek.terra.addons.terrascript.codegen.CodegenType.InstructionType;
 import com.dfsek.terra.addons.terrascript.codegen.NativeFunction;
 import com.dfsek.terra.addons.terrascript.codegen.TerraScript;
 import com.dfsek.terra.addons.terrascript.exception.CompilerBugException;
@@ -45,7 +47,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import static com.dfsek.terra.addons.terrascript.codegen.CodegenType.BOOLEAN_PRIMITIVE;
+import static com.dfsek.terra.addons.terrascript.codegen.CodegenType.codegenType;
 import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_EQUALS;
 import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.BOOL_FALSE;
 import static com.dfsek.terra.addons.terrascript.codegen.asm.OpcodeAlias.CMP_GREATER_EQUALS;
@@ -175,12 +180,13 @@ public class TerraScriptClassGenerator {
                 case EQUALS, NOT_EQUALS, BOOLEAN_AND, BOOLEAN_OR, GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> pushComparisonBool(expr);
                 case ADD -> {
                     pushBinaryOperands(expr);
-                    switch(expr.type) {
-                        case NUMBER -> method.visitInsn(Opcodes.DADD);
+                    CodegenType codegenType = codegenType(expr.type);
+                    if(codegenType.bytecodeType() == InstructionType.DOUBLE)
+                        method.visitInsn(Opcodes.DADD);
+                    else if (Objects.equals(codegenType.getDescriptor(), "Ljava/lang/String;"))
                         // TODO - Optimize string concatenation
-                        case STRING -> method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "concat", "(Ljava/lang/String;)Ljava/lang/String;", false);
-                        default -> throw new RuntimeException("Could not generate bytecode for ADD binary operator returning type " + expr.type);
-                    }
+                        method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "concat", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                    else throw new RuntimeException("Could not generate bytecode for ADD binary operator returning type " + expr.type);
                 }
                 case SUBTRACT -> binaryInsn(expr, Opcodes.DSUB);
                 case MULTIPLY -> binaryInsn(expr, Opcodes.DMUL);
@@ -198,10 +204,9 @@ public class TerraScriptClassGenerator {
         
         @Override
         public Void visitLiteralTypedExpr(Literal expr) {
-            switch (expr.type) {
-                case BOOLEAN -> { if ((boolean) expr.value) pushTrue(); else pushFalse(); }
-                case NUMBER, STRING -> method.visitLdcInsn(expr.value);
-            }
+            if(codegenType(expr.type) == BOOLEAN_PRIMITIVE)
+                if ((boolean) expr.value) pushTrue(); else pushFalse();
+            else method.visitLdcInsn(expr.value);
             return null;
         }
         
@@ -233,12 +238,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitVariableTypedExpr(Variable expr) {
             Type varType = expr.type;
-            method.visitVarInsn(switch(varType) {
-                case NUMBER -> Opcodes.DLOAD;
-                case STRING -> Opcodes.ALOAD;
-                case BOOLEAN -> Opcodes.ILOAD;
-                default -> throw new RuntimeException("Unable to load local variable, unhandled type '" + varType + "'");
-            }, lvTable.get(expr.identifier));
+            method.visitVarInsn(codegenType(varType).bytecodeType().loadInsn(), lvTable.get(expr.identifier));
             return null;
         }
         
@@ -246,12 +246,7 @@ public class TerraScriptClassGenerator {
         public Void visitAssignmentTypedExpr(Assignment expr) {
             expr.rValue.accept(this);
             Type type = expr.lValue.type;
-            method.visitVarInsn(switch(type) {
-                case NUMBER -> Opcodes.DSTORE;
-                case STRING -> Opcodes.ASTORE;
-                case BOOLEAN -> Opcodes.ISTORE;
-                default -> throw new RuntimeException("Unable to assign local variable, unhandled type '" + type + "'");
-            }, lvTable.get(expr.lValue.identifier));
+            method.visitVarInsn(codegenType(type).bytecodeType().storeInsn(), lvTable.get(expr.lValue.identifier));
             return null;
         }
         
@@ -293,11 +288,7 @@ public class TerraScriptClassGenerator {
             int lvidx = 0;
             for (Pair<String, Type> parameter : stmt.parameters) {
                 funcGenerator.lvTable.put(parameter.getLeft(), lvidx);
-                lvidx += switch(parameter.getRight()) { // Increment by how many slots data type takes
-                    case NUMBER -> 2;
-                    case STRING, BOOLEAN -> 1;
-                    default -> throw new RuntimeException("Unable to register local variable index for parameter, unknown parameter type '" + parameter.getRight() + "'");
-                };
+                lvidx += codegenType(parameter.getRight()).bytecodeType().slotSize(); // Increment by how many slots data type takes
             }
             
             // Generate method bytecode
@@ -315,24 +306,14 @@ public class TerraScriptClassGenerator {
         public Void visitVariableDeclarationTypedStmt(VariableDeclaration stmt) {
             stmt.value.accept(this);
             lvTable.put(stmt.identifier, lvs.newLocal(ASMUtil.tsTypeToAsmType(stmt.type)));
-            method.visitVarInsn(switch(stmt.type) {
-                case NUMBER -> Opcodes.DSTORE;
-                case STRING -> Opcodes.ASTORE;
-                case BOOLEAN -> Opcodes.ISTORE;
-                default -> throw new RuntimeException("Unable to declare local variable, unknown parameter type '" + stmt.type + "'");
-            }, lvTable.get(stmt.identifier));
+            method.visitVarInsn(codegenType(stmt.type).bytecodeType().storeInsn(), lvTable.get(stmt.identifier));
             return null;
         }
         
         @Override
         public Void visitReturnTypedStmt(Return stmt) {
             stmt.value.accept(this);
-            switch(stmt.value.type) {
-                case NUMBER -> method.visitInsn(Opcodes.DRETURN);
-                case STRING -> method.visitInsn(Opcodes.ARETURN);
-                case BOOLEAN -> method.visitInsn(Opcodes.IRETURN);
-                default -> throw new CompilerBugException();
-            }
+            method.visitInsn(codegenType(stmt.value.type).bytecodeType().returnInsn());
             return null;
         }
         
@@ -557,19 +538,9 @@ public class TerraScriptClassGenerator {
         
         private String getFunctionDescriptor(List<Type> parameters, Type returnType) {
             StringBuilder sb = new StringBuilder().append("(");
-            parameters.stream().map(p -> switch (p) {
-                case NUMBER -> "D";
-                case STRING -> "Ljava/lang/String;";
-                case BOOLEAN -> "Z";
-                default -> throw new RuntimeException("Unable to generate method descriptor, unknown parameter type '" + p + "'");
-            }).forEach(sb::append);
+            parameters.stream().map(parameter -> codegenType(parameter).getDescriptor()).forEach(sb::append);
             sb.append(")");
-            sb.append(switch (returnType) {
-                case NUMBER -> "D";
-                case STRING -> "Ljava/lang/String;";
-                case BOOLEAN -> "Z";
-                case VOID -> "V";
-            });
+            sb.append(codegenType(returnType).getDescriptor());
             return sb.toString();
         }
     }

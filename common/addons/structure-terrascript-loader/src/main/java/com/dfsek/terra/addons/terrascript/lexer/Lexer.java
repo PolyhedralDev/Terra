@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.lexer;
 
+import com.dfsek.terra.addons.terrascript.parser.ParseException;
+
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
@@ -17,7 +19,6 @@ import java.util.Set;
 import com.dfsek.terra.addons.terrascript.exception.lexer.EOFException;
 import com.dfsek.terra.addons.terrascript.exception.lexer.FormatException;
 import com.dfsek.terra.addons.terrascript.exception.lexer.TokenizerException;
-import com.dfsek.terra.addons.terrascript.legacy.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.lexer.Token.TokenType;
 
 
@@ -190,14 +191,8 @@ public class Lexer {
         if(tokenString.equals("false"))
             return new Token(tokenString, TokenType.BOOLEAN, position);
         
-        if(tokenString.equals("num"))
-            return new Token(tokenString, TokenType.TYPE_NUMBER, position);
-        if(tokenString.equals("str"))
-            return new Token(tokenString, TokenType.TYPE_STRING, position);
-        if(tokenString.equals("bool"))
-            return new Token(tokenString, TokenType.TYPE_BOOLEAN, position);
-        if(tokenString.equals("void"))
-            return new Token(tokenString, TokenType.TYPE_VOID, position);
+        if(tokenString.equals("var"))
+            return new Token(tokenString, TokenType.VARIABLE, position);
         
         if(tokenString.equals("fun"))
             return new Token(tokenString, TokenType.FUNCTION, position);

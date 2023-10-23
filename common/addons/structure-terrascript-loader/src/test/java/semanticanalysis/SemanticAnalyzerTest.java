@@ -20,22 +20,22 @@ public class SemanticAnalyzerTest {
     @Test
     public void testVariableReference() {
         // Use of declared variable
-        testValid("num a = 1; a + a;");
+        testValid("var a: num = 1; a + a;");
         
         // Can't use undeclared variable
         testInvalid("a + a;", UndefinedReferenceException.class);
         
         // Can't reference variable before declaration
-        testInvalid("a + a; num a = 1;", UndefinedReferenceException.class);
+        testInvalid("a + a; var a: num = 1;", UndefinedReferenceException.class);
         
         // Variable declarations shouldn't be accessible from inner scopes
-        testInvalid("{ num a = 1; } a + a;", UndefinedReferenceException.class);
+        testInvalid("{ var a: num = 1; } a + a;", UndefinedReferenceException.class);
         
         // Can access variables declared in outer scope
-        testValid("num a = 3; { a + a; }");
+        testValid("var a: num = 3; { a + a; }");
         
         // Should not be able to use variables from outer scope if they're declared after scope
-        testInvalid("{ a + a; } num a = 2;", UndefinedReferenceException.class);
+        testInvalid("{ a + a; } var a: num = 2;", UndefinedReferenceException.class);
         
         // Can't use undeclared variable as function argument
         testInvalid("fun test(p: str) {} test(a);", UndefinedReferenceException.class);
@@ -47,34 +47,34 @@ public class SemanticAnalyzerTest {
         testInvalid("a = 1;", UndefinedReferenceException.class);
         
         // Cannot assign to variable declared after assignment
-        testInvalid("a = 2; num a = 1;", UndefinedReferenceException.class);
+        testInvalid("a = 2; var a: num = 1;", UndefinedReferenceException.class);
     }
     
     @Test
     public void testAssignment() {
         // Simple assignment
-        testValid("num a = 1; a = 2;");
+        testValid("var a: num = 1; a = 2;");
         
         // Can assign variables declared in outer scope
         testValid("""
-                  num a = 1;
+                  var a: num = 1;
                   { a = 2; }
                   """);
         
         // Cannot assign variables declared in inner scope
         testInvalid("""
-                    { num a = 1; }
+                    { var a: num = 1; }
                     a = 2;
                     """, UndefinedReferenceException.class);
         
         // Cannot assign variables declared in outer scope after reference
         testInvalid("""
                     { a = 2; }
-                    num a = 1;
+                    var a: num = 1;
                     """, UndefinedReferenceException.class);
         
         // Cannot assign variable to expression of different type
-        testInvalid("num a = 1; a = true;", InvalidTypeException.class);
+        testInvalid("var a: num = 1; a = true;", InvalidTypeException.class);
     }
     
     @Test
@@ -293,8 +293,8 @@ public class SemanticAnalyzerTest {
         testInvalid("fun test(a: num, b: num) { a + c; }", UndefinedReferenceException.class);
         
         // Function bodies can't use variables from outer scope
-        testInvalid("num a = 1; fun doStuff() { a + 2; }", UndefinedReferenceException.class);
-        testInvalid("fun doStuff() { a + 2; } num a = 1;", UndefinedReferenceException.class);
+        testInvalid("var a: num = 1; fun doStuff() { a + 2; }", UndefinedReferenceException.class);
+        testInvalid("fun doStuff() { a + 2; } var a: num = 1;", UndefinedReferenceException.class);
         
         // Type checking parameters
         testValid("fun takesNum(a: num) {} fun test(numberParam: num) { takesNum(numberParam); }");
@@ -304,20 +304,20 @@ public class SemanticAnalyzerTest {
     @Test
     public void testShadowing() {
         // Can't shadow variable in immediate scope
-        testInvalid("num a = 1; num a = 2;", IdentifierAlreadyDeclaredException.class);
+        testInvalid("var a: num = 1; var a: num = 2;", IdentifierAlreadyDeclaredException.class);
         
         // Can shadow variable from outer scope
-        testValid("num a = 1; { num a = 2; }");
+        testValid("var a: num = 1; { var a: num = 2; }");
         
         // Can declare variable after same identifier is used previously in an inner scope
-        testValid("{ num a = 2; } num a = 1;");
+        testValid("{ var a: num = 2; } var a: num = 1;");
         
         // Ensure shadowed variable type is used
         testValid("""
                   fun takesNum(p: num) {}
-                  bool a = false;
+                  var a: bool = false;
                   {
-                      num a = 1;
+                      var a: num = 1;
                       takesNum(a);
                   }
                   """);
@@ -325,9 +325,9 @@ public class SemanticAnalyzerTest {
         // Should not be able to use type of shadowed variable in use of shadowing variable
         testInvalid("""
                   fun takesNum(p: num) {}
-                  num a = false;
+                  var a: num = false;
                   {
-                      bool a = 1;
+                      var a: bool = 1;
                       takesNum(a);
                   }
                   """, InvalidTypeException.class);
@@ -350,7 +350,7 @@ public class SemanticAnalyzerTest {
                   """, IdentifierAlreadyDeclaredException.class);
         
         // Can't use function name that is already declared as a variable
-        testInvalid("num id = 1; fun id() {}", IdentifierAlreadyDeclaredException.class);
+        testInvalid("var id: num = 1; fun id() {}", IdentifierAlreadyDeclaredException.class);
     }
     
     private <T extends Exception> void testInvalid(String invalidSource, Class<T> exceptionType) {

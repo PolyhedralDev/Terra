@@ -23,9 +23,9 @@ public class CodeGenTest {
                   
                   if (1 == 1) print("Dis is true");
                   
-                  num a = 1;
-                  num b = 2;
-                  str e = "test";
+                  var a: num = 1;
+                  var b: num = 2;
+                  var e: str = "test";
                   
                   if (a <= b) {
                       print("a is <= b");
@@ -48,17 +48,19 @@ public class CodeGenTest {
                   }
                   
                   fun loopTwiceThenBreak() {
-                      num i = 0;
+                      var i: num = 0;
                       while (true) {
-                          if (i == 2) break;
+                          print("looped");
+                          if (i == 1) break;
                           i = i + 1;
                       }
                   }
                   
+                  print("Should loop twice:");
                   loopTwiceThenBreak();
                   
                   retNum();
-                  bool bln = true;
+                  var bln: bool = true;
               
                   print(takesArgs("test", 3, true));
                   print(retStr());
@@ -84,9 +86,9 @@ public class CodeGenTest {
                       fun concatTwo(a: str, b: str): str {
                           return a + b;
                       }
-                      str hello = "Hell";
+                      var hello: str = "Hell";
                       hello = concatTwo(hello, "o");
-                      str world = "world!";
+                      var world: str = "world!";
                       return concatThree(hello, " ", world);
                   }
                   

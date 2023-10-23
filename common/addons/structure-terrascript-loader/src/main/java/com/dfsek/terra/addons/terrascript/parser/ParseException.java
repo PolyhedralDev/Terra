@@ -5,7 +5,7 @@
  * reference the LICENSE file in this module's root directory.
  */
 
-package com.dfsek.terra.addons.terrascript.legacy.parser.exceptions;
+package com.dfsek.terra.addons.terrascript.parser;
 
 import java.io.Serial;
 
