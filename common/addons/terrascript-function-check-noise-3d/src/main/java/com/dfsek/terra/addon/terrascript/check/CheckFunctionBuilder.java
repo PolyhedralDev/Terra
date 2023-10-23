@@ -9,10 +9,9 @@ package com.dfsek.terra.addon.terrascript.check;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.terrascript.Type;
-import com.dfsek.terra.addons.terrascript.legacy.parser.lang.Expression;
-import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.lexer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 
 
@@ -25,9 +24,9 @@ public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     
     @SuppressWarnings("unchecked")
     @Override
-    public CheckFunction build(List<Expression<?>> argumentList, SourcePosition position) {
-        return new CheckFunction((Expression<Number>) argumentList.get(0), (Expression<Number>) argumentList.get(1),
-                                 (Expression<Number>) argumentList.get(2), position);
+    public CheckFunction build(List<Returnable<?>> argumentList, Position position) {
+        return new CheckFunction((Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
+                                 (Returnable<Number>) argumentList.get(2), position);
     }
     
     @Override
@@ -36,9 +35,9 @@ public class CheckFunctionBuilder implements FunctionBuilder<CheckFunction> {
     }
     
     @Override
-    public Type getArgument(int position) {
+    public Returnable.ReturnType getArgument(int position) {
         return switch(position) {
-            case 0, 1, 2 -> Type.NUMBER;
+            case 0, 1, 2 -> Returnable.ReturnType.NUMBER;
             default -> null;
         };
     }

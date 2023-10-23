@@ -1,7 +1,7 @@
 package com.dfsek.terra.addon.terrascript.check;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
-import com.dfsek.terra.addons.terrascript.legacy.parser.lang.functions.FunctionBuilder;
+import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
