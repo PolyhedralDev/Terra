@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 dependencies {
@@ -15,6 +15,11 @@ dependencies {
     
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    
+    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud) {
+        exclude("net.fabricmc")
+        exclude("net.fabricmc.fabric-api")
+    }
 }
 
 loom {
@@ -36,6 +41,7 @@ tasks {
 }
 
 architectury {
-    common("fabric", "quilt")
+//    common("fabric", "quilt")
+    common("fabric")
     minecraft = Versions.Mod.minecraft
 }

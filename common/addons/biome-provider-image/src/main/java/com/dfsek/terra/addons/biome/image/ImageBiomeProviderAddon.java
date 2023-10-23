@@ -50,6 +50,7 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                                               () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
                 })
                 .failThrough();
-        logger.warn("The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-image-v2 addon for future pack development instead.");
+        if(platform.getTerraConfig().isDebugLog())
+            logger.warn("The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-image-v2 addon for future pack development instead.");
     }
 }

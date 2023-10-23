@@ -47,14 +47,7 @@ JARs are produced in `platforms/<platform>/build/libs`.
 To run Minecraft with Terra in the IDE (for testing) use the following tasks:
 
 * Bukkit
-    * `installPaper` - Install a [Paper](https://github.com/PaperMC/Paper) test
-      server. (Only needs to be run once).
-    * `installPurpur` - Install a [Purpur](https://github.com/pl3xgaming/Purpur)
-      test server. (Only needs to be run once).
-    * `runPaper` - Run the Paper test server with Terra (`installPaper` must
-      have been run previously).
-    * `runPurpur` - Run the Purpur test server with Terra (`installPurpur` must
-      have been run previously).
+    * `runServer` - Run the Paper test server with Terra installed.
 * Fabric
     * `runClient` - Run a Minecraft Fabric client with Terra installed.
     * `runServer` - Run a Minecraft Fabric server with Terra installed.

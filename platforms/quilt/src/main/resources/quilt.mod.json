@@ -39,7 +39,7 @@
             },
             {
                 "id": "minecraft",
-                "version": "1.19.x"
+                "version": "1.20.x"
             },
             {
                 "id": "quilted_fabric_api",

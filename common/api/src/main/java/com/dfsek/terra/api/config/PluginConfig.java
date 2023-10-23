@@ -21,6 +21,8 @@ public interface PluginConfig {
     
     boolean isDebugScript();
     
+    boolean isDebugLog();
+    
     int getBiomeSearchResolution();
     
     int getStructureCache();
