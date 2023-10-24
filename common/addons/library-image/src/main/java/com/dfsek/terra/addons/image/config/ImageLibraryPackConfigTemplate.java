@@ -18,7 +18,7 @@ public class ImageLibraryPackConfigTemplate implements ConfigTemplate, Propertie
     
     @Value("images.cache.unload-on-timeout")
     @Description("If set to true, images will be removed from memory if not used after a timeout, otherwise images will stay loaded in memory. " +
-                 "Trades decreased memory consumption when not performing image reads for extra processing time required to perform cache lookups.")
+                 "Trades decreased memory consumption when not performing any image reads for a period of time for extra processing time required to perform cache lookups.")
     @Default
     private boolean unloadOnTimeout = false;
     
