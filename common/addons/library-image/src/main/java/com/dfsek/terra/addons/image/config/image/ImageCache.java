@@ -27,7 +27,6 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
         ImageLibraryPackConfigTemplate config = pack.getContext().get(ImageLibraryPackConfigTemplate.class);
         ImageCache images;
         if(!pack.getContext().has(ImageCache.class)) {
-            System.out.println("Initializing new image cache");
             var cacheBuilder = Caffeine.newBuilder();
             if (config.unloadOnTimeout()) cacheBuilder.expireAfterAccess(config.getCacheTimeout(), TimeUnit.SECONDS);
             images = new ImageCache(cacheBuilder.build(s -> loadImage(path, files)));
@@ -48,7 +47,6 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
     }
     
     private static Image loadImage(String path, Loader files) throws IOException {
-        System.out.println("Loading image: " + path);
         try {
             return new BufferedImageWrapper(ImageIO.read(files.get(path)));
         } catch(IllegalArgumentException e) {
