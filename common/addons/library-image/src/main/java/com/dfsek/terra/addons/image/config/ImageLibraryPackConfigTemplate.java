@@ -16,23 +16,19 @@ public class ImageLibraryPackConfigTemplate implements ConfigTemplate, Propertie
     @Default
     private boolean loadOnUse = false;
     
-    @Value("images.cache.unload-on-timeout")
-    @Description("If set to true, images will be removed from memory if not used after a timeout, otherwise images will stay loaded in memory. " +
-                 "Trades decreased memory consumption when not performing any image reads for a period of time for extra processing time required to perform cache lookups.")
-    @Default
-    private boolean unloadOnTimeout = false;
-    
     @Value("images.cache.timeout")
-    @Description("How many seconds to keep images loaded in the image cache for if images.cache.unload-on-timeout is enabled.")
+    @Description("How many seconds to keep images loaded in the image cache for. " +
+                 "If set to a number greater than 0, images will be removed from memory if not used after the timeout, otherwise images will stay loaded in memory. " +
+                 "Setting the timeout to greater than 0 will trade decreased memory consumption when not performing any image reads for a period of time for extra processing time required to perform cache lookups.")
     @Default
-    private int cacheTimeout = 300;
+    private int cacheTimeout = 0;
     
     public boolean loadOnUse() {
         return loadOnUse;
     }
     
     public boolean unloadOnTimeout() {
-        return unloadOnTimeout;
+        return cacheTimeout > 0;
     }
     
     public int getCacheTimeout() {
