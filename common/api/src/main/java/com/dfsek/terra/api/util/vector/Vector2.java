@@ -14,8 +14,9 @@ import com.dfsek.terra.api.util.MathUtil;
  * oh yeah
  */
 public class Vector2 {
-    protected double x;
-    protected double z;
+    private static final Vector2 ZERO = new Vector2(0, 0);
+    private static final Vector2 UNIT = new Vector2(0, 1);
+    protected double x, z;
     
     /**
      * Create a vector with a given X and Z component

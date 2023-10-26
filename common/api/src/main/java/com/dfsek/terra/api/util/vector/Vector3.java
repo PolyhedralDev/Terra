@@ -13,9 +13,9 @@ import com.dfsek.terra.api.util.MathUtil;
 
 
 public class Vector3 {
-    protected double x;
-    protected double y;
-    protected double z;
+    private static final Vector3 ZERO = new Vector3(0, 0, 0);
+    private static final Vector3 UNIT = new Vector3(0, 1, 0);
+    protected double x, y, z;
     
     private Vector3(double x, double y, double z) {
         this.x = x;
