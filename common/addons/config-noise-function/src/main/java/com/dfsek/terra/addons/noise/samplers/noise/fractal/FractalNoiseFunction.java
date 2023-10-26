@@ -25,7 +25,7 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
     }
     
     protected void calculateFractalBounding() {
-        double gain = fastAbs(this.gain);
+        double gain = Math.abs(this.gain);
         double amp = gain;
         double ampFractal = 1.0;
         for(int i = 1; i < octaves; i++) {

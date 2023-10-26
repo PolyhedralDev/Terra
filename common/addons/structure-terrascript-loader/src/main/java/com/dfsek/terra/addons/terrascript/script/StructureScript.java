@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
-import net.jafama.FastMath;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +43,7 @@ import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
@@ -100,25 +100,25 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                                                                                   Returnable.ReturnType.NUMBER))
                 .registerFunction("print",
                                   new UnaryStringFunctionBuilder(string -> LOGGER.info("[TerraScript:{}] {}", id, string)))
-                .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> FastMath.abs(number.doubleValue())))
-                .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> FastMath.pow2(number.doubleValue())))
+                .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> Math.abs(number.doubleValue())))
+                .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> Math.pow(number.doubleValue(), 2)))
                 .registerFunction("pow", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> FastMath.pow(number.doubleValue(), number2.doubleValue())))
-                .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> FastMath.sqrt(number.doubleValue())))
-                .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> FastMath.floor(number.doubleValue())))
-                .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> FastMath.ceil(number.doubleValue())))
-                .registerFunction("log", new UnaryNumberFunctionBuilder(number -> FastMath.log(number.doubleValue())))
-                .registerFunction("round", new UnaryNumberFunctionBuilder(number -> FastMath.round(number.doubleValue())))
-                .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> FastMath.sin(number.doubleValue())))
-                .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> FastMath.cos(number.doubleValue())))
-                .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> FastMath.tan(number.doubleValue())))
-                .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> FastMath.asin(number.doubleValue())))
-                .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> FastMath.acos(number.doubleValue())))
-                .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> FastMath.atan(number.doubleValue())))
+                        (number, number2) -> Math.pow(number.doubleValue(), number2.doubleValue())))
+                .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> Math.sqrt(number.doubleValue())))
+                .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> Math.floor(number.doubleValue())))
+                .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> Math.ceil(number.doubleValue())))
+                .registerFunction("log", new UnaryNumberFunctionBuilder(number -> Math.log(number.doubleValue())))
+                .registerFunction("round", new UnaryNumberFunctionBuilder(number -> Math.round(number.doubleValue())))
+                .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> MathUtil.sin(number.doubleValue())))
+                .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> MathUtil.cos(number.doubleValue())))
+                .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> Math.tan(number.doubleValue())))
+                .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> Math.asin(number.doubleValue())))
+                .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> Math.acos(number.doubleValue())))
+                .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> Math.atan(number.doubleValue())))
                 .registerFunction("max", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> FastMath.max(number.doubleValue(), number2.doubleValue())))
+                        (number, number2) -> Math.max(number.doubleValue(), number2.doubleValue())))
                 .registerFunction("min", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> FastMath.min(number.doubleValue(), number2.doubleValue())));
+                        (number, number2) -> Math.min(number.doubleValue(), number2.doubleValue())));
         
         if(!platform.getTerraConfig().isDebugScript()) {
             parser.ignoreFunction("debugBlock");

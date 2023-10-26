@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.biome.pipeline.v2.config.stage.expander;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Expander;
+import com.dfsek.terra.addons.biome.pipeline.v2.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.v2.stage.expander.FractalExpander;
 
 

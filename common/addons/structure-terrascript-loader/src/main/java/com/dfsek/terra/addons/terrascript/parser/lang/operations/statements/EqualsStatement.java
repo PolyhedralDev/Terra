@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.parser.lang.operations.statements;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -40,7 +38,7 @@ public class EqualsStatement extends BinaryOperation<Object, Boolean> {
         Object leftValue = left.apply(implementationArguments, scope);
         Object rightValue = right.apply(implementationArguments, scope);
         if(leftValue instanceof Number l && rightValue instanceof Number r) {
-            return FastMath.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
+            return Math.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }
 
         return leftValue.equals(rightValue);

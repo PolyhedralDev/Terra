@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.random;
 
+import com.dfsek.terra.api.util.MathUtil;
+
+
 /**
  * NoiseSampler implementation to produce random, uniformly distributed (white) noise.
  */
@@ -15,7 +18,7 @@ public class PositiveWhiteNoiseSampler extends WhiteNoiseSampler {
     // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
     
     public double getNoiseRaw(long seed) {
-        return (Double.longBitsToDouble((murmur64(seed) & 0x000fffffffffffffL) | POSITIVE_POW1) - 1.5) * 2;
+        return (Double.longBitsToDouble((MathUtil.murmur64(seed) & 0x000fffffffffffffL) | POSITIVE_POW1) - 1.5) * 2;
     }
     
     @Override

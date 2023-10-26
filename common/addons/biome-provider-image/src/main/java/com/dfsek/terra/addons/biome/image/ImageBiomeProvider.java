@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.biome.image;
 
-import net.jafama.FastMath;
-
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -34,7 +32,7 @@ public class ImageBiomeProvider implements BiomeProvider {
     }
     
     private static int distance(Color a, Color b) {
-        return FastMath.abs(a.getRed() - b.getRed()) + FastMath.abs(a.getGreen() - b.getGreen()) + FastMath.abs(a.getBlue() - b.getBlue());
+        return Math.abs(a.getRed() - b.getRed()) + Math.abs(a.getGreen() - b.getGreen()) + Math.abs(a.getBlue() - b.getBlue());
     }
     
     @Override
@@ -70,14 +68,14 @@ public class ImageBiomeProvider implements BiomeProvider {
         CENTER {
             @Override
             public Color getColor(BufferedImage image, int x, int z) {
-                return new Color(image.getRGB(FastMath.floorMod(x - image.getWidth() / 2, image.getWidth()),
-                                              FastMath.floorMod(z - image.getHeight() / 2, image.getHeight())));
+                return new Color(image.getRGB(Math.floorMod(x - image.getWidth() / 2, image.getWidth()),
+                                              Math.floorMod(z - image.getHeight() / 2, image.getHeight())));
             }
         },
         NONE {
             @Override
             public Color getColor(BufferedImage image, int x, int z) {
-                return new Color(image.getRGB(FastMath.floorMod(x, image.getWidth()), FastMath.floorMod(z, image.getHeight())));
+                return new Color(image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(z, image.getHeight())));
             }
         };
         

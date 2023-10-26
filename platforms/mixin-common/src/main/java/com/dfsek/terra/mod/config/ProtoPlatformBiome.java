@@ -17,10 +17,10 @@
 
 package com.dfsek.terra.mod.config;
 
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
 import java.util.Objects;

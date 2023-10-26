@@ -1,7 +1,6 @@
 package com.dfsek.terra.cli.world;
 
 import com.google.common.collect.Streams;
-import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,8 +118,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        return getChunkAt(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16))
-                .getBlock(FastMath.floorMod(x, 16), y, FastMath.floorMod(z, 16));
+        return getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16))
+                .getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
     }
     
     @Override
@@ -165,8 +164,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public CLIChunk getChunkAt(int x, int z) {
-        return getRegion(FastMath.floorDiv(x, 32), FastMath.floorDiv(z, 32))
-                .get(FastMath.floorMod(x, 32), FastMath.floorMod(z, 32));
+        return getRegion(Math.floorDiv(x, 32), Math.floorDiv(z, 32))
+                .get(Math.floorMod(x, 32), Math.floorMod(z, 32));
     }
     
     public Region getRegion(int x, int z) {
@@ -207,8 +206,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        getChunkAt(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16))
-                .setBlock(FastMath.floorMod(x, 16), y, FastMath.floorMod(z, 16), data, physics);
+        getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16))
+                .setBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16), data, physics);
     }
     
     @Override

@@ -16,8 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;

@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.util;
 
-import net.jafama.FastMath;
-
 import java.util.List;
 
 
@@ -16,10 +14,57 @@ import java.util.List;
  * Utility class for mathematical functions.
  */
 public final class MathUtil {
+    private static final int SIN_BITS, SIN_MASK, SIN_COUNT;
+    private static final double radFull, radToIndex;
+    private static final double degFull, degToIndex;
+    private static final double[] sin, cos;
+    
+    static {
+        SIN_BITS = 12;
+        SIN_MASK = ~(-1 << SIN_BITS);
+        SIN_COUNT = SIN_MASK + 1;
+        
+        radFull = Math.PI * 2.0;
+        degFull = 360.0;
+        radToIndex = SIN_COUNT / radFull;
+        degToIndex = SIN_COUNT / degFull;
+        
+        sin = new double[SIN_COUNT];
+        cos = new double[SIN_COUNT];
+        
+        for (int i = 0; i < SIN_COUNT; i++) {
+            sin[i] = Math.sin((i + 0.5f) / SIN_COUNT * radFull);
+            cos[i] = Math.cos((i + 0.5f) / SIN_COUNT * radFull);
+        }
+        
+        // Four cardinal directions (credits: Nate)
+        for (int i = 0; i < 360; i += 90) {
+            sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
+            cos[(int) (i * degToIndex) & SIN_MASK] = Math.cos(i * Math.PI / 180.0);
+        }
+    }
+    
     /**
      * Epsilon for fuzzy floating point comparisons.
      */
     public static final double EPSILON = 1.0E-5;
+    
+    public static double sin(double rad) {
+        return sin[(int) (rad * radToIndex) & SIN_MASK];
+    }
+    
+    public static double cos(double rad) {
+        return cos[(int) (rad * radToIndex) & SIN_MASK];
+    }
+    
+    public static double invSqrt(double x) {
+        double xhalf = 0.5d * x;
+        long i = Double.doubleToLongBits(x);
+        i = 0x5fe6ec85e7de30daL - (i >> 1);
+        x = Double.longBitsToDouble(i);
+        x *= (1.5d - xhalf * x * x);
+        return x;
+    }
     
     /**
      * Gets the standard deviation of an array of doubles.
@@ -39,10 +84,10 @@ public final class MathUtil {
         double mean = sum / length;
         
         for(Number num : numArray) {
-            standardDeviation += FastMath.pow2(num.doubleValue() - mean);
+            standardDeviation += Math.pow(num.doubleValue() - mean, 2);
         }
         
-        return FastMath.sqrt(standardDeviation / length);
+        return Math.sqrt(standardDeviation / length);
     }
     
     public static long hashToLong(String s) {
@@ -65,11 +110,11 @@ public final class MathUtil {
      * @return Whether these values are equal
      */
     public static boolean equals(double a, double b) {
-        return a == b || FastMath.abs(a - b) < EPSILON;
+        return a == b || Math.abs(a - b) < EPSILON;
     }
     
     public static int normalizeIndex(double val, int size) {
-        return FastMath.max(FastMath.min(FastMath.floorToInt(((val + 1D) / 2D) * size), size - 1), 0);
+        return Math.max(Math.min((int)Math.floor(((val + 1D) / 2D) * size), size - 1), 0);
     }
     
     public static long squash(int first, int last) {
@@ -84,11 +129,11 @@ public final class MathUtil {
      * @return Clamped value
      */
     public static double clamp(double in) {
-        return FastMath.min(FastMath.max(in, -1), 1);
+        return Math.min(Math.max(in, -1), 1);
     }
     
     public static int clamp(int min, int i, int max) {
-        return FastMath.max(FastMath.min(i, max), min);
+        return Math.max(Math.min(i, max), min);
     }
     
     /**
@@ -115,7 +160,7 @@ public final class MathUtil {
         
         q = p - 0.5;
         
-        if(FastMath.abs(q) <= .425) {
+        if(Math.abs(q) <= .425) {
             r = .180625 - q * q;
             val =
                     q * (((((((r * 2509.0809287301226727 +
@@ -134,7 +179,7 @@ public final class MathUtil {
                 r = p;
             }
             
-            r = FastMath.sqrt(-FastMath.log(r));
+            r = Math.sqrt(-Math.log(r));
             
             if(r <= 5) {
                 r -= 1.6;
@@ -172,5 +217,38 @@ public final class MathUtil {
         }
         
         return mu + sigma * val;
+    }
+    
+    /**
+     * Murmur64 hashing function
+     *
+     * @param h Input value
+     *
+     * @return Hashed value
+     */
+    public static long murmur64(long h) {
+        h ^= h >>> 33;
+        h *= 0xff51afd7ed558ccdL;
+        h ^= h >>> 33;
+        h *= 0xc4ceb9fe1a85ec53L;
+        h ^= h >>> 33;
+        return h;
+    }
+    
+    public static double lerp(double a, double b, double t) {
+        return a + t * (b - a);
+    }
+    
+    public static double cubicLerp(double a, double b, double c, double d, double t) {
+        double p = (d - c) - (a - b);
+        return t * t * t * p + t * t * ((a - b) - p) + t * (c - a) + b;
+    }
+    
+    public static double interpHermite(double t) {
+        return t * t * (3 - 2 * t);
+    }
+    
+    public static double interpQuintic(double t) {
+        return t * t * t * (t * (t * 6 - 15) + 10);
     }
 }

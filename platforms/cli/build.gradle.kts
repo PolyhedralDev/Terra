@@ -14,7 +14,7 @@ dependencies {
     
     shadedImplementation("ch.qos.logback:logback-classic:${Versions.CLI.logback}")
     
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+
 }
 
 tasks.withType<Jar> {

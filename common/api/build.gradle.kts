@@ -7,5 +7,5 @@ dependencies {
     api("com.dfsek.tectonic", "common", Versions.Libraries.tectonic)
     
     api("com.github.ben-manes.caffeine:caffeine:3.1.0")
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+
 }

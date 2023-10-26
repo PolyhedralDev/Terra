@@ -1,8 +1,5 @@
 package com.dfsek.terra.addons.image.util;
 
-import net.jafama.FastMath;
-
-
 /**
  * Utility class for manipulating 8 bit ARGB colors
  */
@@ -11,9 +8,9 @@ public class ColorUtil {
     private ColorUtil() {}
     
     public static int distance(int a, int b) {
-        return FastMath.abs(getRed(a) - getRed(b)) +
-               FastMath.abs(getGreen(a) - getGreen(b)) +
-               FastMath.abs(getBlue(a) - getBlue(b));
+        return Math.abs(getRed(a) - getRed(b)) +
+               Math.abs(getGreen(a) - getGreen(b)) +
+               Math.abs(getBlue(a) - getBlue(b));
     }
     
     /**

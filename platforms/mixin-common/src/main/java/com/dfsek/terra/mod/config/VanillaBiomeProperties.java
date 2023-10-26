@@ -8,7 +8,6 @@ import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.village.VillagerType;
-import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;

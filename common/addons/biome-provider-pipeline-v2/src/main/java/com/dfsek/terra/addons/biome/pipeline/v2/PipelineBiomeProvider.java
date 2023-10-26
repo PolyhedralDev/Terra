@@ -1,13 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.v2;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.api.BiomeChunk;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.Pipeline;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.SeededVector;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -15,6 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
+import com.dfsek.terra.addons.biome.pipeline.v2.api.BiomeChunk;
+import com.dfsek.terra.addons.biome.pipeline.v2.api.Pipeline;
+import com.dfsek.terra.addons.biome.pipeline.v2.api.SeededVector;
+import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Column;
@@ -81,8 +80,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
         x /= resolution;
         z /= resolution;
         
-        int chunkX = FastMath.floorDiv(x, chunkSize);
-        int chunkZ = FastMath.floorDiv(z, chunkSize);
+        int chunkX = Math.floorDiv(x, chunkSize);
+        int chunkZ = Math.floorDiv(z, chunkSize);
         
         int chunkWorldX = chunkX * chunkSize;
         int chunkWorldZ = chunkZ * chunkSize;

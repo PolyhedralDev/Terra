@@ -1,7 +1,6 @@
 package com.dfsek.terra.lifecycle.mixin;
 
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

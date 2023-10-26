@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.util.vector;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.api.util.MathUtil;
 
 
@@ -16,8 +14,9 @@ import com.dfsek.terra.api.util.MathUtil;
  * oh yeah
  */
 public class Vector2 {
-    protected double x;
-    protected double z;
+    private static final Vector2 ZERO = new Vector2(0, 0);
+    private static final Vector2 UNIT = new Vector2(0, 1);
+    protected double x, z;
     
     /**
      * Create a vector with a given X and Z component
@@ -28,6 +27,13 @@ public class Vector2 {
     private Vector2(double x, double z) {
         this.x = x;
         this.z = z;
+    }
+    public static Vector2 zero() {
+        return ZERO;
+    }
+    
+    public static Vector2 unit() {
+        return UNIT;
     }
     
     public static Vector2 of(double x, double z) {
@@ -41,7 +47,7 @@ public class Vector2 {
      * @return length
      */
     public double length() {
-        return FastMath.sqrt(lengthSquared());
+        return Math.sqrt(lengthSquared());
     }
     
     /**
@@ -61,7 +67,7 @@ public class Vector2 {
      * @return Distance between vectors
      */
     public double distance(Vector2 other) {
-        return FastMath.sqrt(distanceSquared(other));
+        return Math.sqrt(distanceSquared(other));
     }
     
     /**
@@ -102,11 +108,11 @@ public class Vector2 {
     
     
     public int getBlockX() {
-        return FastMath.floorToInt(x);
+        return (int) Math.floor(x);
     }
     
     public int getBlockZ() {
-        return FastMath.floorToInt(z);
+        return (int) Math.floor(z);
     }
     
     @Override
@@ -166,7 +172,7 @@ public class Vector2 {
          * @return length
          */
         public double length() {
-            return FastMath.sqrt(lengthSquared());
+            return Math.sqrt(lengthSquared());
         }
         
         /**

@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.image.operator;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
@@ -115,7 +113,7 @@ public class DistanceTransform {
                 row[x] = d[x][y];
             row = calculateDistance1D(row);
             for(int x = 0; x < f[0].length; x++) {
-                d[x][y] = FastMath.sqrt(row[x]);
+                d[x][y] = Math.sqrt(row[x]);
             }
         }
         return d;
@@ -130,10 +128,10 @@ public class DistanceTransform {
         z[0] = Integer.MIN_VALUE;
         z[1] = Integer.MAX_VALUE;
         for(int q = 1; q <= f.length-1; q++) {
-            double s = ((f[q]+FastMath.pow2(q))-(f[v[k]]+FastMath.pow2(v[k])))/(2*q-2*v[k]);
+            double s = ((f[q]+Math.pow(q, 2))-(f[v[k]]+Math.pow(v[k], 2)))/(2*q-2*v[k]);
             while (s <= z[k]) {
                 k--;
-                s = ((f[q]+FastMath.pow2(q))-(f[v[k]]+FastMath.pow2(v[k])))/(2*q-2*v[k]);
+                s = ((f[q]+Math.pow(q, 2))-(f[v[k]]+Math.pow(v[k], 2)))/(2*q-2*v[k]);
             }
             k++;
             v[k] = q;
@@ -145,7 +143,7 @@ public class DistanceTransform {
         for(int q = 0; q <= f.length-1; q++) {
             while(z[k+1] < q)
                 k++;
-            d[q] = FastMath.pow2(q-v[k]) + f[v[k]];
+            d[q] = Math.pow(q-v[k], 2) + f[v[k]];
         }
         return d;
     }
@@ -166,9 +164,9 @@ public class DistanceTransform {
                             yield lerp(distances[x][y], minDistance, -1, maxDistance, 1);
                         } else {
                             if(d > 0) {
-                                yield FastMath.pow2(d/maxDistance);
+                                yield Math.pow(d/maxDistance, 2);
                             } else if(d < 0) {
-                                yield -FastMath.pow2(d/minDistance);
+                                yield -Math.pow(d/minDistance, 2);
                             } else {
                                 yield 0;
                             }
@@ -231,7 +229,7 @@ public class DistanceTransform {
         @Override
         public double noise(long seed, double x, double y) {
             if(x<0 || y<0 || x>=transform.width || y>=transform.height) return transform.minDistance;
-            return transform.distances[FastMath.floorToInt(x)][FastMath.floorToInt(y)];
+            return transform.distances[(int) Math.floor(x)][(int) Math.floor(y)];
         }
     
         @Override

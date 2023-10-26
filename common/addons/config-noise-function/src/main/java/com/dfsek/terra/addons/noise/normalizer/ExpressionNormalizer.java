@@ -6,9 +6,9 @@ import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-
 import java.util.Map;
+
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ExpressionNormalizer extends Normalizer {

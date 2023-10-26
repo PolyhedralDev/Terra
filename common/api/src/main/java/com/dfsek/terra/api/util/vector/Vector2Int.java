@@ -9,8 +9,7 @@ import com.dfsek.terra.api.util.Rotation;
 public class Vector2Int {
     private static final Vector2Int ZERO = new Vector2Int(0, 0);
     private static final Vector2Int UNIT = new Vector2Int(0, 1);
-    protected int x;
-    protected int z;
+    protected int x, z;
     
     protected Vector2Int(int x, int z) {
         this.x = x;

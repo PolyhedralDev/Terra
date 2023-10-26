@@ -1,13 +1,12 @@
 package com.dfsek.terra.addons.biome.pipeline.v2.pipeline;
 
+import java.util.List;
+
 import com.dfsek.terra.addons.biome.pipeline.v2.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
-import net.jafama.FastMath;
-
-import java.util.List;
 
 
 public class BiomeChunkImpl implements BiomeChunk {
@@ -111,7 +110,7 @@ public class BiomeChunkImpl implements BiomeChunk {
         // chunk samples points on the same overall grid.
         // Without this, shared chunk borders (required because of adjacent cell reads) will not be identical
         // because points would be sampled on grids at different offsets, resulting in artifacts at borders.
-        return FastMath.ceilToInt((double) finalGridOrigin / initialGridInterval) * initialGridInterval;
+        return (int) Math.ceil((double) finalGridOrigin / initialGridInterval) * initialGridInterval;
     }
     
     private static int calculateFinalGridOrigin(int totalExpanderCount, List<Stage> stages) {
