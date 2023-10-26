@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
+import java.util.BitSet;
 import java.util.Map;
 import java.util.Random;
 
@@ -40,57 +41,130 @@ public class VanillaOre implements Structure {
         this.materials = materials;
     }
     
+    protected static boolean shouldNotDiscard(Random random, double chance) {
+        if(chance <= 0.0F) {
+            return true;
+        } else if(chance >= 1.0F) {
+            return false;
+        } else {
+            return random.nextFloat() >= chance;
+        }
+    }
+    
+    public static double lerp(double t, double v0, double v1) {
+        return v0 + t * (v1 - v0);
+    }
+    
     @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
-        int centerX = location.getX();
-        int centerZ = location.getZ();
-        int centerY = location.getY();
+        float randomRadian = random.nextFloat() * (float) Math.PI;
+        double eigthSize = size / 8.0F;
         
+        // Place points to form a line segment
+        double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eigthSize;
+        double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eigthSize;
         
-        float f = random.nextFloat() * (float) Math.PI;
+        double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eigthSize;
+        double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eigthSize;
         
-        double d1 = centerX + 8 + MathUtil.sin(f) * size / 8.0F;
-        double d2 = centerX + 8 - MathUtil.sin(f) * size / 8.0F;
-        double d3 = centerZ + 8 + MathUtil.cos(f) * size / 8.0F;
-        double d4 = centerZ + 8 - MathUtil.cos(f) * size / 8.0F;
+        double startY = location.getY() + random.nextInt(3) - 2;
+        double endY = location.getY() + random.nextInt(3) - 2;
         
-        double d5 = centerY + random.nextInt(3) - 2D;
-        double d6 = centerY + random.nextInt(3) - 2D;
+        int sizeInt = (int) size;
+        double[] points = new double[sizeInt * 4];
         
-        for(int i = 0; i < size; i++) {
-            float iFactor = (float) i / (float) size;
-            
-            double d10 = random.nextDouble() * size / 16.0D;
-            double d11 = (MathUtil.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
-            double d12 = (MathUtil.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
-            
-            int xStart = (int) Math.round(Math.floor(d1 + (d2 - d1) * iFactor - d11 / 2.0D));
-            int yStart = (int) Math.round(Math.floor(d5 + (d6 - d5) * iFactor - d12 / 2.0D));
-            int zStart = (int) Math.round(Math.floor(d3 + (d4 - d3) * iFactor - d11 / 2.0D));
-            
-            int xEnd = (int) Math.round(Math.floor(d1 + (d2 - d1) * iFactor + d11 / 2.0D));
-            int yEnd = (int) Math.round(Math.floor(d5 + (d6 - d5) * iFactor + d12 / 2.0D));
-            int zEnd = (int) Math.round(Math.floor(d3 + (d4 - d3) * iFactor + d11 / 2.0D));
-            
-            for(int x = xStart; x <= xEnd; x++) {
-                double d13 = (x + 0.5D - (d1 + (d2 - d1) * iFactor)) / (d11 / 2.0D);
+        // Compute initial point positions and radius
+        for(int i = 0; i < sizeInt; ++i) {
+            float t = (float) i / (float) sizeInt;
+            double xt = lerp(t, startX, endX);
+            double yt = lerp(t, startY, endY);
+            double zt = lerp(t, startZ, endZ);
+            double roll = random.nextDouble() * size / 16.0;
+            // Taper radius closer to line ends
+            double radius = ((MathUtil.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
+            points[i * 4] = xt;
+            points[i * 4 + 1] = yt;
+            points[i * 4 + 2] = zt;
+            points[i * 4 + 3] = radius;
+        }
+        
+        // Compare every point to every other point
+        for(int a = 0; a < sizeInt - 1; ++a) {
+            double radiusA = points[a * 4 + 3];
+            if(radiusA > 0.0) {
+                for(int b = a + 1; b < sizeInt; ++b) {
+                    double radiusB = points[b * 4 + 3];
+                    if(radiusB > 0.0) {
+                        double dxt = points[a * 4] - points[b * 4];
+                        double dyt = points[a * 4 + 1] - points[b * 4 + 1];
+                        double dzt = points[a * 4 + 2] - points[b * 4 + 2];
+                        double dRadius = radiusA - radiusB;
+                        
+                        // If the radius difference is greater than the distance between the two points
+                        if(dRadius * dRadius > dxt * dxt + dyt * dyt + dzt * dzt) {
+                            // Set smaller of two radii to -1
+                            if(dRadius > 0.0) {
+                                points[b * 4 + 3] = -1.0;
+                            } else {
+                                points[a * 4 + 3] = -1.0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        int outset = (int) Math.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
+        int x = (int) (location.getX() - Math.ceil(eigthSize) - outset);
+        int y = location.getY() - 2 - outset;
+        int z = (int) (location.getZ() - Math.ceil(eigthSize) - outset);
+        
+        int horizontalSize = (int) (2 * (Math.ceil(eigthSize) + outset));
+        int verticalSize = 2 * (2 + outset);
+        
+        int sphereCount = 0;
+        BitSet visited = new BitSet(horizontalSize * verticalSize * horizontalSize);
+        
+        // Generate a sphere at each point
+        for(int i = 0; i < sizeInt; ++i) {
+            double radius = points[i * 4 + 3];
+            if(radius > 0.0) {
+                double xt = points[i * 4];
+                double yt = points[i * 4 + 1];
+                double zt = points[i * 4 + 2];
                 
-                if(d13 * d13 < 1.0D) {
-                    for(int y = yStart; y <= yEnd; y++) {
-                        double d14 = (y + 0.5D - (d5 + (d6 - d5) * iFactor)) / (d12 / 2.0D);
-                        if(d13 * d13 + d14 * d14 < 1.0D) {
-                            for(int z = zStart; z <= zEnd; z++) {
-                                double d15 = (z + 0.5D - (d3 + (d4 - d3) * iFactor)) / (d11 / 2.0D);
-                                if(y >= world.getMaxHeight() || y < world.getMinHeight()) continue;
-                                BlockType block = world.getBlockState(x, y, z).getBlockType();
-                                if((d13 * d13 + d14 * d14 + d15 * d15 < 1.0D) && getReplaceable().contains(block)) {
-                                    if(exposed > random.nextDouble() || !(world.getBlockState(x, y, z - 1).isAir() ||
-                                                                          world.getBlockState(x, y, z + 1).isAir() ||
-                                                                          world.getBlockState(x, y - 1, z).isAir() ||
-                                                                          world.getBlockState(x, y + 1, z).isAir() ||
-                                                                          world.getBlockState(x - 1, y, z).isAir() ||
-                                                                          world.getBlockState(x + 1, y, z).isAir())) {
-                                        world.setBlockState(x, y, z, getMaterial(block), isApplyGravity());
+                int xLowerBound = (int) Math.max(Math.floor(xt - radius), x);
+                int xUpperBound = (int) Math.max(Math.floor(xt + radius), xLowerBound);
+                
+                int yLowerBound = (int) Math.max(Math.floor(yt - radius), y);
+                int yUpperBound = (int) Math.max(Math.floor(yt + radius), yLowerBound);
+                
+                int zLowerBound = (int) Math.max(Math.floor(zt - radius), z);
+                int zUpperBound = (int) Math.max(Math.floor(zt + radius), zLowerBound);
+                
+                // Iterate over coordinates within bounds
+                for(int xi = xLowerBound; xi <= xUpperBound; ++xi) {
+                    double dx = ((double) xi + 0.5 - xt) / radius;
+                    if(dx * dx < 1.0) {
+                        for(int yi = yLowerBound; yi <= yUpperBound; ++yi) {
+                            double dy = ((double) yi + 0.5 - yt) / radius;
+                            if(dx * dx + dy * dy < 1.0) {
+                                for(int zi = zLowerBound; zi <= zUpperBound; ++zi) {
+                                    double dz = ((double) zi + 0.5 - zt) / radius;
+                                    
+                                    // If position is inside the sphere
+                                    if(dx * dx + dy * dy + dz * dz < 1.0 && !(yi < world.getMinHeight() || yi >= world.getMaxHeight())) {
+                                        int index = xi - x + (yi - y) * horizontalSize + (zi - z) * horizontalSize * verticalSize;
+                                        if(!visited.get(index)) { // Skip blocks that have already been visited
+                                            
+                                            visited.set(index);
+                                            BlockType block = world.getBlockState(xi, yi, zi).getBlockType();
+                                            if(shouldPlace(block, random, world, xi, yi, zi)) {
+                                                world.setBlockState(xi, yi, zi, getMaterial(block), isApplyGravity());
+                                                ++sphereCount;
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -99,7 +173,23 @@ public class VanillaOre implements Structure {
                 }
             }
         }
-        return true;
+        
+        return sphereCount > 0;
+    }
+    
+    public boolean shouldPlace(BlockType type, Random random, WritableWorld world, int x, int y, int z) {
+        if(!getReplaceable().contains(type)) {
+            return false;
+        } else if(shouldNotDiscard(random, exposed)) {
+            return true;
+        } else {
+            return !(world.getBlockState(x, y, z - 1).isAir() ||
+                     world.getBlockState(x, y, z + 1).isAir() ||
+                     world.getBlockState(x, y - 1, z).isAir() ||
+                     world.getBlockState(x, y + 1, z).isAir() ||
+                     world.getBlockState(x - 1, y, z).isAir() ||
+                     world.getBlockState(x + 1, y, z).isAir());
+        }
     }
     
     public BlockState getMaterial(BlockType replace) {
