@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.MathUtil;
 
 
 public class BrownianMotionSampler extends FractalNoiseFunction {
@@ -23,7 +24,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = input.noise(seed++, x, y);
             sum += noise * amp;
-            amp *= lerp(1.0, fastMin(noise + 1, 2) * 0.5, weightedStrength);
+            amp *= MathUtil.lerp(1.0, Math.min(noise + 1, 2) * 0.5, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;
@@ -41,7 +42,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = input.noise(seed++, x, y, z);
             sum += noise * amp;
-            amp *= lerp(1.0, (noise + 1) * 0.5, weightedStrength);
+            amp *= MathUtil.lerp(1.0, (noise + 1) * 0.5, weightedStrength);
             
             x *= lacunarity;
             y *= lacunarity;

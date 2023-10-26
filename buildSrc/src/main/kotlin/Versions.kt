@@ -12,7 +12,6 @@ object Versions {
         object Internal {
             const val shadow = "8.1.1"
             const val apacheText = "1.10.0"
-            const val jafama = "2.3.2"
             const val apacheIO = "2.14.0"
             const val guava = "32.1.3-jre"
             const val asm = "9.5"

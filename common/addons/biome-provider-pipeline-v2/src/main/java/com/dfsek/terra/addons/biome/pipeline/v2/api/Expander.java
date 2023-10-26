@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.v2.api;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.BiomeChunkImpl.ViewPoint;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.BiomeChunkImpl.ViewPoint;
 
 
 /**

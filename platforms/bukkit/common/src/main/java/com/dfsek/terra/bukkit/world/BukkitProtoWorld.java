@@ -1,7 +1,5 @@
 package com.dfsek.terra.bukkit.world;
 
-import com.dfsek.terra.bukkit.util.BukkitUtils;
-
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.LimitedRegion;
@@ -23,6 +21,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;

@@ -1,8 +1,7 @@
 package com.dfsek.terra.addons.image.colorsampler.mutate;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.api.util.MathUtil;
 
 public class RotateColorSampler implements ColorSampler {
     
@@ -29,7 +28,7 @@ public class RotateColorSampler implements ColorSampler {
         else
             rotationMethod = RotationMethod.RAD_ANY;
         
-        this.radians = FastMath.toRadians(degrees);
+        this.radians = Math.toRadians(degrees);
     }
     
     @Override
@@ -39,14 +38,14 @@ public class RotateColorSampler implements ColorSampler {
             case DEG_90 -> -z;
             case DEG_180 -> -x;
             case DEG_270 -> z;
-            case RAD_ANY -> (int) (x * FastMath.cos(radians) - z * FastMath.sin(radians));
+            case RAD_ANY -> (int) (x * MathUtil.cos(radians) - z * MathUtil.sin(radians));
         };
         int rz = switch(rotationMethod) {
             case DEG_0 -> z;
             case DEG_90 -> x;
             case DEG_180 -> -z;
             case DEG_270 -> -x;
-            case RAD_ANY -> (int) (z * FastMath.cos(radians) + x * FastMath.sin(radians));
+            case RAD_ANY -> (int) (z * MathUtil.cos(radians) + x * MathUtil.sin(radians));
         };
         return sampler.apply(rx, rz);
     }

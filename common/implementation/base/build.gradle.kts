@@ -9,7 +9,7 @@ dependencies {
     implementation("org.apache.commons", "commons-text", Versions.Libraries.Internal.apacheText)
     implementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
     
-    implementation("net.jafama", "jafama", Versions.Libraries.Internal.jafama)
+
     
     implementation("com.dfsek", "paralithic", Versions.Libraries.paralithic)
 }

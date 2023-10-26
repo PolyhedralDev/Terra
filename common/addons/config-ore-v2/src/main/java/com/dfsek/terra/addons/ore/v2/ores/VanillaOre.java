@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.ore.v2.ores;
 
-import net.jafama.FastMath;
-
 import java.util.BitSet;
 import java.util.Map;
 import java.util.Random;
@@ -16,6 +14,7 @@ import java.util.Random;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3Int;
@@ -62,11 +61,11 @@ public class VanillaOre implements Structure {
         double eigthSize = size / 8.0F;
         
         // Place points to form a line segment
-        double startX = (double) location.getX() + FastMath.sin(randomRadian) * eigthSize;
-        double endX = (double) location.getX() - FastMath.sin(randomRadian) * eigthSize;
+        double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eigthSize;
+        double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eigthSize;
         
-        double startZ = (double) location.getZ() + FastMath.cos(randomRadian) * eigthSize;
-        double endZ = (double) location.getZ() - FastMath.cos(randomRadian) * eigthSize;
+        double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eigthSize;
+        double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eigthSize;
         
         double startY = location.getY() + random.nextInt(3) - 2;
         double endY = location.getY() + random.nextInt(3) - 2;
@@ -82,7 +81,7 @@ public class VanillaOre implements Structure {
             double zt = lerp(t, startZ, endZ);
             double roll = random.nextDouble() * size / 16.0;
             // Taper radius closer to line ends
-            double radius = ((FastMath.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
+            double radius = ((MathUtil.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
             points[i * 4] = xt;
             points[i * 4 + 1] = yt;
             points[i * 4 + 2] = zt;
@@ -115,12 +114,12 @@ public class VanillaOre implements Structure {
             }
         }
         
-        int outset = (int) FastMath.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
-        int x = (int) (location.getX() - FastMath.ceil(eigthSize) - outset);
+        int outset = (int) Math.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
+        int x = (int) (location.getX() - Math.ceil(eigthSize) - outset);
         int y = location.getY() - 2 - outset;
-        int z = (int) (location.getZ() - FastMath.ceil(eigthSize) - outset);
+        int z = (int) (location.getZ() - Math.ceil(eigthSize) - outset);
         
-        int horizontalSize = (int) (2 * (FastMath.ceil(eigthSize) + outset));
+        int horizontalSize = (int) (2 * (Math.ceil(eigthSize) + outset));
         int verticalSize = 2 * (2 + outset);
         
         int sphereCount = 0;
@@ -134,14 +133,14 @@ public class VanillaOre implements Structure {
                 double yt = points[i * 4 + 1];
                 double zt = points[i * 4 + 2];
                 
-                int xLowerBound = (int) FastMath.max(FastMath.floor(xt - radius), x);
-                int xUpperBound = (int) FastMath.max(FastMath.floor(xt + radius), xLowerBound);
+                int xLowerBound = (int) Math.max(Math.floor(xt - radius), x);
+                int xUpperBound = (int) Math.max(Math.floor(xt + radius), xLowerBound);
                 
-                int yLowerBound = (int) FastMath.max(FastMath.floor(yt - radius), y);
-                int yUpperBound = (int) FastMath.max(FastMath.floor(yt + radius), yLowerBound);
+                int yLowerBound = (int) Math.max(Math.floor(yt - radius), y);
+                int yUpperBound = (int) Math.max(Math.floor(yt + radius), yLowerBound);
                 
-                int zLowerBound = (int) FastMath.max(FastMath.floor(zt - radius), z);
-                int zUpperBound = (int) FastMath.max(FastMath.floor(zt + radius), zLowerBound);
+                int zLowerBound = (int) Math.max(Math.floor(zt - radius), z);
+                int zUpperBound = (int) Math.max(Math.floor(zt + radius), zLowerBound);
                 
                 // Iterate over coordinates within bounds
                 for(int xi = xLowerBound; xi <= xUpperBound; ++xi) {

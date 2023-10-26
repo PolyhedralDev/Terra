@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -46,8 +44,8 @@ public class PullFunction implements Function<Void> {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
-        Vector3.Mutable mutable = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-                                             FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin());
+        Vector3.Mutable mutable = Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
+                                             (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {
                 arguments.getWorld().setBlockState(mutable, data);

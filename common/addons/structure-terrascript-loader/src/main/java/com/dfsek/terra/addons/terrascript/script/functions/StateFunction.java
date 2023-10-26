@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +44,8 @@ public class StateFunction implements Function<Void> {
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
         
-        Vector3 origin = Vector3.of(FastMath.roundToInt(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-                                    FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+        Vector3 origin = Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
+                                    (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
         try {
             BlockEntity state = arguments.getWorld().getBlockEntity(origin);
             state.applyState(data.apply(implementationArguments, scope));

@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.api.util.vector;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.api.util.MathUtil;
 
 
@@ -41,7 +39,7 @@ public class Vector2 {
      * @return length
      */
     public double length() {
-        return FastMath.sqrt(lengthSquared());
+        return Math.sqrt(lengthSquared());
     }
     
     /**
@@ -61,7 +59,7 @@ public class Vector2 {
      * @return Distance between vectors
      */
     public double distance(Vector2 other) {
-        return FastMath.sqrt(distanceSquared(other));
+        return Math.sqrt(distanceSquared(other));
     }
     
     /**
@@ -102,11 +100,11 @@ public class Vector2 {
     
     
     public int getBlockX() {
-        return FastMath.floorToInt(x);
+        return (int) Math.floor(x);
     }
     
     public int getBlockZ() {
-        return FastMath.floorToInt(z);
+        return (int) Math.floor(z);
     }
     
     @Override
@@ -166,7 +164,7 @@ public class Vector2 {
          * @return length
          */
         public double length() {
-            return FastMath.sqrt(lengthSquared());
+            return Math.sqrt(lengthSquared());
         }
         
         /**

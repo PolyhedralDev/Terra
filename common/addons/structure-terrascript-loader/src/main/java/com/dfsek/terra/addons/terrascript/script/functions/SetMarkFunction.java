@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -40,10 +38,10 @@ public class SetMarkFunction implements Function<Void> {
                                                           z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
         
         
-        arguments.setMark(Vector3.of(FastMath.floorToInt(xz.getX()),
-                                     FastMath.floorToInt(
+        arguments.setMark(Vector3.of((int) Math.floor(xz.getX()),
+                                     (int) Math.floor(
                                              y.apply(implementationArguments, scope).doubleValue()),
-                                     FastMath.floorToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
+                                     (int) Math.floor(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
                           mark.apply(implementationArguments, scope));
         return null;
     }

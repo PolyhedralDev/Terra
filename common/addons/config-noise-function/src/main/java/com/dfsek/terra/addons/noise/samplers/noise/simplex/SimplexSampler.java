@@ -61,8 +61,8 @@ public class SimplexSampler extends SimplexStyleSampler {
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
         double t = (x + y) * F2;
-        int i = fastFloor(x + t);
-        int j = fastFloor(y + t);
+        int i = (int) Math.floor(x + t);
+        int j = (int) Math.floor(y + t);
         
         t = (i + j) * G2;
         double X0 = i - t;
@@ -118,9 +118,9 @@ public class SimplexSampler extends SimplexStyleSampler {
     public double getNoiseRaw(long sl, double x, double y, double z) {
         int seed = (int) sl;
         double t = (x + y + z) * F3;
-        int i = fastFloor(x + t);
-        int j = fastFloor(y + t);
-        int k = fastFloor(z + t);
+        int i = (int) Math.floor(x + t);
+        int j = (int) Math.floor(y + t);
+        int k = (int) Math.floor(z + t);
         
         t = (i + j + k) * G3;
         double x0 = x - (i - t);

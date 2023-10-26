@@ -26,8 +26,8 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         y += s;
         
         
-        int i = fastFloor(x);
-        int j = fastFloor(y);
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
         double xi = x - i;
         double yi = y - j;
         
@@ -131,9 +131,9 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         z = r - z;
         
         
-        int i = fastFloor(x);
-        int j = fastFloor(y);
-        int k = fastFloor(z);
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
+        int k = (int) Math.floor(z);
         double xi = x - i;
         double yi = y - j;
         double zi = z - k;

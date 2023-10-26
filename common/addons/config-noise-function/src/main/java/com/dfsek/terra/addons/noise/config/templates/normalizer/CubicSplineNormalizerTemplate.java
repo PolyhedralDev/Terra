@@ -2,13 +2,13 @@ package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
+import java.util.List;
+
 import com.dfsek.terra.addons.noise.math.CubicSpline;
 import com.dfsek.terra.addons.noise.math.CubicSpline.Point;
 import com.dfsek.terra.addons.noise.normalizer.CubicSplineNoiseSampler;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.noise.NoiseSampler;
-
-import java.util.List;
 
 
 public class CubicSplineNormalizerTemplate extends NormalizerTemplate<CubicSplineNoiseSampler> {

@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.feature.locator.patterns;
 
-import net.jafama.FastMath;
-
 import java.util.function.Predicate;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -28,8 +26,8 @@ public class MatchPattern implements Pattern {
     
     @Override
     public boolean matches(int y, Column<?> column) {
-        int min = FastMath.max(column.getMinY(), range.getMin() + y);
-        int max = FastMath.min(column.getMaxY(), range.getMax() + y);
+        int min = Math.max(column.getMinY(), range.getMin() + y);
+        int max = Math.min(column.getMaxY(), range.getMax() + y);
         if(max <= min) return false;
         for(int i = min; i < max; i++) {
             if(!matches.test(column.getBlock(i))) return false;
@@ -39,8 +37,8 @@ public class MatchPattern implements Pattern {
     
     @Override
     public boolean matches(WritableWorld world, int x, int y, int z) {
-        int min = FastMath.max(world.getMinHeight(), range.getMin() + y);
-        int max = FastMath.min(world.getMaxHeight(), range.getMax() + y);
+        int min = Math.max(world.getMinHeight(), range.getMin() + y);
+        int max = Math.min(world.getMaxHeight(), range.getMax() + y);
         if(max <= min) return false;
         for(int i = min; i < max; i++) {
             if(!matches.test(world.getBlockState(x, i, z))) return false;

@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.api.util;
 
-import net.jafama.FastMath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -44,7 +43,7 @@ public class ConstantRange implements Range {
     @Override
     public Range intersects(Range other) {
         try {
-            return new ConstantRange(FastMath.max(this.getMin(), other.getMin()), FastMath.min(this.getMax(), other.getMax()));
+            return new ConstantRange(Math.max(this.getMin(), other.getMin()), Math.min(this.getMax(), other.getMax()));
         } catch(IllegalArgumentException e) {
             return null;
         }

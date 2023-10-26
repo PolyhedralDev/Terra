@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
-import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk.TickSchedulers;
 import net.minecraft.world.chunk.WorldChunk;

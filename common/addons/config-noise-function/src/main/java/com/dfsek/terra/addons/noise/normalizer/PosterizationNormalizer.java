@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.noise.normalizer;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -22,6 +20,6 @@ public class PosterizationNormalizer extends Normalizer {
     
     @Override
     public double normalize(double in) {
-        return FastMath.roundToInt((in + 1) / stepSize) * stepSize - 1;
+        return (int) Math.round((in + 1) / stepSize) * stepSize - 1;
     }
 }

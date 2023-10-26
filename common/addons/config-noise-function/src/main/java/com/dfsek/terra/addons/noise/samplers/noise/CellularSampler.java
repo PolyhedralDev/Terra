@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
@@ -223,8 +221,8 @@ public class CellularSampler extends NoiseFunction {
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
-        int xr = fastRound(x);
-        int yr = fastRound(y);
+        int xr = (int) Math.round(x);
+        int yr = (int) Math.round(y);
         
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
@@ -251,12 +249,12 @@ public class CellularSampler extends NoiseFunction {
                 double vecY = (yi - y) + RAND_VECS_2D[idx | 1] * cellularJitter;
                 
                 double newDistance = switch(distanceFunction) {
-                    case Manhattan -> fastAbs(vecX) + fastAbs(vecY);
-                    case Hybrid -> (fastAbs(vecX) + fastAbs(vecY)) + (vecX * vecX + vecY * vecY);
+                    case Manhattan -> Math.abs(vecX) + Math.abs(vecY);
+                    case Hybrid -> (Math.abs(vecX) + Math.abs(vecY)) + (vecX * vecX + vecY * vecY);
                     default -> vecX * vecX + vecY * vecY;
                 };
                 
-                distance1 = fastMax(fastMin(distance1, newDistance), distance0);
+                distance1 = Math.max(Math.min(distance1, newDistance), distance0);
                 if(newDistance < distance0) {
                     distance0 = newDistance;
                     closestHash = hash;
@@ -274,9 +272,9 @@ public class CellularSampler extends NoiseFunction {
         }
         
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
-            distance0 = fastSqrt(distance0);
+            distance0 = Math.sqrt(distance0);
             if(returnType != ReturnType.CellValue) {
-                distance1 = fastSqrt(distance1);
+                distance1 = Math.sqrt(distance1);
             }
         }
         
@@ -295,16 +293,16 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
-            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
+            case Angle -> Math.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     
     @Override
     public double getNoiseRaw(long sl, double x, double y, double z) {
         int seed = (int) sl;
-        int xr = fastRound(x);
-        int yr = fastRound(y);
-        int zr = fastRound(z);
+        int xr = (int) Math.round(x);
+        int yr = (int) Math.round(y);
+        int zr = (int) Math.round(z);
         
         double distance0 = Double.MAX_VALUE;
         double distance1 = Double.MAX_VALUE;
@@ -338,10 +336,10 @@ public class CellularSampler extends NoiseFunction {
                     double newDistance = 0;
                     switch(distanceFunction) {
                         case Euclidean, EuclideanSq -> newDistance = vecX * vecX + vecY * vecY + vecZ * vecZ;
-                        case Manhattan -> newDistance = fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ);
+                        case Manhattan -> newDistance = Math.abs(vecX) + Math.abs(vecY) + Math.abs(vecZ);
                         case Hybrid -> {
-                            newDistance = (fastAbs(vecX) + fastAbs(vecY) + fastAbs(vecZ)) + (vecX * vecX + vecY * vecY + vecZ * vecZ);
-                            distance1 = fastMax(fastMin(distance1, newDistance), distance0);
+                            newDistance = (Math.abs(vecX) + Math.abs(vecY) + Math.abs(vecZ)) + (vecX * vecX + vecY * vecY + vecZ * vecZ);
+                            distance1 = Math.max(Math.min(distance1, newDistance), distance0);
                         }
                     }
                     
@@ -365,9 +363,9 @@ public class CellularSampler extends NoiseFunction {
         }
         
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
-            distance0 = fastSqrt(distance0);
+            distance0 = Math.sqrt(distance0);
             if(returnType != ReturnType.CellValue) {
-                distance1 = fastSqrt(distance1);
+                distance1 = Math.sqrt(distance1);
             }
         }
         
@@ -386,7 +384,7 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Sub -> distance2 - distance0 - 1;
             case Distance3Mul -> distance2 * distance0 - 1;
             case Distance3Div -> distance0 / distance2 - 1;
-            case Angle -> FastMath.atan2(y / frequency - centerY, x / frequency - centerX);
+            case Angle -> Math.atan2(y / frequency - centerY, x / frequency - centerX);
         };
     }
     

@@ -7,14 +7,13 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
-import net.jafama.FastMath;
-
 import java.util.Map;
 import java.util.Random;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3Int;
@@ -50,10 +49,10 @@ public class VanillaOre implements Structure {
         
         float f = random.nextFloat() * (float) Math.PI;
         
-        double d1 = centerX + 8 + FastMath.sin(f) * size / 8.0F;
-        double d2 = centerX + 8 - FastMath.sin(f) * size / 8.0F;
-        double d3 = centerZ + 8 + FastMath.cos(f) * size / 8.0F;
-        double d4 = centerZ + 8 - FastMath.cos(f) * size / 8.0F;
+        double d1 = centerX + 8 + MathUtil.sin(f) * size / 8.0F;
+        double d2 = centerX + 8 - MathUtil.sin(f) * size / 8.0F;
+        double d3 = centerZ + 8 + MathUtil.cos(f) * size / 8.0F;
+        double d4 = centerZ + 8 - MathUtil.cos(f) * size / 8.0F;
         
         double d5 = centerY + random.nextInt(3) - 2D;
         double d6 = centerY + random.nextInt(3) - 2D;
@@ -62,16 +61,16 @@ public class VanillaOre implements Structure {
             float iFactor = (float) i / (float) size;
             
             double d10 = random.nextDouble() * size / 16.0D;
-            double d11 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
-            double d12 = (FastMath.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
+            double d11 = (MathUtil.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
+            double d12 = (MathUtil.sin(Math.PI * iFactor) + 1.0) * d10 + 1.0;
             
-            int xStart = FastMath.roundToInt(FastMath.floor(d1 + (d2 - d1) * iFactor - d11 / 2.0D));
-            int yStart = FastMath.roundToInt(FastMath.floor(d5 + (d6 - d5) * iFactor - d12 / 2.0D));
-            int zStart = FastMath.roundToInt(FastMath.floor(d3 + (d4 - d3) * iFactor - d11 / 2.0D));
+            int xStart = (int) Math.round(Math.floor(d1 + (d2 - d1) * iFactor - d11 / 2.0D));
+            int yStart = (int) Math.round(Math.floor(d5 + (d6 - d5) * iFactor - d12 / 2.0D));
+            int zStart = (int) Math.round(Math.floor(d3 + (d4 - d3) * iFactor - d11 / 2.0D));
             
-            int xEnd = FastMath.roundToInt(FastMath.floor(d1 + (d2 - d1) * iFactor + d11 / 2.0D));
-            int yEnd = FastMath.roundToInt(FastMath.floor(d5 + (d6 - d5) * iFactor + d12 / 2.0D));
-            int zEnd = FastMath.roundToInt(FastMath.floor(d3 + (d4 - d3) * iFactor + d11 / 2.0D));
+            int xEnd = (int) Math.round(Math.floor(d1 + (d2 - d1) * iFactor + d11 / 2.0D));
+            int yEnd = (int) Math.round(Math.floor(d5 + (d6 - d5) * iFactor + d12 / 2.0D));
+            int zEnd = (int) Math.round(Math.floor(d3 + (d4 - d3) * iFactor + d11 / 2.0D));
             
             for(int x = xStart; x <= xEnd; x++) {
                 double d13 = (x + 0.5D - (d1 + (d2 - d1) * iFactor)) / (d11 / 2.0D);

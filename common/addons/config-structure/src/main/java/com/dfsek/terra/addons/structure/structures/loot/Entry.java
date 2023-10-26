@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -62,12 +61,12 @@ public class Entry {
                             max = (long) ((JSONObject) loot).get("max");
                             min = (long) ((JSONObject) loot).get("min");
                         }
-                        functions.add(new AmountFunction(FastMath.toIntExact(min), FastMath.toIntExact(max)));
+                        functions.add(new AmountFunction(Math.toIntExact(min), Math.toIntExact(max)));
                     }
                     case "minecraft:set_damage", "set_damage" -> {
                         long maxDamage = (long) ((JSONObject) ((JSONObject) function).get("damage")).get("max");
                         long minDamage = (long) ((JSONObject) ((JSONObject) function).get("damage")).get("min");
-                        functions.add(new DamageFunction(FastMath.toIntExact(minDamage), FastMath.toIntExact(maxDamage)));
+                        functions.add(new DamageFunction(Math.toIntExact(minDamage), Math.toIntExact(maxDamage)));
                     }
                     case "minecraft:enchant_with_levels", "enchant_with_levels" -> {
                         long maxEnchant = (long) ((JSONObject) ((JSONObject) function).get("levels")).get("max");
@@ -76,7 +75,7 @@ public class Entry {
                         if(((JSONObject) function).containsKey("disabled_enchants"))
                             disabled = (JSONArray) ((JSONObject) function).get("disabled_enchants");
                         functions.add(
-                                new EnchantFunction(FastMath.toIntExact(minEnchant), FastMath.toIntExact(maxEnchant), disabled, platform));
+                                new EnchantFunction(Math.toIntExact(minEnchant), Math.toIntExact(maxEnchant), disabled, platform));
                     }
                 }
             }
