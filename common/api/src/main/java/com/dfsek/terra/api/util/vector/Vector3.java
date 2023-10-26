@@ -22,6 +22,13 @@ public class Vector3 {
         this.y = y;
         this.z = z;
     }
+    public static Vector3 zero() {
+        return ZERO;
+    }
+    
+    public static Vector3 unit() {
+        return UNIT;
+    }
     
     public static Vector3 of(double x, double y, double z) {
         return new Vector3(x, y, z);

@@ -28,6 +28,13 @@ public class Vector2 {
         this.x = x;
         this.z = z;
     }
+    public static Vector2 zero() {
+        return ZERO;
+    }
+    
+    public static Vector2 unit() {
+        return UNIT;
+    }
     
     public static Vector2 of(double x, double z) {
         return new Vector2(x, z);
