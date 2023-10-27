@@ -210,7 +210,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitCallTypedExpr(Call expr) {
             // TODO - Remove specific handling of native functions
-            if (expr.function.type instanceof Type.Function.Native nativeFunction) {
+            if (expr.callee.type instanceof Type.Function.Native nativeFunction) {
                 NativeFunction function = nativeFunction.getNativeFunction();
                 function.pushInstance(method);
                 expr.arguments.forEach(a -> a.accept(this));
@@ -220,7 +220,7 @@ public class TerraScriptClassGenerator {
             // TODO - Add support for invokevirtual
             expr.arguments.forEach(a -> a.accept(this));
             List<Type> parameters = expr.arguments.stream().map(e -> e.type).toList();
-            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, ((Type.Function) expr.function.type).getId(), getFunctionDescriptor(parameters, expr.type), false);
+            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, ((Type.Function) expr.callee.type).getId(), getFunctionDescriptor(parameters, expr.type), false);
             return null;
         }
         

@@ -2,6 +2,7 @@ package semanticanalysis;
 
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
+import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidCalleeException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
 import com.dfsek.terra.addons.terrascript.v2.semanticanalysis.SemanticAnalyzer;
 import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
@@ -247,6 +248,9 @@ public class SemanticAnalyzerTest {
         
         // Calling function that hasn't been declared
         testInvalid("test();", UndefinedReferenceException.class);
+        
+        // Cannot call non functions
+        testInvalid("var test: num = 1; test();", InvalidCalleeException.class);
         
         // Cannot use functions declared in inner scopes
         testInvalid("{ fun test() {} } test();", UndefinedReferenceException.class);

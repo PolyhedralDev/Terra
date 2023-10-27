@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.terrascript.v2.semanticanalysis;
 
 import com.dfsek.terra.addons.terrascript.v2.Environment;
-import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.NonexistentSymbolException;
 import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.Type;
@@ -18,7 +17,6 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Visitor;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Void;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
-import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 import java.util.List;
@@ -64,7 +62,7 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitCallExpr(Call expr) {
-        expr.function.accept(this);
+        expr.callee.accept(this);
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }

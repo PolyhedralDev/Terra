@@ -3,8 +3,6 @@ package com.dfsek.terra.addons.terrascript.v2.semanticanalysis;
 import java.util.List;
 import java.util.Optional;
 
-import com.dfsek.terra.addons.terrascript.v2.Environment;
-import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.Type;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Assignment;
@@ -19,6 +17,7 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Void;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedExpr;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt;
+import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidCalleeException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidFunctionDeclarationException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidTypeException;
 import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
@@ -104,10 +103,10 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     @Override
     public TypedExpr visitCallExpr(Call expr) {
         
-        TypedExpr function = expr.function.accept(this);
+        TypedExpr function = expr.callee.accept(this);
         
         if(!(function.type instanceof Type.Function functionType)) {
-            errorHandler.add(new InvalidTypeException("Cannot call type '" + function.type + "', only functions can be called", expr.position));
+            errorHandler.add(new InvalidCalleeException("Cannot call type '" + function.type + "', only functions can be called", expr.position));
             return new TypedExpr.Void(Type.VOID);
         }
         

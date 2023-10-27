@@ -62,7 +62,7 @@ public class VariableAnalyzer implements Expr.Visitor<Void>, Stmt.Visitor<Void> 
     
     @Override
     public Void visitCallExpr(Call expr) {
-        expr.function.accept(this);
+        expr.callee.accept(this);
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }
