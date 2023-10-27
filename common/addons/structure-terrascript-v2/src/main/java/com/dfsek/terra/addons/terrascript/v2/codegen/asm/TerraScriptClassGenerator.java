@@ -29,8 +29,6 @@ import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
 import com.dfsek.terra.addons.terrascript.v2.codegen.TerraScript;
 import com.dfsek.terra.addons.terrascript.v2.exception.CompilerBugException;
 import com.dfsek.terra.addons.terrascript.v2.util.ASMUtil;
-import com.dfsek.terra.addons.terrascript.v2.parser.BinaryOperator;
-import com.dfsek.terra.addons.terrascript.v2.parser.UnaryOperator;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 import org.objectweb.asm.ClassReader;
@@ -51,8 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.dfsek.terra.addons.terrascript.v2.parser.BinaryOperator.*;
-import static com.dfsek.terra.addons.terrascript.v2.parser.UnaryOperator.*;
 import static com.dfsek.terra.addons.terrascript.v2.util.ASMUtil.dynamicName;
 
 public class TerraScriptClassGenerator {
@@ -163,7 +159,6 @@ public class TerraScriptClassGenerator {
         
         public void generate(Block root) {
             this.visitBlockTypedStmt(root);
-            
         }
         
         @Override
@@ -172,7 +167,7 @@ public class TerraScriptClassGenerator {
                 case EQUALS, NOT_EQUALS, BOOLEAN_AND, BOOLEAN_OR, GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> pushComparisonBool(expr);
                 case ADD -> {
                     pushBinaryOperands(expr);
-                    CodegenType codegenType = CodegenType.codegenType(expr.type);
+                    CodegenType codegenType = expr.type.getCodegenType();
                     if(codegenType.bytecodeType() == InstructionType.DOUBLE)
                         method.visitInsn(Opcodes.DADD);
                     else if (Objects.equals(codegenType.getDescriptor(), "Ljava/lang/String;"))
@@ -196,7 +191,7 @@ public class TerraScriptClassGenerator {
         
         @Override
         public Void visitLiteralTypedExpr(Literal expr) {
-            if(CodegenType.codegenType(expr.type) == CodegenType.BOOLEAN_PRIMITIVE)
+            if(expr.type.getCodegenType() == CodegenType.BOOLEAN)
                 if ((boolean) expr.value) pushTrue(); else pushFalse();
             else method.visitLdcInsn(expr.value);
             return null;
@@ -214,23 +209,25 @@ public class TerraScriptClassGenerator {
         
         @Override
         public Void visitCallTypedExpr(Call expr) {
-            if (NativeFunction.BUILTIN_FUNCTIONS.containsKey(expr.identifier)) {
-                NativeFunction function = NativeFunction.BUILTIN_FUNCTIONS.get(expr.identifier);
+            // TODO - Remove specific handling of native functions
+            if (expr.function.type instanceof Type.Function.Native nativeFunction) {
+                NativeFunction function = nativeFunction.getNativeFunction();
                 function.pushInstance(method);
                 expr.arguments.forEach(a -> a.accept(this));
                 function.callMethod(method);
                 return null;
             }
+            // TODO - Add support for invokevirtual
             expr.arguments.forEach(a -> a.accept(this));
             List<Type> parameters = expr.arguments.stream().map(e -> e.type).toList();
-            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, expr.scopedIdentifier, getFunctionDescriptor(parameters, expr.type), false);
+            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, ((Type.Function) expr.function.type).getId(), getFunctionDescriptor(parameters, expr.type), false);
             return null;
         }
         
         @Override
         public Void visitVariableTypedExpr(Variable expr) {
             Type varType = expr.type;
-            method.visitVarInsn(CodegenType.codegenType(varType).bytecodeType().loadInsn(), lvTable.get(expr.identifier));
+            method.visitVarInsn(varType.getCodegenType().bytecodeType().loadInsn(), lvTable.get(expr.identifier));
             return null;
         }
         
@@ -238,7 +235,7 @@ public class TerraScriptClassGenerator {
         public Void visitAssignmentTypedExpr(Assignment expr) {
             expr.rValue.accept(this);
             Type type = expr.lValue.type;
-            method.visitVarInsn(CodegenType.codegenType(type).bytecodeType().storeInsn(), lvTable.get(expr.lValue.identifier));
+            method.visitVarInsn(type.getCodegenType().bytecodeType().storeInsn(), lvTable.get(expr.lValue.identifier));
             return null;
         }
         
@@ -280,7 +277,7 @@ public class TerraScriptClassGenerator {
             int lvidx = 0;
             for (Pair<String, Type> parameter : stmt.parameters) {
                 funcGenerator.lvTable.put(parameter.getLeft(), lvidx);
-                lvidx += CodegenType.codegenType(parameter.getRight()).bytecodeType().slotSize(); // Increment by how many slots data type takes
+                lvidx += parameter.getRight().getCodegenType().bytecodeType().slotSize(); // Increment by how many slots data type takes
             }
             
             // Generate method bytecode
@@ -298,14 +295,14 @@ public class TerraScriptClassGenerator {
         public Void visitVariableDeclarationTypedStmt(VariableDeclaration stmt) {
             stmt.value.accept(this);
             lvTable.put(stmt.identifier, lvs.newLocal(ASMUtil.tsTypeToAsmType(stmt.type)));
-            method.visitVarInsn(CodegenType.codegenType(stmt.type).bytecodeType().storeInsn(), lvTable.get(stmt.identifier));
+            method.visitVarInsn(stmt.type.getCodegenType().bytecodeType().storeInsn(), lvTable.get(stmt.identifier));
             return null;
         }
         
         @Override
         public Void visitReturnTypedStmt(Return stmt) {
             stmt.value.accept(this);
-            method.visitInsn(CodegenType.codegenType(stmt.value.type).bytecodeType().returnInsn());
+            method.visitInsn(stmt.value.type.getCodegenType().bytecodeType().returnInsn());
             return null;
         }
         
@@ -530,9 +527,9 @@ public class TerraScriptClassGenerator {
         
         private String getFunctionDescriptor(List<Type> parameters, Type returnType) {
             StringBuilder sb = new StringBuilder().append("(");
-            parameters.stream().map(parameter -> CodegenType.codegenType(parameter).getDescriptor()).forEach(sb::append);
+            parameters.stream().map(parameter -> parameter.getCodegenType().getDescriptor()).forEach(sb::append);
             sb.append(")");
-            sb.append(CodegenType.codegenType(returnType).getDescriptor());
+            sb.append(returnType.getCodegenType().getDescriptor());
             return sb.toString();
         }
     }

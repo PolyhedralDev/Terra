@@ -2,10 +2,10 @@ package com.dfsek.terra.addons.terrascript.v2.semanticanalysis;
 
 import com.dfsek.terra.addons.terrascript.v2.Environment;
 import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.NonexistentSymbolException;
-import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolTypeMismatchException;
 import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.Type;
+import com.dfsek.terra.addons.terrascript.v2.Type.Function;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Assignment;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Binary;
@@ -19,8 +19,11 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Void;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
-import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+
+import java.util.List;
+
+import static com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.*;
 
 
 public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
@@ -61,22 +64,14 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitCallExpr(Call expr) {
-        expr.setEnvironment(currentScope);
+        expr.function.accept(this);
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }
     
     @Override
     public Void visitVariableExpr(Variable expr) {
-        String id = expr.identifier;
-        try {
-            expr.setSymbol(currentScope.getVariable(id));
-        } catch(NonexistentSymbolException e) {
-            errorHandler.add(
-                    new UndefinedReferenceException("No variable by the name '" + id + "' is defined in this scope", expr.position));
-        } catch(SymbolTypeMismatchException e) {
-            errorHandler.add(new ParseException("Identifier '" + id + "' is not defined as a variable", expr.position));
-        }
+        expr.setScope(currentScope);
         return null;
     }
     
@@ -111,8 +106,8 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         currentScope = currentScope.functionalInner();
         for(Pair<String, Type> param : stmt.parameters) {
             try {
-                currentScope.put(param.getLeft(), new Environment.Symbol.Variable(param.getRight()));
-            } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
+                currentScope.put(param.getLeft(), new Symbol.Variable(param.getRight()));
+            } catch(SymbolAlreadyExistsException e) {
                 throw new IllegalStateException("Formal parameter '" + param.getLeft() + "' defined in '" + stmt.identifier +
                                                 "' already exists in the function scope");
             }
@@ -120,10 +115,12 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
         stmt.body.accept(this);
         currentScope = currentScope.outer();
         try {
-            Symbol.Function symbol = new Symbol.Function(stmt.returnType, stmt.parameters.stream().map(Pair::getRight).toList(), currentScope);
+            List<Type> parameters = stmt.parameters.stream().map(Pair::getRight).toList();
+            Function function = new Function(stmt.returnType, parameters, stmt.identifier, currentScope);
+            Symbol.Variable symbol = new Symbol.Variable(function);
             stmt.setSymbol(symbol);
             currentScope.put(stmt.identifier, symbol);
-        } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
+        } catch(SymbolAlreadyExistsException e) {
             errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
                                                                     stmt.position));
         }
@@ -132,13 +129,8 @@ public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
     @Override
     public Void visitVariableDeclarationStmt(Stmt.VariableDeclaration stmt) {
+        stmt.setScope(currentScope);
         stmt.value.accept(this);
-        try {
-            currentScope.put(stmt.identifier, new Environment.Symbol.Variable(stmt.type));
-        } catch(Environment.ScopeException.SymbolAlreadyExistsException e) {
-            errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
-                                                                    stmt.position));
-        }
         return null;
     }
     

@@ -1,7 +1,8 @@
 package com.dfsek.terra.addons.terrascript.v2.semanticanalysis;
 
 import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.NonexistentSymbolException;
-import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolTypeMismatchException;
+import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolAlreadyExistsException;
+import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr;
 import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Assignment;
@@ -24,16 +25,16 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Stmt.NoOp;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt.Return;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt.VariableDeclaration;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt.While;
+import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
-import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
-public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
+public class VariableAnalyzer implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
     
     private final ErrorHandler errorHandler;
     
-    public FunctionReferenceAnalyzer(ErrorHandler errorHandler) { this.errorHandler = errorHandler; }
+    public VariableAnalyzer(ErrorHandler errorHandler) { this.errorHandler = errorHandler; }
     
     @Override
     public Void visitBinaryExpr(Binary expr) {
@@ -61,21 +62,20 @@ public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visit
     
     @Override
     public Void visitCallExpr(Call expr) {
-        String id = expr.identifier;
-        try {
-            expr.setSymbol(expr.getEnvironment().getFunction(expr.identifier));
-        } catch(NonexistentSymbolException e) {
-            errorHandler.add(
-                    new UndefinedReferenceException("No function by the name '" + id + "' is defined in this scope", expr.position));
-        } catch(SymbolTypeMismatchException e) {
-            errorHandler.add(new ParseException("Identifier '" + id + "' is not defined as a function", expr.position));
-        }
+        expr.function.accept(this);
         expr.arguments.forEach(e -> e.accept(this));
         return null;
     }
     
     @Override
     public Void visitVariableExpr(Variable expr) {
+        String id = expr.identifier;
+        try {
+            expr.setSymbol(expr.getScope().getVariable(id));
+        } catch(NonexistentSymbolException e) {
+            errorHandler.add(
+                    new UndefinedReferenceException("'" + id + "' not is defined in this scope", expr.position));
+        }
         return null;
     }
     
@@ -112,6 +112,12 @@ public class FunctionReferenceAnalyzer implements Expr.Visitor<Void>, Stmt.Visit
     @Override
     public Void visitVariableDeclarationStmt(VariableDeclaration stmt) {
         stmt.value.accept(this);
+        try {
+            stmt.getScope().put(stmt.identifier, new Symbol.Variable(stmt.type));
+        } catch(SymbolAlreadyExistsException e) {
+            errorHandler.add(new IdentifierAlreadyDeclaredException("Name '" + stmt.identifier + "' is already defined in this scope",
+                                                                    stmt.position));
+        }
         return null;
     }
     

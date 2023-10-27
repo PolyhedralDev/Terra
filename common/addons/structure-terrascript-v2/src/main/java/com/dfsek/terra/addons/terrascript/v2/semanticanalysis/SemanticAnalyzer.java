@@ -12,7 +12,7 @@ public class SemanticAnalyzer {
         new ScopeAnalyzer(Environment.global(), errorHandler).visitBlockStmt(root);
         errorHandler.throwAny();
         
-        new FunctionReferenceAnalyzer(errorHandler).visitBlockStmt(root);
+        new VariableAnalyzer(errorHandler).visitBlockStmt(root);
         errorHandler.throwAny();
         
         TypedStmt.Block checkedRoot = (TypedStmt.Block) new TypeChecker(errorHandler).visitBlockStmt(root);

@@ -1,12 +1,6 @@
 package com.dfsek.terra.addons.terrascript.v2.codegen;
 
-import com.dfsek.terra.addons.terrascript.v2.Type;
-
-import com.dfsek.terra.addons.terrascript.v2.exception.CompilerBugException;
-
 import org.objectweb.asm.Opcodes;
-
-import java.util.Map;
 
 
 public class CodegenType {
@@ -28,21 +22,12 @@ public class CodegenType {
         return descriptor;
     }
     
-    public static final CodegenType BOOLEAN_PRIMITIVE = new CodegenType(InstructionType.INTEGER, "Z");
-    
-    private static final Map<Type, CodegenType> TYPE_MAP = Map.of(
-        Type.BOOLEAN, BOOLEAN_PRIMITIVE,
-        Type.STRING, new CodegenType(InstructionType.OBJECT, "Ljava/lang/String;"),
-        Type.NUMBER, new CodegenType(InstructionType.DOUBLE, "D"),
-        Type.VOID, new CodegenType(InstructionType.VOID, "V")
-    );
-    
-    public static CodegenType codegenType(Type type) {
-        CodegenType out = TYPE_MAP.get(type);
-        if(out == null)
-            throw new CompilerBugException();
-        return out;
-    }
+    public static final CodegenType BOOLEAN = new CodegenType(InstructionType.INTEGER, "Z");
+    public static final CodegenType STRING = new CodegenType(InstructionType.OBJECT, "Ljava/lang/String;");
+    public static final CodegenType DOUBLE = new CodegenType(InstructionType.DOUBLE, "D");
+    public static final CodegenType INTEGER = new CodegenType(InstructionType.INTEGER, "I");
+    public static final CodegenType VOID = new CodegenType(InstructionType.VOID, "V");
+    public static final CodegenType OBJECT = new CodegenType(InstructionType.OBJECT, "Ljava/lang/Object;");
     
     public enum InstructionType {
         DOUBLE {

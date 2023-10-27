@@ -33,10 +33,6 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     
     TypeChecker(ErrorHandler errorHandler) { this.errorHandler = errorHandler; }
     
-    private static String scopedIdentifier(String identifier, Symbol.Function symbol) {
-        return identifier + "$" + symbol.scope.name;
-    }
-    
     @Override
     public TypedExpr visitBinaryExpr(Binary expr) {
         TypedExpr left = expr.left.accept(this);
@@ -107,28 +103,31 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     
     @Override
     public TypedExpr visitCallExpr(Call expr) {
-        String id = expr.identifier;
         
-        Environment.Symbol.Function signature = expr.getSymbol();
+        TypedExpr function = expr.function.accept(this);
+        
+        if(!(function.type instanceof Type.Function functionType)) {
+            errorHandler.add(new InvalidTypeException("Cannot call type '" + function.type + "', only functions can be called", expr.position));
+            return new TypedExpr.Void(Type.VOID);
+        }
         
         List<TypedExpr> arguments = expr.arguments.stream().map(a -> a.accept(this)).toList();
-        List<Type> parameters = signature.parameters;
+        List<Type> parameters = functionType.getParameters();
         
         if(arguments.size() != parameters.size())
             errorHandler.add(new ParseException(
-                    "Provided " + arguments.size() + " arguments to function call of '" + id + "', expected " + parameters.size() +
-                    " arguments", expr.position));
+                    "Provided " + arguments.size() + " arguments to function call, expected " + parameters.size() + " arguments", expr.position));
         
         for(int i = 0; i < parameters.size(); i++) {
             Type expectedType = parameters.get(i);
             Type providedType = arguments.get(i).type;
             if(!expectedType.typeOf(providedType))
                 errorHandler.add(new InvalidTypeException(
-                        ordinalOf(i + 1) + " argument provided for function '" + id + "' expects type " + expectedType + ", found " +
+                        ordinalOf(i + 1) + " argument provided for function. Function expects type " + expectedType + ", found " +
                         providedType + " instead", expr.position));
         }
         
-        return new TypedExpr.Call(expr.identifier, arguments, scopedIdentifier(expr.identifier, expr.getSymbol()), signature.type);
+        return new TypedExpr.Call(function, arguments, functionType.getReturnType());
     }
     
     @Override
@@ -144,7 +143,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         String id = expr.lValue.identifier;
         if(!right.type.typeOf(expected))
             errorHandler.add(new InvalidTypeException(
-                    "Cannot assign variable '" + id + "' to value of type " + right.type + ", '" + id + "' is declared with type " + expected,
+                    "Cannot assign variable '" + id + "' to value of type '" + right.type + "', '" + id + "' is declared with type '" + expected + "'",
                     expr.position));
         return new TypedExpr.Assignment(left, right, right.type);
     }
@@ -173,7 +172,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                     new InvalidFunctionDeclarationException("Function body for '" + stmt.identifier + "' does not contain return statement",
                                                             stmt.position));
         }
-        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body, scopedIdentifier(stmt.identifier, stmt.getSymbol()));
+        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body, ((Type.Function) stmt.getSymbol().type).getId());
     }
     
     private boolean alwaysReturns(TypedStmt stmt, Stmt.FunctionDeclaration function) {

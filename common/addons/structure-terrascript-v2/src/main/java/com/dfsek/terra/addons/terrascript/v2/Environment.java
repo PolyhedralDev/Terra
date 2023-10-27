@@ -8,9 +8,6 @@ import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.NonexistentSymbolException;
 import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolAlreadyExistsException;
-import com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolTypeMismatchException;
-import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol.Function;
-import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol.Variable;
 import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
 
 
@@ -36,8 +33,10 @@ public class Environment {
         this.inLoop = inLoop;
         this.index = index;
         this.name = String.join("_", getNestedIndexes().stream().map(Object::toString).toList());
-        // Populate symbol tables with built-in Java implemented methods
-        NativeFunction.BUILTIN_FUNCTIONS.forEach((name, function) -> symbolTable.put(name, new Symbol.Function(function.getReturnType(), function.getParameterTypes(), this)));
+        // Populate global scope with built-in Java implemented methods
+        // TODO - Replace with AST import nodes
+        if (index == 0) NativeFunction.BUILTIN_FUNCTIONS.forEach((name, function) ->
+            symbolTable.put(name, new Symbol.Variable(new Type.Function.Native(function.getReturnType(), function.getParameterTypes(), name, this, function))));
     }
     
     public static Environment global() {
@@ -69,19 +68,6 @@ public class Environment {
         return outer;
     }
     
-    public Function getFunction(String id) throws NonexistentSymbolException, SymbolTypeMismatchException {
-        Function function;
-        Symbol symbol = symbolTable.get(id);
-        if(symbol == null) {
-            if(outer == null) throw new NonexistentSymbolException();
-            function = outer.getFunction(id);
-        } else {
-            if(!(symbol instanceof Function)) throw new SymbolTypeMismatchException();
-            function = (Function) symbol;
-        }
-        return function;
-    }
-    
     /**
      * Returns symbol table entry for a variable identifier, includes enclosing scopes in lookup.
      * <br>
@@ -93,19 +79,25 @@ public class Environment {
      * @return variable symbol table entry
      *
      * @throws NonexistentSymbolException  if symbol is not declared in symbol table
-     * @throws SymbolTypeMismatchException if symbol is not a variable
      */
-    public Variable getVariable(String id) throws NonexistentSymbolException, SymbolTypeMismatchException {
-        Variable variable;
+    public Symbol getVariable(String id) throws NonexistentSymbolException {
         Symbol symbol = symbolTable.get(id);
-        if(symbol == null) {
-            if(!canAccessOuterVariables || outer == null) throw new NonexistentSymbolException();
-            variable = outer.getVariable(id);
-        } else {
-            if(!(symbol instanceof Variable)) throw new SymbolTypeMismatchException();
-            variable = (Variable) symbol;
-        }
-        return variable;
+        if(symbol != null) return symbol;
+        if(outer == null) throw new NonexistentSymbolException();
+        if(canAccessOuterVariables) return outer.getVariable(id);
+        
+        // Only functions can be accessed from restricted scopes
+        // TODO - Only make applicable to functions that cannot be reassigned
+        Symbol potentialFunction = outer.getVariableUnrestricted(id);
+        if(!(potentialFunction.type instanceof Type.Function)) throw new NonexistentSymbolException();
+        return potentialFunction;
+    }
+    
+    private Symbol getVariableUnrestricted(String id) throws NonexistentSymbolException {
+        Symbol symbol = symbolTable.get(id);
+        if(symbol != null) return symbol;
+        if(outer == null) throw new NonexistentSymbolException();
+        return outer.getVariableUnrestricted(id);
     }
     
     public void put(String id, Symbol symbol) throws SymbolAlreadyExistsException {
@@ -115,34 +107,22 @@ public class Environment {
     
     public static abstract class Symbol {
         
-        public static class Function extends Symbol {
-            
-            public final Type type;
-            
-            public final List<Type> parameters;
-            
-            public final Environment scope;
-            
-            public Function(Type type, List<Type> parameters, Environment scope) {
-                this.type = type;
-                this.parameters = parameters;
-                this.scope = scope;
-            }
-        }
+        public final Type type;
         
+        public Symbol(Type type) {
+            this.type = type;
+        }
         
         public static class Variable extends Symbol {
             
-            public final Type type;
-            
             public Variable(Type type) {
-                this.type = type;
+                super(type);
             }
         }
     }
     
     
-    public static class ScopeException extends RuntimeException {
+    public static class ScopeException extends Exception {
         
         public static class SymbolAlreadyExistsException extends ScopeException {
         }
@@ -151,8 +131,5 @@ public class Environment {
         public static class NonexistentSymbolException extends ScopeException {
         }
         
-        
-        public static class SymbolTypeMismatchException extends ScopeException {
-        }
     }
 }

@@ -326,7 +326,15 @@ public class Parser {
                 return new Expr.Unary(operator, unary(), position);
             }
         }
-        return primary();
+        return postfix();
+    }
+    
+    private Expr postfix() {
+        Expr expr = primary();
+        while (current().isType(TokenType.OPEN_PAREN)) {
+            expr = call(expr);
+        }
+        return expr;
     }
     
     private Expr primary() {
@@ -336,10 +344,7 @@ public class Parser {
             case NUMBER -> new Expr.Literal(Double.parseDouble(token.lexeme()), Type.NUMBER, position);
             case STRING -> new Expr.Literal(token.lexeme(), Type.STRING, position);
             case BOOLEAN -> new Expr.Literal(Boolean.parseBoolean(token.lexeme()), Type.BOOLEAN, position);
-            case IDENTIFIER -> {
-                if(current().isType(TokenType.OPEN_PAREN)) yield call(token);
-                else yield variable(token);
-            }
+            case IDENTIFIER -> variable(token);
             case OPEN_PAREN -> {
                 if(current().isType(TokenType.CLOSE_PAREN)) {
                     consumeUnchecked(); // Consume ')'
@@ -353,22 +358,20 @@ public class Parser {
         };
     }
     
-    private Expr call(Token identifier) {
-        String id = identifier.lexeme();
-        SourcePosition position = consume("Expected '(' to initiate function call on function '" + id + "'",
-                                          TokenType.OPEN_PAREN).position();
+    private Expr call(Expr function) {
+        SourcePosition position = consume("Expected '(' to initiate function call on function", TokenType.OPEN_PAREN).position();
         
         List<Expr> args = new ArrayList<>();
         while(!current().isType(TokenType.CLOSE_PAREN)) {
             args.add(expression());
             if(current().isType(TokenType.CLOSE_PAREN)) break;
-            consume("Expected ',' or ')' after passed argument in function call of '" + id + "'", TokenType.SEPARATOR);
+            consume("Expected ',' or ')' after passed argument in function call", TokenType.SEPARATOR);
         }
         
-        consume("Expected ')' after " + (args.size() == 0 ? "')'" : "arguments") + " in function call of '" + id + "'",
+        consume("Expected ')' after " + (args.size() == 0 ? "')'" : "arguments") + " in function call",
                 TokenType.CLOSE_PAREN);
         
-        return new Expr.Call(id, args, position);
+        return new Expr.Call(function, args, position);
     }
     
     private Expr variable(Token identifier) {
