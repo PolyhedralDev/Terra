@@ -1,14 +1,13 @@
 package com.dfsek.terra.addons.terrascript.v2;
 
-import com.dfsek.terra.addons.terrascript.v2.codegen.CodegenType;
-import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
-
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
 import com.google.common.collect.Streams;
 
 import javax.annotation.Nullable;
 import java.util.List;
+
+import com.dfsek.terra.addons.terrascript.v2.codegen.CodegenType;
+import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public interface Type {

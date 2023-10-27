@@ -1,5 +1,23 @@
 package com.dfsek.terra.addons.terrascript.v2.codegen.asm;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.LocalVariablesSorter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.dfsek.terra.addons.terrascript.v2.Type;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedExpr;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedExpr.Assignment;
@@ -22,7 +40,6 @@ import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt.NoOp;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt.Return;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt.VariableDeclaration;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt.While;
-
 import com.dfsek.terra.addons.terrascript.v2.codegen.CodegenType;
 import com.dfsek.terra.addons.terrascript.v2.codegen.CodegenType.InstructionType;
 import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
@@ -30,24 +47,6 @@ import com.dfsek.terra.addons.terrascript.v2.codegen.TerraScript;
 import com.dfsek.terra.addons.terrascript.v2.exception.CompilerBugException;
 import com.dfsek.terra.addons.terrascript.v2.util.ASMUtil;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.LocalVariablesSorter;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import static com.dfsek.terra.addons.terrascript.v2.util.ASMUtil.dynamicName;
 

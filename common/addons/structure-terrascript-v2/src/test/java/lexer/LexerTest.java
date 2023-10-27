@@ -1,14 +1,11 @@
 package lexer;
 
-import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
-
-import com.dfsek.terra.addons.terrascript.v2.lexer.SourcePosition;
-import com.dfsek.terra.addons.terrascript.v2.lexer.Token;
-
-import com.dfsek.terra.addons.terrascript.v2.lexer.Token.TokenType;
-
 import org.junit.jupiter.api.Test;
 
+import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
+import com.dfsek.terra.addons.terrascript.v2.lexer.SourcePosition;
+import com.dfsek.terra.addons.terrascript.v2.lexer.Token;
+import com.dfsek.terra.addons.terrascript.v2.lexer.Token.TokenType;
 
 import static org.junit.jupiter.api.Assertions.*;
 

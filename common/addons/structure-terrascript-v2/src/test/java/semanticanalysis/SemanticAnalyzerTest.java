@@ -1,17 +1,16 @@
 package semanticanalysis;
 
+import org.junit.jupiter.api.Test;
+
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidCalleeException;
-import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
-import com.dfsek.terra.addons.terrascript.v2.semanticanalysis.SemanticAnalyzer;
-import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
-import com.dfsek.terra.addons.terrascript.v2.parser.Parser;
-
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidFunctionDeclarationException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidTypeException;
-
-import org.junit.jupiter.api.Test;
+import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.UndefinedReferenceException;
+import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
+import com.dfsek.terra.addons.terrascript.v2.parser.Parser;
+import com.dfsek.terra.addons.terrascript.v2.semanticanalysis.SemanticAnalyzer;
 
 import static org.junit.jupiter.api.Assertions.*;
 

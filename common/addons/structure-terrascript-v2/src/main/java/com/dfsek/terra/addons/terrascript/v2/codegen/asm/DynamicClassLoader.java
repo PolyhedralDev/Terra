@@ -1,8 +1,5 @@
 package com.dfsek.terra.addons.terrascript.v2.codegen.asm;
 
-import com.dfsek.terra.api.structure.Structure;
-
-
 public class DynamicClassLoader extends ClassLoader {
     public DynamicClassLoader(Class<?> clazz) {
         super(clazz.getClassLoader());

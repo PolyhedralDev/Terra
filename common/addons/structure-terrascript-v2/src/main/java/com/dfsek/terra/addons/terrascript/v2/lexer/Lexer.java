@@ -7,12 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.v2.lexer;
 
-import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
-
-import com.dfsek.terra.addons.terrascript.v2.exception.lexer.EOFException;
-import com.dfsek.terra.addons.terrascript.v2.exception.lexer.FormatException;
-import com.dfsek.terra.addons.terrascript.v2.exception.lexer.TokenizerException;
-
 import com.google.common.collect.Sets;
 
 import java.util.ArrayList;
@@ -20,7 +14,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import com.dfsek.terra.addons.terrascript.v2.exception.lexer.EOFException;
+import com.dfsek.terra.addons.terrascript.v2.exception.lexer.FormatException;
+import com.dfsek.terra.addons.terrascript.v2.exception.lexer.TokenizerException;
 import com.dfsek.terra.addons.terrascript.v2.lexer.Token.TokenType;
+import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
 
 
 public class Lexer {

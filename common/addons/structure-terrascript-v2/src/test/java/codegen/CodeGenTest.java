@@ -1,5 +1,7 @@
 package codegen;
 
+import org.junit.jupiter.api.Test;
+
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt.Block;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt;
@@ -8,8 +10,6 @@ import com.dfsek.terra.addons.terrascript.v2.codegen.asm.TerraScriptClassGenerat
 import com.dfsek.terra.addons.terrascript.v2.lexer.Lexer;
 import com.dfsek.terra.addons.terrascript.v2.parser.Parser;
 import com.dfsek.terra.addons.terrascript.v2.semanticanalysis.SemanticAnalyzer;
-
-import org.junit.jupiter.api.Test;
 
 
 public class CodeGenTest {

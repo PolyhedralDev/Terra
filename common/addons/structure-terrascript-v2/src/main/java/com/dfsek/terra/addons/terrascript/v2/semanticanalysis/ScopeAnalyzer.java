@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.terrascript.v2.semanticanalysis;
 
+import java.util.List;
+
 import com.dfsek.terra.addons.terrascript.v2.Environment;
 import com.dfsek.terra.addons.terrascript.v2.Environment.Symbol;
 import com.dfsek.terra.addons.terrascript.v2.ErrorHandler;
@@ -19,9 +21,7 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.IdentifierAlreadyDeclaredException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
-import java.util.List;
-
-import static com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.*;
+import static com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.SymbolAlreadyExistsException;
 
 
 public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {

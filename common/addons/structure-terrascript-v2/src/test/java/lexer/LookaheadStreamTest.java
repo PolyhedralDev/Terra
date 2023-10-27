@@ -7,12 +7,11 @@
 
 package lexer;
 
-import com.dfsek.terra.addons.terrascript.v2.lexer.LookaheadStream;
-import com.dfsek.terra.addons.terrascript.v2.lexer.Char;
-
-import com.dfsek.terra.addons.terrascript.v2.lexer.SourcePosition;
-
 import org.junit.jupiter.api.Test;
+
+import com.dfsek.terra.addons.terrascript.v2.lexer.Char;
+import com.dfsek.terra.addons.terrascript.v2.lexer.LookaheadStream;
+import com.dfsek.terra.addons.terrascript.v2.lexer.SourcePosition;
 
 import static org.junit.jupiter.api.Assertions.*;
 

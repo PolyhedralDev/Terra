@@ -21,7 +21,6 @@ import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidA
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidCalleeException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidFunctionDeclarationException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidTypeException;
-import com.dfsek.terra.addons.terrascript.v2.parser.ParseException;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 
 import static com.dfsek.terra.addons.terrascript.v2.util.OrdinalUtil.ordinalOf;

@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.terrascript.v2;
 
-import com.dfsek.terra.addons.terrascript.v2.exception.CompilationException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dfsek.terra.addons.terrascript.v2.exception.CompilationException;
 
 
 public class ErrorHandler {
