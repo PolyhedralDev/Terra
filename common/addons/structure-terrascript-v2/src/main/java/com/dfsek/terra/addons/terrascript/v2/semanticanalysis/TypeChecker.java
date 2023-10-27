@@ -17,6 +17,7 @@ import com.dfsek.terra.addons.terrascript.v2.ast.Expr.Void;
 import com.dfsek.terra.addons.terrascript.v2.ast.Stmt;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedExpr;
 import com.dfsek.terra.addons.terrascript.v2.ast.TypedStmt;
+import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidArgumentsException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidCalleeException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidFunctionDeclarationException;
 import com.dfsek.terra.addons.terrascript.v2.exception.semanticanalysis.InvalidTypeException;
@@ -62,7 +63,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                 if(leftType.typeOf(Type.STRING) || rightType.typeOf(Type.STRING)) {
                     yield Type.STRING;
                 }
-                errorHandler.add(new RuntimeException("Addition operands must be either both of type '" + Type.NUMBER + "', or one of type '" + Type.STRING + "'"));
+                errorHandler.add(new InvalidTypeException("Addition operands must be either both of type '" + Type.NUMBER + "', or one of type '" + Type.STRING + "'", expr.position));
                 yield Type.VOID;
             }
             case SUBTRACT, MULTIPLY, DIVIDE, MODULO -> {
@@ -114,7 +115,7 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         List<Type> parameters = functionType.getParameters();
         
         if(arguments.size() != parameters.size())
-            errorHandler.add(new ParseException(
+            errorHandler.add(new InvalidArgumentsException(
                     "Provided " + arguments.size() + " arguments to function call, expected " + parameters.size() + " arguments", expr.position));
         
         for(int i = 0; i < parameters.size(); i++) {
