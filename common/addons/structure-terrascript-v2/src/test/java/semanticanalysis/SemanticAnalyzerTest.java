@@ -129,12 +129,12 @@ public class SemanticAnalyzerTest {
         
         // Returns can still be explicitly used for void returning functions
         testValid("""
-                    fun returnsNum(p: bool) {
-                        if (p) {
-                            return;
-                        }
-                    }
-                    """);
+                  fun returnsNum(p: bool) {
+                      if (p) {
+                          return;
+                      }
+                  }
+                  """);
         
         // If all if-statement bodies always return, then the statement is considered as always returning
         testValid("""
@@ -159,7 +159,8 @@ public class SemanticAnalyzerTest {
                   }
                   """);
         
-        // If no else body is defined, an if-statement does not always return, therefore the function does not contain any always-return-statements
+        // If no else body is defined, an if-statement does not always return, therefore the function does not contain any
+        // always-return-statements
         testInvalid("""
                     fun returnsNum(p: bool): num {
                         if (p) {
@@ -194,38 +195,38 @@ public class SemanticAnalyzerTest {
                   """);
         
         testInvalid("""
-                  fun returnsNum(p1: bool, p2: bool): num {
-                      if (p1) {
-                          if (p2) {
-                              return 1;
-                          }
-                          // No else clause here, so will not always return
-                      } else {
-                          return 3;
-                      }
-                  }
-                  """, InvalidFunctionDeclarationException.class);
+                    fun returnsNum(p1: bool, p2: bool): num {
+                        if (p1) {
+                            if (p2) {
+                                return 1;
+                            }
+                            // No else clause here, so will not always return
+                        } else {
+                            return 3;
+                        }
+                    }
+                    """, InvalidFunctionDeclarationException.class);
         
         // If-statement may not always return but a return statement after it means function will always return
         testValid("""
-                    fun returnsNum(p: bool): num {
-                        if (p) {
-                            return 1;
-                        }
-                        return 2;
-                    }
-                    """);
+                  fun returnsNum(p: bool): num {
+                      if (p) {
+                          return 1;
+                      }
+                      return 2;
+                  }
+                  """);
         
         // Same applies when statements are swapped
         testValid("""
-                    fun returnsNum(p: bool): num {
-                        return 1;
-                        // Unreachable
-                        if (p) {
-                            return 2;
-                        }
-                    }
-                    """);
+                  fun returnsNum(p: bool): num {
+                      return 1;
+                      // Unreachable
+                      if (p) {
+                          return 2;
+                      }
+                  }
+                  """);
     }
     
     @Test
@@ -281,12 +282,12 @@ public class SemanticAnalyzerTest {
         
         // Should not be able to pass argument of type not matching parameter type
         testInvalid("""
-                  fun returnBool(): bool {
-                      return true;
-                  }
-                  fun takeNum(p: num) {}
-                  takeNum(returnBool());
-                  """, InvalidTypeException.class);
+                    fun returnBool(): bool {
+                        return true;
+                    }
+                    fun takeNum(p: num) {}
+                    takeNum(returnBool());
+                    """, InvalidTypeException.class);
     }
     
     @Test
@@ -327,13 +328,13 @@ public class SemanticAnalyzerTest {
         
         // Should not be able to use type of shadowed variable in use of shadowing variable
         testInvalid("""
-                  fun takesNum(p: num) {}
-                  var a: num = false;
-                  {
-                      var a: bool = 1;
-                      takesNum(a);
-                  }
-                  """, InvalidTypeException.class);
+                    fun takesNum(p: num) {}
+                    var a: num = false;
+                    {
+                        var a: bool = 1;
+                        takesNum(a);
+                    }
+                    """, InvalidTypeException.class);
         
         // Functions can be shadowed in inner scopes
         testValid("""
@@ -348,9 +349,9 @@ public class SemanticAnalyzerTest {
         
         // Functions can't be shadowed in the same immediate scope
         testInvalid("""
-                  fun test() {}
-                  fun test() {}
-                  """, IdentifierAlreadyDeclaredException.class);
+                    fun test() {}
+                    fun test() {}
+                    """, IdentifierAlreadyDeclaredException.class);
         
         // Can't use function name that is already declared as a variable
         testInvalid("var id: num = 1; fun id() {}", IdentifierAlreadyDeclaredException.class);

@@ -43,16 +43,22 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         Type type = switch(expr.operator) {
             case BOOLEAN_OR, BOOLEAN_AND -> {
                 if(!leftType.typeOf(Type.BOOLEAN) || !rightType.typeOf(Type.BOOLEAN))
-                    errorHandler.add(new InvalidTypeException("Both operands of '" + expr.operator + "' operator must be of type '" + Type.BOOLEAN + "', found types '" + leftType + "' and '" + rightType + "'", expr.position));
+                    errorHandler.add(new InvalidTypeException(
+                            "Both operands of '" + expr.operator + "' operator must be of type '" + Type.BOOLEAN + "', found types '" +
+                            leftType + "' and '" + rightType + "'", expr.position));
                 yield Type.BOOLEAN;
             }
             case EQUALS, NOT_EQUALS -> {
-                if(!leftType.typeOf(rightType)) errorHandler.add(new InvalidTypeException("Both operands of equality operator (==) must be of the same type, found mismatched types '" + leftType + "' and '" + rightType + "'", expr.position));
+                if(!leftType.typeOf(rightType)) errorHandler.add(new InvalidTypeException(
+                        "Both operands of equality operator (==) must be of the same type, found mismatched types '" + leftType +
+                        "' and '" + rightType + "'", expr.position));
                 yield Type.BOOLEAN;
             }
             case GREATER, GREATER_EQUALS, LESS, LESS_EQUALS -> {
                 if(!leftType.typeOf(Type.NUMBER) || !rightType.typeOf(Type.NUMBER))
-                    errorHandler.add(new InvalidTypeException("Both operands of '" + expr.operator + "' operator must be of type '" + Type.NUMBER + "', found types '" + leftType + "' and '" + rightType + "'", expr.position));
+                    errorHandler.add(new InvalidTypeException(
+                            "Both operands of '" + expr.operator + "' operator must be of type '" + Type.NUMBER + "', found types '" +
+                            leftType + "' and '" + rightType + "'", expr.position));
                 yield Type.BOOLEAN;
             }
             case ADD -> {
@@ -62,12 +68,16 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                 if(leftType.typeOf(Type.STRING) || rightType.typeOf(Type.STRING)) {
                     yield Type.STRING;
                 }
-                errorHandler.add(new InvalidTypeException("Addition operands must be either both of type '" + Type.NUMBER + "', or one of type '" + Type.STRING + "'", expr.position));
+                errorHandler.add(new InvalidTypeException(
+                        "Addition operands must be either both of type '" + Type.NUMBER + "', or one of type '" + Type.STRING + "'",
+                        expr.position));
                 yield Type.VOID;
             }
             case SUBTRACT, MULTIPLY, DIVIDE, MODULO -> {
                 if(!leftType.typeOf(Type.NUMBER) || !rightType.typeOf(Type.NUMBER))
-                    errorHandler.add(new InvalidTypeException("Both operands of '" + expr.operator + "' operator must be of type '" + Type.NUMBER + "', found types '" + leftType + "' and '" + rightType + "'", expr.position));
+                    errorHandler.add(new InvalidTypeException(
+                            "Both operands of '" + expr.operator + "' operator must be of type '" + Type.NUMBER + "', found types '" +
+                            leftType + "' and '" + rightType + "'", expr.position));
                 yield Type.NUMBER;
             }
         };
@@ -106,7 +116,8 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         TypedExpr function = expr.callee.accept(this);
         
         if(!(function.type instanceof Type.Function functionType)) {
-            errorHandler.add(new InvalidCalleeException("Cannot call type '" + function.type + "', only functions can be called", expr.position));
+            errorHandler.add(
+                    new InvalidCalleeException("Cannot call type '" + function.type + "', only functions can be called", expr.position));
             return new TypedExpr.Void(Type.VOID);
         }
         
@@ -115,7 +126,8 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         
         if(arguments.size() != parameters.size())
             errorHandler.add(new InvalidArgumentsException(
-                    "Provided " + arguments.size() + " arguments to function call, expected " + parameters.size() + " arguments", expr.position));
+                    "Provided " + arguments.size() + " arguments to function call, expected " + parameters.size() + " arguments",
+                    expr.position));
         
         for(int i = 0; i < parameters.size(); i++) {
             Type expectedType = parameters.get(i);
@@ -142,7 +154,8 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         String id = expr.lValue.identifier;
         if(!right.type.typeOf(expected))
             errorHandler.add(new InvalidTypeException(
-                    "Cannot assign variable '" + id + "' to value of type '" + right.type + "', '" + id + "' is declared with type '" + expected + "'",
+                    "Cannot assign variable '" + id + "' to value of type '" + right.type + "', '" + id + "' is declared with type '" +
+                    expected + "'",
                     expr.position));
         return new TypedExpr.Assignment(left, right, right.type);
     }
@@ -171,7 +184,8 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                     new InvalidFunctionDeclarationException("Function body for '" + stmt.identifier + "' does not contain return statement",
                                                             stmt.position));
         }
-        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body, ((Type.Function) stmt.getSymbol().type).getId());
+        return new TypedStmt.FunctionDeclaration(stmt.identifier, stmt.parameters, stmt.returnType, body,
+                                                 ((Type.Function) stmt.getSymbol().type).getId());
     }
     
     private boolean alwaysReturns(TypedStmt stmt, Stmt.FunctionDeclaration function) {
@@ -181,11 +195,12 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
                         "Return statement must match function's return type. Function '" + function.identifier + "' expects " +
                         function.returnType + ", found " + ret.value.type + " instead", function.position));
             return true;
-        } else if (stmt instanceof TypedStmt.If ifStmt) {
+        } else if(stmt instanceof TypedStmt.If ifStmt) {
             return alwaysReturns(ifStmt.trueBody, function) &&
                    ifStmt.elseIfClauses.stream().map(Pair::getRight).allMatch(s -> alwaysReturns(s, function)) &&
-                   ifStmt.elseBody.map(body -> alwaysReturns(body, function)).orElse(false); // If else body is not defined then statement does not always return
-        } else if (stmt instanceof TypedStmt.Block block) {
+                   ifStmt.elseBody.map(body -> alwaysReturns(body, function)).orElse(
+                           false); // If else body is not defined then statement does not always return
+        } else if(stmt instanceof TypedStmt.Block block) {
             return block.statements.stream().anyMatch(s -> alwaysReturns(s, function));
         }
         return false;
@@ -196,8 +211,9 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
         TypedExpr value = stmt.value.accept(this);
         if(!stmt.type.typeOf(value.type))
             errorHandler.add(new InvalidTypeException(
-                    "Type of value assigned to variable '" + stmt.identifier + "' does not match variable's declared type. Expected type '" +
-                    stmt.type + "', found '" + value.type +"' instead", stmt.position));
+                    "Type of value assigned to variable '" + stmt.identifier +
+                    "' does not match variable's declared type. Expected type '" +
+                    stmt.type + "', found '" + value.type + "' instead", stmt.position));
         return new TypedStmt.VariableDeclaration(stmt.type, stmt.identifier, value);
     }
     
@@ -209,12 +225,15 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     @Override
     public TypedStmt visitIfStmt(Stmt.If stmt) {
         TypedExpr condition = stmt.condition.accept(this);
-        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException("If statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.", stmt.position));
+        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException(
+                "If statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.", stmt.position));
         
         TypedStmt.Block trueBody = (TypedStmt.Block) stmt.trueBody.accept(this);
         List<Pair<TypedExpr, TypedStmt.Block>> elseIfClauses = stmt.elseIfClauses.stream().map(c -> {
             TypedExpr clauseCondition = c.getLeft().accept(this);
-            if (!clauseCondition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException("Else if clause conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.", stmt.position));
+            if(!clauseCondition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException(
+                    "Else if clause conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.",
+                    stmt.position));
             return Pair.of(clauseCondition, (TypedStmt.Block) c.getRight().accept(this));
         }).toList();
         
@@ -227,7 +246,9 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     public TypedStmt visitForStmt(Stmt.For stmt) {
         TypedStmt initializer = stmt.initializer.accept(this);
         TypedExpr condition = stmt.condition.accept(this);
-        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException("For statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.", stmt.position));
+        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException(
+                "For statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.",
+                stmt.position));
         TypedExpr incrementer = stmt.incrementer.accept(this);
         return new TypedStmt.For(initializer, condition, incrementer, (TypedStmt.Block) stmt.body.accept(this));
     }
@@ -235,7 +256,9 @@ public class TypeChecker implements Visitor<TypedExpr>, Stmt.Visitor<TypedStmt> 
     @Override
     public TypedStmt visitWhileStmt(Stmt.While stmt) {
         TypedExpr condition = stmt.condition.accept(this);
-        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException("While statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.", stmt.position));
+        if(!condition.type.typeOf(Type.BOOLEAN)) errorHandler.add(new InvalidTypeException(
+                "While statement conditional must be of type '" + Type.BOOLEAN + "', found '" + condition.type + "' instead.",
+                stmt.position));
         return new TypedStmt.While(condition, (TypedStmt.Block) stmt.body.accept(this));
     }
     

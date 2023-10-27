@@ -331,7 +331,7 @@ public class Parser {
     
     private Expr postfix() {
         Expr expr = primary();
-        while (current().isType(TokenType.OPEN_PAREN)) {
+        while(current().isType(TokenType.OPEN_PAREN)) {
             expr = call(expr);
         }
         return expr;

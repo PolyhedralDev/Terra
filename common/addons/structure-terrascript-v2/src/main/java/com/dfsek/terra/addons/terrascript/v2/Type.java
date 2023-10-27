@@ -12,6 +12,89 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 
 public interface Type {
     
+    Type NUMBER = new Type() {
+        @Override
+        public java.lang.reflect.Type javaType() {
+            return double.class;
+        }
+        
+        @Override
+        public CodegenType getCodegenType() {
+            return CodegenType.DOUBLE;
+        }
+        
+        @Override
+        public String toString() {
+            return "num";
+        }
+    };
+    Type INTEGER = new Type() {
+        
+        @Override
+        public java.lang.reflect.Type javaType() {
+            return int.class;
+        }
+        
+        @Override
+        public CodegenType getCodegenType() {
+            return CodegenType.INTEGER;
+        }
+        
+        @Override
+        public String toString() {
+            return "int";
+        }
+    };
+    Type STRING = new Type() {
+        
+        @Override
+        public java.lang.reflect.Type javaType() {
+            return String.class;
+        }
+        
+        @Override
+        public CodegenType getCodegenType() {
+            return CodegenType.STRING;
+        }
+        
+        @Override
+        public String toString() {
+            return "str";
+        }
+    };
+    Type BOOLEAN = new Type() {
+        @Override
+        public java.lang.reflect.Type javaType() {
+            return boolean.class;
+        }
+        
+        @Override
+        public CodegenType getCodegenType() {
+            return CodegenType.BOOLEAN;
+        }
+        
+        @Override
+        public String toString() {
+            return "bool";
+        }
+    };
+    Type VOID = new Type() {
+        @Override
+        public java.lang.reflect.Type javaType() {
+            return void.class;
+        }
+        
+        @Override
+        public CodegenType getCodegenType() {
+            return CodegenType.VOID;
+        }
+        
+        @Override
+        public String toString() {
+            return "()";
+        }
+    };
+    
     static Type fromString(String lexeme) throws TypeException {
         return switch(lexeme) {
             case "num" -> NUMBER;
@@ -31,6 +114,7 @@ public interface Type {
     
     CodegenType getCodegenType();
     
+
     class Function implements Type {
         
         private final Type returnType;
@@ -41,6 +125,11 @@ public interface Type {
             this.returnType = returnType;
             this.parameters = parameters;
             this.id = identifier == null ? "ANONYMOUS" : identifier + declarationScope.name;
+        }
+        
+        private static boolean paramsAreSubtypes(List<Type> subtypes, List<Type> superTypes) {
+            if(subtypes.size() != superTypes.size()) return false;
+            return Streams.zip(subtypes.stream(), superTypes.stream(), Pair::of).allMatch(p -> p.getLeft().typeOf(p.getRight()));
         }
         
         public Type getReturnType() {
@@ -64,11 +153,6 @@ public interface Type {
         @Override
         public CodegenType getCodegenType() {
             return CodegenType.OBJECT;
-        }
-        
-        private static boolean paramsAreSubtypes(List<Type> subtypes, List<Type> superTypes) {
-            if(subtypes.size() != superTypes.size()) return false;
-            return Streams.zip(subtypes.stream(), superTypes.stream(), Pair::of).allMatch(p -> p.getLeft().typeOf(p.getRight()));
         }
         
         @Override
@@ -96,92 +180,6 @@ public interface Type {
         }
     }
     
-    Type NUMBER = new Type() {
-        @Override
-        public java.lang.reflect.Type javaType() {
-            return double.class;
-        }
-        
-        @Override
-        public CodegenType getCodegenType() {
-            return CodegenType.DOUBLE;
-        }
-        
-        @Override
-        public String toString() {
-            return "num";
-        }
-    };
-    
-    Type INTEGER = new Type() {
-        
-        @Override
-        public java.lang.reflect.Type javaType() {
-            return int.class;
-        }
-        
-        @Override
-        public CodegenType getCodegenType() {
-            return CodegenType.INTEGER;
-        }
-        
-        @Override
-        public String toString() {
-            return "int";
-        }
-    };
-    
-    Type STRING = new Type() {
-        
-        @Override
-        public java.lang.reflect.Type javaType() {
-            return String.class;
-        }
-        
-        @Override
-        public CodegenType getCodegenType() {
-            return CodegenType.STRING;
-        }
-        
-        @Override
-        public String toString() {
-            return "str";
-        }
-    };
-    
-    Type BOOLEAN = new Type() {
-        @Override
-        public java.lang.reflect.Type javaType() {
-            return boolean.class;
-        }
-        
-        @Override
-        public CodegenType getCodegenType() {
-            return CodegenType.BOOLEAN;
-        }
-        
-        @Override
-        public String toString() {
-            return "bool";
-        }
-    };
-    
-    Type VOID = new Type() {
-        @Override
-        public java.lang.reflect.Type javaType() {
-            return void.class;
-        }
-        
-        @Override
-        public CodegenType getCodegenType() {
-            return CodegenType.VOID;
-        }
-        
-        @Override
-        public String toString() {
-            return "()";
-        }
-    };
     
     class TypeException extends Exception {
     }

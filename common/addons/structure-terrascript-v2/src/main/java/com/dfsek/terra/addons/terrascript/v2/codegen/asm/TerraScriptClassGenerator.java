@@ -50,24 +50,24 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 
 import static com.dfsek.terra.addons.terrascript.v2.util.ASMUtil.dynamicName;
 
+
 public class TerraScriptClassGenerator {
     
     private static final Class<?> TARGET_CLASS = TerraScript.class;
     
     private static final boolean DUMP = true;
-    
-    private int generationCount = 0;
-    
     private final String debugPath;
+    private int generationCount = 0;
     
     public TerraScriptClassGenerator(String debugPath) {
         this.debugPath = debugPath;
     }
     
     /**
-     *
      * @param root Assumed to be semantically correct
+     *
      * @return Generated TerraScript instance
+     *
      * @throws IOException
      */
     public TerraScript generate(Block root) throws IOException {
@@ -78,7 +78,7 @@ public class TerraScriptClassGenerator {
         
         // Create class
         classWriter.visit(Opcodes.V1_8, Opcodes.ACC_PUBLIC, generatedClassName, null, "java/lang/Object", new String[]{ targetClassName });
-       
+        
         // Generate constructor method
         MethodVisitor constructor = classWriter.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V", null, null);
         constructor.visitCode();
@@ -97,7 +97,8 @@ public class TerraScriptClassGenerator {
         int exeAcc = Opcodes.ACC_PUBLIC;
         MethodVisitor executeMethod = classWriter.visitMethod(exeAcc, methodName, description, null, null);
         executeMethod.visitCode(); // Start method body
-        new MethodBytecodeGenerator(classWriter, generatedClassName, executeMethod, exeAcc, description).generate(root); // Generate bytecode
+        new MethodBytecodeGenerator(classWriter, generatedClassName, executeMethod, exeAcc, description).generate(
+                root); // Generate bytecode
         // Finish up method
         executeMethod.visitInsn(Opcodes.RETURN);
         executeMethod.visitMaxs(0, 0);
@@ -106,7 +107,9 @@ public class TerraScriptClassGenerator {
         // Finished generating class
         classWriter.visitEnd();
         
-        DynamicClassLoader loader = new DynamicClassLoader(TARGET_CLASS); // Instantiate a new loader every time so classes can be GC'ed when they are no longer used. (Classes cannot be GC'ed until their loaders are).
+        DynamicClassLoader loader = new DynamicClassLoader(
+                TARGET_CLASS); // Instantiate a new loader every time so classes can be GC'ed when they are no longer used. (Classes
+        // cannot be GC'ed until their loaders are).
         
         generationCount++;
         
@@ -114,7 +117,7 @@ public class TerraScriptClassGenerator {
         
         Class<?> generatedClass = loader.defineClass(generatedClassName.replace('/', '.'), bytecode);
         
-        if (DUMP) {
+        if(DUMP) {
             File dump = new File(debugPath + "/" + generatedClass.getSimpleName() + ".class");
             dump.getParentFile().mkdirs();
             try(FileOutputStream out = new FileOutputStream(dump)) {
@@ -156,6 +159,13 @@ public class TerraScriptClassGenerator {
             this.lvs = new LocalVariablesSorter(access, descriptor, method);
         }
         
+        private static boolean exprTypesEqual(Type type, TypedExpr... exprs) {
+            for(TypedExpr expr : exprs) {
+                if(expr.type != type) return false;
+            }
+            return true;
+        }
+        
         public void generate(Block root) {
             this.visitBlockTypedStmt(root);
         }
@@ -169,9 +179,10 @@ public class TerraScriptClassGenerator {
                     CodegenType codegenType = expr.type.getCodegenType();
                     if(codegenType.bytecodeType() == InstructionType.DOUBLE)
                         method.visitInsn(Opcodes.DADD);
-                    else if (Objects.equals(codegenType.getDescriptor(), "Ljava/lang/String;"))
+                    else if(Objects.equals(codegenType.getDescriptor(), "Ljava/lang/String;"))
                         // TODO - Optimize string concatenation
-                        method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "concat", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                        method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "concat",
+                                               "(Ljava/lang/String;)Ljava/lang/String;", false);
                     else throw new RuntimeException("Could not generate bytecode for ADD binary operator returning type " + expr.type);
                 }
                 case SUBTRACT -> binaryInsn(expr, Opcodes.DSUB);
@@ -191,7 +202,8 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitLiteralTypedExpr(Literal expr) {
             if(expr.type.getCodegenType() == CodegenType.BOOLEAN)
-                if ((boolean) expr.value) pushTrue(); else pushFalse();
+                if((boolean) expr.value) pushTrue();
+                else pushFalse();
             else method.visitLdcInsn(expr.value);
             return null;
         }
@@ -199,7 +211,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitUnaryTypedExpr(Unary expr) {
             expr.operand.accept(this);
-            switch (expr.operator) {
+            switch(expr.operator) {
                 case NOT -> invertBool();
                 case NEGATE -> method.visitInsn(Opcodes.DNEG);
             }
@@ -209,7 +221,7 @@ public class TerraScriptClassGenerator {
         @Override
         public Void visitCallTypedExpr(Call expr) {
             // TODO - Remove specific handling of native functions
-            if (expr.callee.type instanceof Type.Function.Native nativeFunction) {
+            if(expr.callee.type instanceof Type.Function.Native nativeFunction) {
                 NativeFunction function = nativeFunction.getNativeFunction();
                 function.pushInstance(method);
                 expr.arguments.forEach(a -> a.accept(this));
@@ -219,7 +231,8 @@ public class TerraScriptClassGenerator {
             // TODO - Add support for invokevirtual
             expr.arguments.forEach(a -> a.accept(this));
             List<Type> parameters = expr.arguments.stream().map(e -> e.type).toList();
-            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, ((Type.Function) expr.callee.type).getId(), getFunctionDescriptor(parameters, expr.type), false);
+            method.visitMethodInsn(Opcodes.INVOKESTATIC, className, ((Type.Function) expr.callee.type).getId(),
+                                   getFunctionDescriptor(parameters, expr.type), false);
             return null;
         }
         
@@ -257,7 +270,9 @@ public class TerraScriptClassGenerator {
         
         /**
          * Writes function as a private static method of the current class
+         *
          * @param stmt
+         *
          * @return
          */
         @Override
@@ -266,7 +281,8 @@ public class TerraScriptClassGenerator {
             
             int access = Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC;
             
-            MethodVisitor method = classWriter.visitMethod(access, stmt.scopedIdentifier, getFunctionDescriptor(parameterTypes, stmt.returnType), null, null);
+            MethodVisitor method = classWriter.visitMethod(access, stmt.scopedIdentifier,
+                                                           getFunctionDescriptor(parameterTypes, stmt.returnType), null, null);
             
             method.visitCode(); // Start method body
             
@@ -274,7 +290,7 @@ public class TerraScriptClassGenerator {
             
             // Add local variable indexes for each parameter
             int lvidx = 0;
-            for (Pair<String, Type> parameter : stmt.parameters) {
+            for(Pair<String, Type> parameter : stmt.parameters) {
                 funcGenerator.lvTable.put(parameter.getLeft(), lvidx);
                 lvidx += parameter.getRight().getCodegenType().bytecodeType().slotSize(); // Increment by how many slots data type takes
             }
@@ -370,13 +386,6 @@ public class TerraScriptClassGenerator {
             return exprTypesEqual(type, expr.left, expr.right);
         }
         
-        private static boolean exprTypesEqual(Type type, TypedExpr... exprs) {
-            for(TypedExpr expr : exprs) {
-                if (expr.type != type) return false;
-            }
-            return true;
-        }
-        
         /**
          * Inverts a boolean on the stack
          */
@@ -406,6 +415,7 @@ public class TerraScriptClassGenerator {
         
         /**
          * Pushes boolean on to the stack based on comparison result
+         *
          * @param condition
          */
         private void pushComparisonBool(TypedExpr condition) {
@@ -417,6 +427,7 @@ public class TerraScriptClassGenerator {
         
         /**
          * Executes a statement then jumps to the exit label if the condition is true, jumps over the statement if false
+         *
          * @param condition
          * @param stmt
          * @param exit
@@ -447,7 +458,7 @@ public class TerraScriptClassGenerator {
         
         private void conditionalRunnable(TypedExpr condition, Runnable trueBlock, Label trueFinished) {
             Label exit = new Label(); // If the first conditional is false, jump over statement and don't execute it
-            if (condition instanceof Binary binaryCondition) {
+            if(condition instanceof Binary binaryCondition) {
                 switch(binaryCondition.operator) {
                     case BOOLEAN_AND -> {
                         // Operands assumed booleans
@@ -466,30 +477,30 @@ public class TerraScriptClassGenerator {
                         label(skipRight);
                     }
                     case EQUALS -> {
-                        if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
+                        if(binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
                             pushBinaryOperands(binaryCondition);
                             jumpIf(OpcodeAlias.INTEGERS_NOT_EQUAL, exit);
                             
-                        } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
+                        } else if(binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
                             binaryInsn(binaryCondition, Opcodes.DCMPG);
                             jumpIf(OpcodeAlias.CMP_NOT_EQUALS, exit);
                             
-                        } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) {
+                        } else if(binaryOperandsSameType(Type.STRING, binaryCondition)) {
                             pushBinaryOperands(binaryCondition);
                             method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
                             jumpIf(OpcodeAlias.BOOL_FALSE, exit);
                         } else throw new CompilerBugException();
                     }
                     case NOT_EQUALS -> {
-                        if (binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
+                        if(binaryOperandsSameType(Type.BOOLEAN, binaryCondition)) { // Operands assumed integers
                             pushBinaryOperands(binaryCondition);
                             jumpIf(OpcodeAlias.INTEGERS_EQUAL, exit);
                             
-                        } else if (binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
+                        } else if(binaryOperandsSameType(Type.NUMBER, binaryCondition)) { // Operands assumed doubles
                             binaryInsn(binaryCondition, Opcodes.DCMPG);
                             jumpIf(OpcodeAlias.CMP_EQUALS, exit);
                             
-                        } else if (binaryOperandsSameType(Type.STRING, binaryCondition)) { // Operands assumed references
+                        } else if(binaryOperandsSameType(Type.STRING, binaryCondition)) { // Operands assumed references
                             pushBinaryOperands(binaryCondition);
                             method.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/String", "equals", "(Ljava/lang/Object;)Z", false);
                             invertBool();
@@ -533,6 +544,7 @@ public class TerraScriptClassGenerator {
         }
     }
     
+    
     private static class MethodExtractor extends ClassVisitor {
         
         private final String methodName;
@@ -545,7 +557,7 @@ public class TerraScriptClassGenerator {
         
         @Override
         public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
-            if (name.equals(methodName))
+            if(name.equals(methodName))
                 methodDescription = descriptor;
             return super.visitMethod(access, name, descriptor, signature, exceptions);
         }

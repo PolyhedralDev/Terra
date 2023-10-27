@@ -4,7 +4,7 @@ public class DynamicClassLoader extends ClassLoader {
     public DynamicClassLoader(Class<?> clazz) {
         super(clazz.getClassLoader());
     }
-   
+    
     public Class<?> defineClass(String name, byte[] data) {
         return defineClass(name, data, 0, data.length);
     }

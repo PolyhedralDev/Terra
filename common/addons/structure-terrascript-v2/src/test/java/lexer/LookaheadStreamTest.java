@@ -38,7 +38,7 @@ public class LookaheadStreamTest {
         
         assertEquals(first, lookahead.current());
         assertEquals(first, lookahead.current());
-
+        
         assertEquals(new SourcePosition(1, 1), lookahead.getPosition());
         assertEquals(new SourcePosition(1, 1), lookahead.getPosition());
         
@@ -52,7 +52,7 @@ public class LookaheadStreamTest {
         assertEquals(second, lookahead.current());
         
         assertEquals(second, lookahead.consume());
-
+        
         assertEquals(third, lookahead.current());
         
         assertTrue(lookahead.matchesString("st", true));

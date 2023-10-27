@@ -26,9 +26,8 @@ import static com.dfsek.terra.addons.terrascript.v2.Environment.ScopeException.S
 
 public class ScopeAnalyzer implements Visitor<Void>, Stmt.Visitor<Void> {
     
-    private Environment currentScope;
-    
     private final ErrorHandler errorHandler;
+    private Environment currentScope;
     
     
     public ScopeAnalyzer(Environment globalScope, ErrorHandler errorHandler) {

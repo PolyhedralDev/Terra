@@ -13,19 +13,13 @@ import com.dfsek.terra.addons.terrascript.v2.codegen.NativeFunction;
 
 public class Environment {
     
-    private final Environment outer;
-    
-    private final boolean canAccessOuterVariables;
-    
-    private final Map<String, Symbol> symbolTable = new HashMap<>();
-    
-    private final boolean inLoop;
-    
-    private final int index;
-    
-    private int innerCount = 0;
-    
     public final String name;
+    private final Environment outer;
+    private final boolean canAccessOuterVariables;
+    private final Map<String, Symbol> symbolTable = new HashMap<>();
+    private final boolean inLoop;
+    private final int index;
+    private int innerCount = 0;
     
     private Environment(@Nullable Environment outer, boolean canAccessOuterVariables, boolean inLoop, int index) {
         this.outer = outer;
@@ -35,8 +29,11 @@ public class Environment {
         this.name = String.join("_", getNestedIndexes().stream().map(Object::toString).toList());
         // Populate global scope with built-in Java implemented methods
         // TODO - Replace with AST import nodes
-        if (index == 0) NativeFunction.BUILTIN_FUNCTIONS.forEach((name, function) ->
-            symbolTable.put(name, new Symbol.Variable(new Type.Function.Native(function.getReturnType(), function.getParameterTypes(), name, this, function))));
+        if(index == 0) NativeFunction.BUILTIN_FUNCTIONS.forEach((name, function) ->
+                                                                        symbolTable.put(name, new Symbol.Variable(
+                                                                                new Type.Function.Native(function.getReturnType(),
+                                                                                                         function.getParameterTypes(), name,
+                                                                                                         this, function))));
     }
     
     public static Environment global() {
@@ -57,7 +54,7 @@ public class Environment {
     
     private List<Integer> getNestedIndexes() {
         List<Integer> idxs = new ArrayList<>();
-        for (Environment env = this; env.outer != null; env = env.outer) {
+        for(Environment env = this; env.outer != null; env = env.outer) {
             idxs.add(0, env.index);
         }
         return idxs;
@@ -78,7 +75,7 @@ public class Environment {
      *
      * @return variable symbol table entry
      *
-     * @throws NonexistentSymbolException  if symbol is not declared in symbol table
+     * @throws NonexistentSymbolException if symbol is not declared in symbol table
      */
     public Symbol getVariable(String id) throws NonexistentSymbolException {
         Symbol symbol = symbolTable.get(id);

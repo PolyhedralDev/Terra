@@ -5,29 +5,27 @@ import org.objectweb.asm.Opcodes;
 
 public class CodegenType {
     
-    private final InstructionType instructionType;
-    
-    private final String descriptor;
-    
-    public CodegenType(InstructionType instructionType, String descriptor) {
-        this.instructionType = instructionType;
-        this.descriptor = descriptor;
-    }
-    
-    public InstructionType bytecodeType() {
-        return instructionType;
-    }
-    
-    public String getDescriptor() {
-        return descriptor;
-    }
-    
     public static final CodegenType BOOLEAN = new CodegenType(InstructionType.INTEGER, "Z");
     public static final CodegenType STRING = new CodegenType(InstructionType.OBJECT, "Ljava/lang/String;");
     public static final CodegenType DOUBLE = new CodegenType(InstructionType.DOUBLE, "D");
     public static final CodegenType INTEGER = new CodegenType(InstructionType.INTEGER, "I");
     public static final CodegenType VOID = new CodegenType(InstructionType.VOID, "V");
     public static final CodegenType OBJECT = new CodegenType(InstructionType.OBJECT, "Ljava/lang/Object;");
+    private final InstructionType instructionType;
+    private final String descriptor;
+    public CodegenType(InstructionType instructionType, String descriptor) {
+        this.instructionType = instructionType;
+        this.descriptor = descriptor;
+    }
+
+    public InstructionType bytecodeType() {
+        return instructionType;
+    }
+
+    public String getDescriptor() {
+        return descriptor;
+    }
+    
     
     public enum InstructionType {
         DOUBLE {

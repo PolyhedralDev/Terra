@@ -9,6 +9,7 @@ import com.dfsek.terra.addons.terrascript.v2.lexer.Token.TokenType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 public class LexerTest {
     
     private static void tokenTypeTest(String input, TokenType type) {

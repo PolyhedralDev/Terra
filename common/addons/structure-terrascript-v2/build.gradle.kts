@@ -30,12 +30,10 @@ data class ASTNode(
         val name: String,
         val constructorFields: List<Pair<String, String>>,
         val mutableFields: List<Pair<String, String>> = emptyList() // TODO - Remove mutability from AST nodes
-
 )
 
 // Auto generate AST classes rather than writing them by hand
 tasks.register("genTerrascriptAstClasses") {
-
 
     val packageName = astPackage.toRelativeString(astSourceSet).replace('/', '.')
     fun generateClass(clazz: ASTClass) {
