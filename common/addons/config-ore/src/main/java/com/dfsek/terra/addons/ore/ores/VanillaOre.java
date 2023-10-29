@@ -154,7 +154,6 @@ public class VanillaOre implements Structure {
                                             if(shouldPlace(getReplaceable(), block, exposed, random, world, xi, yi, zi)) {
                                                 world.setBlockState(xi, yi, zi, getMaterial(block), isApplyGravity());
                                                 ++sphereCount;
-                                                break;
                                             }
                                         }
                                     }
