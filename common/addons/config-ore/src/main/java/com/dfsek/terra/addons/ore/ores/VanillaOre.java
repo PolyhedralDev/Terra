@@ -20,16 +20,18 @@ import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
+import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
+
 
 public class VanillaOre implements Structure {
     
-    private final BlockState material;
+    protected final BlockState material;
     
-    private final double size;
-    private final MaterialSet replaceable;
-    private final boolean applyGravity;
-    private final double exposed;
-    private final Map<BlockType, BlockState> materials;
+    protected final double size;
+    protected final MaterialSet replaceable;
+    protected final boolean applyGravity;
+    protected final double exposed;
+    protected final Map<BlockType, BlockState> materials;
     
     public VanillaOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity,
                       double exposed, Map<BlockType, BlockState> materials) {
@@ -41,16 +43,6 @@ public class VanillaOre implements Structure {
         this.materials = materials;
     }
     
-    protected static boolean shouldNotDiscard(Random random, double chance) {
-        if(chance <= 0.0F) {
-            return true;
-        } else if(chance >= 1.0F) {
-            return false;
-        } else {
-            return random.nextFloat() >= chance;
-        }
-    }
-    
     public static double lerp(double t, double v0, double v1) {
         return v0 + t * (v1 - v0);
     }
@@ -58,14 +50,14 @@ public class VanillaOre implements Structure {
     @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         float randomRadian = random.nextFloat() * (float) Math.PI;
-        double eigthSize = size / 8.0F;
+        double eighthSize = size / 8.0F;
         
         // Place points to form a line segment
-        double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eigthSize;
-        double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eigthSize;
+        double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eighthSize;
+        double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eighthSize;
         
-        double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eigthSize;
-        double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eigthSize;
+        double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eighthSize;
+        double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eighthSize;
         
         double startY = location.getY() + random.nextInt(3) - 2;
         double endY = location.getY() + random.nextInt(3) - 2;
@@ -115,14 +107,14 @@ public class VanillaOre implements Structure {
         }
         
         int outset = (int) Math.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
-        int x = (int) (location.getX() - Math.ceil(eigthSize) - outset);
+        int x = (int) (location.getX() - Math.ceil(eighthSize) - outset);
         int y = location.getY() - 2 - outset;
-        int z = (int) (location.getZ() - Math.ceil(eigthSize) - outset);
+        int z = (int) (location.getZ() - Math.ceil(eighthSize) - outset);
         
-        int horizontalSize = (int) (2 * (Math.ceil(eigthSize) + outset));
+        int horizontalSize = (int) (2 * (Math.ceil(eighthSize) + outset));
         int verticalSize = 2 * (2 + outset);
         
-        int sphereCount = 0;
+        int blockCount = 0;
         BitSet visited = new BitSet(horizontalSize * verticalSize * horizontalSize);
         
         // Generate a sphere at each point
@@ -159,10 +151,9 @@ public class VanillaOre implements Structure {
                                             
                                             visited.set(index);
                                             BlockType block = world.getBlockState(xi, yi, zi).getBlockType();
-                                            if(shouldPlace(block, random, world, xi, yi, zi)) {
+                                            if(shouldPlace(getReplaceable(), block, exposed, random, world, xi, yi, zi)) {
                                                 world.setBlockState(xi, yi, zi, getMaterial(block), isApplyGravity());
-                                                ++sphereCount;
-                                                break;
+                                                ++blockCount;
                                             }
                                         }
                                     }
@@ -174,24 +165,8 @@ public class VanillaOre implements Structure {
             }
         }
         
-        return sphereCount > 0;
+        return blockCount > 0;
     }
-    
-    public boolean shouldPlace(BlockType type, Random random, WritableWorld world, int x, int y, int z) {
-        if(!getReplaceable().contains(type)) {
-            return false;
-        } else if(shouldNotDiscard(random, exposed)) {
-            return true;
-        } else {
-            return !(world.getBlockState(x, y, z - 1).isAir() ||
-                     world.getBlockState(x, y, z + 1).isAir() ||
-                     world.getBlockState(x, y - 1, z).isAir() ||
-                     world.getBlockState(x, y + 1, z).isAir() ||
-                     world.getBlockState(x - 1, y, z).isAir() ||
-                     world.getBlockState(x + 1, y, z).isAir());
-        }
-    }
-    
     public BlockState getMaterial(BlockType replace) {
         return materials.getOrDefault(replace, material);
     }

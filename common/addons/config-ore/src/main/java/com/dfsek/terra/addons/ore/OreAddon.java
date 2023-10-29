@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class OreAddon implements AddonInitializer {
-    private static final Logger logger = LoggerFactory.getLogger(OreAddon.class);
-    
     @Inject
     private Platform platform;
     
@@ -33,9 +31,7 @@ public class OreAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .then(event -> event.getPack().registerConfigType(new OreConfigType(), addon.key("ORE"), 1))
+                .then(event -> event.getPack().registerConfigType(new ScatteredOreConfigType(), addon.key("SCATTERED_ORE"), 1))
                 .failThrough();
-        
-        if(platform.getTerraConfig().isDebugLog())
-            logger.warn("The ore-config addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the ore-config-v2 addon for future pack development instead.");
     }
 }
