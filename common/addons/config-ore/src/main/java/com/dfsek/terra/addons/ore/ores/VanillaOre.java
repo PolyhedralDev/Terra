@@ -114,7 +114,7 @@ public class VanillaOre implements Structure {
         int horizontalSize = (int) (2 * (Math.ceil(eighthSize) + outset));
         int verticalSize = 2 * (2 + outset);
         
-        int sphereCount = 0;
+        int blockCount = 0;
         BitSet visited = new BitSet(horizontalSize * verticalSize * horizontalSize);
         
         // Generate a sphere at each point
@@ -153,7 +153,7 @@ public class VanillaOre implements Structure {
                                             BlockType block = world.getBlockState(xi, yi, zi).getBlockType();
                                             if(shouldPlace(getReplaceable(), block, exposed, random, world, xi, yi, zi)) {
                                                 world.setBlockState(xi, yi, zi, getMaterial(block), isApplyGravity());
-                                                ++sphereCount;
+                                                ++blockCount;
                                             }
                                         }
                                     }
@@ -165,7 +165,7 @@ public class VanillaOre implements Structure {
             }
         }
         
-        return sphereCount > 0;
+        return blockCount > 0;
     }
     public BlockState getMaterial(BlockType replace) {
         return materials.getOrDefault(replace, material);
