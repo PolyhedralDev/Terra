@@ -7,6 +7,11 @@ import java.util.function.Supplier;
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.config.ColorLoader;
 import com.dfsek.terra.addons.image.config.ColorLoader.ColorString;
+import com.dfsek.terra.addons.image.config.ImageLibraryPackConfigTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
+import com.dfsek.terra.addons.image.config.image.ImageTemplate;
+import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.ConstantColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.image.SingleImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.image.TileImageColorSamplerTemplate;
@@ -52,6 +57,10 @@ public class ImageLibraryAddon implements AddonInitializer {
                 .getHandler(FunctionalEventHandler.class)
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(10)
+                .then(event -> {
+                    ImageLibraryPackConfigTemplate config = event.loadTemplate(new ImageLibraryPackConfigTemplate());
+                    event.getPack().getContext().put(config);
+                })
                 .then(event -> {
                     ConfigPack pack = event.getPack();
                     CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
