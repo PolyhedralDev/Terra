@@ -38,7 +38,7 @@ public class BorderListStage implements Stage {
         this.replaceDefault = replaceDefault;
         this.defaultReplace = defaultReplace;
         this.replace = replace;
-    
+        
         List<Vector2Int> points = new ArrayList<>();
         for(int x = -1; x <= 1; x++) {
             for(int z = -1; z <= 1; z++) {
@@ -68,10 +68,11 @@ public class BorderListStage implements Stage {
                 if(current != null && current.getTags().contains(border)) {
                     if(replace.containsKey(center)) {
                         PipelineBiome replacement = replace.get(center).get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(),
-                                                                      viewPoint.worldSeed());
+                                                                            viewPoint.worldSeed());
                         return replacement.isSelf() ? center : replacement;
                     }
-                    PipelineBiome replacement = replaceDefault.get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(), viewPoint.worldSeed());
+                    PipelineBiome replacement = replaceDefault.get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(),
+                                                                   viewPoint.worldSeed());
                     return replacement.isSelf() ? center : replacement;
                 }
             }

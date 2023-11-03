@@ -63,16 +63,16 @@ public class LocatorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
                     locatorRegistry.register(addon.key("SURFACE"), SurfaceLocatorTemplate::new);
                     locatorRegistry.register(addon.key("TOP"), TopLocatorTemplate::new);
-            
+                    
                     locatorRegistry.register(addon.key("RANDOM"), RandomLocatorTemplate::new);
                     locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
-            
+                    
                     locatorRegistry.register(addon.key("PATTERN"), PatternLocatorTemplate::new);
                     locatorRegistry.register(addon.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
-            
+                    
                     locatorRegistry.register(addon.key("SAMPLER"), SamplerLocatorTemplate::new);
                     locatorRegistry.register(addon.key("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
-            
+                    
                     locatorRegistry.register(addon.key("AND"), AndLocatorTemplate::new);
                     locatorRegistry.register(addon.key("OR"), OrLocatorTemplate::new);
                     locatorRegistry.register(addon.key("XOR"), XorLocatorTemplate::new);
@@ -83,7 +83,7 @@ public class LocatorAddon implements AddonInitializer {
                     patternRegistry.register(addon.key("MATCH_SOLID"), SolidMatchPatternTemplate::new);
                     patternRegistry.register(addon.key("MATCH"), SingleBlockMatchPatternTemplate::new);
                     patternRegistry.register(addon.key("MATCH_SET"), BlockSetMatchPatternTemplate::new);
-            
+                    
                     patternRegistry.register(addon.key("AND"), AndPatternTemplate::new);
                     patternRegistry.register(addon.key("OR"), OrPatternTemplate::new);
                     patternRegistry.register(addon.key("XOR"), XorPatternTemplate::new);

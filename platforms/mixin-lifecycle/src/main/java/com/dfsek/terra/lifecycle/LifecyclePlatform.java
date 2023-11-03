@@ -30,16 +30,25 @@ import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 
 public abstract class LifecyclePlatform extends ModPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifecyclePlatform.class);
-    private static MinecraftServer server;
-    
     private static final AtomicReference<Registry<Biome>> BIOMES = new AtomicReference<>();
     private static final AtomicReference<Registry<DimensionType>> DIMENSIONS = new AtomicReference<>();
     private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
+    private static MinecraftServer server;
     
     public LifecyclePlatform() {
         CommonPlatform.initialize(this);
         load();
+    }
+    
+    public static void setRegistries(Registry<Biome> biomeRegistry,
+                                     Registry<DimensionType> dimensionTypeRegistry,
+                                     Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
+                                     Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry) {
+        BIOMES.set(biomeRegistry);
+        DIMENSIONS.set(dimensionTypeRegistry);
+        SETTINGS.set(chunkGeneratorSettingsRegistry);
+        NOISE.set(multiNoiseBiomeSourceParameterListRegistry);
     }
     
     @Override
@@ -76,16 +85,6 @@ public abstract class LifecyclePlatform extends ModPlatform {
         return succeed;
     }
     
-    public static void setRegistries(Registry<Biome> biomeRegistry,
-                                     Registry<DimensionType> dimensionTypeRegistry,
-                                     Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
-                                     Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry) {
-        BIOMES.set(biomeRegistry);
-        DIMENSIONS.set(dimensionTypeRegistry);
-        SETTINGS.set(chunkGeneratorSettingsRegistry);
-        NOISE.set(multiNoiseBiomeSourceParameterListRegistry);
-    }
-    
     @Override
     protected Iterable<BaseAddon> platformAddon() {
         List<BaseAddon> addons = new ArrayList<>();
@@ -102,9 +101,9 @@ public abstract class LifecyclePlatform extends ModPlatform {
                 LOGGER.warn("Failed to parse Minecraft version", e);
             }
         }
-    
+        
         addons.addAll(getPlatformMods());
-    
+        
         return addons;
     }
     

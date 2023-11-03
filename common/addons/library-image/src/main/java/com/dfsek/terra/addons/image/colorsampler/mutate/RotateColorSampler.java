@@ -3,6 +3,7 @@ package com.dfsek.terra.addons.image.colorsampler.mutate;
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
+
 public class RotateColorSampler implements ColorSampler {
     
     private final ColorSampler sampler;
@@ -15,15 +16,15 @@ public class RotateColorSampler implements ColorSampler {
         this.sampler = sampler;
         
         double normalizedDegrees = degrees % 360.0;
-        if (normalizedDegrees < 0) normalizedDegrees += 360.0;
+        if(normalizedDegrees < 0) normalizedDegrees += 360.0;
         
-        if (normalizedDegrees == 0.0)
+        if(normalizedDegrees == 0.0)
             rotationMethod = RotationMethod.DEG_0;
-        else if (normalizedDegrees == 90.0)
+        else if(normalizedDegrees == 90.0)
             rotationMethod = RotationMethod.DEG_90;
-        else if (normalizedDegrees == 180.0)
+        else if(normalizedDegrees == 180.0)
             rotationMethod = RotationMethod.DEG_180;
-        else if (normalizedDegrees == 270.0)
+        else if(normalizedDegrees == 270.0)
             rotationMethod = RotationMethod.DEG_270;
         else
             rotationMethod = RotationMethod.RAD_ANY;

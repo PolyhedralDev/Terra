@@ -34,7 +34,7 @@ public class SmoothStage implements Stage {
         
         boolean vert = Objects.equals(top, bottom);
         boolean horiz = Objects.equals(left, right);
-    
+        
         if(vert && horiz) {
             return roll > 0 ?
                    roll > 0.25 ? left : right :

@@ -66,7 +66,7 @@ public class FeatureGenerationAddon implements AddonInitializer {
                 .then(event -> {
                     if(event.is(Biome.class)) {
                         DynamicTemplate.Builder templateBuilder = DynamicTemplate.builder();
-                
+                        
                         List<FeatureGenerationStage> featureGenerationStages = new ArrayList<>();
                         event.getPack().getStages().forEach(stage -> {
                             if(stage instanceof FeatureGenerationStage featureGenerationStage) {
@@ -80,13 +80,13 @@ public class FeatureGenerationAddon implements AddonInitializer {
                                                        .build());
                             }
                         });
-                
+                        
                         DynamicTemplate template = event.load(templateBuilder.build());
-                
+                        
                         Map<FeatureGenerationStage, List<Feature>> features = new HashMap<>();
-                
+                        
                         featureGenerationStages.forEach(stage -> features.put(stage, template.get(stage.getID(), List.class)));
-                
+                        
                         event.getLoadedObject(Biome.class).getContext().put(biomeFeaturesKey, new BiomeFeatures(features));
                     }
                 })

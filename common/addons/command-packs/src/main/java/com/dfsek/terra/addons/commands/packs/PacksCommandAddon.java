@@ -33,7 +33,7 @@ public class PacksCommandAddon implements AddonInitializer {
                 .register(addon, CommandRegistrationEvent.class)
                 .then(event -> {
                     CommandManager<CommandSender> manager = event.getCommandManager();
-            
+                    
                     manager.command(
                                    manager.commandBuilder("packs", ArgumentDescription.of("List installed config packs"))
                                           .permission("terra.packs")
@@ -54,10 +54,10 @@ public class PacksCommandAddon implements AddonInitializer {
                                           .handler(context -> {
                                               ConfigPack pack = context.get("pack");
                                               StringBuilder packInfo = new StringBuilder("Pack ").append(pack.getID()).append('\n');
-                        
+                                              
                                               packInfo.append("Version: ").append(pack.getVersion().getFormatted()).append('\n');
                                               packInfo.append("Author: ").append(pack.getAuthor()).append('\n');
-                        
+                                              
                                               packInfo.append("Addon Dependencies:\n");
                                               pack.addons().forEach((id, versions) -> packInfo
                                                       .append(" - ")

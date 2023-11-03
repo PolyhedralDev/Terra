@@ -56,7 +56,8 @@ public class BukkitWorldHandle implements WorldHandle {
         
         return new BukkitEntityType(switch(entityID) {
             case "END_CRYSTAL" -> org.bukkit.entity.EntityType.ENDER_CRYSTAL;
-            case "ENDER_CRYSTAL" -> throw new IllegalArgumentException("Invalid entity identifier " + id); // make sure this issue can't happen the other way around.
+            case "ENDER_CRYSTAL" -> throw new IllegalArgumentException(
+                    "Invalid entity identifier " + id); // make sure this issue can't happen the other way around.
             default -> org.bukkit.entity.EntityType.valueOf(entityID);
         });
     }

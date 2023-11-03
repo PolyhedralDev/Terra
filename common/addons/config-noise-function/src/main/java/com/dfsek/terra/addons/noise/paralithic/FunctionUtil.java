@@ -14,10 +14,11 @@ import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 
 
 public class FunctionUtil {
-    private FunctionUtil() {}
+    private FunctionUtil() { }
     
     public static Map<String, Function> convertFunctionsAndSamplers(Map<String, FunctionTemplate> functions,
-                                                                    Map<String, DimensionApplicableNoiseSampler> samplers) throws ParseException {
+                                                                    Map<String, DimensionApplicableNoiseSampler> samplers)
+    throws ParseException {
         Map<String, Function> functionMap = new HashMap<>();
         for(Map.Entry<String, FunctionTemplate> entry : functions.entrySet()) {
             functionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));

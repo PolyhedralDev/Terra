@@ -55,9 +55,9 @@ public abstract class WorldChunkMixin {
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
         setBlockState(blockPos, (net.minecraft.block.BlockState) data, false);
-        if (physics) {
+        if(physics) {
             net.minecraft.block.BlockState state = ((net.minecraft.block.BlockState) data);
-            if (state.isLiquid()) {
+            if(state.isLiquid()) {
                 world.getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
             } else {
                 world.getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));

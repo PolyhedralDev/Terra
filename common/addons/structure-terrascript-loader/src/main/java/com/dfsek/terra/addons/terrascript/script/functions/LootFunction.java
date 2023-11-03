@@ -69,7 +69,7 @@ public class LootFunction implements Function<Void> {
                                                                 y.apply(implementationArguments, scope)
                                                                  .intValue(),
                                                                 (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
-            
+                                     
                                      try {
                                          BlockEntity data = arguments.getWorld().getBlockEntity(apply);
                                          if(!(data instanceof Container container)) {
@@ -77,12 +77,12 @@ public class LootFunction implements Function<Void> {
                                                           apply, data);
                                              return;
                                          }
-                
+                                         
                                          LootPopulateEvent event = new LootPopulateEvent(container, table,
                                                                                          arguments.getWorld().getPack(), script);
                                          platform.getEventManager().callEvent(event);
                                          if(event.isCancelled()) return;
-                
+                                         
                                          event.getTable().fillInventory(container.getInventory(),
                                                                         new Random(apply.hashCode()));
                                          data.update(false);

@@ -33,12 +33,12 @@ public class BiomeQueryAPIAddon implements AddonInitializer {
                             .getPack()
                             .getRegistry(Biome.class)
                             .entries();
-            
+                    
                     BiomeTagFlattener flattener = new BiomeTagFlattener(biomes
                                                                                 .stream()
                                                                                 .flatMap(biome -> biome.getTags().stream())
                                                                                 .toList());
-            
+                    
                     biomes.forEach(biome -> biome.getContext().put(BIOME_TAG_KEY, new BiomeTagHolder(biome, flattener)));
                 })
                 .global();

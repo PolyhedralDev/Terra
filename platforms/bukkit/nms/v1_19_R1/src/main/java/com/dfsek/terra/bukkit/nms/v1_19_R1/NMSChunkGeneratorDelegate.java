@@ -112,15 +112,16 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                                                                  @NotNull RandomState noiseConfig,
                                                                  @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
         return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk)
-                .thenApply(c -> {
-                    LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
-                    BiomeProvider biomeProvider = pack.getBiomeProvider();
-                    PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
-                    if(compatibilityOptions.isBeard()) {
-                        beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()), biomeProvider, compatibilityOptions);
-                    }
-                    return c;
-                });
+                      .thenApply(c -> {
+                          LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
+                          BiomeProvider biomeProvider = pack.getBiomeProvider();
+                          PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
+                          if(compatibilityOptions.isBeard()) {
+                              beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()),
+                                    biomeProvider, compatibilityOptions);
+                          }
+                          return c;
+                      });
     }
     
     private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
@@ -187,10 +188,10 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
          */
         return vanilla.getBaseColumn(x, z, world, noiseConfig);
     }
-
+    
     @Override
     public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
-
+    
     }
     
     @Override
@@ -231,7 +232,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
             }
         });
     }
-
+    
     private List<ChunkPos> generateRingPositions(StructureSet holder, RandomState randomstate,
                                                  ConcentricRingsStructurePlacement concentricringsstructureplacement) { // Spigot
         if(concentricringsstructureplacement.count() == 0) {

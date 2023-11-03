@@ -41,7 +41,7 @@ public class StructureCommandAddon implements AddonInitializer {
                 .register(addon, CommandRegistrationEvent.class)
                 .then(event -> {
                     CommandManager<CommandSender> manager = event.getCommandManager();
-            
+                    
                     manager.command(
                             manager.commandBuilder("structures", ArgumentDescription.of("Manage or generate structures"))
                                    .literal("generate")

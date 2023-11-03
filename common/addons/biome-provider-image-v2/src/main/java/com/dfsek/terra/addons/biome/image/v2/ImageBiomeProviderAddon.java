@@ -58,15 +58,19 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                     providerRegistry.register(addon.key("IMAGE"), ImageProviderTemplate::new);
                 })
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorConverter<Biome>>>> biomeColorConverterRegistry = event.getPack().getOrCreateRegistry(
-                            BIOME_COLOR_CONVERTER_REGISTRY_KEY);
+                    CheckedRegistry<Supplier<ObjectTemplate<ColorConverter<Biome>>>> biomeColorConverterRegistry =
+                            event.getPack().getOrCreateRegistry(
+                                    BIOME_COLOR_CONVERTER_REGISTRY_KEY);
                     biomeColorConverterRegistry.register(addon.key("EXACT"), ExactBiomeColorConverterTemplate::new);
                     biomeColorConverterRegistry.register(addon.key("CLOSEST"), ClosestBiomeColorConverterTemplate::new);
                 })
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorMapping<Biome>>>> biomeColorMappingRegistry = event.getPack().getOrCreateRegistry(
-                            BIOME_COLOR_MAPPING_REGISTRY_KEY);
-                    biomeColorMappingRegistry.register(addon.key("USE_BIOME_COLORS"), () -> () -> new BiomeDefinedColorMapping<>(event.getPack().getRegistry(Biome.class), b -> b));
+                    CheckedRegistry<Supplier<ObjectTemplate<ColorMapping<Biome>>>> biomeColorMappingRegistry =
+                            event.getPack().getOrCreateRegistry(
+                                    BIOME_COLOR_MAPPING_REGISTRY_KEY);
+                    biomeColorMappingRegistry.register(addon.key("USE_BIOME_COLORS"),
+                                                       () -> () -> new BiomeDefinedColorMapping<>(event.getPack().getRegistry(Biome.class),
+                                                                                                  b -> b));
                     biomeColorMappingRegistry.register(addon.key("MAP"), DefinedBiomeColorMappingTemplate::new);
                 })
                 .failThrough();

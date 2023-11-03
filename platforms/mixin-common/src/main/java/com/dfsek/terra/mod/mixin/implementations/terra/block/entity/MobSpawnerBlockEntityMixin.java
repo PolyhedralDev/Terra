@@ -66,7 +66,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setDelay(int delay) {
-
+    
     }
     
     public int terra$getMinSpawnDelay() {
@@ -74,7 +74,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setMinSpawnDelay(int delay) {
-
+    
     }
     
     public int terra$getMaxSpawnDelay() {
@@ -82,7 +82,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setMaxSpawnDelay(int delay) {
-
+    
     }
     
     public int terra$getSpawnCount() {
@@ -90,7 +90,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setSpawnCount(int spawnCount) {
-
+    
     }
     
     public int terra$getMaxNearbyEntities() {
@@ -98,7 +98,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setMaxNearbyEntities(int maxNearbyEntities) {
-
+    
     }
     
     public int terra$getRequiredPlayerRange() {
@@ -106,7 +106,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setRequiredPlayerRange(int requiredPlayerRange) {
-
+    
     }
     
     public int terra$getSpawnRange() {
@@ -114,7 +114,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
     
     public void terra$setSpawnRange(int spawnRange) {
-
+    
     }
     
     public void terra$applyState(String state) {

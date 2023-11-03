@@ -10,7 +10,7 @@ final class SelfPipelineBiome implements PipelineBiome {
     public static final SelfPipelineBiome INSTANCE = new SelfPipelineBiome();
     
     private SelfPipelineBiome() {
-
+    
     }
     
     @Override

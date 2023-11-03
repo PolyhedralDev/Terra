@@ -22,6 +22,7 @@ public class Vector3 {
         this.y = y;
         this.z = z;
     }
+    
     public static Vector3 zero() {
         return ZERO;
     }

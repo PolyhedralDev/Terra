@@ -28,6 +28,7 @@ public class Vector2 {
         this.x = x;
         this.z = z;
     }
+    
     public static Vector2 zero() {
         return ZERO;
     }

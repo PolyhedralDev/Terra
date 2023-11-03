@@ -50,7 +50,7 @@ public class DistributorAddon implements AddonInitializer {
                     CheckedRegistry<Supplier<ObjectTemplate<Distributor>>> distributorRegistry = event
                             .getPack()
                             .getOrCreateRegistry(DISTRIBUTOR_TOKEN);
-            
+                    
                     distributorRegistry.register(addon.key("SAMPLER"), SamplerDistributorTemplate::new);
                     distributorRegistry.register(addon.key("POINTS"), PointSetDistributorTemplate::new);
                     distributorRegistry.register(addon.key("PADDED_GRID"), PaddedGridDistributorTemplate::new);
@@ -59,7 +59,7 @@ public class DistributorAddon implements AddonInitializer {
                     distributorRegistry.register(addon.key("XOR"), XorDistributorTemplate::new);
                     distributorRegistry.register(addon.key("YES"), YesDistributorTemplate::new);
                     distributorRegistry.register(addon.key("NO"), NoDistributorTemplate::new);
-            
+                    
                     event.getPack()
                          .applyLoader(Point.class, PointTemplate::new);
                 })

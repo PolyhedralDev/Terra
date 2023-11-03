@@ -74,7 +74,7 @@ public class Scope {
             }
             return id;
         }
-
+        
         public int num(String id) {
             int num = numSize;
             indices.put(check(id), Pair.of(num, ReturnType.NUMBER));
@@ -105,14 +105,14 @@ public class Scope {
                 parent.updateBoolSize(size);
             }
         }
-
+        
         private void updateNumSize(int size) {
             this.numSize = Math.max(numSize, size);
             if(parent != null) {
                 parent.updateNumSize(size);
             }
         }
-
+        
         private void updateStrSize(int size) {
             this.strSize = Math.max(strSize, size);
             if(parent != null) {

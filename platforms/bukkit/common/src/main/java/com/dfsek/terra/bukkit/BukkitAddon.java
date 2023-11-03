@@ -24,10 +24,10 @@ public class BukkitAddon implements BaseAddon {
     @Override
     public void initialize() {
         terraBukkitPlugin.getEventManager()
-                   .getHandler(FunctionalEventHandler.class)
-                   .register(this, ConfigPackPreLoadEvent.class)
-                   .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
-                   .global();
+                         .getHandler(FunctionalEventHandler.class)
+                         .register(this, ConfigPackPreLoadEvent.class)
+                         .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
+                         .global();
         
         terraBukkitPlugin.getEventManager()
                          .getHandler(FunctionalEventHandler.class)

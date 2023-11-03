@@ -56,7 +56,7 @@ import com.dfsek.terra.mod.util.PresetUtil;
 public abstract class ModPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
-
+    
     public abstract MinecraftServer getServer();
     
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
@@ -110,8 +110,11 @@ public abstract class ModPlatform extends AbstractPlatform {
     protected abstract BaseAddon getPlatformAddon();
     
     public abstract Registry<DimensionType> dimensionTypeRegistry();
+    
     public abstract Registry<Biome> biomeRegistry();
+    
     public abstract Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry();
+    
     public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
     
     @Override

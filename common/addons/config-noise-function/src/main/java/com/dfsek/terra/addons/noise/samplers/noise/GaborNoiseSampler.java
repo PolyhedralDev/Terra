@@ -17,11 +17,10 @@ public class GaborNoiseSampler extends NoiseFunction {
     private double a = 0.1;
     private double f0 = 0.625;
     private double kernelRadius = (Math.sqrt(-Math.log(0.05) / Math.PI) / a);
-    private double impulsesPerKernel = 64d;
     private double impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
     private double impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
     private double g = Math.exp(-impulsesPerCell);
-    
+    private double impulsesPerKernel = 64d;
     private double omega0 = Math.PI * 0.25;
     private boolean isotropic = true;
     
@@ -72,8 +71,9 @@ public class GaborNoiseSampler extends NoiseFunction {
     }
     
     private double gabor(double omega_0, double x, double y) {
-        return k * (Math.exp(-Math.PI * (a * a) * (x * x + y * y)) * MathUtil.cos(2 * Math.PI * f0 * (x * MathUtil.cos(omega_0) + y * MathUtil.sin(
-                omega_0))));
+        return k * (Math.exp(-Math.PI * (a * a) * (x * x + y * y)) * MathUtil.cos(2 * Math.PI * f0 * (x * MathUtil.cos(omega_0) +
+                                                                                                      y * MathUtil.sin(
+                                                                                                              omega_0))));
     }
     
     public void setA(double a) {

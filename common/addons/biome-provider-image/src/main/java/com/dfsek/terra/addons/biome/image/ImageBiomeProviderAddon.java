@@ -27,11 +27,9 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 public class ImageBiomeProviderAddon implements AddonInitializer {
     
-    private static final Logger logger = LoggerFactory.getLogger(ImageBiomeProviderAddon.class);
-    
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
-    
+    private static final Logger logger = LoggerFactory.getLogger(ImageBiomeProviderAddon.class);
     @Inject
     private Platform platform;
     
@@ -51,6 +49,8 @@ public class ImageBiomeProviderAddon implements AddonInitializer {
                 })
                 .failThrough();
         if(platform.getTerraConfig().isDebugLog())
-            logger.warn("The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the biome-provider-image-v2 addon for future pack development instead.");
+            logger.warn(
+                    "The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the " +
+                    "biome-provider-image-v2 addon for future pack development instead.");
     }
 }

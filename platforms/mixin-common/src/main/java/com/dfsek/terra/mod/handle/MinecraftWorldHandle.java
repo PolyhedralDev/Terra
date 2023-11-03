@@ -36,7 +36,8 @@ public class MinecraftWorldHandle implements WorldHandle {
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
-            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true).blockState();
+            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true)
+                                                                      .blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             return (BlockState) state;
         } catch(CommandSyntaxException e) {

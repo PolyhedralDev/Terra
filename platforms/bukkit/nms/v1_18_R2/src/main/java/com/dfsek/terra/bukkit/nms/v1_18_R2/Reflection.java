@@ -22,14 +22,14 @@ public class Reflection {
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
     
-
+    
     @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
     
-
+    
     @Proxies(Biome.class)
     public interface BiomeProxy {
         @FieldGetter("biomeCategory")

@@ -50,7 +50,7 @@ public class RegistryTest {
             test.registerChecked(RegistryKey.parse("test:test"), "bazinga2");
             fail("Shouldn't be able to re-register with #registerChecked!");
         } catch(DuplicateEntryException ignore) {
-
+        
         }
     }
     
@@ -66,7 +66,7 @@ public class RegistryTest {
             test.register(RegistryKey.parse("test:test"), "bazinga2");
             fail("Shouldn't be able to re-register in CheckedRegistry!");
         } catch(DuplicateEntryException ignore) {
-
+        
         }
     }
     
@@ -90,7 +90,7 @@ public class RegistryTest {
             test.getByID("test");
             fail("Shouldn't be able to get with ambiguous ID!");
         } catch(IllegalArgumentException ignore) {
-
+        
         }
     }
 }

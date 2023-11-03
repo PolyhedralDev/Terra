@@ -9,7 +9,7 @@ import com.dfsek.terra.mod.data.Codecs;
 
 public final class RegistryUtil {
     private RegistryUtil() {
-
+    
     }
     
     public static void register() {

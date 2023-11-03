@@ -73,7 +73,7 @@ public final class ReflectionUtil {
     public static String typeToString(Type type) {
         return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
     }
-
+    
     public static boolean equals(Type a, Type b) {
         if(a == b) {
             return true;

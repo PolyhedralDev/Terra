@@ -6,15 +6,15 @@
 # wiki for information regarding config pack development.
 
 debug:
-  commands: false
-  log: false
-  profiler: false
-  script: false
+    commands: false
+    log: false
+    profiler: false
+    script: false
 dump-default: true
 biome-search-resolution: 4
 cache:
-  structure: 32
-  sampler: 128
-  biome-provider: 32
+    structure: 32
+    sampler: 128
+    biome-provider: 32
 script:
-  max-recursion: 1000
+    max-recursion: 1000

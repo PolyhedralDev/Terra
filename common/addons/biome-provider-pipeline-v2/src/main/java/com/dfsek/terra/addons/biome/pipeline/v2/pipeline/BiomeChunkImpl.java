@@ -11,10 +11,10 @@ import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
 
 public class BiomeChunkImpl implements BiomeChunk {
     
-    private PipelineBiome[][] biomes;
     private final SeededVector worldOrigin;
     private final int chunkOriginArrayIndex;
     private final int worldCoordinateScale;
+    private PipelineBiome[][] biomes;
     
     public BiomeChunkImpl(SeededVector worldOrigin, PipelineImpl pipeline) {
         
@@ -43,7 +43,8 @@ public class BiomeChunkImpl implements BiomeChunk {
             for(int gridZ = 0; gridZ < gridSize; gridZ++) {
                 int xIndex = gridOrigin + gridX * gridInterval;
                 int zIndex = gridOrigin + gridZ * gridInterval;
-                biomes[xIndex][zIndex] = pipeline.getSource().get(worldOrigin.seed(), xIndexToWorldCoordinate(xIndex), zIndexToWorldCoordinate(zIndex));
+                biomes[xIndex][zIndex] = pipeline.getSource().get(worldOrigin.seed(), xIndexToWorldCoordinate(xIndex),
+                                                                  zIndexToWorldCoordinate(zIndex));
             }
         }
         
@@ -79,21 +80,6 @@ public class BiomeChunkImpl implements BiomeChunk {
         }
     }
     
-    @Override
-    public PipelineBiome get(int xInChunk, int zInChunk) {
-        int xIndex = xInChunk + chunkOriginArrayIndex;
-        int zIndex = zInChunk + chunkOriginArrayIndex;
-        return biomes[xIndex][zIndex];
-    }
-    
-    private int xIndexToWorldCoordinate(int xIndex) {
-        return (worldOrigin.x() + xIndex - chunkOriginArrayIndex) * worldCoordinateScale;
-    }
-    
-    private int zIndexToWorldCoordinate(int zIndex) {
-        return (worldOrigin.z() + zIndex - chunkOriginArrayIndex) * worldCoordinateScale;
-    }
-    
     protected static int initialSizeToArraySize(int expanderCount, int initialSize) {
         int size = initialSize;
         for(int i = 0; i < expanderCount; i++) {
@@ -117,8 +103,8 @@ public class BiomeChunkImpl implements BiomeChunk {
         int gridOrigin = 0;
         int expansionsApplied = 0;
         int gridInterval = calculateGridInterval(totalExpanderCount, expansionsApplied);
-        for (Stage stage : stages) {
-            if (stage instanceof Expander) {
+        for(Stage stage : stages) {
+            if(stage instanceof Expander) {
                 expansionsApplied++;
                 gridInterval = calculateGridInterval(totalExpanderCount, expansionsApplied);
             }
@@ -143,6 +129,21 @@ public class BiomeChunkImpl implements BiomeChunk {
         return 1 << (totalExpansions - expansionsApplied);
     }
     
+    @Override
+    public PipelineBiome get(int xInChunk, int zInChunk) {
+        int xIndex = xInChunk + chunkOriginArrayIndex;
+        int zIndex = zInChunk + chunkOriginArrayIndex;
+        return biomes[xIndex][zIndex];
+    }
+    
+    private int xIndexToWorldCoordinate(int xIndex) {
+        return (worldOrigin.x() + xIndex - chunkOriginArrayIndex) * worldCoordinateScale;
+    }
+    
+    private int zIndexToWorldCoordinate(int zIndex) {
+        return (worldOrigin.z() + zIndex - chunkOriginArrayIndex) * worldCoordinateScale;
+    }
+    
     private SeededVector getOrigin() {
         return worldOrigin;
     }
@@ -160,7 +161,8 @@ public class BiomeChunkImpl implements BiomeChunk {
         private final int zIndex;
         private final PipelineBiome[][] lookupArray;
         
-        private ViewPoint(BiomeChunkImpl chunk, int gridInterval, int gridX, int gridZ, int xIndex, int zIndex, PipelineBiome[][] lookupArray) {
+        private ViewPoint(BiomeChunkImpl chunk, int gridInterval, int gridX, int gridZ, int xIndex, int zIndex,
+                          PipelineBiome[][] lookupArray) {
             this.chunk = chunk;
             this.gridInterval = gridInterval;
             this.gridX = gridX;

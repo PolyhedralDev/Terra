@@ -10,7 +10,7 @@ final class SelfDelegate implements BiomeDelegate {
     public static final SelfDelegate INSTANCE = new SelfDelegate();
     
     private SelfDelegate() {
-
+    
     }
     
     @Override

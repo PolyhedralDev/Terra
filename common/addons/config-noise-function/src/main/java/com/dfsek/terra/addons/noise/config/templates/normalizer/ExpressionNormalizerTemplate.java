@@ -45,15 +45,18 @@ public class ExpressionNormalizerTemplate extends NormalizerTemplate<ExpressionN
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
     
-    public ExpressionNormalizerTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers, Map<String, FunctionTemplate> globalFunctions) {
+    public ExpressionNormalizerTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers,
+                                        Map<String, FunctionTemplate> globalFunctions) {
         this.globalSamplers = globalSamplers;
         this.globalFunctions = globalFunctions;
     }
     
     @Override
     public NoiseSampler get() {
-        var mergedFunctions = new HashMap<>(globalFunctions); mergedFunctions.putAll(functions);
-        var mergedSamplers = new HashMap<>(globalSamplers); mergedSamplers.putAll(samplers);
+        var mergedFunctions = new HashMap<>(globalFunctions);
+        mergedFunctions.putAll(functions);
+        var mergedSamplers = new HashMap<>(globalSamplers);
+        mergedSamplers.putAll(samplers);
         try {
             return new ExpressionNormalizer(function, convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars);
         } catch(ParseException e) {

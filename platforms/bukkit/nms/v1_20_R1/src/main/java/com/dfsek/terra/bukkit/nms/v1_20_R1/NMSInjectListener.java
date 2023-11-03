@@ -37,7 +37,7 @@ public class NMSInjectListener implements Listener {
             
             ChunkGenerator vanilla = serverWorld.getChunkSource().getGenerator();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), craftWorld.getSeed());
-    
+            
             serverWorld.getChunkSource().chunkMap.generator = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());
             
             LOGGER.info("Successfully injected into world.");

@@ -158,7 +158,8 @@ public final class MinecraftUtil {
         
         builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getTemperature()));
         
-        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), ((BiomeAccessor) ((Object) vanilla)).getWeather().downfall()));
+        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(),
+                                                    ((BiomeAccessor) ((Object) vanilla)).getWeather().downfall()));
         
         builder.temperatureModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(),
                                                                ((BiomeAccessor) ((Object) vanilla)).getWeather().temperatureModifier()));

@@ -51,27 +51,35 @@ public class PresetUtil {
         PRESETS.add(generatorID);
         
         RegistryEntry<DimensionType> registryEntry = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
-        RegistryEntry.Reference<MultiNoiseBiomeSourceParameterList> reference = multiNoiseBiomeSourceParameterLists.getEntry(MultiNoiseBiomeSourceParameterLists.NETHER).orElseThrow();
-        RegistryEntry<ChunkGeneratorSettings> registryEntry2 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER).orElseThrow();
+        RegistryEntry.Reference<MultiNoiseBiomeSourceParameterList> reference = multiNoiseBiomeSourceParameterLists.getEntry(
+                MultiNoiseBiomeSourceParameterLists.NETHER).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> registryEntry2 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER)
+                                                                                             .orElseThrow();
         
         RegistryEntry<DimensionType> registryEntry3 = dimensionTypeRegistry.getEntry(DimensionTypes.THE_END).orElseThrow();
-        RegistryEntry<ChunkGeneratorSettings> registryEntry4 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.END).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> registryEntry4 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.END)
+                                                                                             .orElseThrow();
         
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
         
         DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
-        DimensionOptions netherDimensionOptions = new DimensionOptions(registryEntry, new NoiseChunkGenerator(MultiNoiseBiomeSource.create(reference), registryEntry2));
-        DimensionOptions endDimensionOptions = new DimensionOptions(registryEntry3, new NoiseChunkGenerator(TheEndBiomeSource.createVanilla(platform.biomeRegistry().getReadOnlyWrapper()), registryEntry4));
+        DimensionOptions netherDimensionOptions = new DimensionOptions(registryEntry,
+                                                                       new NoiseChunkGenerator(MultiNoiseBiomeSource.create(reference),
+                                                                                               registryEntry2));
+        DimensionOptions endDimensionOptions = new DimensionOptions(registryEntry3, new NoiseChunkGenerator(
+                TheEndBiomeSource.createVanilla(platform.biomeRegistry().getReadOnlyWrapper()), registryEntry4));
         
         WorldPreset preset = createPreset(dimensionOptions, netherDimensionOptions, endDimensionOptions);
         LOGGER.info("Created world type \"{}\"", generatorID);
         return Pair.of(generatorID, preset);
     }
     
-    private static WorldPreset createPreset(DimensionOptions dimensionOptions, DimensionOptions netherDimensionOptions, DimensionOptions endDimensionOptions) {
+    private static WorldPreset createPreset(DimensionOptions dimensionOptions, DimensionOptions netherDimensionOptions,
+                                            DimensionOptions endDimensionOptions) {
         return new WorldPreset(
-                Map.of(DimensionOptions.OVERWORLD, dimensionOptions, DimensionOptions.NETHER, netherDimensionOptions, DimensionOptions.END, endDimensionOptions)
+                Map.of(DimensionOptions.OVERWORLD, dimensionOptions, DimensionOptions.NETHER, netherDimensionOptions, DimensionOptions.END,
+                       endDimensionOptions)
         );
     }
     

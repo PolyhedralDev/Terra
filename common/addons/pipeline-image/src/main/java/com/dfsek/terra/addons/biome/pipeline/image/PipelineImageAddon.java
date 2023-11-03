@@ -28,11 +28,13 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public class PipelineImageAddon implements AddonInitializer {
     
-    public static final TypeKey<Supplier<ObjectTemplate<ColorConverter<PipelineBiome>>>> PIPELINE_BIOME_COLOR_CONVERTER_REGISTRY_KEY = new TypeKey<>() {
-    };
+    public static final TypeKey<Supplier<ObjectTemplate<ColorConverter<PipelineBiome>>>> PIPELINE_BIOME_COLOR_CONVERTER_REGISTRY_KEY =
+            new TypeKey<>() {
+            };
     
-    public static final TypeKey<Supplier<ObjectTemplate<ColorMapping<PipelineBiome>>>> PIPELINE_BIOME_COLOR_MAPPING_REGISTRY_KEY = new TypeKey<>() {
-    };
+    public static final TypeKey<Supplier<ObjectTemplate<ColorMapping<PipelineBiome>>>> PIPELINE_BIOME_COLOR_MAPPING_REGISTRY_KEY =
+            new TypeKey<>() {
+            };
     
     @Inject
     private Platform platform;
@@ -48,19 +50,24 @@ public class PipelineImageAddon implements AddonInitializer {
                 .register(addon, ConfigPackPreLoadEvent.class)
                 .priority(500)
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorConverter<PipelineBiome>>>> biomeColorConverterRegistry = event.getPack().getOrCreateRegistry(
-                            PIPELINE_BIOME_COLOR_CONVERTER_REGISTRY_KEY);
+                    CheckedRegistry<Supplier<ObjectTemplate<ColorConverter<PipelineBiome>>>> biomeColorConverterRegistry =
+                            event.getPack().getOrCreateRegistry(
+                                    PIPELINE_BIOME_COLOR_CONVERTER_REGISTRY_KEY);
                     biomeColorConverterRegistry.register(addon.key("EXACT"), ExactPipelineBiomeColorConverterTemplate::new);
                     biomeColorConverterRegistry.register(addon.key("CLOSEST"), ClosestPipelineBiomeColorConverterTemplate::new);
                 })
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<Source>>> sourceRegistry = event.getPack().getOrCreateRegistry(BiomePipelineAddon.SOURCE_REGISTRY_KEY);
+                    CheckedRegistry<Supplier<ObjectTemplate<Source>>> sourceRegistry = event.getPack().getOrCreateRegistry(
+                            BiomePipelineAddon.SOURCE_REGISTRY_KEY);
                     sourceRegistry.register(addon.key("IMAGE"), ImageSourceTemplate::new);
                 })
                 .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorMapping<PipelineBiome>>>> biomeColorMappingRegistry = event.getPack().getOrCreateRegistry(
-                            PIPELINE_BIOME_COLOR_MAPPING_REGISTRY_KEY);
-                    biomeColorMappingRegistry.register(addon.key("USE_BIOME_COLORS"), () -> () -> new BiomeDefinedColorMapping<>(event.getPack().getRegistry(Biome.class), DelegatedPipelineBiome::new));
+                    CheckedRegistry<Supplier<ObjectTemplate<ColorMapping<PipelineBiome>>>> biomeColorMappingRegistry =
+                            event.getPack().getOrCreateRegistry(
+                                    PIPELINE_BIOME_COLOR_MAPPING_REGISTRY_KEY);
+                    biomeColorMappingRegistry.register(addon.key("USE_BIOME_COLORS"),
+                                                       () -> () -> new BiomeDefinedColorMapping<>(event.getPack().getRegistry(Biome.class),
+                                                                                                  DelegatedPipelineBiome::new));
                     biomeColorMappingRegistry.register(addon.key("MAP"), DefinedPipelineBiomeColorMappingTemplate::new);
                 })
                 .failThrough();

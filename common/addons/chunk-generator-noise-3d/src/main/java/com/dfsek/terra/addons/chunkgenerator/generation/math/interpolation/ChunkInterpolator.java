@@ -145,7 +145,7 @@ public class ChunkInterpolator {
      */
     public double getNoise(double x, double y, double z) {
         return interpGrid[reRange(((int) x) / 4, 3)][(Math.max(Math.min(((int) y), max), min) - min) / 4][reRange(((int) z) / 4,
-                                                                                                                          3)].trilerp(
+                                                                                                                  3)].trilerp(
                 (x % 4) / 4, (y % 4) / 4, (z % 4) / 4);
     }
     

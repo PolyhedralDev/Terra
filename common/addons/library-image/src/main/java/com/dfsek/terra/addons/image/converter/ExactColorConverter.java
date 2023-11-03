@@ -16,7 +16,7 @@ public class ExactColorConverter<T> implements ColorConverter<T> {
     private final boolean ignoreAlpha;
     
     public ExactColorConverter(Map<Integer, T> map, T fallback, boolean ignoreAlpha) {
-        if (ignoreAlpha) {
+        if(ignoreAlpha) {
             map = MapUtil.mapKeys(map, ColorUtil::zeroAlpha);
         }
         this.map = map;
@@ -26,7 +26,7 @@ public class ExactColorConverter<T> implements ColorConverter<T> {
     
     @Override
     public T apply(int color) {
-        if (ignoreAlpha) {
+        if(ignoreAlpha) {
             color = ColorUtil.zeroAlpha(color);
         }
         T lookup = map.get(color);

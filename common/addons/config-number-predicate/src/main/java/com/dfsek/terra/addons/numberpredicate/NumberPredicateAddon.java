@@ -16,6 +16,7 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
+
 public class NumberPredicateAddon implements AddonInitializer {
     
     @Inject

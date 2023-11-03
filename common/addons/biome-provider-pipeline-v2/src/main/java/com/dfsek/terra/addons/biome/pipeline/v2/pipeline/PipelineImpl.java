@@ -36,18 +36,18 @@ public class PipelineImpl implements Pipeline {
         int chunkOriginArrayIndex;
         int chunkSize;
         int initialSize = 1;
-        while (true) {
+        while(true) {
             arraySize = BiomeChunkImpl.initialSizeToArraySize(expanderCount, initialSize);
             chunkOriginArrayIndex = BiomeChunkImpl.calculateChunkOriginArrayIndex(expanderCount, stages);
             chunkSize = BiomeChunkImpl.calculateChunkSize(arraySize, chunkOriginArrayIndex, expanderCount);
-            if (chunkSize > 1 && arraySize >= idealChunkArraySize) break;
+            if(chunkSize > 1 && arraySize >= idealChunkArraySize) break;
             initialSize++;
         }
         
         this.arraySize = arraySize;
         this.chunkOriginArrayIndex = chunkOriginArrayIndex;
         this.chunkSize = chunkSize;
-    
+        
         logger.debug("Initialized a new biome pipeline:");
         logger.debug("Array size: {} (Target: {})", arraySize, idealChunkArraySize);
         logger.debug("Internal array origin: {}", chunkOriginArrayIndex);

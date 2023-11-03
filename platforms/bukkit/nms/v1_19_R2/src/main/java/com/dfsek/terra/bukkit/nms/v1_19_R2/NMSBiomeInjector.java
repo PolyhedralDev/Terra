@@ -15,7 +15,7 @@ import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
 
 public class NMSBiomeInjector {
-
+    
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
         return registry.getOptional(identifier)
                        .flatMap(registry::getResourceKey)
@@ -41,11 +41,11 @@ public class NMSBiomeInjector {
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
         
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-        
+               
                .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-        
+               
                .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-        
+               
                .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
         
         if(vanillaBiomeProperties.getFoliageColor() == null) {

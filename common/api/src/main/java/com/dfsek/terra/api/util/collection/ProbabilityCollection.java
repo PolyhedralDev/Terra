@@ -57,13 +57,15 @@ public class ProbabilityCollection<E> implements Collection<E> {
     @SuppressWarnings("unchecked")
     public E get(NoiseSampler n, Vector3Int vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()), array.length)];
+        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+                                                       array.length)];
     }
     
     @SuppressWarnings("unchecked")
     public E get(NoiseSampler n, Vector3 vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()), array.length)];
+        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+                                                       array.length)];
     }
     
     @SuppressWarnings("unchecked")

@@ -15,7 +15,7 @@ public abstract class NoiseFunction implements NoiseSampler {
     protected static final int PRIME_X = 501125321;
     protected static final int PRIME_Y = 1136930381;
     protected static final int PRIME_Z = 1720413743;
-
+    
     protected double frequency = 0.02d;
     protected long salt;
     

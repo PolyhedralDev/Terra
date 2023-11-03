@@ -61,7 +61,8 @@ public final class BiomeUtil {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
             
             net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome,
-                                                                                       ForgeRegistries.BIOMES.getDelegateOrThrow(vanilla.getKey().orElseThrow())
+                                                                                       ForgeRegistries.BIOMES.getDelegateOrThrow(
+                                                                                                              vanilla.getKey().orElseThrow())
                                                                                                              .value(),
                                                                                        vanillaBiomeProperties);
             
@@ -82,7 +83,8 @@ public final class BiomeUtil {
                             Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
                                                        villagerMap.getOrDefault(vanilla.getKey().orElseThrow(), VillagerType.PLAINS)));
             
-            MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(identifier);
+            MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(
+                    identifier);
         }
     }
 }

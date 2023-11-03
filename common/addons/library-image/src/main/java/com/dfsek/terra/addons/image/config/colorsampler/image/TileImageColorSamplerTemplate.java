@@ -5,7 +5,7 @@ import com.dfsek.terra.addons.image.colorsampler.image.TileImageColorSampler;
 
 
 public class TileImageColorSamplerTemplate extends ImageColorSamplerTemplate {
-
+    
     @Override
     public ColorSampler get() {
         return new TileImageColorSampler(image, alignment);

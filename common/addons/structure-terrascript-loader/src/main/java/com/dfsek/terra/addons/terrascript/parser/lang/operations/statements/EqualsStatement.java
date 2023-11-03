@@ -40,7 +40,7 @@ public class EqualsStatement extends BinaryOperation<Object, Boolean> {
         if(leftValue instanceof Number l && rightValue instanceof Number r) {
             return Math.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }
-
+        
         return leftValue.equals(rightValue);
     }
 }

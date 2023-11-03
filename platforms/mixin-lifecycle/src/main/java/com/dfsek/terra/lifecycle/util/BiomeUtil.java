@@ -65,9 +65,9 @@ public final class BiomeUtil {
                                                                                          .orElseThrow());
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(Registry.registerReference(registry,
-                                                                                                  MinecraftUtil.registerKey(identifier)
-                                                                                                               .getValue(),
-                                                                                                  minecraftBiome));
+                                                                                                       MinecraftUtil.registerKey(identifier)
+                                                                                                                    .getValue(),
+                                                                                                       minecraftBiome));
             }
             
             Map<RegistryKey<net.minecraft.world.biome.Biome>, VillagerType> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();

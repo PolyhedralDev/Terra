@@ -63,9 +63,9 @@ public class TerraBiomeSource extends BiomeSource {
     @Override
     public RegistryEntry<Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return ((ProtoPlatformBiome) pack
-                                 .getBiomeProvider()
-                                 .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
-                                 .getPlatformBiome()).getDelegate();
+                .getBiomeProvider()
+                .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
+                .getPlatformBiome()).getDelegate();
     }
     
     public BiomeProvider getProvider() {

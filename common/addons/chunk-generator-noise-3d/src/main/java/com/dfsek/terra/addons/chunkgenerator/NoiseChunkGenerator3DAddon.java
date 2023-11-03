@@ -47,7 +47,7 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                     
                     event.getPack().applyLoader(SlantHolder.CalculationMethod.class,
                                                 (type, o, loader, depthTracker) -> SlantHolder.CalculationMethod.valueOf((String) o));
-
+                    
                     NoiseChunkGeneratorPackConfigTemplate config = event.loadTemplate(new NoiseChunkGeneratorPackConfigTemplate());
                     event.getPack().getContext().put(config);
                     
@@ -68,10 +68,13 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                 .register(addon, ConfigurationLoadEvent.class)
                 .then(event -> {
                     if(event.is(Biome.class)) {
-                        NoiseChunkGeneratorPackConfigTemplate config = event.getPack().getContext().get(NoiseChunkGeneratorPackConfigTemplate.class);
+                        NoiseChunkGeneratorPackConfigTemplate config = event.getPack().getContext().get(
+                                NoiseChunkGeneratorPackConfigTemplate.class);
                         
                         event.getLoadedObject(Biome.class).getContext().put(paletteInfoPropertyKey,
-                                                                            event.load(new BiomePaletteTemplate(platform, config.getSlantCalculationMethod())).get());
+                                                                            event.load(new BiomePaletteTemplate(platform,
+                                                                                                                config.getSlantCalculationMethod()))
+                                                                                 .get());
                         event.getLoadedObject(Biome.class).getContext().put(noisePropertiesPropertyKey,
                                                                             event.load(new BiomeNoiseConfigTemplate()).get());
                     }

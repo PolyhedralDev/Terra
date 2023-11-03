@@ -16,6 +16,6 @@ public class TranslateColorSamplerTemplate extends MutateColorSamplerTemplate {
     
     @Override
     public ColorSampler get() {
-        return new TranslateColorSampler(sampler, translateX,   translateZ);
+        return new TranslateColorSampler(sampler, translateX, translateZ);
     }
 }

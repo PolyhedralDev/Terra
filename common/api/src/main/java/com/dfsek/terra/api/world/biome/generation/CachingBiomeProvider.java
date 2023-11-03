@@ -30,12 +30,12 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
                 .initialCapacity(98304)
                 .maximumSize(98304) // 1 full chunk (high res)
                 .build(vec -> delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed));
-
+        
         this.baseCache = Caffeine
                 .newBuilder()
                 .maximumSize(256) // 1 full chunk (high res)
                 .build(vec -> delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed));
-
+        
     }
     
     @Override
@@ -80,8 +80,8 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
             return 31 * code + ((int) (seed ^ (seed >>> 32)));
         }
     }
-
-
+    
+    
     private record SeededVector2(int x, int z, long seed) {
         @Override
         public boolean equals(Object obj) {

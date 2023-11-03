@@ -80,7 +80,7 @@ public final class Either<L, R> {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Either<?, ?> that)) return false;
-
+        
         return (this.leftPresent && that.leftPresent && Objects.equals(this.left, that.left))
                || (!this.leftPresent && !that.leftPresent && Objects.equals(this.right, that.right));
     }

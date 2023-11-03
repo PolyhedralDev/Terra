@@ -52,7 +52,7 @@ public class BukkitProtoWorld implements ProtoWorld {
             BlockData bukkitData = BukkitAdapter.adapt(data);
             delegate.setBlockData(x, y, z, bukkitData);
             if(physics) {
-                if (BukkitUtils.isLiquid(bukkitData)) {
+                if(BukkitUtils.isLiquid(bukkitData)) {
                     delegate.scheduleFluidUpdate(x, y, z);
                 } else {
                     delegate.scheduleBlockUpdate(x, y, z);

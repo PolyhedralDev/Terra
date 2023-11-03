@@ -4,11 +4,9 @@ import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 
 
 public abstract class SlantHolderImpl implements SlantHolder {
-    private final SlantHolder.CalculationMethod calculationMethod;
-    
-    private final int slantDepth;
-    
     protected final boolean floorToThreshold;
+    private final SlantHolder.CalculationMethod calculationMethod;
+    private final int slantDepth;
     
     protected SlantHolderImpl(int slantDepth, CalculationMethod calculationMethod) {
         this.floorToThreshold = calculationMethod.floorToThreshold();

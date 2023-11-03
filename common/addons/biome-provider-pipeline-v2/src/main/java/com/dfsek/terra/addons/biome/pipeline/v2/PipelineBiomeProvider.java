@@ -38,7 +38,7 @@ public class PipelineBiomeProvider implements BiomeProvider {
         this.biomeChunkCache = Caffeine.newBuilder()
                                        .maximumSize(64)
                                        .build(pipeline::generateChunk);
-    
+        
         Set<PipelineBiome> biomeSet = new HashSet<>();
         pipeline.getSource().getBiomes().forEach(biomeSet::add);
         Iterable<PipelineBiome> result = biomeSet;
@@ -49,7 +49,7 @@ public class PipelineBiomeProvider implements BiomeProvider {
         Iterable<PipelineBiome> finalResult = result;
         result.forEach(pipelineBiome -> {
             if(pipelineBiome.isPlaceholder()) {
-            
+                
                 StringBuilder biomeList = new StringBuilder("\n");
                 StreamSupport.stream(finalResult.spliterator(), false)
                              .sorted(Comparator.comparing(StringIdentifiable::getID))
@@ -60,7 +60,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
                                      .append(delegate.getClass().getCanonicalName())
                                      .append('\n'));
                 throw new IllegalArgumentException("Biome Pipeline leaks placeholder biome \"" + pipelineBiome.getID() +
-                                                   "\". Ensure there is a stage to guarantee replacement of the placeholder biome. Biomes: " +
+                                                   "\". Ensure there is a stage to guarantee replacement of the placeholder biome. " +
+                                                   "Biomes: " +
                                                    biomeList);
             }
             this.biomes.add(pipelineBiome.getBiome());
@@ -73,7 +74,7 @@ public class PipelineBiomeProvider implements BiomeProvider {
     }
     
     public Biome getBiome(int x, int z, long seed) {
-    
+        
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
         

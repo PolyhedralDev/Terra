@@ -76,7 +76,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
             int wid = baseTag.getShort("Width");
             int len = baseTag.getShort("Length");
             int hei = baseTag.getShort("Height");
-    
+            
             CompoundTag metadata = baseTag.getCompoundTag("Metadata");
             
             Vector3Int offset = switch(ver) {

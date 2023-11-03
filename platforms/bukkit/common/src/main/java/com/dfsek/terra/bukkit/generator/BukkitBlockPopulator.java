@@ -13,8 +13,8 @@ import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 
 
 public class BukkitBlockPopulator extends BlockPopulator {
-    private ConfigPack pack;
     private final BlockState air;
+    private ConfigPack pack;
     
     public BukkitBlockPopulator(ConfigPack pack, BlockState air) {
         this.pack = pack;
@@ -28,6 +28,7 @@ public class BukkitBlockPopulator extends BlockPopulator {
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ,
                          @NotNull LimitedRegion limitedRegion) {
-        pack.getStages().forEach(generationStage -> generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider())));
+        pack.getStages().forEach(
+                generationStage -> generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider())));
     }
 }

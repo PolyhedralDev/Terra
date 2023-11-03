@@ -24,15 +24,6 @@ public class PaletteHolder {
         this.offset = offset;
     }
     
-    public Palette getPalette(int y) {
-        int index = y + offset;
-        return index >= 0
-               ? index < palettes.length
-                 ? palettes[index]
-                 : palettes[palettes.length - 1]
-               : palettes[0];
-    }
-    
     public static PaletteHolder of(List<Map<Palette, Integer>> palettes) {
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<Palette, Integer> layer : palettes) {
@@ -43,6 +34,16 @@ public class PaletteHolder {
         return builder.build();
     }
     
+    public Palette getPalette(int y) {
+        int index = y + offset;
+        return index >= 0
+               ? index < palettes.length
+                 ? palettes[index]
+                 : palettes[palettes.length - 1]
+               : palettes[0];
+    }
+    
+
     private static class PaletteHolderBuilder {
         private final TreeMap<Integer, Palette> paletteMap = new TreeMap<>();
         

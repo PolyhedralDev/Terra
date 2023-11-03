@@ -28,18 +28,14 @@ public class CubicSpline {
         }
     }
     
-    public double apply(double in) {
-        return calculate(in, fromValues, toValues, gradients);
-    }
-    
     public static double calculate(double in, double[] fromValues, double[] toValues, double[] gradients) {
         int pointIdx = floorBinarySearch(in, fromValues) - 1;
         
         int pointIdxLast = fromValues.length - 1;
         
-        if (pointIdx < 0) { // If to left of first point return linear function intersecting said point using point's gradient
+        if(pointIdx < 0) { // If to left of first point return linear function intersecting said point using point's gradient
             return gradients[0] * (in - fromValues[0]) + toValues[0];
-        } else if (pointIdx == pointIdxLast) { // Do same if to right of last point
+        } else if(pointIdx == pointIdxLast) { // Do same if to right of last point
             return gradients[pointIdxLast] * (in - fromValues[pointIdxLast]) + toValues[pointIdxLast];
         } else {
             double fromLeft = fromValues[pointIdx];
@@ -48,7 +44,7 @@ public class CubicSpline {
             double toLeft = toValues[pointIdx];
             double toRight = toValues[pointIdx + 1];
             
-            double gradientLeft =  gradients[pointIdx];
+            double gradientLeft = gradients[pointIdx];
             double gradientRight = gradients[pointIdx + 1];
             
             double fromDelta = fromRight - fromLeft;
@@ -56,7 +52,8 @@ public class CubicSpline {
             
             double t = (in - fromLeft) / fromDelta;
             
-            return lerp(t, toLeft, toRight) + t * (1.0F - t) * lerp(t, gradientLeft * fromDelta - toDelta, -gradientRight * fromDelta + toDelta);
+            return lerp(t, toLeft, toRight) + t * (1.0F - t) * lerp(t, gradientLeft * fromDelta - toDelta,
+                                                                    -gradientRight * fromDelta + toDelta);
         }
     }
     
@@ -64,10 +61,10 @@ public class CubicSpline {
         int left = 0;
         int right = values.length;
         int idx = right - left;
-        while (idx > 0) {
+        while(idx > 0) {
             int halfDelta = idx / 2;
             int mid = left + halfDelta;
-            if (targetValue < values[mid]) {
+            if(targetValue < values[mid]) {
                 idx = halfDelta;
             } else {
                 left = mid + 1;
@@ -76,6 +73,11 @@ public class CubicSpline {
         }
         return left;
     }
+    
+    public double apply(double in) {
+        return calculate(in, fromValues, toValues, gradients);
+    }
+    
 
     public record Point(double from, double to, double gradient) implements Comparable<Point> {
         

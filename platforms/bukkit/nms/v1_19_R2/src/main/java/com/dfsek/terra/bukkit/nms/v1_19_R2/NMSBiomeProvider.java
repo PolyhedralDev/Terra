@@ -21,8 +21,8 @@ public class NMSBiomeProvider extends BiomeSource {
         super(delegate.stream()
                       .map(biome -> RegistryFetcher.biomeRegistry()
                                                    .getHolderOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                                                                                                                .get(NMSBiomeInfo.class)
-                                                                                                                .biomeKey())));
+                                                                                                                     .get(NMSBiomeInfo.class)
+                                                                                                                     .biomeKey())));
         this.delegate = delegate;
         this.seed = seed;
     }

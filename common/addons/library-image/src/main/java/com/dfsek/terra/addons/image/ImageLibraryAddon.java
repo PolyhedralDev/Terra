@@ -84,6 +84,6 @@ public class ImageLibraryAddon implements AddonInitializer {
                     colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
                     colorSamplerRegistry.register(addon.key("TRANSLATE"), TranslateColorSamplerTemplate::new);
-        });
+                });
     }
 }

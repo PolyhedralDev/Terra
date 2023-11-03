@@ -33,28 +33,28 @@ public class NMSBiomeInjector {
                .generationSettings(vanilla.getGenerationSettings())
                .temperature(vanilla.getBaseTemperature())
                .downfall(vanilla.getDownfall());
-
+        
         
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-
+        
         effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
-
+        
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-
+        
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-
+               
                .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-
+               
                .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-
+               
                .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
-
+        
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
         } else {
             effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
         }
-
+        
         if(vanillaBiomeProperties.getGrassColor() == null) {
             vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
         } else {
@@ -66,7 +66,7 @@ public class NMSBiomeInjector {
         vanilla.getAmbientMood().ifPresent(effects::ambientMoodSound);
         vanilla.getBackgroundMusic().ifPresent(effects::backgroundMusic);
         vanilla.getAmbientParticle().ifPresent(effects::ambientParticle);
-
+        
         builder.specialEffects(effects.build());
         
         return builder.build(); // build()

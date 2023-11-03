@@ -88,7 +88,8 @@ fun Project.configureDistribution() {
                 val jar = getJarTask().archiveFileName.get()
                 resources.computeIfAbsent(
                     if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "addons/bootstrap"
-                    else "addons") { ArrayList() }.add(jar)
+                    else "addons"
+                                         ) { ArrayList() }.add(jar)
             }
             
             val options = DumperOptions()
@@ -109,7 +110,7 @@ fun Project.configureDistribution() {
             FileWriter(manifest).use {
                 yaml.dump(resources, it)
             }
-
+            
         }
     }
     

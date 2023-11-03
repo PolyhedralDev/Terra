@@ -80,11 +80,11 @@ public class BiomePipelineProvider implements BiomeProvider {
     public Biome getBiome(int x, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
-
-
+        
+        
         x /= resolution;
         z /= resolution;
-
+        
         int fdX = Math.floorDiv(x, pipeline.getSize());
         int fdZ = Math.floorDiv(z, pipeline.getSize());
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
@@ -119,7 +119,7 @@ public class BiomePipelineProvider implements BiomeProvider {
             }
             return false;
         }
-
+        
         @Override
         public int hashCode() {
             int code = x;

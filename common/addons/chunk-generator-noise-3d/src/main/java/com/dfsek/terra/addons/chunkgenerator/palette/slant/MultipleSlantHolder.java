@@ -23,7 +23,8 @@ public class MultipleSlantHolder extends SlantHolderImpl {
     
     MultipleSlantHolder(List<SlantHolder.Layer> slant, int slantDepth, CalculationMethod calculationMethod) {
         super(slantDepth, calculationMethod);
-        NavigableMap<Double, PaletteHolder> layers = new TreeMap<>(slant.stream().collect(Collectors.toMap(SlantHolder.Layer::threshold, SlantHolder.Layer::palette)));
+        NavigableMap<Double, PaletteHolder> layers = new TreeMap<>(
+                slant.stream().collect(Collectors.toMap(SlantHolder.Layer::threshold, SlantHolder.Layer::palette)));
         Stream<Double> thresholds = layers.keySet().stream();
         double slantThreshold = floorToThreshold ?
                                 thresholds.min(Double::compare).orElseThrow() :

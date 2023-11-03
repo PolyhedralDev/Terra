@@ -41,15 +41,18 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionFuncti
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
     
-    public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers, Map<String, FunctionTemplate> globalFunctions) {
+    public ExpressionFunctionTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers,
+                                      Map<String, FunctionTemplate> globalFunctions) {
         this.globalSamplers = globalSamplers;
         this.globalFunctions = globalFunctions;
     }
     
     @Override
     public NoiseSampler get() {
-        var mergedFunctions = new HashMap<>(globalFunctions); mergedFunctions.putAll(functions);
-        var mergedSamplers = new HashMap<>(globalSamplers); mergedSamplers.putAll(samplers);
+        var mergedFunctions = new HashMap<>(globalFunctions);
+        mergedFunctions.putAll(functions);
+        var mergedSamplers = new HashMap<>(globalSamplers);
+        mergedSamplers.putAll(samplers);
         try {
             return new ExpressionFunction(convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars);
         } catch(ParseException e) {

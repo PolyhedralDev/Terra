@@ -28,7 +28,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                 .register(addon, CommandRegistrationEvent.class)
                 .then(event -> {
                     CommandManager<CommandSender> manager = event.getCommandManager();
-            
+                    
                     manager.command(
                                    manager.commandBuilder("addons", ArgumentDescription.of("List installed Terra addons"))
                                           .permission("terra.addons")
@@ -51,9 +51,9 @@ public class AddonsCommandAddon implements AddonInitializer {
                                           .handler(context -> {
                                               BaseAddon addon = context.get("addon");
                                               StringBuilder addonInfo = new StringBuilder("Addon ").append(addon.getID()).append('\n');
-                        
+                                              
                                               addonInfo.append("Version: ").append(addon.getVersion().getFormatted()).append('\n');
-                        
+                                              
                                               addonInfo.append("Dependencies:\n");
                                               addon.getDependencies().forEach((id, versions) -> addonInfo
                                                       .append(" - ")

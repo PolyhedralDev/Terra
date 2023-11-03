@@ -12,19 +12,19 @@ public class ExactPipelineBiomeColorConverterTemplate extends ExactColorConverte
     
     @Value("match")
     private ColorMapping<PipelineBiome> match;
-
+    
     @Value("else")
     private PipelineBiome fallback;
     
     @Value("ignore-alpha")
     @Default
     private boolean ignoreAlpha = true;
-
+    
     @Override
     protected ColorMapping<PipelineBiome> getMapping() {
         return match;
     }
-
+    
     @Override
     protected PipelineBiome getFallback() {
         return fallback;

@@ -18,7 +18,8 @@ public class VanillaOreUtils {
         }
     }
     
-    public static boolean shouldPlace(MaterialSet replaceable, BlockType type, Double exposed, Random random, WritableWorld world, int x, int y, int z) {
+    public static boolean shouldPlace(MaterialSet replaceable, BlockType type, Double exposed, Random random, WritableWorld world, int x,
+                                      int y, int z) {
         if(!replaceable.contains(type)) {
             return false;
         } else if(shouldNotDiscard(random, exposed)) {

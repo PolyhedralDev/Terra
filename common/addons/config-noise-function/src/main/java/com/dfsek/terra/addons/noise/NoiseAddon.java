@@ -95,7 +95,7 @@ public class NoiseAddon implements AddonInitializer {
                        .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                        .applyLoader(FunctionTemplate.class, FunctionTemplate::new)
                        .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("CLAMP"), ClampNormalizerTemplate::new);
@@ -103,53 +103,54 @@ public class NoiseAddon implements AddonInitializer {
                   noiseRegistry.register(addon.key("SCALE"), ScaleNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("POSTERIZATION"), PosterizationNormalizerTemplate::new);
                   noiseRegistry.register(addon.key("CUBIC_SPLINE"), CubicSplineNormalizerTemplate::new);
-    
+                  
                   noiseRegistry.register(addon.key("IMAGE"), ImageSamplerTemplate::new);
-    
+                  
                   noiseRegistry.register(addon.key("DOMAIN_WARP"), DomainWarpTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("FBM"), BrownianMotionTemplate::new);
                   noiseRegistry.register(addon.key("PING_PONG"), PingPongTemplate::new);
                   noiseRegistry.register(addon.key("RIDGED"), RidgedFractalTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("OPEN_SIMPLEX_2"), () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
                   noiseRegistry.register(addon.key("OPEN_SIMPLEX_2S"), () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
                   noiseRegistry.register(addon.key("PERLIN"), () -> new SimpleNoiseTemplate(PerlinSampler::new));
                   noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate(SimplexSampler::new));
                   noiseRegistry.register(addon.key("GABOR"), GaborNoiseTemplate::new);
-            
-            
+                  
+                  
                   noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate(ValueSampler::new));
                   noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
-            
+                  
                   noiseRegistry.register(addon.key("CELLULAR"), CellularNoiseTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
                   noiseRegistry.register(addon.key("GAUSSIAN"), () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
                   
                   noiseRegistry.register(addon.key("DISTANCE"), DistanceSamplerTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("CONSTANT"), ConstantNoiseTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("KERNEL"), KernelTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("LINEAR_HEIGHTMAP"), LinearHeightmapSamplerTemplate::new);
                   noiseRegistry.register(addon.key("TRANSLATE"), TranslateSamplerTemplate::new);
-            
+                  
                   noiseRegistry.register(addon.key("ADD"), () -> new BinaryArithmeticTemplate<>(AdditionSampler::new));
                   noiseRegistry.register(addon.key("SUB"), () -> new BinaryArithmeticTemplate<>(SubtractionSampler::new));
                   noiseRegistry.register(addon.key("MUL"), () -> new BinaryArithmeticTemplate<>(MultiplicationSampler::new));
                   noiseRegistry.register(addon.key("DIV"), () -> new BinaryArithmeticTemplate<>(DivisionSampler::new));
                   noiseRegistry.register(addon.key("MAX"), () -> new BinaryArithmeticTemplate<>(MaxSampler::new));
                   noiseRegistry.register(addon.key("MIN"), () -> new BinaryArithmeticTemplate<>(MinSampler::new));
-            
-            
+                  
+                  
                   Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                   Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
                   noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
-                  noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"), () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions));
-            
+                  noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"),
+                                         () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions));
+                  
                   NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                   packSamplers.putAll(template.getSamplers());
                   packFunctions.putAll(template.getFunctions());

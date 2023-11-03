@@ -40,7 +40,7 @@ public class StitchedImage implements Image {
     }
     
     private int getColumn(int x) {
-        for(int i = columnOffsets.length-1; i > 0; i--) {
+        for(int i = columnOffsets.length - 1; i > 0; i--) {
             if(x >= columnOffsets[i])
                 return i;
         }
@@ -48,7 +48,7 @@ public class StitchedImage implements Image {
     }
     
     private int getRow(int y) {
-        for(int i = rowOffsets.length-1; i > 0; i--) {
+        for(int i = rowOffsets.length - 1; i > 0; i--) {
             if(y >= rowOffsets[i])
                 return i;
         }
@@ -59,7 +59,7 @@ public class StitchedImage implements Image {
     public int getRGB(int x, int y) {
         int row = getRow(y);
         int column = getColumn(x);
-        return images[row][column].getRGB(x-columnOffsets[column], y-rowOffsets[row]);
+        return images[row][column].getRGB(x - columnOffsets[column], y - rowOffsets[row]);
     }
     
     @Override

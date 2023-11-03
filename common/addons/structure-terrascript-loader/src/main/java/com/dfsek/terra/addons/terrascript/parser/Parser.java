@@ -338,9 +338,9 @@ public class Parser {
         
         Returnable<?> value = parseExpression(tokens, true, scopeBuilder);
         ParserUtil.checkReturnType(value, returnType);
-
+        
         String id = identifier.getContent();
-
+        
         return switch(value.returnType()) {
             case NUMBER -> new NumAssignmentNode((Returnable<Number>) value, identifier.getPosition(), scopeBuilder.num(id));
             case STRING -> new StrAssignmentNode((Returnable<String>) value, identifier.getPosition(), scopeBuilder.str(id));

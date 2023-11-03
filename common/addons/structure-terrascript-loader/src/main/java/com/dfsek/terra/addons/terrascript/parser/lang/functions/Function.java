@@ -19,12 +19,12 @@ public interface Function<T> extends Returnable<T> {
         public ReturnType returnType() {
             return null;
         }
-
+        
         @Override
         public Object apply(ImplementationArguments implementationArguments, Scope scope) {
             return null;
         }
-
+        
         @Override
         public Position getPosition() {
             return null;

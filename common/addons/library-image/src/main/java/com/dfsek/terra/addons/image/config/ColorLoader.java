@@ -28,28 +28,24 @@ public class ColorLoader implements TypeLoader<ColorString> {
             this.argb = parse(string);
         }
         
-        public int getColor() {
-            return argb;
-        }
-        
         private static int parse(String string) throws IllegalArgumentException {
-            if (string.length() == 0)
+            if(string.length() == 0)
                 throw new IllegalArgumentException("Empty string cannot be parsed as a valid color");
             
             String[] split = string.split(",");
             
-            if (split.length == 1)
+            if(split.length == 1)
                 return parseHex(string);
-            else if (split.length == 3)
+            else if(split.length == 3)
                 return parseChannels("255", split[0], split[1], split[2]);
-            else if (split.length == 4)
+            else if(split.length == 4)
                 return parseChannels(split[0], split[1], split[2], split[3]);
             else
                 throw new IllegalArgumentException("Invalid channels provided, required format RED,GREEN,BLUE or ALPHA,RED,GREEN,BLUE");
         }
         
         private static int parseHex(String hex) throws IllegalArgumentException {
-            if (hex.startsWith("#"))
+            if(hex.startsWith("#"))
                 hex = hex.substring(1);
             
             int alpha = 255;
@@ -71,7 +67,7 @@ public class ColorLoader implements TypeLoader<ColorString> {
                 blue = Integer.parseInt(hex.substring(4, 6), 16);
                 
                 return ColorUtil.argbValidated(alpha, red, green, blue);
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 throw new IllegalArgumentException("Failed to parse hex color", e);
             }
         }
@@ -84,9 +80,13 @@ public class ColorLoader implements TypeLoader<ColorString> {
                 int b = Integer.decode(blue);
                 
                 return ColorUtil.argbValidated(a, r, g, b);
-            } catch (NumberFormatException e) {
+            } catch(NumberFormatException e) {
                 throw new IllegalArgumentException("Invalid channel value", e);
             }
+        }
+        
+        public int getColor() {
+            return argb;
         }
     }
 }

@@ -167,6 +167,7 @@ public class VanillaOre implements Structure {
         
         return blockCount > 0;
     }
+    
     public BlockState getMaterial(BlockType replace) {
         return materials.getOrDefault(replace, material);
     }

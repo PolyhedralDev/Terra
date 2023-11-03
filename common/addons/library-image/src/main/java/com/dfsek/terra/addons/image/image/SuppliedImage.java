@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.image.image;
 
 import java.util.function.Supplier;
 
+
 public class SuppliedImage implements Image {
     
     private final Supplier<Image> imageSupplier;

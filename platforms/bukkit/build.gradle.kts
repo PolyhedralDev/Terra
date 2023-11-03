@@ -33,7 +33,7 @@ tasks {
         exclude("com/google/j2objc/**")
         exclude("javax/**")
     }
-    
+
     runServer {
         minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)

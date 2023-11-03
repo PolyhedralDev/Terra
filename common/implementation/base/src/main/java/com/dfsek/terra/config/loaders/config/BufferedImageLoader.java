@@ -33,6 +33,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.properties.Properties;
 
+
 /*
  * @deprecated Use the Image and ImageLoader class provided by the library-image addon instead. This is subject to removal in v7.
  */
@@ -45,7 +46,7 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     public BufferedImageLoader(Loader files, ConfigPack pack) {
         this.files = files;
         this.pack = pack;
-        if (!pack.getContext().has(ImageCache.class))
+        if(!pack.getContext().has(ImageCache.class))
             pack.getContext().put(new ImageCache(new ConcurrentHashMap<>()));
     }
     

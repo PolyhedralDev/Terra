@@ -68,7 +68,8 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
                         
                         if(!(metaValue instanceof List)) {
                             throw new LoadException(
-                                    "Meta list / set injection (via <<) must point to a list. '" + meta + "' points to type " + metaValue.getClass().getCanonicalName(),
+                                    "Meta list / set injection (via <<) must point to a list. '" + meta + "' points to type " +
+                                    metaValue.getClass().getCanonicalName(),
                                     depthTracker);
                         }
                         

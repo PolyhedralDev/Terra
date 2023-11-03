@@ -69,6 +69,7 @@ public class DistanceTransformNoiseSamplerTemplate implements ObjectTemplate<Noi
     
     @Override
     public NoiseSampler get() {
-        return new DistanceTransform.Noise(new DistanceTransform(image, channel, threshold, clampToEdge, costFunction, invertThreshold), normalization);
+        return new DistanceTransform.Noise(new DistanceTransform(image, channel, threshold, clampToEdge, costFunction, invertThreshold),
+                                           normalization);
     }
 }

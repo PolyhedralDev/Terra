@@ -34,9 +34,9 @@ public final class Codecs {
     
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
             .create(instance -> instance.group(
-                                               CONFIG_PACK.fieldOf("pack")
-                                                          .stable()
-                                                          .forGetter(TerraBiomeSource::getPack))
+                                                CONFIG_PACK.fieldOf("pack")
+                                                           .stable()
+                                                           .forGetter(TerraBiomeSource::getPack))
                                         .apply(instance, instance.stable(TerraBiomeSource::new)));
     
     public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder

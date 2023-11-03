@@ -7,11 +7,6 @@
 
 package com.dfsek.terra.api;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.PluginConfig;
@@ -22,6 +17,11 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 
 
 /**

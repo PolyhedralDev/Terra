@@ -30,7 +30,8 @@ public class BiomeDefinedColorMapping<T> implements ColorMapping<T> {
             if(!output.containsKey(color)) {
                 output.put(color, biome);
             } else {
-                throw new IllegalArgumentException(String.format("Biome %s has same color as %s: %x", biome.getID(), output.get(color).getID(), color));
+                throw new IllegalArgumentException(
+                        String.format("Biome %s has same color as %s: %x", biome.getID(), output.get(color).getID(), color));
             }
         }));
         return output.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> converter.apply(e.getValue())));

@@ -27,26 +27,22 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {
     private final Platform platform;
-    
+    private final SlantHolder.CalculationMethod slantCalculationMethod;
     @Value("slant")
     @Default
     @Description("The slant palettes to use in this biome.")
     private @Meta List<SlantHolder.@Meta Layer> slantLayers = Collections.emptyList();
-    
     @Value("slant-depth")
     @Default
     @Description("The maximum depth at which to apply a slant palette.")
     private @Meta int slantDepth = Integer.MAX_VALUE;
-    
     @Value("palette")
     @Description("The palettes to use in this biome.")
     private @Meta List<@Meta Map<@Meta Palette, @Meta Integer>> palettes;
-    
     @Value("ocean.level")
     @Description("Sea level in this biome. Defaults to zero")
     @Default
     private @Meta int seaLevel = 0;
-    
     @Value("ocean.palette")
     @Description("The palette to use for the ocean in this biome. Defaults to a blank palette.")
     @Default
@@ -56,12 +52,9 @@ public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {
             return platform.getWorldHandle().air();
         }
     };
-    
     @Value("carving.update-palette")
     @Default
     private @Meta boolean updatePalette = false;
-    
-    private final SlantHolder.CalculationMethod slantCalculationMethod;
     
     public BiomePaletteTemplate(Platform platform, SlantHolder.CalculationMethod slantCalculationMethod) {
         this.platform = platform;

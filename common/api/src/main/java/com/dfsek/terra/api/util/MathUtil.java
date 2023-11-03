@@ -14,11 +14,14 @@ import java.util.List;
  * Utility class for mathematical functions.
  */
 public final class MathUtil {
+    /**
+     * Epsilon for fuzzy floating point comparisons.
+     */
+    public static final double EPSILON = 1.0E-5;
     private static final int SIN_BITS, SIN_MASK, SIN_COUNT;
     private static final double radFull, radToIndex;
     private static final double degFull, degToIndex;
     private static final double[] sin, cos;
-    
     static {
         SIN_BITS = 12;
         SIN_MASK = ~(-1 << SIN_BITS);
@@ -32,22 +35,17 @@ public final class MathUtil {
         sin = new double[SIN_COUNT];
         cos = new double[SIN_COUNT];
         
-        for (int i = 0; i < SIN_COUNT; i++) {
+        for(int i = 0; i < SIN_COUNT; i++) {
             sin[i] = Math.sin((i + 0.5f) / SIN_COUNT * radFull);
             cos[i] = Math.cos((i + 0.5f) / SIN_COUNT * radFull);
         }
         
         // Four cardinal directions (credits: Nate)
-        for (int i = 0; i < 360; i += 90) {
+        for(int i = 0; i < 360; i += 90) {
             sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
             cos[(int) (i * degToIndex) & SIN_MASK] = Math.cos(i * Math.PI / 180.0);
         }
     }
-    
-    /**
-     * Epsilon for fuzzy floating point comparisons.
-     */
-    public static final double EPSILON = 1.0E-5;
     
     public static double sin(double rad) {
         return sin[(int) (rad * radToIndex) & SIN_MASK];
@@ -114,7 +112,7 @@ public final class MathUtil {
     }
     
     public static int normalizeIndex(double val, int size) {
-        return Math.max(Math.min((int)Math.floor(((val + 1D) / 2D) * size), size - 1), 0);
+        return Math.max(Math.min((int) Math.floor(((val + 1D) / 2D) * size), size - 1), 0);
     }
     
     public static long squash(int first, int last) {

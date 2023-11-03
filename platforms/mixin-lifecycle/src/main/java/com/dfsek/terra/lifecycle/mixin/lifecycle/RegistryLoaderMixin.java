@@ -52,7 +52,8 @@ public class RegistryLoaderMixin {
                     MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
                     MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance,
                                                                                                      RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
-                    MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance, RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
+                    MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance,
+                                                                                                                              RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
                     
                     LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists);
                     LifecycleUtil.initialize(biomes, worldPresets);

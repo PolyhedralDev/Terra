@@ -122,14 +122,14 @@ public final class AwfulForgeHacks {
                                                           .getLocation()
                                                           .toURI()
                                                           .getPath();
-                                
+                                     
                                      cl.addURL(new URL("jar:file:" + pathToJar + "!/"));
                                      Class newClassLoad = Class.forName(name, true, cl);
                                      omegaCL.loadOrDefine(newClassLoad, AbstractPlatform.class.getClassLoader());
                                  } catch(ClassNotFoundException | URISyntaxException | IOException ex) {
                                      throw new RuntimeException(ex);
                                  }
-                            
+                                 
                              }
                          });
                 } catch(IOException e) {

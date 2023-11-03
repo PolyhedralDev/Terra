@@ -91,7 +91,7 @@ public class AwfulBukkitHacks {
                                                                                                                         ": " +
                                                                                                                         vanilla.tags()
                                                                                                                                .toList());
-
+                                                                                                                
                                                                                                                 vanilla.tags()
                                                                                                                        .forEach(
                                                                                                                                tag -> collect

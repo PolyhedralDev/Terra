@@ -29,7 +29,7 @@ public class LessThanOrEqualsStatement extends BinaryOperation<Number, Boolean> 
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) <= right.applyDouble(implementationArguments, scope);
     }
-
+    
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.BOOLEAN;

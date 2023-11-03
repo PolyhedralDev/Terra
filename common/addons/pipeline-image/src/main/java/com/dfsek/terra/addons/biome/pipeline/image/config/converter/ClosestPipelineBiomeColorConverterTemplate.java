@@ -8,7 +8,7 @@ import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;
 
 
 public class ClosestPipelineBiomeColorConverterTemplate extends ClosestColorConverterTemplate<PipelineBiome> {
-
+    
     @Value("match")
     private ColorMapping<PipelineBiome> match;
     

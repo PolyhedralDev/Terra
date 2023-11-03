@@ -17,8 +17,8 @@ repositories {
 dependencies {
     //TODO Allow pulling from Versions.kt
     implementation("com.github.johnrengelman", "shadow", "8.1.1")
-    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin","1.5.6")
-    
+    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "1.5.6")
+
     implementation("org.ow2.asm", "asm", "9.5")
     implementation("org.ow2.asm", "asm-tree", "9.5")
     implementation("com.dfsek.tectonic", "common", "4.2.0")

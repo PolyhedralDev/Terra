@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 
 public class MapUtil {
-
-    private MapUtil() {}
+    
+    private MapUtil() { }
     
     /**
      * Utility method for applying transformations on a map's keys.
@@ -20,6 +20,6 @@ public class MapUtil {
                 .collect(Collectors.toMap(
                         e -> mappingFunction.apply(e.getKey()),
                         Entry::getValue
-                ));
+                                         ));
     }
 }

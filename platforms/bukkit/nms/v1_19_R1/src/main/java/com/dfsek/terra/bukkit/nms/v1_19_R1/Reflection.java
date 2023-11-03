@@ -30,6 +30,7 @@ public class Reflection {
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
     
+    
     @Proxies(StructureManager.class)
     public interface StructureManagerProxy {
         @FieldGetter("level")

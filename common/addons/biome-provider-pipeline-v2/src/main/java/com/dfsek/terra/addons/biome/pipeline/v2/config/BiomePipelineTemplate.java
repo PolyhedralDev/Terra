@@ -33,24 +33,20 @@ public class BiomePipelineTemplate implements ObjectTemplate<BiomeProvider> {
                  Larger values are quadratically faster, but produce lower quality results.
                  For example, a value of 3 would sample every 3 blocks.""")
     protected @Meta int resolution = 1;
-    
-    @Value("pipeline.source")
-    @Description("The Biome Source to use for initial population of biomes.")
-    private @Meta Source source;
-    
-    @Value("pipeline.stages")
-    @Description("A list of pipeline stages to apply to the result of #source")
-    private @Meta List<@Meta Stage> stages;
-    
     @Value("blend.sampler")
     @Default
     @Description("A sampler to use for blending the edges of biomes via domain warping.")
     protected @Meta NoiseSampler blendSampler = NoiseSampler.zero();
-    
     @Value("blend.amplitude")
     @Default
     @Description("The amplitude at which to perform blending.")
     protected @Meta double blendAmplitude = 0d;
+    @Value("pipeline.source")
+    @Description("The Biome Source to use for initial population of biomes.")
+    private @Meta Source source;
+    @Value("pipeline.stages")
+    @Description("A list of pipeline stages to apply to the result of #source")
+    private @Meta List<@Meta Stage> stages;
     
     @Override
     public BiomeProvider get() {

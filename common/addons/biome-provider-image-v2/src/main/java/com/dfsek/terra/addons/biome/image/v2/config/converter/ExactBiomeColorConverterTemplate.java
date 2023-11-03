@@ -12,19 +12,19 @@ public class ExactBiomeColorConverterTemplate extends ExactColorConverterTemplat
     
     @Value("match")
     private ColorMapping<Biome> match;
-
+    
     @Value("else")
     private Biome fallback;
     
     @Value("ignore-alpha")
     @Default
     private boolean ignoreAlpha = true;
-
+    
     @Override
     protected ColorMapping<Biome> getMapping() {
         return match;
     }
-
+    
     @Override
     protected Biome getFallback() {
         return fallback;

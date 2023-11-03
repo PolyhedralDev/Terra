@@ -18,7 +18,7 @@ public class DoublePredicateLoader implements TypeLoader<DoublePredicate> {
     @Override
     public DoublePredicate load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader,
                                 DepthTracker depthTracker) throws LoadException {
-        if (o instanceof String expressionString) {
+        if(o instanceof String expressionString) {
             Scope scope = new Scope();
             scope.addInvocationVariable("value");
             try {

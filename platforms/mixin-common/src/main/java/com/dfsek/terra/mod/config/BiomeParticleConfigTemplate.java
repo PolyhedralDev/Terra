@@ -26,7 +26,9 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
         }
         
         try {
-            return new BiomeParticleConfig(ParticleEffectArgumentType.readParameters(new StringReader(particle), Registries.PARTICLE_TYPE.getReadOnlyWrapper()), probability);
+            return new BiomeParticleConfig(
+                    ParticleEffectArgumentType.readParameters(new StringReader(particle), Registries.PARTICLE_TYPE.getReadOnlyWrapper()),
+                    probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);
         }

@@ -7,8 +7,6 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public interface PipelineBiome extends StringIdentifiable {
-    Biome getBiome();
-    
     static PipelineBiome placeholder(String id) {
         return new PlaceholderPipelineBiome(id);
     }
@@ -20,6 +18,8 @@ public interface PipelineBiome extends StringIdentifiable {
     static PipelineBiome self() {
         return SelfPipelineBiome.INSTANCE;
     }
+    
+    Biome getBiome();
     
     Set<String> getTags();
     

@@ -76,7 +76,7 @@ public final class TagUtil {
                                                                                      ": " +
                                                                                      vanilla.streamTags()
                                                                                             .toList());
-                                                                    
+                                                                             
                                                                              vanilla.streamTags()
                                                                                     .forEach(
                                                                                             tag -> collect

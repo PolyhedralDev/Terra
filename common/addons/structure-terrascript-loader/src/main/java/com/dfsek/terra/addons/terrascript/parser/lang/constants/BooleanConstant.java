@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class BooleanConstant extends ConstantExpression<Boolean> {
     private final boolean constant;
-
+    
     public BooleanConstant(Boolean constant, Position position) {
         super(constant, position);
         this.constant = constant;

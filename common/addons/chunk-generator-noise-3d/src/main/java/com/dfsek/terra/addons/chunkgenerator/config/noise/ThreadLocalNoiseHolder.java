@@ -12,7 +12,7 @@ public class ThreadLocalNoiseHolder {
         if(holder.init && holder.y == y && holder.z == z && holder.x == x && holder.seed == seed) {
             return holder.noise;
         }
-
+        
         double noise = sampler.noise(seed, x, y, z);
         holder.noise = noise;
         holder.x = x;

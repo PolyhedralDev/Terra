@@ -180,7 +180,7 @@ public abstract class AbstractPlatform implements Platform {
         bootstrapAddonLoader.loadAddons(addonsFolder, bootstrapAddonClassLoader)
                             .forEach(bootstrapAddon -> {
                                 platformInjector.inject(bootstrapAddon);
-            
+                                
                                 bootstrapAddon.loadAddons(addonsFolder, bootstrapAddonClassLoader)
                                               .forEach(addonList::add);
                             });

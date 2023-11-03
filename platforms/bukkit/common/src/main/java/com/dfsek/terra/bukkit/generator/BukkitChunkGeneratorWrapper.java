@@ -40,11 +40,11 @@ import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(BukkitChunkGeneratorWrapper.class);
     private final BlockState air;
+    private final BukkitBlockPopulator blockPopulator;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    private final BukkitBlockPopulator blockPopulator;
     
-
+    
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
@@ -87,7 +87,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public boolean shouldGenerateMobs() {
         return true;
     }
-
+    
     @Override
     public boolean shouldGenerateStructures() {
         return true;
@@ -107,7 +107,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         return delegate;
     }
     
-
+    
     private record SeededVector(int x, int z, WorldProperties worldProperties) {
         @Override
         public boolean equals(Object obj) {
@@ -116,7 +116,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
             }
             return false;
         }
-
+        
         @Override
         public int hashCode() {
             int code = x;

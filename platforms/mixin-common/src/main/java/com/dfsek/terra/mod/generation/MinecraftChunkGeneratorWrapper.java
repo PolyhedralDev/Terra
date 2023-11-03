@@ -129,7 +129,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     
     private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
                        PreLoadCompatibilityOptions compatibilityOptions) {
-        StructureWeightSampler structureWeightSampler = StructureWeightSampler.createStructureWeightSampler(structureAccessor, chunk.getPos());
+        StructureWeightSampler structureWeightSampler = StructureWeightSampler.createStructureWeightSampler(structureAccessor,
+                                                                                                            chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
         int xi = chunk.getPos().x << 4;

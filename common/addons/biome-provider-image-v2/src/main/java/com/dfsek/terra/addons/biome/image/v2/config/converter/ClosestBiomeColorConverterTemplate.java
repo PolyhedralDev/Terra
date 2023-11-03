@@ -8,7 +8,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class ClosestBiomeColorConverterTemplate extends ClosestColorConverterTemplate<Biome> {
-
+    
     @Value("match")
     private ColorMapping<Biome> match;
     

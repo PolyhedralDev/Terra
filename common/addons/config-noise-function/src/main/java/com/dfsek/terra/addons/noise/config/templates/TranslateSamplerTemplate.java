@@ -27,6 +27,6 @@ public class TranslateSamplerTemplate extends SamplerTemplate<TranslateSampler> 
     
     @Override
     public NoiseSampler get() {
-        return new TranslateSampler(sampler, x, y ,z);
+        return new TranslateSampler(sampler, x, y, z);
     }
 }
