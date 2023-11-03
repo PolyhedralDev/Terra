@@ -14,9 +14,6 @@ import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class OreAddon implements AddonInitializer {
     @Inject

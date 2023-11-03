@@ -21,6 +21,7 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+import com.tcoded.folialib.FoliaLib;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,7 +43,6 @@ import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
-import com.tcoded.folialib.FoliaLib;
 
 
 public class TerraBukkitPlugin extends JavaPlugin {

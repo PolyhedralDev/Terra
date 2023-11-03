@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.ore.utils;
 
+import java.util.Random;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.world.WritableWorld;
-
-import java.util.Random;
 
 
 public class VanillaOreUtils {

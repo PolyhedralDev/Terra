@@ -7,19 +7,9 @@
 
 package com.dfsek.terra.addons.ore;
 
-import com.dfsek.tectonic.api.config.template.annotations.Default;
-import com.dfsek.tectonic.api.config.template.annotations.Description;
-import com.dfsek.tectonic.api.config.template.annotations.Final;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.collection.MaterialSet;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })

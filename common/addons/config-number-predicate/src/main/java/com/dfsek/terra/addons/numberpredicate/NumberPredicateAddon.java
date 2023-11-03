@@ -7,12 +7,7 @@
 
 package com.dfsek.terra.addons.numberpredicate;
 
-import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.DoublePredicate;
-import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;

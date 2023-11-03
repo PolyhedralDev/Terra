@@ -1,7 +1,6 @@
 package com.dfsek.terra.addons.image.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
-
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;

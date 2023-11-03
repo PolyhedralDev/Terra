@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.ore;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 
-import com.dfsek.terra.addons.ore.ores.VanillaOre;
 import com.dfsek.terra.addons.ore.ores.VanillaScatteredOre;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;

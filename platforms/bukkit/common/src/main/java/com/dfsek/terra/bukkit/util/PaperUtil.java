@@ -17,11 +17,9 @@
 
 package com.dfsek.terra.bukkit.util;
 
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-
 import io.papermc.lib.PaperLib;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import static io.papermc.lib.PaperLib.suggestPaper;
 

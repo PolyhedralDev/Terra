@@ -2,6 +2,8 @@ package com.dfsek.terra.addon.feature.locator.slant;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -10,8 +12,6 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import java.util.function.Supplier;
 
 
 public class SlantLocatorAddon implements AddonInitializer {

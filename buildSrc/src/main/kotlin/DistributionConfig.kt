@@ -9,7 +9,6 @@ import java.nio.file.StandardCopyOption
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
-import org.gradle.kotlin.dsl.TaskContainerScope
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
