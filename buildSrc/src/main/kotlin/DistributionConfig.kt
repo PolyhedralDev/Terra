@@ -5,7 +5,9 @@ import java.net.URI
 import java.net.URL
 import java.nio.file.FileSystems
 import java.nio.file.Files
+import java.nio.file.ProviderNotFoundException
 import java.nio.file.StandardCopyOption
+import java.nio.file.spi.FileSystemProvider
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
@@ -46,7 +48,14 @@ fun Project.configureDistribution() {
             // https://github.com/johnrengelman/shadow/issues/111
             val dest = URI.create("jar:" + tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI())
             
-            FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
+            val preExistingProvider = try {
+                FileSystems.getFileSystem(dest)
+            } catch (e: Exception) {
+                null
+            };
+            val provider = if (preExistingProvider == null) { preExistingProvider } else { FileSystems.newFileSystem(dest, mapOf("create" to "false"), null)
+            };
+            provider?.use { fs ->
                 forSubProjects(":common:addons") {
                     val jar = getJarTask()
                     

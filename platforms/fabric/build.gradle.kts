@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
@@ -61,6 +63,6 @@ tasks {
     remapJar {
         injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
-        archiveFileName.set("${rootProject.name.capitalize()}-fabric-${project.version}.jar")
+        archiveFileName.set("${rootProject.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}-fabric-${project.version}.jar")
     }
 }

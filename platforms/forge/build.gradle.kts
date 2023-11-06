@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
@@ -73,6 +75,6 @@ tasks {
 
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
-        archiveFileName.set("${rootProject.name.capitalize()}-forge-${project.version}.jar")
+        archiveFileName.set("${rootProject.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}-forge-${project.version}.jar")
     }
 }
