@@ -12,10 +12,6 @@ import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
@@ -23,6 +19,10 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {

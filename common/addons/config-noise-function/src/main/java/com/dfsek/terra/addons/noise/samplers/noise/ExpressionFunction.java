@@ -13,9 +13,9 @@ import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
 
-import java.util.Map;
-
 import com.dfsek.terra.addons.noise.paralithic.noise.SeedContext;
+
+import java.util.Map;
 
 
 /**

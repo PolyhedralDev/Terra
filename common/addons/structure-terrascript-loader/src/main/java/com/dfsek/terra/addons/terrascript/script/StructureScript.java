@@ -7,11 +7,36 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.Random;
+
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
-import com.dfsek.terra.addons.terrascript.script.builders.*;
+import com.dfsek.terra.addons.terrascript.script.builders.BinaryNumberFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.BiomeFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.BlockFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.CheckBlockFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.EntityFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.GetMarkFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.LootFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.PullFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.RandomFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.RecursionsFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.SetMarkFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.StateFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.StructureFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.UnaryBooleanFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.UnaryNumberFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.UnaryStringFunctionBuilder;
+import com.dfsek.terra.addons.terrascript.script.builders.ZeroArgFunctionBuilder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.Keyed;
@@ -22,15 +47,6 @@ import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.util.Random;
 
 
 public class StructureScript implements Structure, Keyed<StructureScript> {

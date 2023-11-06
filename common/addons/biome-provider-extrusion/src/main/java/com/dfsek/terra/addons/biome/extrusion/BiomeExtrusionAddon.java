@@ -2,8 +2,6 @@ package com.dfsek.terra.addons.biome.extrusion;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.function.Supplier;
-
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.api.ReplaceableBiome;
 import com.dfsek.terra.addons.biome.extrusion.config.BiomeExtrusionTemplate;
@@ -22,6 +20,8 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import java.util.function.Supplier;
 
 
 public class BiomeExtrusionAddon implements AddonInitializer {

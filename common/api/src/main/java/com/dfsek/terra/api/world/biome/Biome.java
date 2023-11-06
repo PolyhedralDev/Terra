@@ -8,10 +8,10 @@
 package com.dfsek.terra.api.world.biome;
 
 
-import java.util.Set;
-
 import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
+
+import java.util.Set;
 
 
 /**

@@ -17,10 +17,10 @@ public class GaborNoiseSampler extends NoiseFunction {
     private double a = 0.1;
     private double f0 = 0.625;
     private double kernelRadius = (Math.sqrt(-Math.log(0.05) / Math.PI) / a);
-    private double impulsesPerKernel = 64d;
     private double impulseDensity = (impulsesPerKernel / (Math.PI * kernelRadius * kernelRadius));
     private double impulsesPerCell = impulseDensity * kernelRadius * kernelRadius;
     private double g = Math.exp(-impulsesPerCell);
+    private double impulsesPerKernel = 64d;
     private double omega0 = Math.PI * 0.25;
     private boolean isotropic = true;
     

@@ -78,7 +78,7 @@ public class CubicSpline {
         return calculate(in, fromValues, toValues, gradients);
     }
     
-
+    
     public record Point(double from, double to, double gradient) implements Comparable<Point> {
         
         @Override

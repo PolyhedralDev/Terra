@@ -4,14 +4,15 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.registry.Registry;
+import com.dfsek.terra.api.tectonic.ShortcutLoader;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.tectonic.ShortcutLoader;
 
 
 public class ShortcutHolder<T> implements TypeLoader<T> {

@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -17,9 +20,6 @@ import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class StateFunction implements Function<Void> {

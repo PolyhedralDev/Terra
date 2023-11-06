@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.biome.pipeline.api.delegate;
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 final class EphemeralBiomeDelegate implements BiomeDelegate {

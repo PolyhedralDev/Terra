@@ -23,6 +23,11 @@ import com.dfsek.tectonic.api.depth.EntryLevel;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
+
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -31,10 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {

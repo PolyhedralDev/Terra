@@ -43,7 +43,7 @@ public class PaletteHolder {
                : palettes[0];
     }
     
-
+    
     private static class PaletteHolderBuilder {
         private final TreeMap<Integer, Palette> paletteMap = new TreeMap<>();
         

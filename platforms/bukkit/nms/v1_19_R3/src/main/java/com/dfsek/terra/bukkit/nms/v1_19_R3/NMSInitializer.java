@@ -1,9 +1,9 @@
 package com.dfsek.terra.bukkit.nms.v1_19_R3;
 
-import org.bukkit.Bukkit;
-
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.nms.Initializer;
+
+import org.bukkit.Bukkit;
 
 
 public class NMSInitializer implements Initializer {
