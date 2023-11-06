@@ -63,21 +63,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         
         
         try {
-            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-                                                                                          CommandExecutionCoordinator.simpleCoordinator(),
-                                                                                          BukkitAdapter::adapt,
-                                                                                          BukkitAdapter::adapt);
-            if(commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-                commandManager.registerBrigadier();
-                final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-                if(brigManager != null) {
-                    brigManager.setNativeNumberSuggestions(false);
-                }
-            }
-            
-            if(commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-                commandManager.registerAsynchronousCompletions();
-            }
+            PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
             
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
             
@@ -96,6 +82,26 @@ public class TerraBukkitPlugin extends JavaPlugin {
         PaperUtil.checkPaper(this);
         
         Initializer.init(platform);
+    }
+    
+    @NotNull
+    private PaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
+        PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
+                                                                                      CommandExecutionCoordinator.simpleCoordinator(),
+                                                                                      BukkitAdapter::adapt,
+                                                                                      BukkitAdapter::adapt);
+        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            commandManager.registerBrigadier();
+            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+            if(brigManager != null) {
+                brigManager.setNativeNumberSuggestions(false);
+            }
+        }
+        
+        if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            commandManager.registerAsynchronousCompletions();
+        }
+        return commandManager;
     }
     
     public PlatformImpl getPlatform() {
@@ -153,7 +159,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                getFoliaLib().getImpl().runLaterAsync(runnable, 200L);
+                foliaLib.getImpl().runLaterAsync(runnable, 200L);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
