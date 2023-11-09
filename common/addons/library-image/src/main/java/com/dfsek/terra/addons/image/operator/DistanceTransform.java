@@ -75,7 +75,7 @@ public class DistanceTransform {
         }
 
         if(clampToMaxEdgeDistance) {
-            // Find largest value on the edge of the image
+            // Find the largest value on the edge of the image
             double max = Double.NEGATIVE_INFINITY;
             for(int x = 0; x < image.getWidth(); x++) {
                 max = Math.max(max, distances[x][0]);
@@ -128,7 +128,7 @@ public class DistanceTransform {
         z[1] = Integer.MAX_VALUE;
         for(int q = 1; q <= f.length - 1; q++) {
             double fqPlusQ2 = (f[q] + Math.pow(q, 2));
-            double twoQ = 2*q;
+            double twoQ = 2 * q;
             double s = (fqPlusQ2 - (f[v[k]] + Math.pow(v[k], 2))) / (twoQ - 2 * v[k]);
             while(s <= z[k]) {
                 k--;

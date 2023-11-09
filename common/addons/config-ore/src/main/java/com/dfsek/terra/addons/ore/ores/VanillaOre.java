@@ -24,15 +24,15 @@ import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
 
 
 public class VanillaOre implements Structure {
-    
+
     protected final BlockState material;
-    
+
     protected final double size;
     protected final MaterialSet replaceable;
     protected final boolean applyGravity;
     protected final double exposed;
     protected final Map<BlockType, BlockState> materials;
-    
+
     public VanillaOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity,
                       double exposed, Map<BlockType, BlockState> materials) {
         this.material = material;
@@ -42,25 +42,25 @@ public class VanillaOre implements Structure {
         this.exposed = exposed;
         this.materials = materials;
     }
-    
+
     @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         float randomRadian = random.nextFloat() * (float) Math.PI;
         double eighthSize = size / 8.0F;
-        
+
         // Place points to form a line segment
         double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eighthSize;
         double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eighthSize;
-        
+
         double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eighthSize;
         double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eighthSize;
-        
+
         double startY = location.getY() + random.nextInt(3) - 2;
         double endY = location.getY() + random.nextInt(3) - 2;
-        
+
         int sizeInt = (int) size;
         double[] points = new double[sizeInt * 4];
-        
+
         // Compute initial point positions and radius
         for(int i = 0; i < sizeInt; ++i) {
             float t = (float) i / (float) sizeInt;
@@ -75,7 +75,7 @@ public class VanillaOre implements Structure {
             points[i * 4 + 2] = zt;
             points[i * 4 + 3] = radius;
         }
-        
+
         // Compare every point to every other point
         for(int a = 0; a < sizeInt - 1; ++a) {
             double radiusA = points[a * 4 + 3];
@@ -87,7 +87,7 @@ public class VanillaOre implements Structure {
                         double dyt = points[a * 4 + 1] - points[b * 4 + 1];
                         double dzt = points[a * 4 + 2] - points[b * 4 + 2];
                         double dRadius = radiusA - radiusB;
-                        
+
                         // If the radius difference is greater than the distance between the two points
                         if(dRadius * dRadius > dxt * dxt + dyt * dyt + dzt * dzt) {
                             // Set smaller of two radii to -1
@@ -101,18 +101,18 @@ public class VanillaOre implements Structure {
                 }
             }
         }
-        
+
         int outset = (int) Math.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
         int x = (int) (location.getX() - Math.ceil(eighthSize) - outset);
         int y = location.getY() - 2 - outset;
         int z = (int) (location.getZ() - Math.ceil(eighthSize) - outset);
-        
+
         int horizontalSize = (int) (2 * (Math.ceil(eighthSize) + outset));
         int verticalSize = 2 * (2 + outset);
-        
+
         int blockCount = 0;
         BitSet visited = new BitSet(horizontalSize * verticalSize * horizontalSize);
-        
+
         // Generate a sphere at each point
         for(int i = 0; i < sizeInt; ++i) {
             double radius = points[i * 4 + 3];
@@ -120,16 +120,16 @@ public class VanillaOre implements Structure {
                 double xt = points[i * 4];
                 double yt = points[i * 4 + 1];
                 double zt = points[i * 4 + 2];
-                
+
                 int xLowerBound = (int) Math.max(Math.floor(xt - radius), x);
                 int xUpperBound = (int) Math.max(Math.floor(xt + radius), xLowerBound);
-                
+
                 int yLowerBound = (int) Math.max(Math.floor(yt - radius), y);
                 int yUpperBound = (int) Math.max(Math.floor(yt + radius), yLowerBound);
-                
+
                 int zLowerBound = (int) Math.max(Math.floor(zt - radius), z);
                 int zUpperBound = (int) Math.max(Math.floor(zt + radius), zLowerBound);
-                
+
                 // Iterate over coordinates within bounds
                 for(int xi = xLowerBound; xi <= xUpperBound; ++xi) {
                     double dx = ((double) xi + 0.5 - xt) / radius;
@@ -139,12 +139,12 @@ public class VanillaOre implements Structure {
                             if(dx * dx + dy * dy < 1.0) {
                                 for(int zi = zLowerBound; zi <= zUpperBound; ++zi) {
                                     double dz = ((double) zi + 0.5 - zt) / radius;
-                                    
+
                                     // If position is inside the sphere
                                     if(dx * dx + dy * dy + dz * dz < 1.0 && !(yi < world.getMinHeight() || yi >= world.getMaxHeight())) {
                                         int index = xi - x + (yi - y) * horizontalSize + (zi - z) * horizontalSize * verticalSize;
                                         if(!visited.get(index)) { // Skip blocks that have already been visited
-                                            
+
                                             visited.set(index);
                                             BlockType block = world.getBlockState(xi, yi, zi).getBlockType();
                                             if(shouldPlace(getReplaceable(), block, exposed, random, world, xi, yi, zi)) {
@@ -160,18 +160,18 @@ public class VanillaOre implements Structure {
                 }
             }
         }
-        
+
         return blockCount > 0;
     }
-    
+
     public BlockState getMaterial(BlockType replace) {
         return materials.getOrDefault(replace, material);
     }
-    
+
     public MaterialSet getReplaceable() {
         return replaceable;
     }
-    
+
     public boolean isApplyGravity() {
         return applyGravity;
     }
