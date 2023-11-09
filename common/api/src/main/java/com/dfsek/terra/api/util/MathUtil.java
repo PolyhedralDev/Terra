@@ -237,8 +237,17 @@ public final class MathUtil {
         return h;
     }
     
-    public static double lerp(double a, double b, double t) {
-        return a + t * (b - a);
+    /**
+     * 1D Linear interpolation between 2 points 1 unit apart.
+     *
+     * @param t  - Distance from v0. Total distance between v0 and v1 is 1 unit.
+     * @param v0 - Value at v0.
+     * @param v1 - Value at v1.
+     *
+     * @return double - The interpolated value.
+     */
+    public static double lerp(double t, double v0, double v1) {
+        return v0 + t * (v1 - v0);
     }
     
     public static double cubicLerp(double a, double b, double c, double d, double t) {

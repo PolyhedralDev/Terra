@@ -2,10 +2,8 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
+import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-
-import static com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.Interpolator.lerp;
-
 
 public class LazilyEvaluatedInterpolator {
     private final Double[] samples; //
@@ -82,10 +80,10 @@ public class LazilyEvaluatedInterpolator {
         
         double xFrac = (double) (x % horizontalRes) / horizontalRes;
         double zFrac = (double) (z % horizontalRes) / horizontalRes;
-        double lerp_bottom_0 = lerp(zFrac, sample_0_0_0, sample_0_0_1);
-        double lerp_bottom_1 = lerp(zFrac, sample_1_0_0, sample_1_0_1);
+        double lerp_bottom_0 = MathUtil.lerp(zFrac, sample_0_0_0, sample_0_0_1);
+        double lerp_bottom_1 = MathUtil.lerp(zFrac, sample_1_0_0, sample_1_0_1);
         
-        double lerp_bottom = lerp(xFrac, lerp_bottom_0, lerp_bottom_1);
+        double lerp_bottom = MathUtil.lerp(xFrac, lerp_bottom_0, lerp_bottom_1);
         
         if(yRange) { // we can do bilerp
             return lerp_bottom;
@@ -101,11 +99,11 @@ public class LazilyEvaluatedInterpolator {
         double sample_1_1_0 = sample(xIndex + 1, yIndex + 1, zIndex, x + horizontalRes, y + verticalRes, z);
         double sample_1_1_1 = sample(xIndex + 1, yIndex + 1, zIndex + 1, x + horizontalRes, y + verticalRes, z + horizontalRes);
         
-        double lerp_top_0 = lerp(zFrac, sample_0_1_0, sample_0_1_1);
-        double lerp_top_1 = lerp(zFrac, sample_1_1_0, sample_1_1_1);
+        double lerp_top_0 = MathUtil.lerp(zFrac, sample_0_1_0, sample_0_1_1);
+        double lerp_top_1 = MathUtil.lerp(zFrac, sample_1_1_0, sample_1_1_1);
         
-        double lerp_top = lerp(xFrac, lerp_top_0, lerp_top_1);
+        double lerp_top = MathUtil.lerp(xFrac, lerp_top_0, lerp_top_1);
         
-        return lerp(yFrac, lerp_bottom, lerp_top);
+        return MathUtil.lerp(yFrac, lerp_bottom, lerp_top);
     }
 }

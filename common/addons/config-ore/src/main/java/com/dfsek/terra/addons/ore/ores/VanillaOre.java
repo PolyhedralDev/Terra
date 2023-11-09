@@ -43,10 +43,6 @@ public class VanillaOre implements Structure {
         this.materials = materials;
     }
     
-    public static double lerp(double t, double v0, double v1) {
-        return v0 + t * (v1 - v0);
-    }
-    
     @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         float randomRadian = random.nextFloat() * (float) Math.PI;
@@ -68,9 +64,9 @@ public class VanillaOre implements Structure {
         // Compute initial point positions and radius
         for(int i = 0; i < sizeInt; ++i) {
             float t = (float) i / (float) sizeInt;
-            double xt = lerp(t, startX, endX);
-            double yt = lerp(t, startY, endY);
-            double zt = lerp(t, startZ, endZ);
+            double xt = MathUtil.lerp(t, startX, endX);
+            double yt = MathUtil.lerp(t, startY, endY);
+            double zt = MathUtil.lerp(t, startZ, endZ);
             double roll = random.nextDouble() * size / 16.0;
             // Taper radius closer to line ends
             double radius = ((MathUtil.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
