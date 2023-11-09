@@ -29,13 +29,13 @@ import java.util.zip.ZipFile;
 
 public class ZIPLoader extends LoaderImpl {
     private static final Logger logger = LoggerFactory.getLogger(ZIPLoader.class);
-    
+
     private final ZipFile file;
-    
+
     public ZIPLoader(ZipFile file) {
         this.file = file;
     }
-    
+
     @Override
     public InputStream get(String singleFile) throws IOException {
         Enumeration<? extends ZipEntry> entries = file.entries();
@@ -45,7 +45,7 @@ public class ZIPLoader extends LoaderImpl {
         }
         throw new IllegalArgumentException("No such file: " + singleFile);
     }
-    
+
     protected void load(String directory, String extension) {
         Enumeration<? extends ZipEntry> entries = file.entries();
         while(entries.hasMoreElements()) {

@@ -21,7 +21,7 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 public class PointSetDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("points")
     private @Meta Set<@Meta Point> points;
-    
+
     @Override
     public Distributor get() {
         return new PointSetDistributor(points);

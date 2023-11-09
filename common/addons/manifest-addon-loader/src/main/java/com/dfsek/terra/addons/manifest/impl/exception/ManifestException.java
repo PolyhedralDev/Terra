@@ -13,11 +13,11 @@ import java.io.Serial;
 public class ManifestException extends AddonException {
     @Serial
     private static final long serialVersionUID = -2458077663176544645L;
-    
+
     public ManifestException(String message) {
         super(message);
     }
-    
+
     public ManifestException(String message, Throwable cause) {
         super(message, cause);
     }

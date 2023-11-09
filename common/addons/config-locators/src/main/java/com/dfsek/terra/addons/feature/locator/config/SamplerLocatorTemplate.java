@@ -21,7 +21,7 @@ import com.dfsek.terra.api.structure.feature.Locator;
 public class SamplerLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("samplers")
     private @Meta List<@Meta NoiseSampler> samplers;
-    
+
     @Override
     public Locator get() {
         return new SamplerLocator(samplers);

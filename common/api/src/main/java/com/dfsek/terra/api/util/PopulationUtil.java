@@ -7,20 +7,20 @@
 
 package com.dfsek.terra.api.util;
 
-import com.dfsek.terra.api.world.chunk.Chunk;
-
 import java.util.Random;
+
+import com.dfsek.terra.api.world.chunk.Chunk;
 
 
 public final class PopulationUtil {
     public static Random getRandom(Chunk c) {
         return getRandom(c, 0);
     }
-    
+
     public static Random getRandom(Chunk c, long salt) {
         return new Random(getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
     }
-    
+
     /**
      * Gets the carver seed for a chunk.
      *

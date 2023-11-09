@@ -16,7 +16,7 @@ public enum Half {
      * The bottom half of the block, normally with the lower y coordinate.
      */
     BOTTOM,
-    
+
     /**
      * Some blocks, e.g. slabs, can occupy both halves.
      */

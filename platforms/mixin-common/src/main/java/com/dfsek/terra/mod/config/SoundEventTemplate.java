@@ -11,11 +11,11 @@ public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
     @Value("id")
     @Default
     private Identifier id = null;
-    
+
     @Value("distance-to-travel")
     @Default
     private Float distanceToTravel = null;
-    
+
     @Override
     public SoundEvent get() {
         if(id == null) {

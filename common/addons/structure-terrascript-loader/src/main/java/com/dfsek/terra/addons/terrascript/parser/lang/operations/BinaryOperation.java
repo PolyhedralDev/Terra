@@ -15,13 +15,13 @@ public abstract class BinaryOperation<I, O> implements Returnable<O> {
     protected final Returnable<I> left;
     protected final Returnable<I> right;
     private final Position start;
-    
+
     public BinaryOperation(Returnable<I> left, Returnable<I> right, Position start) {
         this.left = left;
         this.right = right;
         this.start = start;
     }
-    
+
     @Override
     public Position getPosition() {
         return start;

@@ -21,11 +21,11 @@ public interface WorldHandle {
     @NotNull
     @Contract("_ -> new")
     BlockState createBlockState(@NotNull String data);
-    
+
     @NotNull
     @Contract(pure = true)
     BlockState air();
-    
+
     @NotNull
     EntityType getEntity(@NotNull String id);
 }

@@ -8,16 +8,16 @@ import com.dfsek.terra.api.config.meta.Meta;
 
 
 public class CubicSplinePointTemplate implements ObjectTemplate<Point> {
-    
+
     @Value("from")
     private @Meta double from;
-    
+
     @Value("to")
     private @Meta double to;
-    
+
     @Value("gradient")
     private @Meta double gradient;
-    
+
     @Override
     public Point get() {
         return new Point(from, to, gradient);

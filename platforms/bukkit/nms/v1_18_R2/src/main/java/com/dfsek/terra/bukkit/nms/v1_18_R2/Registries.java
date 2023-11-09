@@ -14,16 +14,16 @@ public class Registries {
         CraftServer craftserver = (CraftServer) Bukkit.getServer();
         DedicatedServer dedicatedserver = craftserver.getServer();
         return dedicatedserver
-                .registryAccess()
-                .registryOrThrow( // getRegistry
-                                  key
-                                );
+            .registryAccess()
+            .registryOrThrow( // getRegistry
+                key
+            );
     }
-    
+
     public static Registry<Biome> biomeRegistry() {
         return getRegistry(Registry.BIOME_REGISTRY);
     }
-    
+
     public static Registry<StructureSet> structureSet() {
         return getRegistry(Registry.STRUCTURE_SET_REGISTRY);
     }

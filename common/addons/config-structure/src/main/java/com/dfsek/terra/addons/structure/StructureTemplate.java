@@ -23,28 +23,28 @@ public class StructureTemplate implements AbstractableTemplate {
     @Value("id")
     @Final
     private String id;
-    
+
     @Value("scripts")
     private @Meta ProbabilityCollection<@Meta Structure> structure;
-    
+
     @Value("spawn.start")
     private @Meta Range y;
-    
+
     @Value("spawn")
     private @Meta StructureSpawn spawn;
-    
+
     public String getID() {
         return id;
     }
-    
+
     public ProbabilityCollection<Structure> getStructures() {
         return structure;
     }
-    
+
     public Range getY() {
         return y;
     }
-    
+
     public StructureSpawn getSpawn() {
         return spawn;
     }

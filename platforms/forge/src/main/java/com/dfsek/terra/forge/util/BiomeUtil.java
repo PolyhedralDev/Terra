@@ -26,13 +26,13 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 
 public final class BiomeUtil {
     private static final Logger logger = LoggerFactory.getLogger(BiomeUtil.class);
-    
-    
+
+
     private BiomeUtil() {
-    
+
     }
-    
-    
+
+
     public static void registerBiomes(RegisterHelper<net.minecraft.world.biome.Biome> helper) {
         logger.info("Registering biomes...");
         ForgeEntryPoint.getPlatform().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
@@ -41,7 +41,7 @@ public final class BiomeUtil {
         });
         logger.info("Terra biomes registered.");
     }
-    
+
     /**
      * Clones a Vanilla biome and injects Terra data to create a Terra-vanilla biome delegate.
      *
@@ -52,39 +52,39 @@ public final class BiomeUtil {
                                       com.dfsek.terra.api.registry.key.RegistryKey id,
                                       RegisterHelper<net.minecraft.world.biome.Biome> helper) {
         RegistryEntry<net.minecraft.world.biome.Biome>
-                vanilla = ForgeRegistries.BIOMES.getHolder(((ProtoPlatformBiome) biome.getPlatformBiome()).getHandle()).orElseThrow();
-        
-        
+            vanilla = ForgeRegistries.BIOMES.getHolder(((ProtoPlatformBiome) biome.getPlatformBiome()).getHandle()).orElseThrow();
+
+
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
             ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(vanilla);
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
-            
+
             net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome,
-                                                                                       ForgeRegistries.BIOMES.getDelegateOrThrow(
-                                                                                                              vanilla.getKey().orElseThrow())
-                                                                                                             .value(),
-                                                                                       vanillaBiomeProperties);
-            
+                ForgeRegistries.BIOMES.getDelegateOrThrow(
+                        vanilla.getKey().orElseThrow())
+                    .value(),
+                vanillaBiomeProperties);
+
             Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
-            
+
             if(ForgeRegistries.BIOMES.containsKey(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier)
-                                                                                                  .orElseThrow());
+                    .orElseThrow());
             } else {
                 helper.register(MinecraftUtil.registerKey(identifier).getValue(), minecraftBiome);
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier)
-                                                                                                  .orElseThrow());
+                    .orElseThrow());
             }
-            
+
             Map<RegistryKey<net.minecraft.world.biome.Biome>, VillagerType> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
-            
+
             villagerMap.put(RegistryKey.of(RegistryKeys.BIOME, identifier),
-                            Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
-                                                       villagerMap.getOrDefault(vanilla.getKey().orElseThrow(), VillagerType.PLAINS)));
-            
+                Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
+                    villagerMap.getOrDefault(vanilla.getKey().orElseThrow(), VillagerType.PLAINS)));
+
             MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(
-                    identifier);
+                identifier);
         }
     }
 }

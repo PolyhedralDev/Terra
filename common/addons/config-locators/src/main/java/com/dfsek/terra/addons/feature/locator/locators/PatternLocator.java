@@ -17,12 +17,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 public class PatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;
-    
+
     public PatternLocator(Pattern pattern, Range search) {
         this.pattern = pattern;
         this.search = search;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         int min = Math.max(column.getMinY(), search.getMin());

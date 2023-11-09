@@ -16,7 +16,7 @@ public class SimpleRegistryMixin<T> implements RegistryHack {
     @Shadow
     @Final
     private Map<T, Reference<T>> valueToEntry;
-    
+
     @Override
     public void terra_bind() {
         valueToEntry.forEach((value, entry) -> {

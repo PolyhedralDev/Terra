@@ -12,7 +12,7 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
  */
 public class Interpolator {
     private final double v0, v1, v2, v3;
-    
+
     /**
      * Constructs an interpolator with given values as vertices of a unit square.
      *
@@ -27,7 +27,7 @@ public class Interpolator {
         this.v2 = v2;
         this.v3 = v3;
     }
-    
+
     /**
      * 1D Linear interpolation between 2 points 1 unit apart.
      *
@@ -40,7 +40,7 @@ public class Interpolator {
     public static double lerp(double t, double v0, double v1) {
         return v0 + t * (v1 - v0);
     }
-    
+
     /**
      * 2D Bilinear interpolation between 4 points on a unit square.
      *

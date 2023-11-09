@@ -11,13 +11,13 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public class SlantLocator implements Locator {
-    
+
     private final DoublePredicate predicate;
-    
+
     public SlantLocator(DoublePredicate predicate) {
         this.predicate = predicate;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         return column.newBinaryColumn(y -> {

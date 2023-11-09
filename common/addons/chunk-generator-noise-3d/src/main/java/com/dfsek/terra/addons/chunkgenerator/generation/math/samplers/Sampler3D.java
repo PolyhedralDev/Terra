@@ -17,18 +17,18 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class Sampler3D {
     private final ChunkInterpolator interpolator;
     private final ElevationInterpolator elevationInterpolator;
-    
+
     public Sampler3D(int x, int z, long seed, int minHeight, int maxHeight, BiomeProvider provider, int elevationSmooth,
                      PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
         this.interpolator = new ChunkInterpolator(seed, x, z, provider,
-                                                  minHeight, maxHeight, noisePropertiesKey, maxBlend);
+            minHeight, maxHeight, noisePropertiesKey, maxBlend);
         this.elevationInterpolator = new ElevationInterpolator(seed, x, z, provider, elevationSmooth, noisePropertiesKey);
     }
-    
+
     public double sample(double x, double y, double z) {
         return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation((int) Math.round(x), (int) Math.round(z));
     }
-    
+
     public double sample(int x, int y, int z) {
         return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(x, z);
     }

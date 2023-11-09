@@ -12,10 +12,10 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class CubicSplineNormalizerTemplate extends NormalizerTemplate<CubicSplineNoiseSampler> {
-    
+
     @Value("points")
     private @Meta List<@Meta Point> points;
-    
+
     @Override
     public NoiseSampler get() {
         return new CubicSplineNoiseSampler(function, new CubicSpline(points));

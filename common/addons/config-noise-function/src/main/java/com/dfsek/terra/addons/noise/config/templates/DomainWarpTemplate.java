@@ -19,14 +19,14 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class DomainWarpTemplate extends SamplerTemplate<DomainWarpedSampler> {
     @Value("warp")
     private @Meta NoiseSampler warp;
-    
+
     @Value("sampler")
     private @Meta NoiseSampler function;
-    
+
     @Value("amplitude")
     @Default
     private @Meta double amplitude = 1;
-    
+
     @Override
     public NoiseSampler get() {
         return new DomainWarpedSampler(function, warp, amplitude);

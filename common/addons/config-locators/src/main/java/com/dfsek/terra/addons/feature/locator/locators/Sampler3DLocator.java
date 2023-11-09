@@ -15,11 +15,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public class Sampler3DLocator implements Locator {
     private final NoiseSampler sampler;
-    
+
     public Sampler3DLocator(NoiseSampler sampler) {
         this.sampler = sampler;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         long seed = column.getWorld().getSeed();

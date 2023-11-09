@@ -20,19 +20,19 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 public class BiomeAddon implements AddonInitializer {
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), addon.key("BIOME"), 1000);
-                    event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                event.getPack().registerConfigType(new BiomeConfigType(event.getPack()), addon.key("BIOME"), 1000);
+                event.getPack().applyLoader(PaletteHolder.class, new PaletteHolderLoader());
+            })
+            .failThrough();
     }
 }

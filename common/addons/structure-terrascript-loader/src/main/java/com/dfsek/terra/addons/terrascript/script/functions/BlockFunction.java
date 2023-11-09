@@ -36,7 +36,7 @@ public class BlockFunction implements Function<Void> {
     private final Returnable<Boolean> overwrite;
     private final Returnable<Boolean> physics;
     private final Position position;
-    
+
     public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> blockData,
                          Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
         this.x = x;
@@ -48,7 +48,7 @@ public class BlockFunction implements Function<Void> {
         this.position = position;
         this.physics = physics;
     }
-    
+
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
@@ -56,25 +56,25 @@ public class BlockFunction implements Function<Void> {
         setBlock(implementationArguments, scope, arguments, rot);
         return null;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;
     }
-    
+
     void setBlock(ImplementationArguments implementationArguments, Scope scope,
                   TerraImplementationArguments arguments, BlockState rot) {
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
         try {
             Vector3.Mutable set = Vector3.of((int) Math.round(xz.getX()),
-                                             y.apply(implementationArguments, scope).doubleValue(),
-                                             (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin());
+                y.apply(implementationArguments, scope).doubleValue(),
+                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));
@@ -83,21 +83,21 @@ public class BlockFunction implements Function<Void> {
             logger.error("Failed to place block at location {}", arguments.getOrigin(), e);
         }
     }
-    
+
     protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
         return data.computeIfAbsent(blockData.apply(arguments, scope), platform.getWorldHandle()::createBlockState);
     }
-    
-    
+
+
     public static class Constant extends BlockFunction {
         private final BlockState state;
-        
+
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData,
                         Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
             super(x, y, z, blockData, overwrite, physics, platform, position);
             this.state = platform.getWorldHandle().createBlockState(blockData.getConstant());
         }
-        
+
         @Override
         protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
             return state;

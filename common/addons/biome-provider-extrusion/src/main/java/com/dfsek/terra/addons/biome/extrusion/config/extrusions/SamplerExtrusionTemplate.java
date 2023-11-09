@@ -12,7 +12,7 @@ import com.dfsek.terra.api.util.Range;
 public abstract class SamplerExtrusionTemplate implements ObjectTemplate<Extrusion> {
     @Value("sampler")
     protected @Meta NoiseSampler sampler;
-    
+
     @Value("range")
     protected @Meta Range range;
 }

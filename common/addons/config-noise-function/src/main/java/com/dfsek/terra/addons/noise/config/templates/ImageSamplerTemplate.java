@@ -20,20 +20,20 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
 public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ImageSamplerTemplate.class);
-    
+
     private static boolean used = false;
-    
+
     @Value("image")
     private @Meta BufferedImage image;
-    
+
     @Value("frequency")
     private @Meta double frequency;
-    
+
     @Value("channel")
     private ImageSampler.@Meta Channel channel;
-    
+
     @Override
     public NoiseSampler get() {
         if(!used) {

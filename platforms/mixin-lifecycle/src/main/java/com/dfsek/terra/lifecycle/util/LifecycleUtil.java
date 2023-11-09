@@ -13,13 +13,13 @@ import com.dfsek.terra.mod.CommonPlatform;
 
 public final class LifecycleUtil {
     private LifecycleUtil() {
-    
+
     }
-    
+
     public static void initialize(MutableRegistry<Biome> biomeMutableRegistry, MutableRegistry<WorldPreset> worldPresetMutableRegistry) {
         CommonPlatform.get().getEventManager().callEvent(new PlatformInitializationEvent());
         BiomeUtil.registerBiomes(biomeMutableRegistry);
         CommonPlatform.get().registerWorldTypes(
-                (id, preset) -> Registry.register(worldPresetMutableRegistry, RegistryKey.of(RegistryKeys.WORLD_PRESET, id), preset));
+            (id, preset) -> Registry.register(worldPresetMutableRegistry, RegistryKey.of(RegistryKeys.WORLD_PRESET, id), preset));
     }
 }

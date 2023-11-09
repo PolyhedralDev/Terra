@@ -21,14 +21,14 @@ import com.dfsek.terra.api.util.Range;
 public class RandomLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("height")
     private @Meta Range height;
-    
+
     @Value("amount")
     private @Meta Range amount;
-    
+
     @Value("salt")
     @Default
     private @Meta int salt = 0;
-    
+
     @Override
     public Locator get() {
         return new RandomLocator(height, amount, salt);

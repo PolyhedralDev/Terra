@@ -24,22 +24,22 @@ public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
     private @Meta NoiseSampler noise = NoiseSampler.zero();
-    
+
     @Value("id")
     @Final
     private String id;
-    
+
     @Value("layers")
     private @Meta List<@Meta PaletteLayerHolder> palette;
-    
+
     public String getID() {
         return id;
     }
-    
+
     public List<PaletteLayerHolder> getPalette() {
         return palette;
     }
-    
+
     public NoiseSampler getNoise() {
         return noise;
     }

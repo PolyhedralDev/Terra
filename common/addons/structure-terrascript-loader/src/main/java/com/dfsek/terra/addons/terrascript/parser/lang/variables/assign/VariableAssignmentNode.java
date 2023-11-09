@@ -16,14 +16,14 @@ public abstract class VariableAssignmentNode<T> implements Item<T> {
     protected final Returnable<T> value;
     protected final int index;
     private final Position position;
-    
-    
+
+
     public VariableAssignmentNode(Returnable<T> value, Position position, int index) {
         this.value = value;
         this.index = index;
         this.position = position;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

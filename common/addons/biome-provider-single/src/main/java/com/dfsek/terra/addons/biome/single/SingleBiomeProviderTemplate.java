@@ -18,7 +18,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class SingleBiomeProviderTemplate implements ObjectTemplate<BiomeProvider> {
     @Value("biome")
     private @Meta Biome biome;
-    
+
     @Override
     public BiomeProvider get() {
         return new SingleBiomeProvider(biome);

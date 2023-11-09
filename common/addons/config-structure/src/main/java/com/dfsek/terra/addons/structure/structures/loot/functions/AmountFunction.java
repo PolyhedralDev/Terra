@@ -19,7 +19,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 public class AmountFunction implements LootFunction {
     private final int max;
     private final int min;
-    
+
     /**
      * Instantiates an AmountFunction.
      *
@@ -30,7 +30,7 @@ public class AmountFunction implements LootFunction {
         this.min = min;
         this.max = max;
     }
-    
+
     /**
      * Applies the function to an ItemStack.
      *

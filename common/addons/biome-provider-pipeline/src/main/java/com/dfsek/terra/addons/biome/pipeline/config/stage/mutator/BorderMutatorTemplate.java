@@ -22,13 +22,13 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class BorderMutatorTemplate extends StageTemplate {
     @Value("from")
     private @Meta String from;
-    
+
     @Value("replace")
     private @Meta String replace;
-    
+
     @Value("to")
     private @Meta ProbabilityCollection<@Meta BiomeDelegate> to;
-    
+
     @Override
     public Stage get() {
         return new MutatorStage(new BorderMutator(from, replace, noise, to));

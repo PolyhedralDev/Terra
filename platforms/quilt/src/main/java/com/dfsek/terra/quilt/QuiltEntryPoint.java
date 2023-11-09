@@ -25,7 +25,7 @@ import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
 
 public class QuiltEntryPoint extends LifecycleEntryPoint implements ModInitializer {
     private static final QuiltPlatform TERRA_PLUGIN = new QuiltPlatform();
-    
+
     @Override
     public void onInitialize(ModContainer container) {
         initialize("Quilt", TERRA_PLUGIN);

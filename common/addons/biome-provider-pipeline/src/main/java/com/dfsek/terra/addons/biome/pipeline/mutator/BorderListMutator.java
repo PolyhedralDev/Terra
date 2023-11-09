@@ -24,7 +24,7 @@ public class BorderListMutator implements BiomeMutator {
     private final ProbabilityCollection<BiomeDelegate> replaceDefault;
     private final String defaultReplace;
     private final Map<BiomeDelegate, ProbabilityCollection<BiomeDelegate>> replace;
-    
+
     public BorderListMutator(Map<BiomeDelegate, ProbabilityCollection<BiomeDelegate>> replace, String border, String defaultReplace,
                              NoiseSampler noiseSampler, ProbabilityCollection<BiomeDelegate> replaceDefault) {
         this.border = border;
@@ -33,7 +33,7 @@ public class BorderListMutator implements BiomeMutator {
         this.defaultReplace = defaultReplace;
         this.replace = replace;
     }
-    
+
     @Override
     public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         BiomeDelegate origin = viewPoint.getBiome(0, 0);
@@ -55,7 +55,7 @@ public class BorderListMutator implements BiomeMutator {
         }
         return origin;
     }
-    
+
     @Override
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();

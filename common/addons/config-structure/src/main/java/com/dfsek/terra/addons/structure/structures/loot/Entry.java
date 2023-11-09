@@ -30,7 +30,7 @@ public class Entry {
     private final Item item;
     private final long weight;
     private final List<LootFunction> functions = new ArrayList<>();
-    
+
     /**
      * Instantiates an Entry from a JSON representation.
      *
@@ -39,14 +39,14 @@ public class Entry {
     public Entry(JSONObject entry, Platform platform) {
         String id = entry.get("name").toString();
         this.item = platform.getItemHandle().createItem(id);
-        
+
         long weight1;
         try {
             weight1 = (long) entry.get("weight");
         } catch(NullPointerException e) {
             weight1 = 1;
         }
-        
+
         this.weight = weight1;
         if(entry.containsKey("functions")) {
             for(Object function : (JSONArray) entry.get("functions")) {
@@ -75,13 +75,13 @@ public class Entry {
                         if(((JSONObject) function).containsKey("disabled_enchants"))
                             disabled = (JSONArray) ((JSONObject) function).get("disabled_enchants");
                         functions.add(
-                                new EnchantFunction(Math.toIntExact(minEnchant), Math.toIntExact(maxEnchant), disabled, platform));
+                            new EnchantFunction(Math.toIntExact(minEnchant), Math.toIntExact(maxEnchant), disabled, platform));
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Fetches a single ItemStack from the Entry, applying all functions to it.
      *
@@ -96,7 +96,7 @@ public class Entry {
         }
         return item;
     }
-    
+
     /**
      * Gets the weight attribute of the Entry.
      *

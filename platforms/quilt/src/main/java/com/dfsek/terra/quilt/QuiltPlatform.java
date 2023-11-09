@@ -29,26 +29,26 @@ import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
 
 public class QuiltPlatform extends LifecyclePlatform {
-    
+
     @Override
     protected Collection<BaseAddon> getPlatformMods() {
         return QuiltLoader.getAllMods()
-                          .stream()
-                          .flatMap(mod -> parseModData(mod.metadata().id(), mod.metadata().version().raw(), "quilt"))
-                          .collect(
-                                  Collectors.toList());
+            .stream()
+            .flatMap(mod -> parseModData(mod.metadata().id(), mod.metadata().version().raw(), "quilt"))
+            .collect(
+                Collectors.toList());
     }
-    
+
     @Override
     public @NotNull String platformName() {
         return "Quilt";
     }
-    
+
     @Override
     public @NotNull File getDataFolder() {
         return new File(QuiltLoader.getConfigDir().toFile(), "Terra");
     }
-    
+
     @Override
     public BaseAddon getPlatformAddon() {
         return new QuiltAddon(this);

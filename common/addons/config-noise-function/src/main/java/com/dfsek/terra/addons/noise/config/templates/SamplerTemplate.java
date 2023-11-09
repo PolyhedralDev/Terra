@@ -22,13 +22,13 @@ public abstract class SamplerTemplate<T extends NoiseSampler> implements Validat
     @Value("dimensions")
     @Default
     private @Meta int dimensions = 2;
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(dimensions != 2 && dimensions != 3) throw new ValidationException("Illegal amount of dimensions: " + dimensions);
         return true;
     }
-    
+
     public int getDimensions() {
         return dimensions;
     }

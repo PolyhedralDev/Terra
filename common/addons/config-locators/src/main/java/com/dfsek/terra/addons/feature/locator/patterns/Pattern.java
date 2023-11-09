@@ -13,24 +13,24 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public interface Pattern {
     boolean matches(int y, Column<?> column);
-    
+
     default boolean matches(WritableWorld world, int x, int y, int z) {
         return matches(y, world.column(x, z));
     }
-    
-    
+
+
     default Pattern and(Pattern that) {
         return (y, column) -> this.matches(y, column) && that.matches(y, column);
     }
-    
+
     default Pattern or(Pattern that) {
         return (y, column) -> this.matches(y, column) || that.matches(y, column);
     }
-    
+
     default Pattern xor(Pattern that) {
         return (y, column) -> this.matches(y, column) ^ that.matches(y, column);
     }
-    
+
     default Pattern not() {
         return (y, column) -> !this.matches(y, column);
     }

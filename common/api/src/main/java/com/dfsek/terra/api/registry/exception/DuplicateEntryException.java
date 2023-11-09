@@ -16,11 +16,11 @@ import java.io.Serial;
 public class DuplicateEntryException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = -7199021672428288780L;
-    
+
     public DuplicateEntryException(String message) {
         super(message);
     }
-    
+
     public DuplicateEntryException(String message, Throwable cause) {
         super(message, cause);
     }

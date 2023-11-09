@@ -17,17 +17,17 @@ public class MultiplicationOperation extends BinaryOperation<Number, Number> {
     public MultiplicationOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
-    
+
     @Override
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) * right.applyDouble(implementationArguments, scope);
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;

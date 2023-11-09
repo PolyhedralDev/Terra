@@ -17,7 +17,7 @@ public class FloraFactory implements ConfigFactory<FloraTemplate, Structure> {
     @Override
     public TerraFlora build(FloraTemplate config, Platform platform) {
         return new TerraFlora(config.getLayers(), config.doPhysics(), config.isCeiling(),
-                              config.getRotatable(),
-                              config.getNoiseDistribution(), config.getID());
+            config.getRotatable(),
+            config.getNoiseDistribution(), config.getID());
     }
 }

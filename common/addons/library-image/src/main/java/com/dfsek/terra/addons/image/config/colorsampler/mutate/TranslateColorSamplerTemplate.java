@@ -7,13 +7,13 @@ import com.dfsek.terra.addons.image.colorsampler.mutate.TranslateColorSampler;
 
 
 public class TranslateColorSamplerTemplate extends MutateColorSamplerTemplate {
-    
+
     @Value("x")
     private int translateX;
-    
+
     @Value("z")
     private int translateZ;
-    
+
     @Override
     public ColorSampler get() {
         return new TranslateColorSampler(sampler, translateX, translateZ);

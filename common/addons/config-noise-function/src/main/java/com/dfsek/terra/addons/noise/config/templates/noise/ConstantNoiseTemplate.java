@@ -21,7 +21,7 @@ public class ConstantNoiseTemplate extends SamplerTemplate<ConstantSampler> {
     @Value("value")
     @Default
     private @Meta double value = 0d;
-    
+
     @Override
     public NoiseSampler get() {
         return new ConstantSampler(value);

@@ -16,21 +16,21 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class RecursionsFunction implements Function<Number> {
     private final Position position;
-    
+
     public RecursionsFunction(Position position) {
         this.position = position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

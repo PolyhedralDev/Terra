@@ -12,24 +12,24 @@ import com.dfsek.terra.api.Platform;
 
 public interface PluginConfig {
     void load(Platform platform);
-    
+
     boolean dumpDefaultConfig();
-    
+
     boolean isDebugCommands();
-    
+
     boolean isDebugProfiler();
-    
+
     boolean isDebugScript();
-    
+
     boolean isDebugLog();
-    
+
     int getBiomeSearchResolution();
-    
+
     int getStructureCache();
-    
+
     int getSamplerCache();
-    
+
     int getMaxRecursion();
-    
+
     int getProviderCache();
 }

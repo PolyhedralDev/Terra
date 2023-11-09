@@ -17,7 +17,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 public class NotPatternTemplate implements ObjectTemplate<Pattern> {
     @Value("pattern")
     private @Meta Pattern pattern;
-    
+
     @Override
     public Pattern get() {
         return pattern.not();

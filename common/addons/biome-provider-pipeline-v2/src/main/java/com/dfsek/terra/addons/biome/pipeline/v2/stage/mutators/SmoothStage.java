@@ -16,25 +16,25 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class SmoothStage implements Stage {
-    
+
     private final NoiseSampler sampler;
-    
+
     public SmoothStage(NoiseSampler sampler) {
         this.sampler = sampler;
     }
-    
+
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         PipelineBiome top = viewPoint.getRelativeBiome(1, 0);
         PipelineBiome bottom = viewPoint.getRelativeBiome(-1, 0);
         PipelineBiome left = viewPoint.getRelativeBiome(0, 1);
         PipelineBiome right = viewPoint.getRelativeBiome(0, -1);
-        
+
         double roll = sampler.noise(viewPoint.worldSeed(), viewPoint.worldX(), viewPoint.worldZ());
-        
+
         boolean vert = Objects.equals(top, bottom);
         boolean horiz = Objects.equals(left, right);
-        
+
         if(vert && horiz) {
             return roll > 0 ?
                    roll > 0.25 ? left : right :
@@ -48,7 +48,7 @@ public class SmoothStage implements Stage {
         }
         return viewPoint.getBiome();
     }
-    
+
     @Override
     public int maxRelativeReadDistance() {
         return 1;

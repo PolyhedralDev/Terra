@@ -41,10 +41,10 @@ public class LinkedHashMapLoader implements TypeLoader<LinkedHashMap<Object, Obj
             AnnotatedType value = pType.getAnnotatedActualTypeArguments()[1];
             for(Map.Entry<String, Object> entry : config.entrySet()) {
                 map.put(loader.loadType(key, entry.getKey(), depthTracker.entry(entry.getKey())),
-                        loader.loadType(value, entry.getValue(), depthTracker.entry(entry.getKey())));
+                    loader.loadType(value, entry.getValue(), depthTracker.entry(entry.getKey())));
             }
         } else throw new LoadException("Unable to load config", depthTracker);
-        
+
         return map;
     }
 }

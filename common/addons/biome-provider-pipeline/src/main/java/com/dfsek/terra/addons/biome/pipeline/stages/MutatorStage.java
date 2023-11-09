@@ -15,27 +15,27 @@ import com.dfsek.terra.addons.biome.pipeline.api.stage.type.BiomeMutator;
 
 public class MutatorStage implements Stage {
     private final BiomeMutator mutator;
-    
+
     public MutatorStage(BiomeMutator mutator) {
         this.mutator = mutator;
     }
-    
+
     @Override
     public BiomeHolder apply(BiomeHolder in, long seed) {
         in.mutate(mutator, seed);
         return in;
     }
-    
+
     @Override
     public boolean isExpansion() {
         return false;
     }
-    
+
     @Override
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         return mutator.getBiomes(biomes);
     }
-    
+
     public enum Type {
         REPLACE,
         REPLACE_LIST,

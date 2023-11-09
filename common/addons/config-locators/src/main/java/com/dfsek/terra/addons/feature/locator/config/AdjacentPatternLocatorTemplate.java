@@ -22,14 +22,14 @@ import com.dfsek.terra.api.util.Range;
 public class AdjacentPatternLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("range")
     private @Meta Range range;
-    
+
     @Value("pattern")
     private @Meta Pattern pattern;
-    
+
     @Value("match-all")
     @Default
     private @Meta boolean matchAll = false;
-    
+
     @Override
     public Locator get() {
         return new AdjacentPatternLocator(pattern, range, matchAll);

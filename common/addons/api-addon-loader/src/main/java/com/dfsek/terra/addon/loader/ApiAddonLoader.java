@@ -20,18 +20,18 @@ import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 
 public class ApiAddonLoader implements BootstrapBaseAddon<BaseAddon> {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
-    
+
     @Override
     public Iterable<BaseAddon> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
-        
+
         return Collections.emptySet();
     }
-    
+
     @Override
     public String getID() {
         return "API";
     }
-    
+
     @Override
     public Version getVersion() {
         return VERSION;

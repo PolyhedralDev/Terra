@@ -18,12 +18,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 public class PaletteHolder {
     private final Palette[] palettes;
     private final int offset;
-    
+
     protected PaletteHolder(Palette[] palettes, int offset) {
         this.palettes = palettes;
         this.offset = offset;
     }
-    
+
     public static PaletteHolder of(List<Map<Palette, Integer>> palettes) {
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<Palette, Integer> layer : palettes) {
@@ -33,7 +33,7 @@ public class PaletteHolder {
         }
         return builder.build();
     }
-    
+
     public Palette getPalette(int y) {
         int index = y + offset;
         return index >= 0
@@ -42,21 +42,21 @@ public class PaletteHolder {
                  : palettes[palettes.length - 1]
                : palettes[0];
     }
-    
-    
+
+
     private static class PaletteHolderBuilder {
         private final TreeMap<Integer, Palette> paletteMap = new TreeMap<>();
-        
+
         public PaletteHolderBuilder add(int y, Palette palette) {
             paletteMap.put(y, palette);
             return this;
         }
-        
+
         public PaletteHolder build() {
-            
+
             int min = Math.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
             int max = Math.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
-            
+
             Palette[] palettes = new Palette[paletteMap.lastKey() + 1 - min];
             for(int y = min; y <= Math.max(paletteMap.lastKey(), max); y++) {
                 Palette d = null;

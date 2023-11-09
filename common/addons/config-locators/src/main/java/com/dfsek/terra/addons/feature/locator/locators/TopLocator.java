@@ -15,11 +15,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public class TopLocator implements Locator {
     private final Range search;
-    
+
     public TopLocator(Range search) {
         this.search = search;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         for(int y = search.getMax(); y >= search.getMin(); y--) {

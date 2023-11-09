@@ -25,7 +25,7 @@ public interface BaseAddon extends StringIdentifiable, Namespaced {
      * Initializes the addon. To be implemented by addons, but never manually invoked.
      */
     default void initialize() { }
-    
+
     /**
      * Gets the dependencies of this addon.
      *
@@ -34,14 +34,14 @@ public interface BaseAddon extends StringIdentifiable, Namespaced {
     default Map<String, VersionRange> getDependencies() {
         return Collections.emptyMap();
     }
-    
+
     /**
      * Get the version of the addon
      *
      * @return Version of addon
      */
     Version getVersion();
-    
+
     default String getNamespace() {
         return getID();
     }

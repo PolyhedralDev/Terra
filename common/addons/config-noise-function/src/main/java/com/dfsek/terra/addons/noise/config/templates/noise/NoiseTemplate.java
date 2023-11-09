@@ -20,7 +20,7 @@ public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemp
     @Value("frequency")
     @Default
     protected @Meta double frequency = 0.02d;
-    
+
     @Value("salt")
     @Default
     protected @Meta long salt = 0;

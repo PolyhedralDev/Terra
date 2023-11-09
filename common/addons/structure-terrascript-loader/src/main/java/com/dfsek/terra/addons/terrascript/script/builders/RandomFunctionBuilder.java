@@ -21,12 +21,12 @@ public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {
     public RandomFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RandomFunction((Returnable<Number>) argumentList.get(0), position);
     }
-    
+
     @Override
     public int argNumber() {
         return 1;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         if(position == 0) return Returnable.ReturnType.NUMBER;

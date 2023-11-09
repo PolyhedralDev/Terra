@@ -17,10 +17,10 @@ import com.dfsek.terra.api.util.Range;
 
 
 public class TopLocatorTemplate implements ObjectTemplate<Locator> {
-    
+
     @Value("range")
     private @Meta Range range;
-    
+
     @Override
     public Locator get() {
         return new TopLocator(range);

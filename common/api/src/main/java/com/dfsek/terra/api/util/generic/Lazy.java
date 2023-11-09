@@ -14,15 +14,15 @@ public final class Lazy<T> {
     private final Supplier<T> valueSupplier;
     private T value;
     private boolean got = false;
-    
+
     private Lazy(Supplier<T> valueSupplier) {
         this.valueSupplier = valueSupplier;
     }
-    
+
     public static <T> Lazy<T> lazy(Supplier<T> valueSupplier) {
         return new Lazy<>(valueSupplier);
     }
-    
+
     public T value() {
         if(!got && value == null) {
             got = true;

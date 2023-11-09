@@ -32,23 +32,23 @@ import com.dfsek.terra.api.inventory.item.Damageable;
 public abstract class ItemStackDamageableMixin {
     @Shadow
     public abstract boolean isDamaged();
-    
+
     @Shadow
     public abstract int getDamage();
-    
+
     @Shadow
     public abstract void setDamage(int damage);
-    
+
     @Intrinsic
     public int terra$getDamage() {
         return getDamage();
     }
-    
+
     @Intrinsic
     public void terra$setDamage(int damage) {
         setDamage(damage);
     }
-    
+
     public boolean terra$hasDamage() {
         return isDamaged();
     }

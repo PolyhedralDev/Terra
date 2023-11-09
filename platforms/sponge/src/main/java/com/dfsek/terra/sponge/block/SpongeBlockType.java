@@ -26,26 +26,26 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 public class SpongeBlockType implements BlockType {
     private final org.spongepowered.api.block.BlockType delegate;
-    
+
     public SpongeBlockType(org.spongepowered.api.block.BlockType delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public org.spongepowered.api.block.BlockType getHandle() {
         return delegate;
     }
-    
+
     @Override
     public BlockState getDefaultState() {
         return new SpongeBlockState(delegate.defaultState());
     }
-    
+
     @Override
     public boolean isSolid() {
         return !delegate.getOrElse(Keys.IS_SOLID, false);
     }
-    
+
     @Override
     public boolean isWater() {
         return delegate.equals(BlockTypes.WATER.get());

@@ -20,8 +20,8 @@ import com.dfsek.terra.api.util.Range;
 public class AirMatchPatternTemplate implements ObjectTemplate<Pattern> {
     @Value("offset")
     private @Meta Range offset;
-    
-    
+
+
     @Override
     public Pattern get() {
         return new MatchPattern(offset, BlockState::isAir);

@@ -10,12 +10,12 @@ import com.dfsek.terra.api.properties.Properties;
 
 public class ImageLibraryPackConfigTemplate implements ConfigTemplate, Properties {
     // TODO - These would be better as plugin wide config parameters in config.yml
-    
+
     @Value("images.cache.load-on-use")
     @Description("If set to true, images will load into memory upon use rather than on pack load.")
     @Default
     private boolean loadOnUse = false;
-    
+
     @Value("images.cache.timeout")
     @Description("How many seconds to keep images loaded in the image cache for. " +
                  "If set to a number greater than 0, images will be removed from memory if not used after the timeout, otherwise images " +
@@ -24,15 +24,15 @@ public class ImageLibraryPackConfigTemplate implements ConfigTemplate, Propertie
                  " period of time for extra processing time required to perform cache lookups.")
     @Default
     private int cacheTimeout = 0;
-    
+
     public boolean loadOnUse() {
         return loadOnUse;
     }
-    
+
     public boolean unloadOnTimeout() {
         return cacheTimeout > 0;
     }
-    
+
     public int getCacheTimeout() {
         return cacheTimeout;
     }

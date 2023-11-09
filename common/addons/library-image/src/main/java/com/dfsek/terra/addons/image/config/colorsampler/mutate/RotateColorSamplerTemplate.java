@@ -7,10 +7,10 @@ import com.dfsek.terra.addons.image.colorsampler.mutate.RotateColorSampler;
 
 
 public class RotateColorSamplerTemplate extends MutateColorSamplerTemplate {
-    
+
     @Value("angle")
     private double degrees;
-    
+
     @Override
     public ColorSampler get() {
         return new RotateColorSampler(sampler, degrees);

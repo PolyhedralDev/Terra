@@ -9,10 +9,10 @@ import com.dfsek.terra.api.structure.feature.Locator;
 
 
 public class SlantLocatorTemplate implements ObjectTemplate<Locator> {
-    
+
     @Value("condition")
     private DoublePredicate predicate;
-    
+
     @Override
     public Locator get() {
         return new SlantLocator(predicate);

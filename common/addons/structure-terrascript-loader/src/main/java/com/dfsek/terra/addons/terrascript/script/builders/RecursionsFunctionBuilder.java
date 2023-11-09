@@ -20,12 +20,12 @@ public class RecursionsFunctionBuilder implements FunctionBuilder<RecursionsFunc
     public RecursionsFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RecursionsFunction(position);
     }
-    
+
     @Override
     public int argNumber() {
         return 0;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         return null;

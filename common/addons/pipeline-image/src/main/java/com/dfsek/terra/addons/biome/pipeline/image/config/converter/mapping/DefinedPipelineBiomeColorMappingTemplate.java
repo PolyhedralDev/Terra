@@ -12,10 +12,10 @@ import com.dfsek.terra.addons.image.util.MapUtil;
 
 
 public class DefinedPipelineBiomeColorMappingTemplate implements ObjectTemplate<ColorMapping<PipelineBiome>> {
-    
+
     @Value("map")
     Map<ColorString, PipelineBiome> map;
-    
+
     @Override
     public ColorMapping<PipelineBiome> get() {
         var map = MapUtil.mapKeys(this.map, ColorString::getColor);

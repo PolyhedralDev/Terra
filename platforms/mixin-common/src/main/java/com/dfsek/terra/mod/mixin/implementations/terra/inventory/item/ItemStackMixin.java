@@ -35,40 +35,40 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 public abstract class ItemStackMixin {
     @Shadow
     public abstract int getCount();
-    
+
     @Shadow
     public abstract void setCount(int count);
-    
+
     @Shadow
     public abstract net.minecraft.item.Item getItem();
-    
+
     @Shadow
     public abstract boolean isDamageable();
-    
+
     @Shadow
     public abstract void setNbt(@Nullable NbtCompound tag);
-    
+
     public int terra$getAmount() {
         return getCount();
     }
-    
+
     public void terra$setAmount(int i) {
         setCount(i);
     }
-    
+
     public Item terra$getType() {
         return (Item) getItem();
     }
-    
+
     public ItemMeta terra$getItemMeta() {
         return (ItemMeta) this;
     }
-    
+
     @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
         setNbt(((ItemStack) (Object) meta).getNbt());
     }
-    
+
     @Intrinsic
     public boolean terra$isDamageable() {
         return isDamageable();

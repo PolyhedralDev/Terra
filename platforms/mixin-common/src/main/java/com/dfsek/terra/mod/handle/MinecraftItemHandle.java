@@ -37,7 +37,7 @@ import com.dfsek.terra.mod.CommonPlatform;
 
 
 public class MinecraftItemHandle implements ItemHandle {
-    
+
     @Override
     public Item createItem(String data) {
         try {
@@ -51,12 +51,12 @@ public class MinecraftItemHandle implements ItemHandle {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }
     }
-    
+
     @Override
     public Enchantment getEnchantment(String id) {
         return (Enchantment) (Registries.ENCHANTMENT.get(Identifier.tryParse(id)));
     }
-    
+
     @Override
     public Set<Enchantment> getEnchantments() {
         return Registries.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());

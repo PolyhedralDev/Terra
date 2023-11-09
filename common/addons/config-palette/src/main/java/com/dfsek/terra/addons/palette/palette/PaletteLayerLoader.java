@@ -20,14 +20,14 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class PaletteLayerLoader implements ObjectTemplate<PaletteLayerHolder> {
     @Value("materials")
     private @Meta ProbabilityCollection<@Meta BlockState> collection;
-    
+
     @Value("sampler")
     @Default
     private @Meta NoiseSampler sampler = null;
-    
+
     @Value("layers")
     private @Meta int layers;
-    
+
     @Override
     public PaletteLayerHolder get() {
         return new PaletteLayerHolder(collection, sampler, layers);

@@ -29,31 +29,31 @@ public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
     @Value("minecraft.use-vanilla-biomes")
     @Default
     private boolean vanillaBiomes = false;
-    
+
     @Value("minecraft.beard.enable")
     @Default
     private boolean beard = true;
-    
+
     @Value("minecraft.beard.threshold")
     @Default
     private double beardThreshold = 0.5;
-    
+
     @Value("minecraft.beard.air-threshold")
     @Default
     private double airThreshold = -0.5;
-    
+
     public boolean useVanillaBiomes() {
         return vanillaBiomes;
     }
-    
+
     public boolean isBeard() {
         return beard;
     }
-    
+
     public double getBeardThreshold() {
         return beardThreshold;
     }
-    
+
     public double getAirThreshold() {
         return airThreshold;
     }

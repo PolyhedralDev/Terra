@@ -21,12 +21,12 @@ import com.dfsek.terra.api.event.events.PackEvent;
 public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final ExceptionalConsumer<ConfigTemplate> configLoader;
-    
+
     public ConfigPackLoadEvent(ConfigPack pack, ExceptionalConsumer<ConfigTemplate> configLoader) {
         this.pack = pack;
         this.configLoader = configLoader;
     }
-    
+
     /**
      * Load a custom {@link ConfigTemplate} using the pack manifest.
      *
@@ -36,12 +36,12 @@ public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent
         configLoader.accept(template);
         return template;
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public interface ExceptionalConsumer<T extends ConfigTemplate> {
         void accept(T value) throws ConfigException;
     }

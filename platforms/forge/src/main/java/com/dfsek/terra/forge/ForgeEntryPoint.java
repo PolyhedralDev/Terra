@@ -51,32 +51,32 @@ public class ForgeEntryPoint {
         TERRA_PLUGIN = new ForgePlatform();
     }
     private final RegistrySanityCheck sanityCheck = new RegistrySanityCheck();
-    
+
     public ForgeEntryPoint() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.register(this);
     }
-    
+
     public static ForgePlatform getPlatform() {
         return TERRA_PLUGIN;
     }
-    
+
     public static void initialize(RegisterHelper<Biome> helper) {
         getPlatform().getEventManager().callEvent(
-                new PlatformInitializationEvent());
+            new PlatformInitializationEvent());
         BiomeUtil.registerBiomes(helper);
     }
-    
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void registerBiomes(RegisterEvent event) {
         event.register(Keys.BLOCKS, helper -> sanityCheck.progress(RegistryStep.BLOCK, () -> logger.debug("Block registration detected.")));
         event.register(Keys.BIOMES, helper -> sanityCheck.progress(RegistryStep.BIOME, () -> initialize(helper)));
         event.register(RegistryKeys.WORLD_PRESET,
-                       helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> TERRA_PLUGIN.registerWorldTypes(helper::register)));
-        
-        
+            helper -> sanityCheck.progress(RegistryStep.WORLD_TYPE, () -> TERRA_PLUGIN.registerWorldTypes(helper::register)));
+
+
         event.register(RegistryKeys.CHUNK_GENERATOR,
-                       helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
+            helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
         event.register(RegistryKeys.BIOME_SOURCE, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }

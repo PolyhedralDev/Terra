@@ -6,9 +6,9 @@ import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.BiomeChunkImpl.ViewPoin
 
 public interface Stage {
     PipelineBiome apply(ViewPoint viewPoint);
-    
+
     int maxRelativeReadDistance();
-    
+
     default Iterable<PipelineBiome> getBiomes(Iterable<PipelineBiome> biomes) {
         return biomes;
     }

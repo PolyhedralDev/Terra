@@ -15,27 +15,27 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class ImageSampler implements NoiseSampler {
     private final BufferedImage image;
     private final Channel channel;
-    
+
     private final double frequency;
-    
+
     public ImageSampler(BufferedImage image, Channel channel, double frequency) {
         this.image = image;
         this.channel = channel;
         this.frequency = frequency;
     }
-    
+
     @Override
     public double noise(long seed, double x, double y) {
         return ((channel.getChannel(image.getRGB(Math.floorMod((int) Math.floor(x * frequency), image.getWidth()),
-                                                 Math.floorMod((int) Math.floor(y * frequency), image.getHeight()))) / 255D) - 0.5) *
+            Math.floorMod((int) Math.floor(y * frequency), image.getHeight()))) / 255D) - 0.5) *
                2;
     }
-    
+
     @Override
     public double noise(long seed, double x, double y, double z) {
         return noise(seed, x, y);
     }
-    
+
     public enum Channel {
         RED {
             @Override
@@ -67,7 +67,7 @@ public class ImageSampler implements NoiseSampler {
                 return (mashed >> 24) & 0xff;
             }
         };
-        
+
         public abstract int getChannel(int mashed);
     }
 }

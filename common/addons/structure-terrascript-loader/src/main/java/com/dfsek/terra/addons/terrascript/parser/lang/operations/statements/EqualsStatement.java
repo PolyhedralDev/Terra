@@ -17,22 +17,22 @@ import static com.dfsek.terra.api.util.MathUtil.EPSILON;
 
 
 public class EqualsStatement extends BinaryOperation<Object, Boolean> {
-    
+
     public EqualsStatement(Returnable<Object> left, Returnable<Object> right, Position position) {
         super(left, right, position);
     }
-    
-    
+
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.BOOLEAN;
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         Object leftValue = left.apply(implementationArguments, scope);
@@ -40,7 +40,7 @@ public class EqualsStatement extends BinaryOperation<Object, Boolean> {
         if(leftValue instanceof Number l && rightValue instanceof Number r) {
             return Math.abs(l.doubleValue() - r.doubleValue()) <= EPSILON;
         }
-        
+
         return leftValue.equals(rightValue);
     }
 }

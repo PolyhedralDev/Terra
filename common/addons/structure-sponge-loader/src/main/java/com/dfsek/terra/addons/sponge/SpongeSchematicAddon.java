@@ -36,10 +36,10 @@ import com.dfsek.terra.api.util.vector.Vector3Int;
 public class SpongeSchematicAddon implements AddonInitializer {
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     private static InputStream detectDecompression(InputStream is) throws IOException {
         PushbackInputStream pbis = new PushbackInputStream(is, 2);
         int signature = (pbis.read() & 0xFF) + (pbis.read() << 8);
@@ -50,25 +50,25 @@ public class SpongeSchematicAddon implements AddonInitializer {
         }
         return pbis;
     }
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                    event.getPack()
-                         .getLoader()
-                         .open("", ".schem")
-                         .thenEntries(entries -> entries
-                                 .stream()
-                                 .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey())))
-                                 .forEach(structureRegistry::register)).close();
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
+                event.getPack()
+                    .getLoader()
+                    .open("", ".schem")
+                    .thenEntries(entries -> entries
+                        .stream()
+                        .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey())))
+                        .forEach(structureRegistry::register)).close();
+            })
+            .failThrough();
     }
-    
+
     public SpongeStructure convert(InputStream in, String id) {
         try {
             CompoundTag baseTag = (CompoundTag) new NBTDeserializer(false).fromStream(detectDecompression(in)).getTag();
@@ -76,9 +76,9 @@ public class SpongeSchematicAddon implements AddonInitializer {
             int wid = baseTag.getShort("Width");
             int len = baseTag.getShort("Length");
             int hei = baseTag.getShort("Height");
-            
+
             CompoundTag metadata = baseTag.getCompoundTag("Metadata");
-            
+
             Vector3Int offset = switch(ver) {
                 case 2 -> {
                     // Use WorldEdit defined legacy relative offset if it exists in schematic metadata
@@ -102,18 +102,18 @@ public class SpongeSchematicAddon implements AddonInitializer {
                 }
                 default -> throw new IllegalArgumentException("Failed to parse Sponge schematic: Unsupported format version: " + ver);
             };
-            
+
             ByteArrayTag blocks = baseTag.getByteArrayTag("BlockData");
-            
+
             CompoundTag palette = (CompoundTag) baseTag.get("Palette");
             Map<Integer, String> data = new HashMap<>();
-            
+
             for(Map.Entry<String, Tag<?>> entry : palette.entrySet()) {
                 data.put(((IntTag) entry.getValue()).asInt(), entry.getKey());
             }
-            
+
             BlockState[][][] states = new BlockState[wid][len][hei];
-            
+
             byte[] arr = blocks.getValue();
             for(int x = 0; x < wid; x++) {
                 for(int z = 0; z < len; z++) {
@@ -124,7 +124,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                     }
                 }
             }
-            
+
             return new SpongeStructure(states, offset, addon.key(id));
         } catch(IOException e) {
             throw new IllegalArgumentException("Failed to parse Sponge schematic: ", e);

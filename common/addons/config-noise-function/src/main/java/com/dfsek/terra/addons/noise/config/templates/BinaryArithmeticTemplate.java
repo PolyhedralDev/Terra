@@ -15,11 +15,11 @@ public class BinaryArithmeticTemplate<T extends BinaryArithmeticSampler> extends
     private @Meta NoiseSampler left;
     @Value("right")
     private @Meta NoiseSampler right;
-    
+
     public BinaryArithmeticTemplate(BiFunction<NoiseSampler, NoiseSampler, T> function) {
         this.function = function;
     }
-    
+
     @Override
     public T get() {
         return function.apply(left, right);

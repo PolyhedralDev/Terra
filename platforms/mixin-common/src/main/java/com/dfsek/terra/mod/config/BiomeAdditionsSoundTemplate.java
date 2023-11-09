@@ -12,11 +12,11 @@ public class BiomeAdditionsSoundTemplate implements ObjectTemplate<BiomeAddition
     @Value("sound")
     @Default
     private SoundEvent sound = null;
-    
+
     @Value("sound-chance")
     @Default
     private Double soundChance = null;
-    
+
     @Override
     public BiomeAdditionsSound get() {
         if(sound == null || soundChance == null) {

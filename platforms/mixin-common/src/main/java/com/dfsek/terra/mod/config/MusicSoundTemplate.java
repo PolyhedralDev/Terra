@@ -12,19 +12,19 @@ public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
     @Value("sound")
     @Default
     private SoundEvent sound = null;
-    
+
     @Value("min-delay")
     @Default
     private Integer minDelay = null;
-    
+
     @Value("max-delay")
     @Default
     private Integer maxDelay = null;
-    
+
     @Value("replace-current-music")
     @Default
     private Boolean replaceCurrentMusic = null;
-    
+
     @Override
     public MusicSound get() {
         if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {

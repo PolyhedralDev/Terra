@@ -15,17 +15,17 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class NumericConstant extends ConstantExpression<Number> {
     private final double constant;
-    
+
     public NumericConstant(Number constant, Position position) {
         super(constant, position);
         this.constant = constant.doubleValue();
     }
-    
+
     @Override
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
-    
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.NUMBER;

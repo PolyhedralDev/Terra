@@ -47,53 +47,53 @@ public abstract class ServerWorldMixin {
         ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
     }
-    
+
     public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
         ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data,
-                                                                               physics ? 3 : 1042);
+            physics ? 3 : 1042);
     }
-    
+
     @Intrinsic
     public long terra$getSeed() {
         return ((net.minecraft.server.world.ServerWorld) (Object) this).getSeed();
     }
-    
+
     public int terra$getMaxHeight() {
         return (((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY()) +
                ((net.minecraft.server.world.ServerWorld) (Object) this).getHeight();
     }
-    
+
     public Chunk terra$getChunkAt(int x, int z) {
         return (Chunk) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunk(x, z);
     }
-    
+
     public BlockState terra$getBlockState(int x, int y, int z) {
         return (BlockState) ((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z));
     }
-    
+
     public BlockEntity terra$getBlockEntity(int x, int y, int z) {
         return MinecraftUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
-    
+
     public int terra$getMinHeight() {
         return ((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY();
     }
-    
+
     public ChunkGenerator terra$getGenerator() {
         return ((MinecraftChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
-                                                                                                         .getChunkGenerator()).getHandle();
+            .getChunkGenerator()).getHandle();
     }
-    
+
     public BiomeProvider terra$getBiomeProvider() {
         return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
-                                                                                           .getChunkGenerator()
-                                                                                           .getBiomeSource()).getProvider();
+            .getChunkGenerator()
+            .getBiomeSource()).getProvider();
     }
-    
+
     public ConfigPack terra$getPack() {
         net.minecraft.world.gen.chunk.ChunkGenerator generator =
-                (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
+            (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
         if(generator instanceof MinecraftChunkGeneratorWrapper minecraftChunkGeneratorWrapper) {
             return minecraftChunkGeneratorWrapper.getPack();
         }

@@ -12,7 +12,7 @@ public class VillagerTypeTemplate implements ObjectTemplate<VillagerType> {
     @Value("id")
     @Default
     private Identifier id = null;
-    
+
     @Override
     public VillagerType get() {
         return Registries.VILLAGER_TYPE.get(id);

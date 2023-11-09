@@ -20,19 +20,19 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends Sa
     @Value("octaves")
     @Default
     protected @Meta int octaves = 3;
-    
+
     @Value("gain")
     @Default
     protected @Meta double fractalGain = 0.5D;
-    
+
     @Value("lacunarity")
     @Default
     protected @Meta double fractalLacunarity = 2.0D;
-    
+
     @Value("weighted-strength")
     @Default
     protected @Meta double weightedStrength = 0.0D;
-    
+
     @Value("sampler")
     protected @Meta NoiseSampler function;
 }

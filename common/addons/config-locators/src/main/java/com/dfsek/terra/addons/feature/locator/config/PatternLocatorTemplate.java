@@ -20,10 +20,10 @@ import com.dfsek.terra.api.util.Range;
 public class PatternLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("range")
     private @Meta Range range;
-    
+
     @Value("pattern")
     private @Meta Pattern pattern;
-    
+
     @Override
     public Locator get() {
         return new PatternLocator(pattern, range);

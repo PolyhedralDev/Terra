@@ -7,28 +7,28 @@
 
 package com.dfsek.terra.addons.biome.pipeline.v2.stage.mutators;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.v2.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
 
 public class ReplaceStage implements Stage {
     private final String replaceableTag;
     private final ProbabilityCollection<PipelineBiome> replace;
     private final NoiseSampler sampler;
-    
+
     public ReplaceStage(String replaceable, ProbabilityCollection<PipelineBiome> replace, NoiseSampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
     }
-    
+
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         if(viewPoint.getBiome().getTags().contains(replaceableTag)) {
@@ -37,12 +37,12 @@ public class ReplaceStage implements Stage {
         }
         return viewPoint.getBiome();
     }
-    
+
     @Override
     public int maxRelativeReadDistance() {
         return 0;
     }
-    
+
     @Override
     public Iterable<PipelineBiome> getBiomes(Iterable<PipelineBiome> biomes) {
         Set<PipelineBiome> biomeSet = new HashSet<>();

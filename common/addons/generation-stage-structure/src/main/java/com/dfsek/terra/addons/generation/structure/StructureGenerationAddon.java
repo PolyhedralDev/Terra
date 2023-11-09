@@ -15,29 +15,29 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.GenerationStageP
 public class StructureGenerationAddon implements AddonInitializer {
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack()
-                                    .getOrCreateRegistry(GenerationStageProvider.class)
-                                    .register(addon.key("STRUCTURE"), pack -> new StructureGenerationStage(platform)))
-                .failThrough();
-        
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> event.getPack()
+                .getOrCreateRegistry(GenerationStageProvider.class)
+                .register(addon.key("STRUCTURE"), pack -> new StructureGenerationStage(platform)))
+            .failThrough();
+
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(Biome.class)) {
-                        event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeStructuresTemplate()).get());
-                    }
-                })
-                .failThrough();
-        
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigurationLoadEvent.class)
+            .then(event -> {
+                if(event.is(Biome.class)) {
+                    event.getLoadedObject(Biome.class).getContext().put(event.load(new BiomeStructuresTemplate()).get());
+                }
+            })
+            .failThrough();
+
     }
 }

@@ -19,14 +19,14 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class NormalNormalizerTemplate extends NormalizerTemplate<NormalNormalizer> {
     @Value("mean")
     private @Meta double mean;
-    
+
     @Value("standard-deviation")
     private @Meta double stdDev;
-    
+
     @Value("groups")
     @Default
     private @Meta int groups = 16384;
-    
+
     @Override
     public NoiseSampler get() {
         return new NormalNormalizer(function, groups, mean, stdDev);

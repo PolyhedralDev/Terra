@@ -16,13 +16,13 @@ import java.util.function.Supplier;
 
 public interface ConfigLoadingDelegate {
     <T> ConfigLoadingDelegate applyLoader(Type type, TypeLoader<T> loader);
-    
+
     default <T> ConfigLoadingDelegate applyLoader(Class<? extends T> type, TypeLoader<T> loader) {
         return applyLoader((Type) type, loader);
     }
-    
+
     <T> ConfigLoadingDelegate applyLoader(Type type, Supplier<ObjectTemplate<T>> loader);
-    
+
     default <T> ConfigLoadingDelegate applyLoader(Class<? extends T> type, Supplier<ObjectTemplate<T>> loader) {
         return applyLoader((Type) type, loader);
     }

@@ -10,27 +10,27 @@ public class SpawnCostConfig implements ObjectTemplate<SpawnCostConfig> {
     @Value("type")
     @Default
     private EntityType<?> type = null;
-    
+
     @Value("mass")
     @Default
     private Double mass = null;
-    
+
     @Value("gravity")
     @Default
     private Double gravity = null;
-    
+
     public EntityType<?> getType() {
         return type;
     }
-    
+
     public Double getMass() {
         return mass;
     }
-    
+
     public Double getGravity() {
         return gravity;
     }
-    
+
     @Override
     public SpawnCostConfig get() {
         return this;

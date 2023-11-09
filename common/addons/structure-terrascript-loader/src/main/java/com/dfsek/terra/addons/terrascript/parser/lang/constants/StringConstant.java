@@ -15,7 +15,7 @@ public class StringConstant extends ConstantExpression<String> {
     public StringConstant(String constant, Position position) {
         super(constant, position);
     }
-    
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.STRING;

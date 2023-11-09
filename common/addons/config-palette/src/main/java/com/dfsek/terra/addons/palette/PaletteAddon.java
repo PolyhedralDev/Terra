@@ -20,19 +20,19 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 public class PaletteAddon implements AddonInitializer {
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new PaletteConfigType(platform), addon.key("PALETTE"), 2);
-                    event.getPack().applyLoader(PaletteLayerHolder.class, PaletteLayerLoader::new);
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                event.getPack().registerConfigType(new PaletteConfigType(platform), addon.key("PALETTE"), 2);
+                event.getPack().applyLoader(PaletteLayerHolder.class, PaletteLayerLoader::new);
+            })
+            .failThrough();
     }
 }

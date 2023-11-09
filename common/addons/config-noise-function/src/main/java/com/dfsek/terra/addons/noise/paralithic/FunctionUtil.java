@@ -15,7 +15,7 @@ import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
 
 public class FunctionUtil {
     private FunctionUtil() { }
-    
+
     public static Map<String, Function> convertFunctionsAndSamplers(Map<String, FunctionTemplate> functions,
                                                                     Map<String, DimensionApplicableNoiseSampler> samplers)
     throws ParseException {
@@ -24,9 +24,9 @@ public class FunctionUtil {
             functionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));
         }
         samplers.forEach((id, sampler) -> functionMap.put(id,
-                                                          sampler.getDimensions() == 2 ?
-                                                          new NoiseFunction2(sampler.getSampler()) :
-                                                          new NoiseFunction3(sampler.getSampler())));
+            sampler.getDimensions() == 2 ?
+            new NoiseFunction2(sampler.getSampler()) :
+            new NoiseFunction3(sampler.getSampler())));
         return functionMap;
     }
 }

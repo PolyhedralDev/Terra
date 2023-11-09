@@ -19,21 +19,21 @@ public class BiomeConfigType implements ConfigType<BiomeTemplate, Biome> {
     public static final TypeKey<Biome> BIOME_TYPE_TOKEN = new TypeKey<>() {
     };
     private final BiomeFactory factory;
-    
+
     public BiomeConfigType(ConfigPack pack) {
         this.factory = new BiomeFactory(pack);
     }
-    
+
     @Override
     public BiomeTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new BiomeTemplate(pack, platform);
     }
-    
+
     @Override
     public ConfigFactory<BiomeTemplate, Biome> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<Biome> getTypeKey() {
         return BIOME_TYPE_TOKEN;

@@ -21,18 +21,18 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 @SuppressWarnings("FieldMayBeFinal")
 public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
-    
+
     @Value("resolution")
     @Default
     @Description("Sets the resolution at which to sample the image.")
     private int resolution = 1;
-    
+
     @Value("color-sampler")
     private ColorSampler colorSampler;
-    
+
     @Value("color-conversion")
     private ColorConverter<Biome> colorConverter;
-    
+
     @Override
     public BiomeProvider get() {
         return new ImageBiomeProvider(colorConverter, colorSampler, resolution);

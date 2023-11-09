@@ -29,6 +29,6 @@ public final class RotationUtil {
         }
         return copy.immutable();
     }
-    
-    
+
+
 }

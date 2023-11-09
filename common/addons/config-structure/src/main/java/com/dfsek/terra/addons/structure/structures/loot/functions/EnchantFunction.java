@@ -28,15 +28,15 @@ public class EnchantFunction implements LootFunction {
     private final int max;
     private final JSONArray disabled;
     private final Platform platform;
-    
-    
+
+
     public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {
         this.max = max;
         this.min = min;
         this.disabled = disabled;
         this.platform = platform;
     }
-    
+
     /**
      * Applies the function to an ItemStack.
      *
@@ -48,7 +48,7 @@ public class EnchantFunction implements LootFunction {
     @Override
     public ItemStack apply(ItemStack original, Random r) {
         if(original.getItemMeta() == null) return original;
-        
+
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new ArrayList<>();
         for(Enchantment ench : platform.getItemHandle().getEnchantments()) {
@@ -70,9 +70,9 @@ public class EnchantFunction implements LootFunction {
                 meta.addEnchantment(chosen, Math.max(lvl, 1));
             } catch(IllegalArgumentException e) {
                 LOGGER.warn(
-                        "Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused by a " +
-                        "misbehaving enchantment plugin.",
-                        original.getType(), chosen, Math.max(lvl, 1));
+                    "Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused by a " +
+                    "misbehaving enchantment plugin.",
+                    original.getType(), chosen, Math.max(lvl, 1));
             }
         }
         original.setItemMeta(meta);

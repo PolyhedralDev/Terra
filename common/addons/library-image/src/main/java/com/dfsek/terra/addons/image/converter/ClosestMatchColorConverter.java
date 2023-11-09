@@ -6,16 +6,16 @@ import com.dfsek.terra.addons.image.util.ColorUtil;
 
 
 public class ClosestMatchColorConverter<T> implements ColorConverter<T> {
-    
+
     private final Map<Integer, T> map;
-    
+
     private final Integer[] colors;
-    
+
     public ClosestMatchColorConverter(Map<Integer, T> map) {
         this.map = map;
         this.colors = map.keySet().toArray(new Integer[0]);
     }
-    
+
     @Override
     public T apply(int color) {
         int closest = 0;
@@ -33,7 +33,7 @@ public class ClosestMatchColorConverter<T> implements ColorConverter<T> {
         }
         return map.get(closest);
     }
-    
+
     @Override
     public Iterable<T> getEntries() {
         return map.values();

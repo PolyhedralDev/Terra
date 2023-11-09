@@ -16,8 +16,8 @@ import com.dfsek.terra.api.config.meta.Meta;
 public class ScatteredOreTemplate extends OreTemplate {
     @Value("size")
     private @Meta int spread = 7;
-    
-    
+
+
     public int getSpread() {
         return spread;
     }

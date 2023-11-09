@@ -16,16 +16,16 @@ import com.dfsek.terra.api.util.MathUtil;
 public class PositiveWhiteNoiseSampler extends WhiteNoiseSampler {
     private static final long POSITIVE_POW1 = 0b01111111111L << 52;
     // Bits that when applied to the exponent/sign section of a double, produce a positive number with a power of 1.
-    
+
     public double getNoiseRaw(long seed) {
         return (Double.longBitsToDouble((MathUtil.murmur64(seed) & 0x000fffffffffffffL) | POSITIVE_POW1) - 1.5) * 2;
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y) {
         return (getNoiseUnmapped(seed, x, y) - 1);
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y, double z) {
         return (getNoiseUnmapped(seed, x, y, z) - 1);

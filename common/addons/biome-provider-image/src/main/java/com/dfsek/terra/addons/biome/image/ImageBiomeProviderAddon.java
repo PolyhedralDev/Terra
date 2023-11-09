@@ -26,31 +26,31 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class ImageBiomeProviderAddon implements AddonInitializer {
-    
+
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
     private static final Logger logger = LoggerFactory.getLogger(ImageBiomeProviderAddon.class);
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
-                            PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register(addon.key("IMAGE"),
-                                              () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                    PROVIDER_REGISTRY_KEY);
+                providerRegistry.register(addon.key("IMAGE"),
+                    () -> new ImageProviderTemplate(event.getPack().getRegistry(Biome.class)));
+            })
+            .failThrough();
         if(platform.getTerraConfig().isDebugLog())
             logger.warn(
-                    "The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the " +
-                    "biome-provider-image-v2 addon for future pack development instead.");
+                "The biome-provider-image addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the " +
+                "biome-provider-image-v2 addon for future pack development instead.");
     }
 }

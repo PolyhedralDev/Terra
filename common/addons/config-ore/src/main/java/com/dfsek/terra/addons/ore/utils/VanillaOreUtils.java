@@ -17,7 +17,7 @@ public class VanillaOreUtils {
             return random.nextFloat() >= chance;
         }
     }
-    
+
     public static boolean shouldPlace(MaterialSet replaceable, BlockType type, Double exposed, Random random, WritableWorld world, int x,
                                       int y, int z) {
         if(!replaceable.contains(type)) {
@@ -33,6 +33,6 @@ public class VanillaOreUtils {
                      world.getBlockState(x + 1, y, z).isAir());
         }
     }
-    
+
 }
 

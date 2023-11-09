@@ -26,30 +26,30 @@ import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 
 public class BukkitProtoChunk implements ProtoChunk {
-    
+
     private final ChunkGenerator.ChunkData delegate;
-    
+
     public BukkitProtoChunk(ChunkGenerator.ChunkData delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public ChunkGenerator.ChunkData getHandle() {
         return delegate;
     }
-    
+
     @Override
     public int getMaxHeight() {
         return delegate.getMaxHeight();
     }
-    
-    
+
+
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         delegate.setBlock(x, y, z, ((BukkitBlockState) blockState).getHandle());
     }
-    
-    
+
+
     @Override
     public @NotNull BlockState getBlock(int x, int y, int z) {
         return BukkitBlockState.newInstance(delegate.getBlockData(x, y, z));

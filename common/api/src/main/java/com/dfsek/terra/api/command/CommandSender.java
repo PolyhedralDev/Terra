@@ -16,8 +16,8 @@ import com.dfsek.terra.api.entity.Player;
 
 public interface CommandSender extends Handle {
     void sendMessage(String message);
-    
+
     Optional<Entity> getEntity();
-    
+
     Optional<Player> getPlayer();
 }

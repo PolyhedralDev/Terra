@@ -12,9 +12,9 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ExpressionNormalizer extends Normalizer {
-    
+
     private final Expression expression;
-    
+
     public ExpressionNormalizer(NoiseSampler sampler, Map<String, Function> functions, String eq, Map<String, Double> vars)
     throws ParseException {
         super(sampler);
@@ -25,7 +25,7 @@ public class ExpressionNormalizer extends Normalizer {
         functions.forEach(p::registerFunction);
         expression = p.parse(eq, scope);
     }
-    
+
     @Override
     public double normalize(double in) {
         return expression.evaluate(in);

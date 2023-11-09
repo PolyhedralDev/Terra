@@ -19,13 +19,13 @@ public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Block conditional;
     private final Returnable<Boolean> statement;
     private final Position position;
-    
+
     public WhileKeyword(Block conditional, Returnable<Boolean> statement, Position position) {
         this.conditional = conditional;
         this.statement = statement;
         this.position = position;
     }
-    
+
     @Override
     public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         while(statement.apply(implementationArguments, scope)) {
@@ -35,12 +35,12 @@ public class WhileKeyword implements Keyword<Block.ReturnInfo<?>> {
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

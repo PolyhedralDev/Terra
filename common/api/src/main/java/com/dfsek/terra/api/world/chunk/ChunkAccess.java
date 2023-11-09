@@ -25,7 +25,7 @@ public interface ChunkAccess extends Handle {
      * @param blockState the type to set the block to
      */
     void setBlock(int x, int y, int z, @NotNull BlockState blockState);
-    
+
     /**
      * Get the type and data of the block at x, y, z.
      * <p>

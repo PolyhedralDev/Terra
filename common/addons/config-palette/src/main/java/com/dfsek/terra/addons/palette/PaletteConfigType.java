@@ -20,21 +20,21 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     };
     private final PaletteFactory factory = new PaletteFactory();
     private final Platform platform;
-    
+
     public PaletteConfigType(Platform platform) {
         this.platform = platform;
     }
-    
+
     @Override
     public PaletteTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new PaletteTemplate();
     }
-    
+
     @Override
     public ConfigFactory<PaletteTemplate, Palette> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<Palette> getTypeKey() {
         return PALETTE_TYPE_TOKEN;

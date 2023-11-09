@@ -14,10 +14,10 @@ public class RegistryFetcher {
         CraftServer craftserver = (CraftServer) Bukkit.getServer();
         DedicatedServer dedicatedserver = craftserver.getServer();
         return dedicatedserver
-                .registryAccess()
-                .registryOrThrow(key);
+            .registryAccess()
+            .registryOrThrow(key);
     }
-    
+
     public static Registry<Biome> biomeRegistry() {
         return getRegistry(Registries.BIOME);
     }

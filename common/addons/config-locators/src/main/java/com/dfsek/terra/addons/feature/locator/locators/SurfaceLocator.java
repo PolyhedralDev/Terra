@@ -16,11 +16,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilde
 
 public class SurfaceLocator implements Locator {
     private final Range search;
-    
+
     public SurfaceLocator(Range search) {
         this.search = search;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder builder = column.newBinaryColumn();
