@@ -1,15 +1,15 @@
 schema-version: 1
 contributors:
-    - Terra contributors
+  - Terra contributors
 id: pipeline-image
 version: @VERSION@
 entrypoints:
-    - "com.dfsek.terra.addons.biome.pipeline.image.PipelineImageAddon"
+  - "com.dfsek.terra.addons.biome.pipeline.image.PipelineImageAddon"
 website:
-    issues: https://github.com/PolyhedralDev/Terra/issues
-    source: https://github.com/PolyhedralDev/Terra
-    docs: https://terra.polydev.org
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
 license: MIT License
 depends:
-    library-image: "1.+"
-    biome-provider-pipeline-v2: "1.+"
+  library-image: "1.+"
+  biome-provider-pipeline-v2: "1.+"

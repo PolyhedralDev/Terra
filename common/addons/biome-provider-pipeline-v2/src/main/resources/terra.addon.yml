@@ -1,12 +1,12 @@
 schema-version: 1
 contributors:
-    - Terra contributors
+  - Terra contributors
 id: biome-provider-pipeline-v2
 version: @VERSION@
 entrypoints:
-    - "com.dfsek.terra.addons.biome.pipeline.v2.BiomePipelineAddon"
+  - "com.dfsek.terra.addons.biome.pipeline.v2.BiomePipelineAddon"
 website:
-    issues: https://github.com/PolyhedralDev/Terra/issues
-    source: https://github.com/PolyhedralDev/Terra
-    docs: https://terra.polydev.org
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
 license: MIT License
