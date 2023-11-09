@@ -55,6 +55,10 @@ public final class MathUtil {
         return cos[(int) (rad * radToIndex) & SIN_MASK];
     }
     
+    public static double tan(double rad) {
+        return sin(rad)/cos(rad);
+    }
+    
     public static double invSqrt(double x) {
         double xhalf = 0.5d * x;
         long i = Double.doubleToLongBits(x);

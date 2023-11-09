@@ -111,7 +111,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
                 .registerFunction("round", new UnaryNumberFunctionBuilder(number -> Math.round(number.doubleValue())))
                 .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> MathUtil.sin(number.doubleValue())))
                 .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> MathUtil.cos(number.doubleValue())))
-                .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> Math.tan(number.doubleValue())))
+                .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> MathUtil.tan(number.doubleValue())))
                 .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> Math.asin(number.doubleValue())))
                 .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> Math.acos(number.doubleValue())))
                 .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> Math.atan(number.doubleValue())))
