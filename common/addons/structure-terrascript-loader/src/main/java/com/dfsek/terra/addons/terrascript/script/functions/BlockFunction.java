@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +38,18 @@ public class BlockFunction implements Function<Void> {
     private final Returnable<Boolean> overwrite;
     private final Returnable<Boolean> physics;
     private final Position position;
+    
+    public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> blockData,
+                         Returnable<Boolean> overwrite, Platform platform, Position position) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.blockData = blockData;
+        this.overwrite = overwrite;
+        this.platform = platform;
+        this.position = position;
+        this.physics = new BooleanConstant(false, position);;
+    }
     
     public BlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> blockData,
                          Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
