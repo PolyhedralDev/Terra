@@ -33,8 +33,8 @@ public class FabricPlatform extends LifecyclePlatform {
     @Override
     protected Collection<BaseAddon> getPlatformMods() {
         return FabricLoader.getInstance().getAllMods().stream().flatMap(
-                mod -> parseModData(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), "fabric")).collect(
-                Collectors.toList());
+                mod -> parseModData(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), "fabric")
+                                                                       ).collect(Collectors.toList());
     }
     
     @Override
