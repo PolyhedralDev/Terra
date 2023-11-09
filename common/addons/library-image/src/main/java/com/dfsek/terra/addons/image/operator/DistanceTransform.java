@@ -127,10 +127,12 @@ public class DistanceTransform {
         z[0] = Integer.MIN_VALUE;
         z[1] = Integer.MAX_VALUE;
         for(int q = 1; q <= f.length - 1; q++) {
-            double s = ((f[q] + Math.pow(q, 2)) - (f[v[k]] + Math.pow(v[k], 2))) / (2 * q - 2 * v[k]);
+            double fqPlusQ2 = (f[q] + Math.pow(q, 2));
+            double twoQ = 2*q;
+            double s = (fqPlusQ2 - (f[v[k]] + Math.pow(v[k], 2))) / (twoQ - 2 * v[k]);
             while(s <= z[k]) {
                 k--;
-                s = ((f[q] + Math.pow(q, 2)) - (f[v[k]] + Math.pow(v[k], 2))) / (2 * q - 2 * v[k]);
+                s = (fqPlusQ2 - (f[v[k]] + Math.pow(v[k], 2))) / (twoQ - 2 * v[k]);
             }
             k++;
             v[k] = q;
