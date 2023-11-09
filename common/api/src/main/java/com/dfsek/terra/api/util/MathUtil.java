@@ -60,12 +60,14 @@ public final class MathUtil {
     }
     
     public static double invSqrt(double x) {
-        double xhalf = 0.5d * x;
-        long i = Double.doubleToLongBits(x);
-        i = 0x5fe6ec85e7de30daL - (i >> 1);
-        x = Double.longBitsToDouble(i);
-        x *= (1.5d - xhalf * x * x);
-        return x;
+        double halfX = 0.5d * x;
+        long i = Double.doubleToLongBits(x); // evil floating point bit level hacking
+        i = 0x5FE6EC85E7DE30DAL - (i >> 1); // what the fuck?
+        double y = Double.longBitsToDouble(i);
+        y *= (1.5d - halfX * y * y); // 1st newtonian iteration
+        // y *= (1.5d - halfX * y * y); // 2nd newtonian iteration, this can be removed
+        
+        return y;
     }
     
     /**
