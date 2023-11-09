@@ -10,10 +10,10 @@ import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 
 
-public class LifecycleEntryPoint {
+public final class LifecycleEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(LifecycleEntryPoint.class);
     
-    protected static void initialize(String modName, LifecyclePlatform platform) {
+    public static void initialize(String modName, LifecyclePlatform platform) {
         logger.info("Initializing Terra {} mod...", modName);
         
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
