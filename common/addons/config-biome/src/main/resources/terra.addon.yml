@@ -1,12 +1,12 @@
 schema-version: 1
 contributors:
-    - Terra contributors
+  - Terra contributors
 id: config-biome
 version: @VERSION@
 entrypoints:
-    - "com.dfsek.terra.addons.biome.BiomeAddon"
+  - "com.dfsek.terra.addons.biome.BiomeAddon"
 website:
-    issues: https://github.com/PolyhedralDev/Terra/issues
-    source: https://github.com/PolyhedralDev/Terra
-    docs: https://terra.polydev.org
+  issues: https://github.com/PolyhedralDev/Terra/issues
+  source: https://github.com/PolyhedralDev/Terra
+  docs: https://terra.polydev.org
 license: MIT License

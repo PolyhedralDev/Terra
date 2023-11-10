@@ -1,17 +1,17 @@
 list:
-    - TWO
-    - THREE
+  - TWO
+  - THREE
 list2:
-    - SEVEN
-    - EIGHT
+  - SEVEN
+  - EIGHT
 map1:
-    three: THREE
-    four: FOUR
-    five: FIVE
+  three: THREE
+  four: FOUR
+  five: FIVE
 map2:
-    six: SIX
+  six: SIX
 string:
-    two: two
-    three: three
-    six: six
+  two: two
+  three: three
+  six: six
 double: 1
