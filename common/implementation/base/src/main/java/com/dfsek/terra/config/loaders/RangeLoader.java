@@ -34,7 +34,6 @@ import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 
 
-@SuppressWarnings("unchecked")
 public class RangeLoader implements TypeLoader<Range> {
     @Override
     public Range load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
@@ -50,7 +49,7 @@ public class RangeLoader implements TypeLoader<Range> {
     /*
      * Template needed so keys can be meta annotated, otherwise the loader could just grab keys directly from the object
      */
-    public static class RangeMapTemplate implements ObjectTemplate<Range> {
+    private static class RangeMapTemplate implements ObjectTemplate<Range> {
         @Value("min")
         private @Meta int min;
         
