@@ -3,7 +3,6 @@ import java.io.File
 import java.io.FileWriter
 import java.net.URI
 import java.net.URL
-import java.nio.file.FileSystemNotFoundException
 import java.nio.file.FileSystems
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -49,28 +48,29 @@ fun Project.configureDistribution() {
             // https://github.com/johnrengelman/shadow/issues/111
             val dest = URI.create("jar:" + tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI())
             
-            val provider = try {
+            val preExistingProvider = try {
                 FileSystems.getFileSystem(dest)
-            } catch (e: FileSystemNotFoundException) {
+            } catch (e: Exception) {
                 null
-            } ?: FileSystems.newFileSystem(dest, mapOf("create" to "false"), null)
+            };
+            val provider = if (preExistingProvider == null) {
+                preExistingProvider
+            } else {
+                FileSystems.newFileSystem(dest, mapOf("create" to "false"), null)
+            };
             provider?.use { fs ->
                 forSubProjects(":common:addons") {
-                    if (fs.isOpen) {
-                        val jar = getJarTask()
-                        
-                        if (jar.archiveFile.get().asFile.exists()) {
-                            println("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
-                            
-                            val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
-                            val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
-                            
-                            if (!addonPath.exists()) {
-                                addonPath.parent.createDirectories()
-                                addonPath.createFile()
-                                jar.archiveFile.get().asFile.toPath().copyTo(addonPath, overwrite = true)
-                            }
-                        }
+                    val jar = getJarTask()
+                    
+                    println("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
+                    
+                    val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+                    val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
+                    
+                    if (!addonPath.exists()) {
+                        addonPath.parent.createDirectories()
+                        addonPath.createFile()
+                        jar.archiveFile.get().asFile.toPath().copyTo(addonPath, overwrite = true)
                     }
                     
                 }
