@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,7 +20,7 @@ public abstract class NoiseTemplate<T extends NoiseFunction> extends SamplerTemp
     @Value("frequency")
     @Default
     protected @Meta double frequency = 0.02d;
-    
+
     @Value("salt")
     @Default
     protected @Meta long salt = 0;

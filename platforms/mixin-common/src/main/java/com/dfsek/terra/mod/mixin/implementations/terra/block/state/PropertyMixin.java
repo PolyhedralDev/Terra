@@ -22,20 +22,20 @@ public abstract class PropertyMixin<T> {
     @Shadow
     @Final
     private String name;
-    
+
     @Shadow
     public abstract Collection<T> getValues();
-    
+
     @Intrinsic
     public Collection<T> terra$values() {
         return getValues();
     }
-    
+
     @Intrinsic
     public Class<T> terra$getType() {
         return type;
     }
-    
+
     @Intrinsic
     public String terra$getID() {
         return name;

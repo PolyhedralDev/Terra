@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,6 +18,6 @@ public class FeatureFactory implements ConfigFactory<FeatureTemplate, Feature> {
     @Override
     public Feature build(FeatureTemplate config, Platform platform) throws LoadException {
         return new ConfiguredFeature(config.getStructures(), config.getStructureNoise(), config.getDistributor(), config.getLocator(),
-                                     config.getID());
+            config.getID());
     }
 }

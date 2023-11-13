@@ -9,7 +9,7 @@ public final class GeometryUtil {
     private GeometryUtil() {
 
     }
-    
+
     public static void sphere(Vector3Int origin, int radius, Consumer<Vector3Int> action) {
         for(int x = -radius; x <= radius; x++) {
             for(int y = -radius; y <= radius; y++) {
@@ -21,7 +21,7 @@ public final class GeometryUtil {
             }
         }
     }
-    
+
     public static void cube(Vector3Int origin, int radius, Consumer<Vector3Int> action) {
         for(int x = -radius; x <= radius; x++) {
             for(int y = -radius; y <= radius; y++) {

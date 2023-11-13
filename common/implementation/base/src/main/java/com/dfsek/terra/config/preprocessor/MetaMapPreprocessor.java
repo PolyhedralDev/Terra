@@ -40,41 +40,41 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
     private static final TypeKey<List<String>> STRING_LIST = new TypeKey<>() {
     };
-    
+
     public MetaMapPreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(t.getType() instanceof ParameterizedType parameterizedType) {
             if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
-                
+
                 if(Map.class.isAssignableFrom(baseClass) && c instanceof Map) { // Map metaconfig
                     Map<Object, Object> map = (Map<Object, Object>) c;
-                    
+
                     if(map.containsKey("<<")) {
                         Map<Object, Object> newMap = new HashMap<>(map);
-                        
+
                         List<String> keys = (List<String>) loader.loadType(STRING_LIST.getAnnotatedType(), map.get("<<"), depthTracker);
                         keys.forEach(key -> {
                             Pair<Configuration, Object> pair = getMetaValue(key, depthTracker);
                             Object meta = pair.getRight();
                             if(!(meta instanceof Map)) {
                                 throw new LoadException(
-                                        "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(),
-                                        depthTracker);
+                                    "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(),
+                                    depthTracker);
                             }
                             newMap.putAll((Map<?, ?>) meta);
-                            
+
                             String configName;
                             if(pair.getLeft().getName() == null) {
                                 configName = "Anonymous Configuration";
                             } else {
                                 configName = pair.getLeft().getName();
                             }
-                            
+
                             depthTracker.addIntrinsicLevel(level -> {
                                 if(level instanceof EntryLevel entryLevel && ((Map<?, ?>) meta).containsKey(entryLevel.getName())) {
                                     return Optional.of("From configuration \"" + configName + "\"");
@@ -89,7 +89,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                 }
             }
         }
-        
+
         return Result.noOp();
     }
 }

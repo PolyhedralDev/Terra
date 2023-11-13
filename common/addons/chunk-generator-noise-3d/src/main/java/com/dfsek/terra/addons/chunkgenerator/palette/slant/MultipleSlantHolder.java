@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,10 +20,11 @@ import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 public class MultipleSlantHolder extends SlantHolderImpl {
     private final NavigableMap<Double, PaletteHolder> layers;
     private final double slantThreshold;
-    
+
     MultipleSlantHolder(List<SlantHolder.Layer> slant, int slantDepth, CalculationMethod calculationMethod) {
         super(slantDepth, calculationMethod);
-        NavigableMap<Double, PaletteHolder> layers = new TreeMap<>(slant.stream().collect(Collectors.toMap(SlantHolder.Layer::threshold, SlantHolder.Layer::palette)));
+        NavigableMap<Double, PaletteHolder> layers = new TreeMap<>(
+            slant.stream().collect(Collectors.toMap(SlantHolder.Layer::threshold, SlantHolder.Layer::palette)));
         Stream<Double> thresholds = layers.keySet().stream();
         double slantThreshold = floorToThreshold ?
                                 thresholds.min(Double::compare).orElseThrow() :
@@ -31,12 +32,12 @@ public class MultipleSlantHolder extends SlantHolderImpl {
         this.layers = layers;
         this.slantThreshold = slantThreshold;
     }
-    
+
     @Override
     protected double getSlantThreshold() {
         return slantThreshold;
     }
-    
+
     @Override
     public PaletteHolder getPalette(double slant) {
         return (floorToThreshold ?

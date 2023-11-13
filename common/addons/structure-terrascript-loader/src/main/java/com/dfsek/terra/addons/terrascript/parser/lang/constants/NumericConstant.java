@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,12 +20,12 @@ public class NumericConstant extends ConstantExpression<Number> {
         super(constant, position);
         this.constant = constant.doubleValue();
     }
-    
+
     @Override
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
-    
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.NUMBER;

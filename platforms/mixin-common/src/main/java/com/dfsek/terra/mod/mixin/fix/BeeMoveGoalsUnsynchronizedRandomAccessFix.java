@@ -16,8 +16,8 @@ import com.dfsek.terra.mod.CommonPlatform;
  * Bees spawning uses world.random without synchronization. This causes issues when spawning bees during world generation.
  */
 @Mixin({
-        MoveToHiveGoal.class,
-        MoveToFlowerGoal.class
+    MoveToHiveGoal.class,
+    MoveToFlowerGoal.class
 })
 public class BeeMoveGoalsUnsynchronizedRandomAccessFix {
     @Redirect(method = "<init>",

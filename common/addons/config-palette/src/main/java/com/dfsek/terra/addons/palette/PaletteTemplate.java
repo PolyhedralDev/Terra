@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -24,22 +24,22 @@ public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
     private @Meta NoiseSampler noise = NoiseSampler.zero();
-    
+
     @Value("id")
     @Final
     private String id;
-    
+
     @Value("layers")
     private @Meta List<@Meta PaletteLayerHolder> palette;
-    
+
     public String getID() {
         return id;
     }
-    
+
     public List<PaletteLayerHolder> getPalette() {
         return palette;
     }
-    
+
     public NoiseSampler getNoise() {
         return noise;
     }

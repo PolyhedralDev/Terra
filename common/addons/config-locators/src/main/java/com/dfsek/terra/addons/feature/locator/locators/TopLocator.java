@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -15,14 +15,14 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public class TopLocator implements Locator {
     private final Range search;
-    
+
     public TopLocator(Range search) {
         this.search = search;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
-        for(int y : search) {
+        for(int y = search.getMax(); y >= search.getMin(); y--) {
             if(column.getBlock(y).isAir() && !column.getBlock(y - 1).isAir()) {
                 return new BinaryColumn(y, y + 1, yi -> true);
             }

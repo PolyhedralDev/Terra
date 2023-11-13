@@ -11,29 +11,29 @@ import com.dfsek.terra.api.world.util.WriteInterceptor;
 public class MutatedStructureTemplate implements AbstractableTemplate {
     @Value("id")
     private String id;
-    
+
     @Value("mutate.read")
     private ReadInterceptor readInterceptor;
-    
+
     @Value("mutate.write")
     private WriteInterceptor writeInterceptor;
-    
+
     @Value("structure")
     private Structure delegate;
-    
+
     @Override
     public String getID() {
         return id;
     }
-    
+
     public ReadInterceptor getReadInterceptor() {
         return readInterceptor;
     }
-    
+
     public WriteInterceptor getWriteInterceptor() {
         return writeInterceptor;
     }
-    
+
     public Structure getDelegate() {
         return delegate;
     }

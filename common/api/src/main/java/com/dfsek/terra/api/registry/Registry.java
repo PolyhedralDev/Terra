@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -33,7 +33,7 @@ public interface Registry<T> extends TypeLoader<T> {
      */
     @Contract(pure = true)
     Optional<T> get(@NotNull RegistryKey key);
-    
+
     /**
      * Check if the registry contains a value.
      *
@@ -43,21 +43,21 @@ public interface Registry<T> extends TypeLoader<T> {
      */
     @Contract(pure = true)
     boolean contains(@NotNull RegistryKey key);
-    
+
     /**
      * Perform the given action for every value in the registry.
      *
      * @param consumer Action to perform on value.
      */
     void forEach(@NotNull Consumer<T> consumer);
-    
+
     /**
      * Perform an action for every key-value pair in the registry.
      *
      * @param consumer Action to perform on pair.
      */
     void forEach(@NotNull BiConsumer<RegistryKey, T> consumer);
-    
+
     /**
      * Get the entries of this registry as a {@link Set}.
      *
@@ -66,7 +66,7 @@ public interface Registry<T> extends TypeLoader<T> {
     @NotNull
     @Contract(pure = true)
     Collection<T> entries();
-    
+
     /**
      * Get all the keys in this registry.
      *
@@ -75,13 +75,13 @@ public interface Registry<T> extends TypeLoader<T> {
     @NotNull
     @Contract(pure = true)
     Set<RegistryKey> keys();
-    
+
     TypeKey<T> getType();
-    
+
     default Class<? super T> getRawType() {
         return getType().getRawType();
     }
-    
+
     default Optional<T> getByID(String id) {
         return getByID(id, map -> {
             if(map.isEmpty()) return Optional.empty();
@@ -89,19 +89,19 @@ public interface Registry<T> extends TypeLoader<T> {
                 return map.values().stream().findFirst(); // only one value.
             }
             throw new IllegalArgumentException("ID \"" + id + "\" is ambiguous; matches: " + map
-                    .keySet()
-                    .stream()
-                    .map(RegistryKey::toString)
-                    .reduce("", (a, b) -> a + "\n - " + b));
+                .keySet()
+                .stream()
+                .map(RegistryKey::toString)
+                .reduce("", (a, b) -> a + "\n - " + b));
         });
     }
-    
+
     default Collection<T> getAllWithID(String id) {
         return getMatches(id).values();
     }
-    
+
     Map<RegistryKey, T> getMatches(String id);
-    
+
     default Optional<T> getByID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
         if(attempt.contains(":")) {
             return get(RegistryKey.parse(attempt));

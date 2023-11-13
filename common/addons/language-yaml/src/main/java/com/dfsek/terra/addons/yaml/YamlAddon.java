@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,23 +20,23 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 
 
 public class YamlAddon implements AddonInitializer {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(YamlAddon.class);
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigurationDiscoveryEvent.class)
-                .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
-                    LOGGER.debug("Discovered config {}", entry.getKey());
-                    event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
-                })).close())
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigurationDiscoveryEvent.class)
+            .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
+                LOGGER.debug("Discovered config {}", entry.getKey());
+                event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
+            })).close())
+            .failThrough();
     }
 }

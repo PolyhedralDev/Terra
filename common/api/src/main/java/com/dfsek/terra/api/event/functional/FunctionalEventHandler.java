@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -15,6 +15,6 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 public interface FunctionalEventHandler extends EventHandler {
     <T extends Event> EventContext<T> register(BaseAddon addon, Class<T> clazz);
-    
+
     <T extends Event> EventContext<T> register(BaseAddon addon, TypeKey<T> clazz);
 }

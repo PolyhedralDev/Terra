@@ -13,13 +13,13 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class SlantLayerTemplate implements ObjectTemplate<SlantHolder.Layer> {
-    
+
     @Value("threshold")
     private @Meta double threshold;
-    
+
     @Value("palette")
     private @Meta List<@Meta Map<@Meta Palette, @Meta Integer>> palettes;
-    
+
     @Override
     public SlantHolder.Layer get() {
         return new SlantHolder.Layer(PaletteHolder.of(palettes), threshold);

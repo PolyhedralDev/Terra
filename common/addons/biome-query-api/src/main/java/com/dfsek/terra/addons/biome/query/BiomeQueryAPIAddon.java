@@ -21,26 +21,26 @@ public class BiomeQueryAPIAddon implements AddonInitializer {
     private Platform platform;
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
-        
+
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPostLoadEvent.class)
-                .then(event -> {
-                    Collection<Biome> biomes = event
-                            .getPack()
-                            .getRegistry(Biome.class)
-                            .entries();
-            
-                    BiomeTagFlattener flattener = new BiomeTagFlattener(biomes
-                                                                                .stream()
-                                                                                .flatMap(biome -> biome.getTags().stream())
-                                                                                .toList());
-            
-                    biomes.forEach(biome -> biome.getContext().put(BIOME_TAG_KEY, new BiomeTagHolder(biome, flattener)));
-                })
-                .global();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPostLoadEvent.class)
+            .then(event -> {
+                Collection<Biome> biomes = event
+                    .getPack()
+                    .getRegistry(Biome.class)
+                    .entries();
+
+                BiomeTagFlattener flattener = new BiomeTagFlattener(biomes
+                    .stream()
+                    .flatMap(biome -> biome.getTags().stream())
+                    .toList());
+
+                biomes.forEach(biome -> biome.getContext().put(BIOME_TAG_KEY, new BiomeTagHolder(biome, flattener)));
+            })
+            .global();
     }
 }

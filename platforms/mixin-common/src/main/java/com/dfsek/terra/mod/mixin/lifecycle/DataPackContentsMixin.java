@@ -1,7 +1,6 @@
 package com.dfsek.terra.mod.mixin.lifecycle;
 
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.DataPackContents;
@@ -23,7 +22,7 @@ public class DataPackContentsMixin {
     @Inject(method = "refresh(Lnet/minecraft/registry/DynamicRegistryManager;)V", at = @At("RETURN"))
     private void injectReload(DynamicRegistryManager dynamicRegistryManager, CallbackInfo ci) {
         TagUtil.registerWorldPresetTags(dynamicRegistryManager.get(RegistryKeys.WORLD_PRESET));
-        
+
         Registry<Biome> biomeRegistry = dynamicRegistryManager.get(RegistryKeys.BIOME);
         TagUtil.registerBiomeTags(biomeRegistry);
         MinecraftUtil.registerFlora(biomeRegistry);

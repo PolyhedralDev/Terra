@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -34,7 +34,7 @@ public final class ReflectionUtil {
         }
         return result;
     }
-    
+
     public static Method[] getMethods(@NotNull Class<?> type) {
         Method[] result = type.getDeclaredMethods();
         Class<?> parentClass = type.getSuperclass();
@@ -43,13 +43,13 @@ public final class ReflectionUtil {
         }
         return result;
     }
-    
+
     public static <T extends Annotation> void ifAnnotationPresent(AnnotatedElement element, Class<? extends T> annotation,
                                                                   Consumer<T> operation) {
         T a = element.getAnnotation(annotation);
         if(a != null) operation.accept(a);
     }
-    
+
     public static Class<?> getRawType(Type type) {
         if(type instanceof Class<?>) {
             return (Class<?>) type;
@@ -69,7 +69,7 @@ public final class ReflectionUtil {
                                                + "GenericArrayType, but <" + type + "> is of type " + className);
         }
     }
-    
+
     public static String typeToString(Type type) {
         return type instanceof Class ? ((Class<?>) type).getName() : type.toString();
     }
@@ -83,7 +83,7 @@ public final class ReflectionUtil {
             if(!(b instanceof ParameterizedType pb)) {
                 return false;
             }
-            
+
             return Objects.equals(pa.getOwnerType(), pb.getOwnerType())
                    && pa.getRawType().equals(pb.getRawType())
                    && Arrays.equals(pa.getActualTypeArguments(), pb.getActualTypeArguments());
@@ -91,13 +91,13 @@ public final class ReflectionUtil {
             if(!(b instanceof GenericArrayType gb)) {
                 return false;
             }
-            
+
             return equals(ga.getGenericComponentType(), gb.getGenericComponentType());
         } else if(a instanceof WildcardType wa) {
             if(!(b instanceof WildcardType wb)) {
                 return false;
             }
-            
+
             return Arrays.equals(wa.getUpperBounds(), wb.getUpperBounds())
                    && Arrays.equals(wa.getLowerBounds(), wb.getLowerBounds());
         } else if(a instanceof TypeVariable<?> va) {

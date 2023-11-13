@@ -39,11 +39,11 @@ import com.dfsek.terra.api.Platform;
 public class SpigotListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(SpigotListener.class);
     private final Platform platform;
-    
+
     public SpigotListener(Platform platform) {
         this.platform = platform;
     }
-    
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEnderEye(EntitySpawnEvent e) {
 /*
@@ -68,7 +68,7 @@ public class SpigotListener implements Listener {
         }
 */
     }
-    
+
     @EventHandler
     public void onCartographerChange(VillagerAcquireTradeEvent e) {
         if(!(e.getEntity() instanceof Villager))
@@ -85,7 +85,7 @@ public class SpigotListener implements Listener {
             e.setCancelled(true); // Cancel leveling if the villager is a Cartographer, to prevent crashing server.
         }
     }
-    
+
     @EventHandler
     public void onCartographerLevel(VillagerCareerChangeEvent e) {
         if(e.getProfession() == Villager.Profession.CARTOGRAPHER) {

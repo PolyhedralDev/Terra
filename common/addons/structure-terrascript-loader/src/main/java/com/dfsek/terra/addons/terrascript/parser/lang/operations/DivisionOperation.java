@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -17,17 +17,17 @@ public class DivisionOperation extends BinaryOperation<Number, Number> {
     public DivisionOperation(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }
-    
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.NUMBER;
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
-    
+
     @Override
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) / right.applyDouble(implementationArguments, scope);

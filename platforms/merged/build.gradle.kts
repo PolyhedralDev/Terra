@@ -1,6 +1,6 @@
 val platformOverrides = mapOf(
     "fabric" to "remapJar"
-                             )
+)
 
 dependencies {
     api(project(":common:implementation:base"))
@@ -24,7 +24,7 @@ tasks["processResources"].dependsOn(dump)
 afterEvaluate {
     project(":platforms").subprojects.forEach {
         if (it == this@afterEvaluate) return@forEach
-        
+
         val taskName = platformOverrides.getOrDefault(it.name, "jar")
         val task = it.tasks.named(taskName).get()
         if (task !is AbstractArchiveTask) {

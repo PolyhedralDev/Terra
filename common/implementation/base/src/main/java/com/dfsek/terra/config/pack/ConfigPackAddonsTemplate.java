@@ -33,8 +33,8 @@ public class ConfigPackAddonsTemplate implements ConfigTemplate {
     @Value("addons")
     @Default
     private Map<BaseAddon, VersionRange> addons = new HashMap<>();
-    
-    
+
+
     public Map<BaseAddon, VersionRange> getAddons() {
         return addons;
     }

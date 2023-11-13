@@ -34,18 +34,18 @@ public class RegistryTest {
     @Test
     public void openRegistry() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
-        
+
         test.register(RegistryKey.parse("test:test"), "bazinga");
-        
+
         assertEquals(test.get(RegistryKey.parse("test:test")).orElseThrow(), "bazinga");
     }
-    
+
     @Test
     public void openRegistryChecked() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
-        
+
         test.registerChecked(RegistryKey.parse("test:test"), "bazinga");
-        
+
         try {
             test.registerChecked(RegistryKey.parse("test:test"), "bazinga2");
             fail("Shouldn't be able to re-register with #registerChecked!");
@@ -53,15 +53,15 @@ public class RegistryTest {
 
         }
     }
-    
+
     @Test
     public void checkedRegistry() {
         CheckedRegistry<String> test = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(String.class)));
-        
+
         test.register(RegistryKey.parse("test:test"), "bazinga");
-        
+
         assertEquals(test.get(RegistryKey.parse("test:test")).orElseThrow(), "bazinga");
-        
+
         try {
             test.register(RegistryKey.parse("test:test"), "bazinga2");
             fail("Shouldn't be able to re-register in CheckedRegistry!");
@@ -69,23 +69,23 @@ public class RegistryTest {
 
         }
     }
-    
+
     @Test
     public void getID() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
-        
+
         test.register(RegistryKey.parse("test:test"), "bazinga");
-        
+
         assertEquals(test.getByID("test").orElseThrow(), "bazinga");
     }
-    
+
     @Test
     public void getIDAmbiguous() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
-        
+
         test.registerChecked(RegistryKey.parse("test:test"), "bazinga");
         test.registerChecked(RegistryKey.parse("test2:test"), "bazinga");
-        
+
         try {
             test.getByID("test");
             fail("Shouldn't be able to get with ambiguous ID!");

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,7 +23,7 @@ public class ReplaceListMutator implements BiomeMutator {
     private final NoiseSampler sampler;
     private final ProbabilityCollection<BiomeDelegate> replaceDefault;
     private final String defaultTag;
-    
+
     public ReplaceListMutator(Map<BiomeDelegate, ProbabilityCollection<BiomeDelegate>> replace, String defaultTag,
                               ProbabilityCollection<BiomeDelegate> replaceDefault, NoiseSampler sampler) {
         this.replace = replace;
@@ -31,7 +31,7 @@ public class ReplaceListMutator implements BiomeMutator {
         this.defaultTag = defaultTag;
         this.replaceDefault = replaceDefault;
     }
-    
+
     @Override
     public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         BiomeDelegate center = viewPoint.getBiome(0, 0);
@@ -45,13 +45,13 @@ public class ReplaceListMutator implements BiomeMutator {
         }
         return center;
     }
-    
+
     @Override
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();
-        
+
         Set<BiomeDelegate> reject = new HashSet<>();
-        
+
         biomes.forEach(biome -> {
             if(!biome.getTags().contains(defaultTag) && !replace.containsKey(biome)) {
                 biomeSet.add(biome);

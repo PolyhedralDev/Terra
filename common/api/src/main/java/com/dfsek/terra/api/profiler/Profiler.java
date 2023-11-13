@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -17,7 +17,7 @@ public interface Profiler {
      * @param frame ID of frame.
      */
     void push(String frame);
-    
+
     /**
      * Pop a frame from this profiler.
      *
@@ -25,22 +25,22 @@ public interface Profiler {
      *              at the top of the profiler stack.
      */
     void pop(String frame);
-    
+
     /**
      * Start profiling.
      */
     void start();
-    
+
     /**
      * Stop profiling.
      */
     void stop();
-    
+
     /**
      * Clear the profiler data.
      */
     void reset();
-    
+
     /**
      * Get the profiler data.
      *

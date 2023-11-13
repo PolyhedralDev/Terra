@@ -1,13 +1,11 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
  */
 
 package com.dfsek.terra.addons.chunkgenerator.palette;
-
-import net.jafama.FastMath;
 
 import java.util.List;
 import java.util.Map;
@@ -20,21 +18,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 public class PaletteHolder {
     private final Palette[] palettes;
     private final int offset;
-    
+
     protected PaletteHolder(Palette[] palettes, int offset) {
         this.palettes = palettes;
         this.offset = offset;
     }
-    
-    public Palette getPalette(int y) {
-        int index = y + offset;
-        return index >= 0
-               ? index < palettes.length
-                 ? palettes[index]
-                 : palettes[palettes.length - 1]
-               : palettes[0];
-    }
-    
+
     public static PaletteHolder of(List<Map<Palette, Integer>> palettes) {
         PaletteHolderBuilder builder = new PaletteHolderBuilder();
         for(Map<Palette, Integer> layer : palettes) {
@@ -44,22 +33,32 @@ public class PaletteHolder {
         }
         return builder.build();
     }
-    
+
+    public Palette getPalette(int y) {
+        int index = y + offset;
+        return index >= 0
+               ? index < palettes.length
+                 ? palettes[index]
+                 : palettes[palettes.length - 1]
+               : palettes[0];
+    }
+
+
     private static class PaletteHolderBuilder {
         private final TreeMap<Integer, Palette> paletteMap = new TreeMap<>();
-        
+
         public PaletteHolderBuilder add(int y, Palette palette) {
             paletteMap.put(y, palette);
             return this;
         }
-        
+
         public PaletteHolder build() {
-            
-            int min = FastMath.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
-            int max = FastMath.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
-            
+
+            int min = Math.min(paletteMap.keySet().stream().min(Integer::compareTo).orElse(0), 0);
+            int max = Math.max(paletteMap.keySet().stream().max(Integer::compareTo).orElse(255), 255);
+
             Palette[] palettes = new Palette[paletteMap.lastKey() + 1 - min];
-            for(int y = min; y <= FastMath.max(paletteMap.lastKey(), max); y++) {
+            for(int y = min; y <= Math.max(paletteMap.lastKey(), max); y++) {
                 Palette d = null;
                 for(Entry<Integer, Palette> e : paletteMap.entrySet()) {
                     if(e.getKey() >= y) {

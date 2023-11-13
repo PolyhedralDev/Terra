@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -19,6 +19,6 @@ public class OreFactory implements ConfigFactory<OreTemplate, Structure> {
     public VanillaOre build(OreTemplate config, Platform platform) {
         BlockState m = config.getMaterial();
         return new VanillaOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.isExposed(),
-                              config.getMaterialOverrides());
+            config.getMaterialOverrides());
     }
 }

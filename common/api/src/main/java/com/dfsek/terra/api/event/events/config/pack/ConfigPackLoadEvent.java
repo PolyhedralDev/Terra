@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -21,12 +21,12 @@ import com.dfsek.terra.api.event.events.PackEvent;
 public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final ExceptionalConsumer<ConfigTemplate> configLoader;
-    
+
     public ConfigPackLoadEvent(ConfigPack pack, ExceptionalConsumer<ConfigTemplate> configLoader) {
         this.pack = pack;
         this.configLoader = configLoader;
     }
-    
+
     /**
      * Load a custom {@link ConfigTemplate} using the pack manifest.
      *
@@ -36,12 +36,12 @@ public abstract class ConfigPackLoadEvent implements PackEvent, FailThroughEvent
         configLoader.accept(template);
         return template;
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public interface ExceptionalConsumer<T extends ConfigTemplate> {
         void accept(T value) throws ConfigException;
     }

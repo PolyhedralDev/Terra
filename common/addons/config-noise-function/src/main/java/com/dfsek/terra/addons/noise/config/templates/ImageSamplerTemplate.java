@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,20 +20,20 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
 public class ImageSamplerTemplate extends SamplerTemplate<ImageSampler> {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(ImageSamplerTemplate.class);
-    
+
     private static boolean used = false;
-    
+
     @Value("image")
     private @Meta BufferedImage image;
-    
+
     @Value("frequency")
     private @Meta double frequency;
-    
+
     @Value("channel")
     private ImageSampler.@Meta Channel channel;
-    
+
     @Override
     public NoiseSampler get() {
         if(!used) {

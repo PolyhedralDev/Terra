@@ -18,7 +18,6 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
@@ -37,46 +36,46 @@ import com.dfsek.terra.mod.util.SeedHack;
 
 
 public class TerraBiomeSource extends BiomeSource {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TerraBiomeSource.class);
     private ConfigPack pack;
-    
+
     public TerraBiomeSource(ConfigPack pack) {
         this.pack = pack;
-        
+
         LOGGER.debug("Biomes: " + getBiomes());
     }
-    
+
     @Override
     protected Codec<? extends BiomeSource> getCodec() {
         return Codecs.TERRA_BIOME_SOURCE;
     }
-    
+
     @Override
     protected Stream<RegistryEntry<Biome>> biomeStream() {
         return StreamSupport
-                .stream(pack.getBiomeProvider()
-                            .getBiomes()
-                            .spliterator(), false)
-                .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate());
+            .stream(pack.getBiomeProvider()
+                .getBiomes()
+                .spliterator(), false)
+            .map(b -> ((ProtoPlatformBiome) b.getPlatformBiome()).getDelegate());
     }
-    
+
     @Override
     public RegistryEntry<Biome> getBiome(int biomeX, int biomeY, int biomeZ, MultiNoiseSampler noiseSampler) {
         return ((ProtoPlatformBiome) pack
-                                 .getBiomeProvider()
-                                 .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
-                                 .getPlatformBiome()).getDelegate();
+            .getBiomeProvider()
+            .getBiome(biomeX << 2, biomeY << 2, biomeZ << 2, SeedHack.getSeed(noiseSampler))
+            .getPlatformBiome()).getDelegate();
     }
-    
+
     public BiomeProvider getProvider() {
         return pack.getBiomeProvider();
     }
-    
+
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public void setPack(ConfigPack pack) {
         this.pack = pack;
     }

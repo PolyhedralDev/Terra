@@ -1,7 +1,6 @@
 package com.dfsek.terra.cli.world;
 
 import com.google.common.collect.Streams;
-import net.jafama.FastMath;
 import net.querz.mca.MCAFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +44,9 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     private final BiomeProvider biomeProvider;
     private final ConfigPack pack;
     private final AtomicInteger amount = new AtomicInteger(0);
-    
+
     private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
-    
+
     public CLIWorld(int size,
                     long seed,
                     int maxHeight,
@@ -60,8 +59,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         this.chunkGenerator = pack.getGeneratorProvider().newInstance(pack);
         this.biomeProvider = pack.getBiomeProvider();
         this.pack = pack;
-        
-        
+
+
         size += 1;
         this.regions = new Region[size * size];
         this.negativeRegions = new Region[size * size];
@@ -72,7 +71,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
             }
         }
     }
-    
+
     public void generate() {
         int sizeChunks = size * 32;
         List<Future<?>> futures = new ArrayList<>();
@@ -102,7 +101,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                 }));
             }
         }
-        
+
         for(Future<?> future : futures) {
             try {
                 future.get();
@@ -111,18 +110,18 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
             }
         }
     }
-    
+
     @Override
     public Object getHandle() {
         return this;
     }
-    
+
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        return getChunkAt(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16))
-                .getBlock(FastMath.floorMod(x, 16), y, FastMath.floorMod(z, 16));
+        return getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16))
+            .getBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16));
     }
-    
+
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
         return new BlockEntity() {
@@ -130,176 +129,176 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
             public boolean update(boolean applyPhysics) {
                 return false;
             }
-            
+
             @Override
             public Vector3 getPosition() {
                 return Vector3.of(x, y, z);
             }
-            
+
             @Override
             public int getX() {
                 return x;
             }
-            
+
             @Override
             public int getY() {
                 return y;
             }
-            
+
             @Override
             public int getZ() {
                 return z;
             }
-            
+
             @Override
             public BlockState getBlockState() {
                 return CLIWorld.this.getBlockState(x, y, z);
             }
-            
+
             @Override
             public Object getHandle() {
                 return this;
             }
         };
     }
-    
+
     @Override
     public CLIChunk getChunkAt(int x, int z) {
-        return getRegion(FastMath.floorDiv(x, 32), FastMath.floorDiv(z, 32))
-                .get(FastMath.floorMod(x, 32), FastMath.floorMod(z, 32));
+        return getRegion(Math.floorDiv(x, 32), Math.floorDiv(z, 32))
+            .get(Math.floorMod(x, 32), Math.floorMod(z, 32));
     }
-    
+
     public Region getRegion(int x, int z) {
         int key = x + z * size;
         if(key >= 0) return regions[key];
         else return negativeRegions[-key];
     }
-    
+
     @Override
     public long getSeed() {
         return seed;
     }
-    
+
     @Override
     public int getMaxHeight() {
         return maxHeight;
     }
-    
+
     @Override
     public int getMinHeight() {
         return minHeight;
     }
-    
+
     @Override
     public ChunkGenerator getGenerator() {
         return chunkGenerator;
     }
-    
+
     @Override
     public BiomeProvider getBiomeProvider() {
         return biomeProvider;
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        getChunkAt(FastMath.floorDiv(x, 16), FastMath.floorDiv(z, 16))
-                .setBlock(FastMath.floorMod(x, 16), y, FastMath.floorMod(z, 16), data, physics);
+        getChunkAt(Math.floorDiv(x, 16), Math.floorDiv(z, 16))
+            .setBlock(Math.floorMod(x, 16), y, Math.floorMod(z, 16), data, physics);
     }
-    
+
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return null;
     }
-    
+
     @Override
     public Stream<Pair<Vector2Int, MCAFile>> serialize() {
         return Streams
-                .concat(Arrays.stream(regions), Arrays.stream(negativeRegions))
-                .map(region -> Pair.of(Vector2Int.of(region.getX(), region.getZ()), region.serialize()));
+            .concat(Arrays.stream(regions), Arrays.stream(negativeRegions))
+            .map(region -> Pair.of(Vector2Int.of(region.getX(), region.getZ()), region.serialize()));
     }
-    
+
     private static final class CLIProtoWorld implements ProtoWorld {
         private final CLIWorld delegate;
         private final BiomeProvider biomeProvider;
         private final int x, z;
-        
+
         private CLIProtoWorld(CLIWorld delegate, BiomeProvider biomeProvider, int x, int z) {
             this.delegate = delegate;
             this.biomeProvider = biomeProvider;
             this.x = x;
             this.z = z;
         }
-        
+
         @Override
         public Object getHandle() {
             return this;
         }
-        
+
         @Override
         public BlockState getBlockState(int x, int y, int z) {
             return delegate.getBlockState(x, y, z);
         }
-        
+
         @Override
         public BlockEntity getBlockEntity(int x, int y, int z) {
             return delegate.getBlockEntity(x, y, z);
         }
-        
+
         @Override
         public long getSeed() {
             return delegate.seed;
         }
-        
+
         @Override
         public int getMaxHeight() {
             return delegate.maxHeight;
         }
-        
+
         @Override
         public int getMinHeight() {
             return delegate.minHeight;
         }
-        
+
         @Override
         public ChunkGenerator getGenerator() {
             return delegate.chunkGenerator;
         }
-        
+
         @Override
         public BiomeProvider getBiomeProvider() {
             return biomeProvider;
         }
-        
+
         @Override
         public ConfigPack getPack() {
             return delegate.pack;
         }
-        
+
         @Override
         public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
             delegate.setBlockState(x, y, z, data, physics);
         }
-        
+
         @Override
         public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
             return delegate.spawnEntity(x, y, z, entityType);
         }
-        
+
         @Override
         public int centerChunkX() {
             return x;
         }
-        
+
         @Override
         public int centerChunkZ() {
             return z;
         }
-        
+
         @Override
         public ServerWorld getWorld() {
             return delegate;

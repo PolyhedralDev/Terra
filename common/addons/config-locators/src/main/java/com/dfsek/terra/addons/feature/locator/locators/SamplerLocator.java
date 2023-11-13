@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,11 +18,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilde
 
 public class SamplerLocator implements Locator {
     private final List<NoiseSampler> samplers;
-    
+
     public SamplerLocator(List<NoiseSampler> samplers) {
         this.samplers = samplers;
     }
-    
+
     private static int floorToInt(double value) {
         int valueInt = (int) value;
         if(value < 0.0) {
@@ -35,18 +35,18 @@ public class SamplerLocator implements Locator {
             return valueInt;
         }
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         BinaryColumnBuilder results = column.newBinaryColumn();
-        
+
         long seed = column.getWorld().getSeed();
         samplers.forEach(sampler -> {
             int y = floorToInt(sampler.noise(seed, column.getX(), column.getZ()));
             if(y >= column.getMaxY() || y < column.getMinY()) return;
             results.set(y);
         });
-        
+
         return results.build();
     }
 }

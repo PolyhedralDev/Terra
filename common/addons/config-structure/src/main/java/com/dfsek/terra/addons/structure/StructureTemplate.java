@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,28 +23,28 @@ public class StructureTemplate implements AbstractableTemplate {
     @Value("id")
     @Final
     private String id;
-    
+
     @Value("scripts")
     private @Meta ProbabilityCollection<@Meta Structure> structure;
-    
+
     @Value("spawn.start")
     private @Meta Range y;
-    
+
     @Value("spawn")
     private @Meta StructureSpawn spawn;
-    
+
     public String getID() {
         return id;
     }
-    
+
     public ProbabilityCollection<Structure> getStructures() {
         return structure;
     }
-    
+
     public Range getY() {
         return y;
     }
-    
+
     public StructureSpawn getSpawn() {
         return spawn;
     }

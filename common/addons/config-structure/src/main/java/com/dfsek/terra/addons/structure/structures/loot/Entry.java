@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -31,7 +30,7 @@ public class Entry {
     private final Item item;
     private final long weight;
     private final List<LootFunction> functions = new ArrayList<>();
-    
+
     /**
      * Instantiates an Entry from a JSON representation.
      *
@@ -40,14 +39,14 @@ public class Entry {
     public Entry(JSONObject entry, Platform platform) {
         String id = entry.get("name").toString();
         this.item = platform.getItemHandle().createItem(id);
-        
+
         long weight1;
         try {
             weight1 = (long) entry.get("weight");
         } catch(NullPointerException e) {
             weight1 = 1;
         }
-        
+
         this.weight = weight1;
         if(entry.containsKey("functions")) {
             for(Object function : (JSONArray) entry.get("functions")) {
@@ -62,12 +61,12 @@ public class Entry {
                             max = (long) ((JSONObject) loot).get("max");
                             min = (long) ((JSONObject) loot).get("min");
                         }
-                        functions.add(new AmountFunction(FastMath.toIntExact(min), FastMath.toIntExact(max)));
+                        functions.add(new AmountFunction(Math.toIntExact(min), Math.toIntExact(max)));
                     }
                     case "minecraft:set_damage", "set_damage" -> {
                         long maxDamage = (long) ((JSONObject) ((JSONObject) function).get("damage")).get("max");
                         long minDamage = (long) ((JSONObject) ((JSONObject) function).get("damage")).get("min");
-                        functions.add(new DamageFunction(FastMath.toIntExact(minDamage), FastMath.toIntExact(maxDamage)));
+                        functions.add(new DamageFunction(Math.toIntExact(minDamage), Math.toIntExact(maxDamage)));
                     }
                     case "minecraft:enchant_with_levels", "enchant_with_levels" -> {
                         long maxEnchant = (long) ((JSONObject) ((JSONObject) function).get("levels")).get("max");
@@ -76,13 +75,13 @@ public class Entry {
                         if(((JSONObject) function).containsKey("disabled_enchants"))
                             disabled = (JSONArray) ((JSONObject) function).get("disabled_enchants");
                         functions.add(
-                                new EnchantFunction(FastMath.toIntExact(minEnchant), FastMath.toIntExact(maxEnchant), disabled, platform));
+                            new EnchantFunction(Math.toIntExact(minEnchant), Math.toIntExact(maxEnchant), disabled, platform));
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Fetches a single ItemStack from the Entry, applying all functions to it.
      *
@@ -97,7 +96,7 @@ public class Entry {
         }
         return item;
     }
-    
+
     /**
      * Gets the weight attribute of the Entry.
      *

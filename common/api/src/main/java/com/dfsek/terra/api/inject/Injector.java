@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -23,14 +23,14 @@ public interface Injector<T> {
     static <T1> Injector<T1> get(T1 value) {
         return new InjectorImpl<>(value);
     }
-    
+
     /**
      * Add an explicit class as a target. Useful for applications where subclasses may cause issues with DI.
      *
      * @param target Target class type.
      */
     void addExplicitTarget(Class<? extends T> target);
-    
+
     /**
      * Inject the stored object into an object.
      * <p>

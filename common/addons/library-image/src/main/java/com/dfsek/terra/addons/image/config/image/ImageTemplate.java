@@ -11,19 +11,17 @@ import com.dfsek.terra.api.config.Loader;
 
 
 public class ImageTemplate implements ObjectTemplate<Image> {
-    
+
+    private final Loader files;
+    private final ConfigPack pack;
     @Value("path")
     private String path;
-    
-    private final Loader files;
-    
-    private final ConfigPack pack;
-    
+
     public ImageTemplate(Loader files, ConfigPack pack) {
         this.files = files;
         this.pack = pack;
     }
-    
+
     @Override
     public Image get() {
         try {

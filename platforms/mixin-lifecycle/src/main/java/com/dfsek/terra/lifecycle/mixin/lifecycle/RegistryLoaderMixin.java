@@ -31,43 +31,44 @@ public class RegistryLoaderMixin {
     @Shadow
     @Final
     private static Logger LOGGER;
-    
+
     @Redirect(
-            method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)" +
-                     "Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V",
-                    ordinal = 1 // we want right after the first forEach
-                    )
+        method = "load(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)" +
+                 "Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
+        at = @At(
+            value = "INVOKE",
+            target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V",
+            ordinal = 1 // we want right after the first forEach
+            )
     )
     private static void grabManager(List<Pair<MutableRegistry<?>, Object>> instance, Consumer<Pair<MutableRegistry<?>, Object>> consumer) {
         instance.forEach(mutableRegistryObjectPair -> LOGGER.debug("{}: {} entries",
-                                                                   mutableRegistryObjectPair.getFirst().toString(),
-                                                                   mutableRegistryObjectPair.getFirst().size())
-                        );
+            mutableRegistryObjectPair.getFirst().toString(),
+            mutableRegistryObjectPair.getFirst().size())
+        );
         extractRegistry(instance, RegistryKeys.BIOME).ifPresent(
-                biomes -> { // this redirect triggers twice, second time only with dimension registry. don't try extraction second time
-                    MutableRegistry<DimensionType> dimensionTypes = extractRegistry(instance, RegistryKeys.DIMENSION_TYPE).orElseThrow();
-                    MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
-                    MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance,
-                                                                                                     RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
-                    MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance, RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
-                    
-                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists);
-                    LifecycleUtil.initialize(biomes, worldPresets);
-                });
+            biomes -> { // this redirect triggers twice, second time only with dimension registry. don't try extraction second time
+                MutableRegistry<DimensionType> dimensionTypes = extractRegistry(instance, RegistryKeys.DIMENSION_TYPE).orElseThrow();
+                MutableRegistry<WorldPreset> worldPresets = extractRegistry(instance, RegistryKeys.WORLD_PRESET).orElseThrow();
+                MutableRegistry<ChunkGeneratorSettings> chunkGeneratorSettings = extractRegistry(instance,
+                    RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
+                MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance,
+                    RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
+
+                LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists);
+                LifecycleUtil.initialize(biomes, worldPresets);
+            });
         instance.forEach(consumer);
     }
-    
+
     @SuppressWarnings("unchecked")
     private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance,
                                                                     RegistryKey<Registry<T>> key) {
         List<? extends MutableRegistry<?>> matches = instance
-                .stream()
-                .map(Pair::getFirst)
-                .filter(r -> r.getKey().equals(key))
-                .toList();
+            .stream()
+            .map(Pair::getFirst)
+            .filter(r -> r.getKey().equals(key))
+            .toList();
         if(matches.size() > 1) {
             throw new IllegalStateException("Illegal number of registries returned: " + matches);
         } else if(matches.isEmpty()) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -20,8 +20,8 @@ public interface EventManager {
      * @param event Event to pass to all registered EventListeners.
      */
     <T extends Event> T callEvent(T event);
-    
+
     <T extends EventHandler> void registerHandler(Class<T> clazz, T handler);
-    
+
     <T extends EventHandler> T getHandler(Class<T> clazz);
 }

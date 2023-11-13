@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.dfsek.terra.addons.image.util.ColorUtil;
 
+
 public class ClosestMatchColorConverter<T> implements ColorConverter<T> {
 
     private final Map<Integer, T> map;

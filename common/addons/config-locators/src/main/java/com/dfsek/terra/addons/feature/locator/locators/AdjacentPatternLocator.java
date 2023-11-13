@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -19,18 +19,18 @@ public class AdjacentPatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;
     private final boolean matchAll;
-    
+
     public AdjacentPatternLocator(Pattern pattern, Range search, boolean matchAll) {
         this.pattern = pattern;
         this.search = search;
         this.matchAll = matchAll;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         return new BinaryColumn(search, y -> isValid(y, column));
     }
-    
+
     private boolean isValid(int y, Column<?> column) {
         WritableWorld world = column.getWorld();
         int x = column.getX();

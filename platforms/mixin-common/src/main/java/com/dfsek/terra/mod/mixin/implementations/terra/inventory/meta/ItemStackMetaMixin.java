@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -41,22 +40,22 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 public abstract class ItemStackMetaMixin {
     @Shadow
     public abstract boolean hasEnchantments();
-    
+
     @Shadow
     public abstract NbtList getEnchantments();
-    
+
     @Shadow
     public abstract void addEnchantment(net.minecraft.enchantment.Enchantment enchantment, int level);
-    
+
     public void terra$addEnchantment(Enchantment enchantment, int level) {
         addEnchantment((net.minecraft.enchantment.Enchantment) enchantment, level);
     }
-    
+
     @Intrinsic(displace = true)
     public Map<Enchantment, Integer> terra$getEnchantments() {
         if(!hasEnchantments()) return Collections.emptyMap();
         Map<Enchantment, Integer> map = new HashMap<>();
-        
+
         getEnchantments().forEach(enchantment -> {
             NbtCompound eTag = (NbtCompound) enchantment;
             map.put((Enchantment) Registries.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));

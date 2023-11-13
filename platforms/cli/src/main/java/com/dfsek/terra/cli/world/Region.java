@@ -10,14 +10,14 @@ public class Region implements NBTSerializable<MCAFile> {
     private final CLIChunk[] chunks;
     private final int x, z;
     private final CLIWorld world;
-    
+
     public Region(CLIWorld world, int x, int z) {
         this.x = x;
         this.z = z;
         this.world = world;
         this.chunks = new CLIChunk[32 * 32];
     }
-    
+
     public CLIChunk get(int x, int z) {
         int key = x + z * 32;
         CLIChunk chunk = chunks[key];
@@ -27,7 +27,7 @@ public class Region implements NBTSerializable<MCAFile> {
         }
         return chunk;
     }
-    
+
     @Override
     public MCAFile serialize() {
         MCAFile mcaFile = new MCAFile(x, z);
@@ -46,11 +46,11 @@ public class Region implements NBTSerializable<MCAFile> {
         }
         return mcaFile;
     }
-    
+
     public int getX() {
         return x;
     }
-    
+
     public int getZ() {
         return z;
     }

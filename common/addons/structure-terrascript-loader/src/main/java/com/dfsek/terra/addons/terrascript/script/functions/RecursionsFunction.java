@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -16,21 +16,21 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class RecursionsFunction implements Function<Number> {
     private final Position position;
-    
+
     public RecursionsFunction(Position position) {
         this.position = position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return ((TerraImplementationArguments) implementationArguments).getRecursions();
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

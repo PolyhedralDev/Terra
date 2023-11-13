@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -14,11 +14,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 public class PaletteSettingsImpl implements PaletteSettings {
     private final PaletteHolder palette;
-    
+
     public PaletteSettingsImpl(PaletteHolder palette) {
         this.palette = palette;
     }
-    
+
     @Override
     public Palette getPalette(int y) {
         return palette.getPalette(y);

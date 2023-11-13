@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -21,14 +21,14 @@ public interface BlockType extends Handle {
      * @return Default block state
      */
     BlockState getDefaultState();
-    
+
     /**
      * Get whether this block is solid.
      *
      * @return Whether this block is solid.
      */
     boolean isSolid();
-    
+
     /**
      * Get whether this block is water.
      *

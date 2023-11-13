@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -29,11 +29,11 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
  */
 public interface Platform extends LoaderRegistrar {
     boolean reload();
-    
+
     @NotNull
     @Contract(pure = true)
     String platformName();
-    
+
     /**
      * Runs a task that may or may not be thread safe, depending on platform.
      * <p>
@@ -44,40 +44,40 @@ public interface Platform extends LoaderRegistrar {
     default void runPossiblyUnsafeTask(@NotNull Runnable task) {
         task.run();
     }
-    
+
     @NotNull
     @Contract(pure = true)
     WorldHandle getWorldHandle();
-    
+
     @NotNull
     @Contract(pure = true)
     PluginConfig getTerraConfig();
-    
+
     @NotNull
     @Contract(pure = true)
     File getDataFolder();
-    
+
     @NotNull
     @Contract(pure = true)
     CheckedRegistry<ConfigPack> getConfigRegistry();
-    
+
     @NotNull
     @Contract(pure = true)
     Registry<BaseAddon> getAddons();
-    
+
     @NotNull
     @Contract(pure = true)
     ItemHandle getItemHandle();
-    
+
     @NotNull
     @Contract(pure = true)
     EventManager getEventManager();
-    
+
     @Contract(pure = true)
     default @NotNull String getVersion() {
         return "@VERSION@";
     }
-    
+
     @NotNull
     @Contract(pure = true)
     Profiler getProfiler();

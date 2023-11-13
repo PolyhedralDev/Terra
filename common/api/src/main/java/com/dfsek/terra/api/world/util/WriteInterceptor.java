@@ -8,6 +8,6 @@ public interface WriteInterceptor {
     default void write(int x, int y, int z, BlockState block, WritableWorld world) {
         write(x, y, z, block, world, false);
     }
-    
+
     void write(int x, int y, int z, BlockState block, WritableWorld world, boolean physics);
 }

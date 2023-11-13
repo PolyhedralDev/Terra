@@ -36,11 +36,11 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
     public static final TypeKey<String> META_STRING_KEY = new TypeKey<@Meta String>() {
     };
-    
+
     public MetaNumberPreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
-    
+
     private static boolean isNumber(Class<?> clazz) {
         return Number.class.isAssignableFrom(clazz)
                || byte.class.equals(clazz)
@@ -49,7 +49,7 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
                || float.class.equals(clazz)
                || double.class.equals(clazz);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -27,7 +27,7 @@ public class BorderStage implements Stage {
     private final ProbabilityCollection<PipelineBiome> replace;
     private final String replaceTag;
     private final Vector2Int[] borderPoints;
-    
+
     public BorderStage(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollection<PipelineBiome> replace) {
         this.border = border;
         this.noiseSampler = noiseSampler;
@@ -42,7 +42,7 @@ public class BorderStage implements Stage {
         }
         this.borderPoints = points.toArray(new Vector2Int[0]);
     }
-    
+
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         PipelineBiome center = viewPoint.getBiome();
@@ -57,23 +57,23 @@ public class BorderStage implements Stage {
         }
         return center;
     }
-    
+
     @Override
     public Iterable<PipelineBiome> getBiomes(Iterable<PipelineBiome> biomes) {
         Set<PipelineBiome> biomeSet = new HashSet<>();
         biomes.forEach(biomeSet::add);
         biomeSet.addAll(
-                replace
-                        .getContents()
-                        .stream()
-                        .filter(
-                                Predicate.not(PipelineBiome::isSelf)
-                               )
-                        .toList()
-                       );
+            replace
+                .getContents()
+                .stream()
+                .filter(
+                    Predicate.not(PipelineBiome::isSelf)
+                )
+                .toList()
+        );
         return biomeSet;
     }
-    
+
     @Override
     public int maxRelativeReadDistance() {
         return 1;

@@ -22,10 +22,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,7 +37,7 @@ import com.dfsek.terra.mod.CommonPlatform;
 
 
 public class MinecraftItemHandle implements ItemHandle {
-    
+
     @Override
     public Item createItem(String data) {
         try {
@@ -51,12 +51,12 @@ public class MinecraftItemHandle implements ItemHandle {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }
     }
-    
+
     @Override
     public Enchantment getEnchantment(String id) {
         return (Enchantment) (Registries.ENCHANTMENT.get(Identifier.tryParse(id)));
     }
-    
+
     @Override
     public Set<Enchantment> getEnchantments() {
         return Registries.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());

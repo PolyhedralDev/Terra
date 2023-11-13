@@ -41,26 +41,26 @@ import com.dfsek.terra.config.loaders.VersionRangeLoader;
 
 public class GenericLoaders implements LoaderRegistrar {
     private final Platform platform;
-    
+
     public GenericLoaders(Platform platform) {
         this.platform = platform;
     }
-    
+
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(Range.class, new RangeLoader())
-                .registerLoader(Version.class, new VersionLoader())
-                .registerLoader(MaterialSet.class, new MaterialSetLoader())
-                .registerLoader(VersionRange.class, new VersionRangeLoader())
-                .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
-        
+            .registerLoader(Range.class, new RangeLoader())
+            .registerLoader(Version.class, new VersionLoader())
+            .registerLoader(MaterialSet.class, new MaterialSetLoader())
+            .registerLoader(VersionRange.class, new VersionRangeLoader())
+            .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader());
+
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
-                    .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
-                            .getWorldHandle().createBlockState((String) object).getBlockType())
-                    .registerLoader(BlockState.class, (type, object, configLoader, depthTracker) -> platform
-                            .getWorldHandle().createBlockState((String) object));
+                .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
+                    .getWorldHandle().createBlockState((String) object).getBlockType())
+                .registerLoader(BlockState.class, (type, object, configLoader, depthTracker) -> platform
+                    .getWorldHandle().createBlockState((String) object));
         }
     }
 }

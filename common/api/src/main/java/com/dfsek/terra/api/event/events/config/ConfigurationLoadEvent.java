@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -30,9 +30,9 @@ public class ConfigurationLoadEvent implements PackEvent, FailThroughEvent {
     private final AbstractConfiguration configuration;
     private final Consumer<ConfigTemplate> loader;
     private final ConfigType<?, ?> type;
-    
+
     private final Object loaded;
-    
+
     public ConfigurationLoadEvent(ConfigPack pack, AbstractConfiguration configuration, Consumer<ConfigTemplate> loader,
                                   ConfigType<?, ?> type, Object loaded) {
         this.pack = pack;
@@ -41,38 +41,38 @@ public class ConfigurationLoadEvent implements PackEvent, FailThroughEvent {
         this.type = type;
         this.loaded = loaded;
     }
-    
+
     public <T extends ConfigTemplate> T load(T template) {
         loader.accept(template);
         return template;
     }
-    
+
     public boolean is(Class<?> clazz) {
         return clazz.isAssignableFrom(type.getTypeKey().getRawType());
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public AbstractConfiguration getConfiguration() {
         return configuration;
     }
-    
+
     public ConfigType<?, ?> getType() {
         return type;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject(Class<T> clazz) {
         if(!clazz.isAssignableFrom(type.getTypeKey().getRawType()))
             throw new ClassCastException(
-                    "Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeKey().getType()) + " to class " +
-                    clazz.getCanonicalName());
+                "Cannot assign object from loader of type " + ReflectionUtil.typeToString(type.getTypeKey().getType()) + " to class " +
+                clazz.getCanonicalName());
         return (T) loaded;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T> T getLoadedObject() {
         return (T) loaded;

@@ -3,15 +3,6 @@ plugins {
     kotlin("jvm") version embeddedKotlinVersion
 }
 
-buildscript {
-    configurations.all {
-        resolutionStrategy {
-            force("org.ow2.asm:asm:9.3") // TODO: remove when ShadowJar updates ASM version
-            force("org.ow2.asm:asm-commons:9.3")
-        }
-    }
-}
-
 repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -24,11 +15,12 @@ repositories {
 }
 
 dependencies {
-    implementation("gradle.plugin.com.github.jengelman.gradle.plugins:shadow:+")
-    implementation("io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin:1.3.5")
-    
-    implementation("org.ow2.asm:asm:9.3")
-    implementation("org.ow2.asm:asm-tree:9.3")
-    implementation("com.dfsek.tectonic:common:4.2.0")
-    implementation("org.yaml:snakeyaml:1.27")
+    //TODO Allow pulling from Versions.kt
+    implementation("com.github.johnrengelman", "shadow", "8.1.1")
+    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "1.5.6")
+
+    implementation("org.ow2.asm", "asm", "9.5")
+    implementation("org.ow2.asm", "asm-tree", "9.5")
+    implementation("com.dfsek.tectonic", "common", "4.2.0")
+    implementation("org.yaml", "snakeyaml", "2.2")
 }

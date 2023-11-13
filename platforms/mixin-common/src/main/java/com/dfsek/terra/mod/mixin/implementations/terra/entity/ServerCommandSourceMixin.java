@@ -39,23 +39,23 @@ import com.dfsek.terra.api.entity.Player;
 public abstract class ServerCommandSourceMixin {
     @Shadow
     public abstract ServerPlayerEntity getPlayer() throws CommandSyntaxException;
-    
+
     @Shadow
     @Nullable
     public abstract net.minecraft.entity.@Nullable Entity getEntity();
-    
+
     @Shadow
     public abstract void sendMessage(Text message);
-    
+
     public void terra$sendMessage(String message) {
         sendMessage(Text.literal(message));
     }
-    
+
     @Nullable
     public Optional<Entity> terra$getEntity() {
         return Optional.ofNullable((Entity) getEntity());
     }
-    
+
     public Optional<Player> terra$getPlayer() {
         try {
             return Optional.ofNullable((Player) getPlayer());

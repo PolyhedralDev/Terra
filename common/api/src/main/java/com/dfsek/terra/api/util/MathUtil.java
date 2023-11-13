@@ -1,13 +1,11 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
  */
 
 package com.dfsek.terra.api.util;
-
-import net.jafama.FastMath;
 
 import java.util.List;
 
@@ -20,7 +18,58 @@ public final class MathUtil {
      * Epsilon for fuzzy floating point comparisons.
      */
     public static final double EPSILON = 1.0E-5;
-    
+    private static final int SIN_BITS, SIN_MASK, SIN_COUNT;
+    private static final double radFull, radToIndex;
+    private static final double degFull, degToIndex;
+    private static final double[] sin, cos;
+    static {
+        SIN_BITS = 12;
+        SIN_MASK = ~(-1 << SIN_BITS);
+        SIN_COUNT = SIN_MASK + 1;
+
+        radFull = Math.PI * 2.0;
+        degFull = 360.0;
+        radToIndex = SIN_COUNT / radFull;
+        degToIndex = SIN_COUNT / degFull;
+
+        sin = new double[SIN_COUNT];
+        cos = new double[SIN_COUNT];
+
+        for(int i = 0; i < SIN_COUNT; i++) {
+            sin[i] = Math.sin((i + 0.5f) / SIN_COUNT * radFull);
+            cos[i] = Math.cos((i + 0.5f) / SIN_COUNT * radFull);
+        }
+
+        // Four cardinal directions (credits: Nate)
+        for(int i = 0; i < 360; i += 90) {
+            sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
+            cos[(int) (i * degToIndex) & SIN_MASK] = Math.cos(i * Math.PI / 180.0);
+        }
+    }
+
+    public static double sin(double rad) {
+        return sin[(int) (rad * radToIndex) & SIN_MASK];
+    }
+
+    public static double cos(double rad) {
+        return cos[(int) (rad * radToIndex) & SIN_MASK];
+    }
+
+    public static double tan(double rad) {
+        return sin(rad) / cos(rad);
+    }
+
+    public static double invSqrt(double x) {
+        double halfX = 0.5d * x;
+        long i = Double.doubleToLongBits(x); // evil floating point bit level hacking
+        i = 0x5FE6EC85E7DE30DAL - (i >> 1); // what the fuck?
+        double y = Double.longBitsToDouble(i);
+        y *= (1.5d - halfX * y * y); // 1st newtonian iteration
+        // y *= (1.5d - halfX * y * y); // 2nd newtonian iteration, this can be removed
+
+        return y;
+    }
+
     /**
      * Gets the standard deviation of an array of doubles.
      *
@@ -31,20 +80,20 @@ public final class MathUtil {
     public static double standardDeviation(List<Number> numArray) {
         double sum = 0.0, standardDeviation = 0.0;
         int length = numArray.size();
-        
+
         for(Number num : numArray) {
             sum += num.doubleValue();
         }
-        
+
         double mean = sum / length;
-        
+
         for(Number num : numArray) {
-            standardDeviation += FastMath.pow2(num.doubleValue() - mean);
+            standardDeviation += Math.pow(num.doubleValue() - mean, 2);
         }
-        
-        return FastMath.sqrt(standardDeviation / length);
+
+        return Math.sqrt(standardDeviation / length);
     }
-    
+
     public static long hashToLong(String s) {
         if(s == null) {
             return 0;
@@ -55,7 +104,7 @@ public final class MathUtil {
         }
         return hash;
     }
-    
+
     /**
      * Compare 2 floating-point values with epsilon to account for rounding errors
      *
@@ -65,17 +114,17 @@ public final class MathUtil {
      * @return Whether these values are equal
      */
     public static boolean equals(double a, double b) {
-        return a == b || FastMath.abs(a - b) < EPSILON;
+        return a == b || Math.abs(a - b) < EPSILON;
     }
-    
+
     public static int normalizeIndex(double val, int size) {
-        return FastMath.max(FastMath.min(FastMath.floorToInt(((val + 1D) / 2D) * size), size - 1), 0);
+        return Math.max(Math.min((int) Math.floor(((val + 1D) / 2D) * size), size - 1), 0);
     }
-    
+
     public static long squash(int first, int last) {
         return (((long) first) << 32) | (last & 0xffffffffL);
     }
-    
+
     /**
      * Clamp value to range of [-1, 1]
      *
@@ -84,13 +133,13 @@ public final class MathUtil {
      * @return Clamped value
      */
     public static double clamp(double in) {
-        return FastMath.min(FastMath.max(in, -1), 1);
+        return Math.min(Math.max(in, -1), 1);
     }
-    
+
     public static int clamp(int min, int i, int max) {
-        return FastMath.max(FastMath.min(i, max), min);
+        return Math.max(Math.min(i, max), min);
     }
-    
+
     /**
      * Compute the value in a normally distributed data set that has probability p.
      *
@@ -112,30 +161,30 @@ public final class MathUtil {
         if(sigma == 0)
             return mu;
         double q, r, val;
-        
+
         q = p - 0.5;
-        
-        if(FastMath.abs(q) <= .425) {
+
+        if(Math.abs(q) <= .425) {
             r = .180625 - q * q;
             val =
-                    q * (((((((r * 2509.0809287301226727 +
-                               33430.575583588128105) * r + 67265.770927008700853) * r +
-                             45921.953931549871457) * r + 13731.693765509461125) * r +
-                           1971.5909503065514427) * r + 133.14166789178437745) * r +
-                         3.387132872796366608)
-                    / (((((((r * 5226.495278852854561 +
-                             28729.085735721942674) * r + 39307.89580009271061) * r +
-                           21213.794301586595867) * r + 5394.1960214247511077) * r +
-                         687.1870074920579083) * r + 42.313330701600911252) * r + 1);
+                q * (((((((r * 2509.0809287301226727 +
+                           33430.575583588128105) * r + 67265.770927008700853) * r +
+                         45921.953931549871457) * r + 13731.693765509461125) * r +
+                       1971.5909503065514427) * r + 133.14166789178437745) * r +
+                     3.387132872796366608)
+                / (((((((r * 5226.495278852854561 +
+                         28729.085735721942674) * r + 39307.89580009271061) * r +
+                       21213.794301586595867) * r + 5394.1960214247511077) * r +
+                     687.1870074920579083) * r + 42.313330701600911252) * r + 1);
         } else {
             if(q > 0) {
                 r = 1 - p;
             } else {
                 r = p;
             }
-            
-            r = FastMath.sqrt(-FastMath.log(r));
-            
+
+            r = Math.sqrt(-Math.log(r));
+
             if(r <= 5) {
                 r -= 1.6;
                 val = (((((((r * 7.7454501427834140764e-4 +
@@ -165,12 +214,54 @@ public final class MathUtil {
                            * r + .13692988092273580531) * r +
                           .59983220655588793769) * r + 1);
             }
-            
+
             if(q < 0.0) {
                 val = -val;
             }
         }
-        
+
         return mu + sigma * val;
+    }
+
+    /**
+     * Murmur64 hashing function
+     *
+     * @param h Input value
+     *
+     * @return Hashed value
+     */
+    public static long murmur64(long h) {
+        h ^= h >>> 33;
+        h *= 0xff51afd7ed558ccdL;
+        h ^= h >>> 33;
+        h *= 0xc4ceb9fe1a85ec53L;
+        h ^= h >>> 33;
+        return h;
+    }
+
+    /**
+     * 1D Linear interpolation between 2 points 1 unit apart.
+     *
+     * @param t  - Distance from v0. Total distance between v0 and v1 is 1 unit.
+     * @param v0 - Value at v0.
+     * @param v1 - Value at v1.
+     *
+     * @return double - The interpolated value.
+     */
+    public static double lerp(double t, double v0, double v1) {
+        return v0 + t * (v1 - v0);
+    }
+
+    public static double cubicLerp(double a, double b, double c, double d, double t) {
+        double p = (d - c) - (a - b);
+        return t * t * t * p + t * t * ((a - b) - p) + t * (c - a) + b;
+    }
+
+    public static double interpHermite(double t) {
+        return t * t * (3 - 2 * t);
+    }
+
+    public static double interpQuintic(double t) {
+        return t * t * t * (t * (t * 6 - 15) + 10);
     }
 }

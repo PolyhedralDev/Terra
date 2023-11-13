@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.image.operator;
 
-import net.jafama.FastMath;
-
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
@@ -17,22 +15,21 @@ import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
  * by Pedro F. Felzenszwalb and Daniel P. Huttenlocher.
  */
 public class DistanceTransform {
-    
+
+    private static final double MAX_DISTANCE_CAP = 10_000_000; // Arbitrarily large value, doubtful someone would
     private final double[][] distances;
-    
     /**
      * Size bounds matching the provided image.
      */
     private final int width, height;
-    
     /**
      * Min and max distances of the distance computation. These may change after {@link #normalize(Normalization)} calls.
      */
     private double minDistance, maxDistance;
-    
-    private static final double MAX_DISTANCE_CAP = 10_000_000; // Arbitrarily large value, doubtful someone would
-                                                               // ever use an image large enough to exceed this.
-    public DistanceTransform(Image image, Channel channel, int threshold, boolean clampToMaxEdgeDistance, CostFunction costFunction, boolean invertThreshold) {
+
+    // ever use an image large enough to exceed this.
+    public DistanceTransform(Image image, Channel channel, int threshold, boolean clampToMaxEdgeDistance, CostFunction costFunction,
+                             boolean invertThreshold) {
         // Construct binary image based on threshold value
         boolean[][] binaryImage = new boolean[image.getWidth()][image.getHeight()];
         for(int x = 0; x < image.getWidth(); x++) {
@@ -40,7 +37,7 @@ public class DistanceTransform {
                 binaryImage[x][y] = ColorUtil.getChannel(image.getRGB(x, y), channel) > threshold ^ invertThreshold;
             }
         }
-        
+
         // Get edges of binary image
         boolean[][] binaryImageEdge = new boolean[image.getWidth()][image.getHeight()];
         for(int x = 0; x < image.getWidth(); x++) {
@@ -49,26 +46,26 @@ public class DistanceTransform {
                     binaryImageEdge[x][y] = false;
                 else
                     // If cell borders any false cell
-                    binaryImageEdge[x][y] = x > 0 && !binaryImage[x-1][y] ||
-                                 y > 0 && !binaryImage[x][y-1] ||
-                                 x < image.getWidth ()-1 && !binaryImage[x+1][y] ||
-                                 y < image.getHeight()-1 && !binaryImage[x][y+1];
+                    binaryImageEdge[x][y] = x > 0 && !binaryImage[x - 1][y] ||
+                                            y > 0 && !binaryImage[x][y - 1] ||
+                                            x < image.getWidth() - 1 && !binaryImage[x + 1][y] ||
+                                            y < image.getHeight() - 1 && !binaryImage[x][y + 1];
             }
         }
-        
+
         double[][] function = new double[image.getWidth()][image.getHeight()];
         for(int x = 0; x < image.getWidth(); x++) {
             for(int y = 0; y < image.getHeight(); y++) {
-                function[x][y] = switch (costFunction) {
+                function[x][y] = switch(costFunction) {
                     case Channel -> ColorUtil.getChannel(image.getRGB(x, y), channel);
                     case Threshold -> binaryImage[x][y] ? MAX_DISTANCE_CAP : 0;
                     case ThresholdEdge, ThresholdEdgeSigned -> binaryImageEdge[x][y] ? 0 : MAX_DISTANCE_CAP;
                 };
             }
         }
-        
+
         distances = calculateDistance2D(function);
-        
+
         if(costFunction == CostFunction.ThresholdEdgeSigned) {
             for(int x = 0; x < image.getWidth(); x++) {
                 for(int y = 0; y < image.getHeight(); y++) {
@@ -76,17 +73,17 @@ public class DistanceTransform {
                 }
             }
         }
-        
+
         if(clampToMaxEdgeDistance) {
-            // Find largest value on the edge of the image
+            // Find the largest value on the edge of the image
             double max = Double.NEGATIVE_INFINITY;
             for(int x = 0; x < image.getWidth(); x++) {
                 max = Math.max(max, distances[x][0]);
-                max = Math.max(max, distances[x][image.getHeight()-1]);
+                max = Math.max(max, distances[x][image.getHeight() - 1]);
             }
             for(int y = 0; y < image.getHeight(); y++) {
                 max = Math.max(max, distances[0][y]);
-                max = Math.max(max, distances[image.getWidth()-1][y]);
+                max = Math.max(max, distances[image.getWidth() - 1][y]);
             }
             // Clamp to that largest value
             for(int x = 0; x < image.getWidth(); x++) {
@@ -98,10 +95,10 @@ public class DistanceTransform {
 
         this.width = image.getWidth();
         this.height = image.getHeight();
-        
+
         setOutputRange();
     }
-    
+
     private double[][] calculateDistance2D(double[][] f) {
         double[][] d = new double[f.length][f[0].length];
         // Distance pass for each column
@@ -115,41 +112,43 @@ public class DistanceTransform {
                 row[x] = d[x][y];
             row = calculateDistance1D(row);
             for(int x = 0; x < f[0].length; x++) {
-                d[x][y] = FastMath.sqrt(row[x]);
+                d[x][y] = Math.sqrt(row[x]);
             }
         }
         return d;
     }
-    
+
     private double[] calculateDistance1D(double[] f) {
         double[] d = new double[f.length];
         int[] v = new int[f.length];
-        double[] z = new double[f.length+1];
+        double[] z = new double[f.length + 1];
         int k = 0;
         v[0] = 0;
         z[0] = Integer.MIN_VALUE;
         z[1] = Integer.MAX_VALUE;
-        for(int q = 1; q <= f.length-1; q++) {
-            double s = ((f[q]+FastMath.pow2(q))-(f[v[k]]+FastMath.pow2(v[k])))/(2*q-2*v[k]);
-            while (s <= z[k]) {
+        for(int q = 1; q <= f.length - 1; q++) {
+            double fqPlusQ2 = (f[q] + Math.pow(q, 2));
+            double twoQ = 2 * q;
+            double s = (fqPlusQ2 - (f[v[k]] + Math.pow(v[k], 2))) / (twoQ - 2 * v[k]);
+            while(s <= z[k]) {
                 k--;
-                s = ((f[q]+FastMath.pow2(q))-(f[v[k]]+FastMath.pow2(v[k])))/(2*q-2*v[k]);
+                s = (fqPlusQ2 - (f[v[k]] + Math.pow(v[k], 2))) / (twoQ - 2 * v[k]);
             }
             k++;
             v[k] = q;
             z[k] = s;
-            z[k+1] = Integer.MAX_VALUE;
+            z[k + 1] = Integer.MAX_VALUE;
         }
-        
+
         k = 0;
-        for(int q = 0; q <= f.length-1; q++) {
-            while(z[k+1] < q)
+        for(int q = 0; q <= f.length - 1; q++) {
+            while(z[k + 1] < q)
                 k++;
-            d[q] = FastMath.pow2(q-v[k]) + f[v[k]];
+            d[q] = Math.pow(q - v[k], 2) + f[v[k]];
         }
         return d;
     }
-    
+
     /**
      * Redistributes the stored distance computation according to the provided {@link Normalization} method.
      */
@@ -166,9 +165,9 @@ public class DistanceTransform {
                             yield lerp(distances[x][y], minDistance, -1, maxDistance, 1);
                         } else {
                             if(d > 0) {
-                                yield FastMath.pow2(d/maxDistance);
+                                yield Math.pow(d / maxDistance, 2);
                             } else if(d < 0) {
-                                yield -FastMath.pow2(d/minDistance);
+                                yield -Math.pow(d / minDistance, 2);
                             } else {
                                 yield 0;
                             }
@@ -179,7 +178,7 @@ public class DistanceTransform {
         }
         setOutputRange();
     }
-    
+
     private void setOutputRange() {
         double minDistance = Double.POSITIVE_INFINITY;
         double maxDistance = Double.NEGATIVE_INFINITY;
@@ -192,25 +191,26 @@ public class DistanceTransform {
         this.minDistance = minDistance;
         this.maxDistance = maxDistance;
     }
-    
+
     public enum CostFunction {
         Channel,
         Threshold,
         ThresholdEdge,
         ThresholdEdgeSigned,
     }
-    
+
+
     public enum Normalization {
         /**
          * Return the raw calculated distances.
          */
         None,
-        
+
         /**
          * Redistribute the output values to fit in the range [-1, 1]
          */
         Linear,
-        
+
         /**
          * Redistributes smoothly to the range [-1, 1], such that areas where distance = 0 stay 0.
          * This is only really applicable to signed distance calculations, and will fall back to linear
@@ -218,22 +218,23 @@ public class DistanceTransform {
          */
         SmoothPreserveZero,
     }
-    
+
+
     public static class Noise implements NoiseSampler {
-    
+
         private final DistanceTransform transform;
-    
+
         public Noise(DistanceTransform transform, Normalization normalization) {
             this.transform = transform;
             transform.normalize(normalization);
         }
-    
+
         @Override
         public double noise(long seed, double x, double y) {
-            if(x<0 || y<0 || x>=transform.width || y>=transform.height) return transform.minDistance;
-            return transform.distances[FastMath.floorToInt(x)][FastMath.floorToInt(y)];
+            if(x < 0 || y < 0 || x >= transform.width || y >= transform.height) return transform.minDistance;
+            return transform.distances[(int) Math.floor(x)][(int) Math.floor(y)];
         }
-    
+
         @Override
         public double noise(long seed, double x, double y, double z) {
             return noise(seed, x, z);

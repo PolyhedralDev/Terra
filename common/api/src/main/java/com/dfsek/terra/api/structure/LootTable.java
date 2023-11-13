@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -25,7 +25,7 @@ public interface LootTable {
      * @param r The The Random instance to use.
      */
     void fillInventory(Inventory i, Random r);
-    
+
     /**
      * Fetches a list of ItemStacks from the loot table using the given Random instance.
      *

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -21,7 +21,7 @@ public class ConstantNoiseTemplate extends SamplerTemplate<ConstantSampler> {
     @Value("value")
     @Default
     private @Meta double value = 0d;
-    
+
     @Override
     public NoiseSampler get() {
         return new ConstantSampler(value);

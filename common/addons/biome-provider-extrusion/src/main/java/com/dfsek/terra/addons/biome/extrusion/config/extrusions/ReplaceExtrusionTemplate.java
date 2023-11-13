@@ -12,10 +12,10 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ReplaceExtrusionTemplate extends SamplerExtrusionTemplate {
     @Value("to")
     private @Meta ProbabilityCollection<@Meta ReplaceableBiome> biomes;
-    
+
     @Value("from")
     private @Meta String fromTag;
-    
+
     @Override
     public Extrusion get() {
         return new ReplaceExtrusion(sampler, range, biomes, fromTag);

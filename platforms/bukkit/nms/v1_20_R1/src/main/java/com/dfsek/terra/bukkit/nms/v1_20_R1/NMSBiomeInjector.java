@@ -1,9 +1,7 @@
 package com.dfsek.terra.bukkit.nms.v1_20_R1;
 
 import net.minecraft.core.Holder;
-import java.util.stream.Stream;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
@@ -11,20 +9,17 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
-import static net.minecraft.world.level.biome.Biome.ClimateSettings;
-import static net.minecraft.world.level.biome.Biome.Precipitation;
 
 public class NMSBiomeInjector {
 
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
         return registry.getOptional(identifier)
-                       .flatMap(registry::getResourceKey)
-                       .flatMap(registry::getHolder);
+            .flatMap(registry::getResourceKey)
+            .flatMap(registry::getHolder);
     }
 
     public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)
@@ -32,10 +27,10 @@ public class NMSBiomeInjector {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
 
         builder
-                .downfall(vanilla.climateSettings.downfall())
-                .temperature(vanilla.getBaseTemperature())
-                .mobSpawnSettings(vanilla.getMobSettings())
-                .generationSettings(vanilla.getGenerationSettings());
+            .downfall(vanilla.climateSettings.downfall())
+            .temperature(vanilla.getBaseTemperature())
+            .mobSpawnSettings(vanilla.getMobSettings())
+            .generationSettings(vanilla.getGenerationSettings());
 
 
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
@@ -46,11 +41,11 @@ public class NMSBiomeInjector {
 
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
 
-               .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
+            .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
 
-               .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
+            .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
 
-               .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
+            .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
 
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);

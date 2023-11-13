@@ -12,10 +12,10 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 
 public class DefinedBiomeColorMappingTemplate implements ObjectTemplate<ColorMapping<Biome>> {
-    
+
     @Value("map")
     Map<ColorString, Biome> map;
-    
+
     @Override
     public ColorMapping<Biome> get() {
         var map = MapUtil.mapKeys(this.map, ColorString::getColor);

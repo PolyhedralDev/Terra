@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -16,14 +16,14 @@ public abstract class VariableAssignmentNode<T> implements Item<T> {
     protected final Returnable<T> value;
     protected final int index;
     private final Position position;
-    
-    
+
+
     public VariableAssignmentNode(Returnable<T> value, Position position, int index) {
         this.value = value;
         this.index = index;
         this.position = position;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

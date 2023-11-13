@@ -10,7 +10,7 @@ public final class BiomeQueries {
     private BiomeQueries() {
 
     }
-    
+
     public static Predicate<Biome> has(String tag) {
         return new SingleTagQuery(tag);
     }

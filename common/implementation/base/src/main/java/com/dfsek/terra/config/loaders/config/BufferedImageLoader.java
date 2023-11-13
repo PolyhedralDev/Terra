@@ -33,22 +33,23 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.properties.Properties;
 
+
 /*
  * @deprecated Use the Image and ImageLoader class provided by the library-image addon instead. This is subject to removal in v7.
  */
 @Deprecated
 public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     private final Loader files;
-    
+
     private final ConfigPack pack;
-    
+
     public BufferedImageLoader(Loader files, ConfigPack pack) {
         this.files = files;
         this.pack = pack;
-        if (!pack.getContext().has(ImageCache.class))
+        if(!pack.getContext().has(ImageCache.class))
             pack.getContext().put(new ImageCache(new ConcurrentHashMap<>()));
     }
-    
+
     @Override
     public BufferedImage load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
@@ -60,7 +61,7 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
             }
         });
     }
-    
+
     /*
      * Cache prevents configs from loading the same image multiple times into memory
      */

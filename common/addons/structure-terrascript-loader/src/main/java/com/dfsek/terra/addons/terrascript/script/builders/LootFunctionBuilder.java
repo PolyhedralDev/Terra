@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,26 +23,26 @@ public class LootFunctionBuilder implements FunctionBuilder<LootFunction> {
     private final Platform platform;
     private final Registry<LootTable> registry;
     private final StructureScript script;
-    
+
     public LootFunctionBuilder(Platform platform, Registry<LootTable> registry, StructureScript script) {
         this.platform = platform;
         this.registry = registry;
         this.script = script;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public LootFunction build(List<Returnable<?>> argumentList, Position position) {
         return new LootFunction(registry, (Returnable<Number>) argumentList.get(0), (Returnable<Number>) argumentList.get(1),
-                                (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position,
-                                script);
+            (Returnable<Number>) argumentList.get(2), (Returnable<String>) argumentList.get(3), platform, position,
+            script);
     }
-    
+
     @Override
     public int argNumber() {
         return 4;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         return switch(position) {

@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_19_R3.CraftServer;
 
@@ -15,10 +14,10 @@ public class RegistryFetcher {
         CraftServer craftserver = (CraftServer) Bukkit.getServer();
         DedicatedServer dedicatedserver = craftserver.getServer();
         return dedicatedserver
-                .registryAccess()
-                .registryOrThrow(key);
+            .registryAccess()
+            .registryOrThrow(key);
     }
-    
+
     public static Registry<Biome> biomeRegistry() {
         return getRegistry(Registries.BIOME);
     }

@@ -41,42 +41,43 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
     public MetaListLikePreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(t.getType() instanceof ParameterizedType parameterizedType) {
             if(parameterizedType.getRawType() instanceof Class<?> baseClass) { // Should always be true but we check anyways
-                
+
                 if((List.class.isAssignableFrom(baseClass) || Set.class.isAssignableFrom(baseClass)) &&
                    c instanceof List) { // List or set metaconfig
                     List<Object> list = (List<Object>) c;
-                    
+
                     int offset = 0;
                     List<Object> newList = new ArrayList<>((List<Object>) c);
-                    
+
                     for(int i = 0; i < list.size(); i++) {
                         Object o = list.get(i);
                         if(!(o instanceof String)) continue;
                         String s = ((String) o).trim();
                         if(!s.startsWith("<< ")) continue;
                         String meta = s.substring(3);
-                        
-                        
+
+
                         Pair<Configuration, Object> pair = getMetaValue(meta, depthTracker);
                         Object metaValue = pair.getRight();
-                        
+
                         if(!(metaValue instanceof List)) {
                             throw new LoadException(
-                                    "MetaList/Set injection candidate must be list, is type " + metaValue.getClass().getCanonicalName(),
-                                    depthTracker);
+                                "Meta list / set injection (via <<) must point to a list. '" + meta + "' points to type " +
+                                metaValue.getClass().getCanonicalName(),
+                                depthTracker);
                         }
-                        
+
                         List<Object> metaList = (List<Object>) metaValue;
-                        
+
                         newList.remove(i + offset); // Remove placeholder
                         newList.addAll(i + offset, metaList); // Add metalist values where placeholder was
-                        
+
                         int begin = i + offset;
                         offset += metaList.size() - 1; // add metalist size to offset, subtract one to account for placeholder.
                         int end = i + offset;
@@ -95,12 +96,12 @@ public class MetaListLikePreprocessor extends MetaPreprocessor<Meta> {
                             return Optional.empty();
                         });
                     }
-                    
+
                     return (Result<T>) Result.overwrite(newList, depthTracker);
                 }
             }
         }
-        
+
         return Result.noOp();
     }
 }

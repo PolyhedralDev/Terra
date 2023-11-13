@@ -8,6 +8,6 @@ public interface RegistryProvider {
     default <T> CheckedRegistry<T> getOrCreateRegistry(Class<T> clazz) {
         return getOrCreateRegistry(TypeKey.of(clazz));
     }
-    
+
     <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> type);
 }

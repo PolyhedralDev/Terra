@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,14 +22,14 @@ public class BorderMutator implements BiomeMutator {
     private final NoiseSampler noiseSampler;
     private final ProbabilityCollection<BiomeDelegate> replace;
     private final String replaceTag;
-    
+
     public BorderMutator(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollection<BiomeDelegate> replace) {
         this.border = border;
         this.noiseSampler = noiseSampler;
         this.replace = replace;
         this.replaceTag = replaceTag;
     }
-    
+
     @Override
     public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         BiomeDelegate origin = viewPoint.getBiome(0, 0);
@@ -47,20 +47,20 @@ public class BorderMutator implements BiomeMutator {
         }
         return origin;
     }
-    
+
     @Override
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();
         biomes.forEach(biomeSet::add);
         biomeSet.addAll(
-                replace
-                        .getContents()
-                        .stream()
-                        .filter(
-                                Predicate.not(BiomeDelegate::isSelf)
-                               )
-                        .toList()
-                       );
+            replace
+                .getContents()
+                .stream()
+                .filter(
+                    Predicate.not(BiomeDelegate::isSelf)
+                )
+                .toList()
+        );
         return biomeSet;
     }
 }

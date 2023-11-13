@@ -15,26 +15,26 @@ import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
 
 public class NMSBiomeInjector {
-    
+
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
         return registry.getOptional(identifier)
-                       .flatMap(registry::getResourceKey)
-                       .map(registry::getOrCreateHolder);
+            .flatMap(registry::getResourceKey)
+            .map(registry::getOrCreateHolder);
     }
-    
+
     public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder(); // Builder
-        
-        
-        builder.biomeCategory(Reflection.BIOME.getBiomeCategory(vanilla))
-               .precipitation(vanilla.getPrecipitation()) // getPrecipitation
-               .mobSpawnSettings(vanilla.getMobSettings())
-               .generationSettings(vanilla.getGenerationSettings())
-               .temperature(vanilla.getBaseTemperature())
-               .downfall(vanilla.getDownfall());
 
-        
+
+        builder.biomeCategory(Reflection.BIOME.getBiomeCategory(vanilla))
+            .precipitation(vanilla.getPrecipitation()) // getPrecipitation
+            .mobSpawnSettings(vanilla.getMobSettings())
+            .generationSettings(vanilla.getGenerationSettings())
+            .temperature(vanilla.getBaseTemperature())
+            .downfall(vanilla.getDownfall());
+
+
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
 
         effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
@@ -43,11 +43,11 @@ public class NMSBiomeInjector {
 
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
 
-               .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
+            .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
 
-               .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
+            .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
 
-               .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
+            .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
 
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
@@ -60,7 +60,7 @@ public class NMSBiomeInjector {
         } else {
             effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
         }
-        
+
         vanilla.getAmbientLoop().ifPresent(effects::ambientLoopSound);
         vanilla.getAmbientAdditions().ifPresent(effects::ambientAdditionsSound);
         vanilla.getAmbientMood().ifPresent(effects::ambientMoodSound);
@@ -68,10 +68,10 @@ public class NMSBiomeInjector {
         vanilla.getAmbientParticle().ifPresent(effects::ambientParticle);
 
         builder.specialEffects(effects.build());
-        
+
         return builder.build(); // build()
     }
-    
+
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID()
                    .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);

@@ -38,43 +38,47 @@ import com.dfsek.terra.api.config.PluginConfig;
 @SuppressWarnings("FieldMayBeFinal")
 public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     private static final Logger logger = LoggerFactory.getLogger(PluginConfigImpl.class);
-    
+
     @Value("debug.commands")
     @Default
     private boolean debugCommands = false;
-    
+
     @Value("debug.profiler")
     @Default
     private boolean debugProfiler = false;
-    
+
     @Value("debug.script")
     @Default
     private boolean debugScript = false;
-    
+
+    @Value("debug.log")
+    @Default
+    private boolean debugLog = false;
+
     @Value("biome-search-resolution")
     @Default
     private int biomeSearch = 4;
-    
+
     @Value("cache.structure")
     @Default
     private int structureCache = 32;
-    
+
     @Value("cache.sampler")
     @Default
     private int samplerCache = 1024;
-    
+
     @Value("cache.biome-provider")
     @Default
     private int providerCache = 32;
-    
+
     @Value("dump-default")
     @Default
     private boolean dumpDefaultData = true;
-    
+
     @Value("script.max-recursion")
     @Default
     private int maxRecursion = 1000;
-    
+
     @Override
     public void load(Platform platform) {
         logger.info("Loading config values from config.yml");
@@ -84,55 +88,62 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
         } catch(ConfigException | IOException | UncheckedIOException e) {
             logger.error("Failed to load config", e);
         }
-        
+
         if(debugCommands)
             logger.info("Debug commands enabled.");
         if(debugProfiler)
             logger.info("Debug profiler enabled.");
         if(debugScript)
             logger.info("Script debug blocks enabled.");
+        if(debugLog)
+            logger.info("Debug logging enabled.");
     }
-    
+
     @Override
     public boolean dumpDefaultConfig() {
         return dumpDefaultData;
     }
-    
+
     @Override
     public boolean isDebugCommands() {
         return debugCommands;
     }
-    
+
     @Override
     public boolean isDebugProfiler() {
         return debugProfiler;
     }
-    
+
     @Override
     public boolean isDebugScript() {
         return debugScript;
     }
-    
+
+    @Override
+    public boolean isDebugLog() {
+        return debugLog;
+    }
+
     @Override
     public int getBiomeSearchResolution() {
         return biomeSearch;
     }
-    
+
     @Override
     public int getStructureCache() {
         return structureCache;
     }
-    
+
     @Override
     public int getSamplerCache() {
         return samplerCache;
     }
-    
+
     @Override
     public int getMaxRecursion() {
         return maxRecursion;
     }
-    
+
     @Override
     public int getProviderCache() {
         return providerCache;

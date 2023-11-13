@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -24,14 +24,14 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
     private final Platform platform;
-    
+
     private final String id;
-    
+
     private final String profile;
-    
+
     private final int resolution;
     private final PropertyKey<BiomeFeatures> biomeFeaturesKey;
-    
+
     public FeatureGenerationStage(Platform platform, String id, int resolution, PropertyKey<BiomeFeatures> biomeFeaturesKey) {
         this.platform = platform;
         this.id = id;
@@ -39,7 +39,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
         this.resolution = resolution;
         this.biomeFeaturesKey = biomeFeaturesKey;
     }
-    
+
     @Override
     @SuppressWarnings("try")
     public void populate(ProtoWorld world) {
@@ -52,40 +52,40 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 int tx = cx + chunkX;
                 int tz = cz + chunkZ;
                 world.getBiomeProvider()
-                     .getColumn(tx, tz, world)
-                     .forRanges(resolution, (min, max, biome) -> {
-                         for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
-                             for(int subChunkZ = 0; subChunkZ < resolution; subChunkZ++) {
-                                 int x = subChunkX + tx;
-                                 int z = subChunkZ + tz;
-                                 long coordinateSeed = (seed * 31 + x) * 31 + z;
-                                 Column<WritableWorld> column = world.column(x, z);
-                                 biome.getContext()
-                                      .get(biomeFeaturesKey)
-                                      .getFeatures()
-                                      .getOrDefault(this, Collections.emptyList())
-                                      .forEach(feature -> {
-                                          platform.getProfiler().push(feature.getID());
-                                          if(feature.getDistributor().matches(x, z, seed)) {
-                                              feature.getLocator()
-                                                     .getSuitableCoordinates(column.clamp(min, max))
-                                                     .forEach(y -> feature.getStructure(world, x, y, z)
-                                                                          .generate(Vector3Int.of(x, y, z),
-                                                                                    world,
-                                                                                    new Random(coordinateSeed * 31 + y),
-                                                                                    Rotation.NONE)
-                                                             );
-                                          }
-                                          platform.getProfiler().pop(feature.getID());
-                                      });
-                             }
-                         }
-                     });
+                    .getColumn(tx, tz, world)
+                    .forRanges(resolution, (min, max, biome) -> {
+                        for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
+                            for(int subChunkZ = 0; subChunkZ < resolution; subChunkZ++) {
+                                int x = subChunkX + tx;
+                                int z = subChunkZ + tz;
+                                long coordinateSeed = (seed * 31 + x) * 31 + z;
+                                Column<WritableWorld> column = world.column(x, z);
+                                biome.getContext()
+                                    .get(biomeFeaturesKey)
+                                    .getFeatures()
+                                    .getOrDefault(this, Collections.emptyList())
+                                    .forEach(feature -> {
+                                        platform.getProfiler().push(feature.getID());
+                                        if(feature.getDistributor().matches(x, z, seed)) {
+                                            feature.getLocator()
+                                                .getSuitableCoordinates(column.clamp(min, max))
+                                                .forEach(y -> feature.getStructure(world, x, y, z)
+                                                    .generate(Vector3Int.of(x, y, z),
+                                                        world,
+                                                        new Random(coordinateSeed * 31 + y),
+                                                        Rotation.NONE)
+                                                );
+                                        }
+                                        platform.getProfiler().pop(feature.getID());
+                                    });
+                            }
+                        }
+                    });
             }
         }
         platform.getProfiler().pop(profile);
     }
-    
+
     @Override
     public String getID() {
         return id;

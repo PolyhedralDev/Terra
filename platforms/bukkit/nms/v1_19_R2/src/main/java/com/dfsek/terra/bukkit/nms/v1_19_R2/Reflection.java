@@ -12,38 +12,38 @@ import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldSetter;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.MethodName;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies;
 
-import java.util.Objects;
-
 
 public class Reflection {
     public static final MappedRegistryProxy MAPPED_REGISTRY;
     public static final StructureManagerProxy STRUCTURE_MANAGER;
-    
+
     public static final ReferenceProxy REFERENCE;
-    
+
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
         ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper,
-                                                                                      Reflection.class.getClassLoader());
-        
+            Reflection.class.getClassLoader());
+
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
         STRUCTURE_MANAGER = reflectionProxyFactory.reflectionProxy(StructureManagerProxy.class);
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
     }
-    
-    
+
+
     @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
-    
+
+
     @Proxies(StructureManager.class)
     public interface StructureManagerProxy {
         @FieldGetter("level")
         LevelAccessor getLevel(StructureManager instance);
     }
-    
+
+
     @Proxies(Holder.Reference.class)
     public interface ReferenceProxy {
         @MethodName("bindValue")

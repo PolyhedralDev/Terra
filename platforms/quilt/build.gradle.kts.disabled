@@ -1,7 +1,7 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-quiltflower") version Versions.Mod.loomQuiltflower
+    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 architectury {
@@ -47,15 +47,6 @@ loom {
     mixin {
         defaultRefmapName.set("terra.quilt.refmap.json")
     }
-    
-    launches {
-        named("client") {
-            property("fabric.log.level", "debug")
-        }
-        named("server") {
-            property("fabric.log.level", "debug")
-        }
-    }
 }
 
 
@@ -69,6 +60,6 @@ tasks {
     remapJar {
         injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
-        archiveFileName.set("${rootProject.name.capitalize()}-quilt-${project.version}.jar")
+        archiveFileName.set("${rootProject.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })}-quilt-${project.version}.jar")
     }
 }

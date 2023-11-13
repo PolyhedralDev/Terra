@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -17,17 +17,17 @@ public class BooleanAndOperation extends BinaryOperation<Boolean, Boolean> {
     public BooleanAndOperation(Returnable<Boolean> left, Returnable<Boolean> right, Position start) {
         super(left, right, start);
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyBoolean(implementationArguments, scope) && right.applyBoolean(implementationArguments, scope);

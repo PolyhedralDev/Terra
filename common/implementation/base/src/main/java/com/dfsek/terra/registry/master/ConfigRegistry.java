@@ -38,16 +38,16 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
  */
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
-    
+
     public ConfigRegistry() {
         super(TypeKey.of(ConfigPack.class));
     }
-    
+
     public void load(File folder, Platform platform) throws ConfigException {
         ConfigPack pack = new ConfigPackImpl(folder, platform);
         registerChecked(pack.getRegistryKey(), pack);
     }
-    
+
     public boolean loadAll(Platform platform) {
         boolean valid = true;
         File packsFolder = new File(platform.getDataFolder(), "packs");
@@ -61,7 +61,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
             }
         }
         for(File zip : Objects.requireNonNull(
-                packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra")))) {
+            packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra")))) {
             try {
                 logger.info("Loading ZIP archive: {}", zip.getName());
                 load(new ZipFile(zip), platform);
@@ -72,7 +72,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         }
         return valid;
     }
-    
+
     public void load(ZipFile file, Platform platform) throws ConfigException {
         ConfigPackImpl pack = new ConfigPackImpl(file, platform);
         registerChecked(pack.getRegistryKey(), pack);

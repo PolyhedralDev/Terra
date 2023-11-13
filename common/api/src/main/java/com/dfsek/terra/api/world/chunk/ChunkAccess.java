@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -25,7 +25,7 @@ public interface ChunkAccess extends Handle {
      * @param blockState the type to set the block to
      */
     void setBlock(int x, int y, int z, @NotNull BlockState blockState);
-    
+
     /**
      * Get the type and data of the block at x, y, z.
      * <p>

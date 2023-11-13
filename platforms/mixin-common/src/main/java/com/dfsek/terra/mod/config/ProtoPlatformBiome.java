@@ -17,10 +17,10 @@
 
 package com.dfsek.terra.mod.config;
 
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
 import java.util.Objects;
@@ -31,26 +31,26 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
-    
+
     private RegistryEntry<Biome> delegate;
-    
+
     public ProtoPlatformBiome(Identifier identifier) {
         this.identifier = identifier;
     }
-    
+
     public RegistryKey<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
         return MinecraftUtil.getEntry(registry, identifier).orElseThrow().getKey().orElseThrow();
     }
-    
+
     @Override
     public Identifier getHandle() {
         return identifier;
     }
-    
+
     public RegistryEntry<Biome> getDelegate() {
         return delegate;
     }
-    
+
     public void setDelegate(RegistryEntry<Biome> delegate) {
         this.delegate = Objects.requireNonNull(delegate);
     }

@@ -10,7 +10,7 @@ public class SpawnGroupTemplate implements ObjectTemplate<SpawnGroup> {
     @Value("group")
     @Default
     private String group = null;
-    
+
     @Override
     public SpawnGroup get() {
         return SpawnGroup.valueOf(group);

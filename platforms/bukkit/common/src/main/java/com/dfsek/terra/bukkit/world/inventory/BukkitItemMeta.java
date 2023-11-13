@@ -31,26 +31,26 @@ import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
 
 public class BukkitItemMeta implements ItemMeta {
     private final org.bukkit.inventory.meta.ItemMeta delegate;
-    
+
     protected BukkitItemMeta(org.bukkit.inventory.meta.ItemMeta delegate) {
         this.delegate = delegate;
     }
-    
+
     public static BukkitItemMeta newInstance(org.bukkit.inventory.meta.ItemMeta delegate) {
         if(delegate instanceof Damageable) return new BukkitDamageable((Damageable) delegate);
         return new BukkitItemMeta(delegate);
     }
-    
+
     @Override
     public org.bukkit.inventory.meta.ItemMeta getHandle() {
         return delegate;
     }
-    
+
     @Override
     public void addEnchantment(Enchantment enchantment, int level) {
         delegate.addEnchant(((BukkitEnchantment) enchantment).getHandle(), level, true);
     }
-    
+
     @Override
     public Map<Enchantment, Integer> getEnchantments() {
         Map<Enchantment, Integer> map = new HashMap<>();

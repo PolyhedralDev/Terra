@@ -27,18 +27,18 @@ import org.spongepowered.plugin.builtin.jvm.Plugin;
 public class TerraSpongePlugin {
     private final PluginContainer plugin;
     private final PlatformImpl terraPlugin;
-    
+
     @Inject
     public TerraSpongePlugin(Game game) {
         this.plugin = null;
         this.terraPlugin = new PlatformImpl(this);
         game.eventManager().registerListeners(plugin, new SpongeListener(this));
     }
-    
+
     public PluginContainer getPluginContainer() {
         return plugin;
     }
-    
+
     public PlatformImpl getTerraPlugin() {
         return terraPlugin;
     }

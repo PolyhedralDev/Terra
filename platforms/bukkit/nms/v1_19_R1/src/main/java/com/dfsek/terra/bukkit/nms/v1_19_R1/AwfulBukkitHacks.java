@@ -27,88 +27,88 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
 
 public class AwfulBukkitHacks {
     private static final Logger LOGGER = LoggerFactory.getLogger(AwfulBukkitHacks.class);
-    
+
     private static final Map<ResourceLocation, List<ResourceLocation>> terraBiomeMap = new HashMap<>();
-    
+
     public static void registerBiomes(ConfigRegistry configRegistry) {
         try {
             LOGGER.info("Hacking biome registry...");
             WritableRegistry<Biome> biomeRegistry = (WritableRegistry<Biome>) Registries.biomeRegistry();
-            
+
             Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, false);
-            
+
             configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
                     ResourceLocation vanillaMinecraftKey = new ResourceLocation(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
                     Biome platform = NMSBiomeInjector.createBiome(
-                            biome,
-                            Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)) // get
-                                                                 );
-                    
+                        biome,
+                        Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)) // get
+                    );
+
                     ResourceKey<Biome> delegateKey = ResourceKey.create(Registry.BIOME_REGISTRY,
-                                                                        new ResourceLocation("terra",
-                                                                                             NMSBiomeInjector.createBiomeID(pack, key)));
-                    
+                        new ResourceLocation("terra",
+                            NMSBiomeInjector.createBiomeID(pack, key)));
+
                     BuiltinRegistries.register(BuiltinRegistries.BIOME, delegateKey, platform);
                     biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
-                    
+
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.location());
-                    
+
                     LOGGER.debug("Registered biome: " + delegateKey);
                 } catch(NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
             }));
-            
+
             Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, true); // freeze registry again :)
-            
+
             LOGGER.info("Doing tag garbage....");
             Map<TagKey<Biome>, List<Holder<Biome>>> collect = biomeRegistry
-                    .getTags() // streamKeysAndEntries
-                    .collect(HashMap::new,
-                             (map, pair) ->
-                                     map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
-                             HashMap::putAll);
-            
+                .getTags() // streamKeysAndEntries
+                .collect(HashMap::new,
+                    (map, pair) ->
+                        map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
+                    HashMap::putAll);
+
             terraBiomeMap
-                    .forEach((vb, terraBiomes) ->
-                                     NMSBiomeInjector.getEntry(biomeRegistry, vb)
-                                                     .ifPresentOrElse(
-                                                             vanilla -> terraBiomes
-                                                                     .forEach(tb -> NMSBiomeInjector.getEntry(biomeRegistry, tb)
-                                                                                                    .ifPresentOrElse(
-                                                                                                            terra -> {
-                                                                                                                LOGGER.debug(
-                                                                                                                        vanilla.unwrapKey()
-                                                                                                                               .orElseThrow()
-                                                                                                                               .location() +
-                                                                                                                        " (vanilla for " +
-                                                                                                                        terra.unwrapKey()
-                                                                                                                             .orElseThrow()
-                                                                                                                             .location() +
-                                                                                                                        ": " +
-                                                                                                                        vanilla.tags()
-                                                                                                                               .toList());
-                                                        
-                                                                                                                vanilla.tags()
-                                                                                                                       .forEach(
-                                                                                                                               tag -> collect
-                                                                                                                                       .computeIfAbsent(
-                                                                                                                                               tag,
-                                                                                                                                               t -> new ArrayList<>())
-                                                                                                                                       .add(terra));
-                                                                                                            },
-                                                                                                            () -> LOGGER.error(
-                                                                                                                    "No such biome: {}",
-                                                                                                                    tb))),
-                                                             () -> LOGGER.error("No vanilla biome: {}", vb)));
-            
+                .forEach((vb, terraBiomes) ->
+                    NMSBiomeInjector.getEntry(biomeRegistry, vb)
+                        .ifPresentOrElse(
+                            vanilla -> terraBiomes
+                                .forEach(tb -> NMSBiomeInjector.getEntry(biomeRegistry, tb)
+                                    .ifPresentOrElse(
+                                        terra -> {
+                                            LOGGER.debug(
+                                                vanilla.unwrapKey()
+                                                    .orElseThrow()
+                                                    .location() +
+                                                " (vanilla for " +
+                                                terra.unwrapKey()
+                                                    .orElseThrow()
+                                                    .location() +
+                                                ": " +
+                                                vanilla.tags()
+                                                    .toList());
+
+                                            vanilla.tags()
+                                                .forEach(
+                                                    tag -> collect
+                                                        .computeIfAbsent(
+                                                            tag,
+                                                            t -> new ArrayList<>())
+                                                        .add(terra));
+                                        },
+                                        () -> LOGGER.error(
+                                            "No such biome: {}",
+                                            tb))),
+                            () -> LOGGER.error("No vanilla biome: {}", vb)));
+
             biomeRegistry.resetTags();
             biomeRegistry.bindTags(ImmutableMap.copyOf(collect));
-            
+
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,7 +18,7 @@ public class LookaheadTest {
     @Test
     public void lookahead() {
         Lookahead lookahead = new Lookahead(new StringReader("Test string..."));
-        
+
         for(int i = 0; lookahead.next(i) != null; i++) {
             System.out.print(lookahead.next(i).getCharacter());
         }

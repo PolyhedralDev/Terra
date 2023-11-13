@@ -9,13 +9,13 @@ import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;
 
 
 public class ExactPipelineBiomeColorConverterTemplate extends ExactColorConverterTemplate<PipelineBiome> {
-    
+
     @Value("match")
     private ColorMapping<PipelineBiome> match;
 
     @Value("else")
     private PipelineBiome fallback;
-    
+
     @Value("ignore-alpha")
     @Default
     private boolean ignoreAlpha = true;
@@ -29,7 +29,7 @@ public class ExactPipelineBiomeColorConverterTemplate extends ExactColorConverte
     protected PipelineBiome getFallback() {
         return fallback;
     }
-    
+
     @Override
     protected boolean ignoreAlpha() {
         return ignoreAlpha;

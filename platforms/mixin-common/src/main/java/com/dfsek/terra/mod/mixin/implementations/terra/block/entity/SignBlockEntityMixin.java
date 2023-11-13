@@ -21,7 +21,6 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -36,14 +35,14 @@ import com.dfsek.terra.api.block.entity.Sign;
 public abstract class SignBlockEntityMixin {
     @Shadow
     private SignText frontText;
-    
+
     @Shadow
     public abstract boolean setText(SignText text, boolean front);
-    
+
     public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
         setText(frontText.withMessage(index, Text.literal(line)), true);
     }
-    
+
     public @NotNull String[] terra$getLines() {
         Text[] texts = frontText.getMessages(false);
         String[] lines = new String[texts.length];
@@ -52,11 +51,11 @@ public abstract class SignBlockEntityMixin {
         }
         return lines;
     }
-    
+
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
         return frontText.getMessage(index, false).getString();
     }
-    
+
     public void terra$applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             if(!k.startsWith("text")) throw new IllegalArgumentException("Invalid property: " + k);

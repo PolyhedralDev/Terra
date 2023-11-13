@@ -12,11 +12,11 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class ConstantSamplerFunction implements Function<Number> {
     private final Returnable<Number> x, y, z;
     private final NoiseSampler sampler;
-    
-    
+
+
     private final boolean twoD;
     private final Position position;
-    
+
     public ConstantSamplerFunction(NoiseSampler sampler,
                                    Returnable<Number> x,
                                    Returnable<Number> y,
@@ -30,14 +30,14 @@ public class ConstantSamplerFunction implements Function<Number> {
         this.twoD = twoD;
         this.position = position;
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         double x = this.x.apply(implementationArguments, scope).doubleValue();
-        
+
         double z = this.z.apply(implementationArguments, scope).doubleValue();
-        
+
         if(twoD) {
             return sampler.noise(arguments.getWorld().getSeed(), x, z);
         } else {
@@ -45,12 +45,12 @@ public class ConstantSamplerFunction implements Function<Number> {
             return sampler.noise(arguments.getWorld().getSeed(), x, y, z);
         }
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;

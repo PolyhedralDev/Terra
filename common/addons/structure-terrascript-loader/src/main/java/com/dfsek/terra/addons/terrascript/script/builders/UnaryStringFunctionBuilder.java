@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,13 +18,13 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void>> {
-    
+
     private final java.util.function.Consumer<String> function;
-    
+
     public UnaryStringFunctionBuilder(java.util.function.Consumer<String> function) {
         this.function = function;
     }
-    
+
     @Override
     public Function<Void> build(List<Returnable<?>> argumentList, Position position) {
         return new Function<>() {
@@ -32,26 +32,26 @@ public class UnaryStringFunctionBuilder implements FunctionBuilder<Function<Void
             public ReturnType returnType() {
                 return ReturnType.VOID;
             }
-            
+
             @SuppressWarnings("unchecked")
             @Override
             public Void apply(ImplementationArguments implementationArguments, Scope scope) {
                 function.accept(((Returnable<String>) argumentList.get(0)).apply(implementationArguments, scope));
                 return null;
             }
-            
+
             @Override
             public Position getPosition() {
                 return position;
             }
         };
     }
-    
+
     @Override
     public int argNumber() {
         return 1;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         if(position == 0) return Returnable.ReturnType.STRING;

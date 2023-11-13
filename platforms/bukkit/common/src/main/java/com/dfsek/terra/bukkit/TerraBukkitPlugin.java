@@ -21,6 +21,7 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+import com.tcoded.folialib.FoliaLib;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,38 +47,26 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
-    
+
     private final PlatformImpl platform = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
-    
+
+    private final FoliaLib foliaLib = new FoliaLib(this);
+
     @Override
     public void onEnable() {
         if(!doVersionCheck()) {
             return;
         }
-        
+
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
-        
-        
+
+
         try {
-            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-                                                                                          CommandExecutionCoordinator.simpleCoordinator(),
-                                                                                          BukkitAdapter::adapt,
-                                                                                          BukkitAdapter::adapt);
-            if(commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-                commandManager.registerBrigadier();
-                final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-                if(brigManager != null) {
-                    brigManager.setNativeNumberSuggestions(false);
-                }
-            }
-            
-            if(commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-                commandManager.registerAsynchronousCompletions();
-            }
-            
+            PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
+
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
-            
+
         } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
@@ -88,25 +77,45 @@ public class TerraBukkitPlugin extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        
+
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
 
         Initializer.init(platform);
     }
-    
+
+    @NotNull
+    private PaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
+        PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
+            CommandExecutionCoordinator.simpleCoordinator(),
+            BukkitAdapter::adapt,
+            BukkitAdapter::adapt);
+        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            commandManager.registerBrigadier();
+            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+            if(brigManager != null) {
+                brigManager.setNativeNumberSuggestions(false);
+            }
+        }
+
+        if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            commandManager.registerAsynchronousCompletions();
+        }
+        return commandManager;
+    }
+
     public PlatformImpl getPlatform() {
         return platform;
     }
-    
+
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
         logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(),
-                    Bukkit.getServer().getName());
-        
+            Bukkit.getServer().getName());
+
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
-        
+
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
                 Runnable runnable = () -> { // scary big block of text
@@ -150,7 +159,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
+                foliaLib.getImpl().runLaterAsync(runnable, 200L);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
@@ -167,14 +176,18 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         return true;
     }
-    
+
     @Override
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
-                    () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
+                () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
         }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+    }
+
+    public FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 }
