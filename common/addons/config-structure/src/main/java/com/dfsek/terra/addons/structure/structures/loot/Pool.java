@@ -26,7 +26,7 @@ public class Pool {
     private final int max;
     private final int min;
     private final ProbabilityCollection<Entry> entries;
-    
+
     /**
      * Instantiates a Pool from a JSON representation.
      *
@@ -42,13 +42,13 @@ public class Pool {
             max = Math.toIntExact((Long) ((JSONObject) amount).get("max"));
             min = Math.toIntExact((Long) ((JSONObject) amount).get("min"));
         }
-        
+
         for(Object entryJSON : (JSONArray) pool.get("entries")) {
             Entry entry = new Entry((JSONObject) entryJSON, platform);
             entries.add(entry, Math.toIntExact(entry.getWeight()));
         }
     }
-    
+
     /**
      * Fetches a list of items from the pool using the provided Random instance.
      *
@@ -57,7 +57,7 @@ public class Pool {
      * @return List&lt;ItemStack&gt; - The list of items fetched.
      */
     public List<ItemStack> getItems(Random r) {
-        
+
         int rolls = r.nextInt(max - min + 1) + min;
         List<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < rolls; i++) {

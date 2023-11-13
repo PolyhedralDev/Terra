@@ -25,16 +25,16 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 public class BukkitPlatformBiome implements PlatformBiome, PropertyHolder {
     private final org.bukkit.block.Biome biome;
     private final Context context = new Context();
-    
+
     public BukkitPlatformBiome(org.bukkit.block.Biome biome) {
         this.biome = biome;
     }
-    
+
     @Override
     public org.bukkit.block.Biome getHandle() {
         return biome;
     }
-    
+
     @Override
     public Context getContext() {
         return context;

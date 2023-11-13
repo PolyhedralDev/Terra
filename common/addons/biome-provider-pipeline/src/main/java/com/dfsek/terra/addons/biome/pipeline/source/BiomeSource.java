@@ -12,6 +12,6 @@ import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
 
 public interface BiomeSource {
     BiomeDelegate getBiome(double x, double z, long seed);
-    
+
     Iterable<BiomeDelegate> getBiomes();
 }

@@ -21,13 +21,13 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class BorderStageTemplate extends StageTemplate {
     @Value("from")
     private @Meta String from;
-    
+
     @Value("replace")
     private @Meta String replace;
-    
+
     @Value("to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> to;
-    
+
     @Override
     public Stage get() {
         return new BorderStage(from, replace, noise, to);

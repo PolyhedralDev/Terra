@@ -21,6 +21,6 @@ public class ScatteredOreFactory implements ConfigFactory<ScatteredOreTemplate, 
     public Structure build(ScatteredOreTemplate config, Platform platform) throws LoadException {
         BlockState m = config.getMaterial();
         return new VanillaScatteredOre(m, config.getSize(), config.getReplaceable(), config.doPhysics(), config.isExposed(),
-                                       config.getMaterialOverrides(), config.getSpread());
+            config.getMaterialOverrides(), config.getSpread());
     }
 }

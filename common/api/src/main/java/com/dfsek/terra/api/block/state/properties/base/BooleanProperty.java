@@ -17,19 +17,19 @@ public interface BooleanProperty extends Property<Boolean> {
     static BooleanProperty of(String name) {
         return new BooleanProperty() {
             private static final Collection<Boolean> BOOLEANS = Arrays.asList(true, false);
-            
+
             @Override
             public Collection<Boolean> values() {
                 return BOOLEANS;
             }
-            
+
             @Override
             public String getID() {
                 return name;
             }
         };
     }
-    
+
     @Override
     default Class<Boolean> getType() {
         return Boolean.class;

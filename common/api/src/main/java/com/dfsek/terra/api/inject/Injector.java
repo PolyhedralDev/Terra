@@ -23,14 +23,14 @@ public interface Injector<T> {
     static <T1> Injector<T1> get(T1 value) {
         return new InjectorImpl<>(value);
     }
-    
+
     /**
      * Add an explicit class as a target. Useful for applications where subclasses may cause issues with DI.
      *
      * @param target Target class type.
      */
     void addExplicitTarget(Class<? extends T> target);
-    
+
     /**
      * Inject the stored object into an object.
      * <p>

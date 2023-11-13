@@ -14,8 +14,8 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public interface Feature extends StringIdentifiable {
     Structure getStructure(WritableWorld world, int x, int y, int z);
-    
+
     Distributor getDistributor();
-    
+
     Locator getLocator();
 }

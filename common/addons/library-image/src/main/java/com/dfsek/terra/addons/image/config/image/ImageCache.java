@@ -31,7 +31,7 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
             images = new ImageCache(cacheBuilder.build(s -> loadImage(s, files)));
             pack.getContext().put(images);
         } else images = pack.getContext().get(ImageCache.class);
-        
+
         if(config.loadOnUse()) {
             if(config.unloadOnTimeout()) { // Grab directly from cache if images are to unload on timeout
                 return new SuppliedImage(() -> images.cache.get(path));
@@ -41,10 +41,10 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
                 return new SuppliedImage(lazyImage::value);
             }
         }
-        
+
         return images.cache.get(path);
     }
-    
+
     private static Image loadImage(String path, Loader files) throws IOException {
         try {
             return new BufferedImageWrapper(ImageIO.read(files.get(path)));

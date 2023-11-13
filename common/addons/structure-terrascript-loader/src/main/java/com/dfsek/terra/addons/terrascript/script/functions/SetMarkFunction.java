@@ -22,7 +22,7 @@ public class SetMarkFunction implements Function<Void> {
     private final Returnable<Number> x, y, z;
     private final Position position;
     private final Returnable<String> mark;
-    
+
     public SetMarkFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> mark, Position position) {
         this.position = position;
         this.mark = mark;
@@ -30,27 +30,27 @@ public class SetMarkFunction implements Function<Void> {
         this.y = y;
         this.z = z;
     }
-    
+
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-        
-        
+            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+
+
         arguments.setMark(Vector3.of((int) Math.floor(xz.getX()),
-                                     (int) Math.floor(
-                                             y.apply(implementationArguments, scope).doubleValue()),
-                                     (int) Math.floor(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
-                          mark.apply(implementationArguments, scope));
+                (int) Math.floor(
+                    y.apply(implementationArguments, scope).doubleValue()),
+                (int) Math.floor(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
+            mark.apply(implementationArguments, scope));
         return null;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

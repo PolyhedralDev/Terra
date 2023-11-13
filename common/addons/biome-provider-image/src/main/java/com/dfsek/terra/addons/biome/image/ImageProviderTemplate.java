@@ -33,11 +33,11 @@ public class ImageProviderTemplate implements ObjectTemplate<BiomeProvider> {
     @Value("image.align")
     @Description("Sets the alignment style to use for the image.")
     private ImageBiomeProvider.Align align;
-    
+
     public ImageProviderTemplate(Registry<Biome> set) {
         this.biomes = set;
     }
-    
+
     @Override
     public BiomeProvider get() {
         return new ImageBiomeProvider(new HashSet<>(biomes.entries()), image, resolution, align);

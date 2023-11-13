@@ -14,17 +14,17 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class BooleanConstant extends ConstantExpression<Boolean> {
     private final boolean constant;
-    
+
     public BooleanConstant(Boolean constant, Position position) {
         super(constant, position);
         this.constant = constant;
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return constant;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;

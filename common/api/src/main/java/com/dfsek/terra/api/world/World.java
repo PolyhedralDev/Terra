@@ -16,14 +16,14 @@ public interface World extends WorldProperties {
      * @return Chunk generator.
      */
     ChunkGenerator getGenerator();
-    
+
     /**
      * Get the {@link BiomeProvider} this world uses.
      *
      * @return Biome provider.
      */
     BiomeProvider getBiomeProvider();
-    
+
     /**
      * Get the {@link ConfigPack} this world uses.
      *

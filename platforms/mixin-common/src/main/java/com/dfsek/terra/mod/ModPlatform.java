@@ -56,72 +56,72 @@ import com.dfsek.terra.mod.util.PresetUtil;
 public abstract class ModPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
-    
+
     public abstract MinecraftServer getServer();
-    
+
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
-                .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
+            .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
     }
-    
+
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-                .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
-                    Identifier identifier = Identifier.tryParse((String) o);
-                    if(identifier == null)
-                        throw new LoadException("Invalid identifier: " + o, depthTracker);
-                    return identifier;
-                })
-                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
-                        Locale.ROOT)))
-                .registerLoader(GrassColorModifier.class,
-                                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                                        Locale.ROOT)))
-                .registerLoader(GrassColorModifier.class,
-                                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
-                                        Locale.ROOT)))
-                .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
-                .registerLoader(SoundEvent.class, SoundEventTemplate::new)
-                .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
-                .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
-                .registerLoader(MusicSound.class, MusicSoundTemplate::new)
-                .registerLoader(EntityType.class, EntityTypeTemplate::new)
-                .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-                .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
-                .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
-                .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-                .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
-                .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+            .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
+                Identifier identifier = Identifier.tryParse((String) o);
+                if(identifier == null)
+                    throw new LoadException("Invalid identifier: " + o, depthTracker);
+                return identifier;
+            })
+            .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
+                Locale.ROOT)))
+            .registerLoader(GrassColorModifier.class,
+                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
+                    Locale.ROOT)))
+            .registerLoader(GrassColorModifier.class,
+                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
+                    Locale.ROOT)))
+            .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
+            .registerLoader(SoundEvent.class, SoundEventTemplate::new)
+            .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
+            .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
+            .registerLoader(MusicSound.class, MusicSoundTemplate::new)
+            .registerLoader(EntityType.class, EntityTypeTemplate::new)
+            .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
+            .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
+            .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
+            .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
+            .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
+            .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
-    
+
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
         if(!biomeRegistry().containsId(identifier)) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
-    
+
     @Override
     protected Iterable<BaseAddon> platformAddon() {
         return List.of(getPlatformAddon());
     }
-    
+
     protected abstract BaseAddon getPlatformAddon();
-    
+
     public abstract Registry<DimensionType> dimensionTypeRegistry();
-    
+
     public abstract Registry<Biome> biomeRegistry();
-    
+
     public abstract Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry();
-    
+
     public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
-    
+
     @Override
     public @NotNull WorldHandle getWorldHandle() {
         return worldHandle;
     }
-    
+
     @Override
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;

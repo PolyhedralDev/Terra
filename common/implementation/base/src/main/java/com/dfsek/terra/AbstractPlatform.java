@@ -81,41 +81,41 @@ import com.dfsek.terra.registry.master.ConfigRegistry;
  */
 public abstract class AbstractPlatform implements Platform {
     private static final Logger logger = LoggerFactory.getLogger(AbstractPlatform.class);
-    
+
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
-    
+
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
-    
+
     private final Profiler profiler = new ProfilerImpl();
-    
+
     private final GenericLoaders loaders = new GenericLoaders(this);
-    
+
     private final PluginConfigImpl config = new PluginConfigImpl();
-    
+
     private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
-    
+
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
-    
+
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
     }
-    
+
     protected Iterable<BaseAddon> platformAddon() {
         return Collections.emptySet();
     }
-    
+
     protected void load() {
         if(LOADED.get()) {
             throw new IllegalStateException(
-                    "Someone tried to initialize Terra, but Terra has already initialized. This is most likely due to a broken platform " +
-                    "implementation, or a misbehaving mod.");
+                "Someone tried to initialize Terra, but Terra has already initialized. This is most likely due to a broken platform " +
+                "implementation, or a misbehaving mod.");
         }
         LOADED.set(true);
-        
+
         logger.info("Initializing Terra...");
-        
+
         try(InputStream stream = getClass().getResourceAsStream("/config.yml")) {
             logger.info("Loading config.yml");
             File configFile = new File(getDataFolder(), "config.yml");
@@ -130,79 +130,79 @@ public abstract class AbstractPlatform implements Platform {
         } catch(IOException e) {
             logger.error("Error loading config.yml resource from jar", e);
         }
-        
+
         config.load(this); // load config.yml
-        
+
         if(config.dumpDefaultConfig()) {
             dumpResources();
         } else {
             logger.info("Skipping resource dumping.");
         }
-        
+
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
         }
-        
+
         InternalAddon internalAddon = loadAddons();
-        
+
         eventManager.getHandler(FunctionalEventHandler.class)
-                    .register(internalAddon, PlatformInitializationEvent.class)
-                    .then(event -> {
-                        logger.info("Loading config packs...");
-                        configRegistry.loadAll(this);
-                        logger.info("Loaded packs.");
-                    })
-                    .global();
-        
-        
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .then(event -> {
+                logger.info("Loading config packs...");
+                configRegistry.loadAll(this);
+                logger.info("Loaded packs.");
+            })
+            .global();
+
+
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
     }
-    
+
     protected InternalAddon loadAddons() {
         List<BaseAddon> addonList = new ArrayList<>();
-        
+
         InternalAddon internalAddon = new InternalAddon();
-        
+
         addonList.add(internalAddon);
-        
+
         platformAddon().forEach(addonList::add);
-        
+
         BootstrapAddonLoader bootstrapAddonLoader = new BootstrapAddonLoader();
-        
+
         Path addonsFolder = getDataFolder().toPath().resolve("addons");
-        
+
         Injector<Platform> platformInjector = new InjectorImpl<>(this);
         platformInjector.addExplicitTarget(Platform.class);
-        
+
         BootstrapAddonClassLoader bootstrapAddonClassLoader = new BootstrapAddonClassLoader(new URL[]{ }, getClass().getClassLoader());
-        
+
         bootstrapAddonLoader.loadAddons(addonsFolder, bootstrapAddonClassLoader)
-                            .forEach(bootstrapAddon -> {
-                                platformInjector.inject(bootstrapAddon);
-                                
-                                bootstrapAddon.loadAddons(addonsFolder, bootstrapAddonClassLoader)
-                                              .forEach(addonList::add);
-                            });
-        
+            .forEach(bootstrapAddon -> {
+                platformInjector.inject(bootstrapAddon);
+
+                bootstrapAddon.loadAddons(addonsFolder, bootstrapAddonClassLoader)
+                    .forEach(addonList::add);
+            });
+
         addonList.sort(Comparator.comparing(StringIdentifiable::getID));
         if(logger.isInfoEnabled()) {
             StringBuilder builder = new StringBuilder();
             builder.append("Loading ")
-                   .append(addonList.size())
-                   .append(" Terra addons:");
-            
+                .append(addonList.size())
+                .append(" Terra addons:");
+
             for(BaseAddon addon : addonList) {
                 builder.append("\n        ")
-                       .append("- ")
-                       .append(addon.getID())
-                       .append("@")
-                       .append(addon.getVersion().getFormatted());
+                    .append("- ")
+                    .append(addon.getID())
+                    .append("@")
+                    .append(addon.getVersion().getFormatted());
             }
-            
+
             logger.info(builder.toString());
         }
-        
+
         DependencySorter sorter = new DependencySorter();
         addonList.forEach(sorter::add);
         sorter.sort().forEach(addon -> {
@@ -212,48 +212,48 @@ public abstract class AbstractPlatform implements Platform {
                 addonRegistry.register(addon.key(addon.getID()), addon);
             }
         });
-        
+
         return internalAddon;
     }
-    
+
     protected void dumpResources() {
         try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
             if(resourcesConfig == null) {
                 logger.info("No resources config found. Skipping resource dumping.");
                 return;
             }
-            
+
             Path data = getDataFolder().toPath();
-            
+
             Path addonsPath = data.resolve("addons");
             Files.createDirectories(addonsPath);
             Set<Pair<Path, String>> paths = Files
-                    .walk(addonsPath)
-                    .map(path -> Pair.of(path, data.relativize(path).toString()))
-                    
-                    .map(Pair.mapRight(s -> {
-                        if(s.contains("+")) { // remove commit hash
-                            return s.substring(0, s.lastIndexOf('+'));
-                        }
-                        return s;
-                    }))
-                    
-                    .filter(Pair.testRight(s -> s.contains("."))) // remove patch version
-                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
-                    
-                    .filter(Pair.testRight(s -> s.contains("."))) // remove minor version
-                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
-                    
-                    .collect(Collectors.toSet());
-            
+                .walk(addonsPath)
+                .map(path -> Pair.of(path, data.relativize(path).toString()))
+
+                .map(Pair.mapRight(s -> {
+                    if(s.contains("+")) { // remove commit hash
+                        return s.substring(0, s.lastIndexOf('+'));
+                    }
+                    return s;
+                }))
+
+                .filter(Pair.testRight(s -> s.contains("."))) // remove patch version
+                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+
+                .filter(Pair.testRight(s -> s.contains("."))) // remove minor version
+                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+
+                .collect(Collectors.toSet());
+
             Set<String> pathsNoMajor = paths
-                    .stream()
-                    .filter(Pair.testRight(s -> s.contains(".")))
-                    .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.')))) // remove major version
-                    .map(Pair.unwrapRight())
-                    .collect(Collectors.toSet());
-            
-            
+                .stream()
+                .filter(Pair.testRight(s -> s.contains(".")))
+                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.')))) // remove major version
+                .map(Pair.unwrapRight())
+                .collect(Collectors.toSet());
+
+
             String resourceYaml = IOUtils.toString(resourcesConfig, StandardCharsets.UTF_8);
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
@@ -262,39 +262,39 @@ public abstract class AbstractPlatform implements Platform {
                 File resource = new File(getDataFolder(), resourcePath);
                 if(resource.exists())
                     return; // dont overwrite
-                
+
                 try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
                     if(is == null) {
                         logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
                         return;
                     }
-                    
+
                     paths
-                            .stream()
-                            .filter(Pair.testRight(resourcePath::startsWith))
-                            .forEach(Pair.consumeLeft(path -> {
-                                logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
-                                try {
-                                    Files.delete(path);
-                                } catch(IOException e) {
-                                    throw new UncheckedIOException(e);
-                                }
-                            }));
-                    
+                        .stream()
+                        .filter(Pair.testRight(resourcePath::startsWith))
+                        .forEach(Pair.consumeLeft(path -> {
+                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                            try {
+                                Files.delete(path);
+                            } catch(IOException e) {
+                                throw new UncheckedIOException(e);
+                            }
+                        }));
+
                     if(pathsNoMajor
-                               .stream()
-                               .anyMatch(resourcePath::startsWith) && // if any share name
+                           .stream()
+                           .anyMatch(resourcePath::startsWith) && // if any share name
                        paths
-                               .stream()
-                               .map(Pair.unwrapRight())
-                               .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                           .stream()
+                           .map(Pair.unwrapRight())
+                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
                         logger.warn(
-                                "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
-                                "ensure " +
-                                "compatibility and update manually.",
-                                resourcePath);
+                            "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
+                            "ensure " +
+                            "compatibility and update manually.",
+                            resourcePath);
                     }
-                    
+
                     logger.info("Dumping resource {}...", resource.getAbsolutePath());
                     resource.getParentFile().mkdirs();
                     resource.createNewFile();
@@ -309,32 +309,32 @@ public abstract class AbstractPlatform implements Platform {
             logger.error("Error while dumping resources...", e);
         }
     }
-    
+
     @Override
     public void register(TypeRegistry registry) {
         loaders.register(registry);
     }
-    
+
     @Override
     public @NotNull PluginConfig getTerraConfig() {
         return config;
     }
-    
+
     @Override
     public @NotNull CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedConfigRegistry;
     }
-    
+
     @Override
     public @NotNull Registry<BaseAddon> getAddons() {
         return lockedAddonRegistry;
     }
-    
+
     @Override
     public @NotNull EventManager getEventManager() {
         return eventManager;
     }
-    
+
     @Override
     public @NotNull Profiler getProfiler() {
         return profiler;

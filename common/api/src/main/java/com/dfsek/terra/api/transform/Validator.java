@@ -17,6 +17,6 @@ public interface Validator<T> {
     static <T> Validator<T> notNull() {
         return Objects::nonNull;
     }
-    
+
     boolean validate(T value) throws TransformException;
 }

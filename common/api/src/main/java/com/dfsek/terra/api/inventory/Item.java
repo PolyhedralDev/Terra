@@ -15,6 +15,6 @@ import com.dfsek.terra.api.Handle;
  */
 public interface Item extends Handle {
     ItemStack newItemStack(int amount);
-    
+
     double getMaxDurability();
 }

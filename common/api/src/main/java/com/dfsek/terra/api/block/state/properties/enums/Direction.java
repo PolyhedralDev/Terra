@@ -18,29 +18,29 @@ public enum Direction {
     WEST(3, -1, 0, 0),
     UP(-1, 0, 1, 0),
     DOWN(-1, 0, -1, 0);
-    
+
     private static final Direction[] rotations = Construct.construct(() -> new Direction[]{ NORTH, SOUTH, EAST, WEST });
-    
+
     private final int rotation;
-    
+
     private final int modX;
     private final int modY;
     private final int modZ;
-    
+
     Direction(int rotation, int modX, int modY, int modZ) {
         this.rotation = rotation;
         this.modX = modX;
         this.modY = modY;
         this.modZ = modZ;
     }
-    
+
     public Direction rotate(Rotation rotation) {
         return switch(this) {
             case UP, DOWN -> this;
             default -> rotations[(this.rotation + rotation.getDegrees() / 90) % 4];
         };
     }
-    
+
     public Direction opposite() {
         return switch(this) {
             case DOWN -> UP;
@@ -51,15 +51,15 @@ public enum Direction {
             case SOUTH -> NORTH;
         };
     }
-    
+
     public int getModX() {
         return modX;
     }
-    
+
     public int getModY() {
         return modY;
     }
-    
+
     public int getModZ() {
         return modZ;
     }

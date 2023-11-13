@@ -23,7 +23,7 @@ public class NoiseConfigMixin {
     @Shadow
     @Final
     private MultiNoiseSampler multiNoiseSampler;
-    
+
     @Inject(method = "<init>(Lnet/minecraft/world/gen/chunk/ChunkGeneratorSettings;Lnet/minecraft/registry/RegistryEntryLookup;J)V",
             at = @At("TAIL"))
     private void mapMultiNoise(ChunkGeneratorSettings chunkGeneratorSettings,

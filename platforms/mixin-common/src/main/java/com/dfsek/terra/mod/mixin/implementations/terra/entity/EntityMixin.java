@@ -34,21 +34,21 @@ import com.dfsek.terra.mod.util.MinecraftAdapter;
 public abstract class EntityMixin {
     @Shadow
     public net.minecraft.world.World world;
-    
+
     @Shadow
     private BlockPos blockPos;
-    
+
     @Shadow
     public abstract void teleport(double destX, double destY, double destZ);
-    
+
     public Vector3 terra$position() {
         return MinecraftAdapter.adapt(blockPos);
     }
-    
+
     public void terra$position(Vector3 location) {
         teleport(location.getX(), location.getY(), location.getZ());
     }
-    
+
     public ServerWorld terra$world() {
         return (ServerWorld) world;
     }

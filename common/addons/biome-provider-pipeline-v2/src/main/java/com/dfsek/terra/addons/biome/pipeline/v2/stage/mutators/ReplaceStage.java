@@ -22,13 +22,13 @@ public class ReplaceStage implements Stage {
     private final String replaceableTag;
     private final ProbabilityCollection<PipelineBiome> replace;
     private final NoiseSampler sampler;
-    
+
     public ReplaceStage(String replaceable, ProbabilityCollection<PipelineBiome> replace, NoiseSampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
     }
-    
+
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         if(viewPoint.getBiome().getTags().contains(replaceableTag)) {
@@ -37,12 +37,12 @@ public class ReplaceStage implements Stage {
         }
         return viewPoint.getBiome();
     }
-    
+
     @Override
     public int maxRelativeReadDistance() {
         return 0;
     }
-    
+
     @Override
     public Iterable<PipelineBiome> getBiomes(Iterable<PipelineBiome> biomes) {
         Set<PipelineBiome> biomeSet = new HashSet<>();

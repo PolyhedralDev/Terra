@@ -45,17 +45,17 @@ public class RangeLoader implements TypeLoader<Range> {
             return new ConstantRange(h, h + 1);
         }
     }
-    
+
     /*
      * Template needed so keys can be meta annotated, otherwise the loader could just grab keys directly from the object
      */
     private static class RangeMapTemplate implements ObjectTemplate<Range> {
         @Value("min")
         private @Meta int min;
-        
+
         @Value("max")
         private @Meta int max;
-        
+
         @Override
         public Range get() {
             return new ConstantRange(min, max);

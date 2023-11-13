@@ -19,13 +19,13 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public class BinaryNumberFunctionBuilder implements FunctionBuilder<Function<Number>> {
-    
+
     private final BiFunction<Number, Number, Number> function;
-    
+
     public BinaryNumberFunctionBuilder(BiFunction<Number, Number, Number> function) {
         this.function = function;
     }
-    
+
     @Override
     public Function<Number> build(List<Returnable<?>> argumentList, Position position) {
         return new Function<>() {
@@ -33,26 +33,26 @@ public class BinaryNumberFunctionBuilder implements FunctionBuilder<Function<Num
             public ReturnType returnType() {
                 return ReturnType.NUMBER;
             }
-            
+
             @SuppressWarnings("unchecked")
             @Override
             public Number apply(ImplementationArguments implementationArguments, Scope scope) {
                 return function.apply(((Returnable<Number>) argumentList.get(0)).apply(implementationArguments, scope),
-                                      ((Returnable<Number>) argumentList.get(1)).apply(implementationArguments, scope));
+                    ((Returnable<Number>) argumentList.get(1)).apply(implementationArguments, scope));
             }
-            
+
             @Override
             public Position getPosition() {
                 return position;
             }
         };
     }
-    
+
     @Override
     public int argNumber() {
         return 2;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         if(position == 0 || position == 1) return Returnable.ReturnType.NUMBER;

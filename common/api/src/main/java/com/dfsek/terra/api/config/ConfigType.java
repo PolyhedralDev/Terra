@@ -13,8 +13,8 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 public interface ConfigType<T extends AbstractableTemplate, R> {
     T getTemplate(ConfigPack pack, Platform platform);
-    
+
     ConfigFactory<T, R> getFactory();
-    
+
     TypeKey<R> getTypeKey();
 }

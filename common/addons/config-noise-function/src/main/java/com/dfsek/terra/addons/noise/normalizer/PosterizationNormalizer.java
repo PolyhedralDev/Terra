@@ -12,12 +12,12 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 public class PosterizationNormalizer extends Normalizer {
     private final double stepSize;
-    
+
     public PosterizationNormalizer(NoiseSampler sampler, int steps) {
         super(sampler);
         this.stepSize = 2.0 / (steps - 1);
     }
-    
+
     @Override
     public double normalize(double in) {
         return (int) Math.round((in + 1) / stepSize) * stepSize - 1;

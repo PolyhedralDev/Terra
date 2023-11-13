@@ -18,20 +18,20 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 
 
 public class NumberPredicateAddon implements AddonInitializer {
-    
+
     @Inject
     private Platform plugin;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         plugin.getEventManager()
-              .getHandler(FunctionalEventHandler.class)
-              .register(addon, ConfigPackPreLoadEvent.class)
-              .then(event -> event.getPack().applyLoader(DoublePredicate.class, new DoublePredicateLoader()))
-              .priority(50)
-              .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> event.getPack().applyLoader(DoublePredicate.class, new DoublePredicateLoader()))
+            .priority(50)
+            .failThrough();
     }
 }

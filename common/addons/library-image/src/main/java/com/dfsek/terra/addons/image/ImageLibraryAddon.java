@@ -32,58 +32,58 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class ImageLibraryAddon implements AddonInitializer {
-    
+
     public static final TypeKey<Supplier<ObjectTemplate<Image>>> IMAGE_REGISTRY_KEY = new TypeKey<>() {
     };
-    
+
     public static final TypeKey<Supplier<ObjectTemplate<ColorSampler>>> COLOR_PICKER_REGISTRY_KEY = new TypeKey<>() {
     };
-    
+
     public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
     };
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .priority(10)
-                .then(event -> {
-                    ImageLibraryPackConfigTemplate config = event.loadTemplate(new ImageLibraryPackConfigTemplate());
-                    event.getPack().getContext().put(config);
-                })
-                .then(event -> {
-                    ConfigPack pack = event.getPack();
-                    CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
-                    imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
-                    imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
-                })
-                .then(event -> {
-                    event.getPack()
-                         .applyLoader(DistanceTransform.CostFunction.class,
-                                      (type, o, loader, depthTracker) -> DistanceTransform.CostFunction.valueOf((String) o))
-                         .applyLoader(DistanceTransform.Normalization.class,
-                                      (type, o, loader, depthTracker) -> DistanceTransform.Normalization.valueOf((String) o))
-                         .applyLoader(ColorString.class, new ColorLoader());
-                    
-                    CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
-                            NOISE_SAMPLER_TOKEN);
-                    noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformNoiseSamplerTemplate::new);
-                    noiseRegistry.register(addon.key("CHANNEL"), ChannelNoiseSamplerTemplate::new);
-                })
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
-                            COLOR_PICKER_REGISTRY_KEY);
-                    colorSamplerRegistry.register(addon.key("SINGLE_IMAGE"), SingleImageColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("TILED_IMAGE"), TileImageColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
-                    colorSamplerRegistry.register(addon.key("TRANSLATE"), TranslateColorSamplerTemplate::new);
-                });
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .priority(10)
+            .then(event -> {
+                ImageLibraryPackConfigTemplate config = event.loadTemplate(new ImageLibraryPackConfigTemplate());
+                event.getPack().getContext().put(config);
+            })
+            .then(event -> {
+                ConfigPack pack = event.getPack();
+                CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
+                imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
+                imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
+            })
+            .then(event -> {
+                event.getPack()
+                    .applyLoader(DistanceTransform.CostFunction.class,
+                        (type, o, loader, depthTracker) -> DistanceTransform.CostFunction.valueOf((String) o))
+                    .applyLoader(DistanceTransform.Normalization.class,
+                        (type, o, loader, depthTracker) -> DistanceTransform.Normalization.valueOf((String) o))
+                    .applyLoader(ColorString.class, new ColorLoader());
+
+                CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
+                    NOISE_SAMPLER_TOKEN);
+                noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformNoiseSamplerTemplate::new);
+                noiseRegistry.register(addon.key("CHANNEL"), ChannelNoiseSamplerTemplate::new);
+            })
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(
+                    COLOR_PICKER_REGISTRY_KEY);
+                colorSamplerRegistry.register(addon.key("SINGLE_IMAGE"), SingleImageColorSamplerTemplate::new);
+                colorSamplerRegistry.register(addon.key("TILED_IMAGE"), TileImageColorSamplerTemplate::new);
+                colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
+                colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
+                colorSamplerRegistry.register(addon.key("TRANSLATE"), TranslateColorSamplerTemplate::new);
+            });
     }
 }

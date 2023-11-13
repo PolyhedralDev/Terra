@@ -34,11 +34,11 @@ public class LockableContainerBlockEntityMixin {
     public void terra$setItem(int slot, ItemStack newStack) {
         ((LockableContainerBlockEntity) (Object) this).setStack(slot, (net.minecraft.item.ItemStack) (Object) newStack);
     }
-    
+
     public int terra$getSize() {
         return ((LockableContainerBlockEntity) (Object) this).size();
     }
-    
+
     @SuppressWarnings("ConstantConditions")
     public ItemStack terra$getItem(int slot) {
         net.minecraft.item.ItemStack itemStack = ((LockableContainerBlockEntity) (Object) this).getStack(slot);

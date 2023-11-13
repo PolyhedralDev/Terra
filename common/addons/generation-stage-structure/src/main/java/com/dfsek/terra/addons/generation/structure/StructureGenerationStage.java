@@ -7,11 +7,11 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
 public class StructureGenerationStage implements GenerationStage {
     private final Platform platform;
-    
+
     public StructureGenerationStage(Platform platform) { this.platform = platform; }
-    
+
     @Override
     public void populate(ProtoWorld world) {
-    
+
     }
 }

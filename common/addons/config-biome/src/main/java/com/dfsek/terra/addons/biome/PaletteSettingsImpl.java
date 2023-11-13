@@ -14,11 +14,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 public class PaletteSettingsImpl implements PaletteSettings {
     private final PaletteHolder palette;
-    
+
     public PaletteSettingsImpl(PaletteHolder palette) {
         this.palette = palette;
     }
-    
+
     @Override
     public Palette getPalette(int y) {
         return palette.getPalette(y);

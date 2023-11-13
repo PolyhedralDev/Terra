@@ -26,23 +26,23 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent 
     private final ConfigPack pack;
     private final Structure structure;
     private LootTable table;
-    
+
     public LootPopulateEvent(Container container, LootTable table, ConfigPack pack, Structure structure) {
         this.container = container;
         this.table = table;
         this.pack = pack;
         this.structure = structure;
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public Vector3 getPosition() {
         return container.getPosition();
     }
-    
+
     /**
      * Get the {@link Container} representing the inventory.
      *
@@ -51,7 +51,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent 
     public Container getContainer() {
         return container;
     }
-    
+
     /**
      * Get the loot table to be populated.
      *
@@ -60,7 +60,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent 
     public LootTable getTable() {
         return table;
     }
-    
+
     /**
      * Set the loot table to be populated.
      *
@@ -69,7 +69,7 @@ public class LootPopulateEvent extends AbstractCancellable implements PackEvent 
     public void setTable(@NotNull LootTable table) {
         this.table = table;
     }
-    
+
     /**
      * Get the script used to generate the structure.
      *

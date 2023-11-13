@@ -19,7 +19,7 @@ import com.dfsek.terra.api.structure.feature.Locator;
 public class Sampler3DLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("sampler")
     private @Meta NoiseSampler sampler;
-    
+
     @Override
     public Locator get() {
         return new Sampler3DLocator(sampler);

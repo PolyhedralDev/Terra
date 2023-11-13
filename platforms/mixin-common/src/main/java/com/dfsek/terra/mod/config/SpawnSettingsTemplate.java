@@ -12,15 +12,15 @@ public class SpawnSettingsTemplate implements ObjectTemplate<SpawnSettings> {
     @Value("spawns")
     @Default
     private List<SpawnTypeConfig> spawns = null;
-    
+
     @Value("costs")
     @Default
     private List<SpawnCostConfig> costs = null;
-    
+
     @Value("probability")
     @Default
     private Float probability = null;
-    
+
     @Override
     public SpawnSettings get() {
         SpawnSettings.Builder builder = new SpawnSettings.Builder();
@@ -33,7 +33,7 @@ public class SpawnSettingsTemplate implements ObjectTemplate<SpawnSettings> {
         if(probability != null) {
             builder.creatureSpawnProbability(probability);
         }
-        
+
         return builder.build();
     }
 }

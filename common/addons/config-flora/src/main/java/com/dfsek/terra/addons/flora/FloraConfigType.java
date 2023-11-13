@@ -19,17 +19,17 @@ public class FloraConfigType implements ConfigType<FloraTemplate, Structure> {
     public static final TypeKey<Structure> FLORA_TYPE_TOKEN = new TypeKey<>() {
     };
     private final FloraFactory factory = new FloraFactory();
-    
+
     @Override
     public FloraTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new FloraTemplate();
     }
-    
+
     @Override
     public ConfigFactory<FloraTemplate, Structure> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<Structure> getTypeKey() {
         return FLORA_TYPE_TOKEN;

@@ -26,51 +26,51 @@ import com.dfsek.terra.api.block.state.properties.Property;
 
 public class SpongeBlockState implements BlockState {
     private final org.spongepowered.api.block.BlockState delegate;
-    
+
     public SpongeBlockState(org.spongepowered.api.block.BlockState delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public org.spongepowered.api.block.BlockState getHandle() {
         return delegate;
     }
-    
+
     @Override
     public boolean matches(BlockState other) {
         return delegate.type().equals(((SpongeBlockType) other.getBlockType()).getHandle());
     }
-    
+
     @Override
     public <T extends Comparable<T>> boolean has(Property<T> property) {
         return false;
     }
-    
+
     @Override
     public <T extends Comparable<T>> T get(Property<T> property) {
         return null;
     }
-    
+
     @Override
     public <T extends Comparable<T>> BlockState set(Property<T> property, T value) {
         return this;
     }
-    
+
     @Override
     public BlockType getBlockType() {
         return new SpongeBlockType(delegate.type());
     }
-    
+
     @Override
     public String getAsString(boolean verbose) {
         return delegate.toString();
     }
-    
+
     @Override
     public boolean isAir() {
         return delegate.type().equals(BlockTypes.AIR.get());
     }
-    
+
     @Override
     public BlockState clone() {
         return this;

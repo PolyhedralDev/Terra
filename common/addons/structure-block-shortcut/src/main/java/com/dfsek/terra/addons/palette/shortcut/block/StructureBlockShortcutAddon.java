@@ -15,17 +15,17 @@ public class StructureBlockShortcutAddon implements AddonInitializer {
     private BaseAddon addon;
     @Inject
     private Platform platform;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> event.getPack()
-                                    .registerShortcut(Structure.class, "BLOCK",
-                                                      (configLoader, input, tracker) -> new SingletonStructure(
-                                                              configLoader.loadType(BlockState.class, input, tracker)
-                                                      )))
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> event.getPack()
+                .registerShortcut(Structure.class, "BLOCK",
+                    (configLoader, input, tracker) -> new SingletonStructure(
+                        configLoader.loadType(BlockState.class, input, tracker)
+                    )))
+            .failThrough();
     }
 }

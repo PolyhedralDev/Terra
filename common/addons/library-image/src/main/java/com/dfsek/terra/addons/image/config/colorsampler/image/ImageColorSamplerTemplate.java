@@ -10,12 +10,12 @@ import com.dfsek.terra.addons.image.image.Image;
 
 
 public abstract class ImageColorSamplerTemplate implements ObjectTemplate<ColorSampler> {
-    
+
     @Value("image")
     protected Image image;
-    
+
     @Value("align")
     @Default
     protected Alignment alignment = Alignment.NONE;
-    
+
 }

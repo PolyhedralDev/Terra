@@ -10,12 +10,12 @@ public class BoolAssignmentNode extends VariableAssignmentNode<Boolean> {
     public BoolAssignmentNode(Returnable<Boolean> value, Position position, int index) {
         super(value, position, index);
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         boolean val = value.applyBoolean(implementationArguments, scope);

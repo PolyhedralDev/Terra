@@ -17,17 +17,17 @@ public class BooleanNotOperation extends UnaryOperation<Boolean> {
     public BooleanNotOperation(Returnable<Boolean> input, Position position) {
         super(input, position);
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return !input.applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;

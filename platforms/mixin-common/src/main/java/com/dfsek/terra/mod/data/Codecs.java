@@ -13,45 +13,45 @@ import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 public final class Codecs {
     public static final Codec<RegistryKey> TERRA_REGISTRY_KEY = RecordCodecBuilder
-            .create(registryKey -> registryKey.group(Codec.STRING.fieldOf("namespace")
-                                                                 .stable()
-                                                                 .forGetter(RegistryKey::getNamespace),
-                                                     Codec.STRING.fieldOf("id")
-                                                                 .stable()
-                                                                 .forGetter(RegistryKey::getID))
-                                              .apply(registryKey, registryKey.stable(RegistryKey::of)));
-    
+        .create(registryKey -> registryKey.group(Codec.STRING.fieldOf("namespace")
+                    .stable()
+                    .forGetter(RegistryKey::getNamespace),
+                Codec.STRING.fieldOf("id")
+                    .stable()
+                    .forGetter(RegistryKey::getID))
+            .apply(registryKey, registryKey.stable(RegistryKey::of)));
+
     public static final Codec<ConfigPack> CONFIG_PACK = RecordCodecBuilder
-            .create(config -> config.group(TERRA_REGISTRY_KEY.fieldOf("pack")
-                                                             .stable()
-                                                             .forGetter(ConfigPack::getRegistryKey))
-                                    .apply(config, config.stable(id -> CommonPlatform.get()
-                                                                                     .getConfigRegistry()
-                                                                                     .get(id)
-                                                                                     .orElseThrow(() -> new IllegalArgumentException(
-                                                                                             "No such config pack " +
-                                                                                             id)))));
-    
+        .create(config -> config.group(TERRA_REGISTRY_KEY.fieldOf("pack")
+                .stable()
+                .forGetter(ConfigPack::getRegistryKey))
+            .apply(config, config.stable(id -> CommonPlatform.get()
+                .getConfigRegistry()
+                .get(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                    "No such config pack " +
+                    id)))));
+
     public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-            .create(instance -> instance.group(
-                                                CONFIG_PACK.fieldOf("pack")
-                                                           .stable()
-                                                           .forGetter(TerraBiomeSource::getPack))
-                                        .apply(instance, instance.stable(TerraBiomeSource::new)));
-    
+        .create(instance -> instance.group(
+                CONFIG_PACK.fieldOf("pack")
+                    .stable()
+                    .forGetter(TerraBiomeSource::getPack))
+            .apply(instance, instance.stable(TerraBiomeSource::new)));
+
     public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
-            .create(
-                    instance -> instance.group(
-                            TERRA_BIOME_SOURCE.fieldOf("biome_source")
-                                              .stable()
-                                              .forGetter(MinecraftChunkGeneratorWrapper::getBiomeSource),
-                            CONFIG_PACK.fieldOf("pack")
-                                       .stable()
-                                       .forGetter(MinecraftChunkGeneratorWrapper::getPack),
-                            ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
-                                                                 .stable()
-                                                                 .forGetter(MinecraftChunkGeneratorWrapper::getSettings)
-                                              ).apply(instance, instance.stable(
-                            MinecraftChunkGeneratorWrapper::new))
-                   );
+        .create(
+            instance -> instance.group(
+                TERRA_BIOME_SOURCE.fieldOf("biome_source")
+                    .stable()
+                    .forGetter(MinecraftChunkGeneratorWrapper::getBiomeSource),
+                CONFIG_PACK.fieldOf("pack")
+                    .stable()
+                    .forGetter(MinecraftChunkGeneratorWrapper::getPack),
+                ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
+                    .stable()
+                    .forGetter(MinecraftChunkGeneratorWrapper::getSettings)
+            ).apply(instance, instance.stable(
+                MinecraftChunkGeneratorWrapper::new))
+        );
 }

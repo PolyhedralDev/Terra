@@ -2,14 +2,14 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 
 
 public class DistanceSampler extends NoiseFunction {
-    
+
     private final DistanceFunction distanceFunction;
     private final double ox, oy, oz;
     private final boolean normalize;
     private final double radius;
-    
+
     private final double distanceAtRadius;
-    
+
     public DistanceSampler(DistanceFunction distanceFunction, double ox, double oy, double oz, boolean normalize, double radius) {
         frequency = 1;
         this.distanceFunction = distanceFunction;
@@ -20,7 +20,7 @@ public class DistanceSampler extends NoiseFunction {
         this.radius = radius;
         this.distanceAtRadius = distance2d(distanceFunction, radius, 0); // distance2d and distance3d should return the same value
     }
-    
+
     private static double distance2d(DistanceFunction distanceFunction, double x, double z) {
         return switch(distanceFunction) {
             case Euclidean -> Math.sqrt(x * x + z * z);
@@ -28,7 +28,7 @@ public class DistanceSampler extends NoiseFunction {
             case Manhattan -> Math.abs(x) + Math.abs(z);
         };
     }
-    
+
     private static double distance3d(DistanceFunction distanceFunction, double x, double y, double z) {
         return switch(distanceFunction) {
             case Euclidean -> Math.sqrt(x * x + y * y + z * z);
@@ -36,7 +36,7 @@ public class DistanceSampler extends NoiseFunction {
             case Manhattan -> Math.abs(x) + Math.abs(y) + Math.abs(z);
         };
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y) {
         double dx = x - ox;
@@ -46,7 +46,7 @@ public class DistanceSampler extends NoiseFunction {
         if(normalize) return Math.min(((2 * dist) / distanceAtRadius) - 1, 1);
         return dist;
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y, double z) {
         double dx = x - ox;
@@ -57,7 +57,7 @@ public class DistanceSampler extends NoiseFunction {
         if(normalize) return Math.min(((2 * dist) / distanceAtRadius) - 1, 1);
         return dist;
     }
-    
+
     public enum DistanceFunction {
         Euclidean,
         EuclideanSq,

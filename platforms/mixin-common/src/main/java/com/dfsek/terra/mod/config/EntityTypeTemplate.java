@@ -12,7 +12,7 @@ public class EntityTypeTemplate implements ObjectTemplate<EntityType<?>> {
     @Value("id")
     @Default
     private Identifier id = null;
-    
+
     @Override
     public EntityType<?> get() {
         return Registries.ENTITY_TYPE.get(id);

@@ -23,13 +23,13 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ReplaceListStageTemplate extends StageTemplate {
     @Value("default-from")
     private @Meta String defaultFrom;
-    
+
     @Value("default-to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> defaultTo;
-    
+
     @Value("to")
     private @Meta Map<@Meta PipelineBiome, @Meta ProbabilityCollection<@Meta PipelineBiome>> replace;
-    
+
     @Override
     public Stage get() {
         return new ReplaceListStage(replace, defaultFrom, defaultTo, noise);

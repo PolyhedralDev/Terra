@@ -15,6 +15,6 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 public interface FunctionalEventHandler extends EventHandler {
     <T extends Event> EventContext<T> register(BaseAddon addon, Class<T> clazz);
-    
+
     <T extends Event> EventContext<T> register(BaseAddon addon, TypeKey<T> clazz);
 }

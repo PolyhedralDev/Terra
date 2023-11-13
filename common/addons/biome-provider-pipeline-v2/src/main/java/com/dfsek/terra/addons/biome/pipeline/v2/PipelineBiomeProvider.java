@@ -22,23 +22,23 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class PipelineBiomeProvider implements BiomeProvider {
-    
+
     private final LoadingCache<SeededVector, BiomeChunk> biomeChunkCache;
     private final int chunkSize;
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
     private final Set<Biome> biomes;
-    
+
     public PipelineBiomeProvider(Pipeline pipeline, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         this.chunkSize = pipeline.getChunkSize();
         this.biomeChunkCache = Caffeine.newBuilder()
-                                       .maximumSize(64)
-                                       .build(pipeline::generateChunk);
-        
+            .maximumSize(64)
+            .build(pipeline::generateChunk);
+
         Set<PipelineBiome> biomeSet = new HashSet<>();
         pipeline.getSource().getBiomes().forEach(biomeSet::add);
         Iterable<PipelineBiome> result = biomeSet;
@@ -49,16 +49,16 @@ public class PipelineBiomeProvider implements BiomeProvider {
         Iterable<PipelineBiome> finalResult = result;
         result.forEach(pipelineBiome -> {
             if(pipelineBiome.isPlaceholder()) {
-                
+
                 StringBuilder biomeList = new StringBuilder("\n");
                 StreamSupport.stream(finalResult.spliterator(), false)
-                             .sorted(Comparator.comparing(StringIdentifiable::getID))
-                             .forEach(delegate -> biomeList
-                                     .append("    - ")
-                                     .append(delegate.getID())
-                                     .append(':')
-                                     .append(delegate.getClass().getCanonicalName())
-                                     .append('\n'));
+                    .sorted(Comparator.comparing(StringIdentifiable::getID))
+                    .forEach(delegate -> biomeList
+                        .append("    - ")
+                        .append(delegate.getID())
+                        .append(':')
+                        .append(delegate.getClass().getCanonicalName())
+                        .append('\n'));
                 throw new IllegalArgumentException("Biome Pipeline leaks placeholder biome \"" + pipelineBiome.getID() +
                                                    "\". Ensure there is a stage to guarantee replacement of the placeholder biome. " +
                                                    "Biomes: " +
@@ -67,47 +67,47 @@ public class PipelineBiomeProvider implements BiomeProvider {
             this.biomes.add(pipelineBiome.getBiome());
         });
     }
-    
+
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         return getBiome(x, z, seed);
     }
-    
+
     public Biome getBiome(int x, int z, long seed) {
-        
+
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
-        
+
         x /= resolution;
         z /= resolution;
-        
+
         int chunkX = Math.floorDiv(x, chunkSize);
         int chunkZ = Math.floorDiv(z, chunkSize);
-        
+
         int chunkWorldX = chunkX * chunkSize;
         int chunkWorldZ = chunkZ * chunkSize;
-        
+
         int xInChunk = x - chunkWorldX;
         int zInChunk = z - chunkWorldZ;
-        
+
         return biomeChunkCache.get(new SeededVector(seed, chunkWorldX, chunkWorldZ)).get(xInChunk, zInChunk).getBiome();
     }
-    
+
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
     }
-    
+
     @Override
     public Optional<Biome> getBaseBiome(int x, int z, long seed) {
         return Optional.of(getBiome(x, z, seed));
     }
-    
+
     @Override
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return new BiomePipelineColumn(this, min, max, x, z, seed);
     }
-    
+
     @Override
     public int resolution() {
         return resolution;

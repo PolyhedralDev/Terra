@@ -10,11 +10,11 @@ import com.dfsek.terra.addons.image.util.MapUtil;
 
 public class ExactColorConverter<T> implements ColorConverter<T> {
     private final Map<Integer, T> map;
-    
+
     private final T fallback;
-    
+
     private final boolean ignoreAlpha;
-    
+
     public ExactColorConverter(Map<Integer, T> map, T fallback, boolean ignoreAlpha) {
         if(ignoreAlpha) {
             map = MapUtil.mapKeys(map, ColorUtil::zeroAlpha);
@@ -23,7 +23,7 @@ public class ExactColorConverter<T> implements ColorConverter<T> {
         this.fallback = fallback;
         this.ignoreAlpha = ignoreAlpha;
     }
-    
+
     @Override
     public T apply(int color) {
         if(ignoreAlpha) {
@@ -32,7 +32,7 @@ public class ExactColorConverter<T> implements ColorConverter<T> {
         T lookup = map.get(color);
         return lookup != null ? lookup : fallback;
     }
-    
+
     @Override
     public Iterable<T> getEntries() {
         Set<T> entries = new HashSet<>(map.values());

@@ -15,7 +15,7 @@ public class ManifestAddonClassLoader extends URLClassLoader {
     static {
         ClassLoader.registerAsParallelCapable();
     }
-    
+
     public ManifestAddonClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
     }

@@ -18,17 +18,17 @@ import com.dfsek.terra.api.event.events.PackEvent;
 public class EntitySpawnEvent implements PackEvent {
     private final ConfigPack pack;
     private final Entity entity;
-    
+
     public EntitySpawnEvent(ConfigPack pack, Entity entity) {
         this.pack = pack;
         this.entity = entity;
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     /**
      * Get the entity that triggered the event.
      *

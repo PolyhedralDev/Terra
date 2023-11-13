@@ -26,31 +26,31 @@ import static com.dfsek.terra.addons.noise.paralithic.FunctionUtil.convertFuncti
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
 public class ExpressionNormalizerTemplate extends NormalizerTemplate<ExpressionNormalizer> {
-    
+
     private final Map<String, DimensionApplicableNoiseSampler> globalSamplers;
     private final Map<String, FunctionTemplate> globalFunctions;
-    
+
     @Value("expression")
     private @Meta String expression;
-    
+
     @Value("variables")
     @Default
     private @Meta Map<String, @Meta Double> vars = new HashMap<>();
-    
+
     @Value("samplers")
     @Default
     private @Meta LinkedHashMap<String, @Meta DimensionApplicableNoiseSampler> samplers = new LinkedHashMap<>();
-    
+
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
-    
+
     public ExpressionNormalizerTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers,
                                         Map<String, FunctionTemplate> globalFunctions) {
         this.globalSamplers = globalSamplers;
         this.globalFunctions = globalFunctions;
     }
-    
+
     @Override
     public NoiseSampler get() {
         var mergedFunctions = new HashMap<>(globalFunctions);

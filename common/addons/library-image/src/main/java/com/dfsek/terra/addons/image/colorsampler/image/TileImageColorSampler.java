@@ -6,16 +6,16 @@ import com.dfsek.terra.addons.image.image.Image;
 
 
 public class TileImageColorSampler implements ColorSampler {
-    
+
     private final Image image;
-    
+
     private final ImageTransformation transformation;
-    
+
     public TileImageColorSampler(Image image, ImageTransformation transformation) {
         this.image = image;
         this.transformation = transformation;
     }
-    
+
     @Override
     public int apply(int x, int z) {
         x = transformation.transformX(image, x);

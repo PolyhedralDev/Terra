@@ -30,26 +30,26 @@ import com.dfsek.terra.api.handle.WorldHandle;
 
 
 public class MinecraftWorldHandle implements WorldHandle {
-    
+
     private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
-    
+
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
             net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true)
-                                                                      .blockState();
+                .blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             return (BlockState) state;
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }
     }
-    
+
     @Override
     public @NotNull BlockState air() {
         return AIR;
     }
-    
+
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
         Identifier identifier = Identifier.tryParse(id);

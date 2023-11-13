@@ -22,7 +22,7 @@ public class NMSInjectListener implements Listener {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSInjectListener.class);
     private static final Set<World> INJECTED = new HashSet<>();
     private static final ReentrantLock INJECT_LOCK = new ReentrantLock();
-    
+
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
         if(!INJECTED.contains(event.getWorld()) &&
@@ -32,16 +32,16 @@ public class NMSInjectListener implements Listener {
             LOGGER.info("Preparing to take over the world: {}", event.getWorld().getName());
             CraftWorld craftWorld = (CraftWorld) event.getWorld();
             ServerLevel serverWorld = craftWorld.getHandle();
-            
+
             ConfigPack pack = bukkitChunkGeneratorWrapper.getPack();
-            
+
             ChunkGenerator vanilla = serverWorld.getChunkSource().getGenerator();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), craftWorld.getSeed());
-            
+
             serverWorld.getChunkSource().chunkMap.generator = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());
-            
+
             LOGGER.info("Successfully injected into world.");
-            
+
             INJECT_LOCK.unlock();
         }
     }

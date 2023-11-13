@@ -24,7 +24,7 @@ public class SamplerDistributorTemplate implements ObjectTemplate<Distributor> {
     private @Meta double threshold = 0;
     @Value("sampler")
     private @Meta NoiseSampler noise;
-    
+
     @Override
     public Distributor get() {
         return new SamplerDistributor(noise, threshold);

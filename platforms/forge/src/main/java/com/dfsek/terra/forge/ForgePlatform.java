@@ -48,25 +48,25 @@ import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 public class ForgePlatform extends ModPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(ForgePlatform.class);
     private final Lazy<File> dataFolder = Lazy.lazy(() -> new File("./config/Terra"));
-    
+
     public ForgePlatform() {
         CommonPlatform.initialize(this);
         load();
     }
-    
+
     @Override
     public MinecraftServer getServer() {
         return ServerLifecycleHooks.getCurrentServer();
     }
-    
+
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
-        
+
         MinecraftServer server = getServer();
-        
+
         if(server != null) {
             server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
@@ -84,13 +84,13 @@ public class ForgePlatform extends ModPlatform {
         }
         return succeed;
     }
-    
+
     @Override
     protected Iterable<BaseAddon> platformAddon() {
         List<BaseAddon> addons = new ArrayList<>();
-        
+
         super.platformAddon().forEach(addons::add);
-        
+
         String mcVersion = MinecraftVersion.CURRENT.getName();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
@@ -101,48 +101,48 @@ public class ForgePlatform extends ModPlatform {
                 LOGGER.warn("Failed to parse Minecraft version", e);
             }
         }
-        
+
         FMLLoader.getLoadingModList().getMods().forEach(mod -> {
             String id = mod.getModId();
             if(id.equals("terra") || id.equals("minecraft") || id.equals("java")) return;
             Version version = Versions.getVersion(mod.getVersion().getMajorVersion(), mod.getVersion().getMinorVersion(),
-                                                  mod.getVersion().getIncrementalVersion());
+                mod.getVersion().getIncrementalVersion());
             addons.add(new EphemeralAddon(version, "forge:" + id));
         });
-        
+
         return addons;
     }
-    
+
     @Override
     public @NotNull String platformName() {
         return "Forge";
     }
-    
+
     @Override
     public @NotNull File getDataFolder() {
         return dataFolder.value();
     }
-    
+
     @Override
     public BaseAddon getPlatformAddon() {
         return new ForgeAddon(this);
     }
-    
+
     @Override
     public Registry<DimensionType> dimensionTypeRegistry() {
         return null;
     }
-    
+
     @Override
     public Registry<Biome> biomeRegistry() {
         return null;
     }
-    
+
     @Override
     public Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry() {
         return null;
     }
-    
+
     @Override
     public Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry() {
         return null;

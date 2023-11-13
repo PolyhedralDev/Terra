@@ -15,7 +15,7 @@ public class ApiAddonClassLoader extends URLClassLoader {
     static {
         ClassLoader.registerAsParallelCapable();
     }
-    
+
     public ApiAddonClassLoader(URL[] urls, ClassLoader parent) {
         super(urls, parent);
     }

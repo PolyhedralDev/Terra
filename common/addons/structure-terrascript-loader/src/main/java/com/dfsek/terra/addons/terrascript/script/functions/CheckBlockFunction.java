@@ -21,41 +21,41 @@ import com.dfsek.terra.api.util.vector.Vector3;
 public class CheckBlockFunction implements Function<String> {
     private final Returnable<Number> x, y, z;
     private final Position position;
-    
+
     public CheckBlockFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.position = position;
     }
-    
-    
+
+
     @Override
     public String apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        
+
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()),
-                                               arguments.getRotation());
-        
-        
+                z.apply(implementationArguments, scope).doubleValue()),
+            arguments.getRotation());
+
+
         String data = arguments.getWorld()
-                               .getBlockState(arguments.getOrigin()
-                                                       .toVector3()
-                                                       .mutable()
-                                                       .add(Vector3.of((int) Math.round(xz.getX()),
-                                                                       y.apply(implementationArguments, scope)
-                                                                        .doubleValue(), (int) Math.round(xz.getZ()))))
-                               .getAsString();
+            .getBlockState(arguments.getOrigin()
+                .toVector3()
+                .mutable()
+                .add(Vector3.of((int) Math.round(xz.getX()),
+                    y.apply(implementationArguments, scope)
+                        .doubleValue(), (int) Math.round(xz.getZ()))))
+            .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.STRING;

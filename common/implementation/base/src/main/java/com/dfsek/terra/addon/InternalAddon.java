@@ -25,16 +25,16 @@ import com.dfsek.terra.api.addon.BaseAddon;
 
 public class InternalAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
-    
+
     public InternalAddon() {
 
     }
-    
+
     @Override
     public String getID() {
         return "terra";
     }
-    
+
     @Override
     public Version getVersion() {
         return VERSION;

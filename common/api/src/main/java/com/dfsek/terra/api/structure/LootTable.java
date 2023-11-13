@@ -25,7 +25,7 @@ public interface LootTable {
      * @param r The The Random instance to use.
      */
     void fillInventory(Inventory i, Random r);
-    
+
     /**
      * Fetches a list of ItemStacks from the loot table using the given Random instance.
      *

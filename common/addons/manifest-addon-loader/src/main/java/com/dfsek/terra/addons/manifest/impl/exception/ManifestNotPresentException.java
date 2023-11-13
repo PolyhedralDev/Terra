@@ -13,11 +13,11 @@ import java.io.Serial;
 public class ManifestNotPresentException extends ManifestException {
     @Serial
     private static final long serialVersionUID = -2116663180747013810L;
-    
+
     public ManifestNotPresentException(String message) {
         super(message);
     }
-    
+
     public ManifestNotPresentException(String message, Throwable cause) {
         super(message, cause);
     }

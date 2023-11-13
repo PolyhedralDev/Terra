@@ -9,7 +9,7 @@ import com.dfsek.terra.addons.image.colorsampler.image.SingleImageColorSampler;
 public class SingleImageColorSamplerTemplate extends ImageColorSamplerTemplate {
     @Value("outside-sampler")
     private ColorSampler fallback;
-    
+
     @Override
     public ColorSampler get() {
         return new SingleImageColorSampler(image, fallback, alignment);

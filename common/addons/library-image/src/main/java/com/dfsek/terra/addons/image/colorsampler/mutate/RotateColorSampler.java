@@ -5,19 +5,19 @@ import com.dfsek.terra.api.util.MathUtil;
 
 
 public class RotateColorSampler implements ColorSampler {
-    
+
     private final ColorSampler sampler;
-    
+
     private final double radians;
-    
+
     private final RotationMethod rotationMethod;
-    
+
     public RotateColorSampler(ColorSampler sampler, double degrees) {
         this.sampler = sampler;
-        
+
         double normalizedDegrees = degrees % 360.0;
         if(normalizedDegrees < 0) normalizedDegrees += 360.0;
-        
+
         if(normalizedDegrees == 0.0)
             rotationMethod = RotationMethod.DEG_0;
         else if(normalizedDegrees == 90.0)
@@ -28,10 +28,10 @@ public class RotateColorSampler implements ColorSampler {
             rotationMethod = RotationMethod.DEG_270;
         else
             rotationMethod = RotationMethod.RAD_ANY;
-        
+
         this.radians = Math.toRadians(degrees);
     }
-    
+
     @Override
     public int apply(int x, int z) {
         int rx = switch(rotationMethod) {
@@ -50,7 +50,7 @@ public class RotateColorSampler implements ColorSampler {
         };
         return sampler.apply(rx, rz);
     }
-    
+
     private enum RotationMethod {
         DEG_0,
         DEG_90,

@@ -25,15 +25,15 @@ public class NoiseConfigPackTemplate implements ConfigTemplate, Properties {
     @Value("samplers")
     @Default
     private @Meta Map<String, @Meta DimensionApplicableNoiseSampler> noiseBuilderMap = new LinkedHashMap<>();
-    
+
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> expressions = new LinkedHashMap<>();
-    
+
     public Map<String, DimensionApplicableNoiseSampler> getSamplers() {
         return noiseBuilderMap;
     }
-    
+
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return expressions;
     }

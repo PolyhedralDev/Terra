@@ -21,7 +21,7 @@ import com.dfsek.terra.api.structure.feature.Locator;
 public class XorLocatorTemplate implements ObjectTemplate<Locator>, ValidatedConfigTemplate {
     @Value("locators")
     private @Meta List<@Meta Locator> locators;
-    
+
     @Override
     public Locator get() {
         Locator current = locators.remove(0);
@@ -30,7 +30,7 @@ public class XorLocatorTemplate implements ObjectTemplate<Locator>, ValidatedCon
         }
         return current;
     }
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(locators.isEmpty()) throw new ValidationException("XOR Pattern must specify at least 1 pattern.");

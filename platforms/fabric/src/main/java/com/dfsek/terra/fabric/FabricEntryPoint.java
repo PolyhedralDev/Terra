@@ -17,14 +17,14 @@
 
 package com.dfsek.terra.fabric;
 
-import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
-
 import net.fabricmc.api.ModInitializer;
+
+import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
 
 
 public class FabricEntryPoint implements ModInitializer {
     private static final FabricPlatform TERRA_PLUGIN = new FabricPlatform();
-    
+
     @Override
     public void onInitialize() {
         LifecycleEntryPoint.initialize("Fabric", TERRA_PLUGIN);

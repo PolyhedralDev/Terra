@@ -26,41 +26,41 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 
 public class BukkitChunk implements Chunk {
     private final org.bukkit.Chunk delegate;
-    
+
     public BukkitChunk(org.bukkit.Chunk delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public org.bukkit.Chunk getHandle() {
         return delegate;
     }
-    
+
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         delegate.getBlock(x, y, z).setBlockData(BukkitAdapter.adapt(data), physics);
     }
-    
+
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         delegate.getBlock(x, y, z).setBlockData(BukkitAdapter.adapt(blockState));
     }
-    
+
     @Override
     public @NotNull BlockState getBlock(int x, int y, int z) {
         return BukkitAdapter.adapt(delegate.getBlock(x, y, z).getBlockData());
     }
-    
+
     @Override
     public int getX() {
         return delegate.getX();
     }
-    
+
     @Override
     public int getZ() {
         return delegate.getZ();
     }
-    
+
     @Override
     public ServerWorld getWorld() {
         return BukkitAdapter.adapt(delegate.getWorld());

@@ -35,7 +35,7 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
     public MetaStringPreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
@@ -52,6 +52,6 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
         }
         return Result.noOp();
     }
-    
-    
+
+
 }

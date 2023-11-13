@@ -19,7 +19,7 @@ public interface Cancellable extends Event {
      * @return Whether event is cancelled.
      */
     boolean isCancelled();
-    
+
     /**
      * Set the cancellation status of the event.
      *

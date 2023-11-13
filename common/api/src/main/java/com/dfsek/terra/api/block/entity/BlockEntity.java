@@ -14,18 +14,18 @@ import com.dfsek.terra.api.util.vector.Vector3;
 
 public interface BlockEntity extends Handle {
     boolean update(boolean applyPhysics);
-    
+
     default void applyState(String state) {
         // Do nothing by default.
     }
-    
+
     Vector3 getPosition();
-    
+
     int getX();
-    
+
     int getY();
-    
+
     int getZ();
-    
+
     BlockState getBlockState();
 }

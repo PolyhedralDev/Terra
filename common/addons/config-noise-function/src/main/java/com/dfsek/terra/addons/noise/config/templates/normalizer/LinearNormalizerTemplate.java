@@ -18,10 +18,10 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class LinearNormalizerTemplate extends NormalizerTemplate<LinearNormalizer> {
     @Value("max")
     private @Meta double max;
-    
+
     @Value("min")
     private @Meta double min;
-    
+
     @Override
     public NoiseSampler get() {
         return new LinearNormalizer(function, min, max);

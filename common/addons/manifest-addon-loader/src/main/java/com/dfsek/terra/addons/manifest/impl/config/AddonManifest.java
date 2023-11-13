@@ -24,60 +24,60 @@ import com.dfsek.terra.api.registry.key.StringIdentifiable;
 public class AddonManifest implements ConfigTemplate, StringIdentifiable {
     @Value("schema-version")
     private int schemaVersion;
-    
+
     @Value("id")
     private String id;
-    
+
     @Value("version")
     private Version version;
-    
+
     @Value("license")
     private String license;
-    
+
     @Value("contributors")
     @Default
     private List<String> contributors = Collections.emptyList();
-    
+
     @Value("entrypoints")
     private List<String> entryPoints;
-    
+
     @Value("depends")
     @Default
     private Map<String, VersionRange> dependencies = Collections.emptyMap();
-    
+
     @Value("website")
     @Default
     private WebsiteConfig website;
-    
+
     @Override
     public String getID() {
         return id;
     }
-    
+
     public int getSchemaVersion() {
         return schemaVersion;
     }
-    
+
     public Version getVersion() {
         return version;
     }
-    
+
     public List<String> getContributors() {
         return contributors;
     }
-    
+
     public List<String> getEntryPoints() {
         return entryPoints;
     }
-    
+
     public String getLicense() {
         return license;
     }
-    
+
     public WebsiteConfig getWebsite() {
         return website;
     }
-    
+
     public Map<String, VersionRange> getDependencies() {
         return dependencies;
     }

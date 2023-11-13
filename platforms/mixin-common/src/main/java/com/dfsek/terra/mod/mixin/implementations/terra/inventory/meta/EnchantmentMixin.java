@@ -34,19 +34,19 @@ import com.dfsek.terra.api.inventory.ItemStack;
 public abstract class EnchantmentMixin {
     @Shadow
     public abstract boolean isAcceptableItem(net.minecraft.item.ItemStack stack);
-    
+
     @Shadow
     public abstract boolean canCombine(Enchantment other);
-    
+
     @SuppressWarnings("ConstantConditions")
     public boolean terra$canEnchantItem(ItemStack itemStack) {
         return isAcceptableItem((net.minecraft.item.ItemStack) (Object) itemStack);
     }
-    
+
     public boolean terra$conflictsWith(com.dfsek.terra.api.inventory.item.Enchantment other) {
         return !canCombine((Enchantment) other);
     }
-    
+
     public String terra$getID() {
         return Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object) this)).toString();
     }

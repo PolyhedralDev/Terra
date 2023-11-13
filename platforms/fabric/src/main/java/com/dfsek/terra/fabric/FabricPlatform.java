@@ -29,24 +29,24 @@ import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
 
 public class FabricPlatform extends LifecyclePlatform {
-    
+
     @Override
     protected Collection<BaseAddon> getPlatformMods() {
         return FabricLoader.getInstance().getAllMods().stream().flatMap(
-                mod -> parseModData(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), "fabric")
-                                                                       ).collect(Collectors.toList());
+            mod -> parseModData(mod.getMetadata().getId(), mod.getMetadata().getVersion().getFriendlyString(), "fabric")
+        ).collect(Collectors.toList());
     }
-    
+
     @Override
     public @NotNull String platformName() {
         return "Fabric";
     }
-    
+
     @Override
     public @NotNull File getDataFolder() {
         return new File(FabricLoader.getInstance().getConfigDir().toFile(), "Terra");
     }
-    
+
     @Override
     public BaseAddon getPlatformAddon() {
         return new FabricAddon(this);

@@ -19,18 +19,18 @@ public class AdjacentPatternLocator implements Locator {
     private final Pattern pattern;
     private final Range search;
     private final boolean matchAll;
-    
+
     public AdjacentPatternLocator(Pattern pattern, Range search, boolean matchAll) {
         this.pattern = pattern;
         this.search = search;
         this.matchAll = matchAll;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         return new BinaryColumn(search, y -> isValid(y, column));
     }
-    
+
     private boolean isValid(int y, Column<?> column) {
         WritableWorld world = column.getWorld();
         int x = column.getX();

@@ -25,19 +25,19 @@ public interface IntProperty extends Property<Integer> {
                 }
                 return ints;
             });
-            
+
             @Override
             public Collection<Integer> values() {
                 return collection;
             }
-            
+
             @Override
             public String getID() {
                 return name;
             }
         };
     }
-    
+
     @Override
     default Class<Integer> getType() {
         return Integer.class;

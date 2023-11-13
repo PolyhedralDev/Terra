@@ -43,71 +43,71 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final BukkitBlockPopulator blockPopulator;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    
-    
+
+
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
         this.air = air;
         this.blockPopulator = new BukkitBlockPopulator(pack, air);
     }
-    
+
     public void setDelegate(ChunkGenerator delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
         return new BukkitBiomeProvider(pack.getBiomeProvider());
     }
-    
+
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
         delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }
-    
+
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
         return List.of(blockPopulator);
     }
-    
+
     @Override
     public boolean shouldGenerateCaves() {
         return false;
         //return pack.vanillaCaves();
     }
-    
+
     @Override
     public boolean shouldGenerateDecorations() {
         return true;
     }
-    
+
     @Override
     public boolean shouldGenerateMobs() {
         return true;
     }
-    
+
     @Override
     public boolean shouldGenerateStructures() {
         return true;
     }
-    
+
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public void setPack(ConfigPack pack) {
         this.pack = pack;
         setDelegate(pack.getGeneratorProvider().newInstance(pack));
     }
-    
+
     @Override
     public ChunkGenerator getHandle() {
         return delegate;
     }
-    
-    
+
+
     private record SeededVector(int x, int z, WorldProperties worldProperties) {
         @Override
         public boolean equals(Object obj) {
@@ -116,7 +116,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
             }
             return false;
         }
-        
+
         @Override
         public int hashCode() {
             int code = x;

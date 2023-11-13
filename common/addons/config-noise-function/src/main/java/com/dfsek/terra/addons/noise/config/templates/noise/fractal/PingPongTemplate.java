@@ -20,7 +20,7 @@ public class PingPongTemplate extends FractalTemplate<PingPongSampler> {
     @Value("ping-pong")
     @Default
     private @Meta double pingPong = 2.0D;
-    
+
     @Override
     public NoiseSampler get() {
         PingPongSampler sampler = new PingPongSampler(function);

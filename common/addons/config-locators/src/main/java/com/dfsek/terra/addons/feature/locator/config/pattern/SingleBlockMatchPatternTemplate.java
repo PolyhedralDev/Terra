@@ -20,11 +20,11 @@ import com.dfsek.terra.api.util.Range;
 public class SingleBlockMatchPatternTemplate implements ObjectTemplate<Pattern> {
     @Value("block")
     private @Meta BlockState block;
-    
+
     @Value("offset")
     private @Meta Range offset;
-    
-    
+
+
     @Override
     public Pattern get() {
         return new MatchPattern(offset, block::matches);

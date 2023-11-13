@@ -35,18 +35,18 @@ import java.util.stream.Stream;
  */
 public class FolderLoader extends LoaderImpl {
     private static final Logger logger = LoggerFactory.getLogger(FolderLoader.class);
-    
+
     private final Path path;
-    
+
     public FolderLoader(Path path) {
         this.path = path;
     }
-    
+
     @Override
     public InputStream get(String singleFile) throws IOException {
         return new FileInputStream(new File(path.toFile(), singleFile));
     }
-    
+
     protected void load(String directory, String extension) {
         File newPath = new File(path.toFile(), directory);
         newPath.mkdirs();

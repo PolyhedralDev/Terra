@@ -34,26 +34,26 @@ public interface ConfigPack extends LoaderRegistrar,
                                     RegistryProvider,
                                     Keyed<ConfigPack>,
                                     PropertyHolder {
-    
+
     ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey id, int priority);
-    
+
     Map<BaseAddon, VersionRange> addons();
-    
+
     BiomeProvider getBiomeProvider();
-    
+
     List<GenerationStage> getStages();
-    
+
     Loader getLoader();
-    
+
     String getAuthor();
-    
+
     Version getVersion();
-    
+
     <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader);
-    
+
     default <T> ConfigPack registerShortcut(Class<T> clazz, String shortcut, ShortcutLoader<T> loader) {
         return registerShortcut(TypeKey.of(clazz), shortcut, loader);
     }
-    
+
     ChunkGeneratorProvider getGeneratorProvider();
 }

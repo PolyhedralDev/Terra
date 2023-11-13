@@ -44,28 +44,28 @@ import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 public class PlatformImpl extends AbstractPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformImpl.class);
-    
+
     private final ItemHandle itemHandle = new BukkitItemHandle();
-    
+
     private final WorldHandle handle = new BukkitWorldHandle();
-    
+
     private final TerraBukkitPlugin plugin;
-    
+
     public PlatformImpl(TerraBukkitPlugin plugin) {
         this.plugin = plugin;
         load();
     }
-    
+
     public TerraBukkitPlugin getPlugin() {
         return plugin;
     }
-    
+
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
         boolean succeed = getRawConfigRegistry().loadAll(this);
-        
+
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
                 getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
@@ -74,49 +74,49 @@ public class PlatformImpl extends AbstractPlatform {
                 });
             }
         });
-        
+
         return succeed;
     }
-    
+
     @Override
     public @NotNull String platformName() {
         return "Bukkit";
     }
-    
+
     @Override
     public void runPossiblyUnsafeTask(@NotNull Runnable task) {
         plugin.getFoliaLib().getImpl().runAsync(task);
     }
-    
+
     @Override
     protected Iterable<BaseAddon> platformAddon() {
         return List.of(new BukkitAddon(this));
     }
-    
+
     @Override
     public @NotNull WorldHandle getWorldHandle() {
         return handle;
     }
-    
+
     @Override
     public @NotNull File getDataFolder() {
         return plugin.getDataFolder();
     }
-    
+
     @Override
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
-    
+
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> handle.createBlockState((String) o))
-                .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-                .registerLoader(EntityType.class, (type, o, loader, depthTracker) -> EntityType.valueOf((String) o));
-        
+            .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
+            .registerLoader(EntityType.class, (type, o, loader, depthTracker) -> EntityType.valueOf((String) o));
+
     }
-    
+
     private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
         return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));

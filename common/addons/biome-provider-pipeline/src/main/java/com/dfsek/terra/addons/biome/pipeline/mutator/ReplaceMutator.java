@@ -21,13 +21,13 @@ public class ReplaceMutator implements BiomeMutator {
     private final String replaceableTag;
     private final ProbabilityCollection<BiomeDelegate> replace;
     private final NoiseSampler sampler;
-    
+
     public ReplaceMutator(String replaceable, ProbabilityCollection<BiomeDelegate> replace, NoiseSampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
     }
-    
+
     @Override
     public BiomeDelegate mutate(ViewPoint viewPoint, double x, double z, long seed) {
         if(viewPoint.getBiome(0, 0).getTags().contains(replaceableTag)) {
@@ -36,7 +36,7 @@ public class ReplaceMutator implements BiomeMutator {
         }
         return viewPoint.getBiome(0, 0);
     }
-    
+
     @Override
     public Iterable<BiomeDelegate> getBiomes(Iterable<BiomeDelegate> biomes) {
         Set<BiomeDelegate> biomeSet = new HashSet<>();

@@ -35,21 +35,21 @@ import com.dfsek.terra.api.config.Loader;
 
 public abstract class LoaderImpl implements Loader {
     private static final Logger logger = LoggerFactory.getLogger(LoaderImpl.class);
-    
+
     protected final Map<String, InputStream> streams = new HashMap<>();
-    
+
     @Override
     public Loader thenNames(Consumer<List<String>> consumer) throws ConfigException {
         consumer.accept(new ArrayList<>(streams.keySet()));
         return this;
     }
-    
+
     @Override
     public Loader thenEntries(Consumer<Set<Map.Entry<String, InputStream>>> consumer) throws ConfigException {
         consumer.accept(streams.entrySet());
         return this;
     }
-    
+
     /**
      * Open a subdirectory.
      *
@@ -62,7 +62,7 @@ public abstract class LoaderImpl implements Loader {
         load(directory, extension);
         return this;
     }
-    
+
     /**
      * Close all InputStreams opened.
      */
@@ -78,6 +78,6 @@ public abstract class LoaderImpl implements Loader {
         streams.clear();
         return this;
     }
-    
+
     protected abstract void load(String directory, String extension);
 }

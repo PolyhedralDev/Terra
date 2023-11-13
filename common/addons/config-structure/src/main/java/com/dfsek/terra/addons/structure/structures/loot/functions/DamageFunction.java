@@ -20,7 +20,7 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 public class DamageFunction implements LootFunction {
     private final int max;
     private final int min;
-    
+
     /**
      * Instantiates a DamageFunction.
      *
@@ -31,7 +31,7 @@ public class DamageFunction implements LootFunction {
         this.min = min;
         this.max = max;
     }
-    
+
     /**
      * Applies the function to an ItemStack.
      *

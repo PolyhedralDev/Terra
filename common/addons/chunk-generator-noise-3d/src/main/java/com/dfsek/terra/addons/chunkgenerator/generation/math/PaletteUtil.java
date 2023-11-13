@@ -14,7 +14,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public final class PaletteUtil {
-    
+
     public static Palette getPalette(int x, int y, int z, Sampler3D sampler, BiomePaletteInfo paletteInfo, int depth) {
         SlantHolder slantHolder = paletteInfo.slantHolder();
         if(slantHolder.isAboveDepth(depth)) {
@@ -23,7 +23,7 @@ public final class PaletteUtil {
                 return slantHolder.getPalette(slant).getPalette(y);
             }
         }
-        
+
         return paletteInfo.paletteHolder().getPalette(y);
     }
 }

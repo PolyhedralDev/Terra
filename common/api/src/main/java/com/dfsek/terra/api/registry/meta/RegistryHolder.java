@@ -17,10 +17,10 @@ public interface RegistryHolder {
     default <T> Registry<T> getRegistry(Class<T> clazz) {
         return getRegistry((Type) clazz);
     }
-    
+
     default <T> Registry<T> getRegistry(TypeKey<T> type) {
         return getRegistry(type.getType());
     }
-    
+
     <T> Registry<T> getRegistry(Type type);
 }

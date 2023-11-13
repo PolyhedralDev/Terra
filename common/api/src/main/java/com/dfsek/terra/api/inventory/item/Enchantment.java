@@ -13,10 +13,10 @@ import com.dfsek.terra.api.inventory.ItemStack;
 
 public interface Enchantment extends Handle {
     boolean canEnchantItem(ItemStack itemStack);
-    
+
     boolean conflictsWith(Enchantment other);
-    
+
     String getID();
-    
+
     int getMaxLevel();
 }

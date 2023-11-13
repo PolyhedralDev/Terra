@@ -15,7 +15,7 @@ import com.dfsek.terra.api.config.Loader;
 
 
 public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedConfigTemplate {
-    
+
     private final Loader files;
     private final ConfigPack pack;
     @Value("path-format")
@@ -27,12 +27,12 @@ public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedCo
     @Value("zero-indexed")
     @Default
     private boolean zeroIndexed = false;
-    
+
     public StitchedImageTemplate(Loader files, ConfigPack pack) {
         this.files = files;
         this.pack = pack;
     }
-    
+
     @Override
     public Image get() {
         Image[][] grid = new Image[rows][cols];
@@ -47,7 +47,7 @@ public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedCo
         }
         return new StitchedImage(grid, zeroIndexed);
     }
-    
+
     private String getFormattedPath(int row, int column) {
         if(!zeroIndexed) {
             row++;
@@ -55,7 +55,7 @@ public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedCo
         }
         return path.replaceFirst("\\{row}", String.valueOf(row)).replaceFirst("\\{column}", String.valueOf(column));
     }
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(!path.contains("{row}"))

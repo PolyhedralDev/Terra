@@ -44,34 +44,34 @@ import com.dfsek.terra.api.addon.bootstrap.BootstrapBaseAddon;
 public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
     private static final Logger logger = LoggerFactory.getLogger(ManifestAddonLoader.class);
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
-    
+
     private final ConfigLoader manifestLoader = new ConfigLoader()
-            .registerLoader(Version.class, new VersionLoader())
-            .registerLoader(VersionRange.class, new VersionRangeLoader())
-            .registerLoader(WebsiteConfig.class, WebsiteConfig::new);
-    
+        .registerLoader(Version.class, new VersionLoader())
+        .registerLoader(VersionRange.class, new VersionRangeLoader())
+        .registerLoader(WebsiteConfig.class, WebsiteConfig::new);
+
     public ManifestAddon loadAddon(Path addonPath, ClassLoader loader) {
         try(JarFile jar = new JarFile(addonPath.toFile())) {
             logger.debug("Loading addon from JAR {}", addonPath);
-            
+
             JarEntry manifestEntry = jar.getJarEntry("terra.addon.yml");
             if(manifestEntry == null) {
                 throw new ManifestNotPresentException("Addon " + addonPath + " does not contain addon manifest.");
             }
-            
-            
+
+
             //noinspection NestedTryStatement
             try {
                 AddonManifest manifest = manifestLoader.load(new AddonManifest(),
-                                                             new YamlConfiguration(jar.getInputStream(manifestEntry),
-                                                                                   "terra.addon.yml"));
-                
+                    new YamlConfiguration(jar.getInputStream(manifestEntry),
+                        "terra.addon.yml"));
+
                 logger.debug("Loading addon {}@{}", manifest.getID(), manifest.getVersion().getFormatted());
-                
+
                 if(manifest.getSchemaVersion() != 1) {
                     throw new AddonException("Addon " + manifest.getID() + " has unknown schema version: " + manifest.getSchemaVersion());
                 }
-                
+
                 List<AddonInitializer> initializers = manifest.getEntryPoints().stream().map(entryPoint -> {
                     try {
                         Object in = loader.loadClass(entryPoint).getConstructor().newInstance();
@@ -87,9 +87,9 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                         throw new AddonException(String.format("Entry point %s not found in JAR.", entryPoint), e);
                     }
                 }).collect(Collectors.toList());
-                
+
                 return new ManifestAddon(manifest, initializers);
-                
+
             } catch(LoadException e) {
                 throw new ManifestException("Failed to load addon manifest", e);
             }
@@ -97,19 +97,19 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
             throw new AddonException("Failed to load addon from JAR " + addonPath, e);
         }
     }
-    
+
     @Override
     public Iterable<ManifestAddon> loadAddons(Path addonsFolder, BootstrapAddonClassLoader parent) {
         logger.debug("Loading addons...");
-        
+
         try(Stream<Path> files = Files.walk(addonsFolder, 1, FileVisitOption.FOLLOW_LINKS)) {
             List<Path> addons = files
-                    .filter(path -> path.toFile().isFile())
-                    .filter(path -> path.toFile().canRead())
-                    .filter(path -> !path.getFileName().startsWith(".")) // ignore hidden files.
-                    .filter(path -> path.toString().endsWith(".jar"))
-                    .toList();
-            
+                .filter(path -> path.toFile().isFile())
+                .filter(path -> path.toFile().canRead())
+                .filter(path -> !path.getFileName().startsWith(".")) // ignore hidden files.
+                .filter(path -> path.toString().endsWith(".jar"))
+                .toList();
+
             addons.stream().map(path -> {
                 try {
                     return path.toUri().toURL();
@@ -117,20 +117,20 @@ public class ManifestAddonLoader implements BootstrapBaseAddon<ManifestAddon> {
                     throw new UncheckedIOException(e);
                 }
             }).forEach(parent::addURL);
-            
+
             return addons.stream()
-                         .map(jar -> loadAddon(jar, parent))
-                         .collect(Collectors.toList());
+                .map(jar -> loadAddon(jar, parent))
+                .collect(Collectors.toList());
         } catch(IOException e) {
             throw new UncheckedIOException(e);
         }
     }
-    
+
     @Override
     public String getID() {
         return "MANIFEST";
     }
-    
+
     @Override
     public Version getVersion() {
         return VERSION;

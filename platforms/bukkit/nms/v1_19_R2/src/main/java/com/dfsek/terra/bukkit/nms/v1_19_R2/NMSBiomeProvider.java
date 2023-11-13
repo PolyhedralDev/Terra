@@ -16,27 +16,27 @@ public class NMSBiomeProvider extends BiomeSource {
     private final BiomeProvider delegate;
     private final long seed;
     private final Registry<Biome> biomeRegistry = RegistryFetcher.biomeRegistry();
-    
+
     public NMSBiomeProvider(BiomeProvider delegate, long seed) {
         super(delegate.stream()
-                      .map(biome -> RegistryFetcher.biomeRegistry()
-                                                   .getHolderOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                                                                                                                     .get(NMSBiomeInfo.class)
-                                                                                                                     .biomeKey())));
+            .map(biome -> RegistryFetcher.biomeRegistry()
+                .getHolderOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
+                    .get(NMSBiomeInfo.class)
+                    .biomeKey())));
         this.delegate = delegate;
         this.seed = seed;
     }
-    
+
     @Override
     protected @NotNull Codec<? extends BiomeSource> codec() {
         return BiomeSource.CODEC;
     }
-    
+
     @Override
     public @NotNull Holder<Biome> getNoiseBiome(int x, int y, int z, @NotNull Sampler sampler) {
         return biomeRegistry.getHolderOrThrow(((BukkitPlatformBiome) delegate.getBiome(x << 2, y << 2, z << 2, seed)
-                                                                             .getPlatformBiome()).getContext()
-                                                                                                 .get(NMSBiomeInfo.class)
-                                                                                                 .biomeKey());
+            .getPlatformBiome()).getContext()
+            .get(NMSBiomeInfo.class)
+            .biomeKey());
     }
 }

@@ -36,7 +36,7 @@ public interface BiomeProvider {
      */
     @Contract(pure = true)
     Biome getBiome(int x, int y, int z, long seed);
-    
+
     /**
      * Get the biome at a location.
      *
@@ -49,7 +49,7 @@ public interface BiomeProvider {
     default Biome getBiome(Vector3 vector3, long seed) {
         return getBiome(vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ(), seed);
     }
-    
+
     /**
      * Get the biome at a location.
      *
@@ -62,20 +62,20 @@ public interface BiomeProvider {
     default Biome getBiome(Vector3Int vector3, long seed) {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
-    
+
     default Optional<Biome> getBaseBiome(int x, int z, long seed) {
         return Optional.empty();
     }
-    
-    
+
+
     default Column<Biome> getColumn(int x, int z, WorldProperties properties) {
         return getColumn(x, z, properties.getSeed(), properties.getMinHeight(), properties.getMaxHeight());
     }
-    
+
     default Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return new BiomeColumn(this, min, max, x, z, seed);
     }
-    
+
     /**
      * Get all biomes this {@link BiomeProvider} is capable of generating in the world.
      * <p>
@@ -85,20 +85,20 @@ public interface BiomeProvider {
      */
     @Contract(pure = true)
     Iterable<Biome> getBiomes();
-    
+
     @Contract(pure = true)
     default Stream<Biome> stream() {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
-    
+
     default CachingBiomeProvider caching() {
         if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
             return cachingBiomeProvider;
         }
         return new CachingBiomeProvider(this);
     }
-    
-    
+
+
     default int resolution() {
         return 1;
     }

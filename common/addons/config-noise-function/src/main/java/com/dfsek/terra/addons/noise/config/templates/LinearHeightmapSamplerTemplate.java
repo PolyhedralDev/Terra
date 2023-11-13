@@ -13,14 +13,14 @@ public class LinearHeightmapSamplerTemplate extends SamplerTemplate<LinearHeight
     @Value("sampler")
     @Default
     private @Meta NoiseSampler sampler = NoiseSampler.zero();
-    
+
     @Value("base")
     private @Meta double base;
-    
+
     @Value("scale")
     @Default
     private @Meta double scale = 1;
-    
+
     @Override
     public NoiseSampler get() {
         return new LinearHeightmapSampler(sampler, scale, base);

@@ -55,24 +55,24 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 @Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$"))
 public abstract class ChunkRegionMixin {
     private ConfigPack terra$config;
-    
-    
+
+
     @Shadow
     @Final
     private net.minecraft.server.world.ServerWorld world;
-    
+
     @Shadow
     @Final
     private long seed;
     @Shadow
     @Final
     private Chunk centerPos;
-    
+
     @Shadow
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;
-    
-    
+
+
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
     public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list,
@@ -80,69 +80,69 @@ public abstract class ChunkRegionMixin {
                                   CallbackInfo ci) {
         this.terra$config = ((ServerWorld) world).getPack();
     }
-    
-    
+
+
     @Intrinsic(displace = true)
     public void terraWorld$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos pos = new BlockPos(x, y, z);
         ((ChunkRegion) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data, physics ? 3 : 1042);
         if(physics && ((net.minecraft.block.BlockState) data).getBlock() instanceof FluidBlock) {
             fluidTickScheduler.scheduleTick(
-                    OrderedTick.create(((FluidBlock) ((net.minecraft.block.BlockState) data).getBlock()).getFluidState(
-                            (net.minecraft.block.BlockState) data).getFluid(), pos));
+                OrderedTick.create(((FluidBlock) ((net.minecraft.block.BlockState) data).getBlock()).getFluidState(
+                    (net.minecraft.block.BlockState) data).getFluid(), pos));
         }
     }
-    
+
     @Intrinsic
     public long terraWorld$getSeed() {
         return seed;
     }
-    
+
     public int terraWorld$getMaxHeight() {
         return world.getTopY();
     }
-    
+
     @Intrinsic(displace = true)
     public BlockState terraWorld$getBlockState(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
         return (BlockState) ((ChunkRegion) (Object) this).getBlockState(pos);
     }
-    
+
     public BlockEntity terraWorld$getBlockEntity(int x, int y, int z) {
         return MinecraftUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
     }
-    
+
     public int terraWorld$getMinHeight() {
         return world.getBottomY();
     }
-    
+
     public ChunkGenerator terraWorld$getGenerator() {
         return ((MinecraftChunkGeneratorWrapper) world.getChunkManager().getChunkGenerator()).getHandle();
     }
-    
+
     public BiomeProvider terraWorld$getBiomeProvider() {
         return terra$config.getBiomeProvider();
     }
-    
+
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world);
         entity.setPos(x, y, z);
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
     }
-    
+
     public int terraWorld$centerChunkX() {
         return centerPos.getPos().x;
     }
-    
+
     public int terraWorld$centerChunkZ() {
         return centerPos.getPos().z;
     }
-    
+
     public ServerWorld terraWorld$getWorld() {
         return (ServerWorld) world;
     }
-    
+
     public ConfigPack terraWorld$getPack() {
         return terra$config;
     }

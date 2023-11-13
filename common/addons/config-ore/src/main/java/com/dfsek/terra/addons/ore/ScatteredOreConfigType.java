@@ -19,17 +19,17 @@ public class ScatteredOreConfigType implements ConfigType<ScatteredOreTemplate, 
     public static final TypeKey<Structure> ORE_TYPE_TOKEN = new TypeKey<>() {
     };
     private final ScatteredOreFactory factory = new ScatteredOreFactory();
-    
+
     @Override
     public ScatteredOreTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new ScatteredOreTemplate();
     }
-    
+
     @Override
     public ConfigFactory<ScatteredOreTemplate, Structure> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<Structure> getTypeKey() {
         return ORE_TYPE_TOKEN;

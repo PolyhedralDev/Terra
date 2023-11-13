@@ -10,26 +10,26 @@ public interface PipelineBiome extends StringIdentifiable {
     static PipelineBiome placeholder(String id) {
         return new PlaceholderPipelineBiome(id);
     }
-    
+
     static PipelineBiome from(Biome biome) {
         return new DelegatedPipelineBiome(biome);
     }
-    
+
     static PipelineBiome self() {
         return SelfPipelineBiome.INSTANCE;
     }
-    
+
     Biome getBiome();
-    
+
     Set<String> getTags();
-    
+
     default boolean isPlaceholder() {
         return false;
     }
-    
+
     default boolean isSelf() {
         return false;
     }
-    
-    
+
+
 }

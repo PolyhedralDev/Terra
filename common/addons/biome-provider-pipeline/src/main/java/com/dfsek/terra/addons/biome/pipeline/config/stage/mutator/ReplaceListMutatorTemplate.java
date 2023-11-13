@@ -24,13 +24,13 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ReplaceListMutatorTemplate extends StageTemplate {
     @Value("default-from")
     private @Meta String defaultFrom;
-    
+
     @Value("default-to")
     private @Meta ProbabilityCollection<@Meta BiomeDelegate> defaultTo;
-    
+
     @Value("to")
     private @Meta Map<@Meta BiomeDelegate, @Meta ProbabilityCollection<@Meta BiomeDelegate>> replace;
-    
+
     @Override
     public Stage get() {
         return new MutatorStage(new ReplaceListMutator(replace, defaultFrom, defaultTo, noise));

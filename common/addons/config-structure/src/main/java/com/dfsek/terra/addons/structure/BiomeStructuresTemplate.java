@@ -23,7 +23,7 @@ public class BiomeStructuresTemplate implements ObjectTemplate<BiomeStructures> 
     @Value("structures")
     @Default
     private @Meta Set<@Meta ConfiguredStructure> structures = Collections.emptySet();
-    
+
     @Override
     public BiomeStructures get() {
         return new BiomeStructures(structures);

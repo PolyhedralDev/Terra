@@ -39,12 +39,12 @@ import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSChunkGeneratorDelegate.class);
     private final com.dfsek.terra.api.world.chunk.generation.ChunkGenerator delegate;
-    
+
     private final ChunkGenerator vanilla;
     private final ConfigPack pack;
-    
+
     private final long seed;
-    
+
     public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
         super(biomeProvider);
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
@@ -52,57 +52,57 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         this.pack = pack;
         this.seed = seed;
     }
-    
+
     @Override
     protected @NotNull Codec<? extends ChunkGenerator> codec() {
         return ChunkGenerator.CODEC;
     }
-    
+
     @Override
     public void applyCarvers(@NotNull WorldGenRegion chunkRegion, long seed, @NotNull RandomState noiseConfig, @NotNull BiomeManager world,
                              @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk, @NotNull Carving carverStep) {
         // no-op
     }
-    
+
     @Override
     public void buildSurface(@NotNull WorldGenRegion region, @NotNull StructureManager structures, @NotNull RandomState noiseConfig,
                              @NotNull ChunkAccess chunk) {
         // no-op
     }
-    
+
     @Override
     public void applyBiomeDecoration(@NotNull WorldGenLevel world, @NotNull ChunkAccess chunk,
                                      @NotNull StructureManager structureAccessor) {
         vanilla.applyBiomeDecoration(world, chunk, structureAccessor);
     }
-    
+
     @Override
     public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
         vanilla.spawnOriginalMobs(region);
     }
-    
+
     @Override
     public int getGenDepth() {
         return vanilla.getGenDepth();
     }
-    
+
     @Override
     public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
                                                                  @NotNull RandomState noiseConfig,
                                                                  @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
         return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk)
-                      .thenApply(c -> {
-                          LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
-                          BiomeProvider biomeProvider = pack.getBiomeProvider();
-                          PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
-                          if(compatibilityOptions.isBeard()) {
-                              beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()),
-                                    biomeProvider, compatibilityOptions);
-                          }
-                          return c;
-                      });
+            .thenApply(c -> {
+                LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
+                BiomeProvider biomeProvider = pack.getBiomeProvider();
+                PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
+                if(compatibilityOptions.isBeard()) {
+                    beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()),
+                        biomeProvider, compatibilityOptions);
+                }
+                return c;
+            });
     }
-    
+
     private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
                        PreLoadCompatibilityOptions compatibilityOptions) {
         Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor, chunk.getPos());
@@ -117,8 +117,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                     double noise = structureWeightSampler.compute(new SinglePointContext(x + xi, y, z + zi));
                     if(noise > threshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), ((CraftBlockData) ((BukkitBlockState) delegate
-                                .getPalette(x + xi, y, z + zi, world, biomeProvider)
-                                .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), false);
+                            .getPalette(x + xi, y, z + zi, world, biomeProvider)
+                            .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), false);
                         depth++;
                     } else if(noise < airThreshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), false);
@@ -129,29 +129,29 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
             }
         }
     }
-    
+
     @Override
     public int getSeaLevel() {
         return vanilla.getSeaLevel();
     }
-    
+
     @Override
     public int getMinY() {
         return vanilla.getMinY();
     }
-    
+
     @Override
     public int getBaseHeight(int x, int z, @NotNull Types heightmap, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
         WorldProperties properties = new NMSWorldProperties(seed, world);
         int y = properties.getMaxHeight();
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         while(y >= getMinY() && !heightmap.isOpaque().test(
-                ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
+            ((CraftBlockData) delegate.getBlock(properties, x, y - 1, z, biomeProvider).getHandle()).getState())) {
             y--;
         }
         return y;
     }
-    
+
     @Override
     public @NotNull NoiseColumn getBaseColumn(int x, int z, @NotNull LevelHeightAccessor world, @NotNull RandomState noiseConfig) {
         BlockState[] array = new BlockState[world.getHeight()];
@@ -159,13 +159,13 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
             array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider)
-                                                                             .getHandle()).getState();
+                .getHandle()).getState();
         }
         return new NoiseColumn(getMinY(), array);
     }
-    
+
     @Override
     public void addDebugScreenInfo(@NotNull List<String> text, @NotNull RandomState noiseConfig, @NotNull BlockPos pos) {
-    
+
     }
 }

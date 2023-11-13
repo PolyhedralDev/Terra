@@ -15,11 +15,11 @@ import com.dfsek.terra.api.util.MathUtil;
 
 public class FractalExpander implements BiomeExpander {
     private final NoiseSampler sampler;
-    
+
     public FractalExpander(NoiseSampler sampler) {
         this.sampler = sampler;
     }
-    
+
     @Override
     public BiomeDelegate getBetween(double x, double z, long seed, BiomeDelegate... others) {
         return others[MathUtil.normalizeIndex(sampler.noise(seed, x, z), others.length)];

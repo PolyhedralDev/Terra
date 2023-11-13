@@ -53,10 +53,10 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StructureScript.class);
     private final Executable block;
     private final RegistryKey id;
-    
+
     private final String profile;
     private final Platform platform;
-    
+
     @SuppressWarnings("rawtypes")
     public StructureScript(InputStream inputStream, RegistryKey id, Platform platform, Registry<Structure> registry,
                            Registry<LootTable> lootRegistry,
@@ -69,66 +69,66 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         }
         this.id = id;
         this.profile = "terrascript_direct:" + id;
-        
+
         //noinspection unchecked
         functionRegistry.forEach((key, function) -> parser.registerFunction(key.getID(), function)); // Register registry functions.
-        
+
         parser
-                .registerFunction("block", new BlockFunctionBuilder(platform))
-                .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
-                .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
-                .registerFunction("randomInt", new RandomFunctionBuilder())
-                .registerFunction("recursions", new RecursionsFunctionBuilder())
-                .registerFunction("setMark", new SetMarkFunctionBuilder())
-                .registerFunction("getMark", new GetMarkFunctionBuilder())
-                .registerFunction("pull", new PullFunctionBuilder(platform))
-                .registerFunction("loot", new LootFunctionBuilder(platform, lootRegistry, this))
-                .registerFunction("entity", new EntityFunctionBuilder(platform))
-                .registerFunction("getBiome", new BiomeFunctionBuilder(platform))
-                .registerFunction("getBlock", new CheckBlockFunctionBuilder())
-                .registerFunction("state", new StateFunctionBuilder(platform))
-                .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
-                .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getX(),
-                                                                                Returnable.ReturnType.NUMBER))
-                .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getY(),
-                                                                                Returnable.ReturnType.NUMBER))
-                .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getZ(),
-                                                                                Returnable.ReturnType.NUMBER))
-                .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(),
-                                                                           Returnable.ReturnType.STRING))
-                .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
-                                                                                  Returnable.ReturnType.NUMBER))
-                .registerFunction("print",
-                                  new UnaryStringFunctionBuilder(string -> LOGGER.info("[TerraScript:{}] {}", id, string)))
-                .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> Math.abs(number.doubleValue())))
-                .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> Math.pow(number.doubleValue(), 2)))
-                .registerFunction("pow", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> Math.pow(number.doubleValue(), number2.doubleValue())))
-                .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> Math.sqrt(number.doubleValue())))
-                .registerFunction("rsqrt", new UnaryNumberFunctionBuilder(number -> MathUtil.invSqrt(number.doubleValue())))
-                .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> Math.floor(number.doubleValue())))
-                .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> Math.ceil(number.doubleValue())))
-                .registerFunction("log", new UnaryNumberFunctionBuilder(number -> Math.log(number.doubleValue())))
-                .registerFunction("round", new UnaryNumberFunctionBuilder(number -> Math.round(number.doubleValue())))
-                .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> MathUtil.sin(number.doubleValue())))
-                .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> MathUtil.cos(number.doubleValue())))
-                .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> MathUtil.tan(number.doubleValue())))
-                .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> Math.asin(number.doubleValue())))
-                .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> Math.acos(number.doubleValue())))
-                .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> Math.atan(number.doubleValue())))
-                .registerFunction("max", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> Math.max(number.doubleValue(), number2.doubleValue())))
-                .registerFunction("min", new BinaryNumberFunctionBuilder(
-                        (number, number2) -> Math.min(number.doubleValue(), number2.doubleValue())));
-        
+            .registerFunction("block", new BlockFunctionBuilder(platform))
+            .registerFunction("debugBlock", new BlockFunctionBuilder(platform))
+            .registerFunction("structure", new StructureFunctionBuilder(registry, platform))
+            .registerFunction("randomInt", new RandomFunctionBuilder())
+            .registerFunction("recursions", new RecursionsFunctionBuilder())
+            .registerFunction("setMark", new SetMarkFunctionBuilder())
+            .registerFunction("getMark", new GetMarkFunctionBuilder())
+            .registerFunction("pull", new PullFunctionBuilder(platform))
+            .registerFunction("loot", new LootFunctionBuilder(platform, lootRegistry, this))
+            .registerFunction("entity", new EntityFunctionBuilder(platform))
+            .registerFunction("getBiome", new BiomeFunctionBuilder(platform))
+            .registerFunction("getBlock", new CheckBlockFunctionBuilder())
+            .registerFunction("state", new StateFunctionBuilder(platform))
+            .registerFunction("setWaterlog", new UnaryBooleanFunctionBuilder((waterlog, args) -> args.setWaterlog(waterlog)))
+            .registerFunction("originX", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getX(),
+                Returnable.ReturnType.NUMBER))
+            .registerFunction("originY", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getY(),
+                Returnable.ReturnType.NUMBER))
+            .registerFunction("originZ", new ZeroArgFunctionBuilder<Number>(arguments -> arguments.getOrigin().getZ(),
+                Returnable.ReturnType.NUMBER))
+            .registerFunction("rotation", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().toString(),
+                Returnable.ReturnType.STRING))
+            .registerFunction("rotationDegrees", new ZeroArgFunctionBuilder<>(arguments -> arguments.getRotation().getDegrees(),
+                Returnable.ReturnType.NUMBER))
+            .registerFunction("print",
+                new UnaryStringFunctionBuilder(string -> LOGGER.info("[TerraScript:{}] {}", id, string)))
+            .registerFunction("abs", new UnaryNumberFunctionBuilder(number -> Math.abs(number.doubleValue())))
+            .registerFunction("pow2", new UnaryNumberFunctionBuilder(number -> Math.pow(number.doubleValue(), 2)))
+            .registerFunction("pow", new BinaryNumberFunctionBuilder(
+                (number, number2) -> Math.pow(number.doubleValue(), number2.doubleValue())))
+            .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> Math.sqrt(number.doubleValue())))
+            .registerFunction("rsqrt", new UnaryNumberFunctionBuilder(number -> MathUtil.invSqrt(number.doubleValue())))
+            .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> Math.floor(number.doubleValue())))
+            .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> Math.ceil(number.doubleValue())))
+            .registerFunction("log", new UnaryNumberFunctionBuilder(number -> Math.log(number.doubleValue())))
+            .registerFunction("round", new UnaryNumberFunctionBuilder(number -> Math.round(number.doubleValue())))
+            .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> MathUtil.sin(number.doubleValue())))
+            .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> MathUtil.cos(number.doubleValue())))
+            .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> MathUtil.tan(number.doubleValue())))
+            .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> Math.asin(number.doubleValue())))
+            .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> Math.acos(number.doubleValue())))
+            .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> Math.atan(number.doubleValue())))
+            .registerFunction("max", new BinaryNumberFunctionBuilder(
+                (number, number2) -> Math.max(number.doubleValue(), number2.doubleValue())))
+            .registerFunction("min", new BinaryNumberFunctionBuilder(
+                (number, number2) -> Math.min(number.doubleValue(), number2.doubleValue())));
+
         if(!platform.getTerraConfig().isDebugScript()) {
             parser.ignoreFunction("debugBlock");
         }
-        
+
         block = parser.parse();
         this.platform = platform;
     }
-    
+
     @Override
     @SuppressWarnings("try")
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
@@ -137,14 +137,14 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         platform.getProfiler().pop(profile);
         return result;
     }
-    
+
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation, int recursions) {
         platform.getProfiler().push(profile);
         boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
         platform.getProfiler().pop(profile);
         return result;
     }
-    
+
     private boolean applyBlock(TerraImplementationArguments arguments) {
         try {
             return block.execute(arguments);
@@ -153,7 +153,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             return false;
         }
     }
-    
+
     @Override
     public RegistryKey getRegistryKey() {
         return id;

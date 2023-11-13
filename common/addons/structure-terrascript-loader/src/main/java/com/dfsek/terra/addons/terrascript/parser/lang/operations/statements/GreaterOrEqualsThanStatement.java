@@ -18,17 +18,17 @@ public class GreaterOrEqualsThanStatement extends BinaryOperation<Number, Boolea
     public GreaterOrEqualsThanStatement(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }
-    
+
     @Override
     public Returnable.ReturnType returnType() {
         return Returnable.ReturnType.BOOLEAN;
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) >= right.applyDouble(implementationArguments, scope);

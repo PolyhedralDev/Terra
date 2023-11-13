@@ -25,23 +25,23 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class SingleBiomeProviderAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
-    
+
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
-                            PROVIDER_REGISTRY_KEY);
-                    providerRegistry.register(addon.key("SINGLE"), SingleBiomeProviderTemplate::new);
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<BiomeProvider>>> providerRegistry = event.getPack().getOrCreateRegistry(
+                    PROVIDER_REGISTRY_KEY);
+                providerRegistry.register(addon.key("SINGLE"), SingleBiomeProviderTemplate::new);
+            })
+            .failThrough();
     }
 }

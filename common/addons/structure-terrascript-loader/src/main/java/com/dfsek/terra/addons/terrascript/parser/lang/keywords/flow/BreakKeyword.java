@@ -16,21 +16,21 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public class BreakKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Position position;
-    
+
     public BreakKeyword(Position position) {
         this.position = position;
     }
-    
+
     @Override
     public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         return new Block.ReturnInfo<>(Block.ReturnLevel.BREAK, null);
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

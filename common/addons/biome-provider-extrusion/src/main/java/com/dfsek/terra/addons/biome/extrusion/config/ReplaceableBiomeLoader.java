@@ -15,18 +15,18 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public class ReplaceableBiomeLoader implements TypeLoader<ReplaceableBiome> {
     private final Registry<Biome> biomeRegistry;
-    
+
     public ReplaceableBiomeLoader(Registry<Biome> biomeRegistry) {
         this.biomeRegistry = biomeRegistry;
     }
-    
+
     @Override
     public ReplaceableBiome load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
         if(c.equals("SELF")) return ReplaceableBiome.self();
         return biomeRegistry
-                .getByID((String) c)
-                .map(ReplaceableBiome::of)
-                .orElseThrow(() -> new LoadException("No such biome: " + c, depthTracker));
+            .getByID((String) c)
+            .map(ReplaceableBiome::of)
+            .orElseThrow(() -> new LoadException("No such biome: " + c, depthTracker));
     }
 }

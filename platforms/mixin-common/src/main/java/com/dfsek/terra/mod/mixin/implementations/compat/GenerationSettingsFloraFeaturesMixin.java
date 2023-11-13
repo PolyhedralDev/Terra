@@ -18,11 +18,11 @@ import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 @Implements(@Interface(iface = FloraFeatureHolder.class, prefix = "terra$"))
 public class GenerationSettingsFloraFeaturesMixin {
     private List<ConfiguredFeature<?, ?>> flora;
-    
+
     public void terra$setFloraFeatures(List<ConfiguredFeature<?, ?>> features) {
         this.flora = features;
     }
-    
+
     @Inject(method = "getFlowerFeatures", cancellable = true, at = @At("HEAD"))
     public void inject(CallbackInfoReturnable<List<ConfiguredFeature<?, ?>>> cir) {
         if(flora != null) {

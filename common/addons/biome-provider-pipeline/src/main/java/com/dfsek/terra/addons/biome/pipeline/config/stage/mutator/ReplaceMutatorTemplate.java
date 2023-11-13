@@ -22,10 +22,10 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ReplaceMutatorTemplate extends StageTemplate {
     @Value("from")
     private @Meta String from;
-    
+
     @Value("to")
     private @Meta ProbabilityCollection<@Meta BiomeDelegate> to;
-    
+
     @Override
     public Stage get() {
         return new MutatorStage(new ReplaceMutator(from, to, noise));

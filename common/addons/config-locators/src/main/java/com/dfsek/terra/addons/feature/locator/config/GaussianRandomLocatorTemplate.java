@@ -21,17 +21,17 @@ import com.dfsek.terra.api.util.Range;
 public class GaussianRandomLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("height")
     private @Meta Range height;
-    
+
     @Value("amount")
     private @Meta Range amount;
-    
+
     @Value("standard-deviation")
     private @Meta double standardDeviation;
-    
+
     @Value("salt")
     @Default
     private @Meta int salt = 0;
-    
+
     @Override
     public Locator get() {
         return new GaussianRandomLocator(height, amount, standardDeviation, salt);

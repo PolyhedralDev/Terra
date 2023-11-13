@@ -27,7 +27,7 @@ public class StateFunction implements Function<Void> {
     private final Returnable<String> data;
     private final Returnable<Number> x, y, z;
     private final Position position;
-    
+
     public StateFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> data,
                          Position position) {
         this.position = position;
@@ -36,16 +36,16 @@ public class StateFunction implements Function<Void> {
         this.y = y;
         this.z = z;
     }
-    
+
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-        
-        
+            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+
+
         Vector3 origin = Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-                                    (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+            (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
         try {
             BlockEntity state = arguments.getWorld().getBlockEntity(origin);
             state.applyState(data.apply(implementationArguments, scope));
@@ -56,12 +56,12 @@ public class StateFunction implements Function<Void> {
         }
         return null;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

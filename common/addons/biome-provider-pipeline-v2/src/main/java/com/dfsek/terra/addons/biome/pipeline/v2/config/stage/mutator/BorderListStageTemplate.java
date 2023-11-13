@@ -23,17 +23,17 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class BorderListStageTemplate extends StageTemplate {
     @Value("from")
     private @Meta String from;
-    
+
     @Value("default-replace")
     private @Meta String defaultReplace;
-    
+
     @Value("default-to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> defaultTo;
-    
+
     @Value("replace")
     private @Meta Map<@Meta PipelineBiome, @Meta ProbabilityCollection<@Meta PipelineBiome>> replace;
-    
-    
+
+
     @Override
     public Stage get() {
         return new BorderListStage(replace, from, defaultReplace, noise, defaultTo);

@@ -15,20 +15,20 @@ import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 public class BukkitBlockPopulator extends BlockPopulator {
     private final BlockState air;
     private ConfigPack pack;
-    
+
     public BukkitBlockPopulator(ConfigPack pack, BlockState air) {
         this.pack = pack;
         this.air = air;
     }
-    
+
     public void setPack(ConfigPack pack) {
         this.pack = pack;
     }
-    
+
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ,
                          @NotNull LimitedRegion limitedRegion) {
         pack.getStages().forEach(
-                generationStage -> generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider())));
+            generationStage -> generationStage.populate(new BukkitProtoWorld(limitedRegion, air, pack.getBiomeProvider())));
     }
 }

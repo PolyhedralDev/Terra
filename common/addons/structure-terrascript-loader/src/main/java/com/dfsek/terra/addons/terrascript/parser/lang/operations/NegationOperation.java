@@ -17,17 +17,17 @@ public class NegationOperation extends UnaryOperation<Number> {
     public NegationOperation(Returnable<Number> input, Position position) {
         super(input, position);
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.NUMBER;
     }
-    
+
     @Override
     public Number apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyDouble(implementationArguments, scope);
     }
-    
+
     @Override
     public double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return -input.applyDouble(implementationArguments, scope);

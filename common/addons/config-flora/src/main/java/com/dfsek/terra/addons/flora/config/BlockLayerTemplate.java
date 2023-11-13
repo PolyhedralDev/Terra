@@ -19,10 +19,10 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class BlockLayerTemplate implements ObjectTemplate<BlockLayer> {
     @Value("layers")
     private @Meta int layers;
-    
+
     @Value("materials")
     private @Meta ProbabilityCollection<BlockState> data;
-    
+
     @Override
     public BlockLayer get() {
         return new BlockLayer(layers, data);

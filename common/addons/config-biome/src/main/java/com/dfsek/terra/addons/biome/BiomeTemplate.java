@@ -27,19 +27,19 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTemplate {
     private final ConfigPack pack;
-    
+
     @Value("id")
     @Final
     private @Meta String id;
-    
+
     @Value("extends")
     @Final
     @Default
     private List<String> extended = Collections.emptyList();
-    
+
     @Value("vanilla")
     private @Meta PlatformBiome vanilla;
-    
+
     @Value("color")
     @Final
     @Default
@@ -47,37 +47,37 @@ public class BiomeTemplate implements AbstractableTemplate, ValidatedConfigTempl
     @Value("tags")
     @Default
     private @Meta Set<@Meta String> tags = new HashSet<>();
-    
+
     public BiomeTemplate(ConfigPack pack, Platform platform) {
         this.pack = pack;
     }
-    
+
     @Override
     public boolean validate() {
         color |= 0xff000000; // Alpha adjustment
         return true;
     }
-    
+
     public List<String> getExtended() {
         return extended;
     }
-    
+
     public Set<String> getTags() {
         return tags;
     }
-    
+
     public int getColor() {
         return color;
     }
-    
+
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public String getID() {
         return id;
     }
-    
+
     public PlatformBiome getVanilla() {
         return vanilla;
     }

@@ -22,40 +22,40 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class BiomeFunction implements Function<String> {
     private final Returnable<Number> x, y, z;
     private final Position position;
-    
-    
+
+
     public BiomeFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Position position) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.position = position;
     }
-    
-    
+
+
     @Override
     public String apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        
+
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()),
-                                               arguments.getRotation());
-        
-        
+                z.apply(implementationArguments, scope).doubleValue()),
+            arguments.getRotation());
+
+
         BiomeProvider grid = arguments.getWorld().getBiomeProvider();
-        
+
         return grid.getBiome(arguments.getOrigin()
-                                      .toVector3()
-                                      .mutable()
-                                      .add(Vector3.of((int) Math.round(xz.getX()),
-                                                      y.apply(implementationArguments, scope).intValue(),
-                                                      (int) Math.round(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
+            .toVector3()
+            .mutable()
+            .add(Vector3.of((int) Math.round(xz.getX()),
+                y.apply(implementationArguments, scope).intValue(),
+                (int) Math.round(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.STRING;

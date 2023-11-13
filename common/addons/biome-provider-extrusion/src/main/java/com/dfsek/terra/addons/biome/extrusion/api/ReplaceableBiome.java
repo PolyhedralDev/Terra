@@ -13,19 +13,19 @@ public sealed interface ReplaceableBiome permits PresentBiome, SelfBiome {
     static ReplaceableBiome of(Biome biome) {
         return new PresentBiome(biome);
     }
-    
+
     static ReplaceableBiome self() {
         return SelfBiome.INSTANCE;
     }
-    
+
     Biome get(Biome existing);
-    
+
     default Biome get() {
         if(isSelf()) {
             throw new IllegalStateException("Cannot get() self biome!");
         }
         return get(null);
     }
-    
+
     boolean isSelf();
 }

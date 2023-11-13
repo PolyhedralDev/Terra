@@ -22,7 +22,7 @@ public interface Property<T> extends StringIdentifiable {
      * @return All values of this property
      */
     Collection<T> values();
-    
+
     /**
      * Get the type of this property.
      *

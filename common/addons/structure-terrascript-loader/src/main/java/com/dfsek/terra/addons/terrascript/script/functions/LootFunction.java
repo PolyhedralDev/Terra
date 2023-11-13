@@ -39,7 +39,7 @@ public class LootFunction implements Function<Void> {
     private final Position position;
     private final Platform platform;
     private final StructureScript script;
-    
+
     public LootFunction(Registry<LootTable> registry, Returnable<Number> x, Returnable<Number> y, Returnable<Number> z,
                         Returnable<String> data, Platform platform, Position position, StructureScript script) {
         this.registry = registry;
@@ -51,55 +51,55 @@ public class LootFunction implements Function<Void> {
         this.platform = platform;
         this.script = script;
     }
-    
+
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()),
-                                               arguments.getRotation());
-        
-        
+                z.apply(implementationArguments, scope).doubleValue()),
+            arguments.getRotation());
+
+
         String id = data.apply(implementationArguments, scope);
-        
-        
+
+
         registry.get(RegistryKey.parse(id))
-                .ifPresentOrElse(table -> {
-                                     Vector3 apply = Vector3.of((int) Math.round(xz.getX()),
-                                                                y.apply(implementationArguments, scope)
-                                                                 .intValue(),
-                                                                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
-                                     
-                                     try {
-                                         BlockEntity data = arguments.getWorld().getBlockEntity(apply);
-                                         if(!(data instanceof Container container)) {
-                                             LOGGER.error("Failed to place loot at {}; block {} is not a container",
-                                                          apply, data);
-                                             return;
-                                         }
-                                         
-                                         LootPopulateEvent event = new LootPopulateEvent(container, table,
-                                                                                         arguments.getWorld().getPack(), script);
-                                         platform.getEventManager().callEvent(event);
-                                         if(event.isCancelled()) return;
-                                         
-                                         event.getTable().fillInventory(container.getInventory(),
-                                                                        new Random(apply.hashCode()));
-                                         data.update(false);
-                                     } catch(Exception e) {
-                                         LOGGER.error("Could not apply loot at {}", apply, e);
-                                         e.printStackTrace();
-                                     }
-                                 },
-                                 () -> LOGGER.error("No such loot table {}", id));
+            .ifPresentOrElse(table -> {
+                    Vector3 apply = Vector3.of((int) Math.round(xz.getX()),
+                        y.apply(implementationArguments, scope)
+                            .intValue(),
+                        (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+
+                    try {
+                        BlockEntity data = arguments.getWorld().getBlockEntity(apply);
+                        if(!(data instanceof Container container)) {
+                            LOGGER.error("Failed to place loot at {}; block {} is not a container",
+                                apply, data);
+                            return;
+                        }
+
+                        LootPopulateEvent event = new LootPopulateEvent(container, table,
+                            arguments.getWorld().getPack(), script);
+                        platform.getEventManager().callEvent(event);
+                        if(event.isCancelled()) return;
+
+                        event.getTable().fillInventory(container.getInventory(),
+                            new Random(apply.hashCode()));
+                        data.update(false);
+                    } catch(Exception e) {
+                        LOGGER.error("Could not apply loot at {}", apply, e);
+                        e.printStackTrace();
+                    }
+                },
+                () -> LOGGER.error("No such loot table {}", id));
         return null;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

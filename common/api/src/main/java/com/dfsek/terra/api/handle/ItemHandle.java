@@ -14,10 +14,10 @@ import com.dfsek.terra.api.inventory.item.Enchantment;
 
 
 public interface ItemHandle {
-    
+
     Item createItem(String data);
-    
+
     Enchantment getEnchantment(String id);
-    
+
     Set<Enchantment> getEnchantments();
 }

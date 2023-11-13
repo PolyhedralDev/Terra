@@ -10,16 +10,16 @@ import com.dfsek.terra.api.config.ConfigFactory;
 
 public class MutatedStructureFactory implements ConfigFactory<MutatedStructureTemplate, MutatedStructure> {
     private final BaseAddon addon;
-    
+
     public MutatedStructureFactory(BaseAddon addon) {
         this.addon = addon;
     }
-    
+
     @Override
     public MutatedStructure build(MutatedStructureTemplate config, Platform platform) throws LoadException {
         return new MutatedStructure(addon.key(config.getID()),
-                                    config.getDelegate(),
-                                    config.getReadInterceptor(),
-                                    config.getWriteInterceptor());
+            config.getDelegate(),
+            config.getReadInterceptor(),
+            config.getWriteInterceptor());
     }
 }

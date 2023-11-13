@@ -14,12 +14,12 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public abstract class UnaryOperation<T> implements Returnable<T> {
     protected final Returnable<T> input;
     private final Position position;
-    
+
     public UnaryOperation(Returnable<T> input, Position position) {
         this.input = input;
         this.position = position;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

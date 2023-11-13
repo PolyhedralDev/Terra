@@ -18,7 +18,7 @@ import com.dfsek.terra.api.util.Range;
 public class SolidMatchPatternTemplate implements ObjectTemplate<Pattern> {
     @Value("offset")
     private Range offset;
-    
+
     @Override
     public Pattern get() {
         return new MatchPattern(offset, blockState -> blockState.getBlockType().isSolid());

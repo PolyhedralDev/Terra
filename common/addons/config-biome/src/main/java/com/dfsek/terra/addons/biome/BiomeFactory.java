@@ -15,11 +15,11 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public class BiomeFactory implements ConfigFactory<BiomeTemplate, Biome> {
     private final ConfigPack pack;
-    
+
     public BiomeFactory(ConfigPack pack) {
         this.pack = pack;
     }
-    
+
     @Override
     public Biome build(BiomeTemplate template, Platform platform) {
         return new UserDefinedBiome(template.getVanilla(), template);

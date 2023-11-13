@@ -28,46 +28,46 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitBlockTypeAndItem implements BlockType, Item {
     private final Material delegate;
-    
+
     public BukkitBlockTypeAndItem(Material delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public Material getHandle() {
         return delegate;
     }
-    
+
     @Override
     public BlockState getDefaultState() {
         return BukkitAdapter.adapt(delegate.createBlockData());
     }
-    
+
     @Override
     public boolean isSolid() {
         return delegate.isOccluding();
     }
-    
+
     @Override
     public boolean isWater() {
         return delegate == Material.WATER;
     }
-    
+
     @Override
     public ItemStack newItemStack(int amount) {
         return BukkitAdapter.adapt(new org.bukkit.inventory.ItemStack(delegate, amount));
     }
-    
+
     @Override
     public double getMaxDurability() {
         return delegate.getMaxDurability();
     }
-    
+
     @Override
     public int hashCode() {
         return delegate.hashCode();
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof BukkitBlockTypeAndItem)) return false;

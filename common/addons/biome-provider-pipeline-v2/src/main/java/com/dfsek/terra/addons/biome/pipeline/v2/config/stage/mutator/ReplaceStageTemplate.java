@@ -21,10 +21,10 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class ReplaceStageTemplate extends StageTemplate {
     @Value("from")
     private @Meta String from;
-    
+
     @Value("to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> to;
-    
+
     @Override
     public Stage get() {
         return new ReplaceStage(from, to, noise);

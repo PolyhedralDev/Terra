@@ -22,11 +22,11 @@ public class SamplerSourceTemplate extends SourceTemplate {
     @Value("sampler")
     @Description("The sampler used to distribute biomes.")
     private @Meta NoiseSampler noise;
-    
+
     @Value("biomes")
     @Description("The biomes to be distributed.")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> biomes;
-    
+
     @Override
     public Source get() {
         return new SamplerSource(biomes, noise);
