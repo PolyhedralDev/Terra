@@ -577,14 +577,14 @@ ij_properties_keep_blank_lines = false
 ij_properties_key_value_delimiter = equals
 ij_properties_spaces_around_key_value_delimiter = false
 
-[{*.yaml, *.yml}]
+[{*.yml, *.yaml}]
 indent_size = 2
 ij_visual_guides = none
 ij_yaml_align_values_properties = do_not_align
 ij_yaml_autoinsert_sequence_marker = true
 ij_yaml_block_mapping_on_new_line = false
 ij_yaml_indent_sequence_value = true
-ij_yaml_keep_indents_on_empty_lines = true
+ij_yaml_keep_indents_on_empty_lines = false
 ij_yaml_keep_line_breaks = true
 ij_yaml_sequence_on_new_line = false
 ij_yaml_space_before_colon = false
