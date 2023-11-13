@@ -16,7 +16,6 @@ import java.util.Map;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
-import com.dfsek.terra.addons.terrascript.parser.lang.constants.BooleanConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.StringConstant;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
