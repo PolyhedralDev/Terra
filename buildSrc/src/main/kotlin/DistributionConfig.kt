@@ -48,17 +48,7 @@ fun Project.configureDistribution() {
             // https://github.com/johnrengelman/shadow/issues/111
             val dest = URI.create("jar:" + tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI())
             
-            val preExistingProvider = try {
-                FileSystems.getFileSystem(dest)
-            } catch (e: Exception) {
-                null
-            };
-            val provider = if (preExistingProvider == null) {
-                preExistingProvider
-            } else {
-                FileSystems.newFileSystem(dest, mapOf("create" to "false"), null)
-            };
-            provider?.use { fs ->
+            FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
                 forSubProjects(":common:addons") {
                     val jar = getJarTask()
                     
