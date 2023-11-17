@@ -29,6 +29,8 @@ dependencies {
 
     modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
     include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+
+    modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
 }
 
 loom {
