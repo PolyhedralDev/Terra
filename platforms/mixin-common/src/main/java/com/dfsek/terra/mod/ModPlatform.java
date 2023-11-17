@@ -44,7 +44,6 @@ import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.SoundEventTemplate;
 import com.dfsek.terra.mod.config.SpawnCostConfig;
 import com.dfsek.terra.mod.config.SpawnEntryTemplate;
-import com.dfsek.terra.mod.config.SpawnGroupTemplate;
 import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.config.VillagerTypeTemplate;
@@ -82,6 +81,7 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(GrassColorModifier.class,
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
+            .registerLoader(SpawnGroup.class,(type, o, loader, depthTracker) ->  SpawnGroup.valueOf((String) o))
             .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)
             .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
