@@ -1,22 +1,29 @@
-package com.dfsek.terra.mod.config;
+package com.dfsek.terra.bukkit.nms.v1_20_R2.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import net.minecraft.sound.BiomeAdditionsSound;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicSound;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.village.VillagerType;
-import net.minecraft.world.biome.Biome.TemperatureModifier;
-import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
-import net.minecraft.world.biome.BiomeParticleConfig;
-import net.minecraft.world.biome.SpawnSettings;
-
+import java.util.List;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.Music;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.level.biome.AmbientAdditionsSettings;
+import net.minecraft.world.level.biome.AmbientMoodSettings;
+import net.minecraft.world.level.biome.AmbientParticleSettings;
+import net.minecraft.world.level.biome.Biome.Precipitation;
+import net.minecraft.world.level.biome.Biome.TemperatureModifier;
+import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import com.dfsek.terra.api.properties.Properties;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
+
+    @Value("tags")
+    @Default
+    private List<ResourceLocation> tags = null;
+
     @Value("colors.grass")
     @Default
     private Integer grassColor = null;
@@ -47,7 +54,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("particles")
     @Default
-    private BiomeParticleConfig particleConfig = null;
+    private AmbientParticleSettings particleConfig = null;
 
     @Value("climate.precipitation")
     @Default
@@ -71,92 +78,96 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("sound.mood-sound")
     @Default
-    private BiomeMoodSound moodSound = null;
+    private AmbientMoodSettings moodSound = null;
 
     @Value("sound.additions-sound")
     @Default
-    private BiomeAdditionsSound additionsSound = null;
+    private AmbientAdditionsSettings additionsSound = null;
 
     @Value("sound.music")
     @Default
-    private MusicSound music = null;
+    private Music music = null;
 
     @Value("spawning")
     @Default
-    private SpawnSettings spawnSettings = null;
+    private MobSpawnSettings spawnSettings = null;
 
     @Value("villager-type")
     @Default
     private VillagerType villagerType = null;
-
+    
+    public List<ResourceLocation> getTags() {
+        return tags;
+    }
+    
     public Integer getGrassColor() {
         return grassColor;
     }
-
+    
     public Integer getFogColor() {
         return fogColor;
     }
-
+    
     public Integer getWaterColor() {
         return waterColor;
     }
-
+    
     public Integer getWaterFogColor() {
         return waterFogColor;
     }
-
+    
     public Integer getFoliageColor() {
         return foliageColor;
     }
-
+    
     public Integer getSkyColor() {
         return skyColor;
     }
-
+    
     public GrassColorModifier getGrassColorModifier() {
         return grassColorModifier;
     }
-
-    public BiomeParticleConfig getParticleConfig() {
+    
+    public AmbientParticleSettings getParticleConfig() {
         return particleConfig;
     }
-
+    
     public Boolean getPrecipitation() {
         return precipitation;
     }
-
+    
     public Float getTemperature() {
         return temperature;
     }
-
+    
     public TemperatureModifier getTemperatureModifier() {
         return temperatureModifier;
     }
-
+    
     public Float getDownfall() {
         return downfall;
     }
-
+    
     public SoundEvent getLoopSound() {
         return loopSound;
     }
-
-    public BiomeMoodSound getMoodSound() {
+    
+    public AmbientMoodSettings getMoodSound() {
         return moodSound;
     }
-
-    public BiomeAdditionsSound getAdditionsSound() {
+    
+    public AmbientAdditionsSettings getAdditionsSound() {
         return additionsSound;
     }
-
-    public MusicSound getMusic() {
+    
+    public Music getMusic() {
         return music;
     }
-
-    public SpawnSettings getSpawnSettings() {
+    
+    public MobSpawnSettings getSpawnSettings() {
         return spawnSettings;
     }
-
+    
     public VillagerType getVillagerType() {
         return villagerType;
     }
