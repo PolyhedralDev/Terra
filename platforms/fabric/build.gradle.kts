@@ -49,6 +49,8 @@ tasks {
     }
 
     remapJar {
+        dependsOn("installAddons")
+
         injectAccessWidener.set(true)
         inputFile.set(shadowJar.get().archiveFile)
         archiveFileName.set("${rootProject.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}-fabric-${project.version}.jar")
