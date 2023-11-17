@@ -1,7 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import io.papermc.paperweight.util.path
 import java.io.File
 import java.io.FileWriter
-import java.net.URI
 import java.net.URL
 import java.nio.file.FileSystems
 import org.gradle.api.DefaultTask
@@ -46,7 +46,8 @@ fun Project.configureDistribution() {
         
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
-            val dest = URI.create("jar:" + tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toURI())
+            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().path
+            
             
             FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
                 forSubProjects(":common:addons") {
