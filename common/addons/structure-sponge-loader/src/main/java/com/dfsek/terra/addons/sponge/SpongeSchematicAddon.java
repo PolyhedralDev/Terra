@@ -7,8 +7,6 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import com.dfsek.terra.api.util.FileUtil;
-
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -32,6 +30,7 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
+import com.dfsek.terra.api.util.FileUtil;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 
 

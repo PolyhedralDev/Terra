@@ -8,11 +8,11 @@
 package com.dfsek.terra.addons.yaml;
 
 import com.dfsek.tectonic.yaml.YamlConfiguration;
-
-import com.dfsek.terra.api.util.FileUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -20,9 +20,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import java.io.IOException;
-import java.nio.file.Files;
+import com.dfsek.terra.api.util.FileUtil;
 
 
 public class YamlAddon implements AddonInitializer {

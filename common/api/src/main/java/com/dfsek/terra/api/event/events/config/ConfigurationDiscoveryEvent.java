@@ -9,7 +9,6 @@ package com.dfsek.terra.api.event.events.config;
 
 import com.dfsek.tectonic.api.config.Configuration;
 
-import java.nio.file.Path;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.api.config.ConfigPack;

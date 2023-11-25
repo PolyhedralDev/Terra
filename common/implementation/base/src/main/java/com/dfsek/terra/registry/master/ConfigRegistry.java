@@ -45,17 +45,17 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
         List<IOException> failedLoads = new ArrayList<>();
-        try (Stream<Path> packs = Files.list(packsDirectory)) {
+        try(Stream<Path> packs = Files.list(packsDirectory)) {
             packs.forEach(path -> {
                 try {
                     ConfigPack pack = new ConfigPackImpl(path, platform);
                     registerChecked(pack.getRegistryKey(), pack);
-                } catch (IOException e) {
+                } catch(IOException e) {
                     failedLoads.add(e);
                 }
             });
         }
-        if (!failedLoads.isEmpty()) {
+        if(!failedLoads.isEmpty()) {
             throw new PackLoadFailuresException(failedLoads);
         }
     }

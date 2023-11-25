@@ -26,6 +26,31 @@ import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.yaml.YamlConfiguration;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimaps;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -52,29 +77,15 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
-import com.dfsek.terra.config.preprocessor.*;
+import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaStringPreprocessor;
+import com.dfsek.terra.config.preprocessor.MetaValuePreprocessor;
 import com.dfsek.terra.config.prototype.ProtoConfig;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.ShortcutHolder;
-
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimaps;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 
 /**
@@ -124,7 +135,8 @@ public class ConfigPackImpl implements ConfigPack {
 
         Path packManifestPath = rootPath.resolve("pack.yml");
         if(Files.notExists(packManifestPath)) throw new IOException("No pack.yml found in " + path);
-        Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath), packManifestPath.getFileName().toString());
+        Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath),
+            packManifestPath.getFileName().toString());
 
         this.platform = platform;
         this.configTypeRegistry = createConfigRegistry();

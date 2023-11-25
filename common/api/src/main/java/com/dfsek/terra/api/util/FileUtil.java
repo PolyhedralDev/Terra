@@ -5,19 +5,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.function.Function.*;
+import static java.util.function.Function.identity;
 
 
 public class FileUtil {
     public static Map<String, Path> filesWithExtension(Path start, String... extensions) throws IOException {
         if(Files.notExists(start) || !Files.isDirectory(start)) return Collections.emptyMap();
-        try (Stream<Path> paths = Files.walk(start)) {
+        try(Stream<Path> paths = Files.walk(start)) {
             return paths
                 .filter(Files::isRegularFile)
                 .filter(p -> Arrays.stream(extensions).anyMatch(e -> p.getFileName().toString().endsWith(e)))
