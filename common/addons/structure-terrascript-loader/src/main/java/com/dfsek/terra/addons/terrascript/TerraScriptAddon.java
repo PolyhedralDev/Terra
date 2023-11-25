@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.FunctionBuilder;
@@ -20,9 +23,6 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.FileUtil;
-
-import java.io.IOException;
-import java.nio.file.Files;
 
 
 public class TerraScriptAddon implements AddonInitializer {
