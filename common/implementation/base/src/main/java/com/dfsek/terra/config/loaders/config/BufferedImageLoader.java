@@ -53,7 +53,7 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     throws LoadException {
         return pack.getContext().get(ImageCache.class).map.computeIfAbsent((String) c, s -> {
             try {
-                return ImageIO.read(Files.newInputStream(pack.getPackDirectory().resolve(s)));
+                return ImageIO.read(Files.newInputStream(pack.getRootPath().resolve(s)));
             } catch(IOException e) {
                 throw new LoadException("Unable to load image", e, depthTracker);
             }

@@ -44,7 +44,7 @@ public interface ConfigPack extends LoaderRegistrar,
 
     List<GenerationStage> getStages();
 
-    Path getPackDirectory();
+    Path getRootPath();
 
     String getAuthor();
 

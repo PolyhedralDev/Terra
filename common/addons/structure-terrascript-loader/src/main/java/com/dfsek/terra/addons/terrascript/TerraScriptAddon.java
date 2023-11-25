@@ -41,7 +41,7 @@ public class TerraScriptAddon implements AddonInitializer {
                 CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                 CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
                 try {
-                    FileUtil.filesWithExtension(event.getPack().getPackDirectory(), ".tesf")
+                    FileUtil.filesWithExtension(event.getPack().getRootPath(), ".tesf")
                         .entrySet()
                         .stream()
                         .parallel()

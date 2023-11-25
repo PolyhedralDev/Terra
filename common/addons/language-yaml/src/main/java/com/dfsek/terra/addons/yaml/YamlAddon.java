@@ -41,7 +41,7 @@ public class YamlAddon implements AddonInitializer {
             .register(addon, ConfigurationDiscoveryEvent.class)
             .then(event -> {
                 try {
-                    FileUtil.filesWithExtension(event.getPack().getPackDirectory(), ".yml")
+                    FileUtil.filesWithExtension(event.getPack().getRootPath(), ".yml")
                         .forEach((key, value) -> {
                             LOGGER.debug("Discovered config {}", key);
                             try {

@@ -90,7 +90,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Platform platform;
-    private final Path packDirectory;
+    private final Path rootPath;
 
     private final Map<BaseAddon, VersionRange> addons;
 
@@ -108,19 +108,22 @@ public class ConfigPackImpl implements ConfigPack {
     public ConfigPackImpl(Path path, Platform platform) throws IOException {
         long start = System.nanoTime();
 
-        if(Files.notExists(path)) throw new FileNotFoundException("Could not create config pack, " + path + " does not exist");
+        if(Files.notExists(path)) throw new FileNotFoundException("Could not load config pack, " + path + " does not exist");
 
         if(Files.isDirectory(path)) {
-            this.packDirectory = path;
-        } else if(Files.isRegularFile(path) && path.getFileName().toString().endsWith(".zip")) {
+            this.rootPath = path;
+        } else if(Files.isRegularFile(path)) {
+            if(!path.getFileName().toString().endsWith(".zip")) {
+                throw new IOException("Could not load config pack, file " + path + " is not a zip");
+            }
             FileSystem zipfs = FileSystems.newFileSystem(path);
-            this.packDirectory = zipfs.getPath("/");
+            this.rootPath = zipfs.getPath("/");
         } else {
-            throw new IllegalArgumentException("Could not load config pack from " + path + ", not a directory or zip file");
+            throw new IOException("Could not load config pack from " + path);
         }
 
-        Path packManifestPath = packDirectory.resolve("pack.yml");
-        if(Files.notExists(packManifestPath)) throw new FileNotFoundException("No pack.yml found in " + path);
+        Path packManifestPath = rootPath.resolve("pack.yml");
+        if(Files.notExists(packManifestPath)) throw new IOException("No pack.yml found in " + path);
         Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath), packManifestPath.getFileName().toString());
 
         this.platform = platform;
@@ -277,7 +280,6 @@ public class ConfigPackImpl implements ConfigPack {
         return seededBiomeProvider;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> typeKey) {
         return (CheckedRegistry<T>) registryMap.computeIfAbsent(typeKey.getType(), c -> {
@@ -316,8 +318,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public Path getPackDirectory() {
-        return packDirectory;
+    public Path getRootPath() {
+        return rootPath;
     }
 
     @Override
@@ -330,7 +332,7 @@ public class ConfigPackImpl implements ConfigPack {
         return template.getVersion();
     }
 
-    @SuppressWarnings("unchecked,rawtypes")
+    @SuppressWarnings("rawtypes")
     @Override
     public <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader) {
         ShortcutHolder<?> holder = shortcuts
@@ -374,12 +376,10 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> CheckedRegistry<T> getRegistry(Type type) {
         return (CheckedRegistry<T>) registryMap.get(type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
         return (CheckedRegistry<T>) registryMap.get(type);

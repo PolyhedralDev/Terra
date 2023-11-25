@@ -61,7 +61,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
             .then(event -> {
                 CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                 try {
-                    FileUtil.filesWithExtension(event.getPack().getPackDirectory(), ".schem")
+                    FileUtil.filesWithExtension(event.getPack().getRootPath(), ".schem")
                         .entrySet()
                         .stream()
                         .map(entry -> {
