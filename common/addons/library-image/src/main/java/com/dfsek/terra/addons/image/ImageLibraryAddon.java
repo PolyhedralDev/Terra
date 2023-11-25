@@ -60,8 +60,8 @@ public class ImageLibraryAddon implements AddonInitializer {
             .then(event -> {
                 ConfigPack pack = event.getPack();
                 CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
-                imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
-                imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
+                imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack));
+                imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack));
             })
             .then(event -> {
                 event.getPack()

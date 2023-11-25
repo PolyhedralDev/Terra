@@ -32,7 +32,6 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
@@ -45,15 +44,12 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
-import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.config.fileloaders.FolderLoader;
-import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.preprocessor.*;
@@ -72,11 +68,13 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 
 /**
@@ -92,7 +90,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Platform platform;
-    private final Loader loader;
+    private final Path packDirectory;
 
     private final Map<BaseAddon, VersionRange> addons;
 
@@ -106,40 +104,25 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final RegistryKey key;
 
-    public ConfigPackImpl(File folder, Platform platform) {
-        this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
-            try {
-                return new YamlConfiguration(new FileInputStream(new File(folder, "pack.yml")), "pack.yml");
-            } catch(FileNotFoundException e) {
-                throw new UncheckedIOException("No pack.yml file found in " + folder.getAbsolutePath(), e);
-            }
-        }), platform);
-    }
-
-    public ConfigPackImpl(ZipFile file, Platform platform) {
-        this(new ZIPLoader(file), Construct.construct(() -> {
-            ZipEntry pack = null;
-            Enumeration<? extends ZipEntry> entries = file.entries();
-            while(entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                if(entry.getName().equals("pack.yml")) pack = entry;
-            }
-
-            if(pack == null) throw new IllegalArgumentException("No pack.yml file found in " + file.getName());
-
-            try {
-                return new YamlConfiguration(file.getInputStream(pack), "pack.yml");
-            } catch(IOException e) {
-                throw new UncheckedIOException("Unable to load pack.yml from ZIP file", e);
-            }
-        }), platform);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private ConfigPackImpl(Loader loader, Configuration packManifest, Platform platform) {
+    @SuppressWarnings({ "rawtypes" })
+    public ConfigPackImpl(Path path, Platform platform) throws IOException {
         long start = System.nanoTime();
 
-        this.loader = loader;
+        if(Files.notExists(path)) throw new FileNotFoundException("Could not create config pack, " + path + " does not exist");
+
+        if(Files.isDirectory(path)) {
+            this.packDirectory = path;
+        } else if(Files.isRegularFile(path) && path.getFileName().toString().endsWith(".zip")) {
+            FileSystem zipfs = FileSystems.newFileSystem(path);
+            this.packDirectory = zipfs.getPath("/");
+        } else {
+            throw new IllegalArgumentException("Could not load config pack from " + path + ", not a directory or zip file");
+        }
+
+        Path packManifestPath = packDirectory.resolve("pack.yml");
+        if(Files.notExists(packManifestPath)) throw new FileNotFoundException("No pack.yml found in " + path);
+        Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath), packManifestPath.getFileName().toString());
+
         this.platform = platform;
         this.configTypeRegistry = createConfigRegistry();
 
@@ -223,7 +206,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private Map<String, Configuration> discoverConfigurations() {
         Map<String, Configuration> configurations = new HashMap<>();
-        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader,
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this,
             (s, c) -> configurations.put(s.replace("\\", "/"),
                 c))); // Create all the configs.
         return configurations;
@@ -268,7 +251,7 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ConfigType.class, configTypeRegistry)
-            .registerLoader(BufferedImage.class, new BufferedImageLoader(loader, this));
+            .registerLoader(BufferedImage.class, new BufferedImageLoader(this));
         registryMap.forEach(registry::registerLoader);
         shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
     }
@@ -333,8 +316,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public Loader getLoader() {
-        return loader;
+    public Path getPackDirectory() {
+        return packDirectory;
     }
 
     @Override
