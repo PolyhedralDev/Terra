@@ -13,7 +13,7 @@ val dump = tasks.create("dumpDependents") {
     doFirst {
         taskSet.forEach {
             val resource = File(resourcesDir, it.archiveFileName.get())
-            println("Including archive " + it.archiveFileName.orNull + " in directory " + resource.absolutePath)
+            logger.info("Including archive " + it.archiveFileName.orNull + " in directory " + resource.absolutePath)
             it.archiveFile.get().asFile.copyTo(resource, true)
         }
     }
@@ -32,6 +32,6 @@ afterEvaluate {
         }
         tasks["dumpDependents"].dependsOn(task)
         taskSet.add(task)
-        println("Merged JAR will incorporate task ${task.name} from platform ${it.name}.")
+        logger.info("Merged JAR will incorporate task ${task.name} from platform ${it.name}.")
     }
 }

@@ -53,7 +53,7 @@ fun Project.configureDistribution() {
                 forSubProjects(":common:addons") {
                     val jar = getJarTask()
                     
-                    println("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
+                    logger.info("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
                     
                     val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
                     val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
