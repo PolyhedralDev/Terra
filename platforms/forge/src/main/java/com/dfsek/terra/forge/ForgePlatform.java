@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +64,12 @@ public class ForgePlatform extends ModPlatform {
     public boolean reload() {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = true;
+        try {
+            getRawConfigRegistry().loadAll(this);
+        } catch(IOException e) {
+            succeed = false;
+        }
 
         MinecraftServer server = getServer();
 

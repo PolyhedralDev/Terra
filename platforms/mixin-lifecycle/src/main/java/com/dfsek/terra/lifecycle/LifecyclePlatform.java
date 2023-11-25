@@ -14,6 +14,7 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,8 +65,12 @@ public abstract class LifecyclePlatform extends ModPlatform {
     public boolean reload() {
         getTerraConfig().load(this);
         getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
-
+        boolean succeed = true;
+        try {
+            getRawConfigRegistry().loadAll(this);
+        } catch(IOException e) {
+            succeed = false;
+        }
 
         if(server != null) {
             BiomeUtil.registerBiomes(server.getRegistryManager().get(RegistryKeys.BIOME));

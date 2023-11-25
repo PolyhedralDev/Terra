@@ -149,7 +149,11 @@ public abstract class AbstractPlatform implements Platform {
             .register(internalAddon, PlatformInitializationEvent.class)
             .then(event -> {
                 logger.info("Loading config packs...");
-                configRegistry.loadAll(this);
+                try {
+                    configRegistry.loadAll(this);
+                } catch(IOException e) {
+                    logger.error("Error loading config packs", e);
+                }
                 logger.info("Loaded packs.");
             })
             .global();
