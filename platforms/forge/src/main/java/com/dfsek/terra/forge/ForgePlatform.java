@@ -20,6 +20,9 @@ package com.dfsek.terra.forge;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
+
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
 import net.minecraft.MinecraftVersion;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
@@ -63,13 +66,7 @@ public class ForgePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = true;
-        try {
-            getRawConfigRegistry().loadAll(this);
-        } catch(IOException e) {
-            succeed = false;
-        }
+        boolean succeed = loadConfigPacks();
 
         MinecraftServer server = getServer();
 
