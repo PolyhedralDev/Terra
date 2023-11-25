@@ -18,6 +18,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -147,20 +150,27 @@ public abstract class AbstractPlatform implements Platform {
 
         eventManager.getHandler(FunctionalEventHandler.class)
             .register(internalAddon, PlatformInitializationEvent.class)
-            .then(event -> {
-                logger.info("Loading config packs...");
-                try {
-                    configRegistry.loadAll(this);
-                } catch(IOException e) {
-                    logger.error("Error loading config packs", e);
-                }
-                logger.info("Loaded packs.");
-            })
+            .then(event -> loadConfigPacks())
             .global();
-
 
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
+    }
+
+    protected boolean loadConfigPacks() {
+        logger.info("Loading config packs...");
+        ConfigRegistry configRegistry = getRawConfigRegistry();
+        configRegistry.clear();
+        try {
+            configRegistry.loadAll(this);
+        } catch(IOException e) {
+            logger.error("Failed to load config packs", e);
+            return false;
+        } catch(PackLoadFailuresException e) {
+            e.getExceptions().forEach(ex -> logger.error("Failed to load config pack", ex));
+            return false;
+        }
+        return true;
     }
 
     protected InternalAddon loadAddons() {

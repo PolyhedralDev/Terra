@@ -17,12 +17,12 @@
 
 package com.dfsek.terra.registry.master;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
+import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.api.Platform;
@@ -41,14 +41,37 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         super(TypeKey.of(ConfigPack.class));
     }
 
-    public void loadAll(Platform platform) throws IOException {
+    public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
+        List<IOException> failedLoads = new ArrayList<>();
         try (Stream<Path> packs = Files.list(packsDirectory)) {
-            for (Path path : packs.toList()) {
-                ConfigPack pack = new ConfigPackImpl(path, platform);
-                registerChecked(pack.getRegistryKey(), pack);
-            }
+            packs.forEach(path -> {
+                try {
+                    ConfigPack pack = new ConfigPackImpl(path, platform);
+                    registerChecked(pack.getRegistryKey(), pack);
+                } catch (IOException e) {
+                    failedLoads.add(e);
+                }
+            });
+        }
+        if (!failedLoads.isEmpty()) {
+            throw new PackLoadFailuresException(failedLoads);
+        }
+    }
+
+    public static class PackLoadFailuresException extends Exception {
+        @Serial
+        private static final long serialVersionUID = 538998844645186306L;
+
+        private final List<Throwable> exceptions;
+
+        public PackLoadFailuresException(List<? extends Throwable> exceptions) {
+            this.exceptions = (List<Throwable>) exceptions;
+        }
+
+        public List<Throwable> getExceptions() {
+            return exceptions;
         }
     }
 }

@@ -3,6 +3,9 @@ package com.dfsek.terra.lifecycle;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
+
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
 import net.minecraft.MinecraftVersion;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
@@ -64,13 +67,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = true;
-        try {
-            getRawConfigRegistry().loadAll(this);
-        } catch(IOException e) {
-            succeed = false;
-        }
+        boolean succeed = loadConfigPacks();
 
         if(server != null) {
             BiomeUtil.registerBiomes(server.getRegistryManager().get(RegistryKeys.BIOME));
