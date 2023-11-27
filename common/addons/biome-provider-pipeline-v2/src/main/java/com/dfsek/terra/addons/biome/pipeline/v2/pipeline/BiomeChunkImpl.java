@@ -14,9 +14,8 @@ public class BiomeChunkImpl implements BiomeChunk {
     private final SeededVector worldOrigin;
     private final int chunkOriginArrayIndex;
     private final int worldCoordinateScale;
-    private PipelineBiome[] biomes;
-
     private final int size;
+    private PipelineBiome[] biomes;
 
     public BiomeChunkImpl(SeededVector worldOrigin, PipelineImpl pipeline) {
 
@@ -76,7 +75,8 @@ public class BiomeChunkImpl implements BiomeChunk {
                 for(int gridX = 0; gridX < gridSize; gridX = gridX + 1) {
                     int xIndex = gridOrigin + gridX * gridInterval;
                     int zIndex = gridOrigin + gridZ * gridInterval;
-                    biomes[(xIndex * size) + zIndex] = stage.apply(new ViewPoint(this, gridInterval, gridX, gridZ, xIndex, zIndex, lookupArray, size));
+                    biomes[(xIndex * size) + zIndex] = stage.apply(
+                        new ViewPoint(this, gridInterval, gridX, gridZ, xIndex, zIndex, lookupArray, size));
                 }
             }
         }
