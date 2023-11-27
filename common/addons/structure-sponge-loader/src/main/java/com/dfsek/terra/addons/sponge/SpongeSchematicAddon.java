@@ -67,12 +67,12 @@ public class SpongeSchematicAddon implements AddonInitializer {
                             try {
                                 return convert(Files.newInputStream(entry.getValue()), FileUtil.fileName(entry.getKey()));
                             } catch(IOException e) {
-                                throw new RuntimeException(e);
+                                throw new RuntimeException("Failed to load config " + entry.getKey(), e);
                             }
                         })
                         .forEach(structureRegistry::register);
                 } catch(IOException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Error occurred while reading config pack files", e);
                 }
             })
             .failThrough();
