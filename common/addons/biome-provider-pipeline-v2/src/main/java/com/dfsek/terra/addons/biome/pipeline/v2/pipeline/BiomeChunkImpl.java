@@ -14,7 +14,9 @@ public class BiomeChunkImpl implements BiomeChunk {
     private final SeededVector worldOrigin;
     private final int chunkOriginArrayIndex;
     private final int worldCoordinateScale;
-    private PipelineBiome[][] biomes;
+    private PipelineBiome[] biomes;
+
+    private final int size;
 
     public BiomeChunkImpl(SeededVector worldOrigin, PipelineImpl pipeline) {
 
@@ -22,14 +24,14 @@ public class BiomeChunkImpl implements BiomeChunk {
         this.chunkOriginArrayIndex = pipeline.getChunkOriginArrayIndex();
         this.worldCoordinateScale = pipeline.getResolution();
 
-        int size = pipeline.getArraySize();
+        this.size = pipeline.getArraySize();
 
         int expanderCount = pipeline.getExpanderCount();
         int expansionsApplied = 0;
 
         // Allocate working arrays
-        this.biomes = new PipelineBiome[size][size];
-        PipelineBiome[][] lookupArray = new PipelineBiome[size][size];
+        this.biomes = new PipelineBiome[size * size];
+        PipelineBiome[] lookupArray = new PipelineBiome[size * size];
         // A second lookup array is required such that stage application doesn't affect lookups, otherwise application may cascade
 
         // Construct working grid
@@ -43,7 +45,7 @@ public class BiomeChunkImpl implements BiomeChunk {
             for(int gridZ = 0; gridZ < gridSize; gridZ++) {
                 int xIndex = gridOrigin + gridX * gridInterval;
                 int zIndex = gridOrigin + gridZ * gridInterval;
-                biomes[xIndex][zIndex] = pipeline.getSource().get(worldOrigin.seed(), xIndexToWorldCoordinate(xIndex),
+                biomes[(xIndex * size) + zIndex] = pipeline.getSource().get(worldOrigin.seed(), xIndexToWorldCoordinate(xIndex),
                     zIndexToWorldCoordinate(zIndex));
             }
         }
@@ -65,7 +67,7 @@ public class BiomeChunkImpl implements BiomeChunk {
 
             // Cycle arrays, the previously populated array is swapped to be used for lookups, and the result of the stage application
             // overwrites the previous lookup array. This saves having to allocate a new array copy each time
-            PipelineBiome[][] tempArray = biomes;
+            PipelineBiome[] tempArray = biomes;
             biomes = lookupArray;
             lookupArray = tempArray;
 
@@ -74,7 +76,7 @@ public class BiomeChunkImpl implements BiomeChunk {
                 for(int gridX = 0; gridX < gridSize; gridX = gridX + 1) {
                     int xIndex = gridOrigin + gridX * gridInterval;
                     int zIndex = gridOrigin + gridZ * gridInterval;
-                    biomes[xIndex][zIndex] = stage.apply(new ViewPoint(this, gridInterval, gridX, gridZ, xIndex, zIndex, lookupArray));
+                    biomes[(xIndex * size) + zIndex] = stage.apply(new ViewPoint(this, gridInterval, gridX, gridZ, xIndex, zIndex, lookupArray, size));
                 }
             }
         }
@@ -133,7 +135,7 @@ public class BiomeChunkImpl implements BiomeChunk {
     public PipelineBiome get(int xInChunk, int zInChunk) {
         int xIndex = xInChunk + chunkOriginArrayIndex;
         int zIndex = zInChunk + chunkOriginArrayIndex;
-        return biomes[xIndex][zIndex];
+        return biomes[(xIndex * size) + zIndex];
     }
 
     private int xIndexToWorldCoordinate(int xIndex) {
@@ -159,10 +161,11 @@ public class BiomeChunkImpl implements BiomeChunk {
         private final int gridZ;
         private final int xIndex;
         private final int zIndex;
-        private final PipelineBiome[][] lookupArray;
+        private final PipelineBiome[] lookupArray;
+        private final int size;
 
         private ViewPoint(BiomeChunkImpl chunk, int gridInterval, int gridX, int gridZ, int xIndex, int zIndex,
-                          PipelineBiome[][] lookupArray) {
+                          PipelineBiome[] lookupArray, int size) {
             this.chunk = chunk;
             this.gridInterval = gridInterval;
             this.gridX = gridX;
@@ -170,13 +173,14 @@ public class BiomeChunkImpl implements BiomeChunk {
             this.xIndex = xIndex;
             this.zIndex = zIndex;
             this.lookupArray = lookupArray;
-            this.biome = lookupArray[xIndex][zIndex];
+            this.size = size;
+            this.biome = lookupArray[(this.xIndex * this.size) + this.zIndex];
         }
 
         public PipelineBiome getRelativeBiome(int x, int z) {
             int lookupXIndex = this.xIndex + x * gridInterval;
             int lookupZIndex = this.zIndex + z * gridInterval;
-            return lookupArray[lookupXIndex][lookupZIndex];
+            return lookupArray[(lookupXIndex * this.size) + lookupZIndex];
         }
 
         public PipelineBiome getBiome() {
