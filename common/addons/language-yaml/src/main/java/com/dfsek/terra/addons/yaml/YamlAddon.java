@@ -45,11 +45,11 @@ public class YamlAddon implements AddonInitializer {
                             try {
                                 event.register(key, new YamlConfiguration(Files.newInputStream(value), key));
                             } catch(IOException e) {
-                                throw new RuntimeException(e);
+                                throw new RuntimeException("Failed to load config " + key, e);
                             }
                         });
                 } catch(IOException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Error occurred while reading config pack files", e);
                 }
             })
             .failThrough();

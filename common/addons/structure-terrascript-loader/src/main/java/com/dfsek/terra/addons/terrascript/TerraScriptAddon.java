@@ -60,7 +60,7 @@ public class TerraScriptAddon implements AddonInitializer {
                         })
                         .forEach(structureRegistry::register);
                 } catch(IOException e) {
-                    throw new RuntimeException(e);
+                    throw new RuntimeException("Error occurred while reading config pack files", e);
                 }
             })
             .priority(100)
