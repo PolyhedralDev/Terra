@@ -18,24 +18,17 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
     - name: Set up JDK 17
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93
       with:
         java-version: '17'
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-        
-    - name: Gradle Wrapper Validation
-      uses: gradle/wrapper-validation-action@v1.1.0
 
-    - uses: burrunan/gradle-cache-action@v1
+    - uses: burrunan/gradle-cache-action@03c71a8ba93d670980695505f48f49daf43704a6
       name: Build PROJECT_NAME
-      # Extra environment variables for Gradle execution (regular GitHub Actions feature)
-      # Note: env must be outside of "with"
-      env:
-        VARIABLE: VALUE
       with:
         # Specifies arguments for Gradle execution
         # If arguments is missing or empty, then Gradle is not executed
@@ -53,18 +46,3 @@ jobs:
         properties: |
           kotlin.js.compiler=ir
           kotlin.parallel.tasks.in.project=true
-
-#    - name: Build with Gradle
-#      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-#      with:
-#        arguments: build
-
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-#    - name: Publish to GitHub Packages
-#      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-#      with:
-#        arguments: publish
-#      env:
-#        USERNAME: ${{ github.actor }}
-#        TOKEN: ${{ secrets.GITHUB_TOKEN }}
