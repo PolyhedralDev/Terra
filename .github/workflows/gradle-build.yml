@@ -28,7 +28,7 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - uses: burrunan/gradle-cache-action@03c71a8ba93d670980695505f48f49daf43704a6
-      name: Build PROJECT_NAME
+      name: Build Terra
       with:
         # Specifies arguments for Gradle execution
         # If arguments is missing or empty, then Gradle is not executed
