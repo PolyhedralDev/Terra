@@ -11,17 +11,18 @@ object Versions {
         
         object Internal {
             const val shadow = "8.1.1"
-            const val apacheText = "1.10.0"
-            const val apacheIO = "2.14.0"
+            const val apacheText = "1.11.0"
+            const val apacheIO = "2.15.1"
             const val guava = "32.1.3-jre"
-            const val asm = "9.5"
+            const val asm = "9.6"
             const val snakeYml = "2.2"
+            const val jetBrainsAnnotations = "24.1.0"
+            const val junit = "5.10.1"
         }
     }
     
     object Fabric {
-        // const val fabricAPI = "0.90.0+${Mod.minecraft}"
-        const val fabricAPI = "0.91.1+1.20.3"
+        const val fabricAPI = "0.91.1+${Mod.minecraft}"
     }
 //
 //    object Quilt {
@@ -32,12 +33,12 @@ object Versions {
     object Mod {
         const val mixin = "0.12.5+mixin.0.8.5"
         
-        const val minecraft = "1.20.3-pre3"
+        const val minecraft = "1.20.3"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.14.25"
+        const val fabricLoader = "0.15.0"
         
-        const val architecuryLoom = "1.3.357"
-        const val architecturyPlugin = "3.4.146"
+        const val architecuryLoom = "1.4.367"
+        const val architecturyPlugin = "3.4.151"
         
         const val loomVineflower = "1.11.0"
     }
@@ -48,14 +49,14 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val paper = "1.18.2-R0.1-SNAPSHOT"
-        const val paperLib = "1.0.5"
+        const val paper = "1.18.2-R0.1-20220920.010157-167"
+        const val paperLib = "1.0.8"
         const val foliaLib = "0.2.5"
         const val minecraft = "1.20.2"
-        const val reflectionRemapper = "0.1.0-SNAPSHOT"
-        const val paperDevBundle = "1.20.2-R0.1-SNAPSHOT"
-        const val runPaper = "2.2.0"
-        const val paperWeight = "1.5.6"
+        const val reflectionRemapper = "0.1.0"
+        const val paperDevBundle = "1.20.2-R0.1-20231203.034718-121"
+        const val runPaper = "2.2.2"
+        const val paperWeight = "1.5.10"
     }
     
     //
@@ -67,6 +68,6 @@ object Versions {
 //
     object CLI {
         const val nbt = "6.1"
-        const val logback = "1.4.11"
+        const val logback = "1.4.14"
     }
 }
