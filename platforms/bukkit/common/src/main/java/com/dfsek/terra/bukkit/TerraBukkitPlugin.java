@@ -120,6 +120,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
 
+        if(!VersionUtil.getSpigotVersionInfo().isPaper())
+            logger.error("YOU ARE RUNNING A SPIGOT SERVER. PLEASE UPGRADE TO PAPER.");
+
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
                 Runnable runnable = () -> { // scary big block of text
