@@ -17,7 +17,6 @@ dependencies {
 tasks {
     shadowJar {
         relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-        relocate("com.tcoded.folialib", "com.dfsek.terra.lib.folialib")
         relocate("com.google.common", "com.dfsek.terra.lib.google.common")
         relocate("org.apache.logging.slf4j", "com.dfsek.terra.lib.slf4j-over-log4j")
         exclude("org/slf4j/**")
