@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R2;
+package com.dfsek.terra.bukkit.nms.v1_20_R3;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
