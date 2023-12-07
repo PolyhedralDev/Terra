@@ -33,7 +33,7 @@ object Versions {
     object Mod {
         const val mixin = "0.12.5+mixin.0.8.5"
         
-        const val minecraft = "1.20.3"
+        const val minecraft = "1.20.4"
         const val yarn = "$minecraft+build.1"
         const val fabricLoader = "0.15.0"
         
