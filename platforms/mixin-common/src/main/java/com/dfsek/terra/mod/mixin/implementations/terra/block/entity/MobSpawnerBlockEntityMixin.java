@@ -50,7 +50,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public abstract MobSpawnerLogic getLogic();
 
     @Shadow
-    public abstract void setEntityType(net.minecraft.entity.EntityType<?> entityType, Random random);
+    public abstract void method_46408(net.minecraft.entity.EntityType<?> entityType, Random random);
 
     public EntityType terra$getSpawnedType() {
         return (EntityType) Registries.ENTITY_TYPE.get(
@@ -58,7 +58,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
-        setEntityType((net.minecraft.entity.EntityType<?>) creatureType, world.getRandom());
+        method_46408((net.minecraft.entity.EntityType<?>) creatureType, world.getRandom());
     }
 
     public int terra$getDelay() {
