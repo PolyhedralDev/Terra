@@ -21,7 +21,8 @@ import cloud.commandframework.brigadier.CloudBrigadierManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
-import com.tcoded.folialib.FoliaLib;
+import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
+import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -51,7 +53,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
     private final PlatformImpl platform = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
 
-    private final FoliaLib foliaLib = new FoliaLib(this);
+    private AsyncScheduler asyncScheduler = this.getServer().getAsyncScheduler();
+
+    private GlobalRegionScheduler globalRegionScheduler = this.getServer().getGlobalRegionScheduler();
 
     @Override
     public void onEnable() {
@@ -116,6 +120,9 @@ public class TerraBukkitPlugin extends JavaPlugin {
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
 
+        if(!VersionUtil.getSpigotVersionInfo().isPaper())
+            logger.error("YOU ARE RUNNING A SPIGOT SERVER. PLEASE UPGRADE TO PAPER.");
+
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
                 Runnable runnable = () -> { // scary big block of text
@@ -159,7 +166,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                foliaLib.getImpl().runLaterAsync(runnable, 200L);
+                asyncScheduler.runDelayed(this, task -> runnable.run(), 200L, TimeUnit.SECONDS);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
@@ -187,7 +194,11 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
     }
 
-    public FoliaLib getFoliaLib() {
-        return foliaLib;
+    public AsyncScheduler getAsyncScheduler() {
+        return asyncScheduler;
+    }
+
+    public GlobalRegionScheduler getGlobalRegionScheduler() {
+        return globalRegionScheduler;
     }
 }

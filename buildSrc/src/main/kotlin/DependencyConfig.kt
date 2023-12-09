@@ -48,17 +48,14 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
-        maven("https://nexuslite.gcnt.net/repos/other/") {
-            name = "GCNT"
-        }
     }
     
     dependencies {
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-        compileOnly("org.jetbrains:annotations:23.0.0")
+        testImplementation("org.junit.jupiter", "junit-jupiter-api", Versions.Libraries.Internal.junit)
+        testImplementation("org.junit.jupiter", "junit-jupiter-engine", Versions.Libraries.Internal.junit)
+        compileOnly("org.jetbrains", "annotations", Versions.Libraries.Internal.jetBrainsAnnotations)
         
-        compileOnly("com.google.guava:guava:30.0-jre")
-        testImplementation("com.google.guava:guava:30.0-jre")
+        compileOnly("com.google.guava", "guava", Versions.Libraries.Internal.guava)
+        testImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
     }
 }

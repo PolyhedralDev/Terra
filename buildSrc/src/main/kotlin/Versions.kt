@@ -6,21 +6,25 @@ object Versions {
         
         const val cloud = "1.8.4"
         
+        const val caffeine = "3.1.8"
+        
         const val slf4j = "2.0.9"
         const val log4j_slf4j_impl = "2.20.0"
         
         object Internal {
             const val shadow = "8.1.1"
-            const val apacheText = "1.10.0"
-            const val apacheIO = "2.14.0"
+            const val apacheText = "1.11.0"
+            const val apacheIO = "2.15.1"
             const val guava = "32.1.3-jre"
-            const val asm = "9.5"
+            const val asm = "9.6"
             const val snakeYml = "2.2"
+            const val jetBrainsAnnotations = "24.1.0"
+            const val junit = "5.10.1"
         }
     }
     
     object Fabric {
-        const val fabricAPI = "0.90.0+${Mod.minecraft}"
+        const val fabricAPI = "0.91.2+${Mod.minecraft}"
     }
 //
 //    object Quilt {
@@ -31,30 +35,28 @@ object Versions {
     object Mod {
         const val mixin = "0.12.5+mixin.0.8.5"
         
-        const val minecraft = "1.20.2"
-        const val yarn = "$minecraft+build.4"
-        const val fabricLoader = "0.14.23"
+        const val minecraft = "1.20.4"
+        const val yarn = "$minecraft+build.1"
+        const val fabricLoader = "0.15.1"
         
-        const val architecuryLoom = "1.3.357"
-        const val architecturyPlugin = "3.4.146"
-        
-        const val loomVineflower = "1.11.0"
-    }
-    
-    object Forge {
-        const val forge = "${Mod.minecraft}-48.0.13"
-        const val burningwave = "12.63.0"
-    }
+        const val architecuryLoom = "1.4.369"
+        const val architecturyPlugin = "3.4.151"
+     }
+//
+//    object Forge {
+//        const val forge = "${Mod.minecraft}-48.0.13"
+//        const val burningwave = "12.63.0"
+//    }
     
     object Bukkit {
-        const val paper = "1.18.2-R0.1-SNAPSHOT"
-        const val paperLib = "1.0.5"
-        const val foliaLib = "0.2.5"
-        const val minecraft = "1.20.2"
-        const val reflectionRemapper = "0.1.0-SNAPSHOT"
-        const val paperDevBundle = "1.20.2-R0.1-SNAPSHOT"
-        const val runPaper = "2.2.0"
-        const val paperWeight = "1.5.6"
+        const val minecraft = "1.20.4"
+        const val paperBuild = "$minecraft-R0.1-20231209.173338-2"
+        const val paper = paperBuild
+        const val paperLib = "1.0.8"
+        const val reflectionRemapper = "0.1.0"
+        const val paperDevBundle = paperBuild
+        const val runPaper = "2.2.2"
+        const val paperWeight = "1.5.11"
     }
     
     //
@@ -66,6 +68,6 @@ object Versions {
 //
     object CLI {
         const val nbt = "6.1"
-        const val logback = "1.4.11"
+        const val logback = "1.4.14"
     }
 }

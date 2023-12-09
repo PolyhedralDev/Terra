@@ -29,9 +29,14 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class BukkitWorldHandle implements WorldHandle {
     private final BlockState air;
+
+    private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
 
     public BukkitWorldHandle() {
         this.air = BukkitBlockState.newInstance(Material.AIR.createBlockData());
@@ -39,6 +44,13 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+        if(data.equals("minecraft:grass")) { //TODO: remove in 7.0
+            data = "minecraft:short_grass";
+            logger.warn(
+                "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
+                ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
+                "version of Terra.");
+        }
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
             data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
