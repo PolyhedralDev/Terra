@@ -26,7 +26,7 @@
         "terra.common.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.15.0",
+        "fabricloader": ">=0.15.1",
         "java": ">=17",
         "minecraft": ">=1.20.4",
         "fabric": "*"
