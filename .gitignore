@@ -250,4 +250,4 @@ nbdist/
 platforms/**/run/**
 
 #Vale Config File
-platforms/mixin-common/src/main/.vale.ini
+**/.vale.ini
