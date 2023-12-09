@@ -47,8 +47,8 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.20.3"
-        const val paperBuild = "$minecraft-R0.1-20231207.043048-3"
+        const val minecraft = "1.20.4"
+        const val paperBuild = "$minecraft-R0.1-20231207.202833-1"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.0"
