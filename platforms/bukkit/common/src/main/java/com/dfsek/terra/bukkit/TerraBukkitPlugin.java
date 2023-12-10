@@ -63,6 +63,11 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
+       if(!Initializer.init(platform)) {
+           Bukkit.getPluginManager().disablePlugin(this);
+           return;
+       }
+
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
 
 
@@ -84,8 +89,6 @@ public class TerraBukkitPlugin extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
-
-        Initializer.init(platform);
     }
 
     @NotNull
