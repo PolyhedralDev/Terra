@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api;
 
+import com.dfsek.terra.api.config.MetaPack;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,6 +62,10 @@ public interface Platform extends LoaderRegistrar {
     @NotNull
     @Contract(pure = true)
     CheckedRegistry<ConfigPack> getConfigRegistry();
+
+    @NotNull
+    @Contract(pure = true)
+    CheckedRegistry<MetaPack> getMetaConfigRegistry();
 
     @NotNull
     @Contract(pure = true)
