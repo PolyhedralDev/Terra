@@ -1,5 +1,7 @@
 package com.dfsek.terra.mod.util;
 
+import com.dfsek.terra.api.config.MetaPack;
+
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
@@ -69,6 +71,54 @@ public class PresetUtil {
                 registryEntry2));
         DimensionOptions endDimensionOptions = new DimensionOptions(registryEntry3, new NoiseChunkGenerator(
             TheEndBiomeSource.createVanilla(platform.biomeRegistry().getReadOnlyWrapper()), registryEntry4));
+
+        WorldPreset preset = createPreset(dimensionOptions, netherDimensionOptions, endDimensionOptions);
+        LOGGER.info("Created world type \"{}\"", generatorID);
+        return Pair.of(generatorID, preset);
+    }
+
+    public static Pair<Identifier, WorldPreset> createMetaPack(MetaPack pack, ModPlatform platform) {
+        Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
+        Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
+        Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists =
+            platform.multiNoiseBiomeSourceParameterListRegistry();
+
+
+        RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.OVERWORLD).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD)
+            .orElseThrow();
+
+
+        Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
+            Locale.ROOT));
+
+        PRESETS.add(generatorID);
+
+        RegistryEntry<DimensionType> registryEntry = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
+        RegistryEntry.Reference<MultiNoiseBiomeSourceParameterList> reference = multiNoiseBiomeSourceParameterLists.getEntry(
+            MultiNoiseBiomeSourceParameterLists.NETHER).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> registryEntry2 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.NETHER)
+            .orElseThrow();
+
+        RegistryEntry<DimensionType> registryEntry3 = dimensionTypeRegistry.getEntry(DimensionTypes.THE_END).orElseThrow();
+        RegistryEntry<ChunkGeneratorSettings> registryEntry4 = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.END)
+            .orElseThrow();
+
+        ConfigPack overWorldPack = pack.packs().get("minecraft:overworld");
+        TerraBiomeSource owBiomeSource = new TerraBiomeSource(overWorldPack);
+        ChunkGenerator owGenerator = new MinecraftChunkGeneratorWrapper(owBiomeSource, overWorldPack, overworld);
+
+        ConfigPack netherPack = pack.packs().get("minecraft:nether");
+        TerraBiomeSource neBiomeSource = new TerraBiomeSource(netherPack);
+        ChunkGenerator neGenerator = new MinecraftChunkGeneratorWrapper(neBiomeSource, netherPack, registryEntry2);
+
+        ConfigPack endPack = pack.packs().get("minecraft:the_end");
+        TerraBiomeSource endBiomeSource = new TerraBiomeSource(netherPack);
+        ChunkGenerator endGenerator = new MinecraftChunkGeneratorWrapper(endBiomeSource, endPack, registryEntry4);
+
+        DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, owGenerator);
+        DimensionOptions netherDimensionOptions = new DimensionOptions(registryEntry, neGenerator);
+        DimensionOptions endDimensionOptions = new DimensionOptions(registryEntry3, endGenerator);
 
         WorldPreset preset = createPreset(dimensionOptions, netherDimensionOptions, endDimensionOptions);
         LOGGER.info("Created world type \"{}\"", generatorID);
