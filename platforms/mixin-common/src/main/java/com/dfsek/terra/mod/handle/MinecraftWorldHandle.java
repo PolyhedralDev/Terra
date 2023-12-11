@@ -71,7 +71,7 @@ public class MinecraftWorldHandle implements WorldHandle {
                 ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
                 "version of Terra.");
         }
-        if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
+        if(!id.contains(":")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
         return (EntityType) Registries.ENTITY_TYPE.get(identifier);
