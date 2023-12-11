@@ -70,6 +70,7 @@ public class MinecraftWorldHandle implements WorldHandle {
                 "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
                 ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
                 "version of Terra.");
+            id = newid;
         }
         if(!id.contains(":")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         Identifier identifier = Identifier.tryParse(id);
