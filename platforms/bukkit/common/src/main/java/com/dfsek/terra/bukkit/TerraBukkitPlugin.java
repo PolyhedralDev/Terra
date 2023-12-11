@@ -63,10 +63,10 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
-       if(!Initializer.init(platform)) {
-           Bukkit.getPluginManager().disablePlugin(this);
-           return;
-       }
+        if(!Initializer.init(platform)) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
 

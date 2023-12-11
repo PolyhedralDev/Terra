@@ -20,6 +20,8 @@ package com.dfsek.terra.bukkit.handles;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
@@ -29,14 +31,10 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 public class BukkitWorldHandle implements WorldHandle {
-    private final BlockState air;
-
     private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
+    private final BlockState air;
 
     public BukkitWorldHandle() {
         this.air = BukkitBlockState.newInstance(Material.AIR.createBlockData());

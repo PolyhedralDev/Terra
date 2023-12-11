@@ -1,7 +1,6 @@
 package com.dfsek.terra.bukkit.nms;
 
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

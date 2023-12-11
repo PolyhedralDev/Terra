@@ -41,7 +41,7 @@ object Versions {
         
         const val architecuryLoom = "1.4.369"
         const val architecturyPlugin = "3.4.151"
-     }
+    }
 //
 //    object Forge {
 //        const val forge = "${Mod.minecraft}-48.0.13"
