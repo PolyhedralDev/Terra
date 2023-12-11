@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.api.structure;
 
+import java.util.Random;
+
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
-
-import java.util.Random;
 
 
 public interface Structure {

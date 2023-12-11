@@ -3,9 +3,6 @@ package com.dfsek.terra.lifecycle;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
-
 import net.minecraft.MinecraftVersion;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
@@ -17,7 +14,6 @@ import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
