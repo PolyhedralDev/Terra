@@ -1,4 +1,8 @@
 object Versions {
+    object Terra {
+        const val overworldConfig = "v1.3.4"
+    }
+    
     object Libraries {
         const val tectonic = "4.2.1"
         const val paralithic = "0.7.1"
