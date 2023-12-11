@@ -17,14 +17,13 @@
 
 package com.dfsek.terra.registry.master;
 
-import com.dfsek.tectonic.api.exception.ConfigException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
-import java.util.zip.ZipFile;
+import java.io.Serial;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -37,44 +36,42 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
  * Class to hold config packs
  */
 public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
-    private static final Logger logger = LoggerFactory.getLogger(ConfigRegistry.class);
 
     public ConfigRegistry() {
         super(TypeKey.of(ConfigPack.class));
     }
 
-    public void load(File folder, Platform platform) throws ConfigException {
-        ConfigPack pack = new ConfigPackImpl(folder, platform);
-        registerChecked(pack.getRegistryKey(), pack);
+    public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
+        Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
+        Files.createDirectories(packsDirectory);
+        List<IOException> failedLoads = new ArrayList<>();
+        try(Stream<Path> packs = Files.list(packsDirectory)) {
+            packs.forEach(path -> {
+                try {
+                    ConfigPack pack = new ConfigPackImpl(path, platform);
+                    registerChecked(pack.getRegistryKey(), pack);
+                } catch(IOException e) {
+                    failedLoads.add(e);
+                }
+            });
+        }
+        if(!failedLoads.isEmpty()) {
+            throw new PackLoadFailuresException(failedLoads);
+        }
     }
 
-    public boolean loadAll(Platform platform) {
-        boolean valid = true;
-        File packsFolder = new File(platform.getDataFolder(), "packs");
-        packsFolder.mkdirs();
-        for(File dir : Objects.requireNonNull(packsFolder.listFiles(File::isDirectory))) {
-            try {
-                load(dir, platform);
-            } catch(ConfigException e) {
-                logger.error("Error loading config pack {}", dir.getName(), e);
-                valid = false;
-            }
-        }
-        for(File zip : Objects.requireNonNull(
-            packsFolder.listFiles(file -> file.getName().endsWith(".zip") || file.getName().endsWith(".terra")))) {
-            try {
-                logger.info("Loading ZIP archive: {}", zip.getName());
-                load(new ZipFile(zip), platform);
-            } catch(IOException | ConfigException e) {
-                logger.error("Error loading config pack {}", zip.getName(), e);
-                valid = false;
-            }
-        }
-        return valid;
-    }
+    public static class PackLoadFailuresException extends Exception {
+        @Serial
+        private static final long serialVersionUID = 538998844645186306L;
 
-    public void load(ZipFile file, Platform platform) throws ConfigException {
-        ConfigPackImpl pack = new ConfigPackImpl(file, platform);
-        registerChecked(pack.getRegistryKey(), pack);
+        private final List<Throwable> exceptions;
+
+        public PackLoadFailuresException(List<? extends Throwable> exceptions) {
+            this.exceptions = (List<Throwable>) exceptions;
+        }
+
+        public List<Throwable> getExceptions() {
+            return exceptions;
+        }
     }
 }
