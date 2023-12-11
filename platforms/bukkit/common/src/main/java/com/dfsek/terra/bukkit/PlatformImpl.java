@@ -20,6 +20,9 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -63,8 +67,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {

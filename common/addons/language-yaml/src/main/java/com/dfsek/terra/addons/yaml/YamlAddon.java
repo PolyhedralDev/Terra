@@ -11,12 +11,16 @@ import com.dfsek.tectonic.yaml.YamlConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.util.FileUtil;
 
 
 public class YamlAddon implements AddonInitializer {
@@ -33,10 +37,21 @@ public class YamlAddon implements AddonInitializer {
         platform.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(addon, ConfigurationDiscoveryEvent.class)
-            .then(event -> event.getLoader().open("", ".yml").thenEntries(entries -> entries.forEach(entry -> {
-                LOGGER.debug("Discovered config {}", entry.getKey());
-                event.register(entry.getKey(), new YamlConfiguration(entry.getValue(), entry.getKey()));
-            })).close())
+            .then(event -> {
+                try {
+                    FileUtil.filesWithExtension(event.getPack().getRootPath(), ".yml")
+                        .forEach((key, value) -> {
+                            LOGGER.debug("Discovered config {}", key);
+                            try {
+                                event.register(key, new YamlConfiguration(Files.newInputStream(value), key));
+                            } catch(IOException e) {
+                                throw new RuntimeException("Failed to load config " + key, e);
+                            }
+                        });
+                } catch(IOException e) {
+                    throw new RuntimeException("Error occurred while reading config pack files", e);
+                }
+            })
             .failThrough();
     }
 }

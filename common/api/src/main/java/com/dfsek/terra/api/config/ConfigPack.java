@@ -10,6 +10,7 @@ package com.dfsek.terra.api.config;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public interface ConfigPack extends LoaderRegistrar,
 
     List<GenerationStage> getStages();
 
-    Loader getLoader();
+    Path getRootPath();
 
     String getAuthor();
 
