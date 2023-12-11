@@ -5,8 +5,6 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.api.config.ConfigPack;
-
 import java.util.Map;
 
 

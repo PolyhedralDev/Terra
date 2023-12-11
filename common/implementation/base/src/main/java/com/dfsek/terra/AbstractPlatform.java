@@ -18,9 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -75,6 +72,7 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 
 
 /**
