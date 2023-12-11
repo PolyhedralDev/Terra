@@ -58,7 +58,13 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
-        method_46408((net.minecraft.entity.EntityType<?>) creatureType, world.getRandom());
+        Random rand;
+        if (hasWorld()) {
+            rand = world.getRandom();
+        } else {
+            rand = Random.create();
+        }
+        method_46408((net.minecraft.entity.EntityType<?>) creatureType, rand);
     }
 
     public int terra$getDelay() {

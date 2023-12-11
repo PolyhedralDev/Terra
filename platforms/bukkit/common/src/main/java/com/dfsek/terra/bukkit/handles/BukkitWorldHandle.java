@@ -61,6 +61,13 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
+        if (!id.contains(":")) { //TODO: remove in 7.0
+            String newid = "minecraft:" + id.toLowerCase();;
+            logger.warn(
+                "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
+                ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
+                "version of Terra.");
+        }
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         String entityID = id.toUpperCase(Locale.ROOT).substring(10);
 
