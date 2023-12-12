@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.ItemStack;
@@ -50,14 +50,14 @@ public class Pool {
     }
 
     /**
-     * Fetches a list of items from the pool using the provided Random instance.
+     * Fetches a list of items from the pool using the provided RandomGenerator instance.
      *
-     * @param r The Random instance to use.
+     * @param r The RandomGenerator instance to use.
      *
      * @return List&lt;ItemStack&gt; - The list of items fetched.
      */
-    public List<ItemStack> getItems(Random r) {
-
+    public List<ItemStack> getItems(RandomGenerator r) {
+        
         int rolls = r.nextInt(max - min + 1) + min;
         List<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < rolls; i++) {

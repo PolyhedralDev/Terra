@@ -27,7 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -62,7 +63,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     }
 
     @Override
-    public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
+    public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull RandomGenerator random, int x, int z, @NotNull ChunkData chunkData) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
         delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }

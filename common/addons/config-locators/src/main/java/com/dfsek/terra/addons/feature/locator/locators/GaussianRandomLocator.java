@@ -7,7 +7,8 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
@@ -39,9 +40,9 @@ public class GaussianRandomLocator implements Locator {
         seed = 31 * seed + column.getX();
         seed = 31 * seed + column.getZ();
         seed += salt;
-
-        Random r = new Random(seed);
-
+        
+        RandomGenerator r = RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(seed);
+        
         int size = points.get(r);
 
 

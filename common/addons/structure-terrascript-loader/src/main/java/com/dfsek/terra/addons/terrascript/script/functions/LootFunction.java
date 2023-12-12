@@ -10,8 +10,6 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -29,6 +27,9 @@ import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.util.RotationUtil;
 import com.dfsek.terra.api.util.vector.Vector2;
 import com.dfsek.terra.api.util.vector.Vector3;
+
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 
 public class LootFunction implements Function<Void> {
@@ -64,34 +65,35 @@ public class LootFunction implements Function<Void> {
 
 
         registry.get(RegistryKey.parse(id))
-            .ifPresentOrElse(table -> {
-                    Vector3 apply = Vector3.of((int) Math.round(xz.getX()),
-                        y.apply(implementationArguments, scope)
-                            .intValue(),
-                        (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
-
-                    try {
-                        BlockEntity data = arguments.getWorld().getBlockEntity(apply);
-                        if(!(data instanceof Container container)) {
-                            LOGGER.error("Failed to place loot at {}; block {} is not a container",
-                                apply, data);
-                            return;
-                        }
-
-                        LootPopulateEvent event = new LootPopulateEvent(container, table,
-                            arguments.getWorld().getPack(), script);
-                        platform.getEventManager().callEvent(event);
-                        if(event.isCancelled()) return;
-
-                        event.getTable().fillInventory(container.getInventory(),
-                            new Random(apply.hashCode()));
-                        data.update(false);
-                    } catch(Exception e) {
-                        LOGGER.error("Could not apply loot at {}", apply, e);
-                        e.printStackTrace();
-                    }
-                },
-                () -> LOGGER.error("No such loot table {}", id));
+                .ifPresentOrElse(table -> {
+                                     Vector3 apply = Vector3.of(FastMath.roundToInt(xz.getX()),
+                                                                y.apply(implementationArguments, scope)
+                                                                 .intValue(),
+                                                                FastMath.roundToInt(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+            
+                                     try {
+                                         BlockEntity data = arguments.getWorld().getBlockEntity(apply);
+                                         if(!(data instanceof Container container)) {
+                                             LOGGER.error("Failed to place loot at {}; block {} is not a container",
+                                                          apply, data);
+                                             return;
+                                         }
+                
+                                         LootPopulateEvent event = new LootPopulateEvent(container, table,
+                                                                                         arguments.getWorld().getPack(), script);
+                                         platform.getEventManager().callEvent(event);
+                                         if(event.isCancelled()) return;
+                
+                                         event.getTable().fillInventory(container.getInventory(),
+                                                                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                                                                "Xoroshiro128PlusPlus").create(apply.hashCode()));
+                                         data.update(false);
+                                     } catch(Exception e) {
+                                         LOGGER.error("Could not apply loot at {}", apply, e);
+                                         e.printStackTrace();
+                                     }
+                                 },
+                                 () -> LOGGER.error("No such loot table {}", id));
         return null;
     }
 
