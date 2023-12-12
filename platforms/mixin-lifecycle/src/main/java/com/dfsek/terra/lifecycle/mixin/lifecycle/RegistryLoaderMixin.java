@@ -7,6 +7,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryLoader;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -64,6 +65,9 @@ public class RegistryLoaderMixin {
     @SuppressWarnings("unchecked")
     private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance,
                                                                     RegistryKey<Registry<T>> key) {
+        instance.stream().forEach(k -> {
+            LOGGER.error(k.toString());
+        });
         List<? extends MutableRegistry<?>> matches = instance
             .stream()
             .map(Pair::getFirst)
