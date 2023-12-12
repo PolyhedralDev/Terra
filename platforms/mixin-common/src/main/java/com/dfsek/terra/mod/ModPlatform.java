@@ -21,6 +21,7 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -62,7 +63,7 @@ public abstract class ModPlatform extends AbstractPlatform {
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         getRawConfigRegistry()
             .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
-        getRawMetaConfigRegistry().forEach(pack -> PresetUtil.createMetaPack(pack, this).apply(registerFunction));
+        getRawMetaConfigRegistry().forEach(pack -> PresetUtil.createMetaPackPreset(pack, this).apply(registerFunction));
     }
 
     @Override
