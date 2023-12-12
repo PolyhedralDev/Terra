@@ -6,9 +6,10 @@ import cloud.commandframework.arguments.standard.EnumArgument;
 import cloud.commandframework.arguments.standard.LongArgument;
 import cloud.commandframework.context.CommandContext;
 
-import java.util.Random;
-
-import com.dfsek.terra.addons.manifest.api.AddonInitializer;
+import com.dfsek.terra.addons.manifest.api.MonadAddonInitializer;
+import com.dfsek.terra.addons.manifest.api.monad.Do;
+import com.dfsek.terra.addons.manifest.api.monad.Get;
+import com.dfsek.terra.addons.manifest.api.monad.Init;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.command.CommandSender;
@@ -22,6 +23,8 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 public class StructureCommandAddon implements AddonInitializer {
     @Inject

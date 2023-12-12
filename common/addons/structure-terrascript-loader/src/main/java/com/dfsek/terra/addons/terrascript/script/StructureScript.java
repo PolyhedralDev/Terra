@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.addons.terrascript.parser.Parser;
 import com.dfsek.terra.addons.terrascript.parser.lang.Executable;
@@ -131,14 +131,14 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
 
     @Override
     @SuppressWarnings("try")
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         platform.getProfiler().push(profile);
         boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, 0));
         platform.getProfiler().pop(profile);
         return result;
     }
-
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation, int recursions) {
+    
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation, int recursions) {
         platform.getProfiler().push(profile);
         boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));
         platform.getProfiler().pop(profile);

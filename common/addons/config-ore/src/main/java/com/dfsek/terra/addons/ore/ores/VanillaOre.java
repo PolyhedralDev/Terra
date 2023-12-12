@@ -9,7 +9,7 @@ package com.dfsek.terra.addons.ore.ores;
 
 import java.util.BitSet;
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
