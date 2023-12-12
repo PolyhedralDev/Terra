@@ -1,20 +1,20 @@
 package com.dfsek.terra.addons.ore.utils;
 
-import java.util.Random;
-
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.world.WritableWorld;
 
+import java.util.random.RandomGenerator;
+
 
 public class VanillaOreUtils {
-    private static boolean shouldExpose(Random random, double exposedChance) {
+    private static boolean shouldExpose(RandomGenerator random, double exposedChance) {
         if(exposedChance >= 1.0F) return true;
         if(exposedChance <= 0.0F) return false;
         return random.nextFloat() < exposedChance;
     }
 
-    public static boolean shouldPlace(MaterialSet replaceable, BlockType type, Double exposedChance, Random random, WritableWorld world,
+    public static boolean shouldPlace(MaterialSet replaceable, BlockType type, Double exposedChance, RandomGenerator random, WritableWorld world,
                                       int x,
                                       int y, int z) {
         if(!replaceable.contains(type)) return false;
