@@ -35,12 +35,6 @@ public final class BiomeUtil {
             pack.getCheckedRegistry(Biome.class)
                 .forEach((id, biome) -> registerBiome(biome, pack, id, biomeRegistry));
         });
-        CommonPlatform.get().getMetaConfigRegistry().forEach(metaPack -> { // Register all Terra biomes.
-            metaPack.packs().forEach((k, pack) -> {
-                pack.getCheckedRegistry(Biome.class)
-                    .forEach((id, biome) -> registerBiome(biome, pack, id, biomeRegistry));
-            });
-        });
         logger.info("Terra biomes registered.");
     }
 
