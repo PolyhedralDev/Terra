@@ -194,7 +194,7 @@ public abstract class AbstractPlatform implements Platform {
         MetaConfigRegistry metaConfigRegistry = getRawMetaConfigRegistry();
         metaConfigRegistry.clear();
         try {
-            metaConfigRegistry.loadAll(this);
+            metaConfigRegistry.loadAll(this, configRegistry);
         } catch(IOException e) {
             logger.error("Failed to load meta config packs", e);
             return false;

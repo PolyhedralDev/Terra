@@ -44,14 +44,14 @@ public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> {
         super(TypeKey.of(MetaPack.class));
     }
 
-    public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
+    public void loadAll(Platform platform, ConfigRegistry configRegistry) throws IOException, PackLoadFailuresException {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("metapacks");
         Files.createDirectories(packsDirectory);
         List<IOException> failedLoads = new ArrayList<>();
         try(Stream<Path> packs = Files.list(packsDirectory)) {
             packs.forEach(path -> {
                 try {
-                    MetaPack pack = new MetaPackImpl(path, platform);
+                    MetaPack pack = new MetaPackImpl(path, platform, configRegistry);
                     registerChecked(pack.getRegistryKey(), pack);
                 } catch(IOException e) {
                     failedLoads.add(e);
