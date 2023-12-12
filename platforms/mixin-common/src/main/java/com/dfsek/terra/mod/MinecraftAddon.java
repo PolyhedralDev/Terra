@@ -19,6 +19,13 @@ package com.dfsek.terra.mod;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
+
+import com.dfsek.terra.api.config.ConfigPack;
+
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
+
+import com.dfsek.terra.mod.util.MinecraftUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,11 +52,20 @@ public abstract class MinecraftAddon implements BaseAddon {
     @Override
     public void initialize() {
         modPlatform.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
-            .global();
-
+                .getHandler(FunctionalEventHandler.class)
+                .register(this, ConfigurationLoadEvent.class)
+                .then(event -> {
+                    if(event.is(ConfigPack.class)) {
+                        event.getLoadedObject(ConfigPack.class).getContext().put(event.load(new VanillaWorldProperties()));
+                    }
+                })
+                .global();
+        modPlatform.getEventManager()
+                   .getHandler(FunctionalEventHandler.class)
+                   .register(this, ConfigPackPreLoadEvent.class)
+                   .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
+                   .global();
+        
         modPlatform.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPostLoadEvent.class)
