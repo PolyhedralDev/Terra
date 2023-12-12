@@ -26,39 +26,12 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+
 import net.minecraft.world.biome.source.MultiNoiseBiomeSource;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterLists;
 import net.minecraft.world.biome.source.TheEndBiomeSource;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.dimension.DimensionTypes;
-import net.minecraft.world.gen.WorldPreset;
-import net.minecraft.world.gen.WorldPresets;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
-import net.minecraft.world.gen.chunk.FlatChunkGenerator;
-import net.minecraft.world.gen.chunk.FlatChunkGeneratorConfig;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
-import com.dfsek.terra.mod.generation.TerraBiomeSource;
-
-
 
 
 public class PresetUtil {
@@ -72,7 +45,13 @@ public class PresetUtil {
             platform.multiNoiseBiomeSourceParameterListRegistry();
 
 
-        RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.OVERWORLD).orElseThrow();
+        DimensionType dimensionType = DimensionUtil.createDimension(pack, platform);
+        RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("overworld"));
+
+        Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
+
+        RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
+
         RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD)
             .orElseThrow();
 
@@ -85,7 +64,7 @@ public class PresetUtil {
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
 
-        DimensionOptions dimensionOptions = new DimensionOptions(overworldDimensionType, generator);
+        DimensionOptions dimensionOptions = new DimensionOptions(dimensionTypeRegistryEntry, generator);
 
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
@@ -114,6 +93,11 @@ public class PresetUtil {
         metaPack.packs().forEach((key, pack) -> {
             Identifier demensionIdentifier = new Identifier(key);
             DimensionType dimensionType = DimensionUtil.createDimension(pack, platform);
+            RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("terra", pack.getID().toLowerCase(
+                Locale.ROOT)));
+
+            Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
+
             RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
 
             TerraBiomeSource biomeSource = new TerraBiomeSource(pack);

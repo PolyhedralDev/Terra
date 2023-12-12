@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.mod.generation;
 
+import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
@@ -75,8 +77,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     private final RegistryEntry<ChunkGeneratorSettings> settings;
     private ChunkGenerator delegate;
     private ConfigPack pack;
-    
-    private VanillaWorldProperties vanillaWorldProperties;
+
 
     public MinecraftChunkGeneratorWrapper(TerraBiomeSource biomeSource, ConfigPack configPack,
                                           RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
@@ -87,11 +88,6 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         logger.info("Loading world with config pack {}", pack.getID());
         this.biomeSource = biomeSource;
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
-            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
-        } else {
-            vanillaWorldProperties = new VanillaWorldProperties();
-        }
     }
 
     @Override
@@ -117,7 +113,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public int getWorldHeight() {
-        return vanillaWorldProperties.getHeight().getMax();
+        return settings.value().generationShapeConfig().height();
     }
 
 
@@ -177,14 +173,13 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public int getSeaLevel() {
-        return vanillaWorldProperties.getSealevel();
+        return settings.value().seaLevel();
     }
 
     @Override
     public int getMinimumY() {
-        return vanillaWorldProperties.getHeight().getMin();
+        return settings.value().generationShapeConfig().minimumY();
     }
-
 
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
@@ -223,13 +218,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         this.pack = pack;
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         biomeSource.setPack(pack);
-    
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
-            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
-        } else {
-            vanillaWorldProperties = new VanillaWorldProperties();
-        }
-        
+
         logger.debug("Loading world with config pack {}", pack.getID());
     }
 

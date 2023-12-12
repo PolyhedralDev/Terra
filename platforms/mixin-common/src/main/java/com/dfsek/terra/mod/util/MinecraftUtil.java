@@ -24,6 +24,7 @@ import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
 
 import net.minecraft.world.biome.GenerationSettings;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,8 +110,12 @@ public final class MinecraftUtil {
         TerraIntProvider.TERRA_RANGE_TYPE_TO_INT_PROVIDER_TYPE.put(ConstantRange.class, CONSTANT);
     }
     
-    public static RegistryKey<Biome> registerKey(Identifier identifier) {
+    public static RegistryKey<Biome> registerBiomeKey(Identifier identifier) {
         return RegistryKey.of(RegistryKeys.BIOME, identifier);
+    }
+
+    public static RegistryKey<DimensionType> registerDimensionTypeKey(Identifier identifier) {
+        return RegistryKey.of(RegistryKeys.DIMENSION_TYPE, identifier);
     }
 
     public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla,
