@@ -8,9 +8,12 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.config.Configuration;
@@ -37,12 +40,15 @@ import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
+import com.dfsek.terra.registry.master.ConfigRegistry;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class MetaPackImpl implements MetaPack {
 
+    private static final Pattern PATTERN = Pattern.compile(", ");
     private final MetaPackTemplate template = new MetaPackTemplate();
 
     private final Platform platform;
@@ -62,8 +68,11 @@ public class MetaPackImpl implements MetaPack {
     private static final Logger logger = LoggerFactory.getLogger(MetaPackImpl.class);
 
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
+    private final String author;
 
-    public MetaPackImpl(Path path, Platform platform) throws IOException {
+    public MetaPackImpl(Path path, Platform platform, ConfigRegistry configRegistry) throws IOException {
+        long start = System.nanoTime();
+
         this.rootPath = path;
         this.platform = platform;
 
@@ -92,23 +101,33 @@ public class MetaPackImpl implements MetaPack {
 
         this.key = RegistryKey.of(namespace, id);
 
-        try {
-            template.getPacks().forEach((k, v) -> {
-                try {
-                    packs.put(k, new ConfigPackImpl(rootPath.resolve(v), platform));
-                } catch(IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        } catch(RuntimeException e) {
-            throw new IOException(e);
-        }
+        template.getPacks().forEach((k, v) -> {
+            RegistryKey registryKey = RegistryKey.parse(v);
+            if (configRegistry.contains(registryKey)) {
+                packs.put(k, configRegistry.get(registryKey).get());
+                logger.info("Linked config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
+            } else {
+                logger.warn("Failed to link config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
+            }
+        });
+
+        HashSet<String> authors = new HashSet<>();
+        packs.forEach((k, v) -> {
+            authors.addAll(Arrays.asList(PATTERN.split(v.getAuthor())));
+        });
+        authors.addAll(Arrays.asList(PATTERN.split(template.getAuthor())));
+
+        this.author = String.join(", ", authors);
+
+        logger.info("Loaded metapack \"{}:{}\" v{} by {} in {}ms.",
+            namespace, id, getVersion().getFormatted(), author, (System.nanoTime() - start) / 1000000.0D);
     }
 
 
     @Override
     public String getAuthor() {
-        return template.getAuthor();
+
+        return author;
     }
 
     @Override
