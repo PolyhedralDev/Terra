@@ -6,6 +6,7 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
@@ -27,6 +28,7 @@ import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -61,9 +63,17 @@ public abstract class ModPlatform extends AbstractPlatform {
     public abstract MinecraftServer getServer();
 
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
+        HashSet<String> configPacksInMetaPack = new HashSet<>();
+        getRawMetaConfigRegistry().forEach(pack -> {
+            PresetUtil.createMetaPackPreset(pack, this).apply(registerFunction);
+            pack.packs().forEach((k, v) -> configPacksInMetaPack.add(v.getID()));
+        });
         getRawConfigRegistry()
-            .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
-        getRawMetaConfigRegistry().forEach(pack -> PresetUtil.createMetaPackPreset(pack, this).apply(registerFunction));
+            .forEach(pack -> {
+                if (!configPacksInMetaPack.contains(pack.getID())) {
+                    PresetUtil.createDefault(pack, this).apply(registerFunction);
+                }
+            });
     }
 
     @Override

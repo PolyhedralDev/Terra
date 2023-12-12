@@ -8,6 +8,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import java.util.Map;
 
 
+@SuppressWarnings({ "unused", "FieldMayBeFinal" })
 public class MetaPackTemplate implements ConfigTemplate {
     @Value("id")
     private String id;

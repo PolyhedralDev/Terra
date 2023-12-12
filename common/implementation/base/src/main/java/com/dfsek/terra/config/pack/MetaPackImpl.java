@@ -3,9 +3,12 @@ package com.dfsek.terra.config.pack;
 import ca.solostudios.strata.version.Version;
 
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -73,13 +76,26 @@ public class MetaPackImpl implements MetaPack {
     public MetaPackImpl(Path path, Platform platform, ConfigRegistry configRegistry) throws IOException {
         long start = System.nanoTime();
 
-        this.rootPath = path;
-        this.platform = platform;
+        if(Files.notExists(path)) throw new FileNotFoundException("Could not load metapack, " + path + " does not exist");
+
+        if(Files.isDirectory(path)) {
+            this.rootPath = path;
+        } else if(Files.isRegularFile(path)) {
+            if(!path.getFileName().toString().endsWith(".zip")) {
+                throw new IOException("Could not load metapack, file " + path + " is not a zip");
+            }
+            FileSystem zipfs = FileSystems.newFileSystem(path);
+            this.rootPath = zipfs.getPath("/");
+        } else {
+            throw new IOException("Could not load metapack from " + path);
+        }
 
         Path packManifestPath = rootPath.resolve("metapack.yml");
         if(Files.notExists(packManifestPath)) throw new IOException("No metapack.yml found in " + path);
         Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath),
             packManifestPath.getFileName().toString());
+
+        this.platform = platform;
 
         register(selfLoader);
         platform.register(selfLoader);
@@ -100,6 +116,8 @@ public class MetaPackImpl implements MetaPack {
         }
 
         this.key = RegistryKey.of(namespace, id);
+
+        logger.info("Loading metapack \"{}:{}\"", id, namespace);
 
         template.getPacks().forEach((k, v) -> {
             RegistryKey registryKey = RegistryKey.parse(v);
@@ -126,7 +144,6 @@ public class MetaPackImpl implements MetaPack {
 
     @Override
     public String getAuthor() {
-
         return author;
     }
 
