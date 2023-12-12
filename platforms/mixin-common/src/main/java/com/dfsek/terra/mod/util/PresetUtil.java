@@ -4,17 +4,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.client.gui.screen.CustomizeBuffetLevelScreen;
-import net.minecraft.client.gui.screen.CustomizeFlatLevelScreen;
-import net.minecraft.client.gui.screen.world.LevelScreenProvider;
-import net.minecraft.structure.StructureSet;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;
-import net.minecraft.util.registry.BuiltinRegistries;
-import net.minecraft.util.registry.DynamicRegistryManager;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
@@ -74,10 +64,6 @@ import com.dfsek.terra.mod.generation.TerraBiomeSource;
 public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Identifier> PRESETS = new ArrayList<>();
-    
-    public static RegistryKey<WorldPreset> getPresetKey(Identifier identifier) {
-        return RegistryKey.of(Registry.WORLD_PRESET_KEY, identifier);
-    }
 
     public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
@@ -127,7 +113,7 @@ public class PresetUtil {
 
         metaPack.packs().forEach((key, pack) -> {
             Identifier demensionIdentifier = new Identifier(key);
-            DimensionType dimensionType = dimensionTypeRegistry.get(demensionIdentifier);
+            DimensionType dimensionType = DimensionUtil.createDimension(pack, platform);
             RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
 
             TerraBiomeSource biomeSource = new TerraBiomeSource(pack);

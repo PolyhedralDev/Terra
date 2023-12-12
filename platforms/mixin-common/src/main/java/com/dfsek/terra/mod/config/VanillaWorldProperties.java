@@ -19,65 +19,75 @@ import com.dfsek.terra.api.util.Range;
 
 
 public class VanillaWorldProperties implements ConfigTemplate, Properties {
+
+    @Value("vanilla")
+    @Default
+    private String vanillaDimension = "minecraft:overworld";
+
     @Value("minecraft.fixed-time")
     @Default
     private Long fixedTime = null;
 
     @Value("minecraft.has-sky-light")
     @Default
-    private Boolean hasSkyLight = false;
+    private Boolean hasSkyLight = null;
 
     @Value("minecraft.has-ceiling")
     @Default
-    private Boolean hasCeiling = false;
+    private Boolean hasCeiling = null;
 
     @Value("minecraft.ultra-warm")
     @Default
-    private Boolean ultraWarm = false;
+    private Boolean ultraWarm = null;
 
     @Value("minecraft.natural")
     @Default
-    private Boolean natural = false;
+    private Boolean natural = null;
 
     @Value("minecraft.coordinate-scale")
     @Default
-    private Double coordinateScale = 1.0E-5d;
+    private Double coordinateScale = null;
 
     @Value("minecraft.bed-works")
     @Default
-    private Boolean bedWorks = false;
+    private Boolean bedWorks = null;
 
     @Value("minecraft.respawn-anchor-works")
     @Default
-    private Boolean respawnAnchorWorks = false;
+    private Boolean respawnAnchorWorks = null;
 
     @Value("minecraft.height")
     @Default
-    private Range height = new ConstantRange(0, 16);
+    private Range height = null;
 
     @Value("minecraft.height.logical")
     @Default
-    private Integer logicalHeight = 0;
+    private Integer logicalHeight = null;
 
     @Value("minecraft.infiniburn")
     @Default
-    private Identifier infiniburn = new Identifier("");
+    private Identifier infiniburn = null;
 
     @Value("minecraft.effects")
     @Default
-    private Identifier effects = new Identifier("");
+    private Identifier effects = null;
 
     @Value("minecraft.ambient-light")
     @Default
-    private Float ambientLight = Float.MAX_VALUE;
+    private Float ambientLight = null;
 
     @Value("minecraft.monster-settings")
     @Default
-    private MonsterSettings monsterSettings = new MonsterSettings(false, false, new TerraIntProvider(new ConstantRange(0, 1)), 0);
-    
+    private MonsterSettingsConfig monsterSettings = null;
+
+
     @Value("minecraft.sealevel")
     @Default
-    private Integer sealevel = 0;
+    private Integer sealevel = 62; //TODO AUTO PULL DEFAULT
+
+    public String getVanillaDimension() {
+        return vanillaDimension;
+    }
 
     public Long getFixedTime() {
         return fixedTime;
@@ -131,10 +141,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
         return ambientLight;
     }
 
-    public MonsterSettings getMonsterSettings() {
+    public MonsterSettingsConfig getMonsterSettings() {
         return monsterSettings;
     }
-    
+
     public Integer getSealevel() {
         return sealevel;
     }
