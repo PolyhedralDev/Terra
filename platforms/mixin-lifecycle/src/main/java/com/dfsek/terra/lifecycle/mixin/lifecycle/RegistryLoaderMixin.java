@@ -65,9 +65,6 @@ public class RegistryLoaderMixin {
     @SuppressWarnings("unchecked")
     private static <T> Optional<MutableRegistry<T>> extractRegistry(List<Pair<MutableRegistry<?>, Object>> instance,
                                                                     RegistryKey<Registry<T>> key) {
-        instance.stream().forEach(k -> {
-            LOGGER.error(k.toString());
-        });
         List<? extends MutableRegistry<?>> matches = instance
             .stream()
             .map(Pair::getFirst)
