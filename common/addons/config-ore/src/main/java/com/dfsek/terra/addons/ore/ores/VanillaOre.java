@@ -44,7 +44,7 @@ public class VanillaOre implements Structure {
     }
 
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         float randomRadian = random.nextFloat() * (float) Math.PI;
         double eighthSize = size / 8.0F;
 
