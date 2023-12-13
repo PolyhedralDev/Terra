@@ -53,12 +53,9 @@ public abstract class MinecraftAddon implements BaseAddon {
     public void initialize() {
         modPlatform.getEventManager()
                 .getHandler(FunctionalEventHandler.class)
-                .register(this, ConfigurationLoadEvent.class)
-                .then(event -> {
-                    if(event.is(ConfigPack.class)) {
-                        event.getLoadedObject(ConfigPack.class).getContext().put(event.load(new VanillaWorldProperties()));
-                    }
-                })
+                .register(this, ConfigPackPostLoadEvent.class)
+                .then(event -> event.getPack().getContext().put(event.loadTemplate(new VanillaWorldProperties())))
+                .priority(100)
                 .global();
         modPlatform.getEventManager()
                    .getHandler(FunctionalEventHandler.class)
