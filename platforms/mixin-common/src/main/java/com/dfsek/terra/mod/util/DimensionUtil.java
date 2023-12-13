@@ -25,7 +25,7 @@ import java.util.OptionalLong;
 
 
 public class DimensionUtil {
-    public static DimensionType createDimension(VanillaWorldProperties vanillaWorldProperties, ModPlatform platform) {
+    public static DimensionType createDimension(VanillaWorldProperties vanillaWorldProperties, DimensionType defaultDimension, ModPlatform platform) {
 
         MonsterSettingsConfig monsterSettingsConfig;
         if (vanillaWorldProperties.getMonsterSettings() != null) {
@@ -34,11 +34,6 @@ public class DimensionUtil {
             monsterSettingsConfig = new MonsterSettingsConfig();
         }
 
-        Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
-
-        DimensionType defaultDimension = dimensionTypeRegistry.get(new Identifier(vanillaWorldProperties.getVanillaDimension()));
-
-        assert defaultDimension != null;
         MonsterSettings monsterSettings = getMonsterSettings(defaultDimension, monsterSettingsConfig);
 
         return new DimensionType(
@@ -52,7 +47,7 @@ public class DimensionUtil {
             vanillaWorldProperties.getBedWorks() == null ? defaultDimension.bedWorks() : vanillaWorldProperties.getBedWorks(),
             vanillaWorldProperties.getRespawnAnchorWorks() == null ? defaultDimension.respawnAnchorWorks() : vanillaWorldProperties.getRespawnAnchorWorks(),
             vanillaWorldProperties.getHeight() == null ? defaultDimension.minY() : vanillaWorldProperties.getHeight().getMin(),
-            vanillaWorldProperties.getHeight() == null ? defaultDimension.height() : vanillaWorldProperties.getHeight().getMax(),
+            vanillaWorldProperties.getHeight() == null ? defaultDimension.height() : vanillaWorldProperties.getHeight().getRange(),
             vanillaWorldProperties.getLogicalHeight() == null ? defaultDimension.logicalHeight() : vanillaWorldProperties.getLogicalHeight(),
             vanillaWorldProperties.getInfiniburn() == null ? defaultDimension.infiniburn() : TagKey.of(RegistryKeys.BLOCK, vanillaWorldProperties.getInfiniburn()),
             vanillaWorldProperties.getEffects() == null ? defaultDimension.effects() : vanillaWorldProperties.getEffects(),

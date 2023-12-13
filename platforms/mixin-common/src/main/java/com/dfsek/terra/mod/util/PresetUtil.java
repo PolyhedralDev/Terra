@@ -1,6 +1,9 @@
 package com.dfsek.terra.mod.util;
 
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.mod.config.VanillaWorldProperties;
+
+import com.dfsek.terra.mod.generation.GenerationSettings;
 
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -100,7 +103,11 @@ public class PresetUtil {
             vanillaWorldProperties = new VanillaWorldProperties();
         }
 
-        DimensionType dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, platform);
+        DimensionType defaultDimension = dimensionTypeRegistry.get(new Identifier(vanillaWorldProperties.getVanillaDimension()));
+
+        assert defaultDimension != null;
+
+        DimensionType dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, defaultDimension, platform);
         RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("terra", pack.getID().toLowerCase(
             Locale.ROOT)));
 
@@ -110,11 +117,12 @@ public class PresetUtil {
 
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
 
-        RegistryEntry<ChunkGeneratorSettings> generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier));
-        if (key.equals("minecraft:the_nether") || key.equals("minecraft:the_end")) { //TODO REMOVE WHEN ADDING CUSTOM GEN SETTINGS
-            Identifier demensionIdentifier2 = new Identifier(key.replace("the_", ""));
-            generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier2));
-        }
+        RegistryEntry<ChunkGeneratorSettings> defaultGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(new Identifier(vanillaWorldProperties.getVanillaGeneration())));
+
+        GenerationSettings generatorSettings = new GenerationSettings(
+            vanillaWorldProperties.getHeight() == null ? new ConstantRange(defaultGeneratorSettings.value().generationShapeConfig().minimumY(), defaultGeneratorSettings.value().generationShapeConfig().height()) : vanillaWorldProperties.getHeight(),
+            vanillaWorldProperties.getSealevel() == null ? defaultGeneratorSettings.value().seaLevel() : vanillaWorldProperties.getSealevel(),
+            vanillaWorldProperties.getMobGeneration() == null ? !defaultGeneratorSettings.value().mobGenerationDisabled() : vanillaWorldProperties.getMobGeneration());
 
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
 
