@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.data;
 import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.api.util.Range;
 
+import com.dfsek.terra.mod.generation.GenerationSettings;
 import com.dfsek.terra.mod.implmentation.TerraIntProvider;
 
 import com.mojang.serialization.Codec;
@@ -44,6 +45,18 @@ public final class Codecs {
                     .forGetter(TerraBiomeSource::getPack))
             .apply(instance, instance.stable(TerraBiomeSource::new)));
 
+    public static final Codec<ConstantRange> TERRA_CONSTANT_RANGE = RecordCodecBuilder.create(range -> range.group(
+        Codec.INT.fieldOf("min").stable().forGetter(ConstantRange::getMin),
+        Codec.INT.fieldOf("max").stable().forGetter(ConstantRange::getMax)).apply(range, range.stable(ConstantRange::new)));
+
+    public static final Codec<GenerationSettings> TERRA_GENERATION_SETTINGS = RecordCodecBuilder
+        .create(instance -> instance.group(
+                TERRA_CONSTANT_RANGE.fieldOf("height").stable().forGetter(GenerationSettings::height),
+                Codec.INT.fieldOf("sealevel").forGetter(GenerationSettings::sealevel),
+                Codec.BOOL.fieldOf("mob_generation").forGetter(GenerationSettings::mobGeneration))
+            .apply(instance, instance.stable(GenerationSettings::new)));
+
+
     public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
         .create(
             instance -> instance.group(
@@ -53,7 +66,7 @@ public final class Codecs {
                 CONFIG_PACK.fieldOf("pack")
                     .stable()
                     .forGetter(MinecraftChunkGeneratorWrapper::getPack),
-                ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings")
+                TERRA_GENERATION_SETTINGS.fieldOf("settings")
                     .stable()
                     .forGetter(MinecraftChunkGeneratorWrapper::getSettings)
             ).apply(instance, instance.stable(

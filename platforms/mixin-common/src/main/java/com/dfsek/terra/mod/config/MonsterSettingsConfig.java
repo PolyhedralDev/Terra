@@ -29,7 +29,6 @@ public class MonsterSettingsConfig implements ObjectTemplate<MonsterSettingsConf
     @Default
     private Integer monsterSpawnBlockLightLimit = null;
 
-
     public Boolean getPiglinSafe() {
         return piglinSafe;
     }
@@ -45,6 +44,8 @@ public class MonsterSettingsConfig implements ObjectTemplate<MonsterSettingsConf
     public Integer getMonsterSpawnBlockLightLimit() {
         return monsterSpawnBlockLightLimit;
     }
+
+
 
     @Override
     public MonsterSettingsConfig get() {

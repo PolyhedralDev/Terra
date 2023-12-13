@@ -74,13 +74,13 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     private static final Logger logger = LoggerFactory.getLogger(MinecraftChunkGeneratorWrapper.class);
 
     private final TerraBiomeSource biomeSource;
-    private final RegistryEntry<ChunkGeneratorSettings> settings;
+    private final GenerationSettings settings;
     private ChunkGenerator delegate;
     private ConfigPack pack;
 
 
     public MinecraftChunkGeneratorWrapper(TerraBiomeSource biomeSource, ConfigPack configPack,
-                                          RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
+                                          GenerationSettings settingsSupplier) {
         super(biomeSource);
         this.pack = configPack;
         this.settings = settingsSupplier;
@@ -102,7 +102,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public void populateEntities(ChunkRegion region) {
-        if(!this.settings.value().mobGenerationDisabled()) {
+        if(this.settings.mobGeneration()) {
             ChunkPos chunkPos = region.getCenterPos();
             RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
             ChunkRandom chunkRandom = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
@@ -113,7 +113,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public int getWorldHeight() {
-        return settings.value().generationShapeConfig().height();
+        return settings.height().getRange();
     }
 
 
@@ -173,12 +173,12 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public int getSeaLevel() {
-        return settings.value().seaLevel();
+        return settings.sealevel();
     }
 
     @Override
     public int getMinimumY() {
-        return settings.value().generationShapeConfig().minimumY();
+        return settings.height().getMin();
     }
 
     @Override
@@ -233,7 +233,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         return delegate;
     }
 
-    public RegistryEntry<ChunkGeneratorSettings> getSettings() {
+    public GenerationSettings getSettings() {
         return settings;
     }
 

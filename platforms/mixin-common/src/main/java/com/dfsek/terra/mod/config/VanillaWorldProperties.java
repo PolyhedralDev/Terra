@@ -24,6 +24,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
     @Default
     private String vanillaDimension = "minecraft:overworld";
 
+    @Value("vanilla-generation")
+    @Default
+    private String vanillaGeneration = vanillaDimension;
+
     @Value("minecraft.fixed-time")
     @Default
     private Long fixedTime = null;
@@ -80,6 +84,9 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
     @Default
     private MonsterSettingsConfig monsterSettings = null;
 
+    @Value("minecraft.mob-generation")
+    @Default
+    private Boolean mobGeneration = null;
 
     @Value("minecraft.sealevel")
     @Default
@@ -87,6 +94,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     public String getVanillaDimension() {
         return vanillaDimension;
+    }
+
+    public String getVanillaGeneration() {
+        return vanillaGeneration;
     }
 
     public Long getFixedTime() {
@@ -121,8 +132,13 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
         return respawnAnchorWorks;
     }
 
-    public Range getHeight() {
-        return height;
+    public ConstantRange getHeight() {
+        //TODO THIS IS BAD
+        if (height != null) {
+            return new ConstantRange(height.getMin(), height.getMax());
+        } else {
+            return null;
+        }
     }
 
     public Integer getLogicalHeight() {
@@ -143,6 +159,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     public MonsterSettingsConfig getMonsterSettings() {
         return monsterSettings;
+    }
+
+    public Boolean getMobGeneration() {
+        return mobGeneration;
     }
 
     public Integer getSealevel() {
