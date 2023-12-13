@@ -28,7 +28,7 @@ public class DimensionUtil {
     public static DimensionType createDimension(ConfigPack pack, ModPlatform platform) {
         VanillaWorldProperties vanillaWorldProperties;
         MonsterSettingsConfig monsterSettingsConfig;
-        if (pack.getContext().has(VanillaBiomeProperties.class)) {
+        if (pack.getContext().has(VanillaWorldProperties.class)) {
             vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
         } else {
             vanillaWorldProperties = new VanillaWorldProperties();
@@ -46,7 +46,7 @@ public class DimensionUtil {
         assert defaultDimension != null;
         MonsterSettings monsterSettings = getMonsterSettings(defaultDimension, monsterSettingsConfig);
 
-        DimensionType dimension = new DimensionType(
+        return new DimensionType(
             vanillaWorldProperties.getFixedTime() == null ? defaultDimension.fixedTime() : OptionalLong.of(
                 vanillaWorldProperties.getFixedTime()),
             vanillaWorldProperties.getHasSkyLight() == null ? defaultDimension.hasSkyLight() : vanillaWorldProperties.getHasSkyLight(),
@@ -64,8 +64,6 @@ public class DimensionUtil {
             vanillaWorldProperties.getAmbientLight() == null ? defaultDimension.ambientLight() : vanillaWorldProperties.getAmbientLight(),
             monsterSettings
         );
-
-        return dimension;
     }
 
     @NotNull
