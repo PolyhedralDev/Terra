@@ -3,8 +3,6 @@ package com.dfsek.terra.mod.mixin.lifecycle;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import net.minecraft.server.DataPackContents;
 import net.minecraft.world.biome.Biome;
 import org.spongepowered.asm.mixin.Mixin;

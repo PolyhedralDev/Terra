@@ -26,7 +26,7 @@ public class TerraImplementationArguments implements ImplementationArguments {
     private final int recursions;
     private final Vector3Int origin;
     private boolean waterlog = false;
-    
+
     public TerraImplementationArguments(Vector3Int origin, Rotation rotation, RandomGenerator random, WritableWorld world, int recursions) {
         this.rotation = rotation;
         this.random = random;
@@ -38,7 +38,7 @@ public class TerraImplementationArguments implements ImplementationArguments {
     public int getRecursions() {
         return recursions;
     }
-    
+
     public RandomGenerator getRandom() {
         return random;
     }

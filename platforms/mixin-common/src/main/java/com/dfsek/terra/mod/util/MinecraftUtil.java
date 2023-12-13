@@ -1,10 +1,5 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.api.util.ConstantRange;
-import com.dfsek.terra.mod.data.Codecs;
-
-import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -15,14 +10,11 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-
 import net.minecraft.util.math.intprovider.IntProviderType;
-
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
-
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
@@ -41,7 +33,10 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.ConstantRange;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.data.Codecs;
+import com.dfsek.terra.mod.implmentation.TerraIntProvider;
 import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
 import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
@@ -102,14 +97,14 @@ public final class MinecraftUtil {
         return Map.copyOf(TERRA_BIOME_MAP);
     }
 
-    
+
     public static void registerIntProviderTypes() {
         IntProviderType<TerraIntProvider> CONSTANT = IntProviderType.register("terra:constant_range",
-                                                                              Codecs.TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE);
-        
+            Codecs.TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE);
+
         TerraIntProvider.TERRA_RANGE_TYPE_TO_INT_PROVIDER_TYPE.put(ConstantRange.class, CONSTANT);
     }
-    
+
     public static RegistryKey<Biome> registerBiomeKey(Identifier identifier) {
         return RegistryKey.of(RegistryKeys.BIOME, identifier);
     }

@@ -137,7 +137,7 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
         platform.getProfiler().pop(profile);
         return result;
     }
-    
+
     public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation, int recursions) {
         platform.getProfiler().push(profile);
         boolean result = applyBlock(new TerraImplementationArguments(location, rotation, random, world, recursions));

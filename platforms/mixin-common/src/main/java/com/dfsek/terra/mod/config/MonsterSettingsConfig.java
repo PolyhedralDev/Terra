@@ -2,14 +2,9 @@ package com.dfsek.terra.mod.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.api.util.Range;
-
-import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-
-import net.minecraft.world.dimension.DimensionType.MonsterSettings;
 
 
 public class MonsterSettingsConfig implements ObjectTemplate<MonsterSettingsConfig> {
@@ -44,7 +39,6 @@ public class MonsterSettingsConfig implements ObjectTemplate<MonsterSettingsConf
     public Integer getMonsterSpawnBlockLightLimit() {
         return monsterSpawnBlockLightLimit;
     }
-
 
 
     @Override

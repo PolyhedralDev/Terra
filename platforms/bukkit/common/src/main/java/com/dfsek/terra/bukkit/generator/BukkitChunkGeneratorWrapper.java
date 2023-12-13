@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.random.RandomGenerator;
-import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;

@@ -17,11 +17,6 @@
 
 package com.dfsek.terra.mod.generation;
 
-import com.dfsek.terra.api.util.ConstantRange;
-import com.dfsek.terra.api.util.Range;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
-
 import com.mojang.serialization.Codec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -44,7 +39,6 @@ import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.densityfunction.DensityFunction.UnblendedNoisePos;
 import net.minecraft.world.gen.noise.NoiseConfig;
