@@ -1,5 +1,7 @@
 package com.dfsek.terra.mod.util;
 
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
+
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -45,30 +47,14 @@ public class PresetUtil {
             platform.multiNoiseBiomeSourceParameterListRegistry();
 
 
-        DimensionType dimensionType = DimensionUtil.createDimension(pack, platform);
-        RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("overworld"));
-
-        Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
-
-        RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
-
-        RegistryEntry<ChunkGeneratorSettings> overworld = chunkGeneratorSettingsRegistry.getEntry(ChunkGeneratorSettings.OVERWORLD)
-            .orElseThrow();
-
-
         Identifier generatorID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
             Locale.ROOT));
 
         PRESETS.add(generatorID);
 
-        TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
-        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, overworld);
-
-        DimensionOptions dimensionOptions = new DimensionOptions(dimensionTypeRegistryEntry, generator);
-
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
-        dimensionMap.put(DimensionOptions.OVERWORLD, dimensionOptions);
+        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap);
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(), dimensionMap);
 
@@ -91,28 +77,7 @@ public class PresetUtil {
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
         metaPack.packs().forEach((key, pack) -> {
-            Identifier demensionIdentifier = new Identifier(key);
-            DimensionType dimensionType = DimensionUtil.createDimension(pack, platform);
-            RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("terra", pack.getID().toLowerCase(
-                Locale.ROOT)));
-
-            Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
-
-            RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
-
-            TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
-
-            RegistryEntry<ChunkGeneratorSettings> generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier));
-            if (key.equals("minecraft:the_nether") || key.equals("minecraft:the_end")) { //TODO REMOVE WHEN ADDING CUSTOM GEN SETTINGS
-                Identifier demensionIdentifier2 = new Identifier(key.replace("the_", ""));
-                generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier2));
-            }
-
-            ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
-
-            DimensionOptions dimensionOptions = new DimensionOptions(dimensionTypeRegistryEntry, generator);
-            RegistryKey<DimensionOptions> dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, demensionIdentifier);
-            dimensionMap.put(dimensionOptionsRegistryKey, dimensionOptions);
+            insertCustom(platform, key, pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap);
         });
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(), dimensionMap);
@@ -120,6 +85,42 @@ public class PresetUtil {
         WorldPreset preset = new WorldPreset(dimensionMap);
         LOGGER.info("Created world type \"{}\"", generatorID);
         return Pair.of(generatorID, preset);
+    }
+
+    private static void insertCustom(ModPlatform platform, String key, ConfigPack pack, Registry<DimensionType> dimensionTypeRegistry,
+                                     Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
+                                     HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap) {
+        Identifier demensionIdentifier = new Identifier(key);
+
+        VanillaWorldProperties vanillaWorldProperties;
+
+        if (pack.getContext().has(VanillaWorldProperties.class)) {
+            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
+        } else {
+            vanillaWorldProperties = new VanillaWorldProperties();
+        }
+
+        DimensionType dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, platform);
+        RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(new Identifier("terra", pack.getID().toLowerCase(
+            Locale.ROOT)));
+
+        Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
+
+        RegistryEntry<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.getEntry(dimensionType);
+
+        TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
+
+        RegistryEntry<ChunkGeneratorSettings> generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier));
+        if (key.equals("minecraft:the_nether") || key.equals("minecraft:the_end")) { //TODO REMOVE WHEN ADDING CUSTOM GEN SETTINGS
+            Identifier demensionIdentifier2 = new Identifier(key.replace("the_", ""));
+            generatorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(demensionIdentifier2));
+        }
+
+        ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
+
+        DimensionOptions dimensionOptions = new DimensionOptions(dimensionTypeRegistryEntry, generator);
+        RegistryKey<DimensionOptions> dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, demensionIdentifier);
+        dimensionMap.put(dimensionOptionsRegistryKey, dimensionOptions);
     }
 
     private static void insertDefaults(Registry<DimensionType> dimensionTypeRegistry, Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry, Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists, Registry<Biome> biomeRegistry, HashMap<RegistryKey<DimensionOptions>, DimensionOptions> map) {

@@ -25,14 +25,9 @@ import java.util.OptionalLong;
 
 
 public class DimensionUtil {
-    public static DimensionType createDimension(ConfigPack pack, ModPlatform platform) {
-        VanillaWorldProperties vanillaWorldProperties;
+    public static DimensionType createDimension(VanillaWorldProperties vanillaWorldProperties, ModPlatform platform) {
+
         MonsterSettingsConfig monsterSettingsConfig;
-        if (pack.getContext().has(VanillaWorldProperties.class)) {
-            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
-        } else {
-            vanillaWorldProperties = new VanillaWorldProperties();
-        }
         if (vanillaWorldProperties.getMonsterSettings() != null) {
             monsterSettingsConfig = vanillaWorldProperties.getMonsterSettings();
         } else {
