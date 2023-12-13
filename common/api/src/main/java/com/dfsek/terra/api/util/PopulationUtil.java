@@ -17,10 +17,10 @@ public final class PopulationUtil {
     public static RandomGenerator getRandom(Chunk c) {
         return getRandom(c, 0);
     }
-    
+
     public static RandomGenerator getRandom(Chunk c, long salt) {
         return RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(
-                getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
+            getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
     }
 
     /**

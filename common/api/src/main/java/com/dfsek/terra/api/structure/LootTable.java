@@ -25,7 +25,7 @@ public interface LootTable {
      * @param r The The RandomGenerator instance to use.
      */
     void fillInventory(Inventory i, RandomGenerator r);
-    
+
     /**
      * Fetches a list of ItemStacks from the loot table using the given RandomGenerator instance.
      *

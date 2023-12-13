@@ -64,8 +64,8 @@ public class MinecraftWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        if (!id.contains(":")) { //TODO: remove in 7.0
-            String newid = "minecraft:" + id.toLowerCase();;
+        if(!id.contains(":")) { //TODO: remove in 7.0
+            String newid = "minecraft:" + id.toLowerCase();
             logger.warn(
                 "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
                 ". You are advised to preform this rename in your config packs as this translation will be removed in the next major " +

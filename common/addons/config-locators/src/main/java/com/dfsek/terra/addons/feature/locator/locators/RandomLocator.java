@@ -36,9 +36,9 @@ public class RandomLocator implements Locator {
         seed = 31 * seed + column.getX();
         seed = 31 * seed + column.getZ();
         seed += salt;
-        
+
         RandomGenerator r = RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(seed);
-        
+
         int size = points.get(r);
 
         BinaryColumnBuilder results = column.newBinaryColumn();

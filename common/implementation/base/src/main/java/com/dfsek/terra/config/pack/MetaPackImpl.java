@@ -1,8 +1,16 @@
 package com.dfsek.terra.config.pack;
 
 import ca.solostudios.strata.version.Version;
+import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.config.Configuration;
+import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
+import com.dfsek.tectonic.api.loader.ConfigLoader;
+import com.dfsek.tectonic.api.loader.type.TypeLoader;
+import com.dfsek.tectonic.yaml.YamlConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -18,58 +26,34 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-import com.dfsek.tectonic.api.TypeRegistry;
-import com.dfsek.tectonic.api.config.Configuration;
-import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import com.dfsek.tectonic.api.loader.AbstractConfigLoader;
-import com.dfsek.tectonic.api.loader.ConfigLoader;
-import com.dfsek.tectonic.api.loader.type.TypeLoader;
-import com.dfsek.tectonic.yaml.YamlConfiguration;
-
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.ConfigType;
 import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.tectonic.ConfigLoadingDelegate;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
-import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
-
 import com.dfsek.terra.registry.master.ConfigRegistry;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 public class MetaPackImpl implements MetaPack {
 
     private static final Pattern PATTERN = Pattern.compile(", ");
-    private final MetaPackTemplate template = new MetaPackTemplate();
-
-    private final Platform platform;
-
-    private final Path rootPath;
-
-    private final Map<String, ConfigPack> packs = new HashMap<>();
-
-    private final ConfigLoader selfLoader = new ConfigLoader();
-
-    private final Context context = new Context();
-
-    private final RegistryKey key;
-
-    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
-
     private static final Logger logger = LoggerFactory.getLogger(MetaPackImpl.class);
-
+    private final MetaPackTemplate template = new MetaPackTemplate();
+    private final Platform platform;
+    private final Path rootPath;
+    private final Map<String, ConfigPack> packs = new HashMap<>();
+    private final ConfigLoader selfLoader = new ConfigLoader();
+    private final Context context = new Context();
+    private final RegistryKey key;
+    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final String author;
 
@@ -121,7 +105,7 @@ public class MetaPackImpl implements MetaPack {
 
         template.getPacks().forEach((k, v) -> {
             RegistryKey registryKey = RegistryKey.parse(v);
-            if (configRegistry.contains(registryKey)) {
+            if(configRegistry.contains(registryKey)) {
                 packs.put(k, configRegistry.get(registryKey).get());
                 logger.info("Linked config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
             } else {

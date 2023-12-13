@@ -57,7 +57,7 @@ public class Pool {
      * @return List&lt;ItemStack&gt; - The list of items fetched.
      */
     public List<ItemStack> getItems(RandomGenerator r) {
-        
+
         int rolls = r.nextInt(max - min + 1) + min;
         List<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < rolls; i++) {

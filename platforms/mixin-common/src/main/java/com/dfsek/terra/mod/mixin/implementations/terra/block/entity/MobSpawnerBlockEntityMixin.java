@@ -59,7 +59,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
         Random rand;
-        if (hasWorld()) {
+        if(hasWorld()) {
             rand = world.getRandom();
         } else {
             rand = Random.create();

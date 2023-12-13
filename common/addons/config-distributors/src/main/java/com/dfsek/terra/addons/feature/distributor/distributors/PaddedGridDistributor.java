@@ -26,8 +26,8 @@ public class PaddedGridDistributor implements Distributor {
         int cellZ = Math.floorDiv(z, cellWidth);
 
         RandomGenerator random = RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(
-                (MathUtil.murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
-        
+            (MathUtil.murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
+
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;
 

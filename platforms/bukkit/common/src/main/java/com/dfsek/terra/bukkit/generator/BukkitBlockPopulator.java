@@ -5,11 +5,11 @@ import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Random;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
-
-import java.util.Random;
 
 
 public class BukkitBlockPopulator extends BlockPopulator {

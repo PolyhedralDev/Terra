@@ -18,9 +18,9 @@ public interface Range extends Iterable<Integer> {
     Range multiply(int mult);
 
     Range reflect(int pt);
-    
+
     int get(RandomGenerator r);
-    
+
     Range intersects(Range other);
 
     Range add(int add);

@@ -18,7 +18,6 @@
 package com.dfsek.terra.registry.master;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,10 +25,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
 import com.dfsek.terra.config.pack.MetaPackImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;

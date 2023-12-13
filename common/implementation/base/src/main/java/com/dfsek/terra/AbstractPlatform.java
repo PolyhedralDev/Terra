@@ -18,10 +18,6 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
-import com.dfsek.terra.api.config.MetaPack;
-import com.dfsek.terra.registry.master.MetaConfigRegistry;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +51,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -77,6 +74,7 @@ import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+import com.dfsek.terra.registry.master.MetaConfigRegistry;
 
 
 /**
@@ -166,7 +164,6 @@ public abstract class AbstractPlatform implements Platform {
             .register(internalAddon, PlatformInitializationEvent.class)
             .then(event -> loadMetaConfigPacks())
             .global();
-
 
 
         logger.info("Terra addons successfully loaded.");

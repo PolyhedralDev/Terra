@@ -6,7 +6,6 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
@@ -22,7 +21,6 @@ import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
-import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
@@ -70,7 +68,7 @@ public abstract class ModPlatform extends AbstractPlatform {
         });
         getRawConfigRegistry()
             .forEach(pack -> {
-                if (!configPacksInMetaPack.contains(pack.getID())) {
+                if(!configPacksInMetaPack.contains(pack.getID())) {
                     PresetUtil.createDefault(pack, this).apply(registerFunction);
                 }
             });

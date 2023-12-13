@@ -2,11 +2,10 @@ package com.dfsek.terra.lifecycle.util;
 
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import com.dfsek.terra.mod.util.MinecraftUtil;
-
 import net.minecraft.util.Identifier;
 
 import com.dfsek.terra.mod.data.Codecs;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 public final class RegistryUtil {

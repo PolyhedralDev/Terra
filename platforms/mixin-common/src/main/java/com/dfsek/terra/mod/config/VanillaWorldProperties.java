@@ -3,15 +3,7 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
-import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-
-import net.minecraft.client.gl.Uniform;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.intprovider.IntProvider;
-import net.minecraft.util.math.intprovider.IntProviderType;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.dimension.DimensionType.MonsterSettings;
 
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.util.ConstantRange;
@@ -134,7 +126,7 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     public ConstantRange getHeight() {
         //TODO THIS IS BAD
-        if (height != null) {
+        if(height != null) {
             return new ConstantRange(height.getMin(), height.getMax());
         } else {
             return null;

@@ -87,9 +87,9 @@ public class TerraFlora implements Structure {
                 location.getZ(), world.getSeed());
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
-                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
-                                              .create(location.getX() ^ location.getZ())
-                                              .nextInt(faces.size())); // Get RandomGenerator face.
+                    RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                        .create(location.getX() ^ location.getZ())
+                        .nextInt(faces.size())); // Get RandomGenerator face.
             }
             world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }
