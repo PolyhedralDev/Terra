@@ -46,7 +46,7 @@ public class BukkitWorldHandle implements WorldHandle {
             data = "minecraft:short_grass";
             logger.warn(
                 "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
-                ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
+                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
                 "version of Terra.");
         }
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
@@ -65,7 +65,7 @@ public class BukkitWorldHandle implements WorldHandle {
             String newid = "minecraft:" + id.toLowerCase();;
             logger.warn(
                 "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
-                ". You are advised to preform this rename in your config backs as this translation will be removed in the next major " +
+                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
                 "version of Terra.");
         }
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);

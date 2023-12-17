@@ -45,7 +45,7 @@ public class MinecraftWorldHandle implements WorldHandle {
                 data = "minecraft:short_grass";
                 logger.warn(
                     "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
-                    ". You are advised to preform this rename in your config packs as this translation will be removed in the next major " +
+                    ". You are advised to perform this rename in your config packs as this translation will be removed in the next major " +
                     "version of Terra.");
             }
             net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true)
@@ -68,7 +68,7 @@ public class MinecraftWorldHandle implements WorldHandle {
             String newid = "minecraft:" + id.toLowerCase();;
             logger.warn(
                 "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
-                ". You are advised to preform this rename in your config packs as this translation will be removed in the next major " +
+                ". You are advised to perform this rename in your config packs as this translation will be removed in the next major " +
                 "version of Terra.");
             id = newid;
         }
