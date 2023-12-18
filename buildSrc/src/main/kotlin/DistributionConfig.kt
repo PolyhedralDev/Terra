@@ -27,7 +27,7 @@ fun Project.configureDistribution() {
         group = "terra"
         doFirst {
             file("${buildDir}/resources/main/packs/").deleteRecursively()
-            val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/latest/default.zip")
+            val defaultPackUrl = URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
             downloadPack(defaultPackUrl, project)
         }
     }
