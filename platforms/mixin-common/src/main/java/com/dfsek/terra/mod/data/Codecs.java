@@ -48,8 +48,9 @@ public final class Codecs {
     public static final Codec<GenerationSettings> TERRA_GENERATION_SETTINGS = RecordCodecBuilder
         .create(instance -> instance.group(
                 TERRA_CONSTANT_RANGE.fieldOf("height").stable().forGetter(GenerationSettings::height),
-                Codec.INT.fieldOf("sealevel").forGetter(GenerationSettings::sealevel),
-                Codec.BOOL.fieldOf("mob_generation").forGetter(GenerationSettings::mobGeneration))
+                Codec.INT.fieldOf("sea_level").forGetter(GenerationSettings::sealevel),
+                Codec.BOOL.fieldOf("mob_generation").forGetter(GenerationSettings::mobGeneration),
+                Codec.INT.fieldOf("spawn_height").forGetter(GenerationSettings::sealevel))
             .apply(instance, instance.stable(GenerationSettings::new)));
 
 

@@ -35,6 +35,7 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.NetherPortal;
 import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
@@ -106,12 +107,6 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    public int getWorldHeight() {
-        return settings.height().getRange();
-    }
-
-
-    @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
                                                   StructureAccessor structureAccessor, Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
@@ -166,6 +161,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
+    public int getWorldHeight() {
+        return settings.height().getRange();
+    }
+
+    @Override
     public int getSeaLevel() {
         return settings.sealevel();
     }
@@ -173,6 +173,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     @Override
     public int getMinimumY() {
         return settings.height().getMin();
+    }
+
+    @Override
+    public int getSpawnHeight(HeightLimitView world) {
+        return settings.spawnHeight();
     }
 
     @Override
