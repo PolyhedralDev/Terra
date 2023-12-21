@@ -10,6 +10,7 @@
         "access.StructureAccessorAccessor",
         "access.VillagerTypeAccessor",
         "fix.BeeMoveGoalsUnsynchronizedRandomAccessFix",
+        "generalize.ServerWorldMixin",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
         "implementations.terra.BiomeMixin",
         "implementations.terra.HandleImplementationMixin",

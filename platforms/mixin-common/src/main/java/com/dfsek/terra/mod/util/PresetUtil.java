@@ -130,7 +130,8 @@ public class PresetUtil {
             : vanillaWorldProperties.getSealevel(),
             vanillaWorldProperties.getMobGeneration() == null
             ? !defaultGeneratorSettings.value().mobGenerationDisabled()
-            : vanillaWorldProperties.getMobGeneration());
+            : vanillaWorldProperties.getMobGeneration(),
+            vanillaWorldProperties.getSpawnHeight());
 
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
 

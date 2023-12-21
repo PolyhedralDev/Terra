@@ -82,7 +82,11 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     @Value("minecraft.sealevel")
     @Default
-    private Integer sealevel = 62; //TODO AUTO PULL DEFAULT
+    private Integer sealevel = null;
+
+    @Value("minecraft.spawn-height")
+    @Default
+    private Integer spawnHeight = 64;
 
     public String getVanillaDimension() {
         return vanillaDimension;
@@ -159,5 +163,9 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     public Integer getSealevel() {
         return sealevel;
+    }
+
+    public Integer getSpawnHeight() {
+        return spawnHeight;
     }
 }

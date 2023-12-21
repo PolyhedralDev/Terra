@@ -33,7 +33,7 @@ public final class TagUtil {
     }
 
     public static void registerWorldPresetTags(Registry<WorldPreset> registry) {
-        logger.info("Doing preset tag garbage....");
+        logger.info("Registering Preset Tags.");
         Map<TagKey<WorldPreset>, List<RegistryEntry<WorldPreset>>> collect = tagsToMutableMap(registry);
 
         PresetUtil
