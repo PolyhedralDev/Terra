@@ -20,6 +20,8 @@ package com.dfsek.terra.bukkit.handles;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
@@ -31,6 +33,7 @@ import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 
 public class BukkitWorldHandle implements WorldHandle {
+    private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
     private final BlockState air;
 
     public BukkitWorldHandle() {
@@ -39,6 +42,13 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+        if(data.equals("minecraft:grass")) { //TODO: remove in 7.0
+            data = "minecraft:short_grass";
+            logger.warn(
+                "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
+                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
+                "version of Terra.");
+        }
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
             data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
@@ -51,6 +61,13 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
+        if (!id.contains(":")) { //TODO: remove in 7.0
+            String newid = "minecraft:" + id.toLowerCase();;
+            logger.warn(
+                "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
+                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
+                "version of Terra.");
+        }
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         String entityID = id.toUpperCase(Locale.ROOT).substring(10);
 

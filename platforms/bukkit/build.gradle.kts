@@ -10,19 +10,13 @@ repositories {
 
 dependencies {
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_18_R2", configuration = "reobf"))
-    shaded(project(":platforms:bukkit:nms:v1_19_R1", configuration = "reobf"))
-    shaded(project(":platforms:bukkit:nms:v1_19_R2", configuration = "reobf"))
-    shaded(project(":platforms:bukkit:nms:v1_19_R3", configuration = "reobf"))
-    shaded(project(":platforms:bukkit:nms:v1_20_R1", configuration = "reobf"))
-    shaded(project(":platforms:bukkit:nms:v1_20_R2", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_20_R3", configuration = "reobf"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
 tasks {
     shadowJar {
         relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
-        relocate("com.tcoded.folialib", "com.dfsek.terra.lib.folialib")
         relocate("com.google.common", "com.dfsek.terra.lib.google.common")
         relocate("org.apache.logging.slf4j", "com.dfsek.terra.lib.slf4j-over-log4j")
         exclude("org/slf4j/**")
