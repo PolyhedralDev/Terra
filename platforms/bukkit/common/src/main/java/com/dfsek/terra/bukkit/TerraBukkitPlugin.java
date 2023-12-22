@@ -63,13 +63,12 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
+        platform.getEventManager().callEvent(new PlatformInitializationEvent());
+
         if(!Initializer.init(platform)) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
-        platform.getEventManager().callEvent(new PlatformInitializationEvent());
-
 
         try {
             PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
