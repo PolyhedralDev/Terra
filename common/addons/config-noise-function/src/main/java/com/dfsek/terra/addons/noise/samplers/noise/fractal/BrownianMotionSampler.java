@@ -24,7 +24,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = input.noise(seed++, x, y);
             sum += noise * amp;
-            amp *= MathUtil.lerp(1.0, Math.min(noise + 1, 2) * 0.5, weightedStrength);
+            amp *= MathUtil.lerp(weightedStrength, 1.0, Math.min(noise + 1, 2) * 0.5);
 
             x *= lacunarity;
             y *= lacunarity;
@@ -42,7 +42,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = input.noise(seed++, x, y, z);
             sum += noise * amp;
-            amp *= MathUtil.lerp(1.0, (noise + 1) * 0.5, weightedStrength);
+            amp *= MathUtil.lerp(weightedStrength, 1.0, (noise + 1) * 0.5);
 
             x *= lacunarity;
             y *= lacunarity;
