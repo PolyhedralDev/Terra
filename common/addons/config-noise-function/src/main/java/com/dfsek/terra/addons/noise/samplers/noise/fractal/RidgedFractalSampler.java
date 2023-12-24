@@ -25,7 +25,7 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = Math.abs(input.noise(seed++, x, y));
             sum += (noise * -2 + 1) * amp;
-            amp *= MathUtil.lerp(1.0, 1 - noise, weightedStrength);
+            amp *= MathUtil.lerp(weightedStrength, 1.0, 1 - noise);
 
             x *= lacunarity;
             y *= lacunarity;
@@ -43,7 +43,7 @@ public class RidgedFractalSampler extends FractalNoiseFunction {
         for(int i = 0; i < octaves; i++) {
             double noise = Math.abs(input.noise(seed++, x, y, z));
             sum += (noise * -2 + 1) * amp;
-            amp *= MathUtil.lerp(1.0, 1 - noise, weightedStrength);
+            amp *= MathUtil.lerp(weightedStrength, 1.0, 1 - noise);
 
             x *= lacunarity;
             y *= lacunarity;
