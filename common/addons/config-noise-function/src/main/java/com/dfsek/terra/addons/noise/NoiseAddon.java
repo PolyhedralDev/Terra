@@ -101,6 +101,7 @@ public class NoiseAddon implements AddonInitializer {
                     .applyLoader(DerivativeNoiseSampler.class, DerivativeNoiseSamplerTemplate::new);
 
                 noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
+                noiseRegistry.register(addon.key("LINEAR_MAP"), LinearMapNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("CLAMP"), ClampNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
