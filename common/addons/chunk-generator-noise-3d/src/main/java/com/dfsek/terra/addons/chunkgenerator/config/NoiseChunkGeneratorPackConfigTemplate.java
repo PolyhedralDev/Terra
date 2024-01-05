@@ -26,6 +26,10 @@ public class NoiseChunkGeneratorPackConfigTemplate implements ConfigTemplate, Pr
     @Default
     private @Meta SlantCalculationMethod slantCalculationMethod = SlantCalculationMethod.Derivative;
 
+    @Value("slant.disable-palettes")
+    @Default
+    private @Meta boolean disableSlantPalettes = false;
+
     public int getElevationBlend() {
         return elevationBlend;
     }
@@ -40,5 +44,9 @@ public class NoiseChunkGeneratorPackConfigTemplate implements ConfigTemplate, Pr
 
     public SlantCalculationMethod getSlantCalculationMethod() {
         return slantCalculationMethod;
+    }
+
+    public boolean isSlantPalettesEnabled() {
+        return !disableSlantPalettes;
     }
 }

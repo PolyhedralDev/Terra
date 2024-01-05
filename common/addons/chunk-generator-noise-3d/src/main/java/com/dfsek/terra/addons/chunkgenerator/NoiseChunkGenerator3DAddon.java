@@ -58,7 +58,8 @@ public class NoiseChunkGenerator3DAddon implements AddonInitializer {
                         pack -> new NoiseChunkGenerator3D(pack, platform, config.getElevationBlend(),
                             config.getHorizontalRes(),
                             config.getVerticalRes(), noisePropertiesPropertyKey,
-                            paletteInfoPropertyKey, config.getSlantCalculationMethod()));
+                            paletteInfoPropertyKey, config.getSlantCalculationMethod(),
+                            config.isSlantPalettesEnabled()));
                 event.getPack()
                     .applyLoader(SlantHolder.Layer.class, SlantLayerTemplate::new);
             })
