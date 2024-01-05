@@ -84,15 +84,12 @@ public abstract class ModPlatform extends AbstractPlatform {
                         throw new LoadException("Invalid identifier: " + o, depthTracker);
                     return identifier;
                 })
-                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
-                        Locale.ROOT)))
+                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase()))
                 .registerLoader(GrassColorModifier.class,
-                                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                                        Locale.ROOT)))
-                .registerLoader(GrassColorModifier.class,
-                                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
-                                        Locale.ROOT)))
-                .registerLoader(SpawnGroup.class,(type, o, loader, depthTracker) ->  SpawnGroup.valueOf((String) o))
+                                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase()))
+                .registerLoader(TemperatureModifier.class,
+                                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
+                .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
                 .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
                 .registerLoader(SoundEvent.class, SoundEventTemplate::new)
                 .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
