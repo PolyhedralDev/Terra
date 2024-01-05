@@ -97,6 +97,7 @@ public class NoiseAddon implements AddonInitializer {
                     .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new);
 
                 noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
+                noiseRegistry.register(addon.key("LINEAR_MAP"), LinearMapNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("CLAMP"), ClampNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);
