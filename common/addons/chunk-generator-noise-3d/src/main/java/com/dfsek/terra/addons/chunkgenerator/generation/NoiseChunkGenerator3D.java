@@ -47,10 +47,13 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
 
     private final SlantCalculationMethod slantCalculationMethod;
 
+    private final boolean useSlantPalettes;
+
     public NoiseChunkGenerator3D(ConfigPack pack, Platform platform, int elevationBlend, int carverHorizontalResolution,
                                  int carverVerticalResolution,
                                  PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
-                                 PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey, SlantCalculationMethod slantCalculationMethod) {
+                                 PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey,
+                                 SlantCalculationMethod slantCalculationMethod, boolean useSlantPalettes) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
@@ -58,6 +61,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         this.paletteInfoPropertyKey = paletteInfoPropertyKey;
         this.noisePropertiesKey = noisePropertiesKey;
         this.slantCalculationMethod = slantCalculationMethod;
+        this.useSlantPalettes = useSlantPalettes;
         int maxBlend = pack
             .getBiomeProvider()
             .stream()
@@ -71,7 +75,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
 
     private Palette paletteAt(int x, int y, int z, Sampler3D sampler, BiomePaletteInfo paletteInfo, int depth) {
         SlantHolder slantHolder = paletteInfo.slantHolder();
-        if(slantHolder.isAboveDepth(depth)) {
+        if(useSlantPalettes && slantHolder.isAboveDepth(depth)) {
             double slant = slantCalculationMethod.slant(sampler, x, y, z);
             if(slantHolder.isInSlantThreshold(slant)) {
                 return slantHolder.getPalette(slant).getPalette(y);
