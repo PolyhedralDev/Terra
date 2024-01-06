@@ -1,32 +1,32 @@
-package com.dfsek.terra.addons.biome.pipeline.image.config.converter;
+package com.dfsek.terra.addons.biome.image.config.converter;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.image.config.converter.ExactColorConverterTemplate;
 import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;
+import com.dfsek.terra.api.world.biome.Biome;
 
 
-public class ExactPipelineBiomeColorConverterTemplate extends ExactColorConverterTemplate<PipelineBiome> {
+public class ExactBiomeColorConverterTemplate extends ExactColorConverterTemplate<Biome> {
 
     @Value("match")
-    private ColorMapping<PipelineBiome> match;
+    private ColorMapping<Biome> match;
 
     @Value("else")
-    private PipelineBiome fallback;
+    private Biome fallback;
 
     @Value("ignore-alpha")
     @Default
     private boolean ignoreAlpha = true;
 
     @Override
-    protected ColorMapping<PipelineBiome> getMapping() {
+    protected ColorMapping<Biome> getMapping() {
         return match;
     }
 
     @Override
-    protected PipelineBiome getFallback() {
+    protected Biome getFallback() {
         return fallback;
     }
 

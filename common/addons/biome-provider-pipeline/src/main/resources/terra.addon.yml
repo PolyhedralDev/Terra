@@ -4,7 +4,7 @@ contributors:
 id: biome-provider-pipeline
 version: @VERSION@
 entrypoints:
-  - "com.dfsek.terra.addons.biome.pipeline.v2.BiomePipelineAddon"
+  - "com.dfsek.terra.addons.biome.pipeline.BiomePipelineAddon"
 website:
   issues: https://github.com/PolyhedralDev/Terra/issues
   source: https://github.com/PolyhedralDev/Terra
