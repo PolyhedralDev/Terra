@@ -143,11 +143,8 @@ public abstract class AbstractPlatform implements Platform {
 
         config.load(this); // load config.yml
 
-        if(config.dumpDefaultConfig()) {
-            dumpResources();
-        } else {
-            logger.info("Skipping resource dumping.");
-        }
+
+        dumpResources(config.getIgnoredResources());
 
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
@@ -259,7 +256,7 @@ public abstract class AbstractPlatform implements Platform {
         return internalAddon;
     }
 
-    protected void dumpResources() {
+    protected void dumpResources(List<String> ignoredResources) {
         try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
             if(resourcesConfig == null) {
                 logger.info("No resources config found. Skipping resource dumping.");
@@ -301,51 +298,55 @@ public abstract class AbstractPlatform implements Platform {
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
                 String resourceClassPath = dir + "/" + entry;
-                String resourcePath = resourceClassPath.replace('/', File.separatorChar);
-                File resource = new File(getDataFolder(), resourcePath);
-                if(resource.exists())
-                    return; // dont overwrite
+                if (ignoredResources.contains(dir) || ignoredResources.contains(entry) || ignoredResources.contains(resourceClassPath)) {
+                    logger.info("Not dumping resource {} because it is ignored.", resourceClassPath);
+                } else {
+                    String resourcePath = resourceClassPath.replace('/', File.separatorChar);
+                    File resource = new File(getDataFolder(), resourcePath);
+                    if(resource.exists())
+                        return; // dont overwrite
 
-                try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
-                    if(is == null) {
-                        logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
-                        return;
+                    try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
+                        if(is == null) {
+                            logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
+                            return;
+                        }
+
+                        paths
+                            .stream()
+                            .filter(Pair.testRight(resourcePath::startsWith))
+                            .forEach(Pair.consumeLeft(path -> {
+                                logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                                try {
+                                    Files.delete(path);
+                                } catch(IOException e) {
+                                    throw new UncheckedIOException(e);
+                                }
+                            }));
+
+                        if(pathsNoMajor
+                               .stream()
+                               .anyMatch(resourcePath::startsWith) && // if any share name
+                           paths
+                               .stream()
+                               .map(Pair.unwrapRight())
+                               .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                            logger.warn(
+                                "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
+                                "ensure " +
+                                "compatibility and update manually.",
+                                resourcePath);
+                        }
+
+                        logger.info("Dumping resource {}.", resource.getAbsolutePath());
+                        resource.getParentFile().mkdirs();
+                        resource.createNewFile();
+                        try(OutputStream os = new FileOutputStream(resource)) {
+                            IOUtils.copy(is, os);
+                        }
+                    } catch(IOException e) {
+                        throw new UncheckedIOException(e);
                     }
-
-                    paths
-                        .stream()
-                        .filter(Pair.testRight(resourcePath::startsWith))
-                        .forEach(Pair.consumeLeft(path -> {
-                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
-                            try {
-                                Files.delete(path);
-                            } catch(IOException e) {
-                                throw new UncheckedIOException(e);
-                            }
-                        }));
-
-                    if(pathsNoMajor
-                           .stream()
-                           .anyMatch(resourcePath::startsWith) && // if any share name
-                       paths
-                           .stream()
-                           .map(Pair.unwrapRight())
-                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
-                        logger.warn(
-                            "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
-                            "ensure " +
-                            "compatibility and update manually.",
-                            resourcePath);
-                    }
-
-                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
-                    resource.getParentFile().mkdirs();
-                    resource.createNewFile();
-                    try(OutputStream os = new FileOutputStream(resource)) {
-                        IOUtils.copy(is, os);
-                    }
-                } catch(IOException e) {
-                    throw new UncheckedIOException(e);
                 }
             }));
         } catch(IOException e) {

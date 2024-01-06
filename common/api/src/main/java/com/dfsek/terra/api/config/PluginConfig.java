@@ -9,11 +9,11 @@ package com.dfsek.terra.api.config;
 
 import com.dfsek.terra.api.Platform;
 
+import java.util.List;
+
 
 public interface PluginConfig {
     void load(Platform platform);
-
-    boolean dumpDefaultConfig();
 
     boolean isDebugCommands();
 
@@ -30,6 +30,8 @@ public interface PluginConfig {
     int getSamplerCache();
 
     int getMaxRecursion();
+
+    List<String> getIgnoredResources();
 
     int getProviderCache();
 }
