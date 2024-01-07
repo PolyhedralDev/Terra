@@ -12,6 +12,7 @@ import java.util.Random;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Rotation;
@@ -31,13 +32,20 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
 
     private final int resolution;
     private final PropertyKey<BiomeFeatures> biomeFeaturesKey;
+    private final NoiseSampler blendSampler;
+    private final boolean doBlending;
+    private final double blendAmplitude;
 
-    public FeatureGenerationStage(Platform platform, String id, int resolution, PropertyKey<BiomeFeatures> biomeFeaturesKey) {
+    public FeatureGenerationStage(Platform platform, String id, int resolution, PropertyKey<BiomeFeatures> biomeFeaturesKey,
+                                  NoiseSampler blendSampler, double blendAmplitude) {
         this.platform = platform;
         this.id = id;
         this.profile = "feature_stage:" + id;
         this.resolution = resolution;
         this.biomeFeaturesKey = biomeFeaturesKey;
+        this.blendSampler = blendSampler;
+        this.doBlending = blendAmplitude != 0d;
+        this.blendAmplitude = blendAmplitude;
     }
 
     @Override
@@ -52,7 +60,10 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 int tx = cx + chunkX;
                 int tz = cz + chunkZ;
                 world.getBiomeProvider()
-                    .getColumn(tx, tz, world)
+                    .getColumn(
+                        tx + (doBlending ? (int) (blendSampler.noise(seed, tx, tz) * blendAmplitude) : 0),
+                        tz + (doBlending ? (int) (blendSampler.noise(seed+1, tx, tz) * blendAmplitude) : 0),
+                        world)
                     .forRanges(resolution, (min, max, biome) -> {
                         for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
                             for(int subChunkZ = 0; subChunkZ < resolution; subChunkZ++) {
