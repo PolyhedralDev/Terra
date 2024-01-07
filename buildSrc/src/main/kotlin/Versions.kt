@@ -41,7 +41,7 @@ object Versions {
         
         const val minecraft = "1.20.4"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.15.1"
+        const val fabricLoader = "0.15.3"
         
         const val architecuryLoom = "1.4.369"
         const val architecturyPlugin = "3.4.151"
