@@ -18,7 +18,6 @@
 package com.dfsek.terra.registry.master;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -26,29 +25,30 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.terra.config.pack.ConfigPackImpl;
+import com.dfsek.terra.config.pack.MetaPackImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 
 
 /**
  * Class to hold config packs
  */
-public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
+public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> {
 
-    public ConfigRegistry() {
-        super(TypeKey.of(ConfigPack.class));
+    public MetaConfigRegistry() {
+        super(TypeKey.of(MetaPack.class));
     }
 
-    public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
-        Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
+    public void loadAll(Platform platform, ConfigRegistry configRegistry) throws IOException, PackLoadFailuresException {
+        Path packsDirectory = platform.getDataFolder().toPath().resolve("metapacks");
         Files.createDirectories(packsDirectory);
         List<IOException> failedLoads = new ArrayList<>();
         try(Stream<Path> packs = Files.list(packsDirectory)) {
             packs.forEach(path -> {
                 try {
-                    ConfigPack pack = new ConfigPackImpl(path, platform);
+                    MetaPack pack = new MetaPackImpl(path, platform, configRegistry);
                     registerChecked(pack.getRegistryKey(), pack);
                 } catch(IOException e) {
                     failedLoads.add(e);
@@ -57,21 +57,6 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         }
         if(!failedLoads.isEmpty()) {
             throw new PackLoadFailuresException(failedLoads);
-        }
-    }
-
-    public static class PackLoadFailuresException extends Exception {
-        @Serial
-        private static final long serialVersionUID = 538998844645186306L;
-
-        private final List<Throwable> exceptions;
-
-        public PackLoadFailuresException(List<? extends Throwable> exceptions) {
-            this.exceptions = (List<Throwable>) exceptions;
-        }
-
-        public List<Throwable> getExceptions() {
-            return exceptions;
         }
     }
 }
