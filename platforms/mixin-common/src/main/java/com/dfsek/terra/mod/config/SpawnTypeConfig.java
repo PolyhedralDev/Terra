@@ -6,21 +6,23 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 
+import java.util.List;
+
 
 public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
     @Value("group")
     @Default
     private SpawnGroup group = null;
-
-    @Value("entry")
+    
+    @Value("entries")
     @Default
-    private SpawnEntry entry = null;
-
+    private List<SpawnEntry> entry = null;
+    
     public SpawnGroup getGroup() {
         return group;
     }
-
-    public SpawnEntry getEntry() {
+    
+    public List<SpawnEntry> getEntry() {
         return entry;
     }
 

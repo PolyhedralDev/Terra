@@ -4,6 +4,7 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -34,6 +35,8 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private static final AtomicReference<Registry<DimensionType>> DIMENSIONS = new AtomicReference<>();
     private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
+
+    private static final AtomicReference<DynamicRegistryManager.Immutable> DYNAMIC_REGISTRY_MANAGER = new AtomicReference<>();
     private static MinecraftServer server;
 
     public LifecyclePlatform() {
@@ -51,6 +54,10 @@ public abstract class LifecyclePlatform extends ModPlatform {
         NOISE.set(multiNoiseBiomeSourceParameterListRegistry);
     }
 
+    public static void setDynamicRegistryManager(DynamicRegistryManager.Immutable dynamicRegistryManager) {
+        DYNAMIC_REGISTRY_MANAGER.set(dynamicRegistryManager);
+    }
+
     @Override
     public MinecraftServer getServer() {
         return server;
@@ -63,9 +70,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
-
+        boolean succeed = loadConfigPacks();
 
         if(server != null) {
             BiomeUtil.registerBiomes(server.getRegistryManager().get(RegistryKeys.BIOME));

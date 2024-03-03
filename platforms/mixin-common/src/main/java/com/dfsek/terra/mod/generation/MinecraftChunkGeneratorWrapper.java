@@ -35,11 +35,11 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.NetherPortal;
 import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 import net.minecraft.world.gen.densityfunction.DensityFunction.UnblendedNoisePos;
 import net.minecraft.world.gen.noise.NoiseConfig;
@@ -69,12 +69,13 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     private static final Logger logger = LoggerFactory.getLogger(MinecraftChunkGeneratorWrapper.class);
 
     private final TerraBiomeSource biomeSource;
-    private final RegistryEntry<ChunkGeneratorSettings> settings;
+    private final GenerationSettings settings;
     private ChunkGenerator delegate;
     private ConfigPack pack;
 
+
     public MinecraftChunkGeneratorWrapper(TerraBiomeSource biomeSource, ConfigPack configPack,
-                                          RegistryEntry<ChunkGeneratorSettings> settingsSupplier) {
+                                          GenerationSettings settingsSupplier) {
         super(biomeSource);
         this.pack = configPack;
         this.settings = settingsSupplier;
@@ -96,7 +97,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public void populateEntities(ChunkRegion region) {
-        if(!this.settings.value().mobGenerationDisabled()) {
+        if(this.settings.mobGeneration()) {
             ChunkPos chunkPos = region.getCenterPos();
             RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
             ChunkRandom chunkRandom = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
@@ -104,12 +105,6 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
             SpawnHelper.populateEntities(region, registryEntry, chunkPos, chunkRandom);
         }
     }
-
-    @Override
-    public int getWorldHeight() {
-        return settings.value().generationShapeConfig().height();
-    }
-
 
     @Override
     public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
@@ -166,15 +161,24 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
+    public int getWorldHeight() {
+        return settings.height().getRange();
+    }
+
+    @Override
     public int getSeaLevel() {
-        return settings.value().seaLevel();
+        return settings.sealevel();
     }
 
     @Override
     public int getMinimumY() {
-        return settings.value().generationShapeConfig().minimumY();
+        return settings.height().getMin();
     }
 
+    @Override
+    public int getSpawnHeight(HeightLimitView world) {
+        return settings.spawnHeight();
+    }
 
     @Override
     public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
@@ -202,7 +206,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
     @Override
     public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
-
+        // no op
     }
 
     public ConfigPack getPack() {
@@ -228,7 +232,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         return delegate;
     }
 
-    public RegistryEntry<ChunkGeneratorSettings> getSettings() {
+    public GenerationSettings getSettings() {
         return settings;
     }
 

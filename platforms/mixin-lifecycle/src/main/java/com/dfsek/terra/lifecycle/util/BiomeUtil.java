@@ -65,7 +65,7 @@ public final class BiomeUtil {
                     .orElseThrow());
             } else {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(Registry.registerReference(registry,
-                    MinecraftUtil.registerKey(identifier)
+                    MinecraftUtil.registerBiomeKey(identifier)
                         .getValue(),
                     minecraftBiome));
             }
