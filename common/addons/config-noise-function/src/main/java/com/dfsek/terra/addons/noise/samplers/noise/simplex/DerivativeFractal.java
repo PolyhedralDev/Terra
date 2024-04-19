@@ -65,7 +65,7 @@ public class DerivativeFractal implements DerivativeNoiseSampler {
     }
 
     @Override
-    public boolean isDerivable() {
+    public boolean isDifferentiable() {
         return true;
     }
 

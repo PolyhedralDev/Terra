@@ -14,7 +14,7 @@ public class DerivativeNoiseSamplerTemplate extends SamplerTemplate<DerivativeNo
 
     @Override
     public boolean validate() throws ValidationException {
-        if (!DerivativeNoiseSampler.providesDerivative(sampler)) throw new ValidationException("Provided sampler does not support calculating a derivative");
+        if (!DerivativeNoiseSampler.isDifferentiable(sampler)) throw new ValidationException("Provided sampler does not support calculating a derivative");
         return super.validate();
     }
 
