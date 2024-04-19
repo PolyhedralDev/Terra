@@ -12,9 +12,7 @@ public interface DerivativeNoiseSampler extends NoiseSampler {
         return false;
     }
 
-    default boolean isDerivable()  {
-        return false;
-    }
+    boolean isDerivable();
 
     double[] noised(long seed, double x, double y);
     

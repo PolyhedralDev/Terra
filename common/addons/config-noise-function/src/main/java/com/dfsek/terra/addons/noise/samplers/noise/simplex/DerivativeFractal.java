@@ -65,6 +65,11 @@ public class DerivativeFractal implements DerivativeNoiseSampler {
     }
 
     @Override
+    public boolean isDerivable() {
+        return true;
+    }
+
+    @Override
     public double[] noised(long seed, double x, double y) {
         x *= frequency;
         y *= frequency;
