@@ -53,10 +53,18 @@ public class PseudoErosionTemplate extends SamplerTemplate<PseudoErosion> {
     @Default
     private double slopeMaskFull = 1;
 
+    @Value("jitter")
+    @Default
+    private double jitterModifier = 1;
+
+    @Value("average-impulses")
+    @Default
+    private boolean averageErosionImpulses = true;
+
     @Override
     public PseudoErosion get() {
         return new PseudoErosion(octaves, gain, lacunarity,
             slopeStrength, branchStrength, strength,
-            erosionFrequency, heightSampler, slopeMask, slopeMaskFull, slopeMaskNone);
+            erosionFrequency, heightSampler, slopeMask, slopeMaskFull, slopeMaskNone, jitterModifier, averageErosionImpulses);
     }
 }
