@@ -21,9 +21,14 @@ public class PseudoErosion implements NoiseSampler {
     private final boolean slopeMask;
     private final double slopeMaskFullSq;
     private final double slopeMaskNoneSq;
+    private final double jitter;
+    private final double maxCellDistSq;
+    private final double maxCellDistSqRecip;
+    private final boolean averageErosionImpulses;
 
     public PseudoErosion(int octaves, double gain, double lacunarity, double slopeStrength, double branchStrength, double erosionStrength, double erosionFrequency, DerivativeNoiseSampler sampler,
-                         boolean slopeMask, double slopeMaskFull, double slopeMaskNone) {
+                         boolean slopeMask, double slopeMaskFull, double slopeMaskNone, double jitterModifier,
+                         boolean averageErosionImpulses) {
         this.octaves = octaves;
         this.gain = gain;
         this.lacunarity = lacunarity;
@@ -37,6 +42,10 @@ public class PseudoErosion implements NoiseSampler {
         // squared value, otherwise a sqrt would need to be used
         this.slopeMaskFullSq = slopeMaskFull * slopeMaskFull * Math.signum(slopeMaskFull);
         this.slopeMaskNoneSq = slopeMaskNone * slopeMaskNone * Math.signum((slopeMaskNone));
+        this.jitter = 0.43701595 * jitterModifier;
+        this.averageErosionImpulses = averageErosionImpulses;
+        this.maxCellDistSq = 1 + jitter * jitter;
+        this.maxCellDistSqRecip = 1 / maxCellDistSq;
     }
 
     public static float hash(float x, float y) {
@@ -62,26 +71,25 @@ public class PseudoErosion implements NoiseSampler {
         return (x - (float)Math.floor(x));
     }
 
-    public static float[] erosion(float x, float y, float dirX, float dirY) {
-        float gridX = (float) Math.floor(x);
-        float gridY = (float) Math.floor(y);
-        float localX = x - gridX;
-        float localY = y - gridY;
+    public float[] erosion(float x, float y, float dirX, float dirY) {
+        int gridX = Math.round(x);
+        int gridY = Math.round(y);
         float noise = 0.0f;
         float dirOutX = 0.0f;
         float dirOutY = 0.0f;
         float cumAmp = 0.0f;
 
-        for (int cellX = -2; cellX < 2; cellX++) {
-            for (int cellY = -2; cellY < 2; cellY++) {
+        for (int cellX = gridX - 1; cellX <= gridX + 1; cellX++) {
+            for (int cellY = gridY - 1; cellY <= gridY + 1; cellY++) {
                 // TODO - Make seed affect hashing
-                float cellHash = hash(gridX - (float) cellX, gridY - (float) cellY);
-                float cellOffsetX = hashX(cellHash) * 0.5f;
-                float cellOffsetY = hashY(cellHash) * 0.5f;
-                float cellOriginDeltaX = cellX - cellOffsetX + localX;
-                float cellOriginDeltaY = cellY - cellOffsetY + localY;
-                float cellOriginDistSq = dot(cellOriginDeltaX, cellOriginDeltaY, cellOriginDeltaX, cellOriginDeltaY);
-                float amp = (float)exp(-cellOriginDistSq * 2.0); // Exponentially decrease amplitude further from cell center
+                float cellHash = hash(cellX, cellY);
+                float cellOffsetX = (float) (hashX(cellHash) * jitter);
+                float cellOffsetY = (float) (hashY(cellHash) * jitter);
+                float cellOriginDeltaX = (x - cellX) + cellOffsetX;
+                float cellOriginDeltaY = (y - cellY) + cellOffsetY;
+                float cellOriginDistSq = cellOriginDeltaX * cellOriginDeltaX + cellOriginDeltaY * cellOriginDeltaY;
+                if (cellOriginDistSq > maxCellDistSq) continue; // Skip calculating cells too far away
+                float ampTmp = (float) ((cellOriginDistSq * maxCellDistSqRecip) - 1); float amp = ampTmp * ampTmp; // Decrease cell amplitude further away
                 cumAmp += amp;
                 float directionalStrength = dot(cellOriginDeltaX, cellOriginDeltaY, dirX, dirY) * TAU;
                 noise += (float) (MathUtil.cos(directionalStrength) * amp);
@@ -90,11 +98,11 @@ public class PseudoErosion implements NoiseSampler {
                 dirOutY -= sinAngle * (cellOriginDeltaY + dirY);
             }
         }
-
-        noise /= cumAmp;
-        dirOutX /= cumAmp;
-        dirOutY /= cumAmp;
-
+        if (averageErosionImpulses && cumAmp != 0) {
+            noise /= cumAmp;
+            dirOutX /= cumAmp;
+            dirOutY /= cumAmp;
+        }
         return new float[] {noise, dirOutX, dirOutY};
     }
 
