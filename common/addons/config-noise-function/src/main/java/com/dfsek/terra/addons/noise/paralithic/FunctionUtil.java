@@ -26,7 +26,7 @@ public class FunctionUtil {
             functionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));
         }
         samplers.forEach((id, sampler) -> {
-            if (sampler.getDimensions() == 2) {
+            if(sampler.getDimensions() == 2) {
                 functionMap.put(id, new NoiseFunction2(sampler.getSampler()));
                 functionMap.put(id + "Salted", new SaltedNoiseFunction2(sampler.getSampler()));
             } else {

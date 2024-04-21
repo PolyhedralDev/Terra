@@ -9,7 +9,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 import org.jetbrains.annotations.NotNull;
 
 
-public class SaltedNoiseFunction2 implements DynamicFunction  {
+public class SaltedNoiseFunction2 implements DynamicFunction {
     private final NoiseSampler gen;
 
     public SaltedNoiseFunction2(NoiseSampler gen) {
