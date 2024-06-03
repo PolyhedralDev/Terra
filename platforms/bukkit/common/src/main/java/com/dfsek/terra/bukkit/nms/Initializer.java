@@ -8,7 +8,7 @@ import com.dfsek.terra.bukkit.PlatformImpl;
 
 
 public interface Initializer {
-    String NMS = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    String NMS = "v" + Bukkit.getServer().getMinecraftVersion().replace(".", "_");
     String TERRA_PACKAGE = Initializer.class.getPackageName();
 
     static boolean init(PlatformImpl platform) {

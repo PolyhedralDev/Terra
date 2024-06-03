@@ -1,10 +1,10 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R6;
+package com.dfsek.terra.bukkit.nms.v1_20_6;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -49,7 +49,7 @@ public class AwfulBukkitHacks {
                         new ResourceLocation("terra", NMSBiomeInjector.createBiomeID(pack, key))
                     );
 
-                    Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
+                    Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, RegistrationInfo.BUILT_IN);
                     Reflection.REFERENCE.invokeBindValue(holder, platform); // IMPORTANT: bind holder.
 
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));

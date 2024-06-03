@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R6;
+package com.dfsek.terra.bukkit.nms.v1_20_6;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;

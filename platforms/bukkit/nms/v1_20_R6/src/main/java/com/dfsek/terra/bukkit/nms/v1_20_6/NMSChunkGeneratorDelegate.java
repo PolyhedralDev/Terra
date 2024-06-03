@@ -1,6 +1,6 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R6;
+package com.dfsek.terra.bukkit.nms.v1_20_6;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelAccessor;
@@ -54,8 +54,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
 
     @Override
-    protected @NotNull Codec<? extends ChunkGenerator> codec() {
-        return ChunkGenerator.CODEC;
+    protected @NotNull MapCodec<? extends ChunkGenerator> codec() {
+        return MapCodec.assumeMapUnsafe(ChunkGenerator.CODEC);
     }
 
     @Override
