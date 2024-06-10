@@ -77,13 +77,13 @@ public final class VersionUtil {
     public static final class MinecraftVersionInfo {
         private static final Logger logger = LoggerFactory.getLogger(MinecraftVersionInfo.class);
 
-        private static final Pattern VERSION_PATTERN = Pattern.compile("v?(\\d+)_(\\d+)_R(\\d+)");
+        private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)");
         private final int major;
         private final int minor;
         private final int patch;
 
         private MinecraftVersionInfo() {
-            this(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+            this(Bukkit.getServer().getMinecraftVersion());
         }
 
         private MinecraftVersionInfo(int major, int minor, int patch) {
