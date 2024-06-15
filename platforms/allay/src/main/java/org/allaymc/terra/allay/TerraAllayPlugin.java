@@ -25,7 +25,7 @@ public class TerraAllayPlugin extends Plugin {
 
     // TODO: Adapt command manager
     @Override
-    public void onEnable() {
+    public void onLoad() {
         log.info("Starting Terra...");
 
         log.info("Loading mapping...");
