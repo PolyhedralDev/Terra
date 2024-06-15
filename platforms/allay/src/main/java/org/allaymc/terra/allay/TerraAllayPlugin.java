@@ -28,11 +28,12 @@ public class TerraAllayPlugin extends Plugin {
     public void onEnable() {
         log.info("Starting Terra...");
 
-        PLATFORM = new AllayPlatform();
-        PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
-
         log.info("Loading mapping...");
         Mapping.init();
+
+        log.info("Initializing allay platform...");
+        PLATFORM = new AllayPlatform();
+        PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
 
         log.info("Registering generator...");
         WorldGeneratorFactory.getFactory().register("TERRA", AllayGeneratorWrapper::new);
