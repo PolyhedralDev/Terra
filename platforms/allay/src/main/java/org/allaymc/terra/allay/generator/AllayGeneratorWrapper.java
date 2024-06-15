@@ -29,7 +29,7 @@ import java.util.Locale;
  */
 @Slf4j
 public class AllayGeneratorWrapper extends WorldGenerator implements GeneratorWrapper {
-    protected static final String DEFAULT_PACK_NAME = "default";
+    protected static final String DEFAULT_PACK_NAME = "overworld";
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "pack";
 
@@ -86,6 +86,7 @@ public class AllayGeneratorWrapper extends WorldGenerator implements GeneratorWr
 
     @Override
     public void setDimension(Dimension dimension) {
+        super.setDimension(dimension);
         this.worldProperties = new WorldProperties() {
             @Override
             public long getSeed() {

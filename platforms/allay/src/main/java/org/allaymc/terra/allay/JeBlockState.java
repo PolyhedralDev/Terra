@@ -1,9 +1,7 @@
 package org.allaymc.terra.allay;
 
-import org.allaymc.api.utils.Identifier;
+import org.allaymc.api.utils.HashUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 
@@ -15,6 +13,7 @@ import java.util.TreeMap;
 public class JeBlockState {
     protected final String identifier;
     protected final TreeMap<String, String> properties;
+    protected int hash = Integer.MAX_VALUE; // 懒加载
 
     public static JeBlockState fromString(String data) {
         return new JeBlockState(data);
@@ -46,7 +45,19 @@ public class JeBlockState {
         if(!includeProperties) return identifier;
         StringBuilder builder = new StringBuilder(identifier).append(";");
         properties.forEach((k, v) -> builder.append(k).append("=").append(v).append(";"));
-        return builder.toString();
+        var str = builder.toString();
+        if (hash == Integer.MAX_VALUE) {
+            // 顺便算一下hash
+            hash = HashUtils.fnv1a_32(str.getBytes());
+        }
+        return str;
+    }
+
+    public int getHash() {
+        if (hash == Integer.MAX_VALUE) {
+            hash = HashUtils.fnv1a_32(toString(true).getBytes());
+        }
+        return hash;
     }
 
     @Override
