@@ -29,6 +29,7 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public @NotNull WorldHandle getWorldHandle() {
         // TODO
+        return null;
     }
 
     @Override
@@ -39,5 +40,6 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public @NotNull ItemHandle getItemHandle() {
         // TODO
+        return null;
     }
 }
