@@ -29,6 +29,6 @@ public class TerraAllayPlugin extends Plugin {
 
         // TODO: Adapt command manager
 
-
+        Mapping.init();
     }
 }
