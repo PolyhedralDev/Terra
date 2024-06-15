@@ -2,7 +2,9 @@ package org.allaymc.terra.allay;
 
 import org.allaymc.api.utils.Identifier;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 
 /**
@@ -11,28 +13,40 @@ import java.util.Map;
  * @author daoge_cmd
  */
 public class JeBlockState {
-    protected final Identifier identifier;
-    protected final Map<String, String> properties;
+    protected final String identifier;
+    protected final TreeMap<String, String> properties;
 
     public static JeBlockState fromString(String data) {
-        // TODO
-        return null;
+        return new JeBlockState(data);
     }
 
-    public JeBlockState(Identifier identifier, Map<String, String> properties) {
+    public static JeBlockState create(String identifier, TreeMap<String, String> properties) {
+        return new JeBlockState(identifier, properties);
+    }
+
+    private JeBlockState(String data) {
+        var strings = data.replace("[", ",").replace("]", ",").replace(" ", "").split(",");
+        this.identifier = strings[0];
+        this.properties = new TreeMap<>();
+        if (strings.length > 1) {
+            for (int i = 1; i < strings.length; i++) {
+                final var tmp = strings[i];
+                final var index = tmp.indexOf("=");
+                properties.put(tmp.substring(0, index), tmp.substring(index + 1));
+            }
+        }
+    }
+
+    private JeBlockState(String identifier, TreeMap<String, String> properties) {
         this.identifier = identifier;
         this.properties = properties;
     }
 
     public String toString(boolean includeProperties) {
-        if(!includeProperties) return identifier.toString();
-        StringBuilder builder = new StringBuilder(identifier.toString()).append(";");
+        if(!includeProperties) return identifier;
+        StringBuilder builder = new StringBuilder(identifier).append(";");
         properties.forEach((k, v) -> builder.append(k).append("=").append(v).append(";"));
         return builder.toString();
-    }
-
-    public boolean hasProperty(String name) {
-        return properties.containsKey(name);
     }
 
     @Override

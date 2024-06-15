@@ -4,6 +4,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 
 import org.allaymc.api.world.chunk.Chunk;
+import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.allaymc.terra.allay.Mapping;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author daoge_cmd
  */
-public record AllayProtoChunk(Chunk allayChunk) implements ProtoChunk {
+public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
     @Override
     public int getMaxHeight() {
         return allayChunk.getDimensionInfo().maxHeight();
@@ -31,7 +32,7 @@ public record AllayProtoChunk(Chunk allayChunk) implements ProtoChunk {
     }
 
     @Override
-    public Chunk getHandle() {
+    public UnsafeChunk getHandle() {
         return allayChunk;
     }
 }

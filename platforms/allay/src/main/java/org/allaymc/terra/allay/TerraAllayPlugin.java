@@ -4,6 +4,8 @@ import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.plugin.Plugin;
+import org.allaymc.api.world.generator.WorldGeneratorFactory;
+import org.allaymc.terra.allay.generator.AllayGeneratorWrapper;
 
 
 /**
@@ -15,20 +17,26 @@ import org.allaymc.api.plugin.Plugin;
 public class TerraAllayPlugin extends Plugin {
 
     public static TerraAllayPlugin INSTANCE;
+    public static AllayPlatform PLATFORM;
 
     {
         INSTANCE = this;
     }
 
+    // TODO: Adapt command manager
     @Override
     public void onEnable() {
         log.info("Starting Terra...");
 
-        var platform = new AllayPlatform();
-        platform.getEventManager().callEvent(new PlatformInitializationEvent());
+        PLATFORM = new AllayPlatform();
+        PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
 
-        // TODO: Adapt command manager
-
+        log.info("Loading mapping...");
         Mapping.init();
+
+        log.info("Registering generator...");
+        WorldGeneratorFactory.getFactory().register("TERRA", AllayGeneratorWrapper::new);
+
+        log.info("Terra started");
     }
 }
