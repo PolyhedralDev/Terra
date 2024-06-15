@@ -1,0 +1,9 @@
+{
+  "entrance": "org.allaymc.terra.allay.TerraAllayPlugin",
+  "name": "Terra",
+  "authors": [
+    "daoge_cmd"
+  ],
+  "version": "1.0.0",
+  "order": "START_UP"
+}
