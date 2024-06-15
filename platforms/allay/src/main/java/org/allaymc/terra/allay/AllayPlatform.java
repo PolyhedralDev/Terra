@@ -4,6 +4,9 @@ import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 
+import org.allaymc.api.server.Server;
+import org.allaymc.terra.allay.handle.AllayItemHandle;
+import org.allaymc.terra.allay.handle.AllayWorldHandle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -16,8 +19,12 @@ import java.io.File;
  */
 public class AllayPlatform extends AbstractPlatform {
 
+    protected static final AllayWorldHandle ALLAY_WORLD_HANDLE = new AllayWorldHandle();
+    protected static final AllayItemHandle ALLAY_ITEM_HANDLE = new AllayItemHandle();
+
     @Override
     public boolean reload() {
+        // TODO: Implement reload
         return false;
     }
 
@@ -28,8 +35,12 @@ public class AllayPlatform extends AbstractPlatform {
 
     @Override
     public @NotNull WorldHandle getWorldHandle() {
-        // TODO
-        return null;
+        return ALLAY_WORLD_HANDLE;
+    }
+
+    @Override
+    public @NotNull ItemHandle getItemHandle() {
+        return ALLAY_ITEM_HANDLE;
     }
 
     @Override
@@ -38,8 +49,7 @@ public class AllayPlatform extends AbstractPlatform {
     }
 
     @Override
-    public @NotNull ItemHandle getItemHandle() {
-        // TODO
-        return null;
+    public void runPossiblyUnsafeTask(@NotNull Runnable task) {
+        Server.getInstance().getScheduler().runLater(Server.getInstance(), task);
     }
 }
