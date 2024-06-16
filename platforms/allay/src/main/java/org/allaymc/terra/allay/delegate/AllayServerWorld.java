@@ -1,5 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
+import com.dfsek.terra.api.util.vector.Vector3;
+
 import org.allaymc.api.world.Dimension;
 import org.allaymc.terra.allay.Mapping;
 import org.allaymc.terra.allay.generator.AllayGeneratorWrapper;
@@ -34,8 +36,7 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
-        // TODO
-        return null;
+        return new AllayFakeEntity(Vector3.of(x, y, z), this);
     }
 
     @Override
