@@ -27,12 +27,12 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
 
     @Override
     public int getX() {
-        return 0;
+        return allayChunk.getX();
     }
 
     @Override
     public int getZ() {
-        return 0;
+        return allayChunk.getZ();
     }
 
     @Override
