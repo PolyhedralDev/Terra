@@ -36,7 +36,7 @@ public class TerraAllayPlugin extends Plugin {
         PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
 
         log.info("Registering generator...");
-        WorldGeneratorFactory.getFactory().register("TERRA", AllayGeneratorWrapper::new);
+        WorldGeneratorFactory.getFactory().register("TERRA", preset -> new AllayGeneratorWrapper(preset).getAllayWorldGenerator());
 
         log.info("Terra started");
     }
