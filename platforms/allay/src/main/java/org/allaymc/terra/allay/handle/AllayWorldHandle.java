@@ -1,13 +1,13 @@
 package org.allaymc.terra.allay.handle;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.handle.WorldHandle;
-
 import org.allaymc.terra.allay.JeBlockState;
 import org.allaymc.terra.allay.Mapping;
 import org.allaymc.terra.allay.delegate.AllayBlockState;
 import org.jetbrains.annotations.NotNull;
+
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.handle.WorldHandle;
 
 
 /**

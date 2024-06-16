@@ -1,9 +1,9 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.item.ItemStack;
+
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
-
-import org.allaymc.api.item.ItemStack;
 
 
 /**

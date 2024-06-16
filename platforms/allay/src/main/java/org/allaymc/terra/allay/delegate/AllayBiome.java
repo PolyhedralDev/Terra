@@ -1,7 +1,8 @@
 package org.allaymc.terra.allay.delegate;
 
-import com.dfsek.terra.api.world.biome.PlatformBiome;
 import org.allaymc.api.world.biome.BiomeType;
+
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 /**

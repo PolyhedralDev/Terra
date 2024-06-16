@@ -3,11 +3,6 @@ package org.allaymc.terra.allay;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
-import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.handle.ItemHandle;
-import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.world.biome.PlatformBiome;
 import org.allaymc.api.data.VanillaBiomeId;
 import org.allaymc.api.server.Server;
 import org.allaymc.terra.allay.delegate.AllayBiome;
@@ -16,6 +11,12 @@ import org.allaymc.terra.allay.handle.AllayWorldHandle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+
+import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 /**
