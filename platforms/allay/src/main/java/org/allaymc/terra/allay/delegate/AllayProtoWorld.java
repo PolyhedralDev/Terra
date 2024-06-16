@@ -10,22 +10,37 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
+import org.allaymc.api.world.chunk.UnsafeChunk;
+import org.allaymc.terra.allay.Mapping;
+
 
 /**
  * Terra Project 2024/6/16
  *
  * @author daoge_cmd
  */
-public record AllayProtoWorld(ServerWorld serverWorld, int centerChunkX, int centerChunkZ) implements ProtoWorld {
+public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk centerChunk) implements ProtoWorld {
+
+    @Override
+    public int centerChunkX() {
+        return centerChunk.getX();
+    }
+
+    @Override
+    public int centerChunkZ() {
+        return centerChunk.getZ();
+    }
 
     @Override
     public ServerWorld getWorld() {
-        return serverWorld;
+        return allayServerWorld;
     }
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        serverWorld.setBlockState(x, y, z, data, physics);
+        if(isInRegin(x, y, z)) {
+            centerChunk.setBlockState(x & 15, y, z & 15, ((AllayBlockState)data).allayBlockState());
+        }
     }
 
     @Override
@@ -36,7 +51,11 @@ public record AllayProtoWorld(ServerWorld serverWorld, int centerChunkX, int cen
 
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        return serverWorld.getBlockState(x, y, z);
+        if(isInRegin(x, y, z)) {
+            var blockState = centerChunk.getBlockState(x & 15, y, z & 15);
+            return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
+        }
+        return AllayBlockState.AIR;
     }
 
     @Override
@@ -47,36 +66,43 @@ public record AllayProtoWorld(ServerWorld serverWorld, int centerChunkX, int cen
 
     @Override
     public ChunkGenerator getGenerator() {
-        return serverWorld.getGenerator();
+        return allayServerWorld.getGenerator();
     }
 
     @Override
     public BiomeProvider getBiomeProvider() {
-        return serverWorld.getBiomeProvider();
+        return allayServerWorld.getBiomeProvider();
     }
 
     @Override
     public ConfigPack getPack() {
-        return serverWorld.getPack();
+        return allayServerWorld.getPack();
     }
 
     @Override
     public long getSeed() {
-        return serverWorld.getSeed();
+        return allayServerWorld.getSeed();
     }
 
     @Override
     public int getMaxHeight() {
-        return serverWorld.getMaxHeight();
+        return allayServerWorld.getMaxHeight();
     }
 
     @Override
     public int getMinHeight() {
-        return serverWorld.getMinHeight();
+        return allayServerWorld.getMinHeight();
     }
 
     @Override
-    public ServerWorld getHandle() {
-        return serverWorld;
+    public AllayServerWorld getHandle() {
+        return allayServerWorld;
+    }
+
+    private boolean isInRegin(int x, int y, int z) {
+        return
+            x >= centerChunkX() && x < centerChunkX() + 16 &&
+            z >= centerChunkZ() && z < centerChunkZ() + 16 &&
+            y >= getMinHeight() && y <= getMaxHeight();
     }
 }
