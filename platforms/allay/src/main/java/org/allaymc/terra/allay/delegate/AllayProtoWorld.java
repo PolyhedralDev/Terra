@@ -101,8 +101,8 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk cen
 
     private boolean isInRegin(int x, int y, int z) {
         return
-            x >= centerChunkX() && x < centerChunkX() + 16 &&
-            z >= centerChunkZ() && z < centerChunkZ() + 16 &&
+            x >= centerChunkX() * 16 && x < centerChunkX() * 16 + 16 &&
+            z >= centerChunkZ() * 16 && z < centerChunkZ() * 16 + 16 &&
             y >= getMinHeight() && y <= getMaxHeight();
     }
 }
