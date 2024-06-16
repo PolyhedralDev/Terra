@@ -1,5 +1,8 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.world.chunk.UnsafeChunk;
+import org.allaymc.terra.allay.Mapping;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -9,9 +12,6 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
-
-import org.allaymc.api.world.chunk.UnsafeChunk;
-import org.allaymc.terra.allay.Mapping;
 
 
 /**

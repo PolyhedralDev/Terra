@@ -1,11 +1,11 @@
 package org.allaymc.terra.allay.delegate;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.ServerWorld;
-
 import org.allaymc.api.world.chunk.Chunk;
 import org.allaymc.terra.allay.Mapping;
 import org.jetbrains.annotations.NotNull;
+
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.world.ServerWorld;
 
 
 /**

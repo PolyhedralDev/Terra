@@ -1,12 +1,5 @@
 package org.allaymc.terra.allay.generator;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-
-import com.dfsek.terra.api.world.info.WorldProperties;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.world.Dimension;
@@ -20,6 +13,12 @@ import org.allaymc.terra.allay.delegate.AllayProtoWorld;
 import org.allaymc.terra.allay.delegate.AllayServerWorld;
 
 import java.util.Locale;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 /**

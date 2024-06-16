@@ -1,7 +1,5 @@
 package org.allaymc.terra.allay;
 
-import com.dfsek.terra.api.block.state.properties.Property;
-
 import com.google.gson.reflect.TypeToken;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -11,8 +9,6 @@ import org.allaymc.api.block.property.type.BlockPropertyType.BlockPropertyValue;
 import org.allaymc.api.block.registry.BlockTypeRegistry;
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockTypes;
-import org.allaymc.api.entity.registry.EntityTypeRegistry;
-import org.allaymc.api.entity.type.EntityType;
 import org.allaymc.api.utils.Identifier;
 import org.allaymc.api.utils.JSONUtils;
 
