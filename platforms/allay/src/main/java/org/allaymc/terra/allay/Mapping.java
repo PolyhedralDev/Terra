@@ -26,16 +26,62 @@ import java.util.TreeMap;
 @Slf4j
 public final class Mapping {
 
+    private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
     private static final Map<BlockState, JeBlockState> BLOCK_STATE_BE_TO_JE = new Object2ObjectOpenHashMap<>();
     private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
     private static final Map<String, String> ITEM_ID_JE_TO_BE = new Object2ObjectOpenHashMap<>();
     private static final Map<String, Integer> BIOME_ID_JE_TO_BE = new Object2IntOpenHashMap<>();
+    private static final BlockState BE_AIR_STATE = BlockTypes.AIR_TYPE.getDefaultState();
 
     public static void init() {
+        if(!initBlockStateMapping()) error();
+        if (!initJeBlockDefaultProperties()) error();
+        if(!initItemMapping()) error();
+        if(!initBiomeMapping()) error();
+    }
+
+    private static void error() {
+        throw new RuntimeException("Mapping not initialized");
+    }
+
+    private static boolean initBiomeMapping() {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes.json")) {
+            if  (stream == null) {
+                log.error("biomes.json not found");
+                return false;
+            }
+            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
+            for(var mapping : mappings) {
+                BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id"));
+            }
+        } catch(IOException e) {
+            log.error("Failed to load mapping", e);
+            return false;
+        }
+        return true;
+    }
+
+    private static boolean initItemMapping() {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items.json")) {
+            if  (stream == null) {
+                log.error("items.json not found");
+                return false;
+            }
+            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
+            for(var mapping : mappings) {
+                ITEM_ID_JE_TO_BE.put(mapping.getKey(), (String) mapping.getValue().get("bedrock_identifier"));
+            }
+        } catch(IOException e) {
+            log.error("Failed to load mapping", e);
+        }
+        return true;
+    }
+
+    private static boolean initBlockStateMapping() {
         try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks.json")) {
             if (stream == null) {
                 log.error("blocks.json not found");
-                return;
+                return false;
             }
             var mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>(){}).get("mappings");
             for(var mapping : mappings) {
@@ -47,30 +93,20 @@ public final class Mapping {
         } catch(IOException e) {
             log.error("Failed to load mapping", e);
         }
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items.json")) {
-            if  (stream == null) {
-                log.error("items.json not found");
-                return;
+        return true;
+    }
+
+    private static boolean initJeBlockDefaultProperties() {
+        for (var beBlockType : BlockTypeRegistry.getRegistry().getContent().values()) {
+            var defaultBeBlockState = beBlockType.getDefaultState();
+            var defaultJeBlockState = blockStateBeToJe(defaultBeBlockState);
+            if (defaultJeBlockState == null) {
+                log.warn("Failed to find JE block state for {}", defaultBeBlockState);
+                continue;
             }
-            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
-            for(var mapping : mappings) {
-                ITEM_ID_JE_TO_BE.put(mapping.getKey(), (String) mapping.getValue().get("bedrock_identifier"));
-            }
-        } catch(IOException e) {
-            log.error("Failed to load mapping", e);
+            JE_BLOCK_DEFAULT_PROPERTIES.put(defaultJeBlockState.identifier, defaultJeBlockState.properties);
         }
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes.json")) {
-            if  (stream == null) {
-                log.error("biomes.json not found");
-                return;
-            }
-            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
-            for(var mapping : mappings) {
-                BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id"));
-            }
-        } catch(IOException e) {
-            log.error("Failed to load mapping", e);
-        }
+        return true;
     }
 
     private static BlockState createBeBlockState(Map<String, Object> data) {
@@ -88,13 +124,13 @@ public final class Mapping {
             var propertyType = blockType.getProperties().get(propertyName);
             if (propertyType == null) {
                 log.warn("Unknown property type: {}", propertyName);
-                return null;
+                return BlockTypes.AIR_TYPE.getDefaultState();
             }
             try {
                 propertyValues[index] = propertyType.tryCreateValue(entry.getValue());
             } catch (IllegalArgumentException e) {
                 log.warn("Failed to create property value for {}: {}", propertyName, entry.getValue());
-                return null;
+                return BE_AIR_STATE;
             }
         }
         return blockType.ofState(propertyValues);
@@ -135,5 +171,14 @@ public final class Mapping {
 
     public static int biomeIdJeToBe(String jeBiomeId) {
         return BIOME_ID_JE_TO_BE.get(jeBiomeId);
+    }
+
+    public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
+        var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
+        if( defaultProperties == null) {
+            log.warn("Failed to find default properties for {}", jeBlockIdentifier);
+            return Map.of();
+        }
+        return defaultProperties;
     }
 }

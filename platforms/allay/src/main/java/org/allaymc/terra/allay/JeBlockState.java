@@ -34,6 +34,18 @@ public class JeBlockState {
                 properties.put(tmp.substring(0, index), tmp.substring(index + 1));
             }
         }
+        completeMissingProperties();
+    }
+
+    private void completeMissingProperties() {
+        var defaultProperties = Mapping.getJeBlockDefaultProperties(identifier);
+        if(properties.size() == defaultProperties.size()) {
+            return;
+        }
+        for (var entry : defaultProperties.entrySet()) {
+            if (properties.containsKey(entry.getKey())) continue;
+            properties.put(entry.getKey(), entry.getValue());
+        }
     }
 
     private JeBlockState(String identifier, TreeMap<String, String> properties) {
