@@ -1,5 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
+import com.dfsek.terra.api.util.vector.Vector3;
+
 import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.allaymc.terra.allay.Mapping;
 
@@ -45,8 +47,7 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk cen
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
-        // TODO
-        return null;
+        return new AllayFakeEntity(Vector3.of(x, y, z), allayServerWorld);
     }
 
     @Override
