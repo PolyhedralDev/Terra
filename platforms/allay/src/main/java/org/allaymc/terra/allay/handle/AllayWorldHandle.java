@@ -7,7 +7,6 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import org.allaymc.terra.allay.JeBlockState;
 import org.allaymc.terra.allay.Mapping;
 import org.allaymc.terra.allay.delegate.AllayBlockState;
-import org.allaymc.terra.allay.delegate.AllayEntityTypeHandle;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -31,6 +30,7 @@ public class AllayWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        return new AllayEntityTypeHandle(id);
+        // TODO: 我们暂时不支持实体，因为端本身都没实体ai，生成实体没有意义
+        return null;
     }
 }

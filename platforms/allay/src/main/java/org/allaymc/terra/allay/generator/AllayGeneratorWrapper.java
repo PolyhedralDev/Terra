@@ -74,7 +74,7 @@ public class AllayGeneratorWrapper extends WorldGenerator implements GeneratorWr
                 }
             }
         }
-        var tmp = new AllayProtoWorld(new AllayServerWorld(this, dimension), chunkX, chunkZ);
+        var tmp = new AllayProtoWorld(new AllayServerWorld(this, dimension), chunk);
         try {
             for (var generationStage : configPack.getStages()) {
                 generationStage.populate(tmp);
