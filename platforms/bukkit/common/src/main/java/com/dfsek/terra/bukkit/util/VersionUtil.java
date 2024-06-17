@@ -83,7 +83,7 @@ public final class VersionUtil {
         private final int patch;
 
         private MinecraftVersionInfo() {
-            this(Bukkit.getServer().getMinecraftVersion());
+            this(Bukkit.getServer().getBukkitVersion().split("-")[0]);
         }
 
         private MinecraftVersionInfo(int major, int minor, int patch) {
