@@ -97,14 +97,19 @@ public final class Mapping {
     }
 
     private static boolean initJeBlockDefaultProperties() {
-        for (var beBlockType : BlockTypeRegistry.getRegistry().getContent().values()) {
-            var defaultBeBlockState = beBlockType.getDefaultState();
-            var defaultJeBlockState = blockStateBeToJe(defaultBeBlockState);
-            if (defaultJeBlockState == null) {
-                log.warn("Failed to find JE block state for {}", defaultBeBlockState);
-                continue;
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states.json")) {
+            if (stream == null) {
+                log.error("je_block_default_states.json not found");
+                return false;
             }
-            JE_BLOCK_DEFAULT_PROPERTIES.put(defaultJeBlockState.identifier, defaultJeBlockState.properties);
+            var states = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, String>>>(){});
+            for(var entry : states.entrySet()) {
+                var identifier = entry.getKey();
+                var properties = entry.getValue();
+                JE_BLOCK_DEFAULT_PROPERTIES.put(identifier, properties);
+            }
+        } catch(IOException e) {
+            throw new RuntimeException(e);
         }
         return true;
     }
