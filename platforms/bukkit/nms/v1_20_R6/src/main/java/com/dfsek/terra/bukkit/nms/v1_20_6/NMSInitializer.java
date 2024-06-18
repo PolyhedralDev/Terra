@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21;
+package com.dfsek.terra.bukkit.nms.v1_20_6;
 
 import org.bukkit.Bukkit;
 

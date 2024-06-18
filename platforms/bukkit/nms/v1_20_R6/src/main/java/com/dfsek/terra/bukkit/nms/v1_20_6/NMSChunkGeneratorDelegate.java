@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21;
+package com.dfsek.terra.bukkit.nms.v1_20_6;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -86,10 +87,10 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
 
     @Override
-    public CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Blender blender,
-                                                        @NotNull RandomState noiseConfig,
-                                                        @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
-        return vanilla.fillFromNoise(blender, noiseConfig, structureAccessor, chunk)
+    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
+                                                                 @NotNull RandomState noiseConfig,
+                                                                 @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
+        return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk)
             .thenApply(c -> {
                 LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
                 BiomeProvider biomeProvider = pack.getBiomeProvider();
