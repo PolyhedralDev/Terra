@@ -41,12 +41,12 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        context.setBlockState(x & 15, y, z & 15, ((AllayBlockState)data).allayBlockState());
+        context.setBlockState(x, y, z, ((AllayBlockState)data).allayBlockState());
     }
 
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        var blockState = context.getBlockState(x & 15, y, z & 15);
+        var blockState = context.getBlockState(x, y, z);
         return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
     }
 
