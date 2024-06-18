@@ -125,8 +125,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
         @Override
         public Boolean apply(PopulateContext context) {
-            var chunk = context.getCurrentChunk();
-            var tmp = new AllayProtoWorld(allayServerWorld, chunk, context.getChunkAccessor());
+            var tmp = new AllayProtoWorld(allayServerWorld, context);
             try {
                 for (var generationStage : configPack.getStages()) {
                     generationStage.populate(tmp);

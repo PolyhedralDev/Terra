@@ -4,6 +4,7 @@ import com.dfsek.terra.api.util.vector.Vector3;
 
 import org.allaymc.api.world.chunk.ChunkAccessible;
 import org.allaymc.api.world.chunk.UnsafeChunk;
+import org.allaymc.api.world.generator.context.OtherChunkAccessibleContext;
 import org.allaymc.terra.allay.Mapping;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
@@ -21,16 +22,16 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  *
  * @author daoge_cmd
  */
-public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk centerChunk, ChunkAccessible chunkAccessor) implements ProtoWorld {
+public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
 
     @Override
     public int centerChunkX() {
-        return centerChunk.getX();
+        return context.getCurrentChunk().getX();
     }
 
     @Override
     public int centerChunkZ() {
-        return centerChunk.getZ();
+        return context.getCurrentChunk().getZ();
     }
 
     @Override
@@ -40,35 +41,18 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk cen
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        if(isInCurrentChunk(x, y, z)) {
-            centerChunk.setBlockState(x & 15, y, z & 15, ((AllayBlockState)data).allayBlockState());
-        } else {
-            setBlockStateInOtherChunk(x, y, z, data, physics);
-        }
+        context.setBlockState(x & 15, y, z & 15, ((AllayBlockState)data).allayBlockState());
     }
 
-    private void setBlockStateInOtherChunk(int x, int y, int z, BlockState data, boolean physics) {
-        var chunk = chunkAccessor.getChunk(x >> 4, z >> 4);
-        chunk.setBlockState(x & 15, y, z & 15, ((AllayBlockState)data).allayBlockState());
+    @Override
+    public BlockState getBlockState(int x, int y, int z) {
+        var blockState = context.getBlockState(x & 15, y, z & 15);
+        return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
     }
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         return new AllayFakeEntity(Vector3.of(x, y, z), allayServerWorld);
-    }
-
-    @Override
-    public BlockState getBlockState(int x, int y, int z) {
-        if(isInCurrentChunk(x, y, z)) {
-            var blockState = centerChunk.getBlockState(x & 15, y, z & 15);
-            return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
-        }
-        return getBlockStateInOtherChunk(x, y, z);
-    }
-
-    private BlockState getBlockStateInOtherChunk(int x, int y, int z) {
-        var chunk = chunkAccessor.getChunk(x >> 4, z >> 4);
-        return new AllayBlockState(chunk.getBlockState(x & 15, y, z & 15), Mapping.blockStateBeToJe(chunk.getBlockState(x & 15, y, z & 15)));
     }
 
     @Override
@@ -110,12 +94,5 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, UnsafeChunk cen
     @Override
     public AllayServerWorld getHandle() {
         return allayServerWorld;
-    }
-
-    private boolean isInCurrentChunk(int x, int y, int z) {
-        return
-            x >= centerChunkX() * 16 && x < centerChunkX() * 16 + 16 &&
-            z >= centerChunkZ() * 16 && z < centerChunkZ() * 16 + 16 &&
-            y >= getMinHeight() && y <= getMaxHeight();
     }
 }
