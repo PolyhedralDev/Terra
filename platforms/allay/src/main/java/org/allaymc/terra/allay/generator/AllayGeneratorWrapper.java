@@ -33,7 +33,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 public class AllayGeneratorWrapper implements GeneratorWrapper {
     protected static final String DEFAULT_PACK_NAME = "overworld";
     protected static final String OPTION_PACK_NAME = "pack";
-    protected static final String OPTION_SEED = "pack";
+    protected static final String OPTION_SEED = "seed";
 
     @Getter
     protected final BiomeProvider biomeProvider;
