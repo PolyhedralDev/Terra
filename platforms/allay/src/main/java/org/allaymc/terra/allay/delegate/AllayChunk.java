@@ -1,5 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.block.type.BlockTypes;
+import org.allaymc.api.data.VanillaBlockPropertyTypes;
 import org.allaymc.api.world.chunk.Chunk;
 import org.allaymc.terra.allay.Mapping;
 import org.jetbrains.annotations.NotNull;
@@ -14,9 +16,19 @@ import com.dfsek.terra.api.world.ServerWorld;
  * @author daoge_cmd
  */
 public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfsek.terra.api.world.chunk.Chunk {
+
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
-        allayChunk.setBlockState(x, y, z, ((AllayBlockState)data).allayBlockState());
+        var allayBlockState = (AllayBlockState)data;
+        var containsWater = allayBlockState.containsWater();
+        if (!containsWater) {
+            var oldBlock = allayChunk.getBlockState(x, y, z);
+            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+        }
+        allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
+        if (containsWater) allayChunk.setBlockState(x, y, z, WATER, 1);
     }
 
     @Override

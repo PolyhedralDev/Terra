@@ -37,6 +37,10 @@ public class JeBlockState {
         completeMissingProperties();
     }
 
+    public String getPropertyValue(String key) {
+        return properties.get(key);
+    }
+
     private void completeMissingProperties() {
         var defaultProperties = Mapping.getJeBlockDefaultProperties(identifier);
         if(properties.size() == defaultProperties.size()) {

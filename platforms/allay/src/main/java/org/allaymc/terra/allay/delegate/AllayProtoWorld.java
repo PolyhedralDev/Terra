@@ -2,8 +2,8 @@ package org.allaymc.terra.allay.delegate;
 
 import com.dfsek.terra.api.util.vector.Vector3;
 
-import org.allaymc.api.world.chunk.ChunkAccessible;
-import org.allaymc.api.world.chunk.UnsafeChunk;
+import org.allaymc.api.block.type.BlockTypes;
+import org.allaymc.api.data.VanillaBlockPropertyTypes;
 import org.allaymc.api.world.generator.context.OtherChunkAccessibleContext;
 import org.allaymc.terra.allay.Mapping;
 
@@ -24,6 +24,8 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
 
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+
     @Override
     public int centerChunkX() {
         return context.getCurrentChunk().getX();
@@ -41,7 +43,14 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        context.setBlockState(x, y, z, ((AllayBlockState)data).allayBlockState());
+        var allayBlockState = (AllayBlockState)data;
+        var containsWater = allayBlockState.containsWater();
+        if (!containsWater) {
+            var oldBlock = context.getBlockState(x, y, z).getBlockType();
+            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+        }
+        context.setBlockState(x, y, z, allayBlockState.allayBlockState());
+        if (containsWater) context.setBlockState(x, y, z, WATER, 1);
     }
 
     @Override

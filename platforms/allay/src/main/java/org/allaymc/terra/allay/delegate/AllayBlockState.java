@@ -7,19 +7,32 @@ import org.allaymc.terra.allay.JeBlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 
+import java.util.Objects;
+
 
 /**
  * Terra Project 2024/6/16
  *
  * @author daoge_cmd
  */
-public record AllayBlockState(BlockState allayBlockState, JeBlockState jeBlockState) implements com.dfsek.terra.api.block.state.BlockState {
+public final class AllayBlockState implements com.dfsek.terra.api.block.state.BlockState {
 
-    public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR_TYPE.getDefaultState(), JeBlockState.fromString("minecraft:air"));
+    public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR_TYPE.getDefaultState(),
+        JeBlockState.fromString("minecraft:air"));
+    private final BlockState allayBlockState;
+    private final JeBlockState jeBlockState;
+    private final boolean containsWater;
+
+    public AllayBlockState(BlockState allayBlockState, JeBlockState jeBlockState) {
+        this.allayBlockState = allayBlockState;
+        this.jeBlockState = jeBlockState;
+        this.containsWater = "true".equals(jeBlockState.getPropertyValue("waterlogged"));
+    }
 
     @Override
-    public boolean matches(com.dfsek.terra.api.block.state.BlockState other) {
-        return ((AllayBlockState) other).allayBlockState == this.allayBlockState;
+    public boolean matches(com.dfsek.terra.api.block.state.BlockState o) {
+        var other = ((AllayBlockState) o);
+        return other.allayBlockState == this.allayBlockState && other.containsWater == this.containsWater;
     }
 
     @Override
@@ -59,4 +72,10 @@ public record AllayBlockState(BlockState allayBlockState, JeBlockState jeBlockSt
     public BlockState getHandle() {
         return allayBlockState;
     }
+
+    public BlockState allayBlockState() { return allayBlockState; }
+
+    public boolean containsWater() { return containsWater; }
+
+    public JeBlockState jeBlockState()  { return jeBlockState; }
 }
