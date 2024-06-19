@@ -9,7 +9,7 @@ import com.dfsek.terra.bukkit.PlatformImpl;
 
 
 public interface Initializer {
-    String NMS = "v" + VersionUtil.getMinecraftVersionInfo().toString().replace(".", "_");
+    String NMS = VersionUtil.getMinecraftVersionInfo().toString().replace(".", "_");
     String TERRA_PACKAGE = Initializer.class.getPackageName();
 
     static boolean init(PlatformImpl platform) {
