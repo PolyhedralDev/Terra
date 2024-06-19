@@ -96,13 +96,14 @@ public class TerraBukkitPlugin extends JavaPlugin {
             CommandExecutionCoordinator.simpleCoordinator(),
             BukkitAdapter::adapt,
             BukkitAdapter::adapt);
-        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-            commandManager.registerBrigadier();
-            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-            if(brigManager != null) {
-                brigManager.setNativeNumberSuggestions(false);
-            }
-        }
+        // TODO: Uncomment once Cloud has updated for 1.21
+//        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+//            commandManager.registerBrigadier();
+//            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+//            if(brigManager != null) {
+//                brigManager.setNativeNumberSuggestions(false);
+//            }
+//        }
 
         if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
