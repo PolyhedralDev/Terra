@@ -8,6 +8,7 @@
 package com.dfsek.terra.api.util.reflection;
 
 import org.jetbrains.annotations.NotNull;
+import sun.misc.Unsafe;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
@@ -26,6 +27,18 @@ import java.util.stream.Stream;
 
 
 public final class ReflectionUtil {
+    private static final Unsafe UNSAFE;
+
+    static {
+        try{
+            final Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
+            unsafeField.setAccessible(true);
+            UNSAFE = (Unsafe) unsafeField.get(null);
+        } catch(NoSuchFieldException | IllegalAccessException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     public static Field[] getFields(@NotNull Class<?> type) {
         Field[] result = type.getDeclaredFields();
         Class<?> parentClass = type.getSuperclass();
@@ -33,6 +46,14 @@ public final class ReflectionUtil {
             result = Stream.concat(Arrays.stream(result), Arrays.stream(getFields(parentClass))).toArray(Field[]::new);
         }
         return result;
+    }
+
+    public static void setFinalField(Object obj, String fieldName, Object value) throws NoSuchFieldException {
+        Field field = obj.getClass().getDeclaredField(fieldName);
+        field.setAccessible(true);
+        long fieldOffset = UNSAFE.objectFieldOffset(field);
+
+        UNSAFE.putObject(obj, fieldOffset, value);
     }
 
     public static Method[] getMethods(@NotNull Class<?> type) {
