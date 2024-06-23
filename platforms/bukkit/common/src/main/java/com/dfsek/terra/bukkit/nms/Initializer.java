@@ -1,6 +1,7 @@
 package com.dfsek.terra.bukkit.nms;
 
-import org.bukkit.Bukkit;
+import com.dfsek.terra.bukkit.util.VersionUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +9,7 @@ import com.dfsek.terra.bukkit.PlatformImpl;
 
 
 public interface Initializer {
-    String NMS = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    String NMS = VersionUtil.getMinecraftVersionInfo().toString().replace(".", "_");
     String TERRA_PACKAGE = Initializer.class.getPackageName();
 
     static boolean init(PlatformImpl platform) {
