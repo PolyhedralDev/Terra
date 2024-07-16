@@ -31,7 +31,7 @@ public final class Mapping {
     private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
     private static final Map<String, String> ITEM_ID_JE_TO_BE = new Object2ObjectOpenHashMap<>();
     private static final Map<String, Integer> BIOME_ID_JE_TO_BE = new Object2IntOpenHashMap<>();
-    private static final BlockState BE_AIR_STATE = BlockTypes.AIR_TYPE.getDefaultState();
+    private static final BlockState BE_AIR_STATE = BlockTypes.AIR.getDefaultState();
 
     public static void init() {
         if(!initBlockStateMapping()) error();
@@ -129,7 +129,7 @@ public final class Mapping {
             var propertyType = blockType.getProperties().get(propertyName);
             if (propertyType == null) {
                 log.warn("Unknown property type: {}", propertyName);
-                return BlockTypes.AIR_TYPE.getDefaultState();
+                return BlockTypes.AIR.getDefaultState();
             }
             try {
                 propertyValues[index] = propertyType.tryCreateValue(entry.getValue());
@@ -155,7 +155,7 @@ public final class Mapping {
         var result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
         if(result == null) {
             log.warn("Failed to find be block state for {}", jeBlockState);
-            return BlockTypes.AIR_TYPE.getDefaultState();
+            return BlockTypes.AIR.getDefaultState();
         }
         return result;
     }

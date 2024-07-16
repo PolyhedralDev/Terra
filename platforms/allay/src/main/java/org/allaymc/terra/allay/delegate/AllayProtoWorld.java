@@ -24,7 +24,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public int centerChunkX() {
@@ -47,7 +47,7 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
         var containsWater = allayBlockState.containsWater();
         if (!containsWater) {
             var oldBlock = context.getBlockState(x, y, z).getBlockType();
-            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+            containsWater = oldBlock == BlockTypes.WATER;
         }
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) context.setBlockState(x, y, z, WATER, 1);

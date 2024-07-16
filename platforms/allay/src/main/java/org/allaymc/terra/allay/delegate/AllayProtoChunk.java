@@ -17,7 +17,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
  */
 public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public int getMaxHeight() {
@@ -30,7 +30,7 @@ public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
         var containsWater = allayBlockState.containsWater();
         if (!containsWater) {
             var oldBlock = allayChunk.getBlockState(x, y, z);
-            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+            containsWater = oldBlock == BlockTypes.WATER;
         }
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) allayChunk.setBlockState(x, y, z, WATER, 1);

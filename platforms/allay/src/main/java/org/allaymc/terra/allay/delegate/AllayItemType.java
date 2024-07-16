@@ -17,7 +17,7 @@ public final class AllayItemType implements Item {
     public AllayItemType(ItemType<?> allayItemType) {
         this.allayItemType = allayItemType;
         // TODO: 感觉不太优雅，应该有更好的办法
-        this.maxDurability = allayItemType.createItemStack().getItemAttributes().maxDamage();
+        this.maxDurability = allayItemType.createItemStack().getItemData().maxDamage();
     }
 
     @Override
