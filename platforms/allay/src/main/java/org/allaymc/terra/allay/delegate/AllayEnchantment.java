@@ -20,7 +20,7 @@ public record AllayEnchantment(EnchantmentType allayEnchantment) implements Ench
 
     @Override
     public boolean conflictsWith(Enchantment other) {
-        return ((AllayEnchantment)other).allayEnchantment.checkCompatibility(allayEnchantment);
+        return ((AllayEnchantment)other).allayEnchantment.checkIncompatible(allayEnchantment);
     }
 
     @Override
