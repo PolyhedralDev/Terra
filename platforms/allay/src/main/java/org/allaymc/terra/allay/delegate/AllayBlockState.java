@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public final class AllayBlockState implements com.dfsek.terra.api.block.state.BlockState {
 
-    public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR_TYPE.getDefaultState(),
+    public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR.getDefaultState(),
         JeBlockState.fromString("minecraft:air"));
     private final BlockState allayBlockState;
     private final JeBlockState jeBlockState;
@@ -65,7 +65,7 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
 
     @Override
     public boolean isAir() {
-        return allayBlockState.getBlockType() == BlockTypes.AIR_TYPE;
+        return allayBlockState.getBlockType() == BlockTypes.AIR;
     }
 
     @Override

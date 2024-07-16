@@ -17,7 +17,7 @@ import com.dfsek.terra.api.world.ServerWorld;
  */
 public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfsek.terra.api.world.chunk.Chunk {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
@@ -25,7 +25,7 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
         var containsWater = allayBlockState.containsWater();
         if (!containsWater) {
             var oldBlock = allayChunk.getBlockState(x, y, z);
-            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+            containsWater = oldBlock == BlockTypes.WATER;
         }
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) allayChunk.setBlockState(x, y, z, WATER, 1);

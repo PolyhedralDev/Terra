@@ -26,7 +26,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
  */
 public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dimension allayDimension) implements ServerWorld {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER_TYPE.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public Chunk getChunkAt(int x, int z) {
@@ -39,7 +39,7 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
         var containsWater = allayBlockState.containsWater();
         if (!containsWater) {
             var oldBlock = allayDimension.getBlockState(x, y, z).getBlockType();
-            containsWater = oldBlock == BlockTypes.WATER_TYPE;
+            containsWater = oldBlock == BlockTypes.WATER;
         }
         allayDimension.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) allayDimension.setBlockState(x, y, z, WATER, 1);

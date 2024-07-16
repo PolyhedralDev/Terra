@@ -25,7 +25,7 @@ public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.t
 
     @Override
     public boolean isWater() {
-        return allayBlockType == BlockTypes.WATER_TYPE || allayBlockType == BlockTypes.FLOWING_WATER_TYPE;
+        return allayBlockType == BlockTypes.WATER || allayBlockType == BlockTypes.FLOWING_WATER;
     }
 
     @Override
