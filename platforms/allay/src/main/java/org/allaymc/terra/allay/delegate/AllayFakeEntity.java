@@ -43,6 +43,6 @@ public final class AllayFakeEntity implements Entity {
 
     @Override
     public Object getHandle() {
-        return null;
+        return fakeHandle;
     }
 }

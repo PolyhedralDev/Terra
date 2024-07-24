@@ -2,7 +2,7 @@ package org.allaymc.terra.allay;
 
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.plugin.Plugin;
-import org.allaymc.api.world.generator.WorldGeneratorFactory;
+import org.allaymc.api.registry.Registries;
 import org.allaymc.terra.allay.generator.AllayGeneratorWrapper;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -36,7 +36,7 @@ public class TerraAllayPlugin extends Plugin {
         PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
 
         log.info("Registering generator...");
-        WorldGeneratorFactory.getFactory().register("TERRA", preset -> new AllayGeneratorWrapper(preset).getAllayWorldGenerator());
+        Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", preset -> new AllayGeneratorWrapper(preset).getAllayWorldGenerator());
 
         log.info("Terra started");
     }
