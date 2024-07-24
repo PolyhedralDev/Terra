@@ -6,9 +6,9 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.block.property.type.BlockPropertyType.BlockPropertyValue;
-import org.allaymc.api.block.registry.BlockTypeRegistry;
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockTypes;
+import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.Identifier;
 import org.allaymc.api.utils.JSONUtils;
 
@@ -117,7 +117,7 @@ public final class Mapping {
     private static BlockState createBeBlockState(Map<String, Object> data) {
         var identifier = new Identifier((String) data.get("bedrock_identifier"));
         // 方块类型
-        var blockType = BlockTypeRegistry.getRegistry().get(identifier);
+        var blockType = Registries.BLOCKS.get(identifier);
         // 方块属性
         Map<String, Object> state = (Map<String, Object>) data.get("state");
         if (state == null) return blockType.getDefaultState();

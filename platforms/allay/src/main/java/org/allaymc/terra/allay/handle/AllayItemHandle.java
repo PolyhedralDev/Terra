@@ -1,7 +1,6 @@
 package org.allaymc.terra.allay.handle;
 
-import org.allaymc.api.item.enchantment.EnchantmentRegistry;
-import org.allaymc.api.item.registry.ItemTypeRegistry;
+import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.Identifier;
 import org.allaymc.terra.allay.Mapping;
 import org.allaymc.terra.allay.delegate.AllayEnchantment;
@@ -23,17 +22,17 @@ import com.dfsek.terra.api.inventory.item.Enchantment;
 public class AllayItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
-        return new AllayItemType(ItemTypeRegistry.getRegistry().get(new Identifier(Mapping.itemIdJeToBe(data))));
+        return new AllayItemType(Registries.ITEMS.get(new Identifier(Mapping.itemIdJeToBe(data))));
     }
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return new AllayEnchantment(EnchantmentRegistry.getRegistry().getByK2(new Identifier(Mapping.enchantmentIdJeToBe(id))));
+        return new AllayEnchantment(Registries.ENCHANTMENTS.getByK2(new Identifier(Mapping.enchantmentIdJeToBe(id))));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return EnchantmentRegistry.getRegistry().getContent().m1().values().stream()
+        return Registries.ENCHANTMENTS.getContent().m1().values().stream()
             .map(AllayEnchantment::new)
             .collect(Collectors.toSet());
     }

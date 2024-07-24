@@ -1,5 +1,6 @@
 repositories {
     mavenLocal()
+    maven("https://www.jitpack.io/")
 }
 
 dependencies {
