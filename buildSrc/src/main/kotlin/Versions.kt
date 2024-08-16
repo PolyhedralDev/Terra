@@ -8,7 +8,9 @@ object Versions {
         const val paralithic = "0.7.1"
         const val strata = "1.3.2"
         
-        const val cloud = "1.8.4"
+        const val cloud = "2.0.0-rc.2"
+        const val cloudPaper = "2.0.0-beta.9"
+        const val cloudFabric = "2.0.0-beta.7"
         
         const val caffeine = "3.1.8"
         

@@ -1,8 +1,7 @@
 package com.dfsek.terra.lifecycle;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.fabric.FabricServerCommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.incendo.cloud.fabric.FabricServerCommandManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

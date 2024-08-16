@@ -17,15 +17,16 @@
 
 package com.dfsek.terra.bukkit;
 
-import cloud.commandframework.brigadier.CloudBrigadierManager;
-import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
 import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.brigadier.CloudBrigadierManager;
+import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
 
         try {
-            PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
+            LegacyPaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
 
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
 
@@ -91,23 +92,28 @@ public class TerraBukkitPlugin extends JavaPlugin {
     }
 
     @NotNull
-    private PaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
-        PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-            CommandExecutionCoordinator.simpleCoordinator(),
-            BukkitAdapter::adapt,
-            BukkitAdapter::adapt);
-        // TODO: Uncomment once Cloud has updated for 1.21
-//        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-//            commandManager.registerBrigadier();
-//            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-//            if(brigManager != null) {
-//                brigManager.setNativeNumberSuggestions(false);
-//            }
-//        }
+    private LegacyPaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
+        // TODO: Update to PaperCommandManager
+        LegacyPaperCommandManager<CommandSender> commandManager = new LegacyPaperCommandManager<>(
+            this,
+            ExecutionCoordinator.simpleCoordinator(),
+            SenderMapper.create(
+                BukkitAdapter::adapt,
+                BukkitAdapter::adapt
+            ));
+
+        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            commandManager.registerBrigadier();
+            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+            if(brigManager != null) {
+                brigManager.setNativeNumberSuggestions(false);
+            }
+        }
 
         if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
+
         return commandManager;
     }
 
