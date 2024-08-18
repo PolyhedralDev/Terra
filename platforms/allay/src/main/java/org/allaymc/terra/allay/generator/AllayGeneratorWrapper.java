@@ -91,7 +91,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     public class AllayNoiser implements Noiser {
 
         @Override
-        public Boolean apply(NoiseContext context) {
+        public boolean apply(NoiseContext context) {
             var chunk = context.getCurrentChunk();
             var chunkX = chunk.getX();
             var chunkZ = chunk.getZ();
@@ -124,7 +124,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     public class AllayPopulator implements Populator {
 
         @Override
-        public Boolean apply(PopulateContext context) {
+        public boolean apply(PopulateContext context) {
             var tmp = new AllayProtoWorld(allayServerWorld, context);
             try {
                 for (var generationStage : configPack.getStages()) {
