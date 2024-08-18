@@ -118,6 +118,10 @@ public final class Mapping {
         var identifier = new Identifier((String) data.get("bedrock_identifier"));
         // 方块类型
         var blockType = Registries.BLOCKS.get(identifier);
+        if (blockType == null) {
+            log.error("Cannot find bedrock block type: {}", identifier);
+            return BE_AIR_STATE;
+        }
         // 方块属性
         Map<String, Object> state = (Map<String, Object>) data.get("state");
         if (state == null) return blockType.getDefaultState();
