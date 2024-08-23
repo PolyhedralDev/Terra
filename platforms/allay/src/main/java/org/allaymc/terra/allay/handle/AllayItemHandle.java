@@ -22,7 +22,7 @@ import com.dfsek.terra.api.inventory.item.Enchantment;
 public class AllayItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
-        return new AllayItemType(Registries.ITEMS.get(new Identifier(Mapping.itemIdJeToBe(data))));
+        return new AllayItemType(Registries.ITEMS.get(new Identifier(Mapping.itemIdJeToBe(data))), Mapping.jeItemIdToBeItemMeta(data));
     }
 
     @Override
