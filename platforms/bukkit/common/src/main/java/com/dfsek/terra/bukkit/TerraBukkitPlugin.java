@@ -102,15 +102,13 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 BukkitAdapter::adapt
             ));
 
-        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+        if (commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             commandManager.registerBrigadier();
             final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
             if(brigManager != null) {
                 brigManager.setNativeNumberSuggestions(false);
             }
-        }
-
-        if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        } else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
 
