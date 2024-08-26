@@ -15,7 +15,12 @@ public interface Initializer {
     static boolean init(PlatformImpl platform) {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
         try {
-            Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + NMS + ".NMSInitializer");
+            String packageVersion = NMS;
+            if (NMS.equals("v1_21_1")) {
+                packageVersion = "v1_21";
+            }
+
+            Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSInitializer");
             try {
                 Initializer initializer = (Initializer) initializerClass.getConstructor().newInstance();
                 initializer.initialize(platform);
