@@ -2,8 +2,8 @@ package org.allaymc.terra.allay.delegate;
 
 import com.dfsek.terra.api.util.vector.Vector3;
 
+import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.type.BlockTypes;
-import org.allaymc.api.data.VanillaBlockPropertyTypes;
 import org.allaymc.api.world.generator.context.OtherChunkAccessibleContext;
 import org.allaymc.terra.allay.Mapping;
 
@@ -24,7 +24,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public int centerChunkX() {
