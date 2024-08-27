@@ -1,7 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.type.BlockTypes;
-import org.allaymc.api.data.VanillaBlockPropertyTypes;
 import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.allaymc.terra.allay.Mapping;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
  */
 public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(VanillaBlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(15));
 
     @Override
     public int getMaxHeight() {
