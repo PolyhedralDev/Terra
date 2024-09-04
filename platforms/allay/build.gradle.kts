@@ -1,5 +1,4 @@
 repositories {
-    mavenLocal()
     maven("https://www.jitpack.io/")
 }
 
@@ -8,7 +7,7 @@ dependencies {
     implementation("com.google.code.gson", "gson", "2.11.0")
 
     compileOnly("org.projectlombok:lombok:1.18.32")
-    compileOnly("org.allaymc", "Allay-API", "1.0.0")
+    compileOnly(group = "com.github.AllayMC.Allay", name = "Allay-API", version = "master-SNAPSHOT")
 
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
