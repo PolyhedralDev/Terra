@@ -11,3 +11,9 @@ dependencies {
 
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
+
+tasks {
+    compileJava {
+        options.release.set(21)
+    }
+}
