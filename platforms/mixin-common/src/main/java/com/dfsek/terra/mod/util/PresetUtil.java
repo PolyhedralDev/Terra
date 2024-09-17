@@ -93,7 +93,7 @@ public class PresetUtil {
     private static void insertCustom(ModPlatform platform, String key, ConfigPack pack, Registry<DimensionType> dimensionTypeRegistry,
                                      Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
                                      HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap) {
-        Identifier demensionIdentifier = new Identifier(key);
+        Identifier demensionIdentifier = Identifier.of(key);
 
         VanillaWorldProperties vanillaWorldProperties;
 
@@ -103,13 +103,13 @@ public class PresetUtil {
             vanillaWorldProperties = new VanillaWorldProperties();
         }
 
-        DimensionType defaultDimension = dimensionTypeRegistry.get(new Identifier(vanillaWorldProperties.getVanillaDimension()));
+        DimensionType defaultDimension = dimensionTypeRegistry.get(Identifier.of(vanillaWorldProperties.getVanillaDimension()));
 
         assert defaultDimension != null;
 
         DimensionType dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, defaultDimension, platform);
         RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(
-            new Identifier("terra", pack.getID().toLowerCase(
+            Identifier.of("terra", pack.getID().toLowerCase(
                 Locale.ROOT)));
 
         Registry.registerReference(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
@@ -119,7 +119,7 @@ public class PresetUtil {
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
 
         RegistryEntry<ChunkGeneratorSettings> defaultGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
-            chunkGeneratorSettingsRegistry.get(new Identifier(vanillaWorldProperties.getVanillaGeneration())));
+            chunkGeneratorSettingsRegistry.get(Identifier.of(vanillaWorldProperties.getVanillaGeneration())));
 
         GenerationSettings generatorSettings = new GenerationSettings(
             vanillaWorldProperties.getHeight() == null ? new ConstantRange(

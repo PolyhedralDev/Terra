@@ -42,12 +42,12 @@ public final class Codecs {
                     .forGetter(TerraBiomeSource::getPack))
             .apply(instance, instance.stable(TerraBiomeSource::new)));
 
-    public static final Codec<ConstantRange> TERRA_CONSTANT_RANGE = RecordCodecBuilder.mapCodec(range -> range.group(
+    public static final Codec<ConstantRange> TERRA_CONSTANT_RANGE = RecordCodecBuilder.create(range -> range.group(
         Codec.INT.fieldOf("min").stable().forGetter(ConstantRange::getMin),
         Codec.INT.fieldOf("max").stable().forGetter(ConstantRange::getMax)).apply(range, range.stable(ConstantRange::new)));
 
     public static final Codec<GenerationSettings> TERRA_GENERATION_SETTINGS = RecordCodecBuilder
-        .mapCodec(instance -> instance.group(
+        .create(instance -> instance.group(
                 TERRA_CONSTANT_RANGE.fieldOf("height").stable().forGetter(GenerationSettings::height),
                 Codec.INT.fieldOf("sea_level").forGetter(GenerationSettings::sealevel),
                 Codec.BOOL.fieldOf("mob_generation").forGetter(GenerationSettings::mobGeneration),
@@ -55,8 +55,8 @@ public final class Codecs {
             .apply(instance, instance.stable(GenerationSettings::new)));
 
 
-    public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
-        .create(
+    public static final MapCodec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
+        .mapCodec(
             instance -> instance.group(
                 TERRA_BIOME_SOURCE.fieldOf("biome_source")
                     .stable()
@@ -71,7 +71,7 @@ public final class Codecs {
                 MinecraftChunkGeneratorWrapper::new))
         );
 
-    public static final Codec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.create(range -> range.group(
+    public static final MapCodec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.mapCodec(range -> range.group(
             Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMin),
             Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMax))
         .apply(range, range.stable((min, max) -> new TerraIntProvider(new ConstantRange(
