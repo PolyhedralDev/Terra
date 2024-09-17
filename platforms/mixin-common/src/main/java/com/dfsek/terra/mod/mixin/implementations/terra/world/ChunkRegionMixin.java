@@ -21,10 +21,12 @@ import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
 
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.util.collection.BoundedRegionArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkGenerationStep;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
@@ -76,10 +78,9 @@ public abstract class ChunkRegionMixin {
 
 
     @Inject(at = @At("RETURN"),
-            method = "<init>(Lnet/minecraft/server/world/ServerWorld;Ljava/util/List;Lnet/minecraft/world/chunk/ChunkStatus;I)V")
-    public void injectConstructor(net.minecraft.server.world.ServerWorld world, List<net.minecraft.world.chunk.Chunk> list,
-                                  ChunkStatus chunkStatus, int i,
-                                  CallbackInfo ci) {
+            method = "<init>(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/collection/BoundedRegionArray;Lnet/minecraft/world/chunk/ChunkGenerationStep;Lnet/minecraft/world/chunk/Chunk;)V")
+    public void injectConstructor(net.minecraft.server.world.ServerWorld world, BoundedRegionArray chunks,
+                                  ChunkGenerationStep generationStep, Chunk centerPos, CallbackInfo ci) {
         this.terra$config = ((ServerWorld) world).getPack();
     }
 

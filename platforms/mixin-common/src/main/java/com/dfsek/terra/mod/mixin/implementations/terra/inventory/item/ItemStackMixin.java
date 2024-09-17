@@ -21,7 +21,6 @@ import net.minecraft.component.Component;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.ComponentMap;
 import net.minecraft.component.ComponentMapImpl;
-import net.minecraft.component.DataComponentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;

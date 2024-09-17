@@ -111,10 +111,9 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         return settings.value().generationShapeConfig().height();
     }
 
-
     @Override
-    public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
-                                                  StructureAccessor structureAccessor, Chunk chunk) {
+    public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor,
+                                                  Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider = pack.getBiomeProvider();

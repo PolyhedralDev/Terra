@@ -4,6 +4,7 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -34,6 +35,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private static final AtomicReference<Registry<DimensionType>> DIMENSIONS = new AtomicReference<>();
     private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
+    private static final AtomicReference<Registry<Enchantment>> ENCHANTMENT = new AtomicReference<>();
     private static MinecraftServer server;
 
     public LifecyclePlatform() {
@@ -44,11 +46,13 @@ public abstract class LifecyclePlatform extends ModPlatform {
     public static void setRegistries(Registry<Biome> biomeRegistry,
                                      Registry<DimensionType> dimensionTypeRegistry,
                                      Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
-                                     Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry) {
+                                     Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry,
+                                     Registry<Enchantment> enchantmentRegistry) {
         BIOMES.set(biomeRegistry);
         DIMENSIONS.set(dimensionTypeRegistry);
         SETTINGS.set(chunkGeneratorSettingsRegistry);
         NOISE.set(multiNoiseBiomeSourceParameterListRegistry);
+        ENCHANTMENT.set(enchantmentRegistry);
     }
 
     @Override
@@ -139,6 +143,11 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry() {
         return NOISE.get();
+    }
+
+    @Override
+    public Registry<Enchantment> enchantmentRegistry() {
+        return ENCHANTMENT.get();
     }
 
     protected abstract Collection<BaseAddon> getPlatformMods();

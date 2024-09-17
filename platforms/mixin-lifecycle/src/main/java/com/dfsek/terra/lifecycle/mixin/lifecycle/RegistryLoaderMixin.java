@@ -1,6 +1,7 @@
 package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
 import com.mojang.datafixers.util.Pair;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.DynamicRegistryManager.Immutable;
 import net.minecraft.registry.MutableRegistry;
@@ -70,8 +71,9 @@ public class RegistryLoaderMixin {
                         RegistryKeys.CHUNK_GENERATOR_SETTINGS).orElseThrow();
                     MutableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(instance,
                         RegistryKeys.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
+                    MutableRegistry<Enchantment> enchantments = extractRegistry(instance, RegistryKeys.ENCHANTMENT).orElseThrow();
 
-                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists);
+                    LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists, enchantments);
                     LifecycleUtil.initialize(biomes, worldPresets);
                 });
             initialized = true;

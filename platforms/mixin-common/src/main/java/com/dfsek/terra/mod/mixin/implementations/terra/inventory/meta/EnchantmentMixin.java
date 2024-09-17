@@ -17,8 +17,13 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
+import com.dfsek.terra.mod.CommonPlatform;
+
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryList;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,6 +33,8 @@ import java.util.Objects;
 
 import com.dfsek.terra.api.inventory.ItemStack;
 
+import static net.minecraft.enchantment.Enchantment.canBeCombined;
+
 
 @Mixin(Enchantment.class)
 @Implements(@Interface(iface = com.dfsek.terra.api.inventory.item.Enchantment.class, prefix = "terra$"))
@@ -36,7 +43,8 @@ public abstract class EnchantmentMixin {
     public abstract boolean isAcceptableItem(net.minecraft.item.ItemStack stack);
 
     @Shadow
-    public abstract boolean canCombine(Enchantment other);
+    @Final
+    private RegistryEntryList<Enchantment> exclusiveSet;
 
     @SuppressWarnings("ConstantConditions")
     public boolean terra$canEnchantItem(ItemStack itemStack) {
@@ -44,10 +52,10 @@ public abstract class EnchantmentMixin {
     }
 
     public boolean terra$conflictsWith(com.dfsek.terra.api.inventory.item.Enchantment other) {
-        return !canCombine((Enchantment) other);
+        return canBeCombined(RegistryEntry.of((Enchantment) (Object) this), RegistryEntry.of((Enchantment) (Object) other));
     }
 
     public String terra$getID() {
-        return Objects.requireNonNull(Registries.ENCHANTMENT.getId((Enchantment) (Object) this)).toString();
+        return Objects.requireNonNull(CommonPlatform.get().enchantmentRegistry().getId((Enchantment) (Object) this)).toString();
     }
 }

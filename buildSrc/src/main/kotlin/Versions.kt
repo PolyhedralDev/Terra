@@ -29,7 +29,7 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.97.8+${Mod.minecraft}"
+        const val fabricAPI = "0.104.0+${Mod.minecraft}"
     }
 //
 //    object Quilt {
@@ -40,8 +40,8 @@ object Versions {
     object Mod {
         const val mixin = "0.15.3+mixin.0.8.7"
         
-        const val minecraft = "1.20.6"
-        const val yarn = "$minecraft+build.1"
+        const val minecraft = "1.21.1"
+        const val yarn = "$minecraft+build.3"
         const val fabricLoader = "0.16.5"
         
         const val architecuryLoom = "1.7.413"

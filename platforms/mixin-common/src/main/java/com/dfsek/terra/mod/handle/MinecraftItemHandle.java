@@ -62,11 +62,11 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Registries.ENCHANTMENT.get(Identifier.tryParse(id)));
+        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().get(Identifier.tryParse(id)));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Registries.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());
+        return CommonPlatform.get().enchantmentRegistry().stream().map(enchantment -> (Enchantment) (Object) enchantment).collect(Collectors.toSet());
     }
 }
