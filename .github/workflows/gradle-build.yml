@@ -45,3 +45,10 @@ jobs:
           properties: |
             kotlin.js.compiler=ir
             kotlin.parallel.tasks.in.project=true
+      # Upload Allay-Server
+      - name: Upload Terra-Allay
+        uses: actions/upload-artifact@v4
+        if: success() && contains(github.ref_name, 'master')
+        with:
+          name: Terra-Allay
+          path: platforms/allay/build/libs/*.jar
