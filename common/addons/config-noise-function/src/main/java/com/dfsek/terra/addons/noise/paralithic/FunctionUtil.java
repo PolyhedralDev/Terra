@@ -11,6 +11,8 @@ import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
 import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
+import com.dfsek.terra.addons.noise.paralithic.noise.SaltedNoiseFunction2;
+import com.dfsek.terra.addons.noise.paralithic.noise.SaltedNoiseFunction3;
 
 
 public class FunctionUtil {
@@ -23,10 +25,15 @@ public class FunctionUtil {
         for(Map.Entry<String, FunctionTemplate> entry : functions.entrySet()) {
             functionMap.put(entry.getKey(), UserDefinedFunction.newInstance(entry.getValue()));
         }
-        samplers.forEach((id, sampler) -> functionMap.put(id,
-            sampler.getDimensions() == 2 ?
-            new NoiseFunction2(sampler.getSampler()) :
-            new NoiseFunction3(sampler.getSampler())));
+        samplers.forEach((id, sampler) -> {
+            if(sampler.getDimensions() == 2) {
+                functionMap.put(id, new NoiseFunction2(sampler.getSampler()));
+                functionMap.put(id + "Salted", new SaltedNoiseFunction2(sampler.getSampler()));
+            } else {
+                functionMap.put(id, new NoiseFunction3(sampler.getSampler()));
+                functionMap.put(id + "Salted", new SaltedNoiseFunction3(sampler.getSampler()));
+            }
+        });
         return functionMap;
     }
 }
