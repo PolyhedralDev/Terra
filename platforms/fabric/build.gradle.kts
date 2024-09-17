@@ -10,6 +10,12 @@ architectury {
     loader("fabric")
 }
 
+repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        name = "Sonatype Snapshots"
+    }
+}
+
 dependencies {
     shadedApi(project(":common:implementation:base"))
 
@@ -26,8 +32,8 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
 
-    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    modImplementation("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
+    include("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
 
     modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
 }
