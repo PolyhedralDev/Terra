@@ -8,6 +8,7 @@ import cloud.commandframework.context.CommandContext;
 
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
+import java.util.Random;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -23,6 +24,13 @@ import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.component.DefaultValue;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.description.Description;
+import org.incendo.cloud.parser.standard.EnumParser;
+import org.incendo.cloud.parser.standard.LongParser;
+
 
 public class StructureCommandAddon implements AddonInitializer {
     @Inject
@@ -32,7 +40,7 @@ public class StructureCommandAddon implements AddonInitializer {
     private BaseAddon addon;
 
     private static Registry<Structure> getStructureRegistry(CommandContext<CommandSender> sender) {
-        return sender.getSender().getEntity().orElseThrow().world().getPack().getRegistry(Structure.class);
+        return sender.sender().getEntity().orElseThrow().world().getPack().getRegistry(Structure.class);
     }
 
     @Override
@@ -44,16 +52,16 @@ public class StructureCommandAddon implements AddonInitializer {
                 CommandManager<CommandSender> manager = event.getCommandManager();
 
                 manager.command(
-                    manager.commandBuilder("structures", ArgumentDescription.of("Manage or generate structures"))
+                    manager.commandBuilder("structures", Description.of("Manage or generate structures"))
                         .literal("generate")
-                        .argument(RegistryArgument.builder("structure",
+                        .optional(RegistryArgument.builder("structure",
                             StructureCommandAddon::getStructureRegistry,
                             TypeKey.of(Structure.class)))
-                        .argument(LongArgument.optional("seed", 0))
-                        .argument(EnumArgument.optional(Rotation.class, "rotation", Rotation.NONE))
+                        .optional("seed", LongParser.longParser(), DefaultValue.constant(0L))
+                        .optional("rotation", EnumParser.enumParser(Rotation.class), DefaultValue.constant(Rotation.NONE))
                         .handler(context -> {
                             Structure structure = context.get("structure");
-                            Entity sender = context.getSender().getEntity().orElseThrow();
+                            Entity sender = context.sender().getEntity().orElseThrow();
                             structure.generate(
                                 sender.position().toInt(),
                                 sender.world(),

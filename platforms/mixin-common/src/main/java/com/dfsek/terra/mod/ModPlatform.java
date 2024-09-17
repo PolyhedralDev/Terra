@@ -3,6 +3,7 @@ package com.dfsek.terra.mod;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
@@ -124,6 +125,8 @@ public abstract class ModPlatform extends AbstractPlatform {
 
     public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
 
+    public abstract Registry<Enchantment> enchantmentRegistry();
+
     @Override
     public @NotNull WorldHandle getWorldHandle() {
         return worldHandle;
@@ -133,4 +136,6 @@ public abstract class ModPlatform extends AbstractPlatform {
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
+
+
 }

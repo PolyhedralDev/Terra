@@ -13,18 +13,14 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 @Mixin(SaveLoading.class)
 public class SaveLoadingMixin {
     @ModifyArg(
-        method = "method_42097(Lnet/minecraft/registry/DynamicRegistryManager$Immutable;" +
-                 "Lnet/minecraft/server/SaveLoading$SaveApplierFactory;Lnet/minecraft/resource/LifecycledResourceManager;" +
-                 "Lnet/minecraft/registry/CombinedDynamicRegistries;Lnet/minecraft/server/SaveLoading$LoadContext;" +
-                 "Lnet/minecraft/server/DataPackContents;)Ljava/lang/Object;",
+        method = "load(Lnet/minecraft/server/SaveLoading$ServerConfig;Lnet/minecraft/server/SaveLoading$LoadContextSupplier;Lnet/minecraft/server/SaveLoading$SaveApplierFactory;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/DataPackContents;refresh(Lnet/minecraft/registry/DynamicRegistryManager;)V"
-        ),
-        index = 0
+            target = "Lnet/minecraft/registry/RegistryLoader;loadFromResource(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)Lnet/minecraft/registry/DynamicRegistryManager$Immutable;"        ),
+        index = 1
     )
-    private static DynamicRegistryManager grabManager(DynamicRegistryManager in) {
-        MinecraftUtil.registerFlora(in.get(RegistryKeys.BIOME));
-        return in;
+    private static DynamicRegistryManager grabManager(DynamicRegistryManager registryManager) {
+        MinecraftUtil.registerFlora(registryManager.get(RegistryKeys.BIOME));
+        return registryManager;
     }
 }

@@ -1,15 +1,16 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R3;
+package com.dfsek.terra.bukkit.nms.v1_21;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
@@ -41,15 +42,15 @@ public class AwfulBukkitHacks {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
-                    ResourceLocation vanillaMinecraftKey = new ResourceLocation(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
+                    ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
                     Biome platform = NMSBiomeInjector.createBiome(biome, Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)));
 
                     ResourceKey<Biome> delegateKey = ResourceKey.create(
                         Registries.BIOME,
-                        new ResourceLocation("terra", NMSBiomeInjector.createBiomeID(pack, key))
+                        ResourceLocation.fromNamespaceAndPath("terra", NMSBiomeInjector.createBiomeID(pack, key))
                     );
 
-                    Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, Lifecycle.stable());
+                    Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, RegistrationInfo.BUILT_IN);
                     Reflection.REFERENCE.invokeBindValue(holder, platform); // IMPORTANT: bind holder.
 
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));

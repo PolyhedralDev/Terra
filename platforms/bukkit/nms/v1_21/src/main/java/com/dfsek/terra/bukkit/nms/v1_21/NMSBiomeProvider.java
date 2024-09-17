@@ -1,6 +1,6 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R3;
+package com.dfsek.terra.bukkit.nms.v1_21;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.biome.Biome;
@@ -35,8 +35,12 @@ public class NMSBiomeProvider extends BiomeSource {
     }
 
     @Override
-    protected @NotNull Codec<? extends BiomeSource> codec() {
-        return BiomeSource.CODEC;
+    protected @NotNull MapCodec<? extends BiomeSource> codec() {
+        return MapCodec.assumeMapUnsafe(BiomeSource.CODEC);
+//        return MapCodec.unit(null);
+//        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchMap(this::codec, Function.identity());
+//        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchStable(BiomeSource::codec, Function.identity());
+//        return BiomeSource.CODEC;
     }
 
     @Override
