@@ -92,7 +92,7 @@ public final class MinecraftUtil {
         RegistryKey<net.minecraft.world.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
             biomeRegistry.getOrEmpty(vanillaKey)
                 .ifPresentOrElse(vanillaBiome -> {
-                        Identifier terraBiomeIdentifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
+                        Identifier terraBiomeIdentifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
                         biomeRegistry.getOrEmpty(terraBiomeIdentifier).ifPresentOrElse(
                             terraBiome -> {
                                                                     List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
