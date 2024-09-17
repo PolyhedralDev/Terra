@@ -77,13 +77,13 @@ public final class VersionUtil {
     public static final class MinecraftVersionInfo {
         private static final Logger logger = LoggerFactory.getLogger(MinecraftVersionInfo.class);
 
-        private static final Pattern VERSION_PATTERN = Pattern.compile("v?(\\d+)_(\\d+)_R(\\d+)");
+        private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)(?:\\.(\\d+))?");
         private final int major;
         private final int minor;
         private final int patch;
 
         private MinecraftVersionInfo() {
-            this(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+            this(Bukkit.getServer().getBukkitVersion().split("-")[0]);
         }
 
         private MinecraftVersionInfo(int major, int minor, int patch) {
@@ -97,7 +97,7 @@ public final class VersionUtil {
             if(versionMatcher.find()) {
                 major = Integer.parseInt(versionMatcher.group(1));
                 minor = Integer.parseInt(versionMatcher.group(2));
-                patch = Integer.parseInt(versionMatcher.group(3));
+                patch = versionMatcher.group(3) != null ? Integer.parseInt(versionMatcher.group(3)) : -1;
             } else {
                 logger.warn("Error while parsing minecraft version info. Continuing launch, but setting all versions to -1.");
 
@@ -112,7 +112,11 @@ public final class VersionUtil {
             if(major == -1 && minor == -1 && patch == -1)
                 return "Unknown";
 
-            return String.format("v%d.%d.%d", major, minor, patch);
+            if (patch >= 0) {
+                return String.format("v%d.%d.%d", major, minor, patch);
+            } else {
+                return String.format("v%d.%d", major, minor);
+            }
         }
 
         public int getMajor() {

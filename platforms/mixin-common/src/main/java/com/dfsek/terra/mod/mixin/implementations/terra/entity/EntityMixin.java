@@ -39,14 +39,14 @@ public abstract class EntityMixin {
     private BlockPos blockPos;
 
     @Shadow
-    public abstract void teleport(double destX, double destY, double destZ);
+    public abstract void updatePosition(double destX, double destY, double destZ);
 
     public Vector3 terra$position() {
         return MinecraftAdapter.adapt(blockPos);
     }
 
     public void terra$position(Vector3 location) {
-        teleport(location.getX(), location.getY(), location.getZ());
+        updatePosition(location.getX(), location.getY(), location.getZ());
     }
 
     public ServerWorld terra$world() {

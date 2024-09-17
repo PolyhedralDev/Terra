@@ -1,9 +1,14 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R3;
+package com.dfsek.terra.bukkit.nms.v1_21;
 
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
+
+import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.status.WorldGenContext;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_20_R3.CraftWorld;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
@@ -37,8 +42,20 @@ public class NMSInjectListener implements Listener {
 
             ChunkGenerator vanilla = serverWorld.getChunkSource().getGenerator();
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), craftWorld.getSeed());
+            ChunkMap chunkMap = serverWorld.getChunkSource().chunkMap;
+            WorldGenContext worldGenContext = chunkMap.worldGenContext;
 
-            serverWorld.getChunkSource().chunkMap.generator = new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed());
+            try {
+                ReflectionUtil.setFinalField(chunkMap, "worldGenContext", new WorldGenContext(
+                    worldGenContext.level(),
+                    new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed()),
+                    worldGenContext.structureManager(),
+                    worldGenContext.lightEngine(),
+                    worldGenContext.mainThreadMailBox()
+                ));
+            } catch(NoSuchFieldException e) {
+                throw new RuntimeException(e);
+            }
 
             LOGGER.info("Successfully injected into world.");
 

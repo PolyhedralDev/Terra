@@ -9,18 +9,18 @@ repositories {
     maven("https://repo.codemc.org/repository/maven-public") {
         name = "CodeMC"
     }
-    maven("https://papermc.io/repo/repository/maven-public/") {
+    maven("https://repo.papermc.io/repository/maven-public/") {
         name = "PaperMC"
     }
 }
 
 dependencies {
     //TODO Allow pulling from Versions.kt
-    implementation("com.github.johnrengelman", "shadow", "8.1.1")
-    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "1.5.11")
+    implementation("com.gradleup.shadow", "shadow-gradle-plugin", "8.3.1")
+    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "1.7.2")
 
-    implementation("org.ow2.asm", "asm", "9.6")
-    implementation("org.ow2.asm", "asm-tree", "9.6")
+    implementation("org.ow2.asm", "asm", "9.7")
+    implementation("org.ow2.asm", "asm-tree", "9.7")
     implementation("com.dfsek.tectonic", "common", "4.2.1")
-    implementation("org.yaml", "snakeyaml", "2.2")
+    implementation("org.yaml", "snakeyaml", "2.3")
 }
