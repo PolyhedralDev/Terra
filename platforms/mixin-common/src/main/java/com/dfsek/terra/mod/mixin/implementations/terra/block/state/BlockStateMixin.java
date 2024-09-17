@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.mixin.implementations.terra.block.state;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.block.AbstractBlock.AbstractBlockState;
 import net.minecraft.block.Block;
 import net.minecraft.registry.Registries;
@@ -24,7 +25,7 @@ import com.dfsek.terra.mod.mixin.access.StateAccessor;
 @Mixin(AbstractBlockState.class)
 @Implements(@Interface(iface = BlockState.class, prefix = "terra$"))
 public abstract class BlockStateMixin extends State<Block, net.minecraft.block.BlockState> {
-    private BlockStateMixin(Block owner, ImmutableMap<net.minecraft.state.property.Property<?>, Comparable<?>> entries,
+    private BlockStateMixin(Block owner, Reference2ObjectArrayMap<net.minecraft.state.property.Property<?>, Comparable<?>> entries,
                             MapCodec<net.minecraft.block.BlockState> codec) {
         super(owner, entries, codec);
     }

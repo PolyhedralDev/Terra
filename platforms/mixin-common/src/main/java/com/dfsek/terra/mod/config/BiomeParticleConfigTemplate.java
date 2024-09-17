@@ -7,6 +7,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.argument.ParticleEffectArgumentType;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.biome.BiomeParticleConfig;
 
 
@@ -27,7 +28,7 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
 
         try {
             return new BiomeParticleConfig(
-                ParticleEffectArgumentType.readParameters(new StringReader(particle), Registries.PARTICLE_TYPE.getReadOnlyWrapper()),
+                ParticleEffectArgumentType.readParameters(new StringReader(particle), (RegistryWrapper.WrapperLookup) Registries.PARTICLE_TYPE.getReadOnlyWrapper()),
                 probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);

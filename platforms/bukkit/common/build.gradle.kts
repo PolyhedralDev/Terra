@@ -11,5 +11,5 @@ dependencies {
 
     shadedApi("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
-    shadedApi("cloud.commandframework", "cloud-paper", Versions.Libraries.cloud)
+    shadedApi("org.incendo", "cloud-paper", Versions.Libraries.cloudPaper)
 }
