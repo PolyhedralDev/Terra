@@ -48,7 +48,7 @@ jobs:
       # Upload Allay-Server
       - name: Upload Terra-Allay
         uses: actions/upload-artifact@v4
-        if: success() && contains(github.ref_name, 'master')
+        if: success() && contains(github.ref_name, 'allay')
         with:
           name: Terra-Allay
           path: platforms/allay/build/libs/*.jar
