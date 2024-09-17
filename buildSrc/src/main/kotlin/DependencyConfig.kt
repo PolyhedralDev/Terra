@@ -48,6 +48,9 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            name = "Sonatype Snapshots"
+        }
     }
     
     dependencies {

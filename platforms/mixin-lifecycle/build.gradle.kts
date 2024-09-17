@@ -30,10 +30,6 @@ loom {
 }
 
 tasks {
-    compileJava {
-        options.release.set(17)
-    }
-
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
     }

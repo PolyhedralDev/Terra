@@ -17,9 +17,15 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.item;
 
+import net.minecraft.component.Component;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.component.ComponentMap;
+import net.minecraft.component.ComponentMapImpl;
+import net.minecraft.component.DataComponentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -46,7 +52,11 @@ public abstract class ItemStackMixin {
     public abstract boolean isDamageable();
 
     @Shadow
-    public abstract void setNbt(@Nullable NbtCompound tag);
+    public abstract ComponentMap getComponents();
+
+    @Shadow
+    @Final
+    private ComponentMapImpl components;
 
     public int terra$getAmount() {
         return getCount();
@@ -66,7 +76,13 @@ public abstract class ItemStackMixin {
 
     @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-        setNbt(((ItemStack) (Object) meta).getNbt());
+        ComponentChanges.Builder builder = ComponentChanges.builder();
+        this.getComponents().getTypes().forEach(builder::remove);
+
+        ComponentMap components = ((ItemStack) (Object) meta).getComponents();
+        components.forEach(builder::add);
+
+        this.components.applyChanges(builder.build());
     }
 
     @Intrinsic

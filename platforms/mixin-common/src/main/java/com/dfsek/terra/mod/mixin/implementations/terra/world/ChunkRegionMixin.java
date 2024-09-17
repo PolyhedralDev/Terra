@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
+
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
@@ -88,7 +90,7 @@ public abstract class ChunkRegionMixin {
         ((ChunkRegion) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data, physics ? 3 : 1042);
         if(physics && ((net.minecraft.block.BlockState) data).getBlock() instanceof FluidBlock) {
             fluidTickScheduler.scheduleTick(
-                OrderedTick.create(((FluidBlock) ((net.minecraft.block.BlockState) data).getBlock()).getFluidState(
+                OrderedTick.create((((FluidBlockInvoker) ((net.minecraft.block.BlockState) data).getBlock())).invokeGetFluidState(
                     (net.minecraft.block.BlockState) data).getFluid(), pos));
         }
     }

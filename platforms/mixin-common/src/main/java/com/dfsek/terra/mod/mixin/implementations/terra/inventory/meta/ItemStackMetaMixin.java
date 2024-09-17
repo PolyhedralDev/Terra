@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -42,7 +43,7 @@ public abstract class ItemStackMetaMixin {
     public abstract boolean hasEnchantments();
 
     @Shadow
-    public abstract NbtList getEnchantments();
+    public abstract ItemEnchantmentsComponent getEnchantments();
 
     @Shadow
     public abstract void addEnchantment(net.minecraft.enchantment.Enchantment enchantment, int level);
@@ -56,9 +57,10 @@ public abstract class ItemStackMetaMixin {
         if(!hasEnchantments()) return Collections.emptyMap();
         Map<Enchantment, Integer> map = new HashMap<>();
 
-        getEnchantments().forEach(enchantment -> {
-            NbtCompound eTag = (NbtCompound) enchantment;
-            map.put((Enchantment) Registries.ENCHANTMENT.get(eTag.getInt("id")), eTag.getInt("lvl"));
+        ItemEnchantmentsComponent enchantments = getEnchantments();
+        enchantments.getEnchantments().forEach(enchantment -> {
+            net.minecraft.enchantment.Enchantment enchantmentValue = enchantment.value();
+            map.put((Enchantment) enchantmentValue, enchantments.getLevel(enchantmentValue));
         });
         return map;
     }

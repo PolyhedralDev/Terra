@@ -10,12 +10,6 @@ architectury {
     loader("fabric")
 }
 
-repositories {
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-        name = "Sonatype Snapshots"
-    }
-}
-
 dependencies {
     shadedApi(project(":common:implementation:base"))
 
@@ -51,10 +45,6 @@ loom {
 addonDir(project.file("./run/config/Terra/addons"), tasks.named("configureLaunch").get())
 
 tasks {
-    compileJava {
-        options.release.set(17)
-    }
-
     remapJar {
         dependsOn("installAddons")
 

@@ -8,23 +8,23 @@ object Versions {
         const val paralithic = "0.7.1"
         const val strata = "1.3.2"
         
-        const val cloud = "2.0.0-rc.2"
-        const val cloudPaper = "2.0.0-beta.9"
-        const val cloudFabric = "2.0.0-beta.7"
+        const val cloud = "2.0.0"
+        const val cloudPaper = "2.0.0-beta.10"
+        const val cloudFabric = "2.0.0-beta.9"
         
         const val caffeine = "3.1.8"
         
-        const val slf4j = "2.0.13"
+        const val slf4j = "2.0.16"
 
         object Internal {
-            const val shadow = "8.1.1"
+            const val shadow = "8.3.1"
             const val apacheText = "1.12.0"
             const val apacheIO = "2.16.1"
-            const val guava = "33.1.0-jre"
+            const val guava = "33.3.0-jre"
             const val asm = "9.7"
-            const val snakeYml = "2.2"
+            const val snakeYml = "2.3"
             const val jetBrainsAnnotations = "24.1.0"
-            const val junit = "5.10.2"
+            const val junit = "5.11.0"
         }
     }
     
@@ -38,14 +38,14 @@ object Versions {
 //    }
     
     object Mod {
-        const val mixin = "0.12.5+mixin.0.8.5"
+        const val mixin = "0.15.3+mixin.0.8.7"
         
         const val minecraft = "1.20.6"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.15.10"
+        const val fabricLoader = "0.16.5"
         
-        const val architecuryLoom = "1.6.395"
-        const val architecturyPlugin = "3.4.155"
+        const val architecuryLoom = "1.7.413"
+        const val architecturyPlugin = "3.4.159"
     }
 //
 //    object Forge {
@@ -54,14 +54,14 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21"
-        const val paperBuild = "$minecraft-R0.1-SNAPSHOT"
+        const val minecraft = "1.21.1"
+        const val paperBuild = "$minecraft-R0.1-20240917.151311-80"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.1"
         const val paperDevBundle = paperBuild
-        const val runPaper = "2.3.0"
-        const val paperWeight = "1.7.1"
+        const val runPaper = "2.3.1"
+        const val paperWeight = "1.7.2"
     }
     
     //
@@ -73,6 +73,6 @@ object Versions {
 //
     object CLI {
         const val nbt = "6.1"
-        const val logback = "1.4.14"
+        const val logback = "1.5.8"
     }
 }

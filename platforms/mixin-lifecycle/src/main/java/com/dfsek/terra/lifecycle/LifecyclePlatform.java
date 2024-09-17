@@ -69,7 +69,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
         if(server != null) {
             BiomeUtil.registerBiomes(server.getRegistryManager().get(RegistryKeys.BIOME));
-            server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
+            server.reloadResources(server.getDataPackManager().getEnabledIds()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
