@@ -1,6 +1,7 @@
 package com.dfsek.terra.mod.data;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.dfsek.terra.api.config.ConfigPack;
@@ -34,19 +35,19 @@ public final class Codecs {
                     "No such config pack " +
                     id)))));
 
-    public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-        .create(instance -> instance.group(
+    public static final MapCodec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
+        .mapCodec(instance -> instance.group(
                 CONFIG_PACK.fieldOf("pack")
                     .stable()
                     .forGetter(TerraBiomeSource::getPack))
             .apply(instance, instance.stable(TerraBiomeSource::new)));
 
-    public static final Codec<ConstantRange> TERRA_CONSTANT_RANGE = RecordCodecBuilder.create(range -> range.group(
+    public static final Codec<ConstantRange> TERRA_CONSTANT_RANGE = RecordCodecBuilder.mapCodec(range -> range.group(
         Codec.INT.fieldOf("min").stable().forGetter(ConstantRange::getMin),
         Codec.INT.fieldOf("max").stable().forGetter(ConstantRange::getMax)).apply(range, range.stable(ConstantRange::new)));
 
     public static final Codec<GenerationSettings> TERRA_GENERATION_SETTINGS = RecordCodecBuilder
-        .create(instance -> instance.group(
+        .mapCodec(instance -> instance.group(
                 TERRA_CONSTANT_RANGE.fieldOf("height").stable().forGetter(GenerationSettings::height),
                 Codec.INT.fieldOf("sea_level").forGetter(GenerationSettings::sealevel),
                 Codec.BOOL.fieldOf("mob_generation").forGetter(GenerationSettings::mobGeneration),

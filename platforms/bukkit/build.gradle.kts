@@ -2,15 +2,9 @@ plugins {
     id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
-repositories {
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-        name = "Sonatype"
-    }
-}
-
 dependencies {
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_20_R3", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_21", configuration = "reobf"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 

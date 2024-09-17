@@ -21,7 +21,7 @@ import kotlin.io.path.exists
 
 
 fun Project.configureDistribution() {
-    apply(plugin = "com.github.johnrengelman.shadow")
+    apply(plugin = "com.gradleup.shadow")
     
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         group = "terra"

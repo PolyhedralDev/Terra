@@ -18,6 +18,7 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -86,7 +87,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    protected Codec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
+    protected MapCodec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
         return Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER;
     }
 
@@ -107,8 +108,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    public CompletableFuture<Chunk> populateNoise(Executor executor, Blender blender, NoiseConfig noiseConfig,
-                                                  StructureAccessor structureAccessor, Chunk chunk) {
+    public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor,
+                                                  Chunk chunk) {
         return CompletableFuture.supplyAsync(() -> {
             ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
             BiomeProvider biomeProvider = pack.getBiomeProvider();
