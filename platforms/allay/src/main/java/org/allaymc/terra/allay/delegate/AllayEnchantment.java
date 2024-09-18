@@ -6,10 +6,7 @@ import org.allaymc.terra.allay.Mapping;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public record AllayEnchantment(EnchantmentType allayEnchantment) implements Enchantment {

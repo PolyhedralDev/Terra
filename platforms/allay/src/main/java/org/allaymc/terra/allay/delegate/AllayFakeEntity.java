@@ -4,10 +4,7 @@ import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public final class AllayFakeEntity implements Entity {

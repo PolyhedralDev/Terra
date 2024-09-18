@@ -4,10 +4,7 @@ import org.allaymc.api.item.type.ItemType;
 
 import com.dfsek.terra.api.inventory.Item;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public final class AllayItemType implements Item {

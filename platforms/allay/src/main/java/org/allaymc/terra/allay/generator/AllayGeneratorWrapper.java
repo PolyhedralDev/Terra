@@ -23,10 +23,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 @Slf4j

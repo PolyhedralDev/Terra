@@ -8,12 +8,7 @@ import java.util.Map;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
-
 /**
- * Terra Project 2024/6/16
- *
- * 物品元数据。在allay中物品元数据没有单独的类，故直接使用ItemStack代替
- *
  * @author daoge_cmd
  */
 public record AllayItemMeta(ItemStack allayItemStack) implements ItemMeta {

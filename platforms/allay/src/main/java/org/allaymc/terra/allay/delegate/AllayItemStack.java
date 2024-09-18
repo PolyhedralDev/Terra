@@ -5,10 +5,7 @@ import org.allaymc.api.item.ItemStack;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terra.api.inventory.ItemStack{

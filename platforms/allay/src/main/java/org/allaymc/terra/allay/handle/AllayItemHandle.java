@@ -13,10 +13,7 @@ import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public class AllayItemHandle implements ItemHandle {

@@ -8,8 +8,6 @@ import org.allaymc.terra.allay.generator.AllayGeneratorWrapper;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 
 /**
- * Terra Project 2024/6/15
- *
  * @author daoge_cmd
  */
 @Slf4j

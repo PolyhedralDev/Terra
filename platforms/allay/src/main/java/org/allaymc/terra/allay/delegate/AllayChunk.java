@@ -9,10 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfsek.terra.api.world.chunk.Chunk {

@@ -6,10 +6,7 @@ import org.allaymc.terra.allay.Mapping;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.terra.api.block.BlockType {
