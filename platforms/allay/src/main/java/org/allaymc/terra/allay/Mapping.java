@@ -21,8 +21,6 @@ import java.util.TreeMap;
 
 
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 @Slf4j
@@ -123,37 +121,6 @@ public final class Mapping {
         }
         return true;
     }
-
-//    private static BlockState createBeBlockState(Map<String, Object> data) {
-//        var identifier = new Identifier((String) data.get("bedrock_identifier"));
-//        // 方块类型
-//        var blockType = Registries.BLOCKS.get(identifier);
-//        if (blockType == null) {
-//            log.error("Cannot find bedrock block type: {}", identifier);
-//            return BE_AIR_STATE;
-//        }
-//        // 方块属性
-//        Map<String, Object> state = (Map<String, Object>) data.get("state");
-//        if (state == null) return blockType.getDefaultState();
-//        var propertyValues = new BlockPropertyValue<?, ?, ?>[state.size()];
-//        int index = -1;
-//        for(var entry : state.entrySet()) {
-//            index++;
-//            var propertyName = entry.getKey();
-//            var propertyType = blockType.getProperties().get(propertyName);
-//            if (propertyType == null) {
-//                log.warn("Unknown property type: {}", propertyName);
-//                return BlockTypes.AIR.getDefaultState();
-//            }
-//            try {
-//                propertyValues[index] = propertyType.tryCreateValue(entry.getValue());
-//            } catch (IllegalArgumentException e) {
-//                log.warn("Failed to create property value for {}: {}", propertyName, entry.getValue());
-//                return BE_AIR_STATE;
-//            }
-//        }
-//        return blockType.ofState(propertyValues);
-//    }
 
     private static BlockState createBeBlockState(Map<String, Object> data) {
         var builder = NbtMap.builder();

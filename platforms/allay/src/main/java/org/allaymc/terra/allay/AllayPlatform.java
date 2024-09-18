@@ -20,8 +20,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 /**
- * Terra Project 2024/6/15
- *
  * @author daoge_cmd
  */
 public class AllayPlatform extends AbstractPlatform {

@@ -6,14 +6,12 @@ import java.util.TreeMap;
 
 
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public class JeBlockState {
     protected final String identifier;
     protected final TreeMap<String, String> properties;
-    protected int hash = Integer.MAX_VALUE; // 懒加载
+    protected int hash = Integer.MAX_VALUE;
 
     public static JeBlockState fromString(String data) {
         return new JeBlockState(data);
@@ -63,7 +61,6 @@ public class JeBlockState {
         properties.forEach((k, v) -> builder.append(k).append("=").append(v).append(";"));
         var str = builder.toString();
         if (hash == Integer.MAX_VALUE) {
-            // 顺便算一下hash
             hash = HashUtils.fnv1a_32(str.getBytes());
         }
         return str;

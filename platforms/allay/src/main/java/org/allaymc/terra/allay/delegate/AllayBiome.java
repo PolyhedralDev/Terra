@@ -4,10 +4,7 @@ import org.allaymc.api.world.biome.BiomeType;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public record AllayBiome(BiomeType allayBiome) implements PlatformBiome {

@@ -9,10 +9,7 @@ import com.dfsek.terra.api.block.state.properties.Property;
 
 import java.util.Objects;
 
-
 /**
- * Terra Project 2024/6/16
- *
  * @author daoge_cmd
  */
 public final class AllayBlockState implements com.dfsek.terra.api.block.state.BlockState {
