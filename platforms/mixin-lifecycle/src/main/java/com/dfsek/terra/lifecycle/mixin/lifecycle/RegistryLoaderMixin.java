@@ -28,10 +28,12 @@ import com.dfsek.terra.lifecycle.LifecyclePlatform;
 import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 import com.dfsek.terra.lifecycle.util.RegistryHack;
 
+import static com.dfsek.terra.lifecycle.util.LifecycleUtil.initialized;
+
 
 @Mixin(RegistryLoader.class)
 public class RegistryLoaderMixin {
-    private static boolean initialized = false;
+
     @Shadow
     @Final
     private static Logger LOGGER;
