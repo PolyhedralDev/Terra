@@ -51,4 +51,4 @@ jobs:
         if: success() && contains(github.ref_name, 'allay')
         with:
           name: Terra-Allay
-          path: platforms/allay/build/libs/*.jar
+          path: platforms/allay/build/libs/*-shaded.jar
