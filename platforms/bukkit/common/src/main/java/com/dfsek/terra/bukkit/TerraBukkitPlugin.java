@@ -79,7 +79,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
-                                                  
+                         
                          Errors occurred while registering commands.
                          Please report this to Terra.
                          """.strip(), e);
@@ -102,13 +102,13 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 BukkitAdapter::adapt
             ));
 
-        if (commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             commandManager.registerBrigadier();
             final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
             if(brigManager != null) {
                 brigManager.setNativeNumberSuggestions(false);
             }
-        } else if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        } else if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
 
@@ -181,7 +181,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 logger.warn("""
                             You are using Mohist, so we will not give you any support for issues that may arise.
                             Since you enabled the "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" flag, we won't disable Terra. But be warned.
-                                                        
+                            
                             > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
                             > I fear something terrible has happened.
                             > - Astrash
@@ -194,7 +194,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
     @Override
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
-        if (id == null || id.trim().equals("")) { return null; }
+        if(id == null || id.trim().equals("")) { return null; }
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
                 () -> new IllegalArgumentException("No such config pack \"" + id + "\""));

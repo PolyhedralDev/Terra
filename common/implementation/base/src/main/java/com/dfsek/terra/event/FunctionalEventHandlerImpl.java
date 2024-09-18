@@ -17,17 +17,6 @@
 
 package com.dfsek.terra.event;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.Event;
 import com.dfsek.terra.api.event.events.FailThroughEvent;
@@ -35,6 +24,12 @@ import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.event.functional.EventContext;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Type;
+import java.util.*;
 
 
 public class FunctionalEventHandlerImpl implements FunctionalEventHandler {

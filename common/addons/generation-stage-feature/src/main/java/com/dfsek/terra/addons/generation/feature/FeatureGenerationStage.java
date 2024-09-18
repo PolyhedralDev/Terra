@@ -62,7 +62,7 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 world.getBiomeProvider()
                     .getColumn(
                         tx + (doBlending ? (int) (blendSampler.noise(seed, tx, tz) * blendAmplitude) : 0),
-                        tz + (doBlending ? (int) (blendSampler.noise(seed+1, tx, tz) * blendAmplitude) : 0),
+                        tz + (doBlending ? (int) (blendSampler.noise(seed + 1, tx, tz) * blendAmplitude) : 0),
                         world)
                     .forRanges(resolution, (min, max, biome) -> {
                         for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
