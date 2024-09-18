@@ -21,10 +21,8 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.RegistryWrapper.Impl;
 import net.minecraft.util.Identifier;
 
@@ -67,6 +65,7 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return CommonPlatform.get().enchantmentRegistry().stream().map(enchantment -> (Enchantment) (Object) enchantment).collect(Collectors.toSet());
+        return CommonPlatform.get().enchantmentRegistry().stream().map(enchantment -> (Enchantment) (Object) enchantment).collect(
+            Collectors.toSet());
     }
 }

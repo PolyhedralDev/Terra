@@ -10,7 +10,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
@@ -42,7 +41,8 @@ public class AwfulBukkitHacks {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
-                    ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(), vanillaBukkitKey.getKey());
+                    ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(),
+                        vanillaBukkitKey.getKey());
                     Biome platform = NMSBiomeInjector.createBiome(biome, Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)));
 
                     ResourceKey<Biome> delegateKey = ResourceKey.create(

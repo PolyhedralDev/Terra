@@ -1,11 +1,10 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.util.VersionUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.bukkit.PlatformImpl;
+import com.dfsek.terra.bukkit.util.VersionUtil;
 
 
 public interface Initializer {
@@ -16,7 +15,7 @@ public interface Initializer {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
         try {
             String packageVersion = NMS;
-            if (NMS.equals("v1_21_1")) {
+            if(NMS.equals("v1_21_1")) {
                 packageVersion = "v1_21";
             }
 

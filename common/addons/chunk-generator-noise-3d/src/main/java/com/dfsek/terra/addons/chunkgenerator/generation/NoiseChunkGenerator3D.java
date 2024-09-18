@@ -8,17 +8,15 @@
 package com.dfsek.terra.addons.chunkgenerator.generation;
 
 
-import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
-
-import com.dfsek.terra.addons.chunkgenerator.generation.math.SlantCalculationMethod;
-
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.SlantCalculationMethod;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;

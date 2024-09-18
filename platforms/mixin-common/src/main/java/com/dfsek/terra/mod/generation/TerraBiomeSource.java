@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.mod.generation;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;

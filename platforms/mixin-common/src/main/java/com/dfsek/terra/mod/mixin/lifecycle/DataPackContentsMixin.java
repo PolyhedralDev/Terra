@@ -22,6 +22,7 @@ public class DataPackContentsMixin {
     @Shadow
     @Final
     private ReloadableRegistries.Lookup reloadableRegistries;
+
     /*
      * #refresh populates all tags in the registries
      */
