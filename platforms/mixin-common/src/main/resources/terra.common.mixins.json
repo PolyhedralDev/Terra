@@ -36,6 +36,7 @@
         "implementations.terra.inventory.meta.ItemStackMetaMixin",
         "implementations.terra.world.ChunkRegionMixin",
         "implementations.terra.world.ServerWorldMixin",
+        "invoke.FluidBlockInvoker",
         "lifecycle.DataPackContentsMixin"
     ],
     "client": [

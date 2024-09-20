@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
-
 import net.minecraft.block.FluidBlock;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.collection.BoundedRegionArray;
@@ -27,7 +25,6 @@ import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkGenerationStep;
-import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
 import org.spongepowered.asm.mixin.Final;
@@ -40,8 +37,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -52,6 +47,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -78,7 +74,8 @@ public abstract class ChunkRegionMixin {
 
 
     @Inject(at = @At("RETURN"),
-            method = "<init>(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/collection/BoundedRegionArray;Lnet/minecraft/world/chunk/ChunkGenerationStep;Lnet/minecraft/world/chunk/Chunk;)V")
+            method = "<init>(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/collection/BoundedRegionArray;" +
+                     "Lnet/minecraft/world/chunk/ChunkGenerationStep;Lnet/minecraft/world/chunk/Chunk;)V")
     public void injectConstructor(net.minecraft.server.world.ServerWorld world, BoundedRegionArray chunks,
                                   ChunkGenerationStep generationStep, Chunk centerPos, CallbackInfo ci) {
         this.terra$config = ((ServerWorld) world).getPack();

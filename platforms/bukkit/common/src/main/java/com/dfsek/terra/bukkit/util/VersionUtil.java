@@ -112,7 +112,7 @@ public final class VersionUtil {
             if(major == -1 && minor == -1 && patch == -1)
                 return "Unknown";
 
-            if (patch >= 0) {
+            if(patch >= 0) {
                 return String.format("v%d.%d.%d", major, minor, patch);
             } else {
                 return String.format("v%d.%d", major, minor);

@@ -30,11 +30,11 @@ public final class ReflectionUtil {
     private static final Unsafe UNSAFE;
 
     static {
-        try{
+        try {
             final Field unsafeField = Unsafe.class.getDeclaredField("theUnsafe");
             unsafeField.setAccessible(true);
             UNSAFE = (Unsafe) unsafeField.get(null);
-        } catch(NoSuchFieldException | IllegalAccessException e){
+        } catch(NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

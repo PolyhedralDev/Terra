@@ -1,5 +1,8 @@
 package com.dfsek.terra.addons.commands.addons;
 
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.description.Description;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -8,9 +11,6 @@ import com.dfsek.terra.api.command.arguments.RegistryArgument;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-
-import org.incendo.cloud.CommandManager;
-import org.incendo.cloud.description.Description;
 
 
 public class AddonsCommandAddon implements AddonInitializer {

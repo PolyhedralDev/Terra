@@ -1,12 +1,9 @@
 package com.dfsek.terra.bukkit.nms.v1_21;
 
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.chunk.status.WorldGenContext;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.event.EventHandler;
@@ -20,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 
 

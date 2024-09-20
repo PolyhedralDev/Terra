@@ -13,15 +13,15 @@ public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
     @Value("group")
     @Default
     private SpawnGroup group = null;
-    
+
     @Value("entries")
     @Default
     private List<SpawnEntry> entry = null;
-    
+
     public SpawnGroup getGroup() {
         return group;
     }
-    
+
     public List<SpawnEntry> getEntry() {
         return entry;
     }
