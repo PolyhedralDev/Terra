@@ -21,7 +21,7 @@ public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terr
 
     @Override
     public Item getType() {
-        return new AllayItemType(allayItemStack.getItemType(), allayItemStack.getMeta());
+        return new AllayItemType(allayItemStack.getItemType());
     }
 
     @Override
