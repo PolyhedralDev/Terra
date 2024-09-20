@@ -48,7 +48,8 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
 
     @Shadow
     public abstract MobSpawnerLogic getLogic();
-//method_46408
+
+    //method_46408
     @Shadow
     public abstract void setEntityType(net.minecraft.entity.EntityType<?> entityType, Random random);
 

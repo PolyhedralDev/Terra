@@ -16,6 +16,7 @@ import java.net.Proxy;
 
 import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
+import static com.dfsek.terra.lifecycle.util.LifecycleUtil.initialized;
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
@@ -28,5 +29,10 @@ public class MinecraftServerMixin {
                                    SaveLoader saveLoader, Proxy proxy, DataFixer dataFixer, ApiServices apiServices,
                                    WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
         LifecyclePlatform.setServer((MinecraftServer) (Object) this);
+    }
+
+    @Inject(method = "shutdown()V", at = @At("RETURN"))
+    private void injectShutdown(CallbackInfo ci) {
+        initialized = false;
     }
 }

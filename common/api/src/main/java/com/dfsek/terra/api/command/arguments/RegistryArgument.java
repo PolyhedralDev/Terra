@@ -2,6 +2,15 @@ package com.dfsek.terra.api.command.arguments;
 
 import io.leangen.geantyref.TypeToken;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.incendo.cloud.component.CommandComponent;
+import org.incendo.cloud.component.DefaultValue;
+import org.incendo.cloud.context.CommandContext;
+import org.incendo.cloud.context.CommandInput;
+import org.incendo.cloud.parser.ArgumentParseResult;
+import org.incendo.cloud.parser.ArgumentParser;
+import org.incendo.cloud.parser.ParserDescriptor;
+import org.incendo.cloud.suggestion.Suggestion;
+import org.incendo.cloud.suggestion.SuggestionProvider;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -12,16 +21,6 @@ import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import org.incendo.cloud.component.CommandComponent;
-import org.incendo.cloud.component.DefaultValue;
-import org.incendo.cloud.context.CommandContext;
-import org.incendo.cloud.context.CommandInput;
-import org.incendo.cloud.parser.ArgumentParseResult;
-import org.incendo.cloud.parser.ArgumentParser;
-import org.incendo.cloud.parser.ParserDescriptor;
-import org.incendo.cloud.suggestion.Suggestion;
-import org.incendo.cloud.suggestion.SuggestionProvider;
 
 
 public class RegistryArgument {
@@ -49,17 +48,17 @@ public class RegistryArgument {
     }
 
     public static <T, R> CommandComponent<T> of(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
-                                                  TypeKey<R> registryType) {
+                                                TypeKey<R> registryType) {
         return RegistryArgument.<T, R>builder(name, registryFunction, registryType).build();
     }
 
     public static <T, R> CommandComponent<T> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
-                                                        TypeKey<R> registryType) {
+                                                      TypeKey<R> registryType) {
         return RegistryArgument.builder(name, registryFunction, registryType).optional().build();
     }
 
     public static <T, R> CommandComponent<T> optional(String name, Function<CommandContext<T>, Registry<R>> registryFunction,
-                                                        TypeKey<R> registryType, DefaultValue<T, R> defaultKey) {
+                                                      TypeKey<R> registryType, DefaultValue<T, R> defaultKey) {
         return RegistryArgument.builder(name, registryFunction, registryType).optional(defaultKey).build();
     }
 

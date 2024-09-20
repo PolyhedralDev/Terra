@@ -37,10 +37,10 @@ public class NMSBiomeProvider extends BiomeSource {
     @Override
     protected @NotNull MapCodec<? extends BiomeSource> codec() {
         return MapCodec.assumeMapUnsafe(BiomeSource.CODEC);
-//        return MapCodec.unit(null);
-//        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchMap(this::codec, Function.identity());
-//        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchStable(BiomeSource::codec, Function.identity());
-//        return BiomeSource.CODEC;
+        //        return MapCodec.unit(null);
+        //        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchMap(this::codec, Function.identity());
+        //        BuiltInRegistries.BIOME_SOURCE.byNameCodec().dispatchStable(BiomeSource::codec, Function.identity());
+        //        return BiomeSource.CODEC;
     }
 
     @Override

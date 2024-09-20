@@ -1,9 +1,9 @@
 package com.dfsek.terra.addons.biome.pipeline.api.biome;
 
+import com.dfsek.terra.api.world.biome.Biome;
+
 import java.util.Collections;
 import java.util.Set;
-
-import com.dfsek.terra.api.world.biome.Biome;
 
 
 final class SelfPipelineBiome implements PipelineBiome {

@@ -20,8 +20,8 @@ public final class LifecycleEntryPoint {
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
             ExecutionCoordinator.simpleCoordinator(),
             SenderMapper.create(
-            serverCommandSource -> (CommandSender) serverCommandSource,
-            commandSender -> (ServerCommandSource) commandSender)
+                serverCommandSource -> (CommandSender) serverCommandSource,
+                commandSender -> (ServerCommandSource) commandSender)
         );
 
 
