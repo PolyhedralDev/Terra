@@ -36,6 +36,6 @@ tasks {
 }
 
 architectury {
-    common("fabric")
+    common("fabric", "neoforge")
     minecraft = Versions.Mod.minecraft
 }
