@@ -7,7 +7,7 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    loader("fabric")
+    fabric()
 }
 
 dependencies {
@@ -21,13 +21,13 @@ dependencies {
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }
 
 
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
+    minecraft("com.mojang", "minecraft", Versions.Mod.minecraft)
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
+    modImplementation("net.fabricmc", "fabric-loader", Versions.Mod.fabricLoader)
 
-    modImplementation("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
-    include("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
+    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+    include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
 
     modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
 }

@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge;
+package com.dfsek.terra.neoforge;
 
 import net.minecraftforge.fml.loading.FMLLoader;
 import org.burningwave.core.classes.Classes;
@@ -67,7 +67,7 @@ public final class AwfulForgeHacks {
             try(JarFile jar = getTerraJar()) {
                 jar.stream()
                     .forEach(jarEntry -> {
-                        if(jarEntry.getName().startsWith("com/dfsek/terra/forge/mixin")
+                        if(jarEntry.getName().startsWith("com/dfsek/terra/neoforge/mixin")
                            || jarEntry.getName().startsWith("com/dfsek/terra/mod/mixin")) {
                             return;
                         }

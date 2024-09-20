@@ -39,9 +39,6 @@ fun Project.configureDependencies() {
         maven("https://repo.papermc.io/repository/maven-public/") {
             name = "PaperMC"
         }
-        maven("https://files.minecraftforge.net/maven/") {
-            name = "Forge"
-        }
         maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
@@ -50,6 +47,9 @@ fun Project.configureDependencies() {
         }
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "Sonatype Snapshots"
+        }
+        maven ("https://maven.neoforged.net/releases/") {
+            name = "Neoforged"
         }
     }
     

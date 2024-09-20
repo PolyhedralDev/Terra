@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge.mixin.lifecycle;
+package com.dfsek.terra.neoforge.mixin.lifecycle;
 
 import net.minecraft.registry.RegistryEntryLookup;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler.NoiseParameters;

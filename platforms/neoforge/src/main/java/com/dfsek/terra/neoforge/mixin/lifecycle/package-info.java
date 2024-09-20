@@ -15,19 +15,8 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.quilt;
+/**
+ * Mixins that inject behavior into the client/server lifecycle.
+ */
 
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.qsl.base.api.entrypoint.ModInitializer;
-
-import com.dfsek.terra.lifecycle.LifecycleEntryPoint;
-
-
-public class QuiltEntryPoint extends LifecycleEntryPoint implements ModInitializer {
-    private static final QuiltPlatform TERRA_PLUGIN = new QuiltPlatform();
-
-    @Override
-    public void onInitialize(ModContainer container) {
-        initialize("Quilt", TERRA_PLUGIN);
-    }
-}
+package com.dfsek.terra.neoforge.mixin.lifecycle;

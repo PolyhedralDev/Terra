@@ -1,7 +1,7 @@
 {
     "required": true,
     "minVersion": "0.8",
-    "package": "com.dfsek.terra.forge.mixin",
+    "package": "com.dfsek.terra.neoforge.mixin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
         "lifecycle.NoiseConfigMixin"

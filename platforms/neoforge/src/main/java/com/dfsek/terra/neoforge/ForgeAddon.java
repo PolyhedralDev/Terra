@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge;
+package com.dfsek.terra.neoforge;
 
 import com.dfsek.terra.mod.MinecraftAddon;
 import com.dfsek.terra.mod.ModPlatform;

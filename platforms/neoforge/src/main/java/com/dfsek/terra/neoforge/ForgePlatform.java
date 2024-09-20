@@ -15,12 +15,13 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.forge;
+package com.dfsek.terra.neoforge;
 
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.biome.Biome;
@@ -68,7 +69,7 @@ public class ForgePlatform extends ModPlatform {
         MinecraftServer server = getServer();
 
         if(server != null) {
-            server.reloadResources(server.getDataPackManager().getNames()).exceptionally(throwable -> {
+            server.reloadResources(server.getDataPackManager().getEnabledIds()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
@@ -145,6 +146,11 @@ public class ForgePlatform extends ModPlatform {
 
     @Override
     public Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry() {
+        return null;
+    }
+
+    @Override
+    public Registry<Enchantment> enchantmentRegistry() {
         return null;
     }
 }

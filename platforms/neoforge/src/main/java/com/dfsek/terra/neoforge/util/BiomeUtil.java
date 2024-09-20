@@ -1,4 +1,4 @@
-package com.dfsek.terra.forge.util;
+package com.dfsek.terra.neoforge.util;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.forge.ForgeEntryPoint;
+import com.dfsek.terra.neoforge.ForgeEntryPoint;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
@@ -66,7 +66,7 @@ public final class BiomeUtil {
                     .value(),
                 vanillaBiomeProperties);
 
-            Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
+            Identifier identifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
 
             if(ForgeRegistries.BIOMES.containsKey(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier)

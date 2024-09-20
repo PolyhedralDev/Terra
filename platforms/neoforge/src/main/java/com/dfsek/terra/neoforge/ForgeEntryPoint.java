@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.forge;
+package com.dfsek.terra.neoforge;
 
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
@@ -34,9 +34,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.forge.AwfulForgeHacks.RegistrySanityCheck;
-import com.dfsek.terra.forge.AwfulForgeHacks.RegistryStep;
-import com.dfsek.terra.forge.util.BiomeUtil;
+import com.dfsek.terra.neoforge.AwfulForgeHacks.RegistrySanityCheck;
+import com.dfsek.terra.neoforge.AwfulForgeHacks.RegistryStep;
+import com.dfsek.terra.neoforge.util.BiomeUtil;
 import com.dfsek.terra.mod.data.Codecs;
 
 
@@ -76,7 +76,7 @@ public class ForgeEntryPoint {
 
 
         event.register(RegistryKeys.CHUNK_GENERATOR,
-            helper -> helper.register(new Identifier("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
-        event.register(RegistryKeys.BIOME_SOURCE, helper -> helper.register(new Identifier("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
+            helper -> helper.register(Identifier.of("terra:terra"), Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER));
+        event.register(RegistryKeys.BIOME_SOURCE, helper -> helper.register(Identifier.of("terra:terra"), Codecs.TERRA_BIOME_SOURCE));
     }
 }
