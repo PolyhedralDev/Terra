@@ -17,9 +17,6 @@ dependencies {
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     "developmentNeoForge"(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionNeoForge")) { isTransitive = false }
-    implementation(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
-    "developmentNeoForge"(project(path = ":platforms:mixin-lifecycle", configuration = "namedElements")) { isTransitive = false }
-    shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionNeoForge")) { isTransitive = false }
 
     minecraft("com.mojang", "minecraft", Versions.Mod.minecraft)
     mappings(
