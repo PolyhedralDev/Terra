@@ -10,7 +10,7 @@ dependencies {
     implementation("com.google.code.gson", "gson", "2.11.0")
 
     compileOnly("org.projectlombok:lombok:1.18.32")
-    compileOnly(group = "org.allaymc.allay", name = "Allay-API", version = "master-SNAPSHOT")
+    compileOnly(group = "org.allaymc.allay", name = "api", version = "master-SNAPSHOT")
 
     annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
