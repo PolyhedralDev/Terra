@@ -6,7 +6,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.block.type.BlockState;
+import org.allaymc.api.block.type.BlockStateSafeGetter;
 import org.allaymc.api.block.type.BlockTypes;
+import org.allaymc.api.item.type.ItemType;
+import org.allaymc.api.item.type.ItemTypeSafeGetter;
 import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.HashUtils;
 import org.allaymc.api.utils.JSONUtils;
@@ -28,8 +31,7 @@ public final class Mapping {
     private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
     private static final Map<BlockState, JeBlockState> BLOCK_STATE_BE_TO_JE = new Object2ObjectOpenHashMap<>();
     private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
-    private static final Map<String, String> ITEM_ID_JE_TO_BE = new Object2ObjectOpenHashMap<>();
-    private static final Map<String, Integer> JE_ITEM_ID_TO_BE_ITEM_META = new Object2IntOpenHashMap<>();
+    private static final Map<String, ItemType<?>> ITEM_ID_JE_TO_BE = new Object2ObjectOpenHashMap<>();
     private static final Map<String, Integer> BIOME_ID_JE_TO_BE = new Object2IntOpenHashMap<>();
     private static final BlockState BE_AIR_STATE = BlockTypes.AIR.getDefaultState();
 
@@ -69,15 +71,12 @@ public final class Mapping {
             }
             var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
             for(var mapping : mappings) {
-                var updatedNBT = ItemStateUpdaters.updateItemState(
-                        NbtMap.builder()
-                            .putString("Name", (String) mapping.getValue().get("bedrock_identifier"))
-                            .putInt("Damage", ((Double) mapping.getValue().get("bedrock_data")).intValue())
-                            .build(),
-                        ItemStateUpdaters.LATEST_VERSION
-                );
-                ITEM_ID_JE_TO_BE.put(mapping.getKey(), updatedNBT.getString("Name"));
-                JE_ITEM_ID_TO_BE_ITEM_META.put(mapping.getKey(), updatedNBT.getInt("Damage"));
+                var item = ItemTypeSafeGetter
+                    .name((String) mapping.getValue().get("bedrock_identifier"))
+                    // NOTICE: Should be cast to double
+                    .meta(((Double) mapping.getValue().get("bedrock_data")).intValue())
+                    .itemType();
+                ITEM_ID_JE_TO_BE.put(mapping.getKey(), item);
             }
         } catch(IOException e) {
             log.error("Failed to load mapping", e);
@@ -91,6 +90,7 @@ public final class Mapping {
                 log.error("blocks mapping not found");
                 return false;
             }
+            // noinspection unchecked
             var mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>(){}).get("mappings");
             for(var mapping : mappings) {
                 var jeState = createJeBlockState(mapping.get("java_state"));
@@ -123,47 +123,23 @@ public final class Mapping {
     }
 
     private static BlockState createBeBlockState(Map<String, Object> data) {
-        var builder = NbtMap.builder();
-        builder.putString("name", "minecraft:" + data.get("bedrock_identifier"));
-
-        Map<String, Object> state = (Map<String, Object>) data.get("state");
-        builder.put("states", state != null ? NbtMap.fromMap(convertValueType(state)) : NbtMap.EMPTY);
-
-        // The mapping file may not be the latest, so we use block state updater
-        // to update the old block state to the latest version
-        var updatedNBT = BlockStateUpdaters.updateBlockState(builder.build(), BlockStateUpdaters.LATEST_VERSION);
-        var blockStateTag = NbtMap.builder()
-                // To calculate the hash of the block state
-                // 'name' field must be in the first place
-                .putString("name", updatedNBT.getString("name"))
-                // map implementation inside updatedNBT.getCompound("states") should be TreeMap
-                // see convertValueType() method
-                .putCompound("states", updatedNBT.getCompound("states"))
-                .build();
-        var blockStateHash = HashUtils.fnv1a_32_nbt(blockStateTag);
-        var blockState = Registries.BLOCK_STATE_PALETTE.get(blockStateHash);
-        if (blockState == null) {
-            log.error("Cannot find bedrock block state: {}", blockStateTag);
-            return BE_AIR_STATE;
+        var getter = BlockStateSafeGetter
+            .name("minecraft:" + data.get("bedrock_identifier"));
+        if (data.containsKey("state")) {
+            // noinspection unchecked
+            convertValueType((Map<String, Object>) data.get("state")).forEach(getter::property);
         }
-        return blockState;
+        return getter.blockState();
     }
 
-    private static TreeMap<String, Object> convertValueType(Map<String, Object> data) {
-        // Use tree map to make sure that the order of property is correct
-        // Otherwise the block state hash calculated may not be correct!
+    private static Map<String, Object> convertValueType(Map<String, Object> data) {
         var result = new TreeMap<String, Object>();
         for (var entry : data.entrySet()) {
-            var value = entry.getValue();
-            if (value instanceof Boolean) {
-                // BooleanProperty
-                result.put(entry.getKey(), (Boolean) value ? (byte) 1 : (byte) 0);
-            } else if (value instanceof Number number) {
-                // IntProperty
+            if (entry.getValue() instanceof Number number) {
+                // Convert double to int because the number in json is double
                 result.put(entry.getKey(), number.intValue());
             } else {
-                // EnumProperty
-                result.put(entry.getKey(), value);
+                result.put(entry.getKey(), entry.getValue());
             }
         }
         return result;
@@ -171,8 +147,8 @@ public final class Mapping {
 
     private static JeBlockState createJeBlockState(Map<String, Object> data) {
         var identifier = (String) data.get("Name");
-        var properties = (Map<String, String>) data.getOrDefault("Properties", Map.of());
-        return JeBlockState.create(identifier, new TreeMap<>(properties));
+        // noinspection unchecked
+        return JeBlockState.create(identifier, new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
     }
 
     public static JeBlockState blockStateBeToJe(BlockState beBlockState) {
@@ -188,12 +164,8 @@ public final class Mapping {
         return result;
     }
 
-    public static String itemIdJeToBe(String jeItemId) {
+    public static ItemType<?> itemIdJeToBe(String jeItemId) {
         return ITEM_ID_JE_TO_BE.get(jeItemId);
-    }
-
-    public static int jeItemIdToBeItemMeta(String jeItemId) {
-        return JE_ITEM_ID_TO_BE_ITEM_META.get(jeItemId);
     }
 
     // Enchantment identifiers are same in both versions

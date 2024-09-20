@@ -1,27 +1,28 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.item.data.ItemId;
 import org.allaymc.api.item.type.ItemType;
 
 import com.dfsek.terra.api.inventory.Item;
+
+import org.allaymc.api.registry.Registries;
+
 
 /**
  * @author daoge_cmd
  */
 public final class AllayItemType implements Item {
     private final ItemType<?> allayItemType;
-    private final int beData;
     private final double maxDurability;
 
-    public AllayItemType(ItemType<?> allayItemType, int beData) {
+    public AllayItemType(ItemType<?> allayItemType) {
         this.allayItemType = allayItemType;
-        this.beData = beData;
-        // TODO: Better way to get max damage
-        this.maxDurability = allayItemType.createItemStack().getItemData().maxDamage();
+        this.maxDurability = Registries.ITEM_DATA.get(ItemId.fromIdentifier(allayItemType.getIdentifier())).maxDamage();
     }
 
     @Override
     public com.dfsek.terra.api.inventory.ItemStack newItemStack(int amount) {
-        return new AllayItemStack(allayItemType.createItemStack(amount, beData));
+        return new AllayItemStack(allayItemType.createItemStack(amount));
     }
 
     @Override
