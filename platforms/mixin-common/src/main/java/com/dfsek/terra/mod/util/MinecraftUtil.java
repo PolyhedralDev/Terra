@@ -74,15 +74,15 @@ public final class MinecraftUtil {
     }
 
     public static void registerFlora(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
-        CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
-            pack.getCheckedRegistry(com.dfsek.terra.api.world.biome.Biome.class)
-                .forEach((id, biome) -> {
-                    PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
-                    if (compatibilityOptions.isInjectFlora()) {
-                        registerFlora(biome, pack, id, biomeRegistry);
-                    }
-                });
 
+        CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
+            PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
+            if (compatibilityOptions.isInjectFlora()) {
+                pack.getCheckedRegistry(com.dfsek.terra.api.world.biome.Biome.class)
+                    .forEach((id, biome) -> {
+                        registerFlora(biome, pack, id, biomeRegistry);
+                    });
+            }
         });
         logger.info("Injecting flora into Terra biomes...");
 
