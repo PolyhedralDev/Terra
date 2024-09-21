@@ -7,10 +7,13 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
+
+
 /**
  * NoiseSampler implementation to provide OpenSimplex2 noise.
  */
-public class OpenSimplex2Sampler extends SimplexStyleSampler {
+public class OpenSimplex2Sampler extends SimplexStyleSampler implements DerivativeNoiseSampler {
     private static final double SQRT3 = 1.7320508075688772935274463415059;
 
     @Override
@@ -156,5 +159,20 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
         }
 
         return value * 32.69428253173828125;
+    }
+
+    @Override
+    public boolean isDifferentiable() {
+        return false;
+    }
+
+    @Override
+    public double[] noised(long seed, double x, double y) {
+        return new double[0];
+    }
+
+    @Override
+    public double[] noised(long seed, double x, double y, double z) {
+        return new double[0];
     }
 }

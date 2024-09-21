@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.noise.samplers.noise.simplex;
+package com.dfsek.terra.addons.noise.samplers.noise;
 
 
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;

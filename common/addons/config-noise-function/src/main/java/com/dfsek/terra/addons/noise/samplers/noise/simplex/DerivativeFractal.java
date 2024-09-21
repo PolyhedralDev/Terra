@@ -2,10 +2,10 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 
-import static com.dfsek.terra.addons.noise.samplers.noise.simplex.PseudoErosion.dot;
-import static com.dfsek.terra.addons.noise.samplers.noise.simplex.PseudoErosion.hash;
-import static com.dfsek.terra.addons.noise.samplers.noise.simplex.PseudoErosion.hashX;
-import static com.dfsek.terra.addons.noise.samplers.noise.simplex.PseudoErosion.hashY;
+import static com.dfsek.terra.addons.noise.samplers.noise.PseudoErosion.dot;
+import static com.dfsek.terra.addons.noise.samplers.noise.PseudoErosion.hash;
+import static com.dfsek.terra.addons.noise.samplers.noise.PseudoErosion.hashX;
+import static com.dfsek.terra.addons.noise.samplers.noise.PseudoErosion.hashY;
 
 
 /**
