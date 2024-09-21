@@ -36,6 +36,7 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
@@ -71,7 +72,8 @@ public class NoiseAddon implements AddonInitializer {
                         (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                     .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
                     .applyLoader(FunctionTemplate.class, FunctionTemplate::new)
-                    .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new);
+                    .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new)
+                    .applyLoader(DerivativeNoiseSampler.class, DerivativeNoiseSamplerTemplate::new);
 
                 noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
@@ -94,7 +96,8 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("PERLIN"), () -> new SimpleNoiseTemplate(PerlinSampler::new));
                 noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate(SimplexSampler::new));
                 noiseRegistry.register(addon.key("GABOR"), GaborNoiseTemplate::new);
-
+                noiseRegistry.register(addon.key("PSEUDOEROSION"), PseudoErosionTemplate::new);
+                noiseRegistry.register(addon.key("DERIVATIVE"), DerivativeFractalTemplate::new);
 
                 noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate(ValueSampler::new));
                 noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
