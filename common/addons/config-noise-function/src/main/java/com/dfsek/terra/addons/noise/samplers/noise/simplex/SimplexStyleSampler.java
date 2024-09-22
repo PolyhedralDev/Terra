@@ -78,26 +78,37 @@ public abstract class SimplexStyleSampler extends NoiseFunction {
         1, 1, 0, 0, -1, 1, 0, 0, 1, -1, 0, 0, -1, -1, 0, 0,
         1, 1, 0, 0, 0, -1, 1, 0, -1, 1, 0, 0, 0, -1, -1, 0
     };
-
-    protected static double gradCoord(int seed, int xPrimed, int yPrimed, double xd, double yd) {
+    protected static int gradCoordIndex(int seed, int xPrimed, int yPrimed) {
         int hash = hash(seed, xPrimed, yPrimed);
         hash ^= hash >> 15;
         hash &= 127 << 1;
 
-        double xg = GRADIENTS_2_D[hash];
-        double yg = GRADIENTS_2_D[hash | 1];
+        return hash;
+    }
+
+    protected static double gradCoord(int seed, int xPrimed, int yPrimed, double xd, double yd) {
+        int index = gradCoordIndex(seed, xPrimed, yPrimed);
+
+        double xg = GRADIENTS_2_D[index];
+        double yg = GRADIENTS_2_D[index | 1];
 
         return xd * xg + yd * yg;
     }
 
-    protected static double gradCoord(int seed, int xPrimed, int yPrimed, int zPrimed, double xd, double yd, double zd) {
+    protected static int gradCoordIndex(int seed, int xPrimed, int yPrimed, int zPrimed) {
         int hash = hash(seed, xPrimed, yPrimed, zPrimed);
         hash ^= hash >> 15;
         hash &= 63 << 2;
 
-        double xg = GRADIENTS_3D[hash];
-        double yg = GRADIENTS_3D[hash | 1];
-        double zg = GRADIENTS_3D[hash | 2];
+        return hash;
+    }
+
+    protected static double gradCoord(int seed, int xPrimed, int yPrimed, int zPrimed, double xd, double yd, double zd) {
+        int index = gradCoordIndex(seed, xPrimed, yPrimed, zPrimed);
+
+        double xg = GRADIENTS_3D[index];
+        double yg = GRADIENTS_3D[index | 1];
+        double zg = GRADIENTS_3D[index | 2];
 
         return xd * xg + yd * yg + zd * zg;
     }

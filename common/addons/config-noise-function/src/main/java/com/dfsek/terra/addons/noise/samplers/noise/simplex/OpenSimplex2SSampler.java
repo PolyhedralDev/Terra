@@ -7,10 +7,13 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
+import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
+
+
 /**
  * NoiseSampler implementation to provide OpenSimplex2 (Smooth Variant) noise.
  */
-public class OpenSimplex2SSampler extends SimplexStyleSampler {
+public class OpenSimplex2SSampler extends SimplexStyleSampler implements DerivativeNoiseSampler {
     @Override
     @SuppressWarnings("NumericOverflow")
     public double getNoiseRaw(long sl, double x, double y) {
@@ -275,5 +278,186 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         }
 
         return value * 9.046026385208288;
+    }
+
+    @Override
+    public boolean isDifferentiable() {
+        return true;
+    }
+
+    @Override
+    public double[] noised(long sl, double x, double y) {
+        int seed = (int) sl;
+        // 2D OpenSimplex2S case is a modified 2D simplex noise.
+
+        final double SQRT3 = 1.7320508075688772935274463415059;
+        final double G2 = (3 - SQRT3) / 6;
+
+        final double F2 = 0.5f * (SQRT3 - 1);
+        double s = (x + y) * F2;
+        x += s;
+        y += s;
+
+
+        int i = (int) Math.floor(x);
+        int j = (int) Math.floor(y);
+        double xi = x - i;
+        double yi = y - j;
+
+        i *= PRIME_X;
+        j *= PRIME_Y;
+        int i1 = i + PRIME_X;
+        int j1 = j + PRIME_Y;
+
+        double t = (xi + yi) * G2;
+        double x0 = xi - t;
+        double y0 = yi - t;
+
+        double[] out = { 0.0f, 0.0f, 0.0f };
+
+        double a0 = (2.0 / 3.0) - x0 * x0 - y0 * y0;
+        double aa0 = a0 * a0, aaa0 = aa0 * a0, aaaa0 = aa0 * aa0;
+        int gi0 = gradCoordIndex(seed, i, j);
+        double gx0 = GRADIENTS_2_D[gi0], gy0 = GRADIENTS_2_D[gi0 | 1];
+        double rampValue0 = gx0 * x0 + gy0 * y0;
+        out[0] = aaaa0 * rampValue0;
+        out[1] = gx0 * aaaa0 - 8 * rampValue0 * aaa0 * x0;
+        out[2] = gy0 * aaaa0 - 8 * rampValue0 * aaa0 * y0;
+
+
+
+        double a1 = 2 * (1 - 2 * G2) * (1 / G2 - 2) * t + ((-2 * (1 - 2 * G2) * (1 - 2 * G2)) + a0);
+        double x1 = x0 - (1 - 2 * G2);
+        double y1 = y0 - (1 - 2 * G2);
+        double aa1 = a1 * a1, aaa1 = aa1 * a1, aaaa1 = aa1 * aa1;
+        int gi1 = gradCoordIndex(seed, i1, j1);
+        double gx1 = GRADIENTS_2_D[gi1], gy1 = GRADIENTS_2_D[gi1 | 1];
+        double rampValue1 = gx1 * x1 + gy1 * y1;
+        out[0] += aaaa1 * rampValue1;
+        out[1] += gx1 * aaaa1 - 8 * rampValue1 * aaa1 * x1;
+        out[2] += gy1 * aaaa1 - 8 * rampValue1 * aaa1 * y1;
+
+        // Nested conditionals were faster than compact bit logic/arithmetic.
+        double xmyi = xi - yi;
+        if(t > G2) {
+            if(xi + xmyi > 1) {
+                double x2 = x0 + (3 * G2 - 2);
+                double y2 = y0 + (3 * G2 - 1);
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i + (PRIME_X << 1), j + PRIME_Y);
+                    double gx2 = GRADIENTS_2_D[gi2 | 0], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;
+                }
+            } else {
+                double x2 = x0 + G2;
+                double y2 = y0 + (G2 - 1);
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i, j + PRIME_Y);
+                    double gx2 = GRADIENTS_2_D[gi2], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;
+                }
+            }
+
+            if(yi - xmyi > 1) {
+                double x3 = x0 + (3 * G2 - 1);
+                double y3 = y0 + (3 * G2 - 2);
+                double a3 = (2.0 / 3.0) - x3 * x3 - y3 * y3;
+                if(a3 > 0) {
+                    double aa3 = a3 * a3, aaa3 = aa3 * a3, aaaa3 = aa3 * aa3;
+                    int gi3 = gradCoordIndex(seed, i + PRIME_X, j + (PRIME_Y << 1));
+                    double gx3 = GRADIENTS_2_D[gi3], gy3 = GRADIENTS_2_D[gi3 | 1];
+                    double rampValue3 = gx3 * x3 + gy3 * y3;
+                    out[0] += aaaa3 * rampValue3;
+                    out[1] += gx3 * aaaa3 - 8 * rampValue3 * aaa3 * x3;
+                    out[2] += gy3 * aaaa3 - 8 * rampValue3 * aaa3 * y3;
+                }
+            } else {
+                double x3 = x0 + (G2 - 1);
+                double y3 = y0 + G2;
+                double a3 = (2.0 / 3.0) - x3 * x3 - y3 * y3;
+                if(a3 > 0) {
+                    double aa3 = a3 * a3, aaa3 = aa3 * a3, aaaa3 = aa3 * aa3;
+                    int gi3 = gradCoordIndex(seed, i + PRIME_X, j);
+                    double gx3 = GRADIENTS_2_D[gi3], gy3 = GRADIENTS_2_D[gi3 | 1];
+                    double rampValue3 = gx3 * x3 + gy3 * y3;
+                    out[0] += aaaa3 * rampValue3;
+                    out[1] += gx3 * aaaa3 - 8 * rampValue3 * aaa3 * x3;
+                    out[2] += gy3 * aaaa3 - 8 * rampValue3 * aaa3 * y3;
+                }
+            }
+        } else {
+            if(xi + xmyi < 0) {
+                double x2 = x0 + (1 - G2);
+                double y2 = y0 - G2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i - PRIME_X, j);
+                    double gx2 = GRADIENTS_2_D[gi2], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;                }
+            } else {
+                double x2 = x0 + (G2 - 1);
+                double y2 = y0 + G2;
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i + PRIME_X, j);
+                    double gx2 = GRADIENTS_2_D[gi2], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;
+                }
+            }
+
+            if(yi < xmyi) {
+                double x2 = x0 - G2;
+                double y2 = y0 - (G2 - 1);
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i, j - PRIME_Y);
+                    double gx2 = GRADIENTS_2_D[gi2], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;                }
+            } else {
+                double x2 = x0 + G2;
+                double y2 = y0 + (G2 - 1);
+                double a2 = (2.0 / 3.0) - x2 * x2 - y2 * y2;
+                if(a2 > 0) {
+                    double aa2 = a2 * a2, aaa2 = aa2 * a2, aaaa2 = aa2 * aa2;
+                    int gi2 = gradCoordIndex(seed, i, j + PRIME_Y);
+                    double gx2 = GRADIENTS_2_D[gi2], gy2 = GRADIENTS_2_D[gi2 | 1];
+                    double rampValue2 = gx2 * x2 + gy2 * y2;
+                    out[0] += aaaa2 * rampValue2;
+                    out[1] += gx2 * aaaa2 - 8 * rampValue2 * aaa2 * x2;
+                    out[2] += gy2 * aaaa2 - 8 * rampValue2 * aaa2 * y2;
+                }
+            }
+        }
+        out[0] *= 18.24196194486065;
+        out[1] *= 18.24196194486065;
+        out[2] *= 18.24196194486065;
+        return out;
+    }
+
+    @Override
+    public double[] noised(long seed, double x, double y, double z) {
+        return new double[0];
     }
 }
