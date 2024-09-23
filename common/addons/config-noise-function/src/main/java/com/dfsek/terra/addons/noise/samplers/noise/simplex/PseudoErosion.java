@@ -1,12 +1,13 @@
 package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
 
+import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
 
-public class PseudoErosion implements NoiseSampler {
+public class PseudoErosion extends NoiseFunction {
     public static final float TAU = (float) (2.0 * Math.PI);
     private static final float HASH_X = 0.3183099f;
     private static final float HASH_Y = 0.3678794f;
@@ -106,11 +107,6 @@ public class PseudoErosion implements NoiseSampler {
         return new float[] {noise, dirOutX, dirOutY};
     }
 
-    public static double exp(double val) {
-        final long tmp = (long) (1512775 * val + 1072632447);
-        return Double.longBitsToDouble(tmp << 32);
-    }
-
     public static float smoothstep(float edge0, float edge1, float x) {
         // Scale, bias and saturate x to 0..1 range
         x = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
@@ -176,12 +172,12 @@ public class PseudoErosion implements NoiseSampler {
     }
 
     @Override
-    public double noise(long seed, double x, double y) {
+    public double getNoiseRaw(long seed, double x, double y) {
         return heightMap(seed, (float) x, (float) y);
     }
 
     @Override
-    public double noise(long seed, double x, double y, double z) {
-        return noise(seed, x, z);
+    public double getNoiseRaw(long seed, double x, double y, double z) {
+        return getNoiseRaw(seed, x, z);
     }
 }
