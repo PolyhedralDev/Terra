@@ -7,7 +7,7 @@ import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.DerivativeFractal;
 
 
-public class DerivativeFractalTemplate extends SamplerTemplate<DerivativeFractal> {
+public class DerivativeFractalTemplate extends DerivativeNoiseTemplate<DerivativeFractal> {
 
     @Value("octaves")
     @Default
@@ -21,12 +21,11 @@ public class DerivativeFractalTemplate extends SamplerTemplate<DerivativeFractal
     @Default
     private double lacunarity = 2.0;
 
-    @Value("frequency")
-    @Default
-    private double frequency = 0.02;
-
     @Override
     public DerivativeFractal get() {
-        return new DerivativeFractal(octaves, gain, lacunarity, frequency);
+        DerivativeFractal derivativeFractal = new DerivativeFractal(octaves, gain, lacunarity);
+        derivativeFractal.setFrequency(frequency);
+        derivativeFractal.setSalt(salt);
+        return derivativeFractal;
     }
 }
