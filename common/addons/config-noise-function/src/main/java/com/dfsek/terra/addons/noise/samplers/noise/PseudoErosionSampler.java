@@ -1,13 +1,11 @@
-package com.dfsek.terra.addons.noise.samplers.noise.simplex;
+package com.dfsek.terra.addons.noise.samplers.noise;
 
 
-import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
 
 
-public class PseudoErosion extends NoiseFunction {
+public class PseudoErosionSampler extends NoiseFunction {
     public static final float TAU = (float) (2.0 * Math.PI);
     private static final float HASH_X = 0.3183099f;
     private static final float HASH_Y = 0.3678794f;
@@ -27,9 +25,9 @@ public class PseudoErosion extends NoiseFunction {
     private final double maxCellDistSqRecip;
     private final boolean averageErosionImpulses;
 
-    public PseudoErosion(int octaves, double gain, double lacunarity, double slopeStrength, double branchStrength, double erosionStrength, double erosionFrequency, DerivativeNoiseSampler sampler,
-                         boolean slopeMask, double slopeMaskFull, double slopeMaskNone, double jitterModifier,
-                         boolean averageErosionImpulses) {
+    public PseudoErosionSampler(int octaves, double gain, double lacunarity, double slopeStrength, double branchStrength, double erosionStrength, double erosionFrequency, DerivativeNoiseSampler sampler,
+                                boolean slopeMask, double slopeMaskFull, double slopeMaskNone, double jitterModifier,
+                                boolean averageErosionImpulses) {
         this.octaves = octaves;
         this.gain = gain;
         this.lacunarity = lacunarity;

@@ -2,7 +2,7 @@ package com.dfsek.terra.addons.noise.samplers.noise.simplex;
 
 import com.dfsek.terra.addons.noise.samplers.noise.DerivativeNoiseFunction;
 
-import static com.dfsek.terra.addons.noise.samplers.noise.simplex.PseudoErosion.dot;
+import static com.dfsek.terra.addons.noise.samplers.noise.PseudoErosionSampler.dot;
 
 
 /**
