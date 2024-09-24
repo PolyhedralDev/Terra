@@ -6,9 +6,9 @@ import com.dfsek.terra.api.util.MathUtil;
 
 
 public class PseudoErosionSampler extends NoiseFunction {
-    public static final float TAU = (float) (2.0 * Math.PI);
-    private static final float HASH_X = 0.3183099f;
-    private static final float HASH_Y = 0.3678794f;
+    public static final double TAU = 2.0 * Math.PI;
+    private static final double HASH_X = 0.3183099f;
+    private static final double HASH_Y = 0.3678794f;
     public final double gain;
     public final double lacunarity;
     public final double slopeStrength;
@@ -48,59 +48,59 @@ public class PseudoErosionSampler extends NoiseFunction {
         this.maxCellDistSqRecip = 1 / maxCellDistSq;
     }
 
-    public static float hashX(float seed, float n) {
+    public static double hashX(double seed, double n) {
         // Swapped the components here
-        float nx = HASH_X * n * seed;
+        double nx = HASH_X * n * seed;
         return -1.0f + 2.0f * fract(nx);
     }
 
-    public static float hashY(float seed, float n) {
-        float ny = HASH_Y * n * seed;
+    public static double hashY(double seed, double n) {
+        double ny = HASH_Y * n * seed;
         return -1.0f + 2.0f * fract(ny);
     }
 
-    public static float fract(float x) {
-        return (x - (float) Math.floor(x));
+    public static double fract(double x) {
+        return (x - Math.floor(x));
     }
 
-    public static float smoothstep(float edge0, float edge1, float x) {
+    public static double smoothstep(double edge0, double edge1, double x) {
         // Scale, bias and saturate x to 0..1 range
         x = clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
         // Evaluate polynomial
         return x * x * (3 - 2 * x);
     }
 
-    public static float clamp(float x, float minVal, float maxVal) {
+    public static double clamp(double x, double minVal, double maxVal) {
         return Math.max(minVal, Math.min(maxVal, x));
     }
 
-    public static float dot(float x1, float y1, float x2, float y2) {
+    public static double dot(double x1, double y1, double x2, double y2) {
         return x1 * x2 + y1 * y2;
     }
 
-    public float[] erosion(int seed, float x, float y, float dirX, float dirY) {
-        int gridX = Math.round(x);
-        int gridY = Math.round(y);
-        float noise = 0.0f;
-        float dirOutX = 0.0f;
-        float dirOutY = 0.0f;
-        float cumAmp = 0.0f;
+    public double[] erosion(int seed, double x, double y, double dirX, double dirY) {
+        int gridX = (int) Math.round(x);
+        int gridY = (int) Math.round(y);
+        double noise = 0.0f;
+        double dirOutX = 0.0f;
+        double dirOutY = 0.0f;
+        double cumAmp = 0.0f;
 
         for(int cellX = gridX - 1; cellX <= gridX + 1; cellX++) {
             for(int cellY = gridY - 1; cellY <= gridY + 1; cellY++) {
-                float cellHash = hash(seed, cellX, cellY);
-                float cellOffsetX = (float) (hashX(seed, cellHash) * jitter);
-                float cellOffsetY = (float) (hashY(seed, cellHash) * jitter);
-                float cellOriginDeltaX = (x - cellX) + cellOffsetX;
-                float cellOriginDeltaY = (y - cellY) + cellOffsetY;
-                float cellOriginDistSq = cellOriginDeltaX * cellOriginDeltaX + cellOriginDeltaY * cellOriginDeltaY;
+                double cellHash = hash(seed, cellX, cellY);
+                double cellOffsetX = hashX(seed, cellHash) * jitter;
+                double cellOffsetY = hashY(seed, cellHash) * jitter;
+                double cellOriginDeltaX = (x - cellX) + cellOffsetX;
+                double cellOriginDeltaY = (y - cellY) + cellOffsetY;
+                double cellOriginDistSq = cellOriginDeltaX * cellOriginDeltaX + cellOriginDeltaY * cellOriginDeltaY;
                 if(cellOriginDistSq > maxCellDistSq) continue; // Skip calculating cells too far away
-                float ampTmp = (float) ((cellOriginDistSq * maxCellDistSqRecip) - 1);
-                float amp = ampTmp * ampTmp; // Decrease cell amplitude further away
+                double ampTmp = (cellOriginDistSq * maxCellDistSqRecip) - 1;
+                double amp = ampTmp * ampTmp; // Decrease cell amplitude further away
                 cumAmp += amp;
-                float directionalStrength = dot(cellOriginDeltaX, cellOriginDeltaY, dirX, dirY) * TAU;
-                noise += (float) (MathUtil.cos(directionalStrength) * amp);
-                float sinAngle = (float) MathUtil.sin(directionalStrength) * amp;
+                double directionalStrength = dot(cellOriginDeltaX, cellOriginDeltaY, dirX, dirY) * TAU;
+                noise += MathUtil.cos(directionalStrength) * amp;
+                double sinAngle = MathUtil.sin(directionalStrength) * amp;
                 dirOutX -= sinAngle * (cellOriginDeltaX + dirX);
                 dirOutY -= sinAngle * (cellOriginDeltaY + dirY);
             }
@@ -110,33 +110,33 @@ public class PseudoErosionSampler extends NoiseFunction {
             dirOutX /= cumAmp;
             dirOutY /= cumAmp;
         }
-        return new float[]{ noise, dirOutX, dirOutY };
+        return new double[]{ noise, dirOutX, dirOutY };
     }
 
-    public float heightMap(long seed, float x, float y) {
+    public double heightMap(long seed, double x, double y) {
         double[] sample = sampler.noised(seed, x, y);
-        float height = (float) sample[0];
-        float heightDirX = (float) sample[1];
-        float heightDirY = (float) sample[2];
+        double height = sample[0];
+        double heightDirX = sample[1];
+        double heightDirY = sample[2];
 
         // Take the curl of the normal to get the gradient facing down the slope
-        float baseDirX = heightDirY * (float) slopeStrength;
-        float baseDirY = -heightDirX * (float) slopeStrength;
+        double baseDirX = heightDirY * slopeStrength;
+        double baseDirY = -heightDirX * slopeStrength;
 
-        float erosion = 0.0f;
-        float dirX = 0.0f;
-        float dirY = 0.0f;
-        float amp = 1.0f;
-        float cumAmp = 0.0f;
-        float freq = 1.0f;
+        double erosion = 0.0f;
+        double dirX = 0.0f;
+        double dirY = 0.0f;
+        double amp = 1.0f;
+        double cumAmp = 0.0f;
+        double freq = 1.0f;
 
         // Stack erosion octaves
         for(int i = 0; i < octaves; i++) {
-            float[] erosionResult = erosion((int) seed,
-                x * freq * (float) erosionFrequency,
-                y * freq * (float) erosionFrequency,
-                baseDirX + dirY * (float) branchStrength,
-                baseDirY - dirX * (float) branchStrength);
+            double[] erosionResult = erosion((int) seed,
+                x * freq * erosionFrequency,
+                y * freq * erosionFrequency,
+                baseDirX + dirY * branchStrength,
+                baseDirY - dirX * branchStrength);
             erosion += erosionResult[0] * amp;
             dirX += erosionResult[1] * amp * freq;
             dirY += erosionResult[2] * amp * freq;
@@ -153,17 +153,17 @@ public class PseudoErosionSampler extends NoiseFunction {
         // Without masking, erosion noise in areas with small gradients tend to produce mounds,
         // this reduces erosion amplitude towards smaller gradients to avoid this
         if(slopeMask) {
-            float dirMagSq = dot(baseDirX, baseDirY, baseDirX, baseDirY);
-            float flatness = smoothstep((float) slopeMaskNoneSq, (float) slopeMaskFullSq, dirMagSq);
+            double dirMagSq = dot(baseDirX, baseDirY, baseDirX, baseDirY);
+            double flatness = smoothstep((double) slopeMaskNoneSq, slopeMaskFullSq, dirMagSq);
             erosion *= flatness;
         }
 
-        return (float) (height + erosion * erosionStrength);
+        return height + erosion * erosionStrength;
     }
 
     @Override
     public double getNoiseRaw(long seed, double x, double y) {
-        return heightMap(seed, (float) x, (float) y);
+        return heightMap(seed, x, y);
     }
 
     @Override
