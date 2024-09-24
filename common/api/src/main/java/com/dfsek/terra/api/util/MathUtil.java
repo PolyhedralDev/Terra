@@ -35,6 +35,11 @@ public final class MathUtil {
         sin = new double[SIN_COUNT];
         cos = new double[SIN_COUNT];
 
+        for(int i = 0; i < SIN_COUNT; i++) {
+            sin[i] = Math.sin((i + 0.5f) / SIN_COUNT * radFull);
+            cos[i] = Math.cos((i + 0.5f) / SIN_COUNT * radFull);
+        }
+
         // Four cardinal directions (credits: Nate)
         for(int i = 0; i < 360; i += 90) {
             sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
