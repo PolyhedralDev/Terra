@@ -5,7 +5,13 @@
     "name": "Terra",
     "description": "@DESCRIPTION@",
     "authors": [
-        "dfsek"
+        "dfsek",
+        "duplexsystem",
+        "Astrash",
+        "solonovamax",
+        "Sancires",
+        "Aureus",
+        "RogueShade"
     ],
     "contact": {
         "homepage": "@WIKI@",
@@ -28,7 +34,7 @@
     "depends": {
         "fabricloader": ">=0.16.5",
         "java": ">=21",
-        "minecraft": ">=1.20.6",
+        "minecraft": ">=1.21.1",
         "fabric": "*"
     }
 }
