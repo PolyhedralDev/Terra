@@ -7,14 +7,14 @@
 
 package com.dfsek.terra.addons.terrascript.parser;
 
-import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
-import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
-import com.dfsek.terra.addons.terrascript.tokenizer.Token;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
+import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 
 
 public class ParserUtil {

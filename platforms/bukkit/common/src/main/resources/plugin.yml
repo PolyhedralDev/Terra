@@ -2,8 +2,8 @@ name: "Terra"
 main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
 version: "@VERSION@"
 load: "STARTUP"
-author: dfsek
+authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade" ]
 website: "@WIKI@"
-api-version: "1.20"
+api-version: "1.21.1"
 description: "@DESCRIPTION@"
 folia-supported: true
