@@ -47,22 +47,14 @@ public class PseudoErosionSampler extends NoiseFunction {
         this.maxCellDistSqRecip = 1 / maxCellDistSq;
     }
 
-    public static float hash(float x, float y) {
-        float xx = x * HASH_X + HASH_Y;
-        float yy = y * HASH_Y + HASH_X;
-
+    public static float hashX(float seed, float n) {
         // Swapped the components here
-        return 16 * (xx * yy * (xx + yy));
-    }
-
-    public static float hashX(float n) {
-        // Swapped the components here
-        float nx = HASH_X * n;
+        float nx = HASH_X * n * seed;
         return -1.0f + 2.0f * fract(nx);
     }
 
-    public static float hashY(float n) {
-        float ny = HASH_Y * n;
+    public static float hashY(float seed, float n) {
+        float ny = HASH_Y * n * seed;
         return -1.0f + 2.0f * fract(ny);
     }
 
@@ -70,7 +62,7 @@ public class PseudoErosionSampler extends NoiseFunction {
         return (x - (float)Math.floor(x));
     }
 
-    public float[] erosion(float x, float y, float dirX, float dirY) {
+    public float[] erosion(int seed, float x, float y, float dirX, float dirY) {
         int gridX = Math.round(x);
         int gridY = Math.round(y);
         float noise = 0.0f;
@@ -80,10 +72,9 @@ public class PseudoErosionSampler extends NoiseFunction {
 
         for (int cellX = gridX - 1; cellX <= gridX + 1; cellX++) {
             for (int cellY = gridY - 1; cellY <= gridY + 1; cellY++) {
-                // TODO - Make seed affect hashing
-                float cellHash = hash(cellX, cellY);
-                float cellOffsetX = (float) (hashX(cellHash) * jitter);
-                float cellOffsetY = (float) (hashY(cellHash) * jitter);
+                float cellHash = hash(seed, cellX, cellY);
+                float cellOffsetX = (float) (hashX(seed, cellHash) * jitter);
+                float cellOffsetY = (float) (hashY(seed, cellHash) * jitter);
                 float cellOriginDeltaX = (x - cellX) + cellOffsetX;
                 float cellOriginDeltaY = (y - cellY) + cellOffsetY;
                 float cellOriginDistSq = cellOriginDeltaX * cellOriginDeltaX + cellOriginDeltaY * cellOriginDeltaY;
@@ -135,7 +126,7 @@ public class PseudoErosionSampler extends NoiseFunction {
 
         // Stack erosion octaves
         for (int i = 0; i < octaves; i++) {
-            float[] erosionResult = erosion(
+            float[] erosionResult = erosion((int) seed,
                 x * freq * (float) erosionFrequency,
                 y * freq * (float) erosionFrequency,
                 baseDirX + dirY * (float) branchStrength,
