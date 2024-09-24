@@ -23,8 +23,8 @@ public final class MathUtil {
     static final int lookupTableSize = 1 << lookupBits;
 
     private static final int lookupTableSizeWithMargin = lookupTableSize + 1;
-    private static final double tauOverLookupSize = Math.TAU / lookupTableSize;
-    static final double radianToIndex = (~(-1 << lookupBits) + 1) / Math.TAU;
+    private static final double tauOverLookupSize = TrigonometryConstants.TAU / lookupTableSize;
+    static final double radianToIndex = (~(-1 << lookupBits) + 1) / TrigonometryConstants.TAU;
     private static final long[] sinTable;
 
     static {
