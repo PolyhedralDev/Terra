@@ -2,7 +2,7 @@ name: "Terra"
 main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
 version: "@VERSION@"
 load: "STARTUP"
-authors: ["dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade"]
+authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade" ]
 website: "@WIKI@"
 api-version: "1.21.1"
 description: "@DESCRIPTION@"
