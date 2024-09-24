@@ -18,14 +18,22 @@ public final class MathUtil {
      * Epsilon for fuzzy floating point comparisons.
      */
     public static final double EPSILON = 1.0E-5;
-    private static final int lookupBits = 14;
+    private static final int SIN_BITS, SIN_MASK, SIN_COUNT;
+    private static final double radFull, radToIndex;
+    private static final double degFull, degToIndex;
+    private static final double[] sin, cos;
+    static {
+        SIN_BITS = 12;
+        SIN_MASK = ~(-1 << SIN_BITS);
+        SIN_COUNT = SIN_MASK + 1;
 
-    static final int lookupTableSize = 1 << lookupBits;
+        radFull = Math.PI * 2.0;
+        degFull = 360.0;
+        radToIndex = SIN_COUNT / radFull;
+        degToIndex = SIN_COUNT / degFull;
 
-    private static final int lookupTableSizeWithMargin = lookupTableSize + 1;
-    private static final double tauOverLookupSize = TrigonometryConstants.TAU / lookupTableSize;
-    static final double radianToIndex = (~(-1 << lookupBits) + 1) / TrigonometryConstants.TAU;
-    private static final long[] sinTable;
+        sin = new double[SIN_COUNT];
+        cos = new double[SIN_COUNT];
 
     static {
         sinTable = new long[lookupTableSizeWithMargin];
@@ -33,36 +41,20 @@ public final class MathUtil {
             double d = i * tauOverLookupSize;
             sinTable[i] = Double.doubleToRawLongBits(StrictMath.sin(d));
         }
-    }
 
-    static double sinLookup(long index) {
-        // Trigonometric identity: sin(-x) = -sin(x)
-        // Given a domain of 0 <= x <= 2*pi, just negate the value if x > pi.
-        // This allows the sin table size to be halved.
-        long neg = (index & 0x8000000000000000L) << 32;
-
-        // All bits set if (pi/2 <= x), none set otherwise
-        // Extracts the 31st bit from 'half'
-        long mask = (index << 33) >> 63;
-
-        // Trigonometric identity: sin(x) = sin(pi/2 - x)
-        long pos = (0x8000000000000001L & mask) + (index ^ mask);
-
-        // Wrap the position in the table. Moving this down to immediately before the array access
-        // seems to help the Hotspot compiler optimize the bit math better.
-        pos &= 0x7fffffffffffffffL;
-
-        // Fetch the corresponding value from the LUT and invert the sign bit as needed
-        // This directly manipulate the sign bit on the double bits to simplify logic
-        return Double.longBitsToDouble(sinTable[(int) pos] ^ neg);
+        // Four cardinal directions (credits: Nate)
+        for(int i = 0; i < 360; i += 90) {
+            sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
+            cos[(int) (i * degToIndex) & SIN_MASK] = Math.cos(i * Math.PI / 180.0);
+        }
     }
 
     public static double sin(double rad) {
-        return sinLookup((long) (rad * radianToIndex) & 0xFFFFFFFFL);
+        return sin[(int) (rad * radToIndex) & SIN_MASK];
     }
 
     public static double cos(double rad) {
-        return sinLookup((long) (rad * radianToIndex + lookupTableSize) & 0xFFFFFFFFL);
+        return cos[(int) (rad * radToIndex) & SIN_MASK];
     }
 
     public static double tan(double rad) {
