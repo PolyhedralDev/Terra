@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.biome.holder;
 
-import com.dfsek.terra.api.world.chunk.generation.util.Palette;
-
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteHolderBuilder {

@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.pipeline.stage.expander;
 
-import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 

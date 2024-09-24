@@ -9,9 +9,9 @@ package com.dfsek.terra.addons.biome.pipeline.stage.mutators;
 
 import java.util.Objects;
 
-import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 

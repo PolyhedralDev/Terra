@@ -9,8 +9,6 @@ package com.dfsek.terra.addons.biome.image;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.function.Supplier;
-
 import com.dfsek.terra.addons.biome.image.config.ImageProviderTemplate;
 import com.dfsek.terra.addons.biome.image.config.converter.ClosestBiomeColorConverterTemplate;
 import com.dfsek.terra.addons.biome.image.config.converter.ExactBiomeColorConverterTemplate;
@@ -28,6 +26,8 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+
+import java.util.function.Supplier;
 
 
 public class ImageBiomeProviderAddon implements AddonInitializer {

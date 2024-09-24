@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.pipeline.api.biome;
 
-import com.dfsek.terra.api.world.biome.Biome;
-
 import java.util.Set;
+
+import com.dfsek.terra.api.world.biome.Biome;
 
 
 public final class DelegatedPipelineBiome implements PipelineBiome {

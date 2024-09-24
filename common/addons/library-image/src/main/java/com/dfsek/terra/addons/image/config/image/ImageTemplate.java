@@ -3,10 +3,10 @@ package com.dfsek.terra.addons.image.config.image;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.io.IOException;
-
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.api.config.ConfigPack;
+
+import java.io.IOException;
 
 
 public class ImageTemplate implements ObjectTemplate<Image> {

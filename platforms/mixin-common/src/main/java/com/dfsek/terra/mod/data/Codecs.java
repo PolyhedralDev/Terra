@@ -71,9 +71,10 @@ public final class Codecs {
                 MinecraftChunkGeneratorWrapper::new))
         );
 
-    public static final MapCodec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.mapCodec(range -> range.group(
-            Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMin),
-            Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMax))
-        .apply(range, range.stable((min, max) -> new TerraIntProvider(new ConstantRange(
-            min, max)))));
+    public static final MapCodec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.mapCodec(
+        range -> range.group(
+                Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMin),
+                Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMax))
+            .apply(range, range.stable((min, max) -> new TerraIntProvider(new ConstantRange(
+                min, max)))));
 }

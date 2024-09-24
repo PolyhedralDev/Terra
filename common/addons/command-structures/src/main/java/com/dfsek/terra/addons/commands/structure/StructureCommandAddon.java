@@ -1,8 +1,6 @@
 package com.dfsek.terra.addons.commands.structure;
 
 
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.context.CommandContext;
@@ -10,7 +8,8 @@ import org.incendo.cloud.description.Description;
 import org.incendo.cloud.parser.standard.EnumParser;
 import org.incendo.cloud.parser.standard.LongParser;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;

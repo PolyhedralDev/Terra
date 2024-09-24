@@ -1,10 +1,5 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
-import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
-import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
@@ -14,6 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.StreamSupport;
 
+import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
+import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
+import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Column;
