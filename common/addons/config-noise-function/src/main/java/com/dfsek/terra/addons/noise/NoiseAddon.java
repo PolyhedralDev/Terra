@@ -97,8 +97,7 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate(SimplexSampler::new));
                 noiseRegistry.register(addon.key("GABOR"), GaborNoiseTemplate::new);
                 noiseRegistry.register(addon.key("PSEUDOEROSION"), PseudoErosionTemplate::new);
-                noiseRegistry.register(addon.key("DERIVATIVE"), DerivativeFractalTemplate::new);
-
+                
                 noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate(ValueSampler::new));
                 noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 
