@@ -35,13 +35,6 @@ public final class MathUtil {
         sin = new double[SIN_COUNT];
         cos = new double[SIN_COUNT];
 
-    static {
-        sinTable = new long[lookupTableSizeWithMargin];
-        for(int i = 0; i < lookupTableSizeWithMargin; i++) {
-            double d = i * tauOverLookupSize;
-            sinTable[i] = Double.doubleToRawLongBits(StrictMath.sin(d));
-        }
-
         // Four cardinal directions (credits: Nate)
         for(int i = 0; i < 360; i += 90) {
             sin[(int) (i * degToIndex) & SIN_MASK] = Math.sin(i * Math.PI / 180.0);
