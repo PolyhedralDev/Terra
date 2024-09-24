@@ -479,7 +479,7 @@ public class OpenSimplex2SSampler extends SimplexStyleSampler {
         int yNMask = (int) (-0.5 - yi);
         int zNMask = (int) (-0.5 - zi);
 
-        double[] out = { 0.0f, 0.0f, 0.0f };
+        double[] out = { 0.0f, 0.0f, 0.0f, 0.0f };
 
         double x0 = xi + xNMask;
         double y0 = yi + yNMask;
