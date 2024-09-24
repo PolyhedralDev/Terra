@@ -1,8 +1,8 @@
 package com.dfsek.terra.bukkit.world;
 
-import org.bukkit.generator.WorldInfo;
-
 import com.dfsek.terra.api.world.info.WorldProperties;
+
+import org.bukkit.generator.WorldInfo;
 
 
 public class BukkitWorldProperties implements WorldProperties {

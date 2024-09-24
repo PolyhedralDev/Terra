@@ -36,7 +36,7 @@ fun Project.configureDependencies() {
         maven("https://repo.codemc.org/repository/maven-public") {
             name = "CodeMC"
         }
-        maven("https://papermc.io/repo/repository/maven-public/") {
+        maven("https://repo.papermc.io/repository/maven-public/") {
             name = "PaperMC"
         }
         maven("https://files.minecraftforge.net/maven/") {
@@ -47,6 +47,9 @@ fun Project.configureDependencies() {
         }
         maven("https://jitpack.io") {
             name = "JitPack"
+        }
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            name = "Sonatype Snapshots"
         }
     }
     

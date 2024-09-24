@@ -1,6 +1,7 @@
 package com.dfsek.terra.mod.data;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 
@@ -32,15 +33,15 @@ public final class Codecs {
                     "No such config pack " +
                     id)))));
 
-    public static final Codec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
-        .create(instance -> instance.group(
+    public static final MapCodec<TerraBiomeSource> TERRA_BIOME_SOURCE = RecordCodecBuilder
+        .mapCodec(instance -> instance.group(
                 CONFIG_PACK.fieldOf("pack")
                     .stable()
                     .forGetter(TerraBiomeSource::getPack))
             .apply(instance, instance.stable(TerraBiomeSource::new)));
 
-    public static final Codec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
-        .create(
+    public static final MapCodec<MinecraftChunkGeneratorWrapper> MINECRAFT_CHUNK_GENERATOR_WRAPPER = RecordCodecBuilder
+        .mapCodec(
             instance -> instance.group(
                 TERRA_BIOME_SOURCE.fieldOf("biome_source")
                     .stable()

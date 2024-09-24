@@ -61,8 +61,9 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        if (!id.contains(":")) { //TODO: remove in 7.0
-            String newid = "minecraft:" + id.toLowerCase();;
+        if(!id.contains(":")) { //TODO: remove in 7.0
+            String newid = "minecraft:" + id.toLowerCase();
+            ;
             logger.warn(
                 "Translating " + id + " to " + newid + ". In 1.20.3 entity parsing was reworked" +
                 ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
@@ -72,7 +73,7 @@ public class BukkitWorldHandle implements WorldHandle {
         String entityID = id.toUpperCase(Locale.ROOT).substring(10);
 
         return new BukkitEntityType(switch(entityID) {
-            case "END_CRYSTAL" -> org.bukkit.entity.EntityType.ENDER_CRYSTAL;
+            case "END_CRYSTAL" -> org.bukkit.entity.EntityType.END_CRYSTAL;
             case "ENDER_CRYSTAL" -> throw new IllegalArgumentException(
                 "Invalid entity identifier " + id); // make sure this issue can't happen the other way around.
             default -> org.bukkit.entity.EntityType.valueOf(entityID);

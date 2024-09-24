@@ -17,15 +17,16 @@
 
 package com.dfsek.terra.bukkit;
 
-import cloud.commandframework.brigadier.CloudBrigadierManager;
-import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
 import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.brigadier.CloudBrigadierManager;
+import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -71,14 +72,14 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
 
         try {
-            PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
+            LegacyPaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
 
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
 
         } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
-                                                  
+                         
                          Errors occurred while registering commands.
                          Please report this to Terra.
                          """.strip(), e);
@@ -91,22 +92,26 @@ public class TerraBukkitPlugin extends JavaPlugin {
     }
 
     @NotNull
-    private PaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
-        PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-            CommandExecutionCoordinator.simpleCoordinator(),
-            BukkitAdapter::adapt,
-            BukkitAdapter::adapt);
+    private LegacyPaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
+        // TODO: Update to PaperCommandManager
+        LegacyPaperCommandManager<CommandSender> commandManager = new LegacyPaperCommandManager<>(
+            this,
+            ExecutionCoordinator.simpleCoordinator(),
+            SenderMapper.create(
+                BukkitAdapter::adapt,
+                BukkitAdapter::adapt
+            ));
+
         if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
             commandManager.registerBrigadier();
             final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
             if(brigManager != null) {
                 brigManager.setNativeNumberSuggestions(false);
             }
-        }
-
-        if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+        } else if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
             commandManager.registerAsynchronousCompletions();
         }
+
         return commandManager;
     }
 
@@ -176,7 +181,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 logger.warn("""
                             You are using Mohist, so we will not give you any support for issues that may arise.
                             Since you enabled the "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" flag, we won't disable Terra. But be warned.
-                                                        
+                            
                             > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
                             > I fear something terrible has happened.
                             > - Astrash
@@ -189,6 +194,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
     @Override
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
+        if(id == null || id.trim().equals("")) { return null; }
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
                 () -> new IllegalArgumentException("No such config pack \"" + id + "\""));

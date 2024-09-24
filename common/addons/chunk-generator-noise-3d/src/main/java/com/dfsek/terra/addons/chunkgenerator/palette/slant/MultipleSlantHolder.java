@@ -14,6 +14,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.dfsek.terra.addons.chunkgenerator.generation.math.SlantCalculationMethod;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 
 
@@ -21,7 +22,7 @@ public class MultipleSlantHolder extends SlantHolderImpl {
     private final NavigableMap<Double, PaletteHolder> layers;
     private final double slantThreshold;
 
-    MultipleSlantHolder(List<SlantHolder.Layer> slant, int slantDepth, CalculationMethod calculationMethod) {
+    MultipleSlantHolder(List<SlantHolder.Layer> slant, int slantDepth, SlantCalculationMethod calculationMethod) {
         super(slantDepth, calculationMethod);
         NavigableMap<Double, PaletteHolder> layers = new TreeMap<>(
             slant.stream().collect(Collectors.toMap(SlantHolder.Layer::threshold, SlantHolder.Layer::palette)));

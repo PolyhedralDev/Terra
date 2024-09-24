@@ -21,14 +21,15 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.ItemStackArgumentType;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.RegistryWrapper.Impl;
 import net.minecraft.util.Identifier;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.inventory.Item;
@@ -43,8 +44,13 @@ public class MinecraftItemHandle implements ItemHandle {
         try {
             return (Item) new ItemStackArgumentType(new CommandRegistryAccess() {
                 @Override
-                public <T> RegistryWrapper<T> createWrapper(RegistryKey<? extends Registry<T>> registryRef) {
-                    return CommonPlatform.get().getServer().getRegistryManager().getWrapperOrThrow(registryRef);
+                public Stream<RegistryKey<? extends Registry<?>>> streamAllRegistryKeys() {
+                    return CommonPlatform.get().getServer().getRegistryManager().streamAllRegistryKeys();
+                }
+
+                @Override
+                public <T> Optional<Impl<T>> getOptionalWrapper(RegistryKey<? extends Registry<? extends T>> registryRef) {
+                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getWrapperOrThrow(registryRef));
                 }
             }).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
@@ -54,11 +60,12 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Registries.ENCHANTMENT.get(Identifier.tryParse(id)));
+        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().get(Identifier.tryParse(id)));
     }
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return Registries.ENCHANTMENT.stream().map(enchantment -> (Enchantment) enchantment).collect(Collectors.toSet());
+        return CommonPlatform.get().enchantmentRegistry().stream().map(enchantment -> (Enchantment) (Object) enchantment).collect(
+            Collectors.toSet());
     }
 }
