@@ -1,13 +1,14 @@
 package com.dfsek.terra.lifecycle;
 
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.fabric.FabricServerCommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
+
+import net.minecraft.server.command.ServerCommandSource;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.fabric.FabricServerCommandManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public final class LifecycleEntryPoint {
@@ -17,9 +18,10 @@ public final class LifecycleEntryPoint {
         logger.info("Initializing Terra {} mod...", modName);
 
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
-            CommandExecutionCoordinator.simpleCoordinator(),
-            serverCommandSource -> (CommandSender) serverCommandSource,
-            commandSender -> (ServerCommandSource) commandSender
+            ExecutionCoordinator.simpleCoordinator(),
+            SenderMapper.create(
+                serverCommandSource -> (CommandSender) serverCommandSource,
+                commandSender -> (ServerCommandSource) commandSender)
         );
 
 

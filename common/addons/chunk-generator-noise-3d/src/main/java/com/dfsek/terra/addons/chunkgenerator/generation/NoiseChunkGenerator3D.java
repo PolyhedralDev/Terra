@@ -11,11 +11,12 @@ package com.dfsek.terra.addons.chunkgenerator.generation;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
-import com.dfsek.terra.addons.chunkgenerator.generation.math.PaletteUtil;
+import com.dfsek.terra.addons.chunkgenerator.generation.math.SlantCalculationMethod;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation.LazilyEvaluatedInterpolator;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
+import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -42,16 +43,23 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     private final PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
 
+    private final SlantCalculationMethod slantCalculationMethod;
+
+    private final boolean useSlantPalettes;
+
     public NoiseChunkGenerator3D(ConfigPack pack, Platform platform, int elevationBlend, int carverHorizontalResolution,
                                  int carverVerticalResolution,
                                  PropertyKey<BiomeNoiseProperties> noisePropertiesKey,
-                                 PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey) {
+                                 PropertyKey<BiomePaletteInfo> paletteInfoPropertyKey,
+                                 SlantCalculationMethod slantCalculationMethod, boolean useSlantPalettes) {
         this.platform = platform;
         this.air = platform.getWorldHandle().air();
         this.carverHorizontalResolution = carverHorizontalResolution;
         this.carverVerticalResolution = carverVerticalResolution;
         this.paletteInfoPropertyKey = paletteInfoPropertyKey;
         this.noisePropertiesKey = noisePropertiesKey;
+        this.slantCalculationMethod = slantCalculationMethod;
+        this.useSlantPalettes = useSlantPalettes;
         int maxBlend = pack
             .getBiomeProvider()
             .stream()
@@ -61,6 +69,17 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
             .orElse(0);
 
         this.samplerCache = new SamplerProvider(platform, elevationBlend, noisePropertiesKey, maxBlend);
+    }
+
+    private Palette paletteAt(int x, int y, int z, Sampler3D sampler, BiomePaletteInfo paletteInfo, int depth) {
+        SlantHolder slantHolder = paletteInfo.slantHolder();
+        if(useSlantPalettes && slantHolder.isAboveDepth(depth)) {
+            double slant = slantCalculationMethod.slant(sampler, x, y, z);
+            if(slantHolder.isInSlantThreshold(slant)) {
+                return slantHolder.getPalette(slant).getPalette(y);
+            }
+        }
+        return paletteInfo.paletteHolder().getPalette(y);
     }
 
     @Override
@@ -103,8 +122,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
 
                     if(sampler.sample(x, y, z) > 0) {
                         if(carver.sample(x, y, z) <= 0) {
-                            data = PaletteUtil
-                                .getPalette(x, y, z, sampler, paletteInfo, paletteLevel)
+                            data = paletteAt(x, y, z, sampler, paletteInfo, paletteLevel)
                                 .get(paletteLevel, cx, y, cz, seed);
                             chunk.setBlock(x, y, z, data);
                             paletteLevel++;
@@ -135,7 +153,7 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
         int fdX = Math.floorMod(x, 16);
         int fdZ = Math.floorMod(z, 16);
 
-        Palette palette = PaletteUtil.getPalette(fdX, y, fdZ, sampler, paletteInfo, 0);
+        Palette palette = paletteAt(fdX, y, fdZ, sampler, paletteInfo, 0);
         double noise = sampler.sample(fdX, y, fdZ);
         if(noise > 0) {
             int level = 0;
@@ -157,11 +175,8 @@ public class NoiseChunkGenerator3D implements ChunkGenerator {
     public double getSlant(int x, int y, int z, WorldProperties world, BiomeProvider biomeProvider) {
         int fdX = Math.floorMod(x, 16);
         int fdZ = Math.floorMod(z, 16);
-        return biomeProvider.getBiome(x, y, z, world.getSeed())
-            .getContext()
-            .get(paletteInfoPropertyKey)
-            .slantHolder()
-            .calculateSlant(samplerCache.get(x, z, world, biomeProvider), fdX, y, fdZ);
+        Sampler3D sampler = samplerCache.get(x, z, world, biomeProvider);
+        return slantCalculationMethod.slant(sampler, fdX, y, fdZ);
     }
 
     public SamplerProvider samplerProvider() {

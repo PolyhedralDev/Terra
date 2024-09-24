@@ -1,6 +1,6 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R3;
+package com.dfsek.terra.bukkit.nms.v1_21;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,14 +19,13 @@ import net.minecraft.world.level.levelgen.GenerationStep.Carving;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
-import org.bukkit.craftbukkit.v1_20_R3.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -54,8 +53,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
 
     @Override
-    protected @NotNull Codec<? extends ChunkGenerator> codec() {
-        return ChunkGenerator.CODEC;
+    protected @NotNull MapCodec<? extends ChunkGenerator> codec() {
+        return MapCodec.assumeMapUnsafe(ChunkGenerator.CODEC);
     }
 
     @Override
@@ -87,10 +86,10 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     }
 
     @Override
-    public @NotNull CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Executor executor, @NotNull Blender blender,
-                                                                 @NotNull RandomState noiseConfig,
-                                                                 @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
-        return vanilla.fillFromNoise(executor, blender, noiseConfig, structureAccessor, chunk)
+    public CompletableFuture<ChunkAccess> fillFromNoise(@NotNull Blender blender,
+                                                        @NotNull RandomState noiseConfig,
+                                                        @NotNull StructureManager structureAccessor, @NotNull ChunkAccess chunk) {
+        return vanilla.fillFromNoise(blender, noiseConfig, structureAccessor, chunk)
             .thenApply(c -> {
                 LevelAccessor level = Reflection.STRUCTURE_MANAGER.getLevel(structureAccessor);
                 BiomeProvider biomeProvider = pack.getBiomeProvider();

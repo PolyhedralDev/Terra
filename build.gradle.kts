@@ -1,8 +1,8 @@
 preRelease(true)
 
-versionProjects(":common:api", version("6.4.3"))
-versionProjects(":common:implementation", version("6.4.3"))
-versionProjects(":platforms", version("6.4.3"))
+versionProjects(":common:api", version("6.5.0"))
+versionProjects(":common:implementation", version("6.5.0"))
+versionProjects(":platforms", version("6.5.0"))
 
 
 allprojects {
@@ -15,6 +15,7 @@ allprojects {
     tasks.withType<JavaCompile>().configureEach {
         options.isFork = true
         options.isIncremental = true
+        options.release.set(21)
     }
 
     tasks.withType<Test>().configureEach {
@@ -44,7 +45,7 @@ afterEvaluate {
     }
     project(":platforms:bukkit:common").configureDistribution()
     forSubProjects(":common:addons") {
-        apply(plugin = "com.github.johnrengelman.shadow")
+        apply(plugin = "com.gradleup.shadow")
 
         tasks.named("build") {
             finalizedBy(tasks.named("shadowJar"))

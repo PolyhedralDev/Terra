@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.extrusion.api;
 
-import java.util.Collection;
-
 import com.dfsek.terra.api.world.biome.Biome;
+
+import java.util.Collection;
 
 
 public interface Extrusion {
