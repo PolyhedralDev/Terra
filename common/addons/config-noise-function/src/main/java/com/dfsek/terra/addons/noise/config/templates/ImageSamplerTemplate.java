@@ -8,15 +8,14 @@
 package com.dfsek.terra.addons.noise.config.templates;
 
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
-import com.dfsek.terra.addons.noise.samplers.ImageSampler;
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
+
+import com.dfsek.terra.addons.noise.samplers.ImageSampler;
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
