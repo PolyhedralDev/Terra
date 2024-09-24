@@ -37,41 +37,37 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
         i *= PRIME_X;
         j *= PRIME_Y;
 
-        double n0, n1, n2;
+        double value = 0;
 
         double a = 0.5 - x0 * x0 - y0 * y0;
-        if(a <= 0) n0 = 0;
-        else {
-            n0 = (a * a) * (a * a) * gradCoord(seed, i, j, x0, y0);
+        if(a > 0) {
+            value = (a * a) * (a * a) * gradCoord(seed, i, j, x0, y0);
         }
 
         double c = 2 * (1 - 2 * G2) * (1 / G2 - 2) * t + ((-2 * (1 - 2 * G2) * (1 - 2 * G2)) + a);
-        if(c <= 0) n2 = 0;
-        else {
+        if(c > 0) {
             double x2 = x0 + (2 * G2 - 1);
             double y2 = y0 + (2 * G2 - 1);
-            n2 = (c * c) * (c * c) * gradCoord(seed, i + PRIME_X, j + PRIME_Y, x2, y2);
+            value += (c * c) * (c * c) * gradCoord(seed, i + PRIME_X, j + PRIME_Y, x2, y2);
         }
 
         if(y0 > x0) {
             double x1 = x0 + G2;
             double y1 = y0 + (G2 - 1);
             double b = 0.5 - x1 * x1 - y1 * y1;
-            if(b <= 0) n1 = 0;
-            else {
-                n1 = (b * b) * (b * b) * gradCoord(seed, i, j + PRIME_Y, x1, y1);
+            if(b > 0) {
+                value += (b * b) * (b * b) * gradCoord(seed, i, j + PRIME_Y, x1, y1);
             }
         } else {
             double x1 = x0 + (G2 - 1);
             double y1 = y0 + G2;
             double b = 0.5 - x1 * x1 - y1 * y1;
-            if(b <= 0) n1 = 0;
-            else {
-                n1 = (b * b) * (b * b) * gradCoord(seed, i + PRIME_X, j, x1, y1);
+            if(b <= 0) {
+                value += (b * b) * (b * b) * gradCoord(seed, i + PRIME_X, j, x1, y1);
             }
         }
 
-        return (n0 + n1 + n2) * 99.83685446303647f;
+        return value * 99.83685446303647f;
     }
 
     @Override
