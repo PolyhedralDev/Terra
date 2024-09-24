@@ -11,11 +11,11 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.Collections;
-import java.util.Set;
-
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.configured.ConfiguredStructure;
+
+import java.util.Collections;
+import java.util.Set;
 
 
 @SuppressWarnings("FieldMayBeFinal")

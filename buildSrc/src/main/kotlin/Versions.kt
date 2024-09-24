@@ -15,7 +15,7 @@ object Versions {
         const val caffeine = "3.1.8"
         
         const val slf4j = "2.0.16"
-
+        
         object Internal {
             const val shadow = "8.3.1"
             const val apacheText = "1.12.0"
