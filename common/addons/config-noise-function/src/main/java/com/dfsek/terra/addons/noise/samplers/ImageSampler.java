@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.addons.noise.samplers;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-
 import java.awt.image.BufferedImage;
+
+import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ImageSampler implements NoiseSampler {

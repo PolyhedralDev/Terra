@@ -4,14 +4,14 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.biome.pipeline.image.config.ImageSourceTemplate;
-import com.dfsek.terra.addons.biome.pipeline.image.config.converter.ClosestPipelineBiomeColorConverterTemplate;
-import com.dfsek.terra.addons.biome.pipeline.image.config.converter.ExactPipelineBiomeColorConverterTemplate;
-import com.dfsek.terra.addons.biome.pipeline.image.config.converter.mapping.DefinedPipelineBiomeColorMappingTemplate;
 import com.dfsek.terra.addons.biome.pipeline.BiomePipelineAddon;
 import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.DelegatedPipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.image.config.ImageSourceTemplate;
+import com.dfsek.terra.addons.biome.pipeline.image.config.converter.ClosestPipelineBiomeColorConverterTemplate;
+import com.dfsek.terra.addons.biome.pipeline.image.config.converter.ExactPipelineBiomeColorConverterTemplate;
+import com.dfsek.terra.addons.biome.pipeline.image.config.converter.mapping.DefinedPipelineBiomeColorMappingTemplate;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.addons.image.converter.mapping.BiomeDefinedColorMapping;
 import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;

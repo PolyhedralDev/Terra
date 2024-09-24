@@ -298,7 +298,7 @@ public abstract class AbstractPlatform implements Platform {
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
                 String resourceClassPath = dir + "/" + entry;
-                if (ignoredResources.contains(dir) || ignoredResources.contains(entry) || ignoredResources.contains(resourceClassPath)) {
+                if(ignoredResources.contains(dir) || ignoredResources.contains(entry) || ignoredResources.contains(resourceClassPath)) {
                     logger.info("Not dumping resource {} because it is ignored.", resourceClassPath);
                 } else {
                     String resourcePath = resourceClassPath.replace('/', File.separatorChar);

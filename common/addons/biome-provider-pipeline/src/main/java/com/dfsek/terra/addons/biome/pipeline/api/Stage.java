@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.api;
 
-import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 
 
 public interface Stage {

@@ -7,16 +7,16 @@
 
 package com.dfsek.terra.addons.biome.pipeline.stage.mutators;
 
-import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.addons.biome.pipeline.api.Stage;
-import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
+import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class ReplaceListStage implements Stage {

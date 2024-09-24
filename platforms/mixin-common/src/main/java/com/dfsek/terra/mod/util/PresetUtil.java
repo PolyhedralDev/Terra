@@ -47,8 +47,9 @@ public class PresetUtil {
             platform.multiNoiseBiomeSourceParameterListRegistry();
 
 
-        Identifier generatorID = Identifier.tryParse("terra:" + pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
-            Locale.ROOT));
+        Identifier generatorID = Identifier.tryParse(
+            "terra:" + pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
+                Locale.ROOT));
 
         PRESETS.add(generatorID);
 

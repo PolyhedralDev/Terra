@@ -7,9 +7,9 @@
 
 package com.dfsek.terra.api.config;
 
-import com.dfsek.terra.api.Platform;
-
 import java.util.List;
+
+import com.dfsek.terra.api.Platform;
 
 
 public interface PluginConfig {

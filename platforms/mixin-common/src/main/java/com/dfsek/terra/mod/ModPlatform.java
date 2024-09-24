@@ -6,7 +6,6 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.sound.BiomeAdditionsSound;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.AbstractPlatform;
@@ -79,29 +77,29 @@ public abstract class ModPlatform extends AbstractPlatform {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-                .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
-                    Identifier identifier = Identifier.tryParse((String) o);
-                    if(identifier == null)
-                        throw new LoadException("Invalid identifier: " + o, depthTracker);
-                    return identifier;
-                })
-                .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase()))
-                .registerLoader(GrassColorModifier.class,
-                                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase()))
-                .registerLoader(TemperatureModifier.class,
-                                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
-                .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
-                .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
-                .registerLoader(SoundEvent.class, SoundEventTemplate::new)
-                .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
-                .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
-                .registerLoader(MusicSound.class, MusicSoundTemplate::new)
-                .registerLoader(EntityType.class, EntityTypeTemplate::new)
-                .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-                .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
-                .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-                .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
-                .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+            .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
+                Identifier identifier = Identifier.tryParse((String) o);
+                if(identifier == null)
+                    throw new LoadException("Invalid identifier: " + o, depthTracker);
+                return identifier;
+            })
+            .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase()))
+            .registerLoader(GrassColorModifier.class,
+                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase()))
+            .registerLoader(TemperatureModifier.class,
+                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
+            .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
+            .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
+            .registerLoader(SoundEvent.class, SoundEventTemplate::new)
+            .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
+            .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
+            .registerLoader(MusicSound.class, MusicSoundTemplate::new)
+            .registerLoader(EntityType.class, EntityTypeTemplate::new)
+            .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
+            .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
+            .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
+            .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
+            .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
 
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {

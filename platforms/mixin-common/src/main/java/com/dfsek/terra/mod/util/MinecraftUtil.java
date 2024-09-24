@@ -1,10 +1,5 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.mod.CommonPlatform;
-
-import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.mod.config.ProtoPlatformBiome;
-
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
@@ -39,6 +34,9 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.mod.CommonPlatform;
+import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.data.Codecs;
 import com.dfsek.terra.mod.implmentation.TerraIntProvider;
@@ -77,7 +75,7 @@ public final class MinecraftUtil {
 
         CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
-            if (compatibilityOptions.isInjectFlora()) {
+            if(compatibilityOptions.isInjectFlora()) {
                 pack.getCheckedRegistry(com.dfsek.terra.api.world.biome.Biome.class)
                     .forEach((id, biome) -> {
                         registerFlora(biome, pack, id, biomeRegistry);
@@ -88,28 +86,30 @@ public final class MinecraftUtil {
 
     }
 
-    public static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey id, Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
+    public static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack,
+                                     com.dfsek.terra.api.registry.key.RegistryKey id,
+                                     Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         RegistryKey<net.minecraft.world.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
-            biomeRegistry.getOrEmpty(vanillaKey)
-                .ifPresentOrElse(vanillaBiome -> {
-                        Identifier terraBiomeIdentifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
-                        biomeRegistry.getOrEmpty(terraBiomeIdentifier).ifPresentOrElse(
-                            terraBiome -> {
-                                                                    List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
-                                                                        vanillaBiome.getGenerationSettings()
-                                                                            .getFlowerFeatures());
-                                                                    logger.debug("Injecting flora into biome" +
-                                                                                 " {} : {}", terraBiomeIdentifier,
-                                                                        flowerFeatures);
-                                                                    ((FloraFeatureHolder) terraBiome.getGenerationSettings()).setFloraFeatures(
-                                                                        flowerFeatures);
-                            },
-                                                            () -> logger.error(
-                                                                "No such biome: {}",
-                                                                terraBiomeIdentifier)
-                        );
-                    },
-                    () -> logger.error("No vanilla biome: {}", vanillaKey));
+        biomeRegistry.getOrEmpty(vanillaKey)
+            .ifPresentOrElse(vanillaBiome -> {
+                    Identifier terraBiomeIdentifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
+                    biomeRegistry.getOrEmpty(terraBiomeIdentifier).ifPresentOrElse(
+                        terraBiome -> {
+                            List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
+                                vanillaBiome.getGenerationSettings()
+                                    .getFlowerFeatures());
+                            logger.debug("Injecting flora into biome" +
+                                         " {} : {}", terraBiomeIdentifier,
+                                flowerFeatures);
+                            ((FloraFeatureHolder) terraBiome.getGenerationSettings()).setFloraFeatures(
+                                flowerFeatures);
+                        },
+                        () -> logger.error(
+                            "No such biome: {}",
+                            terraBiomeIdentifier)
+                    );
+                },
+                () -> logger.error("No vanilla biome: {}", vanillaKey));
     }
 
     public static Map<Identifier, List<Identifier>> getTerraBiomeMap() {
