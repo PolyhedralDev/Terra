@@ -7,9 +7,6 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
-import java.util.Collections;
-import java.util.Random;
-
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -21,6 +18,9 @@ import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
+
+import java.util.Collections;
+import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {

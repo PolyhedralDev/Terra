@@ -29,7 +29,7 @@ public final class MathUtil {
 
     static {
         sinTable = new long[lookupTableSizeWithMargin];
-        for (int i = 0; i < lookupTableSizeWithMargin; i++) {
+        for(int i = 0; i < lookupTableSizeWithMargin; i++) {
             double d = i * tauOverLookupSize;
             sinTable[i] = Double.doubleToRawLongBits(StrictMath.sin(d));
         }

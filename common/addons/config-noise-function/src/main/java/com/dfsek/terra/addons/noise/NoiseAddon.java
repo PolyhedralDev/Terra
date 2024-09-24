@@ -9,17 +9,46 @@ package com.dfsek.terra.addons.noise;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.noise.config.CubicSplinePointTemplate;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
-import com.dfsek.terra.addons.noise.config.templates.*;
-import com.dfsek.terra.addons.noise.config.templates.noise.*;
+import com.dfsek.terra.addons.noise.config.templates.BinaryArithmeticTemplate;
+import com.dfsek.terra.addons.noise.config.templates.DerivativeNoiseSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
+import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
+import com.dfsek.terra.addons.noise.config.templates.ImageSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.KernelTemplate;
+import com.dfsek.terra.addons.noise.config.templates.LinearHeightmapSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.TranslateSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.CellularNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.ConstantNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.DistanceSamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.ExpressionFunctionTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.GaborNoiseTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.PseudoErosionTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.SimpleNoiseTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.BrownianMotionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.PingPongTemplate;
 import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractalTemplate;
-import com.dfsek.terra.addons.noise.config.templates.normalizer.*;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.CubicSplineNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ProbabilityNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.ScaleNormalizerTemplate;
 import com.dfsek.terra.addons.noise.math.CubicSpline;
-import com.dfsek.terra.addons.noise.samplers.arithmetic.*;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.AdditionSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.DivisionSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.MaxSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.MinSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.MultiplicationSampler;
+import com.dfsek.terra.addons.noise.samplers.arithmetic.SubtractionSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.DistanceSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.random.GaussianNoiseSampler;
@@ -40,10 +69,6 @@ import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
 
 
 public class NoiseAddon implements AddonInitializer {
@@ -97,7 +122,7 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate(SimplexSampler::new));
                 noiseRegistry.register(addon.key("GABOR"), GaborNoiseTemplate::new);
                 noiseRegistry.register(addon.key("PSEUDOEROSION"), PseudoErosionTemplate::new);
-                
+
                 noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate(ValueSampler::new));
                 noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
 

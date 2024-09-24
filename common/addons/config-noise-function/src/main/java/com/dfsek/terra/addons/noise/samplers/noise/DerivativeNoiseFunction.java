@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 
+
 public abstract class DerivativeNoiseFunction extends NoiseFunction implements DerivativeNoiseSampler {
     @Override
     public boolean isDifferentiable() {
