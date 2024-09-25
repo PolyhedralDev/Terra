@@ -62,7 +62,7 @@ public class OpenSimplex2Sampler extends SimplexStyleSampler {
             double x1 = x0 + (G2 - 1);
             double y1 = y0 + G2;
             double b = 0.5 - x1 * x1 - y1 * y1;
-            if(b <= 0) {
+            if(b > 0) {
                 value += (b * b) * (b * b) * gradCoord(seed, i + PRIME_X, j, x1, y1);
             }
         }
