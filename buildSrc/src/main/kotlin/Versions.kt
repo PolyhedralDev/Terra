@@ -25,6 +25,7 @@ object Versions {
             const val snakeYml = "2.3"
             const val jetBrainsAnnotations = "24.1.0"
             const val junit = "5.11.0"
+            const val nbt = "6.1"
         }
     }
     
@@ -72,7 +73,6 @@ object Versions {
 //    }
 //
     object CLI {
-        const val nbt = "6.1"
         const val logback = "1.5.8"
     }
 }

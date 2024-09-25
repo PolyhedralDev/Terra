@@ -1,8 +1,8 @@
 version = version("1.0.0")
 
 dependencies {
-    api("commons-io:commons-io:2.7")
-    implementation("com.dfsek.tectonic:yaml:${Versions.Libraries.tectonic}")
+    api("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
+    implementation("com.dfsek.tectonic", "yaml", Versions.Libraries.tectonic)
 }
 
 tasks.withType<Jar> {
