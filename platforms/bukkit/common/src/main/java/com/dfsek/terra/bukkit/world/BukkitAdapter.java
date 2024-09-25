@@ -20,7 +20,6 @@ package com.dfsek.terra.bukkit.world;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.util.Vector;
@@ -46,27 +45,12 @@ import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 import com.dfsek.terra.bukkit.world.inventory.BukkitItemStack;
 import com.dfsek.terra.bukkit.world.inventory.meta.BukkitEnchantment;
-import com.dfsek.terra.transform.MapTransform;
-import com.dfsek.terra.transform.TransformerImpl;
 
 
 /**
  * Utility class to adapt Bukkit enums to Terra enums.
  */
 public final class BukkitAdapter {
-    public static TransformerImpl<TreeType, String> TREE_TRANSFORMER = new TransformerImpl.Builder<TreeType, String>()
-        .addTransform(new MapTransform<TreeType, String>()
-            .add(TreeType.COCOA_TREE, "JUNGLE_COCOA")
-            .add(TreeType.BIG_TREE, "LARGE_OAK")
-            .add(TreeType.TALL_REDWOOD, "LARGE_SPRUCE")
-            .add(TreeType.REDWOOD, "SPRUCE")
-            .add(TreeType.TREE, "OAK")
-            .add(TreeType.MEGA_REDWOOD, "MEGA_SPRUCE")
-            .add(TreeType.SWAMP, "SWAMP_OAK"))
-        .addTransform(TreeType::toString)
-        .build();
-
-
     public static BlockState adapt(org.bukkit.block.data.BlockData data) {
         return BukkitBlockState.newInstance(data);
     }
