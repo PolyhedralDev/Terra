@@ -87,7 +87,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
 
     @Override
     public double[] getNoiseDerivativeRaw(long seed, double x, double y, double z) {
-        double[] sum = {0, 0, 0};
+        double[] sum = {0, 0, 0, 0};
         double amp = fractalBounding;
 
         for(int i = 0; i < octaves; i++) {
@@ -97,6 +97,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
             // See comment in 2D version
             sum[1] += noise[1] * amp;
             sum[2] += noise[2] * amp;
+            sum[3] += noise[3] * amp;
 
             amp *= MathUtil.lerp(weightedStrength, 1.0, (noise[0] + 1) * 0.5);
 
