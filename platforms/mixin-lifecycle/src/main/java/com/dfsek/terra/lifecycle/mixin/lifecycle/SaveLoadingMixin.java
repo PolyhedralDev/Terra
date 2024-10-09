@@ -24,7 +24,7 @@ public class SaveLoadingMixin {
         index = 1
     )
     private static DynamicRegistryManager grabManager(DynamicRegistryManager registryManager) {
-        MinecraftUtil.registerFlora(registryManager.get(RegistryKeys.BIOME));
+        MinecraftUtil.registerFlora(registryManager.getOrThrow(RegistryKeys.BIOME));
         return registryManager;
     }
 }

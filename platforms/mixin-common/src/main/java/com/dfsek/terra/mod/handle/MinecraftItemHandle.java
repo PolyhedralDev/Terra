@@ -49,8 +49,8 @@ public class MinecraftItemHandle implements ItemHandle {
                 }
 
                 @Override
-                public <T> Optional<Impl<T>> getOptionalWrapper(RegistryKey<? extends Registry<? extends T>> registryRef) {
-                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getWrapperOrThrow(registryRef));
+                public <T> Optional<Impl<T>> getOptional(RegistryKey<? extends Registry<? extends T>> registryRef) {
+                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getOrThrow(registryRef));
                 }
             }).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
@@ -60,7 +60,7 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().get(Identifier.tryParse(id)));
+        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().getEntry(Identifier.tryParse(id)));
     }
 
     @Override

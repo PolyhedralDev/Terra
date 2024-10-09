@@ -29,9 +29,9 @@ public class DataPackContentsMixin {
     @Inject(method = "refresh()V", at = @At("RETURN"))
     private void injectReload(CallbackInfo ci) {
         DynamicRegistryManager.Immutable dynamicRegistryManager = this.reloadableRegistries.getRegistryManager();
-        TagUtil.registerWorldPresetTags(dynamicRegistryManager.get(RegistryKeys.WORLD_PRESET));
+        TagUtil.registerWorldPresetTags(dynamicRegistryManager.getOrThrow(RegistryKeys.WORLD_PRESET));
 
-        Registry<Biome> biomeRegistry = dynamicRegistryManager.get(RegistryKeys.BIOME);
+        Registry<Biome> biomeRegistry = dynamicRegistryManager.getOrThrow(RegistryKeys.BIOME);
         TagUtil.registerBiomeTags(biomeRegistry);
         MinecraftUtil.registerFlora(biomeRegistry);
     }

@@ -97,7 +97,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     public void populateEntities(ChunkRegion region) {
         if(!this.settings.value().mobGenerationDisabled()) {
             ChunkPos chunkPos = region.getCenterPos();
-            RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopY() - 1));
+            RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopYInclusive() - 1));
             ChunkRandom chunkRandom = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
             chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
             SpawnHelper.populateEntities(region, registryEntry, chunkPos, chunkRandom);
@@ -179,7 +179,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         int min = height.getBottomY();
-        for(int y = height.getTopY() - 1; y >= min; y--) {
+        for(int y = height.getTopYInclusive() - 1; y >= min; y--) {
             if(heightmap
                 .getBlockPredicate()
                 .test((BlockState) delegate.getBlock(properties, x, y, z, biomeProvider))) return y + 1;
@@ -192,14 +192,14 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         BlockState[] array = new BlockState[height.getHeight()];
         WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
-        for(int y = height.getTopY() - 1; y >= height.getBottomY(); y--) {
+        for(int y = height.getTopYInclusive() - 1; y >= height.getBottomY(); y--) {
             array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);
         }
         return new VerticalBlockSample(height.getBottomY(), array);
     }
 
     @Override
-    public void getDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
+    public void appendDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
 
     }
 

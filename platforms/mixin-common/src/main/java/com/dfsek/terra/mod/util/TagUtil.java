@@ -25,7 +25,7 @@ public final class TagUtil {
 
     private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {
         return registry
-            .streamTagsAndEntries()
+            .streamTags()
             .collect(HashMap::new,
                 (map, pair) ->
                     map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
