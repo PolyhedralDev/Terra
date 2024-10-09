@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.noise.samplers.noise.fractal;
 
-import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
+import com.dfsek.terra.addons.noise.samplers.noise.DerivativeNoiseFunction;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
-public abstract class FractalNoiseFunction extends NoiseFunction {
+public abstract class FractalNoiseFunction extends DerivativeNoiseFunction {
     protected final NoiseSampler input;
     protected double fractalBounding = 1 / 1.75;
     protected int octaves = 3;
@@ -51,5 +51,20 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
 
     public void setWeightedStrength(double weightedStrength) {
         this.weightedStrength = weightedStrength;
+    }
+
+    @Override
+    public boolean isDifferentiable() {
+        return false;
+    }
+
+    @Override
+    public double[] getNoiseDerivativeRaw(long seed, double x, double y) {
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
+    }
+
+    @Override
+    public double[] getNoiseDerivativeRaw(long seed, double x, double y, double z) {
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
     }
 }
