@@ -14,7 +14,7 @@ public class DivisionSampler extends BinaryArithmeticSampler {
     }
 
     @Override
-    public double[] operated(double[] left, double[] right) {
+    public double[] operateDerivative(double[] left, double[] right) {
         int dimensions = left.length;
         double[] out = new double[dimensions];
         out[0] = left[0] / right[0];
