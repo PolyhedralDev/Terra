@@ -99,7 +99,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public int terraWorld$getMaxHeight() {
-        return world.getTopY();
+        return world.getTopYInclusive();
     }
 
     @Intrinsic(displace = true)
