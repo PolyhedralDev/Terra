@@ -6,10 +6,7 @@ package com.dfsek.terra.api.noise;
 public interface DerivativeNoiseSampler extends NoiseSampler {
 
     static boolean isDifferentiable(NoiseSampler sampler) {
-        if(sampler instanceof DerivativeNoiseSampler dSampler) {
-            return dSampler.isDifferentiable();
-        }
-        return false;
+        return sampler instanceof DerivativeNoiseSampler dSampler && dSampler.isDifferentiable();
     }
 
     /**
