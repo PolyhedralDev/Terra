@@ -37,6 +37,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.CubicSplineNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearMapNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
