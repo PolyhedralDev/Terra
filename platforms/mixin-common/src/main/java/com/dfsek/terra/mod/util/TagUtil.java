@@ -2,7 +2,9 @@ package com.dfsek.terra.mod.util;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagGroupLoader.RegistryTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.registry.tag.WorldPresetTags;
 import net.minecraft.world.biome.Biome;
@@ -25,10 +27,8 @@ public final class TagUtil {
 
     private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {
         return registry
-            .streamTags()
-            .collect(HashMap::new,
-                (map, pair) ->
-                    map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
+            .streamTags().collect(HashMap::new,
+                (map, tag) -> map.put(tag.getTag(), new ArrayList<>()),
                 HashMap::putAll);
     }
 
@@ -46,8 +46,7 @@ public final class TagUtil {
                         .add(preset),
                     () -> logger.error("Preset {} does not exist!", id)));
 
-        registry.clearTags();
-        registry.populateTags(ImmutableMap.copyOf(collect));
+        registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
     }
 
     public static void registerBiomeTags(Registry<Biome> registry) {
@@ -90,8 +89,7 @@ public final class TagUtil {
                                         tb))),
                         () -> logger.error("No vanilla biome: {}", vb)));
 
-        registry.clearTags();
-        registry.populateTags(ImmutableMap.copyOf(collect));
+        registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
 
         if(logger.isDebugEnabled()) {
             registry.streamEntries()

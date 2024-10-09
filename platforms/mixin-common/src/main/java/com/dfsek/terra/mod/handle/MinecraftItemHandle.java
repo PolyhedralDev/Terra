@@ -24,6 +24,7 @@ import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper.Impl;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -43,6 +44,11 @@ public class MinecraftItemHandle implements ItemHandle {
     public Item createItem(String data) {
         try {
             return (Item) new ItemStackArgumentType(new CommandRegistryAccess() {
+                @Override
+                public FeatureSet getEnabledFeatures() {
+                    return FeatureSet.empty();
+                }
+
                 @Override
                 public Stream<RegistryKey<? extends Registry<?>>> streamAllRegistryKeys() {
                     return CommonPlatform.get().getServer().getRegistryManager().streamAllRegistryKeys();
