@@ -37,6 +37,7 @@ import com.dfsek.terra.addons.noise.config.templates.noise.fractal.RidgedFractal
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ClampNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.CubicSplineNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.ExpressionNormalizerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearMapNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.LinearNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.NormalNormalizerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.normalizer.PosterizationNormalizerTemplate;
@@ -101,6 +102,7 @@ public class NoiseAddon implements AddonInitializer {
                     .applyLoader(DerivativeNoiseSampler.class, DerivativeNoiseSamplerTemplate::new);
 
                 noiseRegistry.register(addon.key("LINEAR"), LinearNormalizerTemplate::new);
+                noiseRegistry.register(addon.key("LINEAR_MAP"), LinearMapNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("NORMAL"), NormalNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("CLAMP"), ClampNormalizerTemplate::new);
                 noiseRegistry.register(addon.key("PROBABILITY"), ProbabilityNormalizerTemplate::new);

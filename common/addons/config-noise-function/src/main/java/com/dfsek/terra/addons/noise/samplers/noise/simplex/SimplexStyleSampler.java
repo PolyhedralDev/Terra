@@ -116,12 +116,12 @@ public abstract class SimplexStyleSampler extends DerivativeNoiseFunction {
 
     @Override
     public double[] getNoiseDerivativeRaw(long seed, double x, double y) {
-        return new double[]{ 0, 0, 0 };
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
     }
 
     @Override
     public double[] getNoiseDerivativeRaw(long seed, double x, double y, double z) {
-        return new double[]{ 0, 0, 0, 0 };
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
     }
 
     @Override

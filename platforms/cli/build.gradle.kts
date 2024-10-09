@@ -8,7 +8,7 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
 
     shadedApi("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
-    shadedApi("com.github.Querz", "NBT", Versions.CLI.nbt)
+    shadedApi("com.github.Querz", "NBT", Versions.Libraries.Internal.nbt)
 
     shadedImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 

@@ -198,6 +198,8 @@ public class CellularSampler extends NoiseFunction {
 
     private NoiseSampler noiseLookup;
 
+    private boolean saltLookup;
+
     public CellularSampler() {
         noiseLookup = new OpenSimplex2Sampler();
     }
@@ -216,6 +218,10 @@ public class CellularSampler extends NoiseFunction {
 
     public void setReturnType(ReturnType returnType) {
         this.returnType = returnType;
+    }
+
+    public void setSaltLookup(boolean saltLookup) {
+        this.saltLookup = saltLookup;
     }
 
     @Override
@@ -286,8 +292,8 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY);
-            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY);
+            case NoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), centerX, centerY);
+            case LocalNoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), x / frequency - centerX, y / frequency - centerY);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -377,8 +383,9 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY, centerZ);
-            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY, z / frequency - centerZ);
+            case NoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), centerX, centerY, centerZ);
+            case LocalNoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), x / frequency - centerX, y / frequency - centerY,
+                z / frequency - centerZ);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
