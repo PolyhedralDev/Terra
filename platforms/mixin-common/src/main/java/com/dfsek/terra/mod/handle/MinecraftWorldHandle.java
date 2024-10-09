@@ -76,6 +76,6 @@ public class MinecraftWorldHandle implements WorldHandle {
         if(!id.contains(":")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
-        return (EntityType) Registries.ENTITY_TYPE.getEntry(identifier).orElseThrow();
+        return (EntityType) Registries.ENTITY_TYPE.getEntry(identifier).orElseThrow().value();
     }
 }
