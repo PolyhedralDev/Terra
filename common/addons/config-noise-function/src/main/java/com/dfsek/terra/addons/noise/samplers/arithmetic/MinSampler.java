@@ -14,7 +14,7 @@ public class MinSampler extends BinaryArithmeticSampler {
     }
 
     @Override
-    public double[] operated(double[] left, double[] right) {
+    public double[] operateDerivative(double[] left, double[] right) {
         double leftValue = left[0];
         double rightValue = right[0];
         return leftValue < rightValue ? left : right;

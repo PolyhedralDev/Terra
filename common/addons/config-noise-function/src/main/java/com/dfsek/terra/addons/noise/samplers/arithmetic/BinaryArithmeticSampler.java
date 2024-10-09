@@ -30,15 +30,15 @@ public abstract class BinaryArithmeticSampler implements DerivativeNoiseSampler 
 
     @Override
     public double[] noised(long seed, double x, double y) {
-        return operated(((DerivativeNoiseSampler)left).noised(seed, x, y), ((DerivativeNoiseSampler)right).noised(seed, x, y));
+        return operateDerivative(((DerivativeNoiseSampler)left).noised(seed, x, y), ((DerivativeNoiseSampler)right).noised(seed, x, y));
     }
 
     @Override
     public double[] noised(long seed, double x, double y, double z) {
-        return operated(((DerivativeNoiseSampler)left).noised(seed, x, y, z), ((DerivativeNoiseSampler)right).noised(seed, x, y, z));
+        return operateDerivative(((DerivativeNoiseSampler)left).noised(seed, x, y, z), ((DerivativeNoiseSampler)right).noised(seed, x, y, z));
     }
 
     public abstract double operate(double left, double right);
 
-    public abstract double[] operated(double[] left, double[] right);
+    public abstract double[] operateDerivative(double[] left, double[] right);
 }

@@ -14,7 +14,7 @@ public class AdditionSampler extends BinaryArithmeticSampler {
     }
 
     @Override
-    public double[] operated(double[] left, double[] right) {
+    public double[] operateDerivative(double[] left, double[] right) {
         int dimensions = left.length;
         double[] out = new double[dimensions];
         for(int i = 0; i < dimensions; i++) {
