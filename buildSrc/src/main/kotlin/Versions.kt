@@ -9,8 +9,6 @@ object Versions {
         const val strata = "1.3.2"
         
         const val cloud = "2.0.0"
-        const val cloudPaper = "2.0.0-beta.10"
-        const val cloudFabric = "2.0.0-beta.9"
         
         const val caffeine = "3.1.8"
         
@@ -30,7 +28,9 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.104.0+${Mod.minecraft}"
+//        const val fabricAPI = "0.104.0+${Mod.minecraft}"
+        const val fabricAPI = "0.105.3+1.21.2"
+        const val cloud = "2.0.0-beta.9"
     }
 //
 //    object Quilt {
@@ -41,12 +41,13 @@ object Versions {
     object Mod {
         const val mixin = "0.15.3+mixin.0.8.7"
         
-        const val minecraft = "1.21.1"
+        const val minecraft = "1.21.2-pre1"
         const val yarn = "$minecraft+build.3"
         const val fabricLoader = "0.16.5"
         
         const val architecuryLoom = "1.7.413"
         const val architecturyPlugin = "3.4.159"
+
     }
 //
 //    object Forge {
@@ -63,6 +64,7 @@ object Versions {
         const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"
         const val paperWeight = "1.7.2"
+        const val cloud = "2.0.0-beta.10"
     }
     
     //
