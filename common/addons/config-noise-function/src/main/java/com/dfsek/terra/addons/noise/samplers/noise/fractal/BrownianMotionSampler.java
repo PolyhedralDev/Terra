@@ -56,7 +56,7 @@ public class BrownianMotionSampler extends FractalNoiseFunction {
 
     @Override
     public boolean isDifferentiable() {
-        return input instanceof DerivativeNoiseSampler dSampler && dSampler.isDifferentiable();
+        return DerivativeNoiseSampler.isDifferentiable(input);
     }
 
     @Override
