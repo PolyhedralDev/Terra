@@ -35,7 +35,6 @@ import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep.Carver;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.StructureWeightSampler;
 import net.minecraft.world.gen.chunk.Blender;
@@ -215,10 +214,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         logger.debug("Loading world with config pack {}", pack.getID());
     }
 
+
     @Override
-    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess world, StructureAccessor structureAccessor,
-                      Chunk chunk, Carver carverStep) {
-        // no op
+    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess,
+                      StructureAccessor structureAccessor, Chunk chunk) {
+        //no op
     }
 
     @Override

@@ -15,6 +15,6 @@ public class VillagerTypeTemplate implements ObjectTemplate<VillagerType> {
 
     @Override
     public VillagerType get() {
-        return Registries.VILLAGER_TYPE.getEntry(id);
+        return Registries.VILLAGER_TYPE.getEntry(id).orElseThrow().value();
     }
 }

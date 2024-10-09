@@ -18,6 +18,7 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
 import net.minecraft.block.FluidBlock;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.collection.BoundedRegionArray;
 import net.minecraft.util.math.BlockPos;
@@ -125,7 +126,7 @@ public abstract class ChunkRegionMixin {
     }
 
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world);
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world, SpawnReason.CHUNK_GENERATION);
         entity.setPos(x, y, z);
         ((ChunkRegion) (Object) this).spawnEntity(entity);
         return (Entity) entity;
