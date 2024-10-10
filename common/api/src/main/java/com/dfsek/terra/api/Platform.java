@@ -81,4 +81,7 @@ public interface Platform extends LoaderRegistrar {
     @NotNull
     @Contract(pure = true)
     Profiler getProfiler();
+
+    @Contract(pure = true)
+    int getGenerationThreads();
 }

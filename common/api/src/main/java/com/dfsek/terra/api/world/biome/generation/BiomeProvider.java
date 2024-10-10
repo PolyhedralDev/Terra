@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
+import com.dfsek.terra.api.Platform;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Optional;
@@ -91,11 +93,11 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
 
-    default CachingBiomeProvider caching() {
+    default CachingBiomeProvider caching(Platform platform) {
         if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
             return cachingBiomeProvider;
         }
-        return new CachingBiomeProvider(this);
+        return new CachingBiomeProvider(this, platform.getGenerationThreads());
     }
 
 
