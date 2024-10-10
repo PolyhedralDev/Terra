@@ -1,8 +1,6 @@
 package com.dfsek.terra.mod.util;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.TagGroupLoader.RegistryTags;
 import net.minecraft.registry.tag.TagKey;
@@ -16,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public final class TagUtil {
@@ -26,10 +25,9 @@ public final class TagUtil {
     }
 
     private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {
-        return registry
-            .streamTags().collect(HashMap::new,
-                (map, tag) -> map.put(tag.getTag(), new ArrayList<>()),
-                HashMap::putAll);
+        return registry.streamTags().collect(HashMap::new,
+            (map, tag) -> map.put(tag.getTag(), tag.stream().collect(Collectors.toList())),
+            HashMap::putAll);
     }
 
     public static void registerWorldPresetTags(Registry<WorldPreset> registry) {
@@ -47,6 +45,13 @@ public final class TagUtil {
                     () -> logger.error("Preset {} does not exist!", id)));
 
         registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
+
+        if(logger.isDebugEnabled()) {
+            registry.streamEntries()
+                .map(e -> e.registryKey().getValue() + ": " +
+                          e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
+                .forEach(logger::debug);
+        }
     }
 
     public static void registerBiomeTags(Registry<Biome> registry) {

@@ -1,5 +1,8 @@
 package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
+import com.dfsek.terra.mod.CommonPlatform;
+import com.dfsek.terra.mod.ModPlatform;
+
 import com.mojang.datafixers.DataFixer;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.server.MinecraftServer;
@@ -34,6 +37,8 @@ public class MinecraftServerMixin {
 
     @Inject(method = "shutdown()V", at = @At("RETURN"))
     private void injectShutdown(CallbackInfo ci) {
+        ModPlatform platform = CommonPlatform.get();
+        platform.getRawConfigRegistry().clear();
         initialized = false;
     }
 }
