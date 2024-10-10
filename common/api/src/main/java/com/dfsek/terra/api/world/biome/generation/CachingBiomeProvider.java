@@ -21,19 +21,20 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     private final LoadingCache<SeededVector3, Biome> cache;
     private final LoadingCache<SeededVector2, Optional<Biome>> baseCache;
 
-    protected CachingBiomeProvider(BiomeProvider delegate) {
+    protected CachingBiomeProvider(BiomeProvider delegate, int generationThreads) {
         this.delegate = delegate;
         this.res = delegate.resolution();
+        int size = generationThreads * 98304;
         this.cache = Caffeine
             .newBuilder()
             .scheduler(Scheduler.disabledScheduler())
-            .initialCapacity(98304)
-            .maximumSize(98304) // 1 full chunk (high res)
+            .initialCapacity(size)
+            .maximumSize(size) // 1 full chunk (high res)
             .build(vec -> delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed));
 
         this.baseCache = Caffeine
             .newBuilder()
-            .maximumSize(256) // 1 full chunk (high res)
+            .maximumSize(256L * generationThreads) // 1 full chunk (high res)
             .build(vec -> delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed));
 
     }
@@ -77,7 +78,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
             int code = x;
             code = 31 * code + y;
             code = 31 * code + z;
-            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+            return 31 * code + (Long.hashCode(seed));
         }
     }
 
@@ -95,7 +96,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
         public int hashCode() {
             int code = x;
             code = 31 * code + z;
-            return 31 * code + ((int) (seed ^ (seed >>> 32)));
+            return 31 * code + (Long.hashCode(seed));
         }
     }
 }
