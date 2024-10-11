@@ -11,47 +11,54 @@ public class CacheSampler implements DerivativeNoiseSampler {
 
     private final NoiseSampler sampler;
     private final LoadingCache<DoubleSeededVector2, Double> cache2D;
-    private final LoadingCache<DoubleSeededVector3, Double> cache3D;
-    private final LoadingCache<DoubleSeededVector2, double[]> cache2DDirv;
-    private final LoadingCache<DoubleSeededVector3, double[]> cache3DDirv;
+//    private final LoadingCache<DoubleSeededVector3, Double> cache3D;
+//    private final LoadingCache<DoubleSeededVector2, double[]> cache2DDirv;
+//    private final LoadingCache<DoubleSeededVector3, double[]> cache3DDirv;
+
+    private final ThreadLocal<DoubleSeededVector2> mutable =
+        ThreadLocal.withInitial(() -> new DoubleSeededVector2(0, 0, 0));
 
     public CacheSampler(NoiseSampler sampler, int dimensions, int generationThreads) {
         this.sampler = sampler;
-        if (dimensions == 2) {
+//        if (dimensions == 2) {
             this.cache2D = Caffeine
                 .newBuilder()
                 .initialCapacity(0)
-                .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                .build(vec -> sampler.noise(vec.seed, vec.x, vec.z));
-            cache3D = null;
-            cache3DDirv = null;
-            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
-                this.cache2DDirv = Caffeine
-                    .newBuilder()
-                    .initialCapacity(0)
-                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                    .build(vec -> ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.z));
-            } else  {
-                cache2DDirv = null;
-            }
-        } else {
-            this.cache3D = Caffeine
-                .newBuilder()
-                .initialCapacity(0)
-                .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                .build(vec -> sampler.noise(vec.seed, vec.x, vec.y, vec.z));
-            cache2D = null;
-            cache2DDirv = null;
-            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
-                this.cache3DDirv = Caffeine
-                    .newBuilder()
-                    .initialCapacity(0)
-                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                    .build(vec -> ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.y, vec.z));
-            } else {
-                cache3DDirv = null;
-            }
-        }
+                .maximumSize(256L * generationThreads)// 1 full chunk (high res)
+                .build(vec -> {
+                    mutable.remove();
+                    return sampler.noise(vec.seed, vec.x, vec.z);
+                });
+//        }
+//            cache3D = null;
+//            cache3DDirv = null;
+//            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
+//                this.cache2DDirv = Caffeine
+//                    .newBuilder()
+//                    .initialCapacity(0)
+//                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
+//                    .build(vec -> ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.z));
+//            } else  {
+//                cache2DDirv = null;
+//            }
+//        } else {
+//            this.cache3D = Caffeine
+//                .newBuilder()
+//                .initialCapacity(0)
+//                .maximumSize(256L * generationThreads) // 1 full chunk (high res)
+//                .build(vec -> sampler.noise(vec.seed, vec.x, vec.y, vec.z));
+//            cache2D = null;
+//            cache2DDirv = null;
+//            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
+//                this.cache3DDirv = Caffeine
+//                    .newBuilder()
+//                    .initialCapacity(0)
+//                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
+//                    .build(vec -> ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.y, vec.z));
+//            } else {
+//                cache3DDirv = null;
+//            }
+//        }
     }
 
     @Override
@@ -61,30 +68,35 @@ public class CacheSampler implements DerivativeNoiseSampler {
 
     @Override
     public double[] noised(long seed, double x, double y) {
-        return cache2DDirv.get(new DoubleSeededVector2(x, y, seed));
+//        return cache2DDirv.get(new DoubleSeededVector2(x, y, seed));
+        return null;
     }
 
     @Override
     public double[] noised(long seed, double x, double y, double z) {
-        return cache3DDirv.get(new DoubleSeededVector3(x, y, z, seed));
+//        return cache3DDirv.get(new DoubleSeededVector3(x, y, z, seed));
+        return null;
     }
 
     @Override
     public double noise(long seed, double x, double y) {
-        DoubleSeededVector2 vec = new DoubleSeededVector2(x, y, seed);
-        if (cache2DDirv != null && cache2DDirv.estimatedSize() != 0) {
-            return cache2DDirv.get(vec)[0];
-        }
-        return cache2D.get(vec);
+//        DoubleSeededVector2 vec = new DoubleSeededVector2(x, y, seed);
+//        if (cache2DDirv != null && cache2DDirv.estimatedSize() != 0) {
+//            return cache2DDirv.get(vec)[0];
+//        }
+        DoubleSeededVector2 mutableKey = mutable.get();
+        mutableKey.set(x, y, seed);
+        return cache2D.get(mutableKey);
     }
 
     @Override
     public double noise(long seed, double x, double y, double z) {
-        DoubleSeededVector3 vec = new DoubleSeededVector3(x, y, z, seed);
-        if (cache3DDirv != null && cache3DDirv.estimatedSize() != 0) {
-            return cache3DDirv.get(vec)[0];
-        }
-        return cache3D.get(vec);
+//        DoubleSeededVector3 vec = new DoubleSeededVector3(x, y, z, seed);
+//        if (cache3DDirv != null && cache3DDirv.estimatedSize() != 0) {
+//            return cache3DDirv.get(vec)[0];
+//        }
+//        return cache3D.get(vec);
+        return 0;
     }
 
     private record DoubleSeededVector3(double x, double y, double z, long seed) {
@@ -106,7 +118,24 @@ public class CacheSampler implements DerivativeNoiseSampler {
     }
 
 
-    private record DoubleSeededVector2(double x, double z, long seed) {
+    private class DoubleSeededVector2 {
+
+        double x;
+        double z;
+        long seed;
+
+        public DoubleSeededVector2(double x, double z, long seed) {
+            this.x = x;
+            this.z = z;
+            this.seed = seed;
+        }
+
+        public void set(double x, double z, long seed) {
+            this.x = x;
+            this.z = z;
+            this.seed = seed;
+        }
+
         @Override
         public boolean equals(Object obj) {
             if(obj instanceof DoubleSeededVector2 that) {
