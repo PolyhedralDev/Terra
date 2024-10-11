@@ -36,8 +36,11 @@ public final class TerraCLI implements Callable<Integer> {
     @Option(names = { "--min-height"}, description = "Minimum height of the world.")
     private int minHeight = -64;
 
+    @Option(names = { "--no-save"}, description = "Don't save the world to disk.")
+    private boolean noSave = false;
+
     @Override
-    public Integer call() throws Exception { // your business logic goes here...
+    public Integer call() {
         Logger LOGGER = LoggerFactory.getLogger(TerraCLI.class);
         LOGGER.info("Starting Terra CLI...");
 
@@ -46,22 +49,24 @@ public final class TerraCLI implements Callable<Integer> {
 
         ConfigPack generate = platform.getConfigRegistry().getByID(pack).orElseThrow();
 
-        CLIWorld world = new CLIWorld(size, seed, maxHeight, minHeight, generate);
+        CLIWorld world = new CLIWorld(size, seed, maxHeight, minHeight, generate, noSave);
 
         world.generate();
 
-        world.serialize().parallel().forEach(mcaFile -> {
-            Vector2Int pos = mcaFile.getLeft();
-            String name = MCAUtil.createNameFromRegionLocation(pos.getX(), pos.getZ());
-            LOGGER.info("Writing region ({}, {}) to {}", pos.getX(), pos.getZ(), name);
+        if(!noSave) {
+            world.serialize().parallel().forEach(mcaFile -> {
+                Vector2Int pos = mcaFile.getLeft();
+                String name = MCAUtil.createNameFromRegionLocation(pos.getX(), pos.getZ());
+                LOGGER.info("Writing region ({}, {}) to {}", pos.getX(), pos.getZ(), name);
 
-            try {
-                MCAUtil.write(mcaFile.getRight(), name);
-            } catch(IOException e) {
-                e.printStackTrace();
-            }
-            LOGGER.info("Wrote region to file.");
-        });
+                try {
+                    MCAUtil.write(mcaFile.getRight(), name);
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
+                LOGGER.info("Wrote region to file.");
+            });
+        }
         LOGGER.info("Done.");
         return 0;
     }
