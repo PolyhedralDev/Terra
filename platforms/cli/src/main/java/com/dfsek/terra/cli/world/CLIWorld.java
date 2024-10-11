@@ -43,6 +43,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     private final ChunkGenerator chunkGenerator;
     private final BiomeProvider biomeProvider;
     private final ConfigPack pack;
+    private final boolean noSave;
     private final AtomicInteger amount = new AtomicInteger(0);
 
     private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
@@ -51,7 +52,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     long seed,
                     int maxHeight,
                     int minHeight,
-                    ConfigPack pack) {
+                    ConfigPack pack, boolean noSave) {
         this.size = size;
         this.maxHeight = maxHeight;
         this.minHeight = minHeight;
@@ -59,6 +60,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         this.chunkGenerator = pack.getGeneratorProvider().newInstance(pack);
         this.biomeProvider = pack.getBiomeProvider();
         this.pack = pack;
+        this.noSave = noSave;
 
 
         size += 1;
@@ -84,7 +86,13 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                 futures.add(executor.submit(() -> {
                     try {
                         int num = amount.getAndIncrement();
-                        CLIChunk chunk = getChunkAt(finalX, finalZ);
+                        CLIChunk chunk;
+                        if (!noSave) {
+                            chunk = getChunkAt(finalX, finalZ);
+                        } else {
+                            chunk = new CLIChunk(Math.floorMod(finalX, 32), Math.floorMod(finalZ, 32), this);
+                        }
+
                         BiomeProvider cachingBiomeProvider = pack.getBiomeProvider();
                         chunkGenerator.generateChunkData(chunk, this, cachingBiomeProvider, finalX, finalZ);
                         CLIProtoWorld protoWorld = new CLIProtoWorld(this, cachingBiomeProvider, finalX, finalZ);
