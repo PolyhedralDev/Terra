@@ -37,7 +37,7 @@ public final class TerraCLI implements Callable<Integer> {
     private int minHeight = -64;
 
     @Override
-    public Integer call() throws Exception { // your business logic goes here...
+    public Integer call() {
         Logger LOGGER = LoggerFactory.getLogger(TerraCLI.class);
         LOGGER.info("Starting Terra CLI...");
 
