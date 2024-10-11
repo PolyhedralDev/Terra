@@ -21,21 +21,33 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     private final LoadingCache<SeededVector3, Biome> cache;
     private final LoadingCache<SeededVector2, Optional<Biome>> baseCache;
 
+    private final ThreadLocal<SeededVector2> mutable2 =
+        ThreadLocal.withInitial(() -> new SeededVector2(0, 0, 0));
+
+    private final ThreadLocal<SeededVector3> mutable3 =
+        ThreadLocal.withInitial(() -> new SeededVector3(0, 0, 0, 0));
+
     protected CachingBiomeProvider(BiomeProvider delegate, int generationThreads) {
         this.delegate = delegate;
         this.res = delegate.resolution();
-        int size = generationThreads * 98304;
+        int size = generationThreads * 256 * 384;
         this.cache = Caffeine
             .newBuilder()
             .scheduler(Scheduler.disabledScheduler())
             .initialCapacity(size)
             .maximumSize(size) // 1 full chunk (high res)
-            .build(vec -> delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed));
+            .build(vec -> {
+                mutable3.remove();
+                return delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed);
+            });
 
         this.baseCache = Caffeine
             .newBuilder()
             .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-            .build(vec -> delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed));
+            .build(vec -> {
+                mutable2.remove();
+                return delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
+            });
 
     }
 
@@ -46,12 +58,16 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
 
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
-        return cache.get(new SeededVector3(x / res, y / res, z / res, seed));
+        SeededVector3 mutableKey = mutable3.get();
+        mutableKey.set(x, y, z, seed);
+        return cache.get(mutableKey);
     }
 
     @Override
     public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return baseCache.get(new SeededVector2(x / res, z / res, seed));
+        SeededVector2 mutableKey = mutable2.get();
+        mutableKey.set(x, z, seed);
+        return baseCache.get(mutableKey);
     }
 
     @Override
@@ -64,7 +80,26 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
         return delegate.resolution();
     }
 
-    private record SeededVector3(int x, int y, int z, long seed) {
+    private static class SeededVector3 {
+        int x;
+        int y;
+        int z;
+        long seed;
+
+        public SeededVector3(int x, int y, int z, long seed) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.seed = seed;
+        }
+
+        public void set(int x, int y, int z, long seed) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.seed = seed;
+        }
+
         @Override
         public boolean equals(Object obj) {
             if(obj instanceof SeededVector3 that) {
@@ -83,7 +118,23 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     }
 
 
-    private record SeededVector2(int x, int z, long seed) {
+    private static class SeededVector2 {
+        int x;
+        int z;
+        long seed;
+
+        public SeededVector2(int x, int z, long seed) {
+            this.x = x;
+            this.z = z;
+            this.seed = seed;
+        }
+
+        public void set(int x, int z, long seed) {
+            this.x = x;
+            this.z = z;
+            this.seed = seed;
+        }
+
         @Override
         public boolean equals(Object obj) {
             if(obj instanceof SeededVector2 that) {
