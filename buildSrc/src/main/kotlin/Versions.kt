@@ -74,5 +74,6 @@ object Versions {
     object CLI {
         const val nbt = "6.1"
         const val logback = "1.5.8"
+        const val picocli = "4.7.6"
     }
 }
