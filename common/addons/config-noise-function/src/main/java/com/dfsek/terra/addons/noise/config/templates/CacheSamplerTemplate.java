@@ -8,7 +8,7 @@ import com.dfsek.terra.addons.noise.samplers.LinearHeightmapSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
-public class CacheSamplerTemplate extends SamplerTemplate<LinearHeightmapSampler> {
+public class CacheSamplerTemplate extends SamplerTemplate<CacheSampler> {
     @Value("sampler")
     @Default
     private NoiseSampler sampler;

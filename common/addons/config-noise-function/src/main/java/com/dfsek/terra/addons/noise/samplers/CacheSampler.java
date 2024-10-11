@@ -5,15 +5,16 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Scheduler;
+
+import static com.dfsek.terra.api.util.CacheUtils.CACHE_EXECUTOR;
 
 
-public class CacheSampler implements DerivativeNoiseSampler {
+public class CacheSampler implements NoiseSampler {
 
     private final NoiseSampler sampler;
     private final LoadingCache<DoubleSeededVector2, Double> cache2D;
     private final LoadingCache<DoubleSeededVector3, Double> cache3D;
-    private final LoadingCache<DoubleSeededVector2, double[]> cache2DDirv;
-    private final LoadingCache<DoubleSeededVector3, double[]> cache3DDirv;
 
     private final ThreadLocal<DoubleSeededVector2> mutable2 =
         ThreadLocal.withInitial(() -> new DoubleSeededVector2(0, 0, 0));
@@ -23,83 +24,41 @@ public class CacheSampler implements DerivativeNoiseSampler {
 
     public CacheSampler(NoiseSampler sampler, int dimensions, int generationThreads) {
         this.sampler = sampler;
+        int size = generationThreads * 256;
         if (dimensions == 2) {
             this.cache2D = Caffeine
                 .newBuilder()
-                .initialCapacity(0)
-                .maximumSize(256L * generationThreads)// 1 full chunk (high res)
+                .executor(CACHE_EXECUTOR)
+                .scheduler(Scheduler.systemScheduler())
+                .initialCapacity(size)
+                .maximumSize(size)
                 .build(vec -> {
                     mutable2.remove();
-                    return sampler.noise(vec.seed, vec.x, vec.z);
+                    return this.sampler.noise(vec.seed, vec.x, vec.z);
                 });
             cache3D = null;
-            cache3DDirv = null;
             mutable3.remove();
-            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
-                this.cache2DDirv = Caffeine
-                    .newBuilder()
-                    .initialCapacity(0)
-                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                    .build(vec -> {
-                        mutable2.remove();
-                        return ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.z);
-                    });
-            } else  {
-                cache2DDirv = null;
-            }
         } else {
+            int size3D = size * 384;
             this.cache3D = Caffeine
                 .newBuilder()
-                .initialCapacity(0)
-                .maximumSize(256L * generationThreads) // 1 full chunk (high res)
+                .executor(CACHE_EXECUTOR)
+                .scheduler(Scheduler.systemScheduler())
+                .initialCapacity(size3D)
+                .maximumSize(size3D)
                 .build(vec -> {
                     mutable3.remove();
-                    return sampler.noise(vec.seed, vec.x, vec.y, vec.z);
+                    return this.sampler.noise(vec.seed, vec.x, vec.y, vec.z);
                 });
             cache2D = null;
-            cache2DDirv = null;
             mutable2.remove();
-            if (DerivativeNoiseSampler.isDifferentiable(sampler)) {
-                this.cache3DDirv = Caffeine
-                    .newBuilder()
-                    .initialCapacity(0)
-                    .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-                    .build(vec -> {
-                        mutable3.remove();
-                        return ((DerivativeNoiseSampler) sampler).noised(vec.seed, vec.x, vec.y, vec.z);
-                    });
-            } else {
-                cache3DDirv = null;
-            }
         }
-    }
-
-    @Override
-    public boolean isDifferentiable() {
-        return DerivativeNoiseSampler.isDifferentiable(sampler);
-    }
-
-    @Override
-    public double[] noised(long seed, double x, double y) {
-        DoubleSeededVector2 mutableKey = mutable2.get();
-        mutableKey.set(x, y, seed);
-        return cache2DDirv.get(mutableKey);
-    }
-
-    @Override
-    public double[] noised(long seed, double x, double y, double z) {
-        DoubleSeededVector3 mutableKey = mutable3.get();
-        mutableKey.set(x, y, z, seed);
-        return cache3DDirv.get(mutableKey);
     }
 
     @Override
     public double noise(long seed, double x, double y) {
         DoubleSeededVector2 mutableKey = mutable2.get();
         mutableKey.set(x, y, seed);
-        if (cache2DDirv != null && cache2DDirv.estimatedSize() != 0) {
-            return cache2DDirv.get(mutableKey)[0];
-        }
         return cache2D.get(mutableKey);
     }
 
@@ -107,9 +66,6 @@ public class CacheSampler implements DerivativeNoiseSampler {
     public double noise(long seed, double x, double y, double z) {
         DoubleSeededVector3 mutableKey = mutable3.get();
         mutableKey.set(x, y, z, seed);
-        if (cache3DDirv != null && cache3DDirv.estimatedSize() != 0) {
-            return cache3DDirv.get(mutableKey)[0];
-        }
         return cache3D.get(mutableKey);
     }
 

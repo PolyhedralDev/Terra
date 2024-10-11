@@ -9,6 +9,8 @@ import java.util.Optional;
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.world.biome.Biome;
 
+import static com.dfsek.terra.api.util.CacheUtils.CACHE_EXECUTOR;
+
 
 /**
  * A biome provider implementation that lazily evaluates biomes, and caches them.
@@ -30,24 +32,32 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     protected CachingBiomeProvider(BiomeProvider delegate, int generationThreads) {
         this.delegate = delegate;
         this.res = delegate.resolution();
-        int size = generationThreads * 256 * 384;
+
+        int size = generationThreads * 256;
+        this.baseCache = Caffeine
+            .newBuilder()
+            .executor(CACHE_EXECUTOR)
+            .scheduler(Scheduler.systemScheduler())
+            .initialCapacity(size)
+            .maximumSize(size)
+            .build(vec -> {
+                mutable2.remove();
+                return delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
+            });
+
+        int size3D = size * 384;
         this.cache = Caffeine
             .newBuilder()
-            .scheduler(Scheduler.disabledScheduler())
-            .initialCapacity(size)
-            .maximumSize(size) // 1 full chunk (high res)
+            .executor(CACHE_EXECUTOR)
+            .scheduler(Scheduler.systemScheduler())
+            .initialCapacity(size3D)
+            .maximumSize(size3D)
             .build(vec -> {
                 mutable3.remove();
                 return delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed);
             });
 
-        this.baseCache = Caffeine
-            .newBuilder()
-            .maximumSize(256L * generationThreads) // 1 full chunk (high res)
-            .build(vec -> {
-                mutable2.remove();
-                return delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
-            });
+
 
     }
 
