@@ -73,6 +73,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     }
 
     public void generate() {
+        ArrayList<Double> CPSHistory = new ArrayList<>();
         int sizeChunks = size * 32;
         List<Future<?>> futures = new ArrayList<>();
         final AtomicLong start = new AtomicLong(System.nanoTime());
@@ -91,6 +92,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                         if(num % 240 == 239) {
                             long time = System.nanoTime();
                             double cps = num / ((double) (time - start.get()) / 1000000000);
+                            CPSHistory.add(cps);
                             LOGGER.info("Generating chunk at ({}, {}), generated {} chunks at {}cps", finalX, finalZ, num, cps);
                             amount.set(0);
                             start.set(System.nanoTime());
@@ -109,6 +111,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                 e.printStackTrace();
             }
         }
+
+        LOGGER.info("Average CPS: {}", CPSHistory.stream().mapToDouble(d -> d).average().orElse(0));
     }
 
     @Override
