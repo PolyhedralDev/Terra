@@ -33,23 +33,27 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
         this.delegate = delegate;
         this.res = delegate.resolution();
 
-        LoadingCache<SeededVector2Key, Optional<Biome>> cache = Caffeine
-            .newBuilder()
-            .executor(CACHE_EXECUTOR)
-            .scheduler(Scheduler.systemScheduler())
-            .initialCapacity(256)
-            .maximumSize(256)
-            .build(this::sampleBiome);
-        this.baseCache = ThreadLocal.withInitial(() -> Pair.of(new SeededVector2Key(0, 0, 0), cache).mutable());
+        this.baseCache = ThreadLocal.withInitial(() -> {
+            LoadingCache<SeededVector2Key, Optional<Biome>> cache = Caffeine
+                .newBuilder()
+                .executor(CACHE_EXECUTOR)
+                .scheduler(Scheduler.systemScheduler())
+                .initialCapacity(256)
+                .maximumSize(256)
+                .build(this::sampleBiome);
+            return Pair.of(new SeededVector2Key(0, 0, 0), cache).mutable();
+        });
 
-        LoadingCache<SeededVector3Key, Biome> cache3D = Caffeine
-            .newBuilder()
-            .executor(CACHE_EXECUTOR)
-            .scheduler(Scheduler.systemScheduler())
-            .initialCapacity(981504)
-            .maximumSize(981504)
-            .build(this::sampleBiome);
-        this.cache = ThreadLocal.withInitial(() -> Pair.of(new SeededVector3Key(0, 0, 0, 0), cache3D).mutable());
+        this.cache = ThreadLocal.withInitial(() -> {
+            LoadingCache<SeededVector3Key, Biome> cache3D = Caffeine
+                .newBuilder()
+                .executor(CACHE_EXECUTOR)
+                .scheduler(Scheduler.systemScheduler())
+                .initialCapacity(981504)
+                .maximumSize(981504)
+                .build(this::sampleBiome);
+            return Pair.of(new SeededVector3Key(0, 0, 0, 0), cache3D).mutable();
+        });
 
 
 
