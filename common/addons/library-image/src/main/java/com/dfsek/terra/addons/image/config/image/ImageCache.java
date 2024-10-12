@@ -32,8 +32,7 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
         ImageCache images;
         if(!pack.getContext().has(ImageCache.class)) {
             var cacheBuilder = Caffeine.newBuilder().executor(CACHE_EXECUTOR).scheduler(Scheduler.systemScheduler());
-            if(config.unloadOnTimeout()) cacheBuilder.expireAfterAccess(config.getCacheTimeout(), TimeUnit.SECONDS)            .executor(CACHE_EXECUTOR)
-                .scheduler(Scheduler.systemScheduler());
+            if(config.unloadOnTimeout()) cacheBuilder.expireAfterAccess(config.getCacheTimeout(), TimeUnit.SECONDS);
             images = new ImageCache(cacheBuilder.build(s -> loadImage(s, pack.getRootPath())));
             pack.getContext().put(images);
         } else images = pack.getContext().get(ImageCache.class);
