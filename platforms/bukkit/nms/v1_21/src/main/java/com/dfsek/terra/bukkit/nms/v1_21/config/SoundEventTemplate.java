@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R2.config;
+package com.dfsek.terra.bukkit.nms.v1_21.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;

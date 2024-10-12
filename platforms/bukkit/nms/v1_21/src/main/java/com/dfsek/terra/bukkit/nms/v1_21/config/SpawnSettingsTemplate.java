@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R2.config;
+package com.dfsek.terra.bukkit.nms.v1_21.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -33,16 +33,8 @@ public class SpawnSettingsTemplate implements ObjectTemplate<MobSpawnSettings> {
         MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();
         for(SpawnTypeConfig spawn : spawns) {
             MobCategory group = spawn.getGroup();
-            if (spawn.getEntries() != null) {
-                for(SpawnerData entry : spawn.getEntries()) {
-                    builder.addSpawn(group, entry);
-                }
-            } else if (spawn.getEntry() != null) {
-                if(!used) {
-                    logger.warn("The entry sub-field of spawns is deprecated. " +
-                                "It is recommended to use the entries sub-field instead.");
-                    used = true;
-                }
+            for(SpawnerData entry : spawn.getEntries()) {
+                builder.addSpawn(group, entry);
             }
         }
         for(SpawnCostConfig cost : costs) {
