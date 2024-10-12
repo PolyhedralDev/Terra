@@ -60,13 +60,13 @@ public final class BiomeUtil {
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
-            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome,
+            net.minecraft.world.biome.Biome minecraftBiome = com.dfsek.terra.mod.util.BiomeUtil.createBiome(biome,
                 ForgeRegistries.BIOMES.getDelegateOrThrow(
                         vanilla.getKey().orElseThrow())
                     .value(),
                 vanillaBiomeProperties);
 
-            Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
+            Identifier identifier = new Identifier("terra", com.dfsek.terra.mod.util.BiomeUtil.createBiomeID(pack, id));
 
             if(ForgeRegistries.BIOMES.containsKey(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(ForgeRegistries.BIOMES.getHolder(identifier)
@@ -83,7 +83,7 @@ public final class BiomeUtil {
                 Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
                     villagerMap.getOrDefault(vanilla.getKey().orElseThrow(), VillagerType.PLAINS)));
 
-            MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(
+            com.dfsek.terra.mod.util.BiomeUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(
                 identifier);
         }
     }

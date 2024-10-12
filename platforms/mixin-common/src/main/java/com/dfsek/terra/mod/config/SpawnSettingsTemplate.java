@@ -11,6 +11,10 @@ import java.util.List;
 
 
 public class SpawnSettingsTemplate implements ObjectTemplate<SpawnSettings> {
+    
+    private static final Logger logger = LoggerFactory.getLogger(SpawnTypeConfig.class);
+    private static boolean used = false;
+
     @Value("spawns")
     @Default
     private List<SpawnTypeConfig> spawns = null;
