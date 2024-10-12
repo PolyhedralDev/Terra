@@ -1,7 +1,6 @@
-package com.dfsek.terra.api.util;
+package com.dfsek.terra.api.util.cache;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 

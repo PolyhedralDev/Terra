@@ -31,7 +31,7 @@ public final class TerraCLI implements Callable<Integer> {
     private long seed = 0;
 
     @Option(names = { "--max-height"}, description = "Maximum height of the world.")
-    private int maxHeight = 384;
+    private int maxHeight = 320;
 
     @Option(names = { "--min-height"}, description = "Minimum height of the world.")
     private int minHeight = -64;
