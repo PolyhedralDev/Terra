@@ -1,11 +1,15 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
  */
 
 package com.dfsek.terra.addons.generation.feature;
+
+import java.util.Collections;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
@@ -18,9 +22,6 @@ import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
-
-import java.util.Collections;
-import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -83,7 +84,9 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                 .forEach(y -> feature.getStructure(world, x, y, z)
                                                     .generate(Vector3Int.of(x, y, z),
                                                         world,
-                                                        new Random(coordinateSeed * 31 + y),
+                                                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                                                "Xoroshiro128PlusPlus")
+                                                            .create(coordinateSeed * 31 + y),
                                                         Rotation.NONE)
                                                 );
                                         }

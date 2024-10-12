@@ -51,6 +51,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -72,6 +73,8 @@ import com.dfsek.terra.registry.CheckedRegistryImpl;
 import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+import com.dfsek.terra.registry.master.MetaConfigRegistry;
 
 
 /**
@@ -85,8 +88,11 @@ public abstract class AbstractPlatform implements Platform {
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
+    private final MetaConfigRegistry metaConfigRegistry = new MetaConfigRegistry();
 
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
+
+    private final CheckedRegistry<MetaPack> checkedMetaConfigRegistry = new CheckedRegistryImpl<>(metaConfigRegistry);
 
     private final Profiler profiler = new ProfilerImpl();
 
@@ -100,6 +106,10 @@ public abstract class AbstractPlatform implements Platform {
 
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
+    }
+
+    public MetaConfigRegistry getRawMetaConfigRegistry() {
+        return metaConfigRegistry;
     }
 
     protected Iterable<BaseAddon> platformAddon() {
@@ -133,11 +143,8 @@ public abstract class AbstractPlatform implements Platform {
 
         config.load(this); // load config.yml
 
-        if(config.dumpDefaultConfig()) {
-            dumpResources();
-        } else {
-            logger.info("Skipping resource dumping.");
-        }
+
+        dumpResources(config.getIgnoredResources());
 
         if(config.isDebugProfiler()) { // if debug.profiler is enabled, start profiling
             profiler.start();
@@ -147,16 +154,49 @@ public abstract class AbstractPlatform implements Platform {
 
         eventManager.getHandler(FunctionalEventHandler.class)
             .register(internalAddon, PlatformInitializationEvent.class)
-            .then(event -> {
-                logger.info("Loading config packs...");
-                configRegistry.loadAll(this);
-                logger.info("Loaded packs.");
-            })
+            .then(event -> loadConfigPacks())
+            .global();
+
+        eventManager.getHandler(FunctionalEventHandler.class)
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .then(event -> loadMetaConfigPacks())
             .global();
 
 
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
+    }
+
+    protected boolean loadConfigPacks() {
+        logger.info("Loading config packs...");
+        ConfigRegistry configRegistry = getRawConfigRegistry();
+        configRegistry.clear();
+        try {
+            configRegistry.loadAll(this);
+        } catch(IOException e) {
+            logger.error("Failed to load config packs", e);
+            return false;
+        } catch(PackLoadFailuresException e) {
+            e.getExceptions().forEach(ex -> logger.error("Failed to load config pack", ex));
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean loadMetaConfigPacks() {
+        logger.info("Loading meta config packs...");
+        MetaConfigRegistry metaConfigRegistry = getRawMetaConfigRegistry();
+        metaConfigRegistry.clear();
+        try {
+            metaConfigRegistry.loadAll(this, configRegistry);
+        } catch(IOException e) {
+            logger.error("Failed to load meta config packs", e);
+            return false;
+        } catch(PackLoadFailuresException e) {
+            e.getExceptions().forEach(ex -> logger.error("Failed to meta load config pack", ex));
+            return false;
+        }
+        return true;
     }
 
     protected InternalAddon loadAddons() {
@@ -216,7 +256,7 @@ public abstract class AbstractPlatform implements Platform {
         return internalAddon;
     }
 
-    protected void dumpResources() {
+    protected void dumpResources(List<String> ignoredResources) {
         try(InputStream resourcesConfig = getClass().getResourceAsStream("/resources.yml")) {
             if(resourcesConfig == null) {
                 logger.info("No resources config found. Skipping resource dumping.");
@@ -258,56 +298,78 @@ public abstract class AbstractPlatform implements Platform {
             Map<String, List<String>> resources = new Yaml().load(resourceYaml);
             resources.forEach((dir, entries) -> entries.forEach(entry -> {
                 String resourceClassPath = dir + "/" + entry;
-                String resourcePath = resourceClassPath.replace('/', File.separatorChar);
-                File resource = new File(getDataFolder(), resourcePath);
-                if(resource.exists())
-                    return; // dont overwrite
+                if(ignoredResources.contains(dir) || ignoredResources.contains(entry) || ignoredResources.contains(resourceClassPath)) {
+                    logger.info("Not dumping resource {} because it is ignored.", resourceClassPath);
+                } else {
+                    String resourcePath = resourceClassPath.replace('/', File.separatorChar);
+                    File resource = new File(getDataFolder(), resourcePath);
+                    if(resource.exists())
+                        return; // dont overwrite
 
-                try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
-                    if(is == null) {
-                        logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
-                        return;
+                    try(InputStream is = getClass().getResourceAsStream("/" + resourceClassPath)) {
+                        if(is == null) {
+                            logger.error("Resource {} doesn't exist on the classpath!", resourcePath);
+                            return;
+                        }
+
+                        paths
+                            .stream()
+                            .filter(Pair.testRight(resourcePath::startsWith))
+                            .forEach(Pair.consumeLeft(path -> {
+                                logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
+                                try {
+                                    Files.delete(path);
+                                } catch(IOException e) {
+                                    throw new UncheckedIOException(e);
+                                }
+                            }));
+
+                        if(pathsNoMajor
+                               .stream()
+                               .anyMatch(resourcePath::startsWith) && // if any share name
+                           paths
+                               .stream()
+                               .map(Pair.unwrapRight())
+                               .noneMatch(resourcePath::startsWith)) { // but dont share major version
+                            logger.warn(
+                                "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
+                                "ensure " +
+                                "compatibility and update manually.",
+                                resourcePath);
+                        }
+
+                        logger.info("Dumping resource {}.", resource.getAbsolutePath());
+                        resource.getParentFile().mkdirs();
+                        resource.createNewFile();
+                        try(OutputStream os = new FileOutputStream(resource)) {
+                            IOUtils.copy(is, os);
+                        }
+                    } catch(IOException e) {
+                        throw new UncheckedIOException(e);
                     }
-
-                    paths
-                        .stream()
-                        .filter(Pair.testRight(resourcePath::startsWith))
-                        .forEach(Pair.consumeLeft(path -> {
-                            logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
-                            try {
-                                Files.delete(path);
-                            } catch(IOException e) {
-                                throw new UncheckedIOException(e);
-                            }
-                        }));
-
-                    if(pathsNoMajor
-                           .stream()
-                           .anyMatch(resourcePath::startsWith) && // if any share name
-                       paths
-                           .stream()
-                           .map(Pair.unwrapRight())
-                           .noneMatch(resourcePath::startsWith)) { // but dont share major version
-                        logger.warn(
-                            "Addon {} has a new major version available. It will not be automatically updated; you will need to " +
-                            "ensure " +
-                            "compatibility and update manually.",
-                            resourcePath);
-                    }
-
-                    logger.info("Dumping resource {}...", resource.getAbsolutePath());
-                    resource.getParentFile().mkdirs();
-                    resource.createNewFile();
-                    try(OutputStream os = new FileOutputStream(resource)) {
-                        IOUtils.copy(is, os);
-                    }
-                } catch(IOException e) {
-                    throw new UncheckedIOException(e);
                 }
             }));
         } catch(IOException e) {
             logger.error("Error while dumping resources...", e);
         }
+    }
+
+    public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
+        try {
+            Class aClass = Class.forName(className);
+            int threads = aClass.getField(fieldName).getInt(null);
+            logger.info("{} found, setting {} generation threads.", project, threads);
+            return threads;
+        } catch(ClassNotFoundException e) {
+            logger.info("{} not found.", project);
+        } catch(NoSuchFieldException e) {
+            logger.warn("{} found, but {} field not found this probably means {0} has changed its code and " +
+                        "Terra has not updated to reflect that.", project, fieldName);
+        } catch(IllegalAccessException e) {
+            logger.error("Failed to access {} field in {}, assuming 1 generation thread.", fieldName, project, e);
+        }
+        return 0;
+
     }
 
     @Override
@@ -326,6 +388,12 @@ public abstract class AbstractPlatform implements Platform {
     }
 
     @Override
+    public @NotNull CheckedRegistry<MetaPack> getMetaConfigRegistry() {
+        return checkedMetaConfigRegistry;
+    }
+
+
+    @Override
     public @NotNull Registry<BaseAddon> getAddons() {
         return lockedAddonRegistry;
     }
@@ -338,5 +406,10 @@ public abstract class AbstractPlatform implements Platform {
     @Override
     public @NotNull Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public int getGenerationThreads() {
+        return 1;
     }
 }

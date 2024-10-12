@@ -8,7 +8,10 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
 
     shadedApi("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
-    shadedApi("com.github.Querz", "NBT", Versions.CLI.nbt)
+    shadedApi("com.github.Querz", "NBT", Versions.Libraries.Internal.nbt)
+
+    shadedImplementation("info.picocli", "picocli", Versions.CLI.picocli)
+    annotationProcessor("info.picocli", "picocli-codegen", Versions.CLI.picocli)
 
     shadedImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
@@ -23,6 +26,12 @@ tasks.withType<Jar> {
         attributes(
             "Main-Class" to javaMainClass,
         )
+    }
+}
+
+tasks.withType<JavaCompile> {
+    doFirst {
+        options.compilerArgs.add("-Aproject=${project.group}/${project.name}")
     }
 }
 

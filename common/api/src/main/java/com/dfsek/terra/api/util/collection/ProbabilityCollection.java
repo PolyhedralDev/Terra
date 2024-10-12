@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.MathUtil;
@@ -43,7 +43,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public E get(Random r) {
+    public E get(RandomGenerator r) {
         if(array.length == 0) return null;
         return (E) array[r.nextInt(array.length)];
     }
@@ -197,7 +197,7 @@ public class ProbabilityCollection<E> implements Collection<E> {
         }
 
         @Override
-        public T get(Random r) {
+        public T get(RandomGenerator r) {
             return single;
         }
 

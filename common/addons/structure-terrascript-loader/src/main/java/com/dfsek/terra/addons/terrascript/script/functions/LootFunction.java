@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -10,7 +10,8 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -84,7 +85,8 @@ public class LootFunction implements Function<Void> {
                         if(event.isCancelled()) return;
 
                         event.getTable().fillInventory(container.getInventory(),
-                            new Random(apply.hashCode()));
+                            RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                "Xoroshiro128PlusPlus").create(apply.hashCode()));
                         data.update(false);
                     } catch(Exception e) {
                         LOGGER.error("Could not apply loot at {}", apply, e);
