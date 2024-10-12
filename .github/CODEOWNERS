@@ -1,11 +1,12 @@
 # Global owners, automatically request review when pull request is submitted
-*                   @dfsek @solonovamax @duplexsystem @Astrashh @justaureus
+*                   @dfsek @solonovamax @duplexsystem @astrsh @justaureus
 
 # Platforms
 /platforms/         @dfsek @solonovamax @duplexsystem @justaureus
+/platforms/bukkit   @dfsek @solonovamax @duplexsystem @justaureus @OakLoaf
 
 # Common
-/common/            @dfsek @solonovamax @duplexsystem @Astrashh
+/common/            @dfsek @solonovamax @duplexsystem @astrsh
 
 # Gradle Stuff
 /buildSrc/          @dfsek @solonovamax @duplexsystem

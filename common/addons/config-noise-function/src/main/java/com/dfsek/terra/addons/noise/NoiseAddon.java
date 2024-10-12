@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -17,6 +17,7 @@ import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.addons.noise.config.CubicSplinePointTemplate;
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.BinaryArithmeticTemplate;
+import com.dfsek.terra.addons.noise.config.templates.CacheSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.DerivativeNoiseSamplerTemplate;
 import com.dfsek.terra.addons.noise.config.templates.DomainWarpTemplate;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
@@ -149,6 +150,8 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("DIV"), () -> new BinaryArithmeticTemplate<>(DivisionSampler::new));
                 noiseRegistry.register(addon.key("MAX"), () -> new BinaryArithmeticTemplate<>(MaxSampler::new));
                 noiseRegistry.register(addon.key("MIN"), () -> new BinaryArithmeticTemplate<>(MinSampler::new));
+
+                noiseRegistry.register(addon.key("CACHE"), CacheSamplerTemplate::new);
 
 
                 Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();

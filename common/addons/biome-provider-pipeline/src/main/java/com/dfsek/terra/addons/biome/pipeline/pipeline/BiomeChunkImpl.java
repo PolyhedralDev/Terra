@@ -4,20 +4,20 @@ import java.util.List;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
-import com.dfsek.terra.addons.biome.pipeline.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
 
 
 public class BiomeChunkImpl implements BiomeChunk {
 
-    private final SeededVector worldOrigin;
+    private final SeededVector2Key worldOrigin;
     private final int chunkOriginArrayIndex;
     private final int worldCoordinateScale;
     private final int size;
     private PipelineBiome[] biomes;
 
-    public BiomeChunkImpl(SeededVector worldOrigin, PipelineImpl pipeline) {
+    public BiomeChunkImpl(SeededVector2Key worldOrigin, PipelineImpl pipeline) {
 
         this.worldOrigin = worldOrigin;
         this.chunkOriginArrayIndex = pipeline.getChunkOriginArrayIndex();
@@ -44,7 +44,7 @@ public class BiomeChunkImpl implements BiomeChunk {
             for(int gridZ = 0; gridZ < gridSize; gridZ++) {
                 int xIndex = gridOrigin + gridX * gridInterval;
                 int zIndex = gridOrigin + gridZ * gridInterval;
-                biomes[(xIndex * size) + zIndex] = pipeline.getSource().get(worldOrigin.seed(), xIndexToWorldCoordinate(xIndex),
+                biomes[(xIndex * size) + zIndex] = pipeline.getSource().get(worldOrigin.seed, xIndexToWorldCoordinate(xIndex),
                     zIndexToWorldCoordinate(zIndex));
             }
         }
@@ -139,14 +139,14 @@ public class BiomeChunkImpl implements BiomeChunk {
     }
 
     private int xIndexToWorldCoordinate(int xIndex) {
-        return (worldOrigin.x() + xIndex - chunkOriginArrayIndex) * worldCoordinateScale;
+        return (worldOrigin.x + xIndex - chunkOriginArrayIndex) * worldCoordinateScale;
     }
 
     private int zIndexToWorldCoordinate(int zIndex) {
-        return (worldOrigin.z() + zIndex - chunkOriginArrayIndex) * worldCoordinateScale;
+        return (worldOrigin.z + zIndex - chunkOriginArrayIndex) * worldCoordinateScale;
     }
 
-    private SeededVector getOrigin() {
+    private SeededVector2Key getOrigin() {
         return worldOrigin;
     }
 
@@ -216,7 +216,7 @@ public class BiomeChunkImpl implements BiomeChunk {
         }
 
         public long worldSeed() {
-            return chunk.getOrigin().seed();
+            return chunk.getOrigin().seed;
         }
     }
 }
