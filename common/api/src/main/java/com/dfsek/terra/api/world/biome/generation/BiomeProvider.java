@@ -97,7 +97,7 @@ public interface BiomeProvider {
         if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
             return cachingBiomeProvider;
         }
-        return new CachingBiomeProvider(this, platform.getGenerationThreads());
+        return new CachingBiomeProvider(this);
     }
 
 

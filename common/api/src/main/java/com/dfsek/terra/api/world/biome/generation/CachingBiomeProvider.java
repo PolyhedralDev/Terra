@@ -1,5 +1,9 @@
 package com.dfsek.terra.api.world.biome.generation;
 
+import com.dfsek.terra.api.util.generic.pair.Pair;
+
+import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
@@ -20,45 +24,43 @@ import static com.dfsek.terra.api.util.CacheUtils.CACHE_EXECUTOR;
 public class CachingBiomeProvider implements BiomeProvider, Handle {
     protected final BiomeProvider delegate;
     private final int res;
-    private final LoadingCache<SeededVector3, Biome> cache;
-    private final LoadingCache<SeededVector2, Optional<Biome>> baseCache;
+    private final ThreadLocal<Pair.Mutable<SeededVector3, LoadingCache<SeededVector3, Biome>>> cache;
+    private final ThreadLocal<Pair.Mutable<SeededVector2, LoadingCache<SeededVector2, Optional<Biome>>>> baseCache;
 
-    private final ThreadLocal<SeededVector2> mutable2 =
-        ThreadLocal.withInitial(() -> new SeededVector2(0, 0, 0));
-
-    private final ThreadLocal<SeededVector3> mutable3 =
-        ThreadLocal.withInitial(() -> new SeededVector3(0, 0, 0, 0));
-
-    protected CachingBiomeProvider(BiomeProvider delegate, int generationThreads) {
+    protected CachingBiomeProvider(BiomeProvider delegate) {
         this.delegate = delegate;
         this.res = delegate.resolution();
 
-        int size = generationThreads * 256;
-        this.baseCache = Caffeine
+        LoadingCache<SeededVector2, Optional<Biome>> cache = Caffeine
             .newBuilder()
             .executor(CACHE_EXECUTOR)
             .scheduler(Scheduler.systemScheduler())
-            .initialCapacity(size)
-            .maximumSize(size)
-            .build(vec -> {
-                mutable2.remove();
-                return delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
-            });
+            .initialCapacity(256)
+            .maximumSize(256)
+            .build(this::sampleBiome);
+        this.baseCache = ThreadLocal.withInitial(() -> Pair.of(new SeededVector2(0, 0, 0), cache).mutable());
 
-        int size3D = size * 384;
-        this.cache = Caffeine
+        LoadingCache<SeededVector3, Biome> cache3D = Caffeine
             .newBuilder()
             .executor(CACHE_EXECUTOR)
             .scheduler(Scheduler.systemScheduler())
-            .initialCapacity(size3D)
-            .maximumSize(size3D)
-            .build(vec -> {
-                mutable3.remove();
-                return delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed);
-            });
+            .initialCapacity(981504)
+            .maximumSize(981504)
+            .build(this::sampleBiome);
+        this.cache = ThreadLocal.withInitial(() -> Pair.of(new SeededVector3(0, 0, 0, 0), cache3D).mutable());
 
 
 
+    }
+
+    private Optional<Biome> sampleBiome(SeededVector2 vec) {
+        this.baseCache.get().setLeft(new SeededVector2(0, 0, 0));
+        return this.delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
+    }
+
+    private Biome sampleBiome(SeededVector3 vec) {
+        this.cache.get().setLeft(new SeededVector3(0, 0, 0, 0));
+        return this.delegate.getBiome(vec.x * res, vec.y * res, vec.z * res, vec.seed);
     }
 
     @Override
@@ -68,16 +70,18 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
 
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
-        SeededVector3 mutableKey = mutable3.get();
+        Mutable<SeededVector3, LoadingCache<SeededVector3, Biome>> cachePair = cache.get();
+        SeededVector3 mutableKey = cachePair.getLeft();
         mutableKey.set(x, y, z, seed);
-        return cache.get(mutableKey);
+        return cachePair.getRight().get(mutableKey);
     }
 
     @Override
     public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        SeededVector2 mutableKey = mutable2.get();
+        Mutable<SeededVector2, LoadingCache<SeededVector2, Optional<Biome>>> cachePair = baseCache.get();
+        SeededVector2 mutableKey = cachePair.getLeft();
         mutableKey.set(x, z, seed);
-        return baseCache.get(mutableKey);
+        return cachePair.getRight().get(mutableKey);
     }
 
     @Override

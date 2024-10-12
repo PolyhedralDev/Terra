@@ -3,6 +3,10 @@ package com.dfsek.terra.addons.noise.samplers;
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import com.dfsek.terra.api.util.generic.pair.Pair;
+
+import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
@@ -13,60 +17,58 @@ import static com.dfsek.terra.api.util.CacheUtils.CACHE_EXECUTOR;
 public class CacheSampler implements NoiseSampler {
 
     private final NoiseSampler sampler;
-    private final LoadingCache<DoubleSeededVector2, Double> cache2D;
-    private final LoadingCache<DoubleSeededVector3, Double> cache3D;
+    private final ThreadLocal<Mutable<DoubleSeededVector2, LoadingCache<DoubleSeededVector2, Double>>> cache2D;
+    private final ThreadLocal<Mutable<DoubleSeededVector3, LoadingCache<DoubleSeededVector3, Double>>> cache3D;
 
-    private final ThreadLocal<DoubleSeededVector2> mutable2 =
-        ThreadLocal.withInitial(() -> new DoubleSeededVector2(0, 0, 0));
-
-    private final ThreadLocal<DoubleSeededVector3> mutable3 =
-        ThreadLocal.withInitial(() -> new DoubleSeededVector3(0, 0, 0, 0));
-
-    public CacheSampler(NoiseSampler sampler, int dimensions, int generationThreads) {
+    public CacheSampler(NoiseSampler sampler, int dimensions) {
         this.sampler = sampler;
-        int size = generationThreads * 256;
         if (dimensions == 2) {
-            this.cache2D = Caffeine
+            LoadingCache<DoubleSeededVector2, Double> cache = Caffeine
                 .newBuilder()
                 .executor(CACHE_EXECUTOR)
                 .scheduler(Scheduler.systemScheduler())
-                .initialCapacity(size)
-                .maximumSize(size)
-                .build(vec -> {
-                    mutable2.remove();
-                    return this.sampler.noise(vec.seed, vec.x, vec.z);
-                });
-            cache3D = null;
-            mutable3.remove();
+                .initialCapacity(256)
+                .maximumSize(256)
+                .build(this::sampleNoise);
+            this.cache2D = ThreadLocal.withInitial(() -> Pair.of(new DoubleSeededVector2(0, 0, 0), cache).mutable());
+            this.cache3D = null;
         } else {
-            int size3D = size * 384;
-            this.cache3D = Caffeine
+            LoadingCache<DoubleSeededVector3, Double> cache = Caffeine
                 .newBuilder()
                 .executor(CACHE_EXECUTOR)
                 .scheduler(Scheduler.systemScheduler())
-                .initialCapacity(size3D)
-                .maximumSize(size3D)
-                .build(vec -> {
-                    mutable3.remove();
-                    return this.sampler.noise(vec.seed, vec.x, vec.y, vec.z);
-                });
-            cache2D = null;
-            mutable2.remove();
+                .initialCapacity(981504)
+                .maximumSize(981504)
+                .build(this::sampleNoise);
+            this.cache3D = ThreadLocal.withInitial(() -> Pair.of(new DoubleSeededVector3(0, 0, 0, 0), cache).mutable());
+            this.cache2D = null;
         }
+    }
+
+    private Double sampleNoise(DoubleSeededVector2 vec) {
+        this.cache2D.get().setLeft(new DoubleSeededVector2(0, 0, 0));
+        return this.sampler.noise(vec.seed, vec.x, vec.z);
+    }
+
+    private Double sampleNoise(DoubleSeededVector3 vec) {
+        this.cache3D.get().setLeft(new DoubleSeededVector3(0, 0, 0, 0));
+        return this.sampler.noise(vec.seed, vec.x, vec.z);
     }
 
     @Override
     public double noise(long seed, double x, double y) {
-        DoubleSeededVector2 mutableKey = mutable2.get();
+        Mutable<DoubleSeededVector2, LoadingCache<DoubleSeededVector2, Double>> cachePair = cache2D.get();
+        DoubleSeededVector2 mutableKey = cachePair.getLeft();
         mutableKey.set(x, y, seed);
-        return cache2D.get(mutableKey);
+        return cachePair.getRight().get(mutableKey);
     }
 
     @Override
     public double noise(long seed, double x, double y, double z) {
-        DoubleSeededVector3 mutableKey = mutable3.get();
+        Mutable<DoubleSeededVector3, LoadingCache<DoubleSeededVector3, Double>> cachePair = cache3D.get();
+        DoubleSeededVector3 mutableKey = cachePair.getLeft();
         mutableKey.set(x, y, z, seed);
-        return cache3D.get(mutableKey);
+        return cachePair.getRight().get(mutableKey);
     }
 
     private static class DoubleSeededVector3 {
