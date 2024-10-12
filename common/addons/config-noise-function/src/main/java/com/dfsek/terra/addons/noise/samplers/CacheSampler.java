@@ -24,24 +24,28 @@ public class CacheSampler implements NoiseSampler {
     public CacheSampler(NoiseSampler sampler, int dimensions) {
         this.sampler = sampler;
         if (dimensions == 2) {
-            LoadingCache<DoubleSeededVector2Key, Double> cache = Caffeine
-                .newBuilder()
-                .executor(CACHE_EXECUTOR)
-                .scheduler(Scheduler.systemScheduler())
-                .initialCapacity(256)
-                .maximumSize(256)
-                .build(this::sampleNoise);
-            this.cache2D = ThreadLocal.withInitial(() -> Pair.of(new DoubleSeededVector2Key(0, 0, 0), cache).mutable());
+            this.cache2D = ThreadLocal.withInitial(() -> {
+                LoadingCache<DoubleSeededVector2Key, Double> cache = Caffeine
+                    .newBuilder()
+                    .executor(CACHE_EXECUTOR)
+                    .scheduler(Scheduler.systemScheduler())
+                    .initialCapacity(256)
+                    .maximumSize(256)
+                    .build(this::sampleNoise);
+                return Pair.of(new DoubleSeededVector2Key(0, 0, 0), cache).mutable();
+            });
             this.cache3D = null;
         } else {
-            LoadingCache<DoubleSeededVector3Key, Double> cache = Caffeine
-                .newBuilder()
-                .executor(CACHE_EXECUTOR)
-                .scheduler(Scheduler.systemScheduler())
-                .initialCapacity(981504)
-                .maximumSize(981504)
-                .build(this::sampleNoise);
-            this.cache3D = ThreadLocal.withInitial(() -> Pair.of(new DoubleSeededVector3Key(0, 0, 0, 0), cache).mutable());
+            this.cache3D = ThreadLocal.withInitial(() -> {
+                LoadingCache<DoubleSeededVector3Key, Double> cache = Caffeine
+                    .newBuilder()
+                    .executor(CACHE_EXECUTOR)
+                    .scheduler(Scheduler.systemScheduler())
+                    .initialCapacity(981504)
+                    .maximumSize(981504)
+                    .build(this::sampleNoise);
+                return Pair.of(new DoubleSeededVector3Key(0, 0, 0, 0), cache).mutable();
+            });
             this.cache2D = null;
         }
     }
