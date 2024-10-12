@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R2.config;
+package com.dfsek.terra.bukkit.nms.v1_21.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -17,22 +17,12 @@ public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
     @Default
     private List<SpawnerData> entries = null;
 
-    @Value("entry")
-    @Default
-    @Deprecated
-    private SpawnerData entry = null;
-
     public MobCategory getGroup() {
         return group;
     }
 
     public List<SpawnerData> getEntries() {
         return entries;
-    }
-
-    @Deprecated
-    public SpawnerData getEntry() {
-        return entry;
     }
 
     @Override
