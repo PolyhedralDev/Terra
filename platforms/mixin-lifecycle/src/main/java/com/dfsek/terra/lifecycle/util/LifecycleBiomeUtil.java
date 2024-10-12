@@ -1,5 +1,7 @@
 package com.dfsek.terra.lifecycle.util;
 
+import com.dfsek.terra.mod.util.BiomeUtil;
+
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -22,10 +24,10 @@ import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
-public final class BiomeUtil {
-    private static final Logger logger = LoggerFactory.getLogger(BiomeUtil.class);
+public final class LifecycleBiomeUtil {
+    private static final Logger logger = LoggerFactory.getLogger(LifecycleBiomeUtil.class);
 
-    private BiomeUtil() {
+    private LifecycleBiomeUtil() {
 
     }
 
@@ -55,10 +57,10 @@ public final class BiomeUtil {
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
-            net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, Objects.requireNonNull(registry.get(vanilla)),
+            net.minecraft.world.biome.Biome minecraftBiome = BiomeUtil.createBiome(biome, Objects.requireNonNull(registry.get(vanilla)),
                 vanillaBiomeProperties);
 
-            Identifier identifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
+            Identifier identifier = Identifier.of("terra", BiomeUtil.createBiomeID(pack, id));
 
             if(registry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(MinecraftUtil.getEntry(registry, identifier)
@@ -76,7 +78,7 @@ public final class BiomeUtil {
                 Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
                     villagerMap.getOrDefault(vanilla, VillagerType.PLAINS)));
 
-            MinecraftUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
+            BiomeUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getValue(), i -> new ArrayList<>()).add(identifier);
         }
     }
 
