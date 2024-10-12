@@ -151,7 +151,7 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("MAX"), () -> new BinaryArithmeticTemplate<>(MaxSampler::new));
                 noiseRegistry.register(addon.key("MIN"), () -> new BinaryArithmeticTemplate<>(MinSampler::new));
 
-                noiseRegistry.register(addon.key("CACHE"), () -> new CacheSamplerTemplate(plugin.getGenerationThreads()));
+                noiseRegistry.register(addon.key("CACHE"), CacheSamplerTemplate::new);
 
 
                 Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();

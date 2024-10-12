@@ -8,19 +8,17 @@ import com.dfsek.terra.addons.noise.samplers.LinearHeightmapSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
-public class CacheSamplerTemplate extends SamplerTemplate<LinearHeightmapSampler> {
+public class CacheSamplerTemplate extends SamplerTemplate<CacheSampler> {
     @Value("sampler")
     @Default
     private NoiseSampler sampler;
 
-    private final int generationThreads;
+    public CacheSamplerTemplate() {
 
-    public CacheSamplerTemplate(int generationThreads) {
-        this.generationThreads = generationThreads;
     }
 
     @Override
     public NoiseSampler get() {
-        return new CacheSampler(sampler, getDimensions(), generationThreads);
+        return new CacheSampler(sampler, getDimensions());
     }
 }
