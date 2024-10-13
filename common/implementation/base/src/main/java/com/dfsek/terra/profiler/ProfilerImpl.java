@@ -57,7 +57,7 @@ public class ProfilerImpl implements Profiler {
                 Stack<Frame> stack = THREAD_STACK.get();
                 stack.push(new Frame(stack.isEmpty() ? frame : stack.peek().getId() + "." + frame));
             } else SAFE.set(false);
-        } else SAFE.set(false);
+        }
     }
 
     @Override
@@ -99,6 +99,7 @@ public class ProfilerImpl implements Profiler {
     public void stop() {
         logger.info("Stopping Terra profiler");
         running = false;
+        SAFE.set(false);
     }
 
     @Override
