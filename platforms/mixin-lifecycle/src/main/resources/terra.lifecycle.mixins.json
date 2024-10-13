@@ -1,23 +1,24 @@
 {
-    "required": true,
-    "minVersion": "0.8",
-    "package": "com.dfsek.terra.lifecycle.mixin",
-    "compatibilityLevel": "JAVA_21",
-    "mixins": [
-        "NoiseConfigMixin",
-        "RegistryEntryReferenceInvoker",
-        "RegistryMixin",
-        "SimpleRegistryMixin",
-        "lifecycle.MinecraftServerMixin",
-        "lifecycle.RegistryLoaderMixin",
-        "lifecycle.SaveLoadingMixin"
-    ],
-    "client": [
-    ],
-    "server": [
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    },
-    "refmap": "terra.lifecycle.refmap.json"
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.dfsek.terra.lifecycle.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "NoiseConfigMixin",
+    "RegistryEntryReferenceInvoker",
+    "RegistryMixin",
+    "SimpleRegistryMixin",
+    "lifecycle.MinecraftServerMixin",
+    "lifecycle.RegistryLoaderMixin",
+    "lifecycle.SaveLoadingMixin"
+  ],
+  "client": [
+      "lifecycle.CreateWorldScreenMixin"
+  ],
+  "server": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "terra.lifecycle.refmap.json"
 }

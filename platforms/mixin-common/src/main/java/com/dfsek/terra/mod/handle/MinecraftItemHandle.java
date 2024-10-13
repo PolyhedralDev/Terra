@@ -24,6 +24,7 @@ import net.minecraft.command.argument.ItemStackArgumentType;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper.Impl;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -44,13 +45,18 @@ public class MinecraftItemHandle implements ItemHandle {
         try {
             return (Item) new ItemStackArgumentType(new CommandRegistryAccess() {
                 @Override
+                public FeatureSet getEnabledFeatures() {
+                    return FeatureSet.empty();
+                }
+
+                @Override
                 public Stream<RegistryKey<? extends Registry<?>>> streamAllRegistryKeys() {
                     return CommonPlatform.get().getServer().getRegistryManager().streamAllRegistryKeys();
                 }
 
                 @Override
-                public <T> Optional<Impl<T>> getOptionalWrapper(RegistryKey<? extends Registry<? extends T>> registryRef) {
-                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getWrapperOrThrow(registryRef));
+                public <T> Optional<Impl<T>> getOptional(RegistryKey<? extends Registry<? extends T>> registryRef) {
+                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getOrThrow(registryRef));
                 }
             }).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
@@ -60,7 +66,7 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().get(Identifier.tryParse(id)));
+        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().getEntry(Identifier.tryParse(id)));
     }
 
     @Override

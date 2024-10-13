@@ -54,8 +54,8 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     public abstract void setEntityType(net.minecraft.entity.EntityType<?> entityType, Random random);
 
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registries.ENTITY_TYPE.get(
-            Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
+        return (EntityType) Registries.ENTITY_TYPE.getEntry(
+            Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id"))).orElseThrow();
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {

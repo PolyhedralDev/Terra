@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.dfsek.terra.api.block.state.properties.Property;
 
@@ -24,7 +25,7 @@ public abstract class PropertyMixin<T> {
     private String name;
 
     @Shadow
-    public abstract Collection<T> getValues();
+    public abstract List<T> getValues();
 
     @Intrinsic
     public Collection<T> terra$values() {

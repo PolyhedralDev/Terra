@@ -51,7 +51,7 @@ public final class BiomeUtil {
 
 
         if(pack.getContext().get(PreLoadCompatibilityOptions.class).useVanillaBiomes()) {
-            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(registry.getEntry(vanilla).orElseThrow());
+            ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(registry.getEntry(registry.get(vanilla)));
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 

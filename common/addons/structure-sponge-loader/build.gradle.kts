@@ -3,11 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 version = version("1.0.0")
 
 dependencies {
-    api("commons-io:commons-io:2.7")
-    api("com.github.Querz:NBT:6.1")
+    api("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
+    api("com.github.Querz", "NBT", Versions.Libraries.Internal.nbt)
     compileOnlyApi(project(":common:addons:manifest-addon-loader"))
-}
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("org.apache.commons", "com.dfsek.terra.addons.sponge.lib.commons")
 }

@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldAccess;
 import org.spongepowered.asm.mixin.Implements;
@@ -42,7 +43,7 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
 public abstract class ServerWorldMixin {
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null);
+        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null, SpawnReason.CHUNK_GENERATION);
         entity.setPos(x, y, z);
         ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
         return (Entity) entity;
