@@ -3,8 +3,10 @@ package com.dfsek.terra.bukkit.nms.v1_21;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.server.level.ChunkMap;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.chunk.status.WorldGenContext;
 import xyz.jpenilla.reflectionremapper.ReflectionRemapper;
 import xyz.jpenilla.reflectionremapper.proxy.ReflectionProxyFactory;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldGetter;
@@ -19,6 +21,8 @@ public class Reflection {
 
     public static final ReferenceProxy REFERENCE;
 
+    public static final ChunkMapProxy CHUNKMAP;
+
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
         ReflectionProxyFactory reflectionProxyFactory = ReflectionProxyFactory.create(reflectionRemapper,
@@ -27,6 +31,7 @@ public class Reflection {
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
         STRUCTURE_MANAGER = reflectionProxyFactory.reflectionProxy(StructureManagerProxy.class);
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
+        CHUNKMAP = reflectionProxyFactory.reflectionProxy(ChunkMapProxy.class);
     }
 
 
@@ -48,5 +53,11 @@ public class Reflection {
     public interface ReferenceProxy {
         @MethodName("bindValue")
         <T> void invokeBindValue(Reference<T> instance, T value);
+    }
+
+    @Proxies(ChunkMap.class)
+    public interface ChunkMapProxy {
+        @FieldSetter("worldGenContext")
+        void setWorldGenContext(ChunkMap instance, WorldGenContext worldGenContext);
     }
 }
