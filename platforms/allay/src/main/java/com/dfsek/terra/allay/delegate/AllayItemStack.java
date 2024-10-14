@@ -5,6 +5,9 @@ import org.allaymc.api.item.ItemStack;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
+import org.allaymc.api.item.enchantment.EnchantmentInstance;
+
+
 /**
  * @author daoge_cmd
  */
@@ -31,9 +34,9 @@ public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terr
 
     @Override
     public void setItemMeta(ItemMeta meta) {
-        var targetItem = ((AllayItemMeta) meta).allayItemStack();
+        ItemStack targetItem = ((AllayItemMeta) meta).allayItemStack();
         allayItemStack.removeAllEnchantments();
-        for (var enchantment : targetItem.getEnchantments()) {
+        for (EnchantmentInstance enchantment : targetItem.getEnchantments()) {
             allayItemStack.addEnchantment(enchantment.getType(), enchantment.getLevel());
         }
         allayItemStack.setLore(targetItem.getLore());

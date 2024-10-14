@@ -1,7 +1,10 @@
 package com.dfsek.terra.allay.generator;
 
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
+import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.allaymc.api.world.generator.WorldGenerator;
 import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
@@ -13,6 +16,8 @@ import com.dfsek.terra.allay.delegate.AllayProtoWorld;
 import com.dfsek.terra.allay.delegate.AllayServerWorld;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -39,8 +44,8 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     protected AllayServerWorld allayServerWorld;
 
     public AllayGeneratorWrapper(String preset) {
-        var options = AllayStringUtils.parseOptions(preset);
-        var packName = options.getOrDefault(OPTION_PACK_NAME, DEFAULT_PACK_NAME);
+        Map<String, String> options = AllayStringUtils.parseOptions(preset);
+        String packName = options.getOrDefault(OPTION_PACK_NAME, DEFAULT_PACK_NAME);
         this.seed = Long.parseLong(options.getOrDefault(OPTION_SEED, "0"));
         this.configPack = createConfigPack(packName);
         this.chunkGenerator = createGenerator(this.configPack);
@@ -85,16 +90,16 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
         @Override
         public boolean apply(NoiseContext context) {
-            var chunk = context.getCurrentChunk();
-            var chunkX = chunk.getX();
-            var chunkZ = chunk.getZ();
+            UnsafeChunk chunk = context.getCurrentChunk();
+            int chunkX = chunk.getX();
+            int chunkZ = chunk.getZ();
             chunkGenerator.generateChunkData(
                 new AllayProtoChunk(chunk),
                 worldProperties, biomeProvider,
                 chunkX, chunkZ
             );
-            var minHeight = context.getDimensionInfo().minHeight();
-            var maxHeight = context.getDimensionInfo().maxHeight();
+            int minHeight = context.getDimensionInfo().minHeight();
+            int maxHeight = context.getDimensionInfo().maxHeight();
             for(int x = 0; x < 16; x++) {
                 for(int y = minHeight; y < maxHeight; y++) {
                     for(int z = 0; z < 16; z++) {
@@ -119,9 +124,9 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
         @Override
         public boolean apply(PopulateContext context) {
-            var tmp = new AllayProtoWorld(allayServerWorld, context);
+            AllayProtoWorld tmp = new AllayProtoWorld(allayServerWorld, context);
             try {
-                for(var generationStage : configPack.getStages()) {
+                for(GenerationStage generationStage : configPack.getStages()) {
                     generationStage.populate(tmp);
                 }
             } catch(Exception e) {
@@ -137,7 +142,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     }
 
     protected static ConfigPack createConfigPack(String packName) {
-        var byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
+        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
         return byId.orElseGet(
             () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
                 .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))

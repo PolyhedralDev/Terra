@@ -27,7 +27,7 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
 
     @Override
     public boolean matches(com.dfsek.terra.api.block.state.BlockState o) {
-        var other = ((AllayBlockState) o);
+        AllayBlockState other = ((AllayBlockState) o);
         return other.allayBlockState == this.allayBlockState && other.containsWater == this.containsWater;
     }
 

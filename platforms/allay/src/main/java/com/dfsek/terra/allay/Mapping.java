@@ -6,14 +6,18 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockStateSafeGetter;
+import org.allaymc.api.block.type.BlockStateSafeGetter.Getter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.item.type.ItemTypeSafeGetter;
 import org.allaymc.api.utils.JSONUtils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 
@@ -41,7 +45,7 @@ public final class Mapping {
     }
 
     public static BlockState blockStateJeToBe(JeBlockState jeBlockState) {
-        var result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
+        BlockState result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
         if(result == null) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find be block state for {}", jeBlockState);
             return BE_AIR_STATE;
@@ -68,7 +72,7 @@ public final class Mapping {
     }
 
     public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
-        var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
+        Map<String, String> defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
         if( defaultProperties == null) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find default properties for {}", jeBlockIdentifier);
             return Map.of();
@@ -81,15 +85,13 @@ public final class Mapping {
     }
 
     private static boolean initBiomeMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes.json")) {
+        try (InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes.json")) {
             if  (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("biomes mapping not found");
                 return false;
             }
-            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
-            for(var mapping : mappings) {
-                BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id"));
-            }
+            Set<Entry<String, Map<String, Integer>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
+            mappings.forEach(mapping -> BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id")));
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
             return false;
@@ -98,20 +100,20 @@ public final class Mapping {
     }
 
     private static boolean initItemMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items.json")) {
+        try (InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items.json")) {
             if  (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("items mapping not found");
                 return false;
             }
-            var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
-            for(var mapping : mappings) {
-                var item = ItemTypeSafeGetter
+            Set<Entry<String, Map<String, Object>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
+            mappings.forEach(mapping -> {
+                ItemType<?> item = ItemTypeSafeGetter
                     .name((String) mapping.getValue().get("bedrock_identifier"))
                     // NOTICE: should be cast to double
                     .meta(((Double) mapping.getValue().get("bedrock_data")).intValue())
                     .itemType();
                 ITEM_ID_JE_TO_BE.put(mapping.getKey(), item);
-            }
+            });
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load items mapping", e);
         }
@@ -119,19 +121,19 @@ public final class Mapping {
     }
 
     private static boolean initBlockStateMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks.json")) {
+        try (InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks.json")) {
             if (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("blocks mapping not found");
                 return false;
             }
             // noinspection unchecked
-            var mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>(){}).get("mappings");
-            for(var mapping : mappings) {
-                var jeState = createJeBlockState(mapping.get("java_state"));
-                var beState = createBeBlockState(mapping.get("bedrock_state"));
+            List<Map<String, Map<String, Object>>> mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>(){}).get("mappings");
+            mappings.forEach(mapping -> {
+                JeBlockState jeState = createJeBlockState(mapping.get("java_state"));
+                BlockState beState = createBeBlockState(mapping.get("bedrock_state"));
                 BLOCK_STATE_BE_TO_JE.put(beState, jeState);
                 BLOCK_STATE_JE_HASH_TO_BE.put(jeState.getHash(), beState);
-            }
+            });
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load blocks mapping", e);
         }
@@ -139,15 +141,15 @@ public final class Mapping {
     }
 
     private static boolean initJeBlockDefaultProperties() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states.json")) {
+        try (InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states.json")) {
             if (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("je_block_default_states.json not found");
                 return false;
             }
-            var states = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, String>>>(){});
-            for(var entry : states.entrySet()) {
-                var identifier = entry.getKey();
-                var properties = entry.getValue();
+            Map<String, Map<String, String>> states = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, String>>>(){});
+            for(Entry<String, Map<String, String>> entry : states.entrySet()) {
+                String identifier = entry.getKey();
+                Map<String, String> properties = entry.getValue();
                 JE_BLOCK_DEFAULT_PROPERTIES.put(identifier, properties);
             }
         } catch(IOException e) {
@@ -157,7 +159,7 @@ public final class Mapping {
     }
 
     private static BlockState createBeBlockState(Map<String, Object> data) {
-        var getter = BlockStateSafeGetter
+        Getter getter = BlockStateSafeGetter
             .name("minecraft:" + data.get("bedrock_identifier"));
         if (data.containsKey("state")) {
             // noinspection unchecked
@@ -167,8 +169,8 @@ public final class Mapping {
     }
 
     private static Map<String, Object> convertValueType(Map<String, Object> data) {
-        var result = new TreeMap<String, Object>();
-        for (var entry : data.entrySet()) {
+        TreeMap<String, Object> result = new TreeMap<>();
+        for (Entry<String, Object> entry : data.entrySet()) {
             if (entry.getValue() instanceof Number number) {
                 // Convert double to int because the number in json is double
                 result.put(entry.getKey(), number.intValue());
@@ -180,8 +182,7 @@ public final class Mapping {
     }
 
     private static JeBlockState createJeBlockState(Map<String, Object> data) {
-        var identifier = (String) data.get("Name");
         // noinspection unchecked
-        return JeBlockState.create(identifier, new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
+        return JeBlockState.create((String) data.get("Name"), new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
     }
 }

@@ -42,7 +42,7 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        var allayBlockState = allayDimension.getBlockState(x, y, z);
+        org.allaymc.api.block.type.BlockState allayBlockState = allayDimension.getBlockState(x, y, z);
         return new AllayBlockState(allayBlockState, Mapping.blockStateBeToJe(allayBlockState));
     }
 
