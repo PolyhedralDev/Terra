@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -18,7 +18,7 @@ import com.dfsek.terra.api.block.state.properties.Property;
  * Contains basic data about a {@link BlockType} in the world
  */
 public interface BlockState extends Handle {
-    
+
     /**
      * Whether this {@link BlockState} matches another.
      * <p>
@@ -29,7 +29,7 @@ public interface BlockState extends Handle {
      * @return Whether this state matches the other
      */
     boolean matches(BlockState other);
-    
+
     /**
      * Check whether this {@link BlockState} has a {@link Property}.
      *
@@ -38,7 +38,7 @@ public interface BlockState extends Handle {
      * @return Whether this state has the property.
      */
     <T extends Comparable<T>> boolean has(Property<T> property);
-    
+
     /**
      * Get the value of a {@link Property} on this state.
      *
@@ -47,7 +47,7 @@ public interface BlockState extends Handle {
      * @return Value of the property
      */
     <T extends Comparable<T>> T get(Property<T> property);
-    
+
     /**
      * Return a new {@link BlockState} with a {@link Property} set to a value.
      *
@@ -57,7 +57,7 @@ public interface BlockState extends Handle {
      * @return New {@link BlockState} with property set.
      */
     <T extends Comparable<T>> BlockState set(Property<T> property, T value);
-    
+
     /**
      * Perform an action on this {@link BlockState} if it contains a {@link Property}
      *
@@ -70,7 +70,7 @@ public interface BlockState extends Handle {
         if(has(property)) action.accept(this);
         return this;
     }
-    
+
     /**
      * Set the value of a {@link Property} on this {@link BlockState} if it is present.
      *
@@ -83,14 +83,14 @@ public interface BlockState extends Handle {
         if(has(property)) set(property, value);
         return this;
     }
-    
+
     /**
      * Get the {@link BlockType} this state applies to.
      *
      * @return Block type.
      */
     BlockType getBlockType();
-    
+
     /**
      * Get this state and its properties as a String
      *
@@ -99,7 +99,7 @@ public interface BlockState extends Handle {
     default String getAsString() {
         return getAsString(true);
     }
-    
+
     /**
      * Get this state and its properties as a String
      *
@@ -108,7 +108,7 @@ public interface BlockState extends Handle {
      * @return String representation of this state
      */
     String getAsString(boolean properties);
-    
+
     /**
      * Get whether this BlockState is air
      *

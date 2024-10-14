@@ -11,13 +11,13 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 public class PaddedGridDistributorTemplate implements ObjectTemplate<Distributor> {
     @Value("width")
     private @Meta int width;
-    
+
     @Value("padding")
     private @Meta int padding;
-    
+
     @Value("salt")
     private @Meta int salt;
-    
+
     @Override
     public Distributor get() {
         return new PaddedGridDistributor(width, padding, salt);

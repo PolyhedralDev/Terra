@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -28,41 +28,41 @@ public class FloraTemplate implements AbstractableTemplate {
     @Value("rotatable")
     @Default
     private @Meta MaterialSet rotatable = MaterialSet.empty();
-    
+
     @Value("physics")
     @Default
     private @Meta boolean doPhysics = false;
-    
+
     @Value("ceiling")
     @Default
     private @Meta boolean ceiling = false;
-    
+
     @Value("layers")
     private @Meta List<@Meta BlockLayer> layers;
-    
+
     @Value("layer-distribution")
     private @Meta NoiseSampler noiseDistribution;
-    
+
     public boolean doPhysics() {
         return doPhysics;
     }
-    
+
     public NoiseSampler getNoiseDistribution() {
         return noiseDistribution;
     }
-    
+
     public List<BlockLayer> getLayers() {
         return layers;
     }
-    
+
     public String getID() {
         return id;
     }
-    
+
     public boolean isCeiling() {
         return ceiling;
     }
-    
+
     public MaterialSet getRotatable() {
         return rotatable;
     }

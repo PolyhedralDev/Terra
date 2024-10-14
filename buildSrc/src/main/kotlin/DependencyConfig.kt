@@ -36,7 +36,7 @@ fun Project.configureDependencies() {
         maven("https://repo.codemc.org/repository/maven-public") {
             name = "CodeMC"
         }
-        maven("https://papermc.io/repo/repository/maven-public/") {
+        maven("https://repo.papermc.io/repository/maven-public/") {
             name = "PaperMC"
         }
         maven("https://files.minecraftforge.net/maven/") {
@@ -48,14 +48,17 @@ fun Project.configureDependencies() {
         maven("https://jitpack.io") {
             name = "JitPack"
         }
+        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+            name = "Sonatype Snapshots"
+        }
     }
     
     dependencies {
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-        compileOnly("org.jetbrains:annotations:23.0.0")
+        testImplementation("org.junit.jupiter", "junit-jupiter-api", Versions.Libraries.Internal.junit)
+        testImplementation("org.junit.jupiter", "junit-jupiter-engine", Versions.Libraries.Internal.junit)
+        compileOnly("org.jetbrains", "annotations", Versions.Libraries.Internal.jetBrainsAnnotations)
         
-        compileOnly("com.google.guava:guava:30.0-jre")
-        testImplementation("com.google.guava:guava:30.0-jre")
+        compileOnly("com.google.guava", "guava", Versions.Libraries.Internal.guava)
+        testImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
     }
 }

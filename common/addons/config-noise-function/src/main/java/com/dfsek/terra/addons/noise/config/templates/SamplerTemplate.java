@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,13 +22,13 @@ public abstract class SamplerTemplate<T extends NoiseSampler> implements Validat
     @Value("dimensions")
     @Default
     private @Meta int dimensions = 2;
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(dimensions != 2 && dimensions != 3) throw new ValidationException("Illegal amount of dimensions: " + dimensions);
         return true;
     }
-    
+
     public int getDimensions() {
         return dimensions;
     }

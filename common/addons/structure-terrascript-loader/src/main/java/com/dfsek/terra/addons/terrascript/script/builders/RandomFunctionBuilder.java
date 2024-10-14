@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -21,12 +21,12 @@ public class RandomFunctionBuilder implements FunctionBuilder<RandomFunction> {
     public RandomFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RandomFunction((Returnable<Number>) argumentList.get(0), position);
     }
-    
+
     @Override
     public int argNumber() {
         return 1;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         if(position == 0) return Returnable.ReturnType.NUMBER;

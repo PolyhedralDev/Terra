@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,7 +22,7 @@ public abstract class BiomeProviderTemplate implements ObjectTemplate<BiomeProvi
     @Default
     @Description("""
                  The resolution at which to sample biomes.
-                                  
+                 
                  Larger values are quadratically faster, but produce lower quality results.
                  For example, a value of 3 would sample every 3 blocks.""")
     protected @Meta int resolution = 1;

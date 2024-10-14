@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,9 +23,9 @@ public class UserDefinedBiome implements Biome {
     private final BiomeTemplate config;
     private final int color;
     private final Set<String> tags;
-    
+
     private final Context context = new Context();
-    
+
     public UserDefinedBiome(PlatformBiome vanilla, BiomeTemplate config) {
         this.vanilla = vanilla;
         this.id = config.getID();
@@ -35,12 +35,12 @@ public class UserDefinedBiome implements Biome {
         tags.add("BIOME:" + id);
         tags.add("ALL");
     }
-    
+
     @Override
     public String toString() {
         return "{BIOME:" + getID() + "}";
     }
-    
+
     /**
      * Gets the Vanilla biomes to represent the custom biome.
      *
@@ -50,26 +50,26 @@ public class UserDefinedBiome implements Biome {
     public PlatformBiome getPlatformBiome() {
         return vanilla;
     }
-    
+
     @Override
     public int getColor() {
         return color;
     }
-    
+
     @Override
     public Set<String> getTags() {
         return tags;
     }
-    
+
     @Override
     public String getID() {
         return id;
     }
-    
+
     public BiomeTemplate getConfig() {
         return config;
     }
-    
+
     @Override
     public Context getContext() {
         return context;

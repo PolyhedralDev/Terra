@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,7 +23,7 @@ public class BiomeStructuresTemplate implements ObjectTemplate<BiomeStructures> 
     @Value("structures")
     @Default
     private @Meta Set<@Meta ConfiguredStructure> structures = Collections.emptySet();
-    
+
     @Override
     public BiomeStructures get() {
         return new BiomeStructures(structures);

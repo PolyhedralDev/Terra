@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -15,12 +15,12 @@ import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
 
 public interface BiomeHolder {
     BiomeHolder expand(BiomeExpander expander, long seed);
-    
+
     void mutate(BiomeMutator mutator, long seed);
-    
+
     void fill(BiomeSource source, long seed);
-    
+
     BiomeDelegate getBiome(int x, int z);
-    
+
     BiomeDelegate getBiomeRaw(int x, int z);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -14,10 +14,10 @@ import com.dfsek.terra.api.inventory.item.Enchantment;
 
 
 public interface ItemHandle {
-    
+
     Item createItem(String data);
-    
+
     Enchantment getEnchantment(String id);
-    
+
     Set<Enchantment> getEnchantments();
 }

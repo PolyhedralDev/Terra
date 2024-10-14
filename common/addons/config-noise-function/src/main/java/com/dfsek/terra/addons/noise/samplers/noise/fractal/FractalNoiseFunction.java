@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,14 +18,14 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
     protected double gain = 0.5;
     protected double lacunarity = 2.0d;
     protected double weightedStrength = 0.0d;
-    
+
     public FractalNoiseFunction(NoiseSampler input) {
         this.input = input;
         frequency = 1;
     }
-    
+
     protected void calculateFractalBounding() {
-        double gain = fastAbs(this.gain);
+        double gain = Math.abs(this.gain);
         double amp = gain;
         double ampFractal = 1.0;
         for(int i = 1; i < octaves; i++) {
@@ -34,21 +34,21 @@ public abstract class FractalNoiseFunction extends NoiseFunction {
         }
         fractalBounding = 1 / ampFractal;
     }
-    
+
     public void setGain(double gain) {
         this.gain = gain;
         calculateFractalBounding();
     }
-    
+
     public void setLacunarity(double lacunarity) {
         this.lacunarity = lacunarity;
     }
-    
+
     public void setOctaves(int octaves) {
         this.octaves = octaves;
         calculateFractalBounding();
     }
-    
+
     public void setWeightedStrength(double weightedStrength) {
         this.weightedStrength = weightedStrength;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -17,10 +17,10 @@ public interface RegistryHolder {
     default <T> Registry<T> getRegistry(Class<T> clazz) {
         return getRegistry((Type) clazz);
     }
-    
+
     default <T> Registry<T> getRegistry(TypeKey<T> type) {
         return getRegistry(type.getType());
     }
-    
+
     <T> Registry<T> getRegistry(Type type);
 }

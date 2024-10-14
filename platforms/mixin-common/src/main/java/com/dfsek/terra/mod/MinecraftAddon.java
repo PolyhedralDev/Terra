@@ -37,37 +37,37 @@ public abstract class MinecraftAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
     private static final Logger logger = LoggerFactory.getLogger(MinecraftAddon.class);
     private final ModPlatform modPlatform;
-    
+
     public MinecraftAddon(ModPlatform modPlatform) {
         this.modPlatform = modPlatform;
     }
-    
+
     @Override
     public void initialize() {
         modPlatform.getEventManager()
-                   .getHandler(FunctionalEventHandler.class)
-                   .register(this, ConfigPackPreLoadEvent.class)
-                   .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
-                   .global();
-        
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPreLoadEvent.class)
+            .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
+            .global();
+
         modPlatform.getEventManager()
-                   .getHandler(FunctionalEventHandler.class)
-                   .register(this, ConfigPackPostLoadEvent.class)
-                   .then(event -> event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions())))
-                   .priority(100)
-                   .global();
-        
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPostLoadEvent.class)
+            .then(event -> event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions())))
+            .priority(100)
+            .global();
+
         modPlatform.getEventManager()
-                   .getHandler(FunctionalEventHandler.class)
-                   .register(this, ConfigurationLoadEvent.class)
-                   .then(event -> {
-                       if(event.is(Biome.class)) {
-                           event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
-                       }
-                   })
-                   .global();
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigurationLoadEvent.class)
+            .then(event -> {
+                if(event.is(Biome.class)) {
+                    event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
+                }
+            })
+            .global();
     }
-    
+
     @Override
     public Version getVersion() {
         return VERSION;

@@ -11,19 +11,19 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 public class StructureMutatorAddon implements AddonInitializer {
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
-    
+
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    event.getPack().registerConfigType(new MutatedStructureConfigType(addon), addon.key("MUTATED_STRUCTURE"), 499);
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                event.getPack().registerConfigType(new MutatedStructureConfigType(addon), addon.key("MUTATED_STRUCTURE"), 499);
+            })
+            .failThrough();
     }
 }

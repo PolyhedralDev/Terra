@@ -19,7 +19,6 @@ package com.dfsek.terra.addons.chunkgenerator.generation.math.samplers;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
-import net.jafama.FastMath;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.Platform;
@@ -33,29 +32,29 @@ public class SamplerProvider {
     private final int elevationSmooth;
     private final PropertyKey<BiomeNoiseProperties> noisePropertiesKey;
     private final int maxBlend;
-    
+
     public SamplerProvider(Platform platform, int elevationSmooth, PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int maxBlend) {
         cache = Caffeine
-                .newBuilder()
-                .maximumSize(platform.getTerraConfig().getSamplerCache())
-                .build();
+            .newBuilder()
+            .maximumSize(platform.getTerraConfig().getSamplerCache())
+            .build();
         this.elevationSmooth = elevationSmooth;
         this.noisePropertiesKey = noisePropertiesKey;
         this.maxBlend = maxBlend;
     }
-    
+
     public Sampler3D get(int x, int z, WorldProperties world, BiomeProvider provider) {
-        int cx = FastMath.floorDiv(x, 16);
-        int cz = FastMath.floorDiv(z, 16);
+        int cx = Math.floorDiv(x, 16);
+        int cz = Math.floorDiv(z, 16);
         return getChunk(cx, cz, world, provider);
     }
-    
+
     public Sampler3D getChunk(int cx, int cz, WorldProperties world, BiomeProvider provider) {
         WorldContext context = new WorldContext(cx, cz, world.getSeed(), world.getMinHeight(), world.getMaxHeight());
         return cache.get(context, c -> new Sampler3D(c.cx, c.cz, c.seed, c.minHeight, c.maxHeight, provider,
-                                                     elevationSmooth, noisePropertiesKey, maxBlend));
+            elevationSmooth, noisePropertiesKey, maxBlend));
     }
-    
+
     private record WorldContext(int cx, int cz, long seed, int minHeight, int maxHeight) {
     }
 }

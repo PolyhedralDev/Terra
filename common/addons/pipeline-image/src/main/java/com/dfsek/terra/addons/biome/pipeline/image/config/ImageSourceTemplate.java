@@ -11,13 +11,13 @@ import com.dfsek.terra.addons.image.converter.ColorConverter;
 
 
 public class ImageSourceTemplate implements ObjectTemplate<Source> {
-    
+
     @Value("color-sampler")
     private ColorSampler colorSampler;
-    
+
     @Value("color-conversion")
     private ColorConverter<PipelineBiome> colorConverter;
-    
+
     @Override
     public Source get() {
         return new ImageSource(colorSampler, colorConverter);

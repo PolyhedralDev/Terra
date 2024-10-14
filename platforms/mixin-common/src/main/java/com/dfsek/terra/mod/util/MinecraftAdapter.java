@@ -25,28 +25,28 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 public final class MinecraftAdapter {
-    
+
     public static Vector3 adapt(BlockPos pos) {
         return Vector3.of(pos.getX(), pos.getY(), pos.getZ());
     }
-    
+
     public static WorldProperties adapt(HeightLimitView height, long seed) {
         return new WorldProperties() {
             @Override
             public long getSeed() {
                 return seed;
             }
-            
+
             @Override
             public int getMaxHeight() {
                 return height.getTopY();
             }
-            
+
             @Override
             public int getMinHeight() {
                 return height.getBottomY();
             }
-            
+
             @Override
             public Object getHandle() {
                 return height;

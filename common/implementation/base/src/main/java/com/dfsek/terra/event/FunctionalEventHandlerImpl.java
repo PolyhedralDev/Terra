@@ -39,9 +39,9 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
     private static final Logger logger = LoggerFactory.getLogger(FunctionalEventHandlerImpl.class);
-    
+
     private final Map<Type, List<EventContextImpl<?>>> contextMap = new HashMap<>();
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public void handle(Event event) {
@@ -59,25 +59,25 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                     throw e; // Rethrow if it's fail-through.
                 // else warn
                 logger.warn("Exception occurred during event handling. Report this to the maintainers of {}@{}",
-                            context.getAddon().getID(), context.getAddon().getVersion().getFormatted(), e);
+                    context.getAddon().getID(), context.getAddon().getVersion().getFormatted(), e);
             }
         });
     }
-    
+
     @Override
     public <T extends Event> EventContext<T> register(BaseAddon addon, Class<T> clazz) {
         EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz, this);
         contextMap.computeIfAbsent(clazz, c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
-    
+
     @Override
     public <T extends Event> EventContext<T> register(BaseAddon addon, TypeKey<T> clazz) {
         EventContextImpl<T> eventContext = new EventContextImpl<>(addon, clazz.getType(), this);
         contextMap.computeIfAbsent(clazz.getType(), c -> new ArrayList<>()).add(eventContext);
         return eventContext;
     }
-    
+
     public void recomputePriorities(Type target) {
         contextMap.get(target).sort(Comparator.naturalOrder());
     }

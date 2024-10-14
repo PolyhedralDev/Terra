@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -21,20 +21,20 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default
     private CellularSampler.@Meta DistanceFunction cellularDistanceFunction = CellularSampler.DistanceFunction.EuclideanSq;
-    
+
     @Value("return")
     @Default
     private CellularSampler.@Meta ReturnType cellularReturnType = CellularSampler.ReturnType.Distance;
-    
+
     @Value("jitter")
     @Default
     private @Meta double cellularJitter = 1.0D;
-    
-    
+
+
     @Value("lookup")
     @Default
     private @Meta NoiseSampler lookup = new OpenSimplex2Sampler();
-    
+
     @Override
     public NoiseSampler get() {
         CellularSampler sampler = new CellularSampler();

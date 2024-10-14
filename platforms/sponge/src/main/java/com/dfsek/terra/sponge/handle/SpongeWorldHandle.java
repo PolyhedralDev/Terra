@@ -29,21 +29,21 @@ import com.dfsek.terra.sponge.block.SpongeBlockState;
 
 public class SpongeWorldHandle implements WorldHandle {
     private final Lazy<SpongeBlockState> air;
-    
+
     public SpongeWorldHandle() {
         air = Lazy.lazy(() -> new SpongeBlockState(BlockTypes.AIR.get().defaultState()));
     }
-    
+
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         return new SpongeBlockState(org.spongepowered.api.block.BlockState.fromString(data));
     }
-    
+
     @Override
     public @NotNull BlockState air() {
         return air.value();
     }
-    
+
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
         throw new UnsupportedOperationException();

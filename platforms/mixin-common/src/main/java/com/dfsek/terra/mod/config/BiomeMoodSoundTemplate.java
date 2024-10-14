@@ -12,19 +12,19 @@ public class BiomeMoodSoundTemplate implements ObjectTemplate<BiomeMoodSound> {
     @Value("sound")
     @Default
     private SoundEvent sound = null;
-    
+
     @Value("cultivation-ticks")
     @Default
     private Integer soundCultivationTicks = null;
-    
+
     @Value("spawn-range")
     @Default
     private Integer soundSpawnRange = null;
-    
+
     @Value("extra-distance")
     @Default
     private Double soundExtraDistance = null;
-    
+
     @Override
     public BiomeMoodSound get() {
         if(sound == null || soundCultivationTicks == null || soundSpawnRange == null || soundExtraDistance == null) {

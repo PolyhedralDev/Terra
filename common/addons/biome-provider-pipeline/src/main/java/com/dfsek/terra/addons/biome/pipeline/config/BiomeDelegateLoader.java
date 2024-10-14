@@ -15,18 +15,18 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public class BiomeDelegateLoader implements TypeLoader<BiomeDelegate> {
     private final Registry<Biome> biomeRegistry;
-    
+
     public BiomeDelegateLoader(Registry<Biome> biomeRegistry) {
         this.biomeRegistry = biomeRegistry;
     }
-    
+
     @Override
     public BiomeDelegate load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
         if(c.equals("SELF")) return BiomeDelegate.self();
         return biomeRegistry
-                .getByID((String) c)
-                .map(BiomeDelegate::from)
-                .orElseGet(() -> BiomeDelegate.ephemeral((String) c));
+            .getByID((String) c)
+            .map(BiomeDelegate::from)
+            .orElseGet(() -> BiomeDelegate.ephemeral((String) c));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -26,7 +26,7 @@ public class TerraImplementationArguments implements ImplementationArguments {
     private final int recursions;
     private final Vector3Int origin;
     private boolean waterlog = false;
-    
+
     public TerraImplementationArguments(Vector3Int origin, Rotation rotation, Random random, WritableWorld world, int recursions) {
         this.rotation = rotation;
         this.random = random;
@@ -34,39 +34,39 @@ public class TerraImplementationArguments implements ImplementationArguments {
         this.recursions = recursions;
         this.origin = origin;
     }
-    
+
     public int getRecursions() {
         return recursions;
     }
-    
+
     public Random getRandom() {
         return random;
     }
-    
+
     public Rotation getRotation() {
         return rotation;
     }
-    
+
     public boolean isWaterlog() {
         return waterlog;
     }
-    
+
     public void setWaterlog(boolean waterlog) {
         this.waterlog = waterlog;
     }
-    
+
     public WritableWorld getWorld() {
         return world;
     }
-    
+
     public Vector3Int getOrigin() {
         return origin;
     }
-    
+
     public void setMark(Vector3 pos, String mark) {
         marks.put(pos, mark);
     }
-    
+
     public String getMark(Vector3 pos) {
         return marks.get(pos);
     }

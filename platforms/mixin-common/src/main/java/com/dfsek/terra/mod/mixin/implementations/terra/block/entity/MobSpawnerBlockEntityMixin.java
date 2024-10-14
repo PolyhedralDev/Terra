@@ -21,12 +21,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
+import net.minecraft.block.spawner.MobSpawnerLogic;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.registry.Registry;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.MobSpawnerLogic;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -46,78 +45,85 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
     private MobSpawnerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
-    
+
     @Shadow
     public abstract MobSpawnerLogic getLogic();
-    
+
+    //method_46408
     @Shadow
     public abstract void setEntityType(net.minecraft.entity.EntityType<?> entityType, Random random);
-    
+
     public EntityType terra$getSpawnedType() {
         return (EntityType) Registries.ENTITY_TYPE.get(
-                Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
+            Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id")));
     }
-    
+
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
-        setEntityType((net.minecraft.entity.EntityType<?>) creatureType, world.getRandom());
+        Random rand;
+        if(hasWorld()) {
+            rand = world.getRandom();
+        } else {
+            rand = Random.create();
+        }
+        setEntityType((net.minecraft.entity.EntityType<?>) creatureType, rand);
     }
-    
+
     public int terra$getDelay() {
         return 0;
     }
-    
+
     public void terra$setDelay(int delay) {
 
     }
-    
+
     public int terra$getMinSpawnDelay() {
         return 0;
     }
-    
+
     public void terra$setMinSpawnDelay(int delay) {
 
     }
-    
+
     public int terra$getMaxSpawnDelay() {
         return 0;
     }
-    
+
     public void terra$setMaxSpawnDelay(int delay) {
 
     }
-    
+
     public int terra$getSpawnCount() {
         return 0;
     }
-    
+
     public void terra$setSpawnCount(int spawnCount) {
 
     }
-    
+
     public int terra$getMaxNearbyEntities() {
         return 0;
     }
-    
+
     public void terra$setMaxNearbyEntities(int maxNearbyEntities) {
 
     }
-    
+
     public int terra$getRequiredPlayerRange() {
         return 0;
     }
-    
+
     public void terra$setRequiredPlayerRange(int requiredPlayerRange) {
 
     }
-    
+
     public int terra$getSpawnRange() {
         return 0;
     }
-    
+
     public void terra$setSpawnRange(int spawnRange) {
 
     }
-    
+
     public void terra$applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {

@@ -51,13 +51,13 @@ assignees: ""
 
 <!-- You can fill out the different items by putting the correct value beside each cell. -->
 
-| Name                         | Value |
-|------------------------------|-------|
-| Terra Version                | <!-- Put your Terra version here. (remove the comment) -->
-| Platform / Platform Version  | <!-- Put your platform and platform version here. (remove the comment) (eg. Spigot, Fabric, Paper, etc.) (If you are using the Region generator, put that here instead) -->
-| Any External Plugins or Mods | <!-- Put a list of all the plugins or mods you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->
-| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te packs may be used to get a list) -->
-| Terra Addons In Use          | <!-- Put a list of all the Terra addons you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te addons may be used to get a list) -->
+| Name                         | Value                                                                                                                                                                       |
+|------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Terra Version                | <!-- Put your Terra version here. (remove the comment) -->                                                                                                                  
+| Platform / Platform Version  | <!-- Put your platform and platform version here. (remove the comment) (eg. Spigot, Fabric, Paper, etc.) (If you are using the Region generator, put that here instead) --> 
+| Any External Plugins or Mods | <!-- Put a list of all the plugins or mods you have installed here. (remove the comment) (Make sure to NOT include any new lines) -->                                       
+| Terra Packs In Use           | <!-- Put a list of all the Terra packs you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te packs may be used to get a list) -->     
+| Terra Addons In Use          | <!-- Put a list of all the Terra addons you have installed here. (remove the comment) (Make sure to NOT include any new lines) (/te addons may be used to get a list) -->   
 
 ## Issue Description
 

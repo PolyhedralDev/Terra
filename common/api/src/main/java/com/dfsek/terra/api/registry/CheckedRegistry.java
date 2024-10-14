@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -24,7 +24,7 @@ public interface CheckedRegistry<T> extends Registry<T> {
      * @throws DuplicateEntryException If an entry with the same identifier is already present.
      */
     void register(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException;
-    
+
     @SuppressWarnings("unchecked")
     default void register(@NotNull Keyed<? extends T> value) throws DuplicateEntryException {
         register(value.getRegistryKey(), (T) value);

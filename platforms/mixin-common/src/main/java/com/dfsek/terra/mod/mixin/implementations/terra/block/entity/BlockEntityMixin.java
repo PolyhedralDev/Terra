@@ -31,23 +31,23 @@ public abstract class BlockEntityMixin {
     public boolean terra$update(boolean applyPhysics) {
         if(((net.minecraft.block.entity.BlockEntity) (Object) this).hasWorld()) //noinspection ConstantConditions
             ((net.minecraft.block.entity.BlockEntity) (Object) this).getWorld().getChunk(
-                    ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos()).setBlockEntity(
-                    (net.minecraft.block.entity.BlockEntity) (Object) this);
+                ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos()).setBlockEntity(
+                (net.minecraft.block.entity.BlockEntity) (Object) this);
         return true;
     }
-    
+
     public int terra$getX() {
         return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getX();
     }
-    
+
     public int terra$getY() {
         return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getY();
     }
-    
+
     public int terra$getZ() {
         return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getZ();
     }
-    
+
     public BlockState terra$getBlockState() {
         return (BlockState) ((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState();
     }

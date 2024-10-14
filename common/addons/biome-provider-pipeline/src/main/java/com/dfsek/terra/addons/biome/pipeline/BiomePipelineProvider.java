@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -9,7 +9,6 @@ package com.dfsek.terra.addons.biome.pipeline;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import net.jafama.FastMath;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -33,18 +32,18 @@ public class BiomePipelineProvider implements BiomeProvider {
     private final int resolution;
     private final NoiseSampler mutator;
     private final double noiseAmp;
-    
+
     private final Set<Biome> biomes;
-    
+
     public BiomePipelineProvider(BiomePipeline pipeline, int resolution, NoiseSampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
         holderCache = Caffeine.newBuilder()
-                              .maximumSize(1024)
-                              .build(key -> pipeline.getBiomes(key.x, key.z, key.seed));
+            .maximumSize(1024)
+            .build(key -> pipeline.getBiomes(key.x, key.z, key.seed));
         this.pipeline = pipeline;
-        
+
         Set<BiomeDelegate> biomeSet = new HashSet<>();
         pipeline.getSource().getBiomes().forEach(biomeSet::add);
         Iterable<BiomeDelegate> result = biomeSet;
@@ -55,16 +54,16 @@ public class BiomePipelineProvider implements BiomeProvider {
         Iterable<BiomeDelegate> finalResult = result;
         result.forEach(biomeDelegate -> {
             if(biomeDelegate.isEphemeral()) {
-                
+
                 StringBuilder biomeList = new StringBuilder("\n");
                 StreamSupport.stream(finalResult.spliterator(), false)
-                             .sorted(Comparator.comparing(StringIdentifiable::getID))
-                             .forEach(delegate -> biomeList
-                                     .append("    - ")
-                                     .append(delegate.getID())
-                                     .append(':')
-                                     .append(delegate.getClass().getCanonicalName())
-                                     .append('\n'));
+                    .sorted(Comparator.comparing(StringIdentifiable::getID))
+                    .forEach(delegate -> biomeList
+                        .append("    - ")
+                        .append(delegate.getID())
+                        .append(':')
+                        .append(delegate.getClass().getCanonicalName())
+                        .append('\n'));
                 throw new IllegalArgumentException("Biome Pipeline leaks ephemeral biome \"" + biomeDelegate.getID() +
                                                    "\". Ensure there is a stage to guarantee replacement of the ephemeral biome. Biomes: " +
                                                    biomeList);
@@ -72,12 +71,12 @@ public class BiomePipelineProvider implements BiomeProvider {
             this.biomes.add(biomeDelegate.getBiome());
         });
     }
-    
+
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         return getBiome(x, z, seed);
     }
-    
+
     public Biome getBiome(int x, int z, long seed) {
         x += mutator.noise(seed + 1, x, z) * noiseAmp;
         z += mutator.noise(seed + 2, x, z) * noiseAmp;
@@ -86,32 +85,32 @@ public class BiomePipelineProvider implements BiomeProvider {
         x /= resolution;
         z /= resolution;
 
-        int fdX = FastMath.floorDiv(x, pipeline.getSize());
-        int fdZ = FastMath.floorDiv(z, pipeline.getSize());
+        int fdX = Math.floorDiv(x, pipeline.getSize());
+        int fdZ = Math.floorDiv(z, pipeline.getSize());
         return holderCache.get(new SeededVector(fdX, fdZ, seed)).getBiome(x - fdX * pipeline.getSize(),
-                                                                          z - fdZ * pipeline.getSize()).getBiome();
+            z - fdZ * pipeline.getSize()).getBiome();
     }
-    
+
     @Override
     public Optional<Biome> getBaseBiome(int x, int z, long seed) {
         return Optional.of(getBiome(x, z, seed));
     }
-    
+
     @Override
     public Iterable<Biome> getBiomes() {
         return biomes;
     }
-    
+
     @Override
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return new BiomePipelineColumn(this, min, max, x, z, seed);
     }
-    
+
     @Override
     public int resolution() {
         return resolution;
     }
-    
+
     private record SeededVector(int x, int z, long seed) {
         @Override
         public boolean equals(Object obj) {

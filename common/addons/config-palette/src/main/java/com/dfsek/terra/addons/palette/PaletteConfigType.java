@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,21 +20,21 @@ public class PaletteConfigType implements ConfigType<PaletteTemplate, Palette> {
     };
     private final PaletteFactory factory = new PaletteFactory();
     private final Platform platform;
-    
+
     public PaletteConfigType(Platform platform) {
         this.platform = platform;
     }
-    
+
     @Override
     public PaletteTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new PaletteTemplate();
     }
-    
+
     @Override
     public ConfigFactory<PaletteTemplate, Palette> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<Palette> getTypeKey() {
         return PALETTE_TYPE_TOKEN;

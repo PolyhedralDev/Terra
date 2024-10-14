@@ -15,7 +15,7 @@ public class BiomeStructuresTemplate implements ObjectTemplate<BiomeStructures> 
     @Value("features")
     @Default
     private @Meta List<@Meta ConfiguredStructure> features = Collections.emptyList();
-    
+
     @Override
     public BiomeStructures get() {
         return new BiomeStructures(features);

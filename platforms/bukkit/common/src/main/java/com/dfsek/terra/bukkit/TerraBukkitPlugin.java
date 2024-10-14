@@ -17,13 +17,16 @@
 
 package com.dfsek.terra.bukkit;
 
-import cloud.commandframework.brigadier.CloudBrigadierManager;
-import cloud.commandframework.bukkit.CloudBukkitCapabilities;
-import cloud.commandframework.execution.CommandExecutionCoordinator;
-import cloud.commandframework.paper.PaperCommandManager;
+import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
+import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.incendo.cloud.SenderMapper;
+import org.incendo.cloud.brigadier.CloudBrigadierManager;
+import org.incendo.cloud.bukkit.CloudBukkitCapabilities;
+import org.incendo.cloud.execution.ExecutionCoordinator;
+import org.incendo.cloud.paper.LegacyPaperCommandManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -31,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -46,67 +50,86 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
-    
+
     private final PlatformImpl platform = new PlatformImpl(this);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
-    
+
+    private AsyncScheduler asyncScheduler = this.getServer().getAsyncScheduler();
+
+    private GlobalRegionScheduler globalRegionScheduler = this.getServer().getGlobalRegionScheduler();
+
     @Override
     public void onEnable() {
         if(!doVersionCheck()) {
             return;
         }
-        
+
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
-        
-        
+
+        if(!Initializer.init(platform)) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         try {
-            PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(this,
-                                                                                          CommandExecutionCoordinator.simpleCoordinator(),
-                                                                                          BukkitAdapter::adapt,
-                                                                                          BukkitAdapter::adapt);
-            if(commandManager.queryCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
-                commandManager.registerBrigadier();
-                final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
-                if(brigManager != null) {
-                    brigManager.setNativeNumberSuggestions(false);
-                }
-            }
-            
-            if(commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
-                commandManager.registerAsynchronousCompletions();
-            }
-            
+            LegacyPaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
+
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
-            
+
         } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
-                                                  
+                         
                          Errors occurred while registering commands.
                          Please report this to Terra.
                          """.strip(), e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        
+
         Bukkit.getPluginManager().registerEvents(new CommonListener(), this); // Register master event listener
         PaperUtil.checkPaper(this);
-
-        Initializer.init(platform);
     }
-    
+
+    @NotNull
+    private LegacyPaperCommandManager<CommandSender> getCommandSenderPaperCommandManager() throws Exception {
+        // TODO: Update to PaperCommandManager
+        LegacyPaperCommandManager<CommandSender> commandManager = new LegacyPaperCommandManager<>(
+            this,
+            ExecutionCoordinator.simpleCoordinator(),
+            SenderMapper.create(
+                BukkitAdapter::adapt,
+                BukkitAdapter::adapt
+            ));
+
+        if(commandManager.hasCapability(CloudBukkitCapabilities.NATIVE_BRIGADIER)) {
+            commandManager.registerBrigadier();
+            final CloudBrigadierManager<?, ?> brigManager = commandManager.brigadierManager();
+            if(brigManager != null) {
+                brigManager.setNativeNumberSuggestions(false);
+            }
+        } else if(commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+            commandManager.registerAsynchronousCompletions();
+        }
+
+        return commandManager;
+    }
+
     public PlatformImpl getPlatform() {
         return platform;
     }
-    
+
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
         logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(),
-                    Bukkit.getServer().getName());
-        
+            Bukkit.getServer().getName());
+
         if(!VersionUtil.getSpigotVersionInfo().isSpigot())
             logger.error("YOU ARE RUNNING A CRAFTBUKKIT OR BUKKIT SERVER. PLEASE UPGRADE TO PAPER.");
-        
+
+        if(!VersionUtil.getSpigotVersionInfo().isPaper())
+            logger.error("YOU ARE RUNNING A SPIGOT SERVER. PLEASE UPGRADE TO PAPER.");
+
         if(VersionUtil.getSpigotVersionInfo().isMohist()) {
             if(System.getProperty("IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways") == null) {
                 Runnable runnable = () -> { // scary big block of text
@@ -150,7 +173,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                                  """.strip());
                 };
                 runnable.run();
-                Bukkit.getScheduler().scheduleAsyncDelayedTask(this, runnable, 200L);
+                asyncScheduler.runDelayed(this, task -> runnable.run(), 200L, TimeUnit.SECONDS);
                 // Bukkit.shutdown(); // we're not *that* evil
                 Bukkit.getPluginManager().disablePlugin(this);
                 return false;
@@ -158,7 +181,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 logger.warn("""
                             You are using Mohist, so we will not give you any support for issues that may arise.
                             Since you enabled the "IKnowMohistCausesLotsOfIssuesButIWillUseItAnyways" flag, we won't disable Terra. But be warned.
-                                                        
+                            
                             > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
                             > I fear something terrible has happened.
                             > - Astrash
@@ -167,14 +190,23 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
         return true;
     }
-    
+
     @Override
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
+        if(id == null || id.trim().equals("")) { return null; }
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
-                    () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
+                () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
         }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+    }
+
+    public AsyncScheduler getAsyncScheduler() {
+        return asyncScheduler;
+    }
+
+    public GlobalRegionScheduler getGlobalRegionScheduler() {
+        return globalRegionScheduler;
     }
 }

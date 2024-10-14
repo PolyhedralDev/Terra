@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -19,7 +19,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
 public class AmountFunction implements LootFunction {
     private final int max;
     private final int min;
-    
+
     /**
      * Instantiates an AmountFunction.
      *
@@ -30,7 +30,7 @@ public class AmountFunction implements LootFunction {
         this.min = min;
         this.max = max;
     }
-    
+
     /**
      * Applies the function to an ItemStack.
      *

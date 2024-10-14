@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -11,34 +11,34 @@ public class Token {
     private final String content;
     private final Type type;
     private final Position start;
-    
+
     public Token(String content, Type type, Position start) {
         this.content = content;
         this.type = type;
         this.start = start;
     }
-    
+
     @Override
     public String toString() {
         return type + ": '" + content + "'";
     }
-    
+
     public Type getType() {
         return type;
     }
-    
+
     public String getContent() {
         return content;
     }
-    
+
     public Position getPosition() {
         return start;
     }
-    
+
     public boolean isConstant() {
         return this.type.equals(Type.NUMBER) || this.type.equals(Type.STRING) || this.type.equals(Type.BOOLEAN);
     }
-    
+
     public boolean isBinaryOperator() {
         return type.equals(Type.ADDITION_OPERATOR)
                || type.equals(Type.SUBTRACTION_OPERATOR)
@@ -54,7 +54,7 @@ public class Token {
                || type.equals(Type.BOOLEAN_AND)
                || type.equals(Type.MODULO_OPERATOR);
     }
-    
+
     public boolean isStrictNumericOperator() {
         return type.equals(Type.SUBTRACTION_OPERATOR)
                || type.equals(Type.MULTIPLICATION_OPERATOR)
@@ -65,34 +65,34 @@ public class Token {
                || type.equals(Type.GREATER_THAN_OR_EQUALS_OPERATOR)
                || type.equals(Type.MODULO_OPERATOR);
     }
-    
+
     public boolean isStrictBooleanOperator() {
         return type.equals(Type.BOOLEAN_AND)
                || type.equals(Type.BOOLEAN_OR);
     }
-    
+
     public boolean isVariableDeclaration() {
         return type.equals(Type.STRING_VARIABLE)
                || type.equals(Type.BOOLEAN_VARIABLE)
                || type.equals(Type.NUMBER_VARIABLE);
     }
-    
+
     public boolean isLoopLike() {
         return type.equals(Type.IF_STATEMENT)
                || type.equals(Type.WHILE_LOOP)
                || type.equals(Type.FOR_LOOP);
     }
-    
+
     public boolean isIdentifier() {
         return type.equals(Type.IDENTIFIER);
     }
-    
+
     public enum Type {
         /**
          * Function identifier or language keyword
          */
         IDENTIFIER,
-        
+
         /**
          * Numeric literal
          */

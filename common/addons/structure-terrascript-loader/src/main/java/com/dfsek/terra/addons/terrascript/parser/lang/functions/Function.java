@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -30,12 +30,12 @@ public interface Function<T> extends Returnable<T> {
             return null;
         }
     };
-    
+
     @Override
     default double applyDouble(ImplementationArguments implementationArguments, Scope scope) {
         return ((Number) apply(implementationArguments, scope)).doubleValue();
     }
-    
+
     @Override
     default boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return (Boolean) apply(implementationArguments, scope);

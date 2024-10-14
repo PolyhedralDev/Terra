@@ -34,20 +34,20 @@ import com.dfsek.terra.api.registry.Registry;
 
 public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
     private final Registry<Supplier<ObjectTemplate<T>>> registry;
-    
+
     public GenericTemplateSupplierLoader(Registry<Supplier<ObjectTemplate<T>>> registry) {
         this.registry = registry;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public T load(@NotNull AnnotatedType t, @NotNull Object c, ConfigLoader loader, DepthTracker depthTracker) throws LoadException {
         Map<String, Object> map = (Map<String, Object>) c;
         String type = (String) map.get("type");
         return loader
-                .load(registry.getByID(type)
-                              .orElseThrow(() -> new LoadException("No such entry: " + map.get("type"), depthTracker))
-                              .get(), new MapConfiguration(map), depthTracker.intrinsic("With type \"" + type + "\"")).get();
-        
+            .load(registry.getByID(type)
+                .orElseThrow(() -> new LoadException("No such entry: " + map.get("type"), depthTracker))
+                .get(), new MapConfiguration(map), depthTracker.intrinsic("With type \"" + type + "\"")).get();
+
     }
 }

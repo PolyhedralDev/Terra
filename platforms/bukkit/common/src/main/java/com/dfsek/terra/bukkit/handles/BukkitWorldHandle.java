@@ -20,44 +20,45 @@ package com.dfsek.terra.bukkit.handles;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Locale;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
-import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 
 public class BukkitWorldHandle implements WorldHandle {
+    private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
     private final BlockState air;
-    
+
     public BukkitWorldHandle() {
         this.air = BukkitBlockState.newInstance(Material.AIR.createBlockData());
     }
-    
+
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+        if(data.equals("minecraft:grass")) { //TODO: remove in 7.0
+            data = "minecraft:short_grass";
+            logger.warn(
+                "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
+                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
+                "version of Terra.");
+        }
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
-                data); // somehow bukkit managed to make this not thread safe! :)
+            data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
     }
-    
+
     @Override
     public @NotNull BlockState air() {
         return air;
     }
-    
+
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
-        String entityID = id.toUpperCase(Locale.ROOT).substring(10);
-        
-        return new BukkitEntityType(switch(entityID) {
-            case "END_CRYSTAL" -> org.bukkit.entity.EntityType.ENDER_CRYSTAL;
-            case "ENDER_CRYSTAL" -> throw new IllegalArgumentException("Invalid entity identifier " + id); // make sure this issue can't happen the other way around.
-            default -> org.bukkit.entity.EntityType.valueOf(entityID);
-        });
+        return BukkitUtils.getEntityType(id);
     }
 }

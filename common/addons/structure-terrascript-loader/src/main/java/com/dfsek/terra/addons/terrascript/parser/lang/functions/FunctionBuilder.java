@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -15,8 +15,8 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 public interface FunctionBuilder<T extends Function<?>> {
     T build(List<Returnable<?>> argumentList, Position position);
-    
+
     int argNumber();
-    
+
     Returnable.ReturnType getArgument(int position);
 }

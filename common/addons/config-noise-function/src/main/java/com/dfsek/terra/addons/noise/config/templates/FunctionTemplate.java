@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,31 +22,31 @@ import com.dfsek.terra.api.config.meta.Meta;
 public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     @Value("arguments")
     private List<String> args;
-    
+
     @Value("expression")
     private @Meta String function;
-    
+
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
-    
+
     @Override
     public FunctionTemplate get() {
         return this;
     }
-    
+
     public List<String> getArgs() {
         return args;
     }
-    
+
     public String getFunction() {
         return function;
     }
-    
+
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return functions;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
@@ -54,7 +54,7 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
         FunctionTemplate that = (FunctionTemplate) o;
         return args.equals(that.args) && function.equals(that.function) && functions.equals(that.functions);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(args, function, functions);

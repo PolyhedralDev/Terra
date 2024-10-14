@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -19,17 +19,17 @@ public class StructureConfigType implements ConfigType<StructureTemplate, Config
     public static final TypeKey<ConfiguredStructure> CONFIGURED_STRUCTURE_TYPE_KEY = new TypeKey<>() {
     };
     private final ConfigFactory<StructureTemplate, ConfiguredStructure> factory = new StructureFactory();
-    
+
     @Override
     public StructureTemplate getTemplate(ConfigPack pack, Platform platform) {
         return new StructureTemplate();
     }
-    
+
     @Override
     public ConfigFactory<StructureTemplate, ConfiguredStructure> getFactory() {
         return factory;
     }
-    
+
     @Override
     public TypeKey<ConfiguredStructure> getTypeKey() {
         return CONFIGURED_STRUCTURE_TYPE_KEY;

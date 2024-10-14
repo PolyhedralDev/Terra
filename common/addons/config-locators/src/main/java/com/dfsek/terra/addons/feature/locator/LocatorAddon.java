@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -43,52 +43,52 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class LocatorAddon implements AddonInitializer {
-    
+
     public static final TypeKey<Supplier<ObjectTemplate<Locator>>> LOCATOR_TOKEN = new TypeKey<>() {
     };
     public static final TypeKey<Supplier<ObjectTemplate<Pattern>>> PATTERN_TOKEN = new TypeKey<>() {
     };
     @Inject
     private Platform platform;
-    
+
     @Inject
     private BaseAddon addon;
-    
+
     @Override
     public void initialize() {
         platform.getEventManager()
-                .getHandler(FunctionalEventHandler.class)
-                .register(addon, ConfigPackPreLoadEvent.class)
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
-                    locatorRegistry.register(addon.key("SURFACE"), SurfaceLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("TOP"), TopLocatorTemplate::new);
-            
-                    locatorRegistry.register(addon.key("RANDOM"), RandomLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
-            
-                    locatorRegistry.register(addon.key("PATTERN"), PatternLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
-            
-                    locatorRegistry.register(addon.key("SAMPLER"), SamplerLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
-            
-                    locatorRegistry.register(addon.key("AND"), AndLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("OR"), OrLocatorTemplate::new);
-                    locatorRegistry.register(addon.key("XOR"), XorLocatorTemplate::new);
-                })
-                .then(event -> {
-                    CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
-                    patternRegistry.register(addon.key("MATCH_AIR"), AirMatchPatternTemplate::new);
-                    patternRegistry.register(addon.key("MATCH_SOLID"), SolidMatchPatternTemplate::new);
-                    patternRegistry.register(addon.key("MATCH"), SingleBlockMatchPatternTemplate::new);
-                    patternRegistry.register(addon.key("MATCH_SET"), BlockSetMatchPatternTemplate::new);
-            
-                    patternRegistry.register(addon.key("AND"), AndPatternTemplate::new);
-                    patternRegistry.register(addon.key("OR"), OrPatternTemplate::new);
-                    patternRegistry.register(addon.key("XOR"), XorPatternTemplate::new);
-                    patternRegistry.register(addon.key("NOT"), NotPatternTemplate::new);
-                })
-                .failThrough();
+            .getHandler(FunctionalEventHandler.class)
+            .register(addon, ConfigPackPreLoadEvent.class)
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<Locator>>> locatorRegistry = event.getPack().getOrCreateRegistry(LOCATOR_TOKEN);
+                locatorRegistry.register(addon.key("SURFACE"), SurfaceLocatorTemplate::new);
+                locatorRegistry.register(addon.key("TOP"), TopLocatorTemplate::new);
+
+                locatorRegistry.register(addon.key("RANDOM"), RandomLocatorTemplate::new);
+                locatorRegistry.register(addon.key("GAUSSIAN_RANDOM"), GaussianRandomLocatorTemplate::new);
+
+                locatorRegistry.register(addon.key("PATTERN"), PatternLocatorTemplate::new);
+                locatorRegistry.register(addon.key("ADJACENT_PATTERN"), AdjacentPatternLocatorTemplate::new);
+
+                locatorRegistry.register(addon.key("SAMPLER"), SamplerLocatorTemplate::new);
+                locatorRegistry.register(addon.key("SAMPLER_3D"), Sampler3DLocatorTemplate::new);
+
+                locatorRegistry.register(addon.key("AND"), AndLocatorTemplate::new);
+                locatorRegistry.register(addon.key("OR"), OrLocatorTemplate::new);
+                locatorRegistry.register(addon.key("XOR"), XorLocatorTemplate::new);
+            })
+            .then(event -> {
+                CheckedRegistry<Supplier<ObjectTemplate<Pattern>>> patternRegistry = event.getPack().getOrCreateRegistry(PATTERN_TOKEN);
+                patternRegistry.register(addon.key("MATCH_AIR"), AirMatchPatternTemplate::new);
+                patternRegistry.register(addon.key("MATCH_SOLID"), SolidMatchPatternTemplate::new);
+                patternRegistry.register(addon.key("MATCH"), SingleBlockMatchPatternTemplate::new);
+                patternRegistry.register(addon.key("MATCH_SET"), BlockSetMatchPatternTemplate::new);
+
+                patternRegistry.register(addon.key("AND"), AndPatternTemplate::new);
+                patternRegistry.register(addon.key("OR"), OrPatternTemplate::new);
+                patternRegistry.register(addon.key("XOR"), XorPatternTemplate::new);
+                patternRegistry.register(addon.key("NOT"), NotPatternTemplate::new);
+            })
+            .failThrough();
     }
 }

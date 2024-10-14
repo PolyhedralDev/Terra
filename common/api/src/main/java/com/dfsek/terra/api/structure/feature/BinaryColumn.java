@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -24,7 +24,7 @@ public class BinaryColumn {
     private final int minY;
     private final int maxY;
     private final Lazy<boolean[]> results;
-    
+
     /**
      * Constructs a new {@link BinaryColumn} with all values initiated to {@code false}
      *
@@ -44,7 +44,7 @@ public class BinaryColumn {
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
         this.data = data;
     }
-    
+
     public BinaryColumn(int minY, int maxY, boolean[] data) {
         this.minY = minY;
         this.maxY = maxY;
@@ -52,15 +52,15 @@ public class BinaryColumn {
         if(maxY <= minY) throw new IllegalArgumentException("Max y must be greater than min y");
         this.data = y -> data[y - minY];
     }
-    
+
     public BinaryColumn(Range y, IntToBooleanFunction data) {
         this(y.getMin(), y.getMax(), data);
     }
-    
+
     public static BinaryColumn getNull() {
         return NULL;
     }
-    
+
     /**
      * Get the value at a height.
      *
@@ -71,12 +71,12 @@ public class BinaryColumn {
     public boolean get(int y) {
         return data.apply(y);
     }
-    
-    
+
+
     public boolean contains(int y) {
         return y >= minY && y < maxY;
     }
-    
+
     /**
      * Perform an action for all heights which have been set.
      *
@@ -90,7 +90,7 @@ public class BinaryColumn {
             }
         }
     }
-    
+
     /**
      * Return a {@link BinaryColumn} of equal height with a boolean AND operation applied to each height.
      *
@@ -103,12 +103,12 @@ public class BinaryColumn {
     public BinaryColumn and(BinaryColumn that) {
         int bigMinY = Math.max(this.minY, that.minY); // narrow new column, as areas outside will always be false.
         int smallMaxY = Math.min(this.maxY, that.maxY);
-        
+
         if(bigMinY >= smallMaxY) return getNull();
-        
+
         return new BinaryColumn(bigMinY, smallMaxY, y -> this.get(y) && that.get(y));
     }
-    
+
     /**
      * Return a {@link BinaryColumn} of equal height with a boolean OR operation applied to each height.
      *
@@ -121,18 +121,18 @@ public class BinaryColumn {
     public BinaryColumn or(BinaryColumn that) {
         return or(that, (a, b) -> a.getAsBoolean() || b.getAsBoolean());
     }
-    
+
     public BinaryColumn xor(BinaryColumn that) {
         return or(that, (a, b) -> a.getAsBoolean() ^ b.getAsBoolean());
     }
-    
+
     private BinaryColumn or(BinaryColumn that, BooleanBinaryOperator operator) {
         int smallMinY = Math.min(this.minY, that.minY);
         int bigMaxY = Math.max(this.maxY, that.maxY);
-        
+
         return new BinaryColumn(smallMinY, bigMaxY, y -> operator.apply(() -> this.get(y), () -> that.get(y)));
     }
-    
+
     private interface BooleanBinaryOperator {
         boolean apply(BooleanSupplier a, BooleanSupplier b);
     }

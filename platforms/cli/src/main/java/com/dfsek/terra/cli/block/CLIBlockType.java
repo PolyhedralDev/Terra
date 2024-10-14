@@ -10,7 +10,7 @@ public class CLIBlockType implements BlockType {
     private final boolean solid;
     private final boolean water;
     private final Lazy<CLIBlockState> defaultState;
-    
+
     public CLIBlockType(String value) {
         if(value.contains("[")) throw new IllegalArgumentException("Block Type must not contain properties");
         this.value = value;
@@ -18,22 +18,22 @@ public class CLIBlockType implements BlockType {
         this.water = value.equals("minecraft:water");
         this.defaultState = Lazy.lazy(() -> new CLIBlockState(value));
     }
-    
+
     @Override
     public String getHandle() {
         return value;
     }
-    
+
     @Override
     public BlockState getDefaultState() {
         return defaultState.value();
     }
-    
+
     @Override
     public boolean isSolid() {
         return solid;
     }
-    
+
     @Override
     public boolean isWater() {
         return water;

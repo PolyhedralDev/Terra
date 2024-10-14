@@ -30,14 +30,15 @@ import com.dfsek.terra.api.inventory.ItemStack;
 @Implements(@Interface(iface = com.dfsek.terra.api.inventory.Item.class, prefix = "terra$"))
 public abstract class ItemMixin {
     @Shadow
-    public abstract int getMaxDamage();
-    
+    public abstract net.minecraft.item.ItemStack getDefaultStack();
+
     @SuppressWarnings("ConstantConditions")
     public ItemStack terra$newItemStack(int amount) {
         return (ItemStack) (Object) new net.minecraft.item.ItemStack((Item) (Object) this, amount);
     }
-    
+
     public double terra$getMaxDurability() {
-        return getMaxDamage();
+        //TODO verify this is correct
+        return getDefaultStack().getMaxDamage();
     }
 }

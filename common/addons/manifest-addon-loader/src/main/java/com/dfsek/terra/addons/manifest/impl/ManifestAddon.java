@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -29,34 +29,34 @@ public class ManifestAddon implements BaseAddon {
     private final List<AddonInitializer> initializers;
     @Inject
     private Platform platform;
-    
+
     public ManifestAddon(AddonManifest manifest, List<AddonInitializer> initializers) {
         this.manifest = manifest;
         this.initializers = initializers;
     }
-    
+
     public AddonManifest getManifest() {
         return manifest;
     }
-    
+
     @Override
     public String getID() {
         return manifest.getID();
     }
-    
+
     public void initialize() {
         Injector<BaseAddon> addonInjector = Injector.get(this);
         addonInjector.addExplicitTarget(BaseAddon.class);
-        
+
         Injector<Platform> platformInjector = Injector.get(platform);
         platformInjector.addExplicitTarget(Platform.class);
-        
+
         logger.debug("Initializing addon {}", getID());
-        
+
         initializers.forEach(initializer -> {
             Injector<Logger> loggerInjector = Injector.get(LoggerFactory.getLogger(initializer.getClass()));
             loggerInjector.addExplicitTarget(Logger.class);
-            
+
             logger.debug("Invoking entry point {}", initializer.getClass());
             addonInjector.inject(initializer);
             platformInjector.inject(initializer);
@@ -64,12 +64,12 @@ public class ManifestAddon implements BaseAddon {
             initializer.initialize();
         });
     }
-    
+
     @Override
     public Map<String, VersionRange> getDependencies() {
         return manifest.getDependencies();
     }
-    
+
     @Override
     public Version getVersion() {
         return manifest.getVersion();

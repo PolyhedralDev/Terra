@@ -31,11 +31,11 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 
 
 public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
-    
+
     public MetaValuePreprocessor(Map<String, Configuration> configs) {
         super(configs);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader configLoader, Meta annotation, DepthTracker depthTracker) {
@@ -44,14 +44,14 @@ public class MetaValuePreprocessor extends MetaPreprocessor<Meta> {
             if(value.startsWith("$") // it's a meta value.
                && !value.startsWith("${")) { // it's not a meta string template.
                 Pair<Configuration, Object> pair = getMetaValue(value.substring(1), depthTracker);
-                
+
                 String configName;
                 if(pair.getLeft().getName() == null) {
                     configName = "Anonymous Configuration";
                 } else {
                     configName = pair.getLeft().getName();
                 }
-                
+
                 return (Result<T>) Result.overwrite(pair.getRight(), depthTracker.intrinsic("From configuration \"" + configName + "\""));
             }
         }

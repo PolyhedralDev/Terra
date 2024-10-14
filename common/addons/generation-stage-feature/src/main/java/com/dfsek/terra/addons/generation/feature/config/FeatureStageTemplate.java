@@ -8,6 +8,7 @@ import com.dfsek.tectonic.api.exception.ValidationException;
 
 import com.dfsek.terra.addons.generation.feature.FeatureGenerationStage;
 import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
@@ -17,22 +18,40 @@ public class FeatureStageTemplate implements ObjectTemplate<GenerationStage>, Va
     private final PropertyKey<BiomeFeatures> biomeFeaturesKey;
     @Value("id")
     private String id;
-    
+
     @Value("resolution")
     @Default
     private int resolution = 4;
-    
+
+    @Value("blend.sampler")
+    @Default
+    private NoiseSampler blendSampler = new NoiseSampler() {
+        @Override
+        public double noise(long seed, double x, double y) {
+            return 0;
+        }
+
+        @Override
+        public double noise(long seed, double x, double y, double z) {
+            return 0;
+        }
+    };
+
+    @Value("blend.amplitude")
+    @Default
+    private double blendAmplitude = 0d;
+
     public FeatureStageTemplate(Platform platform, PropertyKey<BiomeFeatures> biomeFeaturesKey) {
         this.platform = platform;
         this.biomeFeaturesKey = biomeFeaturesKey;
     }
-    
-    
+
+
     @Override
     public FeatureGenerationStage get() {
-        return new FeatureGenerationStage(platform, id, resolution, biomeFeaturesKey);
+        return new FeatureGenerationStage(platform, id, resolution, biomeFeaturesKey, blendSampler, blendAmplitude);
     }
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(!(resolution == 1
@@ -40,7 +59,7 @@ public class FeatureStageTemplate implements ObjectTemplate<GenerationStage>, Va
              || resolution == 4
              || resolution == 8
              || resolution == 16)) throw new ValidationException(
-                "Resolution must be power of 2 less than or equal to 16 (1, 2, 4, 8, 16), got: " + resolution);
+            "Resolution must be power of 2 less than or equal to 16 (1, 2, 4, 8, 16), got: " + resolution);
         return true;
     }
 }

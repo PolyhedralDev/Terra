@@ -11,7 +11,7 @@ public class ClosestBiomeColorConverterTemplate extends ClosestColorConverterTem
 
     @Value("match")
     private ColorMapping<Biome> match;
-    
+
     @Override
     protected ColorMapping<Biome> getMapping() {
         return match;

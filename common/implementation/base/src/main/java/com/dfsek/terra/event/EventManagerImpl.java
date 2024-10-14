@@ -28,22 +28,22 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 
 public class EventManagerImpl implements EventManager {
     private final Map<Class<?>, EventHandler> handlers = new HashMap<>();
-    
+
     public EventManagerImpl() {
         registerHandler(FunctionalEventHandler.class, new FunctionalEventHandlerImpl()); // default handler
     }
-    
+
     @Override
     public <T extends Event> T callEvent(T event) {
         handlers.values().forEach(handler -> handler.handle(event));
         return event;
     }
-    
+
     @Override
     public <T extends EventHandler> void registerHandler(Class<T> clazz, T handler) {
         handlers.put(clazz, handler);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public <T extends EventHandler> T getHandler(Class<T> clazz) {

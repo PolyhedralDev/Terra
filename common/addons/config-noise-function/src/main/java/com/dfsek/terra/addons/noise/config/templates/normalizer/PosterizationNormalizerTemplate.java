@@ -18,7 +18,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class PosterizationNormalizerTemplate extends NormalizerTemplate<PosterizationNormalizer> {
     @Value("steps")
     private @Meta int steps;
-    
+
     @Override
     public NoiseSampler get() {
         return new PosterizationNormalizer(function, steps);

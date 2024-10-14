@@ -12,12 +12,12 @@ public class CLIItemHandle implements ItemHandle {
     public Item createItem(String data) {
         return null;
     }
-    
+
     @Override
     public Enchantment getEnchantment(String id) {
         return null;
     }
-    
+
     @Override
     public Set<Enchantment> getEnchantments() {
         return null;

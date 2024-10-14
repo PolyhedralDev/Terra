@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -21,8 +21,8 @@ import com.dfsek.terra.api.structure.feature.Distributor;
 public class XorDistributorTemplate implements ObjectTemplate<Distributor>, ValidatedConfigTemplate {
     @Value("distributors")
     private @Meta List<@Meta Distributor> distributors;
-    
-    
+
+
     @Override
     public Distributor get() {
         Distributor current = distributors.remove(0);
@@ -31,7 +31,7 @@ public class XorDistributorTemplate implements ObjectTemplate<Distributor>, Vali
         }
         return current;
     }
-    
+
     @Override
     public boolean validate() throws ValidationException {
         if(distributors.isEmpty()) throw new ValidationException("XOR Distributor must specify at least 1 distributor.");

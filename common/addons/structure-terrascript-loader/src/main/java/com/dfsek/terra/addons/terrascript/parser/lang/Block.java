@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -15,12 +15,12 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public class Block implements Item<Block.ReturnInfo<?>> {
     private final List<Item<?>> items;
     private final Position position;
-    
+
     public Block(List<Item<?>> items, Position position) {
         this.items = items;
         this.position = position;
     }
-    
+
     @Override
     public ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         for(Item<?> item : items) {
@@ -31,44 +31,44 @@ public class Block implements Item<Block.ReturnInfo<?>> {
         }
         return new ReturnInfo<>(ReturnLevel.NONE, null);
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     public enum ReturnLevel {
         NONE(false),
         BREAK(false),
         CONTINUE(false),
         RETURN(true),
         FAIL(true);
-        
+
         private final boolean returnFast;
-        
+
         ReturnLevel(boolean returnFast) {
             this.returnFast = returnFast;
         }
-        
+
         public boolean isReturnFast() {
             return returnFast;
         }
     }
-    
-    
+
+
     public static class ReturnInfo<T> {
         private final ReturnLevel level;
         private final T data;
-        
+
         public ReturnInfo(ReturnLevel level, T data) {
             this.level = level;
             this.data = data;
         }
-        
+
         public ReturnLevel getLevel() {
             return level;
         }
-        
+
         public T getData() {
             return data;
         }

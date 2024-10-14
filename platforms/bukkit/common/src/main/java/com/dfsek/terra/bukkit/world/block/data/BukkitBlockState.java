@@ -25,51 +25,51 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitBlockState implements BlockState {
     private final org.bukkit.block.data.BlockData delegate;
-    
+
     protected BukkitBlockState(org.bukkit.block.data.BlockData delegate) {
         this.delegate = delegate;
     }
-    
+
     public static BlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
         return new BukkitBlockState(bukkitData);
     }
-    
-    
+
+
     @Override
     public org.bukkit.block.data.BlockData getHandle() {
         return delegate;
     }
-    
+
     @Override
     public boolean matches(BlockState data) {
         return delegate.getMaterial() == ((BukkitBlockState) data).getHandle().getMaterial();
     }
-    
+
     @Override
     public <T extends Comparable<T>> boolean has(Property<T> property) {
         return false;
     }
-    
+
     @Override
     public <T extends Comparable<T>> T get(Property<T> property) {
         return null;
     }
-    
+
     @Override
     public <T extends Comparable<T>> BlockState set(Property<T> property, T value) {
         return null;
     }
-    
+
     @Override
     public BlockType getBlockType() {
         return BukkitAdapter.adapt(delegate.getMaterial());
     }
-    
+
     @Override
     public String getAsString(boolean properties) {
         return delegate.getAsString(!properties);
     }
-    
+
     @Override
     public boolean isAir() {
         return delegate.getMaterial().isAir();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -21,7 +21,7 @@ import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 public class InjectorImpl<T> implements Injector<T> {
     private final T value;
     private final Set<Class<? extends T>> targets = new HashSet<>();
-    
+
     /**
      * Instantiate an Injector with a value to inject
      *
@@ -30,14 +30,14 @@ public class InjectorImpl<T> implements Injector<T> {
     public InjectorImpl(T value) {
         this.value = value;
     }
-    
-    
+
+
     @Override
     public void addExplicitTarget(Class<? extends T> target) {
         targets.add(target);
     }
-    
-    
+
+
     @Override
     public void inject(Object object) throws InjectionException {
         for(Field field : ReflectionUtil.getFields(object.getClass())) {

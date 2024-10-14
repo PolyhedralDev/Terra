@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -24,7 +24,7 @@ public class SamplerDistributorTemplate implements ObjectTemplate<Distributor> {
     private @Meta double threshold = 0;
     @Value("sampler")
     private @Meta NoiseSampler noise;
-    
+
     @Override
     public Distributor get() {
         return new SamplerDistributor(noise, threshold);

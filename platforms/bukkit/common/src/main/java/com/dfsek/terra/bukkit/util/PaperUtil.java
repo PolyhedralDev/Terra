@@ -18,18 +18,20 @@
 package com.dfsek.terra.bukkit.util;
 
 import io.papermc.lib.PaperLib;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.TimeUnit;
+
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import static io.papermc.lib.PaperLib.suggestPaper;
 
 
 public final class PaperUtil {
-    public static void checkPaper(JavaPlugin main) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+    public static void checkPaper(TerraBukkitPlugin plugin) {
+        plugin.getAsyncScheduler().runDelayed(plugin, task -> {
             if(!PaperLib.isPaper()) {
-                suggestPaper(main);
+                suggestPaper(plugin);
             }
-        }, 100L);
+        }, 100L, TimeUnit.SECONDS);
     }
 }

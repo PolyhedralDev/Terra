@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -18,13 +18,13 @@ public class LessThanOrEqualsStatement extends BinaryOperation<Number, Boolean> 
     public LessThanOrEqualsStatement(Returnable<Number> left, Returnable<Number> right, Position position) {
         super(left, right, position);
     }
-    
-    
+
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         return applyBoolean(implementationArguments, scope);
     }
-    
+
     @Override
     public boolean applyBoolean(ImplementationArguments implementationArguments, Scope scope) {
         return left.applyDouble(implementationArguments, scope) <= right.applyDouble(implementationArguments, scope);

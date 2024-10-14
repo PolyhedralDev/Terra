@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -15,11 +15,11 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 public class Sampler3DLocator implements Locator {
     private final NoiseSampler sampler;
-    
+
     public Sampler3DLocator(NoiseSampler sampler) {
         this.sampler = sampler;
     }
-    
+
     @Override
     public BinaryColumn getSuitableCoordinates(Column<?> column) {
         long seed = column.getWorld().getSeed();

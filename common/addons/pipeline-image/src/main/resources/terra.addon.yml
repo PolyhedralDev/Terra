@@ -11,5 +11,5 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-    library-image: "1.+"
-    biome-provider-pipeline-v2: "1.+"
+  library-image: "1.+"
+  biome-provider-pipeline-v2: "1.+"

@@ -6,9 +6,9 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 public interface ProtoWorld extends WritableWorld {
     int centerChunkX();
-    
+
     int centerChunkZ();
-    
+
     /**
      * Get the world object this ProtoWorld represents
      *

@@ -5,7 +5,7 @@ fun includeImmediateChildren(dir: File, type: String) {
     dir.walkTopDown().maxDepth(1).forEach {
         if (!it.isDirectory || !File(it, "build.gradle.kts").exists()) return@forEach
         val addonDir = it.relativeTo(file(".")).path.replace("/", ":").replace("\\", ":")
-        println("Including $type directory \"$addonDir\" as subproject.")
+        logger.info("Including $type directory \"$addonDir\" as subproject.")
         include(addonDir)
     }
 }
@@ -37,5 +37,14 @@ pluginManagement {
         maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
+    }
+}
+
+// settings.gradle.kts
+val isCiServer = System.getenv().containsKey("CI")
+// Cache build artifacts, so expensive operations do not need to be re-computed
+buildCache {
+    local {
+        isEnabled = !isCiServer
     }
 }

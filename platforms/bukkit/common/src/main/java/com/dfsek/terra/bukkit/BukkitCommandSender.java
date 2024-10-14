@@ -29,16 +29,16 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 public class BukkitCommandSender implements CommandSender {
     private final org.bukkit.command.CommandSender delegate;
-    
+
     public BukkitCommandSender(org.bukkit.command.CommandSender delegate) {
         this.delegate = delegate;
     }
-    
+
     @Override
     public void sendMessage(String message) {
         delegate.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
-    
+
     @Override
     public Optional<Entity> getEntity() {
         if(delegate instanceof org.bukkit.entity.Entity entity) {
@@ -46,7 +46,7 @@ public class BukkitCommandSender implements CommandSender {
         }
         return Optional.empty();
     }
-    
+
     @Override
     public Optional<Player> getPlayer() {
         if(delegate instanceof org.bukkit.entity.Player player) {
@@ -54,7 +54,7 @@ public class BukkitCommandSender implements CommandSender {
         }
         return Optional.empty();
     }
-    
+
     @Override
     public org.bukkit.command.CommandSender getHandle() {
         return delegate;

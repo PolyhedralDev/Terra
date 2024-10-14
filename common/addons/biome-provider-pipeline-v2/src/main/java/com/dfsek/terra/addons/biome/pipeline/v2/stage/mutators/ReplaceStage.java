@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,13 +22,13 @@ public class ReplaceStage implements Stage {
     private final String replaceableTag;
     private final ProbabilityCollection<PipelineBiome> replace;
     private final NoiseSampler sampler;
-    
+
     public ReplaceStage(String replaceable, ProbabilityCollection<PipelineBiome> replace, NoiseSampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
     }
-    
+
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         if(viewPoint.getBiome().getTags().contains(replaceableTag)) {
@@ -37,12 +37,12 @@ public class ReplaceStage implements Stage {
         }
         return viewPoint.getBiome();
     }
-    
+
     @Override
     public int maxRelativeReadDistance() {
         return 0;
     }
-    
+
     @Override
     public Iterable<PipelineBiome> getBiomes(Iterable<PipelineBiome> biomes) {
         Set<PipelineBiome> biomeSet = new HashSet<>();

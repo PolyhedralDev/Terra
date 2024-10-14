@@ -15,18 +15,18 @@ import com.dfsek.terra.api.world.biome.Biome;
 
 public class PipelineBiomeLoader implements TypeLoader<PipelineBiome> {
     private final Registry<Biome> biomeRegistry;
-    
+
     public PipelineBiomeLoader(Registry<Biome> biomeRegistry) {
         this.biomeRegistry = biomeRegistry;
     }
-    
+
     @Override
     public PipelineBiome load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {
         if(c.equals("SELF")) return PipelineBiome.self();
         return biomeRegistry
-                .getByID((String) c)
-                .map(PipelineBiome::from)
-                .orElseGet(() -> PipelineBiome.placeholder((String) c));
+            .getByID((String) c)
+            .map(PipelineBiome::from)
+            .orElseGet(() -> PipelineBiome.placeholder((String) c));
     }
 }

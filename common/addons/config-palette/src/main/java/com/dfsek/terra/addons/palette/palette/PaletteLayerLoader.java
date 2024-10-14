@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,14 +20,14 @@ import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 public class PaletteLayerLoader implements ObjectTemplate<PaletteLayerHolder> {
     @Value("materials")
     private @Meta ProbabilityCollection<@Meta BlockState> collection;
-    
+
     @Value("sampler")
     @Default
     private @Meta NoiseSampler sampler = null;
-    
+
     @Value("layers")
     private @Meta int layers;
-    
+
     @Override
     public PaletteLayerHolder get() {
         return new PaletteLayerHolder(collection, sampler, layers);

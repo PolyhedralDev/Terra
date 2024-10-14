@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,13 +20,13 @@ import com.dfsek.terra.api.world.WritableWorld;
 
 
 public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
-    
+
     private final BlockState[][][] blocks;
-    
+
     private final int offsetX, offsetY, offsetZ;
-    
+
     private final RegistryKey id;
-    
+
     public SpongeStructure(BlockState[][][] blocks, Vector3Int offset, RegistryKey id) {
         this.blocks = blocks;
         this.offsetX = offset.getX();
@@ -34,7 +34,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
         this.offsetZ = offset.getZ();
         this.id = id;
     }
-    
+
     @Override
     public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
         int bX = location.getX();
@@ -56,7 +56,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
         }
         return true;
     }
-    
+
     @Override
     public RegistryKey getRegistryKey() {
         return id;

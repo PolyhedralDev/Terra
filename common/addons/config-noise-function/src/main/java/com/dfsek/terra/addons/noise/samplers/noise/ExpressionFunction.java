@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,28 +23,28 @@ import com.dfsek.terra.addons.noise.paralithic.noise.SeedContext;
  */
 public class ExpressionFunction extends NoiseFunction {
     private final Expression expression;
-    
+
     public ExpressionFunction(Map<String, Function> functions, String eq, Map<String, Double> vars) throws ParseException {
         Parser p = new Parser();
         Scope scope = new Scope();
-        
+
         scope.addInvocationVariable("x");
         scope.addInvocationVariable("y");
         scope.addInvocationVariable("z");
-        
+
         vars.forEach(scope::create);
-        
+
         functions.forEach(p::registerFunction);
-        
+
         expression = p.parse(eq, scope);
         frequency = 1;
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y) {
         return expression.evaluate(new SeedContext(seed), x, 0, y);
     }
-    
+
     @Override
     public double getNoiseRaw(long seed, double x, double y, double z) {
         return expression.evaluate(new SeedContext(seed), x, y, z);

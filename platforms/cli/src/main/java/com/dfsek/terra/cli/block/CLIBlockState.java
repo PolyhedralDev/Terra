@@ -12,7 +12,7 @@ public class CLIBlockState implements BlockState {
     private final CLIBlockType type;
     private final boolean isAir;
     private final CompoundTag nbt;
-    
+
     public CLIBlockState(String value) {
         this.value = value;
         if(value.contains("[")) {
@@ -30,54 +30,54 @@ public class CLIBlockState implements BlockState {
             for(String property : props) {
                 String name = property.substring(0, property.indexOf('='));
                 String val = property.substring(property.indexOf('=') + 1);
-                
+
                 pTag.putString(name, val);
             }
             this.nbt.put("Properties", pTag);
         } else this.type = new CLIBlockType(value);
         this.nbt.putString("Name", type.getHandle());
     }
-    
+
     @Override
     public Object getHandle() {
         return value;
     }
-    
+
     @Override
     public boolean matches(BlockState other) {
         return false;
     }
-    
+
     @Override
     public <T extends Comparable<T>> boolean has(Property<T> property) {
         return false;
     }
-    
+
     @Override
     public <T extends Comparable<T>> T get(Property<T> property) {
         return null;
     }
-    
+
     @Override
     public <T extends Comparable<T>> BlockState set(Property<T> property, T value) {
         return null;
     }
-    
+
     @Override
     public BlockType getBlockType() {
         return type;
     }
-    
+
     @Override
     public String getAsString(boolean properties) {
         return value;
     }
-    
+
     @Override
     public boolean isAir() {
         return isAir;
     }
-    
+
     public CompoundTag getNbt() {
         return nbt;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
-import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,15 +28,15 @@ public class EnchantFunction implements LootFunction {
     private final int max;
     private final JSONArray disabled;
     private final Platform platform;
-    
-    
+
+
     public EnchantFunction(int min, int max, JSONArray disabled, Platform platform) {
         this.max = max;
         this.min = min;
         this.disabled = disabled;
         this.platform = platform;
     }
-    
+
     /**
      * Applies the function to an ItemStack.
      *
@@ -49,7 +48,7 @@ public class EnchantFunction implements LootFunction {
     @Override
     public ItemStack apply(ItemStack original, Random r) {
         if(original.getItemMeta() == null) return original;
-        
+
         double enchant = (r.nextDouble() * (max - min)) + min;
         List<Enchantment> possible = new ArrayList<>();
         for(Enchantment ench : platform.getItemHandle().getEnchantments()) {
@@ -57,7 +56,7 @@ public class EnchantFunction implements LootFunction {
                 possible.add(ench);
             }
         }
-        int numEnchant = (r.nextInt((int) FastMath.abs(enchant)) / 10 + 1);
+        int numEnchant = (r.nextInt((int) Math.abs(enchant)) / 10 + 1);
         Collections.shuffle(possible);
         ItemMeta meta = original.getItemMeta();
         iter:
@@ -68,12 +67,12 @@ public class EnchantFunction implements LootFunction {
             }
             int lvl = r.nextInt(1 + (int) (((enchant / 40 > 1) ? 1 : enchant / 40) * (chosen.getMaxLevel())));
             try {
-                meta.addEnchantment(chosen, FastMath.max(lvl, 1));
+                meta.addEnchantment(chosen, Math.max(lvl, 1));
             } catch(IllegalArgumentException e) {
                 LOGGER.warn(
-                        "Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused by a " +
-                        "misbehaving enchantment plugin.",
-                        original.getType(), chosen, FastMath.max(lvl, 1));
+                    "Attempted to enchant {} with {} at level {}, but an unexpected exception occurred! Usually this is caused by a " +
+                    "misbehaving enchantment plugin.",
+                    original.getType(), chosen, Math.max(lvl, 1));
             }
         }
         original.setItemMeta(meta);

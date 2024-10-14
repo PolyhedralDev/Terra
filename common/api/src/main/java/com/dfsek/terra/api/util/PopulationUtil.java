@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -16,11 +16,11 @@ public final class PopulationUtil {
     public static Random getRandom(Chunk c) {
         return getRandom(c, 0);
     }
-    
+
     public static Random getRandom(Chunk c, long salt) {
         return new Random(getCarverChunkSeed(c.getX(), c.getZ(), c.getWorld().getSeed() + salt));
     }
-    
+
     /**
      * Gets the carver seed for a chunk.
      *

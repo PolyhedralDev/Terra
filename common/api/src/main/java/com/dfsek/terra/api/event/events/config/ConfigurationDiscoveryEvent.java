@@ -26,24 +26,24 @@ import com.dfsek.terra.api.event.events.PackEvent;
 public class ConfigurationDiscoveryEvent implements PackEvent, FailThroughEvent {
     private final ConfigPack pack;
     private final Loader loader;
-    
+
     private final BiConsumer<String, Configuration> consumer;
-    
+
     public ConfigurationDiscoveryEvent(ConfigPack pack, Loader loader, BiConsumer<String, Configuration> consumer) {
         this.pack = pack;
         this.loader = loader;
         this.consumer = consumer;
     }
-    
+
     public void register(String identifier, Configuration config) {
         consumer.accept(identifier, config);
     }
-    
+
     @Override
     public ConfigPack getPack() {
         return pack;
     }
-    
+
     public Loader getLoader() {
         return loader;
     }

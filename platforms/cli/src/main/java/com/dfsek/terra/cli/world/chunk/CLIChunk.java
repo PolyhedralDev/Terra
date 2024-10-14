@@ -20,7 +20,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
     private final int minHeight;
     private final int maxHeight;
     private final CLIWorld world;
-    
+
     public CLIChunk(int x, int z, CLIWorld world) {
         this.x = x;
         this.z = z;
@@ -29,39 +29,39 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
         this.world = world;
         this.blocks = new CLIBlockState[16][16][maxHeight - minHeight];
     }
-    
+
     @Override
     public Object getHandle() {
         return null;
     }
-    
+
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         blocks[x][z][y - minHeight] = (CLIBlockState) data;
     }
-    
+
     @Override
     public @NotNull CLIBlockState getBlock(int x, int y, int z) {
         CLIBlockState blockState = blocks[x][z][y - minHeight];
         if(blockState == null) return getAIR();
         return blockState;
     }
-    
+
     @Override
     public int getX() {
         return x;
     }
-    
+
     @Override
     public int getZ() {
         return z;
     }
-    
+
     @Override
     public ServerWorld getWorld() {
         return world;
     }
-    
+
     @Override
     public net.querz.mca.Chunk serialize() {
         net.querz.mca.Chunk chunk = net.querz.mca.Chunk.newChunk(2230);
@@ -80,7 +80,7 @@ public class CLIChunk implements Chunk, ProtoChunk, NBTSerializable<net.querz.mc
         chunk.setStatus("features");
         return chunk;
     }
-    
+
     @Override
     public int getMaxHeight() {
         return maxHeight;

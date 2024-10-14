@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -26,7 +26,7 @@ import com.dfsek.terra.api.inventory.ItemStack;
  */
 public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
     private final List<Pool> pools = new ArrayList<>();
-    
+
     /**
      * Instantiates a LootTable from a JSON String.
      *
@@ -42,7 +42,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
             pools.add(new Pool((JSONObject) pool, platform));
         }
     }
-    
+
     @Override
     public void fillInventory(Inventory i, Random r) {
         List<ItemStack> loot = getLoot(r);
@@ -68,7 +68,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
             }
         }
     }
-    
+
     @Override
     public List<ItemStack> getLoot(Random r) {
         List<ItemStack> itemList = new ArrayList<>();

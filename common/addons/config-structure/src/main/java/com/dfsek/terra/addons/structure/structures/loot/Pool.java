@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.structure.structures.loot;
 
-import net.jafama.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -27,7 +26,7 @@ public class Pool {
     private final int max;
     private final int min;
     private final ProbabilityCollection<Entry> entries;
-    
+
     /**
      * Instantiates a Pool from a JSON representation.
      *
@@ -37,19 +36,19 @@ public class Pool {
         entries = new ProbabilityCollection<>();
         Object amount = pool.get("rolls");
         if(amount instanceof Long) {
-            max = FastMath.toIntExact((Long) amount);
-            min = FastMath.toIntExact((Long) amount);
+            max = Math.toIntExact((Long) amount);
+            min = Math.toIntExact((Long) amount);
         } else {
-            max = FastMath.toIntExact((Long) ((JSONObject) amount).get("max"));
-            min = FastMath.toIntExact((Long) ((JSONObject) amount).get("min"));
+            max = Math.toIntExact((Long) ((JSONObject) amount).get("max"));
+            min = Math.toIntExact((Long) ((JSONObject) amount).get("min"));
         }
-        
+
         for(Object entryJSON : (JSONArray) pool.get("entries")) {
             Entry entry = new Entry((JSONObject) entryJSON, platform);
-            entries.add(entry, FastMath.toIntExact(entry.getWeight()));
+            entries.add(entry, Math.toIntExact(entry.getWeight()));
         }
     }
-    
+
     /**
      * Fetches a list of items from the pool using the provided Random instance.
      *
@@ -58,7 +57,7 @@ public class Pool {
      * @return List&lt;ItemStack&gt; - The list of items fetched.
      */
     public List<ItemStack> getItems(Random r) {
-        
+
         int rolls = r.nextInt(max - min + 1) + min;
         List<ItemStack> items = new ArrayList<>();
         for(int i = 0; i < rolls; i++) {

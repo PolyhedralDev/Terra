@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,36 +23,36 @@ public class FeatureTemplate implements AbstractableTemplate {
     @Value("id")
     @Final
     private String id;
-    
+
     @Value("distributor")
     private @Meta Distributor distributor;
-    
+
     @Value("locator")
     private @Meta Locator locator;
-    
+
     @Value("structures.distribution")
     private @Meta NoiseSampler structureNoise;
-    
+
     @Value("structures.structures")
     private @Meta ProbabilityCollection<Structure> structures;
-    
+
     @Override
     public String getID() {
         return id;
     }
-    
+
     public Distributor getDistributor() {
         return distributor;
     }
-    
+
     public Locator getLocator() {
         return locator;
     }
-    
+
     public NoiseSampler getStructureNoise() {
         return structureNoise;
     }
-    
+
     public ProbabilityCollection<Structure> getStructures() {
         return structures;
     }

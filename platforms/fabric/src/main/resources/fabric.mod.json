@@ -5,7 +5,13 @@
     "name": "Terra",
     "description": "@DESCRIPTION@",
     "authors": [
-        "dfsek"
+        "dfsek",
+        "duplexsystem",
+        "Astrash",
+        "solonovamax",
+        "Sancires",
+        "Aureus",
+        "RogueShade"
     ],
     "contact": {
         "homepage": "@WIKI@",
@@ -26,8 +32,9 @@
         "terra.common.mixins.json"
     ],
     "depends": {
-        "fabricloader": ">=0.14.2",
-        "java": ">=17",
-        "minecraft": "1.20.x"
+        "fabricloader": ">=0.16.5",
+        "java": ">=21",
+        "minecraft": ">=1.21.1",
+        "fabric": "*"
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -22,7 +22,7 @@ public interface Property<T> extends StringIdentifiable {
      * @return All values of this property
      */
     Collection<T> values();
-    
+
     /**
      * Get the type of this property.
      *

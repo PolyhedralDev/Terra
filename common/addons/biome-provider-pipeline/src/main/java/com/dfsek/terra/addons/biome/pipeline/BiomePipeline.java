@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,14 +22,14 @@ public class BiomePipeline {
     private final List<Stage> stages;
     private final int size;
     private final int init;
-    
+
     private BiomePipeline(BiomeSource source, List<Stage> stages, int size, int init) {
         this.source = source;
         this.stages = stages;
         this.size = size;
         this.init = init;
     }
-    
+
     /**
      * Get biomes in a chunk
      *
@@ -44,37 +44,37 @@ public class BiomePipeline {
         for(Stage stage : stages) holder = stage.apply(holder, seed);
         return holder;
     }
-    
+
     public BiomeSource getSource() {
         return source;
     }
-    
+
     public List<Stage> getStages() {
         return Collections.unmodifiableList(stages);
     }
-    
+
     public int getSize() {
         return size;
     }
-    
+
     public static final class BiomePipelineBuilder {
         private final int init;
         private final List<Stage> stages = new ArrayList<>();
         private int expand;
-        
+
         public BiomePipelineBuilder(int init) {
             this.init = init;
             expand = init;
         }
-        
+
         public BiomePipeline build(BiomeSource source) {
             for(Stage stage : stages) {
                 if(stage.isExpansion()) expand = expand * 2 - 1;
             }
-            
+
             return new BiomePipeline(source, stages, expand, init);
         }
-        
+
         public BiomePipelineBuilder addStage(Stage stage) {
             stages.add(stage);
             return this;

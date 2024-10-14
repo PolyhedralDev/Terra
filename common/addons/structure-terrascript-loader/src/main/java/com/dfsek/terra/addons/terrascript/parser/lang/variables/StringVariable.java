@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -14,27 +14,27 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 public class StringVariable implements Variable<String> {
     private final Position position;
     private String value;
-    
+
     public StringVariable(String value, Position position) {
         this.value = value;
         this.position = position;
     }
-    
+
     @Override
     public String getValue() {
         return value;
     }
-    
+
     @Override
     public void setValue(String value) {
         this.value = value;
     }
-    
+
     @Override
     public Returnable.ReturnType getType() {
         return Returnable.ReturnType.STRING;
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

@@ -34,19 +34,19 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 public abstract class ProtoChunkMixin {
     @Shadow
     public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
-    
+
     @Shadow
     public abstract HeightLimitView getHeightLimitView();
-    
+
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
-                                                                        false);
+            false);
     }
-    
+
     public @NotNull BlockState terra$getBlock(int x, int y, int z) {
         return (BlockState) getBlockState(new BlockPos(x, y, z));
     }
-    
+
     public int terra$getMaxHeight() {
         return getHeightLimitView().getTopY();
     }

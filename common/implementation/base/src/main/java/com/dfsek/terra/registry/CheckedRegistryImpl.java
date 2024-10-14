@@ -45,61 +45,61 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
  */
 public class CheckedRegistryImpl<T> implements CheckedRegistry<T> {
     private final OpenRegistry<T> registry;
-    
+
     public CheckedRegistryImpl(OpenRegistry<T> registry) {
         this.registry = registry;
     }
-    
+
     @Internal
     public OpenRegistry<T> getRegistry() {
         return registry;
     }
-    
+
     @Override
     public void register(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException {
         registry.registerChecked(identifier, value);
     }
-    
+
     @Override
     public Optional<T> get(@NotNull RegistryKey key) {
         return registry.get(key);
     }
-    
+
     @Override
     public boolean contains(@NotNull RegistryKey key) {
         return registry.contains(key);
     }
-    
+
     @Override
     public void forEach(@NotNull Consumer<T> consumer) {
         registry.forEach(consumer);
     }
-    
+
     @Override
     public void forEach(@NotNull BiConsumer<RegistryKey, T> consumer) {
         registry.forEach(consumer);
     }
-    
+
     @Override
     public @NotNull Collection<T> entries() {
         return registry.entries();
     }
-    
+
     @Override
     public @NotNull Set<RegistryKey> keys() {
         return registry.keys();
     }
-    
+
     @Override
     public TypeKey<T> getType() {
         return registry.getType();
     }
-    
+
     @Override
     public Map<RegistryKey, T> getMatches(String id) {
         return registry.getMatches(id);
     }
-    
+
     @Override
     public T load(@NotNull AnnotatedType t, @NotNull Object c, @NotNull ConfigLoader loader, DepthTracker depthTracker)
     throws LoadException {

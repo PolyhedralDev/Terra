@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -20,12 +20,12 @@ public class RecursionsFunctionBuilder implements FunctionBuilder<RecursionsFunc
     public RecursionsFunction build(List<Returnable<?>> argumentList, Position position) {
         return new RecursionsFunction(position);
     }
-    
+
     @Override
     public int argNumber() {
         return 0;
     }
-    
+
     @Override
     public Returnable.ReturnType getArgument(int position) {
         return null;

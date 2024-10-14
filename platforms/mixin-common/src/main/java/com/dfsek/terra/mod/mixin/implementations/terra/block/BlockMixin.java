@@ -32,11 +32,11 @@ public abstract class BlockMixin {
     public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
         return (com.dfsek.terra.api.block.state.BlockState) ((Block) (Object) this).getDefaultState();
     }
-    
+
     public boolean terra$isSolid() {
         return ((Block) (Object) this).getDefaultState().isOpaque();
     }
-    
+
     @SuppressWarnings("ConstantConditions")
     public boolean terra$isWater() {
         return ((Object) this) == Blocks.WATER;

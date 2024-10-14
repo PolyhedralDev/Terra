@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -22,7 +22,7 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Returnable<Boolean> statement;
     private final Item<?> incrementer;
     private final Position position;
-    
+
     public ForKeyword(Block conditional, Item<?> initializer, Returnable<Boolean> statement, Item<?> incrementer, Position position) {
         this.conditional = conditional;
         this.initializer = initializer;
@@ -30,7 +30,7 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
         this.incrementer = incrementer;
         this.position = position;
     }
-    
+
     @Override
     public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         for(initializer.apply(implementationArguments, scope);
@@ -42,12 +42,12 @@ public class ForKeyword implements Keyword<Block.ReturnInfo<?>> {
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

@@ -11,7 +11,7 @@ public class ClosestPipelineBiomeColorConverterTemplate extends ClosestColorConv
 
     @Value("match")
     private ColorMapping<PipelineBiome> match;
-    
+
     @Override
     protected ColorMapping<PipelineBiome> getMapping() {
         return match;

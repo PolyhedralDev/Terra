@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -26,7 +26,7 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
     private final Position position;
     private final List<Pair<Returnable<Boolean>, Block>> elseIf;
     private final Block elseBlock;
-    
+
     public IfKeyword(Block conditional, Returnable<Boolean> statement, List<Pair<Returnable<Boolean>, Block>> elseIf,
                      @Nullable Block elseBlock, Position position) {
         this.conditional = conditional;
@@ -35,7 +35,7 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
         this.elseIf = elseIf;
         this.elseBlock = elseBlock;
     }
-    
+
     @Override
     public Block.ReturnInfo<?> apply(ImplementationArguments implementationArguments, Scope scope) {
         if(statement.apply(implementationArguments, scope)) return conditional.apply(implementationArguments, scope);
@@ -49,12 +49,12 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
         }
         return new Block.ReturnInfo<>(Block.ReturnLevel.NONE, null);
     }
-    
+
     @Override
     public Position getPosition() {
         return position;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.VOID;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,6 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import net.jafama.FastMath;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +35,7 @@ public class StructureFunction implements Function<Boolean> {
     private final Position position;
     private final Platform platform;
     private final List<Returnable<String>> rotations;
-    
+
     public StructureFunction(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, Returnable<String> id,
                              List<Returnable<String>> rotations, Registry<Structure> registry, Position position, Platform platform) {
         this.registry = registry;
@@ -48,23 +47,23 @@ public class StructureFunction implements Function<Boolean> {
         this.platform = platform;
         this.rotations = rotations;
     }
-    
+
     @Override
     public ReturnType returnType() {
         return ReturnType.BOOLEAN;
     }
-    
+
     @Override
     public Boolean apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        
+
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
-        
+
         Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                                                          z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
-        
-        
+            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+
+
         String app = id.apply(implementationArguments, scope);
         return registry.getByID(app).map(script -> {
             Rotation rotation1;
@@ -75,29 +74,29 @@ public class StructureFunction implements Function<Boolean> {
                 LOGGER.warn("Invalid rotation {}", rotString);
                 return false;
             }
-            
+
             if(script instanceof StructureScript structureScript) {
                 return structureScript.generate(arguments.getOrigin(),
-                                                arguments.getWorld()
-                                                         .buffer(FastMath.roundToInt(xz.getX()),
-                                                                 y.apply(implementationArguments, scope).intValue(),
-                                                                 FastMath.roundToInt(xz.getZ())),
-                                                arguments.getRandom(),
-                                                arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
+                    arguments.getWorld()
+                        .buffer((int) Math.round(xz.getX()),
+                            y.apply(implementationArguments, scope).intValue(),
+                            (int) Math.round(xz.getZ())),
+                    arguments.getRandom(),
+                    arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
-                                   arguments.getWorld()
-                                            .buffer(FastMath.roundToInt(xz.getX()),
-                                                    y.apply(implementationArguments, scope).intValue(),
-                                                    FastMath.roundToInt(xz.getZ())),
-                                   arguments.getRandom(),
-                                   arguments.getRotation().rotate(rotation1));
+                arguments.getWorld()
+                    .buffer((int) Math.round(xz.getX()),
+                        y.apply(implementationArguments, scope).intValue(),
+                        (int) Math.round(xz.getZ())),
+                arguments.getRandom(),
+                arguments.getRotation().rotate(rotation1));
         }).orElseGet(() -> {
             LOGGER.error("No such structure {}", app);
             return false;
         });
     }
-    
+
     @Override
     public Position getPosition() {
         return position;

@@ -38,14 +38,14 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
     public ProbabilityCollection<Object> load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader,
                                               DepthTracker depthTracker) throws LoadException {
         ProbabilityCollection<Object> collection = new ProbabilityCollection<>();
-        
+
         if(type instanceof AnnotatedParameterizedType pType) {
             AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) o;
                 for(Map.Entry<Object, Object> entry : map.entrySet()) {
                     collection.add(configLoader.loadType(generic, entry.getKey(), depthTracker.entry((String) entry.getKey())),
-                                   configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
+                        configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
                 }
             } else if(o instanceof List) {
                 List<Map<Object, Object>> map = (List<Map<Object, Object>>) o;
@@ -61,10 +61,10 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                     Map<Object, Object> l = map.get(i);
                     for(Entry<Object, Object> entry : l.entrySet()) {
                         if(entry.getValue() == null) throw new LoadException("No probability defined for entry \"" + entry.getKey() + "\"",
-                                                                             depthTracker);
+                            depthTracker);
                         Object val = configLoader.loadType(generic, entry.getKey(), depthTracker.index(i).entry((String) entry.getKey()));
                         collection.add(val,
-                                       configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
+                            configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
                     }
                 }
             } else if(o instanceof String) {
@@ -73,9 +73,9 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
                 throw new LoadException("Malformed Probability Collection: " + o, depthTracker);
             }
         } else throw new LoadException("Unable to load config! Could not retrieve parameterized type: " + type, depthTracker);
-        
-        
+
+
         return collection;
     }
-    
+
 }

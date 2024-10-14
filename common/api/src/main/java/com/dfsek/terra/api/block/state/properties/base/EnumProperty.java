@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2021 Polyhedral Development
+ * Copyright (c) 2020-2023 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -18,17 +18,17 @@ public interface EnumProperty<T extends Enum<T>> extends Property<T> {
     static <T extends Enum<T>> EnumProperty<T> of(String name, Class<T> clazz) {
         return new EnumProperty<>() {
             private final Lazy<Collection<T>> constants = Lazy.lazy(() -> Arrays.asList(clazz.getEnumConstants()));
-            
+
             @Override
             public Collection<T> values() {
                 return constants.value();
             }
-            
+
             @Override
             public Class<T> getType() {
                 return clazz;
             }
-            
+
             @Override
             public String getID() {
                 return name;
