@@ -1,5 +1,5 @@
 {
-    "entrance": "org.allaymc.terra.allay.TerraAllayPlugin",
+    "entrance": "com.dfsek.terra.allay.TerraAllayPlugin",
     "name": "Terra",
     "authors": ["daoge_cmd", "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade"],
     "version": "@VERSION@",
