@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockStateSafeGetter;
 import org.allaymc.api.block.type.BlockTypes;
@@ -21,7 +20,6 @@ import java.util.TreeMap;
 /**
  * @author daoge_cmd
  */
-@Slf4j
 public final class Mapping {
 
     private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
@@ -45,7 +43,7 @@ public final class Mapping {
     public static BlockState blockStateJeToBe(JeBlockState jeBlockState) {
         var result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
         if(result == null) {
-            log.warn("Failed to find be block state for {}", jeBlockState);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find be block state for {}", jeBlockState);
             return BE_AIR_STATE;
         }
         return result;
@@ -72,7 +70,7 @@ public final class Mapping {
     public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
         var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
         if( defaultProperties == null) {
-            log.warn("Failed to find default properties for {}", jeBlockIdentifier);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find default properties for {}", jeBlockIdentifier);
             return Map.of();
         }
         return defaultProperties;
@@ -85,7 +83,7 @@ public final class Mapping {
     private static boolean initBiomeMapping() {
         try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes_JE_1_21_to_BE_1_21_30.json")) {
             if  (stream == null) {
-                log.error("biomes mapping not found");
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("biomes mapping not found");
                 return false;
             }
             var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
@@ -93,7 +91,7 @@ public final class Mapping {
                 BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id"));
             }
         } catch(IOException e) {
-            log.error("Failed to load biomes mapping", e);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
             return false;
         }
         return true;
@@ -102,7 +100,7 @@ public final class Mapping {
     private static boolean initItemMapping() {
         try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items_JE_1_21_to_BE_1_21_30.json")) {
             if  (stream == null) {
-                log.error("items mapping not found");
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("items mapping not found");
                 return false;
             }
             var mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>(){}).entrySet();
@@ -115,7 +113,7 @@ public final class Mapping {
                 ITEM_ID_JE_TO_BE.put(mapping.getKey(), item);
             }
         } catch(IOException e) {
-            log.error("Failed to load items mapping", e);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load items mapping", e);
         }
         return true;
     }
@@ -123,7 +121,7 @@ public final class Mapping {
     private static boolean initBlockStateMapping() {
         try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks_JE_1_21_to_BE_1_21_30.json")) {
             if (stream == null) {
-                log.error("blocks mapping not found");
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("blocks mapping not found");
                 return false;
             }
             // noinspection unchecked
@@ -135,7 +133,7 @@ public final class Mapping {
                 BLOCK_STATE_JE_HASH_TO_BE.put(jeState.getHash(), beState);
             }
         } catch(IOException e) {
-            log.error("Failed to load blocks mapping", e);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load blocks mapping", e);
         }
         return true;
     }
@@ -143,7 +141,7 @@ public final class Mapping {
     private static boolean initJeBlockDefaultProperties() {
         try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states_1_21.json")) {
             if (stream == null) {
-                log.error("je_block_default_states.json not found");
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("je_block_default_states.json not found");
                 return false;
             }
             var states = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, String>>>(){});

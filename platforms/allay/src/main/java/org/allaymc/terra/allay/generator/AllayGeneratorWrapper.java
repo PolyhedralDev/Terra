@@ -1,7 +1,5 @@
 package org.allaymc.terra.allay.generator;
 
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.generator.WorldGenerator;
@@ -22,24 +20,20 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+
 /**
  * @author daoge_cmd
  */
-@Slf4j
 public class AllayGeneratorWrapper implements GeneratorWrapper {
 
     protected static final String DEFAULT_PACK_NAME = "overworld";
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "seed";
 
-    @Getter
     protected final BiomeProvider biomeProvider;
-    @Getter
     protected final ConfigPack configPack;
     protected final ChunkGenerator chunkGenerator;
-    @Getter
     protected final long seed;
-    @Getter
     protected final WorldGenerator allayWorldGenerator;
     protected WorldProperties worldProperties;
     protected AllayServerWorld allayServerWorld;
@@ -101,9 +95,9 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             );
             var minHeight = context.getDimensionInfo().minHeight();
             var maxHeight = context.getDimensionInfo().maxHeight();
-            for (int x = 0; x < 16; x++) {
-                for (int y = minHeight; y < maxHeight; y++) {
-                    for (int z = 0; z < 16; z++) {
+            for(int x = 0; x < 16; x++) {
+                for(int y = minHeight; y < maxHeight; y++) {
+                    for(int z = 0; z < 16; z++) {
                         chunk.setBiome(
                             x, y, z,
                             (BiomeType) biomeProvider.getBiome(chunkX * 16 + x, y, chunkZ * 16 + z, seed).getPlatformBiome().getHandle()
@@ -120,17 +114,18 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         }
     }
 
+
     public class AllayPopulator implements Populator {
 
         @Override
         public boolean apply(PopulateContext context) {
             var tmp = new AllayProtoWorld(allayServerWorld, context);
             try {
-                for (var generationStage : configPack.getStages()) {
+                for(var generationStage : configPack.getStages()) {
                     generationStage.populate(tmp);
                 }
-            } catch (Exception e) {
-                log.error("Error while populating chunk", e);
+            } catch(Exception e) {
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Error while populating chunk", e);
             }
             return true;
         }
@@ -156,5 +151,21 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     @Override
     public ChunkGenerator getHandle() {
         return chunkGenerator;
+    }
+
+    public BiomeProvider getBiomeProvider() {
+        return this.biomeProvider;
+    }
+
+    public ConfigPack getConfigPack() {
+        return this.configPack;
+    }
+
+    public long getSeed() {
+        return this.seed;
+    }
+
+    public WorldGenerator getAllayWorldGenerator() {
+        return this.allayWorldGenerator;
     }
 }
