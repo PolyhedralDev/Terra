@@ -60,7 +60,6 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        // TODO
         return null;
     }
 

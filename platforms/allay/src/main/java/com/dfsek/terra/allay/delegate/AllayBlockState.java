@@ -33,19 +33,16 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
 
     @Override
     public <T extends Comparable<T>> boolean has(Property<T> property) {
-        // TODO
         return false;
     }
 
     @Override
     public <T extends Comparable<T>> T get(Property<T> property) {
-        // TODO
         return null;
     }
 
     @Override
     public <T extends Comparable<T>> com.dfsek.terra.api.block.state.BlockState set(Property<T> property, T value) {
-        // TODO
         return null;
     }
 

@@ -18,7 +18,6 @@ public class TerraAllayPlugin extends Plugin {
         INSTANCE = this;
     }
 
-    // TODO: Adapt command manager
     @Override
     public void onLoad() {
         pluginLogger.info("Starting Terra...");
@@ -29,6 +28,7 @@ public class TerraAllayPlugin extends Plugin {
         pluginLogger.info("Initializing allay platform...");
         PLATFORM = new AllayPlatform();
         PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
+        // TODO: adapt command manager
 
         pluginLogger.info("Registering generator...");
         Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", preset -> new AllayGeneratorWrapper(preset).getAllayWorldGenerator());
