@@ -33,9 +33,9 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     protected static final String OPTION_SEED = "seed";
 
     protected final BiomeProvider biomeProvider;
-    protected final ChunkGenerator chunkGenerator;
     protected final long seed;
     protected final WorldGenerator allayWorldGenerator;
+    protected ChunkGenerator chunkGenerator;
     protected ConfigPack configPack;
     protected WorldProperties worldProperties;
     protected AllayServerWorld allayServerWorld;
@@ -101,6 +101,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
     public void setConfigPack(ConfigPack configPack) {
         this.configPack = configPack;
+        this.chunkGenerator = createGenerator(this.configPack);
     }
 
     public long getSeed() {
