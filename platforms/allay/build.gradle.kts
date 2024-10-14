@@ -1,9 +1,5 @@
 dependencies {
     shadedApi(project(":common:implementation:base"))
-    implementation("com.google.code.gson", "gson", "2.11.0")
 
-    compileOnly("org.projectlombok:lombok:1.18.32")
-    compileOnly("org.allaymc.allay:api:master-SNAPSHOT")
-
-    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    compileOnly("org.allaymc.allay", "api", Versions.Allay.api)
 }
