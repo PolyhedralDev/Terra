@@ -81,7 +81,7 @@ public final class Mapping {
     }
 
     private static boolean initBiomeMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes_JE_1_21_to_BE_1_21_30.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes.json")) {
             if  (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("biomes mapping not found");
                 return false;
@@ -98,7 +98,7 @@ public final class Mapping {
     }
 
     private static boolean initItemMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items_JE_1_21_to_BE_1_21_30.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items.json")) {
             if  (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("items mapping not found");
                 return false;
@@ -119,7 +119,7 @@ public final class Mapping {
     }
 
     private static boolean initBlockStateMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks_JE_1_21_to_BE_1_21_30.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks.json")) {
             if (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("blocks mapping not found");
                 return false;
@@ -139,7 +139,7 @@ public final class Mapping {
     }
 
     private static boolean initJeBlockDefaultProperties() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states_1_21.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states.json")) {
             if (stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("je_block_default_states.json not found");
                 return false;
