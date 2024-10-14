@@ -2,8 +2,8 @@ package com.dfsek.terra.allay;
 
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.registry.Registries;
-import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
 
+import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 
 /**
@@ -31,8 +31,32 @@ public class TerraAllayPlugin extends Plugin {
         // TODO: adapt command manager
 
         pluginLogger.info("Registering generator...");
-        Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", AllayGeneratorWrapper::createWorldGenerator);
+        Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", preset -> {
+            try {
+                AllayGeneratorWrapper wrapper = new AllayGeneratorWrapper(preset);
+                AllayPlatform.GENERATOR_WRAPPERS.add(wrapper);
+                return wrapper.getAllayWorldGenerator();
+            } catch (IllegalArgumentException e) {
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset);
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Reason: {}", e.getMessage());
+                return Registries.WORLD_GENERATOR_FACTORIES.get("FLAT").apply("");
+            }
+        });
 
         pluginLogger.info("Terra started");
+    }
+
+    @Override
+    public boolean isReloadable() {
+        return true;
+    }
+
+    @Override
+    public void reload() {
+        if(PLATFORM.reload()) {
+            pluginLogger.info("Terra reloaded successfully.");
+        } else {
+            pluginLogger.error("Terra failed to reload.");
+        }
     }
 }

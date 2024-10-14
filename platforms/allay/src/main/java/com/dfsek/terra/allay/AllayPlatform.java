@@ -5,24 +5,28 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import org.allaymc.api.server.Server;
 import org.allaymc.api.world.biome.BiomeId;
-import com.dfsek.terra.allay.delegate.AllayBiome;
-import com.dfsek.terra.allay.handle.AllayItemHandle;
-import com.dfsek.terra.allay.handle.AllayWorldHandle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.allay.delegate.AllayBiome;
+import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
+import com.dfsek.terra.allay.handle.AllayItemHandle;
+import com.dfsek.terra.allay.handle.AllayWorldHandle;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
-
 /**
  * @author daoge_cmd
  */
 public class AllayPlatform extends AbstractPlatform {
+
+    public static final Set<AllayGeneratorWrapper> GENERATOR_WRAPPERS = new HashSet<>();
 
     protected static final AllayWorldHandle ALLAY_WORLD_HANDLE = new AllayWorldHandle();
     protected static final AllayItemHandle ALLAY_ITEM_HANDLE = new AllayItemHandle();
@@ -33,8 +37,21 @@ public class AllayPlatform extends AbstractPlatform {
 
     @Override
     public boolean reload() {
-        // TODO: implement reload
-        return false;
+        getTerraConfig().load(this);
+        getRawConfigRegistry().clear();
+        boolean succeed = getRawConfigRegistry().loadAll(this);
+
+        GENERATOR_WRAPPERS.forEach(wrapper -> {
+            getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
+                wrapper.setConfigPack(pack);
+                var dimension = wrapper.getAllayWorldGenerator().getDimension();
+                TerraAllayPlugin.INSTANCE.getPluginLogger().info(
+                    "Replaced pack in chunk generator for world {}",
+                    dimension.getWorld().getWorldData().getName() + ":" + dimension.getDimensionInfo().dimensionId()
+                );
+            });
+        });
+        return succeed;
     }
 
     @Override

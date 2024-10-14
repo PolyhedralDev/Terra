@@ -1,8 +1,5 @@
 package com.dfsek.terra.allay.generator;
 
-import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-
-import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.chunk.UnsafeChunk;
@@ -11,21 +8,21 @@ import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
 import org.allaymc.api.world.generator.function.Noiser;
 import org.allaymc.api.world.generator.function.Populator;
-import com.dfsek.terra.allay.TerraAllayPlugin;
-import com.dfsek.terra.allay.delegate.AllayProtoChunk;
-import com.dfsek.terra.allay.delegate.AllayProtoWorld;
-import com.dfsek.terra.allay.delegate.AllayServerWorld;
 
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import com.dfsek.terra.allay.TerraAllayPlugin;
+import com.dfsek.terra.allay.delegate.AllayProtoChunk;
+import com.dfsek.terra.allay.delegate.AllayProtoWorld;
+import com.dfsek.terra.allay.delegate.AllayServerWorld;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
-
 
 /**
  * @author daoge_cmd
@@ -36,32 +33,21 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     protected static final String OPTION_SEED = "seed";
 
     protected final BiomeProvider biomeProvider;
-    protected final ConfigPack configPack;
     protected final ChunkGenerator chunkGenerator;
     protected final long seed;
     protected final WorldGenerator allayWorldGenerator;
+    protected ConfigPack configPack;
     protected WorldProperties worldProperties;
     protected AllayServerWorld allayServerWorld;
 
-    public static WorldGenerator createWorldGenerator(String preset) {
-        try {
-            AllayGeneratorWrapper wrapper = new AllayGeneratorWrapper(preset);
-            return wrapper.getAllayWorldGenerator();
-        } catch (IllegalArgumentException e) {
-            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset);
-            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Reason: {}", e.getMessage());
-            return Registries.WORLD_GENERATOR_FACTORIES.get("FLAT").apply("");
-        }
-    }
-
-    protected AllayGeneratorWrapper(String preset) {
+    public AllayGeneratorWrapper(String preset) {
         Map<String, String> options = AllayStringUtils.parseOptions(preset);
         String packName = options.get(OPTION_PACK_NAME);
         if(packName == null) {
             throw new IllegalArgumentException("Missing config pack name");
         }
         this.seed = Long.parseLong(options.getOrDefault(OPTION_SEED, "0"));
-        this.configPack = createConfigPack(packName);
+        this.configPack = getConfigPack(packName);
         this.chunkGenerator = createGenerator(this.configPack);
         this.biomeProvider = this.configPack.getBiomeProvider();
         this.allayWorldGenerator = WorldGenerator
@@ -100,7 +86,32 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .build();
     }
 
-    public class AllayNoiser implements Noiser {
+    @Override
+    public ChunkGenerator getHandle() {
+        return chunkGenerator;
+    }
+
+    public BiomeProvider getBiomeProvider() {
+        return this.biomeProvider;
+    }
+
+    public ConfigPack getConfigPack() {
+        return this.configPack;
+    }
+
+    public void setConfigPack(ConfigPack configPack) {
+        this.configPack = configPack;
+    }
+
+    public long getSeed() {
+        return this.seed;
+    }
+
+    public WorldGenerator getAllayWorldGenerator() {
+        return this.allayWorldGenerator;
+    }
+
+    protected class AllayNoiser implements Noiser {
 
         @Override
         public boolean apply(NoiseContext context) {
@@ -133,8 +144,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         }
     }
 
-
-    public class AllayPopulator implements Populator {
+    protected class AllayPopulator implements Populator {
 
         @Override
         public boolean apply(PopulateContext context) {
@@ -155,7 +165,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         }
     }
 
-    protected static ConfigPack createConfigPack(String packName) {
+    protected static ConfigPack getConfigPack(String packName) {
         Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
         return byId.orElseGet(
             () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
@@ -165,26 +175,5 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
     protected static ChunkGenerator createGenerator(ConfigPack configPack) {
         return configPack.getGeneratorProvider().newInstance(configPack);
-    }
-
-    @Override
-    public ChunkGenerator getHandle() {
-        return chunkGenerator;
-    }
-
-    public BiomeProvider getBiomeProvider() {
-        return this.biomeProvider;
-    }
-
-    public ConfigPack getConfigPack() {
-        return this.configPack;
-    }
-
-    public long getSeed() {
-        return this.seed;
-    }
-
-    public WorldGenerator getAllayWorldGenerator() {
-        return this.allayWorldGenerator;
     }
 }

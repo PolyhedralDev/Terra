@@ -3,9 +3,9 @@ package com.dfsek.terra.allay.delegate;
 import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.Dimension;
+
 import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
-
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;

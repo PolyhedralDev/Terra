@@ -1,8 +1,8 @@
 package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.item.enchantment.EnchantmentType;
-import com.dfsek.terra.allay.Mapping;
 
+import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 

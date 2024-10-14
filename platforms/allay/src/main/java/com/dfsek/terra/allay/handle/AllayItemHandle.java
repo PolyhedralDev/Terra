@@ -2,13 +2,13 @@ package com.dfsek.terra.allay.handle;
 
 import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.Identifier;
-import com.dfsek.terra.allay.Mapping;
-import com.dfsek.terra.allay.delegate.AllayEnchantment;
-import com.dfsek.terra.allay.delegate.AllayItemType;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.allay.Mapping;
+import com.dfsek.terra.allay.delegate.AllayEnchantment;
+import com.dfsek.terra.allay.delegate.AllayItemType;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.Enchantment;

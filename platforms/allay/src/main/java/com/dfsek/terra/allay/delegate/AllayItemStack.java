@@ -1,12 +1,10 @@
 package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.item.ItemStack;
+import org.allaymc.api.item.enchantment.EnchantmentInstance;
 
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
-
-import org.allaymc.api.item.enchantment.EnchantmentInstance;
-
 
 /**
  * @author daoge_cmd
