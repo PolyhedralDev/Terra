@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_20_R3;
+package com.dfsek.terra.bukkit.nms.v1_21;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
