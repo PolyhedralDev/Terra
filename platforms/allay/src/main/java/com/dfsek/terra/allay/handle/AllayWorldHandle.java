@@ -16,7 +16,7 @@ public class AllayWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
-        var jeBlockState = JeBlockState.fromString(data);
+        JeBlockState jeBlockState = JeBlockState.fromString(data);
         return new AllayBlockState(Mapping.blockStateJeToBe(jeBlockState), jeBlockState);
     }
 

@@ -19,9 +19,9 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
 
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
-        var allayBlockState = (AllayBlockState) data;
+        AllayBlockState allayBlockState = (AllayBlockState) data;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        var containsWater = allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
+        boolean containsWater = allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
         if (containsWater) {
             allayChunk.setBlockState(x, y, z, WATER, 1);
         }
@@ -29,7 +29,7 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
 
     @Override
     public @NotNull BlockState getBlock(int x, int y, int z) {
-        var blockState = allayChunk.getBlockState(x, y, z);
+        org.allaymc.api.block.type.BlockState blockState = allayChunk.getBlockState(x, y, z);
         return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
     }
 

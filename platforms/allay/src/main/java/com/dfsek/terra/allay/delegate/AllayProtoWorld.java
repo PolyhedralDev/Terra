@@ -41,15 +41,15 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        var allayBlockState = (AllayBlockState)data;
-        var containsWater = allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
+        AllayBlockState allayBlockState = (AllayBlockState)data;
+        boolean containsWater = allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) context.setBlockState(x, y, z, WATER, 1);
     }
 
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        var blockState = context.getBlockState(x, y, z);
+        org.allaymc.api.block.type.BlockState blockState = context.getBlockState(x, y, z);
         return new AllayBlockState(blockState, Mapping.blockStateBeToJe(blockState));
     }
 

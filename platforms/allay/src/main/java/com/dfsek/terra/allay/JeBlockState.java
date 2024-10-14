@@ -2,6 +2,7 @@ package com.dfsek.terra.allay;
 
 import org.allaymc.api.utils.HashUtils;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 
@@ -22,13 +23,13 @@ public class JeBlockState {
     }
 
     private JeBlockState(String data) {
-        var strings = data.replace("[", ",").replace("]", ",").replace(" ", "").split(",");
+        String[] strings = data.replace("[", ",").replace("]", ",").replace(" ", "").split(",");
         this.identifier = strings[0];
         this.properties = new TreeMap<>();
         if (strings.length > 1) {
             for (int i = 1; i < strings.length; i++) {
-                final var tmp = strings[i];
-                final var index = tmp.indexOf("=");
+                final String tmp = strings[i];
+                final int index = tmp.indexOf("=");
                 properties.put(tmp.substring(0, index), tmp.substring(index + 1));
             }
         }
@@ -40,14 +41,12 @@ public class JeBlockState {
     }
 
     private void completeMissingProperties() {
-        var defaultProperties = Mapping.getJeBlockDefaultProperties(identifier);
+        Map<String, String> defaultProperties = Mapping.getJeBlockDefaultProperties(identifier);
         if(properties.size() == defaultProperties.size()) {
             return;
         }
-        for (var entry : defaultProperties.entrySet()) {
-            if (properties.containsKey(entry.getKey())) continue;
-            properties.put(entry.getKey(), entry.getValue());
-        }
+        defaultProperties.entrySet().stream().filter(entry -> !properties.containsKey(entry.getKey())).forEach(
+            entry -> properties.put(entry.getKey(), entry.getValue()));
     }
 
     private JeBlockState(String identifier, TreeMap<String, String> properties) {
@@ -59,7 +58,7 @@ public class JeBlockState {
         if(!includeProperties) return identifier;
         StringBuilder builder = new StringBuilder(identifier).append(";");
         properties.forEach((k, v) -> builder.append(k).append("=").append(v).append(";"));
-        var str = builder.toString();
+        String str = builder.toString();
         if (hash == Integer.MAX_VALUE) {
             hash = HashUtils.fnv1a_32(str.getBytes());
         }
