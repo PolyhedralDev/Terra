@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay.delegate;
+package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.world.biome.BiomeType;
 

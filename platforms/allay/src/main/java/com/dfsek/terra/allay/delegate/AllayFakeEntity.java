@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay.delegate;
+package com.dfsek.terra.allay.delegate;
 
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.util.vector.Vector3;

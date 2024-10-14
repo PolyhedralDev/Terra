@@ -1,8 +1,8 @@
-package org.allaymc.terra.allay;
+package com.dfsek.terra.allay;
 
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.registry.Registries;
-import org.allaymc.terra.allay.generator.AllayGeneratorWrapper;
+import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 
