@@ -77,7 +77,6 @@ object Versions {
     }
     
     object Allay {
-        const val api = "master-SNAPSHOT"
-        
+        const val api = "1cb3bb69c6"
     }
 }
