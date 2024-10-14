@@ -48,7 +48,6 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        // TODO
         return null;
     }
 
