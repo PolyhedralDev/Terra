@@ -1,13 +1,6 @@
 <img align="left" width="64" height="64" src="https://raw.githubusercontent.com/wiki/PolyhedralDev/Terra/images/terra_logo.png" alt="Terra Logo">
 
-# Terra (Allay Platform)
-
-This fork adds support for allay, and if you want to build it, here are some files you may need:
-
-- `mapping/biomes_JE_1_21_to_BE_1_21_30.json` from GeyserMC/mappings
-- `mapping/items_JE_1_21_to_BE_1_21_30.json` from GeyserMC/mappings
-- `mapping/blocks_JE_1_21_to_BE_1_21_30.json` you should generate it using GeyserMC/mappings-generator, and it's origin name is `generator_blocks.json`
-- `je_block_default_states_1_21.json` converted from https://zh.minecraft.wiki/w/Module:Block_state_values currently
+# Terra
 
 Terra is a modern world generation modding platform, primarily for Minecraft.
 Terra allows complete customization of world generation with an advanced API,
