@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay;
+package com.dfsek.terra.allay;
 
 import com.google.gson.reflect.TypeToken;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;

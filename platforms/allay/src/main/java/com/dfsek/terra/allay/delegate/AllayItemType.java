@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay.delegate;
+package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.item.data.ItemId;
 import org.allaymc.api.item.type.ItemType;

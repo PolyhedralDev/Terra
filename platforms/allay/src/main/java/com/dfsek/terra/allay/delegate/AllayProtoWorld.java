@@ -1,10 +1,10 @@
-package org.allaymc.terra.allay.delegate;
+package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.tag.BlockTags;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.generator.context.OtherChunkAccessibleContext;
-import org.allaymc.terra.allay.Mapping;
+import com.dfsek.terra.allay.Mapping;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;

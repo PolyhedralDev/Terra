@@ -1,13 +1,13 @@
-package org.allaymc.terra.allay;
+package com.dfsek.terra.allay;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import org.allaymc.api.server.Server;
 import org.allaymc.api.world.biome.BiomeId;
-import org.allaymc.terra.allay.delegate.AllayBiome;
-import org.allaymc.terra.allay.handle.AllayItemHandle;
-import org.allaymc.terra.allay.handle.AllayWorldHandle;
+import com.dfsek.terra.allay.delegate.AllayBiome;
+import com.dfsek.terra.allay.handle.AllayItemHandle;
+import com.dfsek.terra.allay.handle.AllayWorldHandle;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay;
+package com.dfsek.terra.allay;
 
 import org.allaymc.api.utils.HashUtils;
 

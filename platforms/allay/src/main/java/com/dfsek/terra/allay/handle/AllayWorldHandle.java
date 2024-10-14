@@ -1,8 +1,8 @@
-package org.allaymc.terra.allay.handle;
+package com.dfsek.terra.allay.handle;
 
-import org.allaymc.terra.allay.JeBlockState;
-import org.allaymc.terra.allay.Mapping;
-import org.allaymc.terra.allay.delegate.AllayBlockState;
+import com.dfsek.terra.allay.JeBlockState;
+import com.dfsek.terra.allay.Mapping;
+import com.dfsek.terra.allay.delegate.AllayBlockState;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;

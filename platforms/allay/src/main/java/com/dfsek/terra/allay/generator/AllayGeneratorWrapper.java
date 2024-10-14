@@ -1,4 +1,4 @@
-package org.allaymc.terra.allay.generator;
+package com.dfsek.terra.allay.generator;
 
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
@@ -7,10 +7,10 @@ import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
 import org.allaymc.api.world.generator.function.Noiser;
 import org.allaymc.api.world.generator.function.Populator;
-import org.allaymc.terra.allay.TerraAllayPlugin;
-import org.allaymc.terra.allay.delegate.AllayProtoChunk;
-import org.allaymc.terra.allay.delegate.AllayProtoWorld;
-import org.allaymc.terra.allay.delegate.AllayServerWorld;
+import com.dfsek.terra.allay.TerraAllayPlugin;
+import com.dfsek.terra.allay.delegate.AllayProtoChunk;
+import com.dfsek.terra.allay.delegate.AllayProtoWorld;
+import com.dfsek.terra.allay.delegate.AllayServerWorld;
 
 import java.util.Locale;
 
