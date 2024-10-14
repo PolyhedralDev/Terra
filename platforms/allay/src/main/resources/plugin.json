@@ -1,8 +1,8 @@
 {
-  "entrance": "org.allaymc.terra.allay.TerraAllayPlugin",
-  "name": "Terra",
-  "authors": [
-    "daoge_cmd"
-  ],
-  "version": "1.0.1"
+    "entrance": "org.allaymc.terra.allay.TerraAllayPlugin",
+    "name": "Terra",
+    "authors": ["daoge_cmd", "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade"],
+    "version": "@VERSION@",
+    "description": "@DESCRIPTION@",
+    "website": "@WIKI@"
 }
