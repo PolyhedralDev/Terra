@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.commands.addons;
 
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.CommandManager;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.description.Description;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -30,7 +30,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                 CommandManager<CommandSender> manager = event.getCommandManager();
 
                 manager.command(
-                        manager.commandBuilder("addons", ArgumentDescription.of("List installed Terra addons"))
+                        manager.commandBuilder("addons", Description.of("List installed Terra addons"))
                             .permission("terra.addons")
                             .handler(context -> {
                                 StringBuilder addons = new StringBuilder("Installed addons:\n");
@@ -41,7 +41,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                                         .append('@')
                                         .append(addon.getVersion().getFormatted())
                                         .append('\n'));
-                                context.getSender().sendMessage(addons.toString());
+                                context.sender().sendMessage(addons.toString());
                             })
                     )
                     .command(
@@ -61,7 +61,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                                     .append('@')
                                     .append(versions.getFormatted())
                                     .append('\n'));
-                                context.getSender().sendMessage(addonInfo.toString());
+                                context.sender().sendMessage(addonInfo.toString());
                             })
                     );
             });

@@ -19,6 +19,8 @@ package com.dfsek.terra.bukkit.util;
 
 import io.papermc.lib.PaperLib;
 
+import java.util.concurrent.TimeUnit;
+
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import static io.papermc.lib.PaperLib.suggestPaper;
@@ -26,10 +28,10 @@ import static io.papermc.lib.PaperLib.suggestPaper;
 
 public final class PaperUtil {
     public static void checkPaper(TerraBukkitPlugin plugin) {
-        plugin.getFoliaLib().getImpl().runLaterAsync(() -> {
+        plugin.getAsyncScheduler().runDelayed(plugin, task -> {
             if(!PaperLib.isPaper()) {
                 suggestPaper(plugin);
             }
-        }, 100L);
+        }, 100L, TimeUnit.SECONDS);
     }
 }

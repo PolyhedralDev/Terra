@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 
@@ -115,7 +116,7 @@ public class BukkitMobSpawner extends BukkitBlockEntity implements MobSpawner {
     public void applyState(String state) {
         SerialState.parse(state).forEach((k, v) -> {
             switch(k) {
-                case "type" -> setSpawnedType(new BukkitEntityType(org.bukkit.entity.EntityType.valueOf(v.toUpperCase())));
+                case "type" -> setSpawnedType(BukkitUtils.getEntityType(v));
                 case "delay" -> setDelay(Integer.parseInt(v));
                 case "min_delay" -> setMinSpawnDelay(Integer.parseInt(v));
                 case "max_delay" -> setMaxSpawnDelay(Integer.parseInt(v));

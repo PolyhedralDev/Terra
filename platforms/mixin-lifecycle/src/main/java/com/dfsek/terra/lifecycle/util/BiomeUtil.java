@@ -58,7 +58,7 @@ public final class BiomeUtil {
             net.minecraft.world.biome.Biome minecraftBiome = MinecraftUtil.createBiome(biome, Objects.requireNonNull(registry.get(vanilla)),
                 vanillaBiomeProperties);
 
-            Identifier identifier = new Identifier("terra", MinecraftUtil.createBiomeID(pack, id));
+            Identifier identifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
 
             if(registry.containsId(identifier)) {
                 ((ProtoPlatformBiome) biome.getPlatformBiome()).setDelegate(MinecraftUtil.getEntry(registry, identifier)

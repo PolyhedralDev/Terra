@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.commands.packs;
 
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.CommandManager;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.description.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ public class PacksCommandAddon implements AddonInitializer {
                 CommandManager<CommandSender> manager = event.getCommandManager();
 
                 manager.command(
-                        manager.commandBuilder("packs", ArgumentDescription.of("List installed config packs"))
+                        manager.commandBuilder("packs", Description.of("List installed config packs"))
                             .permission("terra.packs")
                             .handler(context -> {
                                 StringBuilder packs = new StringBuilder("Installed packs:\n");
@@ -43,12 +43,12 @@ public class PacksCommandAddon implements AddonInitializer {
                                     .append(pack.getID())
                                     .append('@')
                                     .append(pack.getVersion().getFormatted()));
-                                context.getSender().sendMessage(packs.toString());
+                                context.sender().sendMessage(packs.toString());
                             })
                     )
                     .command(
                         manager.commandBuilder("packs")
-                            .literal("info", ArgumentDescription.of("Get information about a pack"))
+                            .literal("info", Description.of("Get information about a pack"))
                             .permission("terra.packs.info")
                             .argument(RegistryArgument.of("pack", platform.getConfigRegistry()))
                             .handler(context -> {
@@ -65,21 +65,21 @@ public class PacksCommandAddon implements AddonInitializer {
                                     .append('@')
                                     .append(versions.getFormatted())
                                     .append('\n'));
-                                context.getSender().sendMessage(packInfo.toString());
+                                context.sender().sendMessage(packInfo.toString());
                             }))
                     .command(
                         manager.commandBuilder("packs")
-                            .literal("reload", ArgumentDescription.of("Reload config packs"))
+                            .literal("reload", Description.of("Reload config packs"))
                             .permission("terra.packs.reload")
                             .handler(context -> {
-                                context.getSender().sendMessage("Reloading Terra...");
+                                context.sender().sendMessage("Reloading Terra...");
                                 logger.info("Reloading Terra...");
                                 if(platform.reload()) {
                                     logger.info("Terra reloaded successfully.");
-                                    context.getSender().sendMessage("Terra reloaded successfully.");
+                                    context.sender().sendMessage("Terra reloaded successfully.");
                                 } else {
                                     logger.error("Terra failed to reload.");
-                                    context.getSender().sendMessage(
+                                    context.sender().sendMessage(
                                         "Terra failed to reload. See logs for more information.");
                                 }
                             }));

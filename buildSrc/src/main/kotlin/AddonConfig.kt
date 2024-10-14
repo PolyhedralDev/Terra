@@ -18,7 +18,7 @@ fun Project.addonDir(dir: File, task: Task) {
             matchingAddons(dir) {
                 it.name.startsWith("Terra-") // Assume everything that starts with Terra- is a core addon.
             }.forEach {
-                println("Deleting old addon: " + it.absolutePath)
+                logger.info("Deleting old addon: " + it.absolutePath)
                 it.delete()
             }
             forSubProjects(":common:addons") {
@@ -29,7 +29,7 @@ fun Project.addonDir(dir: File, task: Task) {
                 
                 val base = "${jar.archiveBaseName.get()}-${version}"
                 
-                println("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
+                logger.info("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
                 
                 jar.archiveFile.orNull?.asFile?.copyTo(target)
             }

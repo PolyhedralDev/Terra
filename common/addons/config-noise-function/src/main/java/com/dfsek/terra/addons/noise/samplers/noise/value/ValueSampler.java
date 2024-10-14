@@ -25,10 +25,10 @@ public class ValueSampler extends ValueStyleNoise {
         int x1 = x0 + PRIME_X;
         int y1 = y0 + PRIME_Y;
 
-        double xf0 = MathUtil.lerp(valCoord(seed, x0, y0), valCoord(seed, x1, y0), xs);
-        double xf1 = MathUtil.lerp(valCoord(seed, x0, y1), valCoord(seed, x1, y1), xs);
+        double xf0 = MathUtil.lerp(xs, valCoord(seed, x0, y0), valCoord(seed, x1, y0));
+        double xf1 = MathUtil.lerp(xs, valCoord(seed, x0, y1), valCoord(seed, x1, y1));
 
-        return MathUtil.lerp(xf0, xf1, ys);
+        return MathUtil.lerp(ys, xf0, xf1);
     }
 
     @Override
@@ -49,14 +49,14 @@ public class ValueSampler extends ValueStyleNoise {
         int y1 = y0 + PRIME_Y;
         int z1 = z0 + PRIME_Z;
 
-        double xf00 = MathUtil.lerp(valCoord(seed, x0, y0, z0), valCoord(seed, x1, y0, z0), xs);
-        double xf10 = MathUtil.lerp(valCoord(seed, x0, y1, z0), valCoord(seed, x1, y1, z0), xs);
-        double xf01 = MathUtil.lerp(valCoord(seed, x0, y0, z1), valCoord(seed, x1, y0, z1), xs);
-        double xf11 = MathUtil.lerp(valCoord(seed, x0, y1, z1), valCoord(seed, x1, y1, z1), xs);
+        double xf00 = MathUtil.lerp(xs, valCoord(seed, x0, y0, z0), valCoord(seed, x1, y0, z0));
+        double xf10 = MathUtil.lerp(xs, valCoord(seed, x0, y1, z0), valCoord(seed, x1, y1, z0));
+        double xf01 = MathUtil.lerp(xs, valCoord(seed, x0, y0, z1), valCoord(seed, x1, y0, z1));
+        double xf11 = MathUtil.lerp(xs, valCoord(seed, x0, y1, z1), valCoord(seed, x1, y1, z1));
 
-        double yf0 = MathUtil.lerp(xf00, xf10, ys);
-        double yf1 = MathUtil.lerp(xf01, xf11, ys);
+        double yf0 = MathUtil.lerp(ys, xf00, xf10);
+        double yf1 = MathUtil.lerp(ys, xf01, xf11);
 
-        return MathUtil.lerp(yf0, yf1, zs);
+        return MathUtil.lerp(zs, yf0, yf1);
     }
 }

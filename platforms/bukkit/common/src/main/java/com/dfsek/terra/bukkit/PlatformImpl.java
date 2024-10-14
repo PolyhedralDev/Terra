@@ -84,8 +84,8 @@ public class PlatformImpl extends AbstractPlatform {
     }
 
     @Override
-    public void runPossiblyUnsafeTask(@NotNull Runnable task) {
-        plugin.getFoliaLib().getImpl().runAsync(task);
+    public void runPossiblyUnsafeTask(@NotNull Runnable runnable) {
+        plugin.getGlobalRegionScheduler().run(plugin, task -> runnable.run());
     }
 
     @Override

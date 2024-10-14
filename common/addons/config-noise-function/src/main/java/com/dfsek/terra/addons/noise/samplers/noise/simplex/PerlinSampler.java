@@ -33,10 +33,10 @@ public class PerlinSampler extends SimplexStyleSampler {
         int x1 = x0 + PRIME_X;
         int y1 = y0 + PRIME_Y;
 
-        double xf0 = MathUtil.lerp(gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0), xs);
-        double xf1 = MathUtil.lerp(gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1), xs);
+        double xf0 = MathUtil.lerp(xs, gradCoord(seed, x0, y0, xd0, yd0), gradCoord(seed, x1, y0, xd1, yd0));
+        double xf1 = MathUtil.lerp(xs, gradCoord(seed, x0, y1, xd0, yd1), gradCoord(seed, x1, y1, xd1, yd1));
 
-        return MathUtil.lerp(xf0, xf1, ys) * 1.4247691104677813;
+        return MathUtil.lerp(ys, xf0, xf1) * 1.4247691104677813;
     }
 
     @Override
@@ -64,14 +64,14 @@ public class PerlinSampler extends SimplexStyleSampler {
         int y1 = y0 + PRIME_Y;
         int z1 = z0 + PRIME_Z;
 
-        double xf00 = MathUtil.lerp(gradCoord(seed, x0, y0, z0, xd0, yd0, zd0), gradCoord(seed, x1, y0, z0, xd1, yd0, zd0), xs);
-        double xf10 = MathUtil.lerp(gradCoord(seed, x0, y1, z0, xd0, yd1, zd0), gradCoord(seed, x1, y1, z0, xd1, yd1, zd0), xs);
-        double xf01 = MathUtil.lerp(gradCoord(seed, x0, y0, z1, xd0, yd0, zd1), gradCoord(seed, x1, y0, z1, xd1, yd0, zd1), xs);
-        double xf11 = MathUtil.lerp(gradCoord(seed, x0, y1, z1, xd0, yd1, zd1), gradCoord(seed, x1, y1, z1, xd1, yd1, zd1), xs);
+        double xf00 = MathUtil.lerp(xs, gradCoord(seed, x0, y0, z0, xd0, yd0, zd0), gradCoord(seed, x1, y0, z0, xd1, yd0, zd0));
+        double xf10 = MathUtil.lerp(xs, gradCoord(seed, x0, y1, z0, xd0, yd1, zd0), gradCoord(seed, x1, y1, z0, xd1, yd1, zd0));
+        double xf01 = MathUtil.lerp(xs, gradCoord(seed, x0, y0, z1, xd0, yd0, zd1), gradCoord(seed, x1, y0, z1, xd1, yd0, zd1));
+        double xf11 = MathUtil.lerp(xs, gradCoord(seed, x0, y1, z1, xd0, yd1, zd1), gradCoord(seed, x1, y1, z1, xd1, yd1, zd1));
 
-        double yf0 = MathUtil.lerp(xf00, xf10, ys);
-        double yf1 = MathUtil.lerp(xf01, xf11, ys);
+        double yf0 = MathUtil.lerp(ys, xf00, xf10);
+        double yf1 = MathUtil.lerp(ys, xf01, xf11);
 
-        return MathUtil.lerp(yf0, yf1, zs) * 0.964921414852142333984375;
+        return MathUtil.lerp(zs, yf0, yf1) * 0.964921414852142333984375;
     }
 }

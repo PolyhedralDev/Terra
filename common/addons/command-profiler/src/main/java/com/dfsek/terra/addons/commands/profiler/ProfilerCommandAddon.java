@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.commands.profiler;
 
-import cloud.commandframework.ArgumentDescription;
-import cloud.commandframework.CommandManager;
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.description.Description;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,24 +33,24 @@ public class ProfilerCommandAddon implements AddonInitializer {
                 CommandManager<CommandSender> manager = event.getCommandManager();
                 manager
                     .command(
-                        manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                            .literal("start", ArgumentDescription.of("Start profiling"), "st")
+                        manager.commandBuilder("profiler", Description.of("Access the profiler"))
+                            .literal("start", Description.of("Start profiling"), "st")
                             .permission("terra.profiler.start")
                             .handler(context -> {
                                 platform.getProfiler().start();
-                                context.getSender().sendMessage("Profiling started.");
+                                context.sender().sendMessage("Profiling started.");
                             }))
                     .command(
-                        manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                            .literal("stop", ArgumentDescription.of("Stop profiling"), "s")
+                        manager.commandBuilder("profiler", Description.of("Access the profiler"))
+                            .literal("stop", Description.of("Stop profiling"), "s")
                             .permission("terra.profiler.stop")
                             .handler(context -> {
                                 platform.getProfiler().stop();
-                                context.getSender().sendMessage("Profiling stopped.");
+                                context.sender().sendMessage("Profiling stopped.");
                             }))
                     .command(
-                        manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                            .literal("query", ArgumentDescription.of("Query profiler results"), "q")
+                        manager.commandBuilder("profiler", Description.of("Access the profiler"))
+                            .literal("query", Description.of("Query profiler results"), "q")
                             .permission("terra.profiler.query")
                             .handler(context -> {
                                 StringBuilder data = new StringBuilder("Terra Profiler data: \n");
@@ -59,15 +59,15 @@ public class ProfilerCommandAddon implements AddonInitializer {
                                     .append(timings.toString())
                                     .append('\n'));
                                 logger.info(data.toString());
-                                context.getSender().sendMessage("Profiling data dumped to console.");
+                                context.sender().sendMessage("Profiling data dumped to console.");
                             }))
                     .command(
-                        manager.commandBuilder("profiler", ArgumentDescription.of("Access the profiler"))
-                            .literal("reset", ArgumentDescription.of("Reset the profiler"), "r")
+                        manager.commandBuilder("profiler", Description.of("Access the profiler"))
+                            .literal("reset", Description.of("Reset the profiler"), "r")
                             .permission("terra.profiler.reset")
                             .handler(context -> {
                                 platform.getProfiler().reset();
-                                context.getSender().sendMessage("Profiler reset.");
+                                context.sender().sendMessage("Profiler reset.");
                             }));
             });
     }

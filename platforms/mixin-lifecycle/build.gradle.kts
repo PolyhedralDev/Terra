@@ -1,7 +1,6 @@
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 dependencies {
@@ -16,7 +15,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud) {
+    modImplementation("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
     }
@@ -31,10 +30,6 @@ loom {
 }
 
 tasks {
-    compileJava {
-        options.release.set(17)
-    }
-
     remapJar {
         inputFile.set(shadowJar.get().archiveFile)
     }

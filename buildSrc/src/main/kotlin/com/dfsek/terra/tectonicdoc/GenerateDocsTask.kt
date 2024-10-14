@@ -82,7 +82,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                         }
                         
                         template.add(keyName.toString(), description.toString().ifBlank {
-                            println("No description provided for field " + field.name + " in class " + name)
+                            logger.info("No description provided for field " + field.name + " in class " + name)
                             "*No description provided.*"
                         })
                     }

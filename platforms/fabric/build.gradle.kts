@@ -3,7 +3,6 @@ import java.util.*
 plugins {
     id("dev.architectury.loom") version Versions.Mod.architecuryLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
-    id("io.github.juuxel.loom-vineflower") version Versions.Mod.loomVineflower
 }
 
 architectury {
@@ -27,8 +26,10 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
 
-    modImplementation("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
-    include("cloud.commandframework", "cloud-fabric", Versions.Libraries.cloud)
+    modImplementation("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
+    include("org.incendo", "cloud-fabric", Versions.Libraries.cloudFabric)
+
+    modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
 }
 
 loom {
@@ -37,6 +38,15 @@ loom {
     mixin {
         defaultRefmapName.set("terra.fabric.refmap.json")
     }
+    
+    launches {
+        named("client") {
+            property("fabric.log.level", "info")
+        }
+        named("server") {
+            property("fabric.log.level", "info")
+        }
+    }
 
 }
 
@@ -44,10 +54,6 @@ loom {
 addonDir(project.file("./run/config/Terra/addons"), tasks.named("configureLaunch").get())
 
 tasks {
-    compileJava {
-        options.release.set(17)
-    }
-
     remapJar {
         dependsOn("installAddons")
 

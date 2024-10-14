@@ -249,3 +249,5 @@ nbdist/
 
 platforms/**/run/**
 
+#Vale Config File
+**/.vale.ini

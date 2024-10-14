@@ -11,13 +11,13 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.properties.Properties;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 @SuppressWarnings("FieldMayBeFinal")
