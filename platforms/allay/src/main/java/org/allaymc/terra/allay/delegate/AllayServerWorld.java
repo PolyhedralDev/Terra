@@ -1,7 +1,5 @@
 package org.allaymc.terra.allay.delegate;
 
-import com.dfsek.terra.api.util.vector.Vector3;
-
 import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.Dimension;
@@ -13,6 +11,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.Chunk;
@@ -23,7 +22,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
  */
 public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dimension allayDimension) implements ServerWorld {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override
     public Chunk getChunkAt(int x, int z) {
@@ -32,14 +31,8 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        var allayBlockState = (AllayBlockState)data;
-        var containsWater = allayBlockState.containsWater();
-        if (!containsWater) {
-            var oldBlock = allayDimension.getBlockState(x, y, z).getBlockType();
-            containsWater = oldBlock == BlockTypes.WATER;
-        }
-        allayDimension.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        if (containsWater) allayDimension.setBlockState(x, y, z, WATER, 1);
+        // In dimension#setBlockState() method, Water will be moved to layer 1 if it is placed at layer 0
+        allayDimension.setBlockState(x, y, z, ((AllayBlockState) data).allayBlockState());
     }
 
     @Override

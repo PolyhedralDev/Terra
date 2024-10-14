@@ -1,6 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
 import org.allaymc.api.block.property.type.BlockPropertyTypes;
+import org.allaymc.api.block.tag.BlockTags;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.allaymc.terra.allay.Mapping;
@@ -14,7 +15,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
  */
 public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override
     public int getMaxHeight() {
@@ -23,14 +24,12 @@ public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
 
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        var allayBlockState = (AllayBlockState)blockState;
-        var containsWater = allayBlockState.containsWater();
-        if (!containsWater) {
-            var oldBlock = allayChunk.getBlockState(x, y, z);
-            containsWater = oldBlock == BlockTypes.WATER;
-        }
+        var allayBlockState = (AllayBlockState) blockState;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        if (containsWater) allayChunk.setBlockState(x, y, z, WATER, 1);
+        var containsWater = allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
+        if (containsWater) {
+            allayChunk.setBlockState(x, y, z, WATER, 1);
+        }
     }
 
     @Override

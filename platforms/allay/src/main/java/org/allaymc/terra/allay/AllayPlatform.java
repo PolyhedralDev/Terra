@@ -33,7 +33,7 @@ public class AllayPlatform extends AbstractPlatform {
 
     @Override
     public boolean reload() {
-        // TODO: Implement reload
+        // TODO: implement reload
         return false;
     }
 

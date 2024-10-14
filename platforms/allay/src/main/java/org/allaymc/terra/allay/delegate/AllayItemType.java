@@ -2,10 +2,9 @@ package org.allaymc.terra.allay.delegate;
 
 import org.allaymc.api.item.data.ItemId;
 import org.allaymc.api.item.type.ItemType;
+import org.allaymc.api.registry.Registries;
 
 import com.dfsek.terra.api.inventory.Item;
-
-import org.allaymc.api.registry.Registries;
 
 
 /**
@@ -32,10 +31,6 @@ public final class AllayItemType implements Item {
 
     @Override
     public ItemType<?> getHandle() {
-        return allayItemType;
-    }
-
-    public ItemType<?> allayItemType() {
         return allayItemType;
     }
 }

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.generator.WorldGenerator;
-import org.allaymc.api.world.generator.WorldGeneratorType;
 import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
 import org.allaymc.api.world.generator.function.Noiser;
@@ -28,6 +27,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
  */
 @Slf4j
 public class AllayGeneratorWrapper implements GeneratorWrapper {
+
     protected static final String DEFAULT_PACK_NAME = "overworld";
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "seed";
@@ -54,12 +54,15 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         this.allayWorldGenerator = WorldGenerator
             .builder()
             .name("TERRA")
-            .preset("")// preset已经在构造函数读取完了，这边不需要传preset
+            .preset(preset)
             .noisers(new AllayNoiser())
             .populators(new AllayPopulator())
             .onDimensionSet(dimension -> {
                 this.allayServerWorld = new AllayServerWorld(this, dimension);
                 this.worldProperties = new WorldProperties() {
+
+                    private final Object fakeHandle = new Object();
+
                     @Override
                     public long getSeed() {
                         return seed;
@@ -77,8 +80,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
                     @Override
                     public Object getHandle() {
-                        // 这里留null就行，没啥用
-                        return null;
+                        return fakeHandle;
                     }
                 };
             })

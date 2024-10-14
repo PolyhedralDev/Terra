@@ -10,12 +10,7 @@ import org.allaymc.api.block.type.BlockStateSafeGetter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.item.type.ItemTypeSafeGetter;
-import org.allaymc.api.registry.Registries;
-import org.allaymc.api.utils.HashUtils;
 import org.allaymc.api.utils.JSONUtils;
-import org.allaymc.updater.block.BlockStateUpdaters;
-import org.allaymc.updater.item.ItemStateUpdaters;
-import org.cloudburstmc.nbt.NbtMap;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,6 +23,7 @@ import java.util.TreeMap;
  */
 @Slf4j
 public final class Mapping {
+
     private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
     private static final Map<BlockState, JeBlockState> BLOCK_STATE_BE_TO_JE = new Object2ObjectOpenHashMap<>();
     private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
@@ -42,12 +38,52 @@ public final class Mapping {
         if(!initBiomeMapping()) error();
     }
 
+    public static JeBlockState blockStateBeToJe(BlockState beBlockState) {
+        return BLOCK_STATE_BE_TO_JE.get(beBlockState);
+    }
+
+    public static BlockState blockStateJeToBe(JeBlockState jeBlockState) {
+        var result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
+        if(result == null) {
+            log.warn("Failed to find be block state for {}", jeBlockState);
+            return BE_AIR_STATE;
+        }
+        return result;
+    }
+
+    public static ItemType<?> itemIdJeToBe(String jeItemId) {
+        return ITEM_ID_JE_TO_BE.get(jeItemId);
+    }
+
+    // Enchantment identifiers are same in both versions
+
+    public static String enchantmentIdBeToJe(String beEnchantmentId) {
+        return beEnchantmentId;
+    }
+
+    public static String enchantmentIdJeToBe(String jeEnchantmentId) {
+        return jeEnchantmentId;
+    }
+
+    public static int biomeIdJeToBe(String jeBiomeId) {
+        return BIOME_ID_JE_TO_BE.get(jeBiomeId);
+    }
+
+    public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
+        var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
+        if( defaultProperties == null) {
+            log.warn("Failed to find default properties for {}", jeBlockIdentifier);
+            return Map.of();
+        }
+        return defaultProperties;
+    }
+
     private static void error() {
         throw new RuntimeException("Mapping not initialized");
     }
 
     private static boolean initBiomeMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes_JE_1_20_4_TO_BE_1_20_0.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/biomes_JE_1_21_to_BE_1_21_30.json")) {
             if  (stream == null) {
                 log.error("biomes mapping not found");
                 return false;
@@ -57,14 +93,14 @@ public final class Mapping {
                 BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id"));
             }
         } catch(IOException e) {
-            log.error("Failed to load mapping", e);
+            log.error("Failed to load biomes mapping", e);
             return false;
         }
         return true;
     }
 
     private static boolean initItemMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items_JE_1_20_4_TO_BE_1_20_0.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/items_JE_1_21_to_BE_1_21_30.json")) {
             if  (stream == null) {
                 log.error("items mapping not found");
                 return false;
@@ -73,19 +109,19 @@ public final class Mapping {
             for(var mapping : mappings) {
                 var item = ItemTypeSafeGetter
                     .name((String) mapping.getValue().get("bedrock_identifier"))
-                    // NOTICE: Should be cast to double
+                    // NOTICE: should be cast to double
                     .meta(((Double) mapping.getValue().get("bedrock_data")).intValue())
                     .itemType();
                 ITEM_ID_JE_TO_BE.put(mapping.getKey(), item);
             }
         } catch(IOException e) {
-            log.error("Failed to load mapping", e);
+            log.error("Failed to load items mapping", e);
         }
         return true;
     }
 
     private static boolean initBlockStateMapping() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks_JE_1_20_4_TO_BE_1_20_0.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("mapping/blocks_JE_1_21_to_BE_1_21_30.json")) {
             if (stream == null) {
                 log.error("blocks mapping not found");
                 return false;
@@ -99,13 +135,13 @@ public final class Mapping {
                 BLOCK_STATE_JE_HASH_TO_BE.put(jeState.getHash(), beState);
             }
         } catch(IOException e) {
-            log.error("Failed to load mapping", e);
+            log.error("Failed to load blocks mapping", e);
         }
         return true;
     }
 
     private static boolean initJeBlockDefaultProperties() {
-        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states_1_20_4.json")) {
+        try (var stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states_1_21.json")) {
             if (stream == null) {
                 log.error("je_block_default_states.json not found");
                 return false;
@@ -149,45 +185,5 @@ public final class Mapping {
         var identifier = (String) data.get("Name");
         // noinspection unchecked
         return JeBlockState.create(identifier, new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
-    }
-
-    public static JeBlockState blockStateBeToJe(BlockState beBlockState) {
-        return BLOCK_STATE_BE_TO_JE.get(beBlockState);
-    }
-
-    public static BlockState blockStateJeToBe(JeBlockState jeBlockState) {
-        var result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
-        if(result == null) {
-            log.warn("Failed to find be block state for {}", jeBlockState);
-            return BlockTypes.AIR.getDefaultState();
-        }
-        return result;
-    }
-
-    public static ItemType<?> itemIdJeToBe(String jeItemId) {
-        return ITEM_ID_JE_TO_BE.get(jeItemId);
-    }
-
-    // Enchantment identifiers are same in both versions
-
-    public static String enchantmentIdBeToJe(String beEnchantmentId) {
-        return beEnchantmentId;
-    }
-
-    public static String enchantmentIdJeToBe(String jeEnchantmentId) {
-        return jeEnchantmentId;
-    }
-
-    public static int biomeIdJeToBe(String jeBiomeId) {
-        return BIOME_ID_JE_TO_BE.get(jeBiomeId);
-    }
-
-    public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
-        var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
-        if( defaultProperties == null) {
-            log.warn("Failed to find default properties for {}", jeBlockIdentifier);
-            return Map.of();
-        }
-        return defaultProperties;
     }
 }

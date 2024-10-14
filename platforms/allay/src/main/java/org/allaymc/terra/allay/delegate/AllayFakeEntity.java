@@ -5,6 +5,8 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 
 /**
+ * NOTICE: Entity is not supported currently, and this is a fake implementation.
+ *
  * @author daoge_cmd
  */
 public final class AllayFakeEntity implements Entity {

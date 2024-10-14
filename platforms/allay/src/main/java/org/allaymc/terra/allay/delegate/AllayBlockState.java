@@ -7,8 +7,6 @@ import org.allaymc.terra.allay.JeBlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 
-import java.util.Objects;
-
 /**
  * @author daoge_cmd
  */
@@ -16,6 +14,7 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
 
     public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR.getDefaultState(),
         JeBlockState.fromString("minecraft:air"));
+
     private final BlockState allayBlockState;
     private final JeBlockState jeBlockState;
     private final boolean containsWater;
