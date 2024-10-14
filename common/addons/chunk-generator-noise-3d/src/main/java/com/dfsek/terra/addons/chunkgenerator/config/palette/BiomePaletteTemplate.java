@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import com.dfsek.terra.addons.chunkgenerator.generation.math.SlantCalculationMethod;
 import com.dfsek.terra.addons.chunkgenerator.palette.BiomePaletteInfo;
 import com.dfsek.terra.addons.chunkgenerator.palette.PaletteHolder;
 import com.dfsek.terra.addons.chunkgenerator.palette.slant.SlantHolder;
@@ -27,7 +28,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {
     private final Platform platform;
-    private final SlantHolder.CalculationMethod slantCalculationMethod;
+    private final SlantCalculationMethod slantCalculationMethod;
     @Value("slant")
     @Default
     @Description("The slant palettes to use in this biome.")
@@ -56,7 +57,7 @@ public class BiomePaletteTemplate implements ObjectTemplate<BiomePaletteInfo> {
     @Default
     private @Meta boolean updatePalette = false;
 
-    public BiomePaletteTemplate(Platform platform, SlantHolder.CalculationMethod slantCalculationMethod) {
+    public BiomePaletteTemplate(Platform platform, SlantCalculationMethod slantCalculationMethod) {
         this.platform = platform;
         this.slantCalculationMethod = slantCalculationMethod;
     }

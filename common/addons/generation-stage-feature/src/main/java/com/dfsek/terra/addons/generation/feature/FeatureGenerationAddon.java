@@ -11,13 +11,6 @@ import com.dfsek.tectonic.api.config.template.dynamic.DynamicTemplate;
 import com.dfsek.tectonic.api.config.template.dynamic.DynamicValue;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.addons.generation.feature.config.FeatureStageTemplate;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -34,6 +27,9 @@ import com.dfsek.terra.api.structure.feature.Feature;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 
 public class FeatureGenerationAddon implements AddonInitializer {

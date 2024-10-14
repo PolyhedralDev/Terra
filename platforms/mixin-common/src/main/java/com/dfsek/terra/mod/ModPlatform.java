@@ -3,6 +3,7 @@ package com.dfsek.terra.mod;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registry;
@@ -44,7 +45,6 @@ import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.SoundEventTemplate;
 import com.dfsek.terra.mod.config.SpawnCostConfig;
 import com.dfsek.terra.mod.config.SpawnEntryTemplate;
-import com.dfsek.terra.mod.config.SpawnGroupTemplate;
 import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.config.VillagerTypeTemplate;
@@ -82,6 +82,7 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(GrassColorModifier.class,
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
+            .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
             .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)
             .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
@@ -90,7 +91,6 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(EntityType.class, EntityTypeTemplate::new)
             .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
             .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
-            .registerLoader(SpawnGroup.class, SpawnGroupTemplate::new)
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
@@ -117,6 +117,8 @@ public abstract class ModPlatform extends AbstractPlatform {
 
     public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
 
+    public abstract Registry<Enchantment> enchantmentRegistry();
+
     @Override
     public @NotNull WorldHandle getWorldHandle() {
         return worldHandle;
@@ -126,4 +128,6 @@ public abstract class ModPlatform extends AbstractPlatform {
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
     }
+
+
 }
