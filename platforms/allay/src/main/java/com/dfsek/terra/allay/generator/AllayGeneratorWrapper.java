@@ -2,6 +2,7 @@ package com.dfsek.terra.allay.generator;
 
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
+import org.allaymc.api.registry.Registries;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.chunk.UnsafeChunk;
@@ -31,7 +32,6 @@ import com.dfsek.terra.api.world.info.WorldProperties;
  */
 public class AllayGeneratorWrapper implements GeneratorWrapper {
 
-    protected static final String DEFAULT_PACK_NAME = "overworld";
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "seed";
 
@@ -43,9 +43,23 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     protected WorldProperties worldProperties;
     protected AllayServerWorld allayServerWorld;
 
-    public AllayGeneratorWrapper(String preset) {
+    public static WorldGenerator createWorldGenerator(String preset) {
+        try {
+            AllayGeneratorWrapper wrapper = new AllayGeneratorWrapper(preset);
+            return wrapper.getAllayWorldGenerator();
+        } catch (IllegalArgumentException e) {
+            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset);
+            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Reason: {}", e.getMessage());
+            return Registries.WORLD_GENERATOR_FACTORIES.get("FLAT").apply("");
+        }
+    }
+
+    protected AllayGeneratorWrapper(String preset) {
         Map<String, String> options = AllayStringUtils.parseOptions(preset);
-        String packName = options.getOrDefault(OPTION_PACK_NAME, DEFAULT_PACK_NAME);
+        String packName = options.get(OPTION_PACK_NAME);
+        if(packName == null) {
+            throw new IllegalArgumentException("Missing config pack name");
+        }
         this.seed = Long.parseLong(options.getOrDefault(OPTION_SEED, "0"));
         this.configPack = createConfigPack(packName);
         this.chunkGenerator = createGenerator(this.configPack);
