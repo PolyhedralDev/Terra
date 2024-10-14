@@ -2,8 +2,8 @@ package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockTypes;
-import com.dfsek.terra.allay.JeBlockState;
 
+import com.dfsek.terra.allay.JeBlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 

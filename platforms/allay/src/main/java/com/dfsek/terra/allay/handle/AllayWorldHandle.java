@@ -1,10 +1,10 @@
 package com.dfsek.terra.allay.handle;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.allay.JeBlockState;
 import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.allay.delegate.AllayBlockState;
-import org.jetbrains.annotations.NotNull;
-
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;

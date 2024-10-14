@@ -1,16 +1,14 @@
 package com.dfsek.terra.allay.delegate;
 
 import org.allaymc.api.item.ItemStack;
+import org.allaymc.api.item.enchantment.EnchantmentInstance;
+import org.allaymc.api.item.enchantment.EnchantmentType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
-
-import org.allaymc.api.item.enchantment.EnchantmentInstance;
-import org.allaymc.api.item.enchantment.EnchantmentType;
-
 
 /**
  * @author daoge_cmd
