@@ -31,7 +31,7 @@ public class TerraAllayPlugin extends Plugin {
         // TODO: adapt command manager
 
         pluginLogger.info("Registering generator...");
-        Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", preset -> new AllayGeneratorWrapper(preset).getAllayWorldGenerator());
+        Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", AllayGeneratorWrapper::createWorldGenerator);
 
         pluginLogger.info("Terra started");
     }
