@@ -1,7 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
+import org.allaymc.api.block.tag.BlockTags;
 import org.allaymc.api.block.type.BlockType;
-import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.terra.allay.Mapping;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -22,7 +22,7 @@ public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.t
 
     @Override
     public boolean isWater() {
-        return allayBlockType == BlockTypes.WATER || allayBlockType == BlockTypes.FLOWING_WATER;
+        return allayBlockType.hasBlockTag(BlockTags.WATER);
     }
 
     @Override

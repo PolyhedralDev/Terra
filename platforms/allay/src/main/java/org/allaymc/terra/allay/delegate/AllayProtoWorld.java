@@ -1,8 +1,7 @@
 package org.allaymc.terra.allay.delegate;
 
-import com.dfsek.terra.api.util.vector.Vector3;
-
 import org.allaymc.api.block.property.type.BlockPropertyTypes;
+import org.allaymc.api.block.tag.BlockTags;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.generator.context.OtherChunkAccessibleContext;
 import org.allaymc.terra.allay.Mapping;
@@ -12,6 +11,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -22,7 +22,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(15));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override
     public int centerChunkX() {
@@ -42,11 +42,7 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         var allayBlockState = (AllayBlockState)data;
-        var containsWater = allayBlockState.containsWater();
-        if (!containsWater) {
-            var oldBlock = context.getBlockState(x, y, z).getBlockType();
-            containsWater = oldBlock == BlockTypes.WATER;
-        }
+        var containsWater = allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if (containsWater) context.setBlockState(x, y, z, WATER, 1);
     }

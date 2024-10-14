@@ -22,7 +22,7 @@ public record AllayItemMeta(ItemStack allayItemStack) implements ItemMeta {
     public Map<Enchantment, Integer> getEnchantments() {
         Map<Enchantment, Integer> results = new HashMap<>();
         for (var allayEnchantmentInstance : allayItemStack.getEnchantments()) {
-            results.put(new AllayEnchantment(allayEnchantmentInstance.getType()), (int) allayEnchantmentInstance.getLevel());
+            results.put(new AllayEnchantment(allayEnchantmentInstance.getType()), allayEnchantmentInstance.getLevel());
         }
         return results;
     }

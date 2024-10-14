@@ -27,7 +27,6 @@ public class AllayWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull EntityType getEntity(@NotNull String id) {
-        // TODO: 我们暂时不支持实体，因为端本身都没实体ai，生成实体没有意义
         return new EntityType() {
             private final Object fakeEntityType = new Object();
             @Override
