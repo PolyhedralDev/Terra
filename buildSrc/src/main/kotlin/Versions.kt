@@ -75,4 +75,8 @@ object Versions {
         const val nbt = "6.1"
         const val logback = "1.5.8"
     }
+    
+    object Allay {
+        const val api = "1cb3bb69c6"
+    }
 }
