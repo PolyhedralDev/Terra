@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.v2;
 
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
@@ -11,7 +13,6 @@ import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.addons.biome.pipeline.v2.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Pipeline;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -23,7 +24,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 public class PipelineBiomeProvider implements BiomeProvider {
 
-    private final LoadingCache<SeededVector, BiomeChunk> biomeChunkCache;
+    private final LoadingCache<SeededVector2Key, BiomeChunk> biomeChunkCache;
     private final int chunkSize;
     private final int resolution;
     private final NoiseSampler mutator;
@@ -90,7 +91,7 @@ public class PipelineBiomeProvider implements BiomeProvider {
         int xInChunk = x - chunkWorldX;
         int zInChunk = z - chunkWorldZ;
 
-        return biomeChunkCache.get(new SeededVector(seed, chunkWorldX, chunkWorldZ)).get(xInChunk, zInChunk).getBiome();
+        return biomeChunkCache.get(new SeededVector2Key(chunkWorldX, chunkWorldZ, seed)).get(xInChunk, zInChunk).getBiome();
     }
 
     @Override

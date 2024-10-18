@@ -22,6 +22,8 @@ public class CLIPlatform extends AbstractPlatform {
     private final CLIWorldHandle worldHandle = new CLIWorldHandle();
     private final CLIItemHandle itemHandle = new CLIItemHandle();
 
+    private final int generationThreads = Runtime.getRuntime().availableProcessors() - 1;
+
     public CLIPlatform() {
         LOGGER.info("Root directory: {}", getDataFolder().getAbsoluteFile());
         load();
@@ -57,5 +59,10 @@ public class CLIPlatform extends AbstractPlatform {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(PlatformBiome.class, (TypeLoader<PlatformBiome>) (annotatedType, o, configLoader, depthTracker) -> () -> o);
+    }
+
+    @Override
+    public int getGenerationThreads() {
+        return generationThreads;
     }
 }

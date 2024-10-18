@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -197,7 +197,9 @@ public class CellularSampler extends NoiseFunction {
     private double jitterModifier = 1.0;
 
     private NoiseSampler noiseLookup;
-
+    
+    private boolean saltLookup;
+    
     public CellularSampler() {
         noiseLookup = new OpenSimplex2Sampler();
     }
@@ -217,7 +219,11 @@ public class CellularSampler extends NoiseFunction {
     public void setReturnType(ReturnType returnType) {
         this.returnType = returnType;
     }
-
+    
+    public void setSaltLookup(boolean saltLookup) {
+        this.saltLookup = saltLookup;
+    }
+    
     @Override
     public double getNoiseRaw(long sl, double x, double y) {
         int seed = (int) sl;
@@ -273,7 +279,8 @@ public class CellularSampler extends NoiseFunction {
 
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
             distance0 = Math.sqrt(distance0);
-            if(returnType != ReturnType.CellValue) {
+
+            if (returnType != ReturnType.Distance) {
                 distance1 = Math.sqrt(distance1);
             }
         }
@@ -286,8 +293,8 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY);
-            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY);
+            case NoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), centerX, centerY);
+            case LocalNoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), x / frequency - centerX, y / frequency - centerY);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -364,7 +371,8 @@ public class CellularSampler extends NoiseFunction {
 
         if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
             distance0 = Math.sqrt(distance0);
-            if(returnType != ReturnType.CellValue) {
+
+            if (returnType != ReturnType.Distance) {
                 distance1 = Math.sqrt(distance1);
             }
         }
@@ -377,8 +385,8 @@ public class CellularSampler extends NoiseFunction {
             case Distance2Sub -> distance1 - distance0 - 1;
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
-            case NoiseLookup -> noiseLookup.noise(sl, centerX, centerY, centerZ);
-            case LocalNoiseLookup -> noiseLookup.noise(sl, x / frequency - centerX, y / frequency - centerY, z / frequency - centerZ);
+            case NoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), centerX, centerY, centerZ);
+            case LocalNoiseLookup -> noiseLookup.noise(sl - (saltLookup ? 0 : salt), x / frequency - centerX, y / frequency - centerY, z / frequency - centerZ);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;

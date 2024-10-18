@@ -43,23 +43,27 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
             AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) o;
+                if (map.size() == 1) {
+                    Object onlyKey = map.keySet().iterator().next();
+                    return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, onlyKey, depthTracker));
+                }
                 for(Map.Entry<Object, Object> entry : map.entrySet()) {
                     collection.add(configLoader.loadType(generic, entry.getKey(), depthTracker.entry((String) entry.getKey())),
                         configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
                 }
             } else if(o instanceof List) {
-                List<Map<Object, Object>> map = (List<Map<Object, Object>>) o;
-                if(map.size() == 1) {
-                    Map<Object, Object> entry = map.get(0);
-                    if(entry.size() == 1) {
-                        for(Object value : entry.keySet()) {
+                List<Map<Object, Object>> list = (List<Map<Object, Object>>) o;
+                if(list.size() == 1) {
+                    Map<Object, Object> map = list.getFirst();
+                    if(map.size() == 1) {
+                        for(Object value : map.keySet()) {
                             return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, value, depthTracker));
                         }
                     }
                 }
-                for(int i = 0; i < map.size(); i++) {
-                    Map<Object, Object> l = map.get(i);
-                    for(Entry<Object, Object> entry : l.entrySet()) {
+                for(int i = 0; i < list.size(); i++) {
+                    Map<Object, Object> map = list.get(i);
+                    for(Entry<Object, Object> entry : map.entrySet()) {
                         if(entry.getValue() == null) throw new LoadException("No probability defined for entry \"" + entry.getKey() + "\"",
                             depthTracker);
                         Object val = configLoader.loadType(generic, entry.getKey(), depthTracker.index(i).entry((String) entry.getKey()));
