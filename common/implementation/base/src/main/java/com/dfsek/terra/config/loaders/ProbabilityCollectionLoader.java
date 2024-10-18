@@ -43,6 +43,10 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
             AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) o;
+                if (map.size() == 1) {
+                    Object onlyKey = map.keySet().iterator().next();
+                    return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, onlyKey, depthTracker));
+                }
                 for(Map.Entry<Object, Object> entry : map.entrySet()) {
                     collection.add(configLoader.loadType(generic, entry.getKey(), depthTracker.entry((String) entry.getKey())),
                         configLoader.loadType(Integer.class, entry.getValue(), depthTracker.entry((String) entry.getKey())));
@@ -50,7 +54,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
             } else if(o instanceof List) {
                 List<Map<Object, Object>> map = (List<Map<Object, Object>>) o;
                 if(map.size() == 1) {
-                    Map<Object, Object> entry = map.get(0);
+                    Map<Object, Object> entry = map.getFirst();
                     if(entry.size() == 1) {
                         for(Object value : entry.keySet()) {
                             return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, value, depthTracker));
