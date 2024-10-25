@@ -26,11 +26,11 @@ public class NMSWorldProperties implements WorldProperties {
 
     @Override
     public int getMaxHeight() {
-        return height.getMaxBuildHeight();
+        return height.getMaxY();
     }
 
     @Override
     public int getMinHeight() {
-        return height.getMinBuildHeight();
+        return height.getMinY();
     }
 }
