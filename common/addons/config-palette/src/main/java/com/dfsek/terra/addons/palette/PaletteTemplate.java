@@ -23,7 +23,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
-    private @Meta NoiseSampler noise = NoiseSampler.zero();
+    private @Meta NoiseSampler defaultSampler = NoiseSampler.zero();
 
     @Value("id")
     @Final
@@ -40,7 +40,7 @@ public class PaletteTemplate implements AbstractableTemplate {
         return palette;
     }
 
-    public NoiseSampler getNoise() {
-        return noise;
+    public NoiseSampler getDefaultSampler() {
+        return defaultSampler;
     }
 }

@@ -54,9 +54,8 @@ public final class MinecraftUtil {
     }
 
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
-        return registry.getOrEmpty(identifier)
-            .flatMap(registry::getKey)
-            .flatMap(registry::getEntry);
+        return registry.getOptionalValue(identifier)
+                .flatMap(id -> Optional.ofNullable(registry.getEntry(id)));
     }
 
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {

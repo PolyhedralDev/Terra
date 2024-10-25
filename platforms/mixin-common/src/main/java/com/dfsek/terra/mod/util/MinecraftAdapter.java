@@ -42,7 +42,7 @@ public final class MinecraftAdapter {
 
             @Override
             public int getMaxHeight() {
-                return height.getTopY();
+                return height.getTopYInclusive();
             }
 
             @Override
