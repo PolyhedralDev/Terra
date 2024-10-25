@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.biome.pipeline.v2.pipeline;
 
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +10,6 @@ import java.util.List;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Pipeline;
-import com.dfsek.terra.addons.biome.pipeline.v2.api.SeededVector;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.v2.api.Stage;
 
@@ -55,7 +56,7 @@ public class PipelineImpl implements Pipeline {
     }
 
     @Override
-    public BiomeChunk generateChunk(SeededVector worldCoordinates) {
+    public BiomeChunk generateChunk(SeededVector2Key worldCoordinates) {
         return new BiomeChunkImpl(worldCoordinates, this);
     }
 

@@ -42,18 +42,13 @@ public class NMSInjectListener implements Listener {
             NMSBiomeProvider provider = new NMSBiomeProvider(pack.getBiomeProvider(), craftWorld.getSeed());
             ChunkMap chunkMap = serverWorld.getChunkSource().chunkMap;
             WorldGenContext worldGenContext = chunkMap.worldGenContext;
-
-            try {
-                ReflectionUtil.setFinalField(chunkMap, "worldGenContext", new WorldGenContext(
-                    worldGenContext.level(),
-                    new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed()),
-                    worldGenContext.structureManager(),
-                    worldGenContext.lightEngine(),
-                    worldGenContext.mainThreadMailBox()
-                ));
-            } catch(NoSuchFieldException e) {
-                throw new RuntimeException(e);
-            }
+            Reflection.CHUNKMAP.setWorldGenContext(chunkMap, new WorldGenContext(
+                worldGenContext.level(),
+                new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed()),
+                worldGenContext.structureManager(),
+                worldGenContext.lightEngine(),
+                worldGenContext.mainThreadMailBox()
+            ));
 
             LOGGER.info("Successfully injected into world.");
 
