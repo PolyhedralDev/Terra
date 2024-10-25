@@ -38,9 +38,9 @@ import com.dfsek.terra.mod.generation.TerraBiomeSource;
 
 public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
-    private static final List<Identifier> PRESETS = new ArrayList<>();
+    private static final List<Pair<Identifier, Boolean>> PRESETS = new ArrayList<>();
 
-    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform) {
+    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform, boolean extended) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists =
@@ -51,7 +51,7 @@ public class PresetUtil {
             "terra:" + pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
                 Locale.ROOT));
 
-        PRESETS.add(generatorID);
+        PRESETS.add(Pair.of(generatorID, extended));
 
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
@@ -65,7 +65,7 @@ public class PresetUtil {
         return Pair.of(generatorID, preset);
     }
 
-    public static Pair<Identifier, WorldPreset> createMetaPackPreset(MetaPack metaPack, ModPlatform platform) {
+    public static Pair<Identifier, WorldPreset> createMetaPackPreset(MetaPack metaPack, ModPlatform platform, boolean extended) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists =
@@ -75,7 +75,7 @@ public class PresetUtil {
             metaPack.getID().toLowerCase(Locale.ROOT) + "/" + metaPack.getNamespace().toLowerCase(
                 Locale.ROOT));
 
-        PRESETS.add(generatorID);
+        PRESETS.add(Pair.of(generatorID, extended));
 
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
@@ -187,7 +187,7 @@ public class PresetUtil {
         }
     }
 
-    public static List<Identifier> getPresets() {
+    public static List<Pair<Identifier, Boolean>> getPresets() {
         return PRESETS;
     }
 }
