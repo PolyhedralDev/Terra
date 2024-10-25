@@ -76,5 +76,6 @@ object Versions {
 //
     object CLI {
         const val logback = "1.5.8"
+        const val picocli = "4.7.6"
     }
 }
