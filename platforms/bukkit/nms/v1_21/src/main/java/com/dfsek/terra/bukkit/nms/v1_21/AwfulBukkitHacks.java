@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -43,7 +42,7 @@ public class AwfulBukkitHacks {
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
                     ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(),
                         vanillaBukkitKey.getKey());
-                    Biome platform = NMSBiomeInjector.createBiome(biome, Objects.requireNonNull(biomeRegistry.get(vanillaMinecraftKey)));
+                    Biome platform = NMSBiomeInjector.createBiome(biome, biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value());
 
                     ResourceKey<Biome> delegateKey = ResourceKey.create(
                         Registries.BIOME,
@@ -70,7 +69,7 @@ public class AwfulBukkitHacks {
                 .getTags() // streamKeysAndEntries
                 .collect(HashMap::new,
                     (map, pair) ->
-                        map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
+                        map.put(pair.key(), new ArrayList<>(Reflection.HOLDER_SET.invokeContents(pair).stream().toList())),
                     HashMap::putAll);
 
             terraBiomeMap
@@ -91,8 +90,8 @@ public class AwfulBukkitHacks {
                                 () -> LOGGER.error("No such biome: {}", tb))),
                         () -> LOGGER.error("No vanilla biome: {}", vb)));
 
-            biomeRegistry.resetTags();
-            biomeRegistry.bindTags(ImmutableMap.copyOf(collect));
+            ((MappedRegistry<Biome>) biomeRegistry).bindAllTagsToEmpty();
+            ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
 
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);

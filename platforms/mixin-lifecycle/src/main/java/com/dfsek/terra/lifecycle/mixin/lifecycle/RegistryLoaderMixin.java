@@ -39,8 +39,7 @@ public class RegistryLoaderMixin {
     private static Logger LOGGER;
 
     @Redirect(
-        method = "load(Lnet/minecraft/registry/RegistryLoader$RegistryLoadable;Lnet/minecraft/registry/DynamicRegistryManager;" +
-                 "Ljava/util/List;)Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
+        method = "load(Lnet/minecraft/registry/RegistryLoader$RegistryLoadable;Ljava/util/List;Ljava/util/List;)Lnet/minecraft/registry/DynamicRegistryManager$Immutable;",
         at = @At(
             value = "INVOKE",
             target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V",
