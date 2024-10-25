@@ -71,7 +71,7 @@ public final class MinecraftUtil {
     }
 
     public static void registerFlora(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
-
+        logger.info("Injecting flora into Terra biomes...");
         CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
             PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
             if(compatibilityOptions.isInjectFlora()) {
@@ -81,18 +81,16 @@ public final class MinecraftUtil {
                     });
             }
         });
-        logger.info("Injecting flora into Terra biomes...");
-
     }
 
     public static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack,
                                      com.dfsek.terra.api.registry.key.RegistryKey id,
                                      Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         RegistryKey<net.minecraft.world.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
-        biomeRegistry.getOrEmpty(vanillaKey)
+        biomeRegistry.getOptionalValue(vanillaKey)
             .ifPresentOrElse(vanillaBiome -> {
                     Identifier terraBiomeIdentifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
-                    biomeRegistry.getOrEmpty(terraBiomeIdentifier).ifPresentOrElse(
+                    biomeRegistry.getOptionalValue(terraBiomeIdentifier).ifPresentOrElse(
                         terraBiome -> {
                             List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
                                 vanillaBiome.getGenerationSettings()

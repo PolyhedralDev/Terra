@@ -146,15 +146,14 @@ public class PresetUtil {
                                        Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists,
                                        Registry<Biome> biomeRegistry, HashMap<RegistryKey<DimensionOptions>, DimensionOptions> map) {
         if(!map.containsKey(DimensionOptions.OVERWORLD)) {
-            RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.OVERWORLD).orElseThrow();
+            RegistryEntry<DimensionType> overworldDimensionType = dimensionTypeRegistry.getEntry(dimensionTypeRegistry.get(DimensionTypes.OVERWORLD));
 
-            RegistryEntry.Reference<MultiNoiseBiomeSourceParameterList> overworldChunkBiomeReference =
-                multiNoiseBiomeSourceParameterLists.getEntry(
-                    MultiNoiseBiomeSourceParameterLists.OVERWORLD).orElseThrow();
+            RegistryEntry<MultiNoiseBiomeSourceParameterList> overworldChunkBiomeReference =
+                multiNoiseBiomeSourceParameterLists.getEntry(multiNoiseBiomeSourceParameterLists.get(
+                    MultiNoiseBiomeSourceParameterLists.OVERWORLD));
 
-            RegistryEntry<ChunkGeneratorSettings> overworldChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
-                    ChunkGeneratorSettings.OVERWORLD)
-                .orElseThrow();
+            RegistryEntry<ChunkGeneratorSettings> overworldChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(
+                    ChunkGeneratorSettings.OVERWORLD));
 
 
             DimensionOptions overworldDimensionOptions = new DimensionOptions(overworldDimensionType,
@@ -162,31 +161,28 @@ public class PresetUtil {
             map.put(DimensionOptions.OVERWORLD, overworldDimensionOptions);
         }
         if(!map.containsKey(DimensionOptions.NETHER)) {
-            RegistryEntry<DimensionType> netherDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_NETHER).orElseThrow();
+            RegistryEntry<DimensionType> netherDimensionType = dimensionTypeRegistry.getEntry(dimensionTypeRegistry.get(DimensionTypes.THE_NETHER));
 
-            RegistryEntry.Reference<MultiNoiseBiomeSourceParameterList> netherChunkBiomeReference =
-                multiNoiseBiomeSourceParameterLists.getEntry(
-                    MultiNoiseBiomeSourceParameterLists.NETHER).orElseThrow();
+            RegistryEntry<MultiNoiseBiomeSourceParameterList> netherChunkBiomeReference =
+                multiNoiseBiomeSourceParameterLists.getEntry(multiNoiseBiomeSourceParameterLists.get(
+                    MultiNoiseBiomeSourceParameterLists.NETHER));
 
-            RegistryEntry<ChunkGeneratorSettings> netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
-                    ChunkGeneratorSettings.NETHER)
-                .orElseThrow();
-
+            RegistryEntry<ChunkGeneratorSettings> netherChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(
+                    ChunkGeneratorSettings.NETHER));
 
             DimensionOptions overworldDimensionOptions = new DimensionOptions(netherDimensionType,
                 (new NoiseChunkGenerator(MultiNoiseBiomeSource.create(netherChunkBiomeReference), netherChunkGeneratorSettings)));
             map.put(DimensionOptions.NETHER, overworldDimensionOptions);
         }
         if(!map.containsKey(DimensionOptions.END)) {
-            RegistryEntry<DimensionType> endDimensionType = dimensionTypeRegistry.getEntry(DimensionTypes.THE_END).orElseThrow();
+            RegistryEntry<DimensionType> endDimensionType = dimensionTypeRegistry.getEntry(dimensionTypeRegistry.get(DimensionTypes.THE_END));
 
-            RegistryEntry<ChunkGeneratorSettings> endChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(
-                    ChunkGeneratorSettings.END)
-                .orElseThrow();
+            RegistryEntry<ChunkGeneratorSettings> endChunkGeneratorSettings = chunkGeneratorSettingsRegistry.getEntry(chunkGeneratorSettingsRegistry.get(
+                    ChunkGeneratorSettings.END));
 
 
             DimensionOptions overworldDimensionOptions = new DimensionOptions(endDimensionType,
-                (new NoiseChunkGenerator(TheEndBiomeSource.createVanilla(biomeRegistry.getReadOnlyWrapper()), endChunkGeneratorSettings)));
+                (new NoiseChunkGenerator(TheEndBiomeSource.createVanilla(biomeRegistry), endChunkGeneratorSettings)));
             map.put(DimensionOptions.END, overworldDimensionOptions);
         }
     }
