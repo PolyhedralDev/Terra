@@ -60,7 +60,7 @@ public class DimensionUtil {
         MonsterSettings defaultMonsterSettings = defaultDimension.monsterSettings();
 
 
-        MonsterSettings monsterSettings = new MonsterSettings(
+        return new MonsterSettings(
             monsterSettingsConfig.getPiglinSafe() == null ? defaultMonsterSettings.piglinSafe() : monsterSettingsConfig.getPiglinSafe(),
             monsterSettingsConfig.getHasRaids() == null ? defaultMonsterSettings.hasRaids() : monsterSettingsConfig.getHasRaids(),
             monsterSettingsConfig.getMonsterSpawnLight() == null ? defaultMonsterSettings.monsterSpawnLightTest() : new TerraIntProvider(
@@ -69,6 +69,5 @@ public class DimensionUtil {
             ? defaultMonsterSettings.monsterSpawnBlockLightLimit()
             : monsterSettingsConfig.getMonsterSpawnBlockLightLimit()
         );
-        return monsterSettings;
     }
 }
