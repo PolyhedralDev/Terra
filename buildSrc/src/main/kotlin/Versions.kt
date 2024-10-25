@@ -77,4 +77,8 @@ object Versions {
         const val logback = "1.5.8"
         const val picocli = "4.7.6"
     }
+    
+    object Allay {
+        const val api = "1cb3bb69c6"
+    }
 }
