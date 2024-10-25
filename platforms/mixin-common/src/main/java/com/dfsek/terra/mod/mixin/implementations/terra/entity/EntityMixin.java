@@ -33,7 +33,7 @@ import com.dfsek.terra.mod.util.MinecraftAdapter;
 @Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$"))
 public abstract class EntityMixin {
     @Shadow
-    public net.minecraft.world.World world;
+    private net.minecraft.world.World world;
 
     @Shadow
     private BlockPos blockPos;
