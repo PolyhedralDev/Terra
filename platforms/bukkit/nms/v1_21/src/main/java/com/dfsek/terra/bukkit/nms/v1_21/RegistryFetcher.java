@@ -15,7 +15,9 @@ public class RegistryFetcher {
         DedicatedServer dedicatedserver = craftserver.getServer();
         return dedicatedserver
             .registryAccess()
-            .registryOrThrow(key);
+            .get(key)
+            .orElseThrow()
+            .value();
     }
 
     public static Registry<Biome> biomeRegistry() {
