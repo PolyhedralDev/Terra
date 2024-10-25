@@ -62,14 +62,12 @@ public abstract class ModPlatform extends AbstractPlatform {
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
         HashSet<String> configPacksInMetaPack = new HashSet<>();
         getRawMetaConfigRegistry().forEach(pack -> {
-            PresetUtil.createMetaPackPreset(pack, this).apply(registerFunction);
+            PresetUtil.createMetaPackPreset(pack, this, false).apply(registerFunction);
             pack.packs().forEach((k, v) -> configPacksInMetaPack.add(v.getID()));
         });
         getRawConfigRegistry()
             .forEach(pack -> {
-                if(!configPacksInMetaPack.contains(pack.getID())) {
-                    PresetUtil.createDefault(pack, this).apply(registerFunction);
-                }
+                    PresetUtil.createDefault(pack, this, configPacksInMetaPack.contains(pack.getID())).apply(registerFunction);
             });
     }
 
