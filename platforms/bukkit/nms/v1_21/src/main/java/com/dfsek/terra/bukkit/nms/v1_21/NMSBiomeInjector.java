@@ -19,7 +19,7 @@ public class NMSBiomeInjector {
     public static <T> Optional<Holder<T>> getEntry(Registry<T> registry, ResourceLocation identifier) {
         return registry.getOptional(identifier)
             .flatMap(registry::getResourceKey)
-            .flatMap(registry::getHolder);
+            .flatMap(registry::get);
     }
 
     public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)

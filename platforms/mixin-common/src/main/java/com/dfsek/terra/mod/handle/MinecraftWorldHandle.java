@@ -41,7 +41,7 @@ public class MinecraftWorldHandle implements WorldHandle {
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
-            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK.getReadOnlyWrapper(), data, true)
+            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK, data, true)
                 .blockState();
             if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
             return (BlockState) state;
@@ -60,6 +60,6 @@ public class MinecraftWorldHandle implements WorldHandle {
         if(!id.contains(":")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         Identifier identifier = Identifier.tryParse(id);
         if(identifier == null) identifier = Identifier.tryParse(id);
-        return (EntityType) Registries.ENTITY_TYPE.get(identifier);
+        return (EntityType) Registries.ENTITY_TYPE.getEntry(identifier).orElseThrow().value();
     }
 }
