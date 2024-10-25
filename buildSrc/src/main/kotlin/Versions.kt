@@ -15,21 +15,20 @@ object Versions {
         const val slf4j = "2.0.16"
 
         object Internal {
-            const val shadow = "8.3.1"
+            const val shadow = "8.3.3"
             const val apacheText = "1.12.0"
-            const val apacheIO = "2.16.1"
-            const val guava = "33.3.0-jre"
-            const val asm = "9.7"
+            const val apacheIO = "2.17.0"
+            const val guava = "33.3.1-jre"
+            const val asm = "9.7.1"
             const val snakeYml = "2.3"
-            const val jetBrainsAnnotations = "24.1.0"
-            const val junit = "5.11.0"
+            const val jetBrainsAnnotations = "26.0.1"
+            const val junit = "5.11.3"
             const val nbt = "6.1"
         }
     }
     
     object Fabric {
-//        const val fabricAPI = "0.104.0+${Mod.minecraft}"
-        const val fabricAPI = "0.105.4+1.21.2"
+        const val fabricAPI = "0.106.1+${Mod.minecraft}"
         const val cloud = "2.0.0-beta.9"
     }
 //
@@ -41,7 +40,7 @@ object Versions {
     object Mod {
         const val mixin = "0.15.3+mixin.0.8.7"
         
-        const val minecraft = "1.21.2-pre3"
+        const val minecraft = "1.21.3-pre3"
         const val yarn = "$minecraft+build.2"
         const val fabricLoader = "0.16.7"
         
