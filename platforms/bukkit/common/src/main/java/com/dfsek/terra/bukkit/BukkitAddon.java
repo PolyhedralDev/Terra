@@ -4,18 +4,15 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.version.Version;
 
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
 
 
 public class BukkitAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
 
-    private final PlatformImpl terraBukkitPlugin;
+    protected final PlatformImpl terraBukkitPlugin;
 
     public BukkitAddon(PlatformImpl terraBukkitPlugin) {
         this.terraBukkitPlugin = terraBukkitPlugin;
@@ -27,16 +24,6 @@ public class BukkitAddon implements BaseAddon {
             .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPreLoadEvent.class)
             .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
-            .global();
-
-        terraBukkitPlugin.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigurationLoadEvent.class)
-            .then(event -> {
-                if(event.is(Biome.class)) {
-                    event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
-                }
-            })
             .global();
     }
 
