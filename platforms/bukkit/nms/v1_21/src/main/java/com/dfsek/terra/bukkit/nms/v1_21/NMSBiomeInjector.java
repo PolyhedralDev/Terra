@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.nms.v1_21.config.VanillaBiomeProperties;
 
 
 public class NMSBiomeInjector {
@@ -26,16 +26,7 @@ public class NMSBiomeInjector {
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
 
-        builder
-            .downfall(vanilla.climateSettings.downfall())
-            .temperature(vanilla.getBaseTemperature())
-            .mobSpawnSettings(vanilla.getMobSettings())
-            .generationSettings(vanilla.getGenerationSettings());
-
-
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-
-        effects.grassColorModifier(vanilla.getSpecialEffects().getGrassColorModifier());
 
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
@@ -45,13 +36,11 @@ public class NMSBiomeInjector {
 
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
 
-            .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()));
+            .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
 
-        if(vanillaBiomeProperties.getFoliageColor() == null) {
-            vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
-        } else {
-            effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
-        }
+            .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getSpecialEffects().getGrassColorModifier()))
+
+            .foliageColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
 
         if(vanillaBiomeProperties.getGrassColor() == null) {
             vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
@@ -60,15 +49,50 @@ public class NMSBiomeInjector {
             effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
         }
 
-        vanilla.getAmbientLoop().ifPresent(effects::ambientLoopSound);
-        vanilla.getAmbientAdditions().ifPresent(effects::ambientAdditionsSound);
-        vanilla.getAmbientMood().ifPresent(effects::ambientMoodSound);
-        vanilla.getBackgroundMusic().ifPresent(effects::backgroundMusic);
-        vanilla.getAmbientParticle().ifPresent(effects::ambientParticle);
+        if(vanillaBiomeProperties.getParticleConfig() == null) {
+            vanilla.getSpecialEffects().getAmbientParticleSettings().ifPresent(effects::ambientParticle);
+        } else {
+            effects.ambientParticle(vanillaBiomeProperties.getParticleConfig());
+        }
 
-        builder.specialEffects(effects.build());
+        if(vanillaBiomeProperties.getLoopSound() == null) {
+            vanilla.getSpecialEffects().getAmbientLoopSoundEvent().ifPresent(effects::ambientLoopSound);
+        } else {
+            RegistryFetcher.soundEventRegistry().get(vanillaBiomeProperties.getLoopSound().location()).ifPresent(effects::ambientLoopSound);
+        }
 
-        return builder.build();
+        if(vanillaBiomeProperties.getMoodSound() == null) {
+            vanilla.getSpecialEffects().getAmbientMoodSettings().ifPresent(effects::ambientMoodSound);
+        } else {
+            effects.ambientMoodSound(vanillaBiomeProperties.getMoodSound());
+        }
+
+        if(vanillaBiomeProperties.getAdditionsSound() == null) {
+            vanilla.getSpecialEffects().getAmbientAdditionsSettings().ifPresent(effects::ambientAdditionsSound);
+        } else {
+            effects.ambientAdditionsSound(vanillaBiomeProperties.getAdditionsSound());
+        }
+
+        if(vanillaBiomeProperties.getMusic() == null) {
+            vanilla.getSpecialEffects().getBackgroundMusic().ifPresent(effects::backgroundMusic);
+        } else {
+            effects.backgroundMusic(vanillaBiomeProperties.getMusic());
+        }
+
+        builder.hasPrecipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.hasPrecipitation()));
+
+        builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getBaseTemperature()));
+
+        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), vanilla.climateSettings.downfall()));
+
+        builder.temperatureAdjustment(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(), vanilla.climateSettings.temperatureModifier()));
+
+        builder.mobSpawnSettings(Objects.requireNonNullElse(vanillaBiomeProperties.getSpawnSettings(), vanilla.getMobSettings()));
+
+        return builder
+            .specialEffects(effects.build())
+            .generationSettings(vanilla.getGenerationSettings())
+            .build();
     }
 
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
