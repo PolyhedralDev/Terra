@@ -79,6 +79,6 @@ object Versions {
     }
     
     object Allay {
-        const val api = "1cb3bb69c6"
+        const val api = "0114e0b290"
     }
 }
