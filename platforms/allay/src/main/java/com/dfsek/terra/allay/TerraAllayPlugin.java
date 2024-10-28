@@ -1,10 +1,14 @@
 package com.dfsek.terra.allay;
 
+import org.allaymc.api.eventbus.EventHandler;
+import org.allaymc.api.eventbus.event.world.WorldUnloadEvent;
 import org.allaymc.api.plugin.Plugin;
 import org.allaymc.api.registry.Registries;
+import org.allaymc.api.server.Server;
 
 import com.dfsek.terra.allay.generator.AllayGeneratorWrapper;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+
 
 /**
  * @author daoge_cmd
@@ -47,6 +51,11 @@ public class TerraAllayPlugin extends Plugin {
     }
 
     @Override
+    public void onEnable() {
+        Server.getInstance().getEventBus().registerListener(this);
+    }
+
+    @Override
     public boolean isReloadable() {
         return true;
     }
@@ -58,5 +67,10 @@ public class TerraAllayPlugin extends Plugin {
         } else {
             pluginLogger.error("Terra failed to reload.");
         }
+    }
+
+    @EventHandler
+    private void onWorldUnload(WorldUnloadEvent event) {
+        AllayPlatform.GENERATOR_WRAPPERS.removeIf(wrapper -> wrapper.getAllayWorldGenerator().getDimension().getWorld() == event.getWorld());
     }
 }
