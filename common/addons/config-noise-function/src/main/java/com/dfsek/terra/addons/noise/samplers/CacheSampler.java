@@ -11,10 +11,12 @@ import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
 import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
 
 
+@Experimental
 public class CacheSampler implements NoiseSampler {
 
     private final NoiseSampler sampler;
