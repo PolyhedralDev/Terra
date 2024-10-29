@@ -10,8 +10,8 @@ import com.dfsek.terra.bukkit.nms.v1_21.config.VanillaBiomeProperties;
 
 public class NMSAddon extends BukkitAddon {
 
-    public NMSAddon(PlatformImpl terraBukkitPlugin) {
-        super(terraBukkitPlugin);
+    public NMSAddon(PlatformImpl platform) {
+        super(platform);
     }
 
     @Override
