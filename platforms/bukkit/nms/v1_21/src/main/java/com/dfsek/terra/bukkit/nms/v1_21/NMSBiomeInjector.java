@@ -22,13 +22,11 @@ public class NMSBiomeInjector {
             .flatMap(registry::get);
     }
 
-    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla)
+    public static Biome createBiome(Biome vanilla, VanillaBiomeProperties vanillaBiomeProperties)
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
 
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
-
-        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
             .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))

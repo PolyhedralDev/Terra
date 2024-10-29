@@ -18,6 +18,6 @@ public class VillagerTypeTemplate implements ObjectTemplate<VillagerType> {
     
     @Override
     public VillagerType get() {
-        return BuiltInRegistries.VILLAGER_TYPE.get(id);
+        return BuiltInRegistries.VILLAGER_TYPE.get(id).orElseThrow().value();
     }
 }

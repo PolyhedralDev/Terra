@@ -22,13 +22,10 @@ public class BiomeUtil {
     public static final Map<Identifier, List<Identifier>>
         TERRA_BIOME_MAP = new HashMap<>();
 
-    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla) {
-
+    public static Biome createBiome(Biome vanilla, VanillaBiomeProperties vanillaBiomeProperties) {
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
 
         net.minecraft.world.biome.Biome.Builder builder = new Builder();
-
-        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
         effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
