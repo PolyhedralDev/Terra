@@ -68,6 +68,13 @@ public final class MinecraftUtil {
         return null;
     }
 
+    public static void registerIntProviderTypes() {
+        IntProviderType<TerraIntProvider> CONSTANT = IntProviderType.register("terra:constant_range",
+            Codecs.TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE);
+
+        TerraIntProvider.TERRA_RANGE_TYPE_TO_INT_PROVIDER_TYPE.put(ConstantRange.class, CONSTANT);
+    }
+
     public static void registerFlora(Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         logger.info("Injecting flora into Terra biomes...");
         CommonPlatform.get().getConfigRegistry().forEach(pack -> { // Register all Terra biomes.
@@ -81,13 +88,13 @@ public final class MinecraftUtil {
         });
     }
 
-    public static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack,
+    private static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack,
                                      com.dfsek.terra.api.registry.key.RegistryKey id,
                                      Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         RegistryKey<net.minecraft.world.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         biomeRegistry.getOptionalValue(vanillaKey)
             .ifPresentOrElse(vanillaBiome -> {
-                    Identifier terraBiomeIdentifier = Identifier.of("terra", MinecraftUtil.createBiomeID(pack, id));
+                    Identifier terraBiomeIdentifier = Identifier.of("terra", BiomeUtil.createBiomeID(pack, id));
                     biomeRegistry.getOptionalValue(terraBiomeIdentifier).ifPresentOrElse(
                         terraBiome -> {
                             List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
