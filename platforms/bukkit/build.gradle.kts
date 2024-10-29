@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_21", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_21_3", configuration = "reobf"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
