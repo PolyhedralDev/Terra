@@ -31,23 +31,12 @@ public class NMSBiomeInjector {
         VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
         effects.fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-
             .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-
             .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-
             .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getSpecialEffects().getGrassColorModifier()))
-
+            .grassColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(), vanilla.getSpecialEffects().getGrassColorOverride().orElseGet(() -> Reflection.BIOME.invokeGrassColorFromTexture(vanilla))))
             .foliageColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
-
-        if(vanillaBiomeProperties.getGrassColor() == null) {
-            vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
-        } else {
-            // grass
-            effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
-        }
 
         if(vanillaBiomeProperties.getParticleConfig() == null) {
             vanilla.getSpecialEffects().getAmbientParticleSettings().ifPresent(effects::ambientParticle);

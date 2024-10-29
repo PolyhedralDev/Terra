@@ -107,9 +107,9 @@ public final class MinecraftUtil {
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
             .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
             .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-            .grassColorModifier(
-                Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(),
-                    vanilla.getEffects().getGrassColorModifier()));
+            .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getEffects().getGrassColorModifier()))
+            .grassColor(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(), vanilla.getEffects().getGrassColor().orElseGet(vanilla.getDefaultGrassColor())))
+            .foliageColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
 
         if(vanillaBiomeProperties.getFoliageColor() == null) {
             vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
