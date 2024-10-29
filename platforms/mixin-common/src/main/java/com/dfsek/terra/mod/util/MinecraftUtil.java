@@ -44,9 +44,8 @@ public final class MinecraftUtil {
     }
 
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
-        return registry.getOrEmpty(identifier)
-            .flatMap(registry::getKey)
-            .flatMap(registry::getEntry);
+        return registry.getOptionalValue(identifier)
+                .flatMap(id -> Optional.ofNullable(registry.getEntry(id)));
     }
 
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
@@ -65,9 +64,9 @@ public final class MinecraftUtil {
         logger.info("Injecting flora into Terra biomes...");
         BiomeUtil.TERRA_BIOME_MAP
             .forEach((vb, terraBiomes) ->
-                biomes.getOrEmpty(vb)
+                biomes.getOptionalValue(vb)
                     .ifPresentOrElse(vanilla -> terraBiomes
-                            .forEach(tb -> biomes.getOrEmpty(tb)
+                            .forEach(tb -> biomes.getOptionalValue(tb)
                                 .ifPresentOrElse(
                                     terra -> {
                                         List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(

@@ -48,6 +48,6 @@ public abstract class ProtoChunkMixin {
     }
 
     public int terra$getMaxHeight() {
-        return getHeightLimitView().getTopY();
+        return getHeightLimitView().getTopYInclusive();
     }
 }
