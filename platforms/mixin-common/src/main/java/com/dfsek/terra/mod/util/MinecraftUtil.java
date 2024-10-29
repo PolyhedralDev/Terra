@@ -38,8 +38,6 @@ import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 public final class MinecraftUtil {
     public static final Logger logger = LoggerFactory.getLogger(MinecraftUtil.class);
-    public static final Map<Identifier, List<Identifier>>
-        TERRA_BIOME_MAP = new HashMap<>();
 
     private MinecraftUtil() {
 
@@ -64,7 +62,7 @@ public final class MinecraftUtil {
 
     public static void registerFlora(Registry<net.minecraft.world.biome.Biome> biomes) {
         logger.info("Injecting flora into Terra biomes...");
-        TERRA_BIOME_MAP
+        BiomeUtil.TERRA_BIOME_MAP
             .forEach((vb, terraBiomes) ->
                 biomes.getOptionalValue(vb)
                     .ifPresentOrElse(vanilla -> terraBiomes
@@ -87,92 +85,7 @@ public final class MinecraftUtil {
 
     }
 
-    public static Map<Identifier, List<Identifier>> getTerraBiomeMap() {
-        return Map.copyOf(TERRA_BIOME_MAP);
-    }
-
     public static RegistryKey<Biome> registerKey(Identifier identifier) {
         return RegistryKey.of(RegistryKeys.BIOME, identifier);
-    }
-
-    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla,
-                                    VanillaBiomeProperties vanillaBiomeProperties) {
-        GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
-
-        BiomeEffects.Builder effects = new BiomeEffects.Builder();
-
-        net.minecraft.world.biome.Biome.Builder builder = new Builder();
-
-        effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
-            .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
-            .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
-            .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-            .grassColorModifier(
-                Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(),
-                    vanilla.getEffects().getGrassColorModifier()));
-
-        if(vanillaBiomeProperties.getFoliageColor() == null) {
-            vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
-        } else {
-            effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
-        }
-
-        if(vanillaBiomeProperties.getGrassColor() == null) {
-            vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
-        } else {
-            effects.grassColor(vanillaBiomeProperties.getGrassColor());
-        }
-
-        if(vanillaBiomeProperties.getParticleConfig() == null) {
-            vanilla.getEffects().getParticleConfig().ifPresent(effects::particleConfig);
-        } else {
-            effects.particleConfig(vanillaBiomeProperties.getParticleConfig());
-        }
-
-        if(vanillaBiomeProperties.getLoopSound() == null) {
-            vanilla.getEffects().getLoopSound().ifPresent(effects::loopSound);
-        } else {
-            effects.loopSound(Registries.SOUND_EVENT.getEntry(vanillaBiomeProperties.getLoopSound()));
-        }
-
-        if(vanillaBiomeProperties.getMoodSound() == null) {
-            vanilla.getEffects().getMoodSound().ifPresent(effects::moodSound);
-        } else {
-            effects.moodSound(vanillaBiomeProperties.getMoodSound());
-        }
-
-        if(vanillaBiomeProperties.getAdditionsSound() == null) {
-            vanilla.getEffects().getAdditionsSound().ifPresent(effects::additionsSound);
-        } else {
-            effects.additionsSound(vanillaBiomeProperties.getAdditionsSound());
-        }
-
-        if(vanillaBiomeProperties.getMusic() == null) {
-            vanilla.getEffects().getMusic().ifPresent(effects::music);
-        } else {
-            effects.music(vanillaBiomeProperties.getMusic());
-        }
-
-        builder.precipitation(Objects.requireNonNullElse(vanillaBiomeProperties.getPrecipitation(), vanilla.hasPrecipitation()));
-
-        builder.temperature(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperature(), vanilla.getTemperature()));
-
-        builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(),
-            ((BiomeAccessor) ((Object) vanilla)).getWeather().downfall()));
-
-        builder.temperatureModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(),
-            ((BiomeAccessor) ((Object) vanilla)).getWeather().temperatureModifier()));
-
-        builder.spawnSettings(Objects.requireNonNullElse(vanillaBiomeProperties.getSpawnSettings(), vanilla.getSpawnSettings()));
-
-        return builder
-            .effects(effects.build())
-            .generationSettings(generationSettings.build())
-            .build();
-    }
-
-    public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
-        return pack.getID()
-                   .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
     }
 }

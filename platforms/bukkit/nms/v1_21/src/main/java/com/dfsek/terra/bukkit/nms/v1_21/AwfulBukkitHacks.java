@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.nms.v1_21;
 
+import com.dfsek.terra.bukkit.nms.v1_21.config.VanillaBiomeProperties;
+
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
@@ -42,7 +44,10 @@ public class AwfulBukkitHacks {
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
                     ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(),
                         vanillaBukkitKey.getKey());
-                    Biome platform = NMSBiomeInjector.createBiome(biome, biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value());
+
+                    VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
+
+                    Biome platform = NMSBiomeInjector.createBiome(biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value(), vanillaBiomeProperties);
 
                     ResourceKey<Biome> delegateKey = ResourceKey.create(
                         Registries.BIOME,

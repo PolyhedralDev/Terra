@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.lifecycle.util.BiomeUtil;
+import com.dfsek.terra.lifecycle.util.LifecycleBiomeUtil;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
@@ -84,7 +84,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
 
         if(server != null) {
-            BiomeUtil.registerBiomes(server.getRegistryManager().getOrThrow(RegistryKeys.BIOME));
+            LifecycleBiomeUtil.registerBiomes(server.getRegistryManager().getOrThrow(RegistryKeys.BIOME));
             server.reloadResources(server.getDataPackManager().getEnabledIds()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
