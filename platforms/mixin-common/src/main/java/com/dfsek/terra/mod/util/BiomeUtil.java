@@ -1,15 +1,10 @@
 package com.dfsek.terra.mod.util;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
-
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,37 +12,33 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
+import com.dfsek.terra.mod.mixin.invoke.BiomeInvoker;
+
 
 public class BiomeUtil {
     public static final Map<Identifier, List<Identifier>>
         TERRA_BIOME_MAP = new HashMap<>();
-    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla,
-                                    VanillaBiomeProperties vanillaBiomeProperties) {
-        GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
+
+    public static Biome createBiome(com.dfsek.terra.api.world.biome.Biome biome, Biome vanilla) {
 
         BiomeEffects.Builder effects = new BiomeEffects.Builder();
 
         net.minecraft.world.biome.Biome.Builder builder = new Builder();
+
+        VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
         effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
             .fogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanilla.getFogColor()))
             .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
             .grassColorModifier(
-                Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(),
-                    vanilla.getEffects().getGrassColorModifier()));
-
-        if(vanillaBiomeProperties.getFoliageColor() == null) {
-            vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
-        } else {
-            effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
-        }
-
-        if(vanillaBiomeProperties.getGrassColor() == null) {
-            vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
-        } else {
-            effects.grassColor(vanillaBiomeProperties.getGrassColor());
-        }
+                Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getEffects().getGrassColorModifier()))
+            .grassColor(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(),
+                vanilla.getEffects().getGrassColor().orElseGet(() -> ((BiomeInvoker) ((Object) vanilla)).invokeGetDefaultGrassColor())))
+            .foliageColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
 
         if(vanillaBiomeProperties.getParticleConfig() == null) {
             vanilla.getEffects().getParticleConfig().ifPresent(effects::particleConfig);
@@ -93,7 +84,7 @@ public class BiomeUtil {
 
         return builder
             .effects(effects.build())
-            .generationSettings(generationSettings.build())
+            .generationSettings(vanilla.getGenerationSettings())
             .build();
     }
 
