@@ -38,27 +38,20 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        try {
-            getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
-            GENERATOR_WRAPPERS.forEach(wrapper -> {
-                getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
-                    wrapper.setConfigPack(pack);
-                    var dimension = wrapper.getAllayWorldGenerator().getDimension();
-                    TerraAllayPlugin.INSTANCE.getPluginLogger().info(
-                        "Replaced pack in chunk generator for world {}",
-                        dimension.getWorld().getWorldData().getName() + ":" + dimension.getDimensionInfo().dimensionId()
-                    );
-                });
+        GENERATOR_WRAPPERS.forEach(wrapper -> {
+            getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
+                wrapper.setConfigPack(pack);
+                var dimension = wrapper.getAllayWorldGenerator().getDimension();
+                TerraAllayPlugin.INSTANCE.getPluginLogger().info(
+                    "Replaced pack in chunk generator for world {}",
+                    dimension.getWorld().getWorldData().getName() + ":" + dimension.getDimensionInfo().dimensionId()
+                );
             });
-        } catch(Exception e) {
-            TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to reload Terra", e);
-            return false;
-        }
+        });
 
-
-        return true;
+        return succeed;
     }
 
     @Override
