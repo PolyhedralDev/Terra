@@ -20,6 +20,9 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.bukkit.nms.Initializer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -95,7 +98,7 @@ public class PlatformImpl extends AbstractPlatform {
 
     @Override
     protected Iterable<BaseAddon> platformAddon() {
-        return List.of(new BukkitAddon(this));
+        return List.of(Initializer.nmsAddon(this));
     }
 
     @Override

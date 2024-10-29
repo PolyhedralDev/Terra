@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21;
+package com.dfsek.terra.bukkit.nms.v1_21_3;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
@@ -7,6 +7,7 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.status.WorldGenContext;
 import xyz.jpenilla.reflectionremapper.ReflectionRemapper;
 import xyz.jpenilla.reflectionremapper.proxy.ReflectionProxyFactory;
@@ -24,8 +25,10 @@ public class Reflection {
 
     public static final ReferenceProxy REFERENCE;
 
+
     public static final ChunkMapProxy CHUNKMAP;
     public static final HolderSetProxy HOLDER_SET;
+    public static final BiomeProxy BIOME;
 
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
@@ -37,6 +40,7 @@ public class Reflection {
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
         CHUNKMAP = reflectionProxyFactory.reflectionProxy(ChunkMapProxy.class);
         HOLDER_SET = reflectionProxyFactory.reflectionProxy(HolderSetProxy.class);
+        BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
 
 
@@ -73,5 +77,11 @@ public class Reflection {
     public interface HolderSetProxy {
         @MethodName("contents")
         <T> List<Holder<T>> invokeContents(HolderSet<T> instance);
+    }
+
+    @Proxies(Biome.class)
+    public interface BiomeProxy {
+        @MethodName("getGrassColorFromTexture")
+        int invokeGrassColorFromTexture(Biome instance);
     }
 }
