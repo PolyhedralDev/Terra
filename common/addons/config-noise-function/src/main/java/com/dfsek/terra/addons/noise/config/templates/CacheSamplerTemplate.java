@@ -7,7 +7,10 @@ import com.dfsek.terra.addons.noise.samplers.CacheSampler;
 import com.dfsek.terra.addons.noise.samplers.LinearHeightmapSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
+
+@Experimental
 public class CacheSamplerTemplate extends SamplerTemplate<CacheSampler> {
     @Value("sampler")
     @Default
