@@ -3,27 +3,21 @@ package com.dfsek.terra.bukkit.nms.v1_21.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import java.util.List;
-import net.minecraft.resources.ResourceLocation;
+
+import com.dfsek.terra.api.properties.Properties;
+
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.level.biome.AmbientAdditionsSettings;
 import net.minecraft.world.level.biome.AmbientMoodSettings;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
-import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import com.dfsek.terra.api.properties.Properties;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
-
-    @Value("tags")
-    @Default
-    private List<ResourceLocation> tags = null;
-
     @Value("colors.grass")
     @Default
     private Integer grassColor = null;
@@ -58,7 +52,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("climate.precipitation")
     @Default
-    private Boolean precipitation = null;
+    private Boolean precipitation = true;
 
     @Value("climate.temperature")
     @Default
@@ -95,79 +89,75 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Value("villager-type")
     @Default
     private VillagerType villagerType = null;
-    
-    public List<ResourceLocation> getTags() {
-        return tags;
-    }
-    
-    public Integer getGrassColor() {
-        return grassColor;
-    }
-    
+
     public Integer getFogColor() {
         return fogColor;
     }
-    
-    public Integer getWaterColor() {
-        return waterColor;
-    }
-    
-    public Integer getWaterFogColor() {
-        return waterFogColor;
-    }
-    
+
     public Integer getFoliageColor() {
         return foliageColor;
     }
-    
+
+    public Integer getGrassColor() {
+        return grassColor;
+    }
+
+    public Integer getWaterColor() {
+        return waterColor;
+    }
+
+    public Integer getWaterFogColor() {
+        return waterFogColor;
+    }
+
     public Integer getSkyColor() {
         return skyColor;
     }
-    
+
     public GrassColorModifier getGrassColorModifier() {
         return grassColorModifier;
     }
-    
+
     public AmbientParticleSettings getParticleConfig() {
         return particleConfig;
     }
-    
+
     public Boolean getPrecipitation() {
         return precipitation;
     }
-    
+
     public Float getTemperature() {
         return temperature;
     }
-    
+
     public TemperatureModifier getTemperatureModifier() {
         return temperatureModifier;
     }
-    
+
     public Float getDownfall() {
         return downfall;
     }
-    
+
     public SoundEvent getLoopSound() {
         return loopSound;
     }
-    
+
     public AmbientMoodSettings getMoodSound() {
         return moodSound;
     }
-    
+
     public AmbientAdditionsSettings getAdditionsSound() {
         return additionsSound;
     }
-    
+
     public Music getMusic() {
         return music;
     }
-    
+
     public MobSpawnSettings getSpawnSettings() {
         return spawnSettings;
     }
-    
+
     public VillagerType getVillagerType() {
         return villagerType;
     }

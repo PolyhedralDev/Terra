@@ -11,5 +11,5 @@ dependencies {
 
     shadedApi("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
-    shadedApi("org.incendo", "cloud-paper", Versions.Libraries.cloudPaper)
+    shadedApi("org.incendo", "cloud-paper", Versions.Bukkit.cloud)
 }
