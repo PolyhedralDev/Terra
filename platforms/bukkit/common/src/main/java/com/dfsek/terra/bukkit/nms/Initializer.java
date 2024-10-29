@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit.nms;
 
+import com.dfsek.terra.bukkit.BukkitAddon;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,20 +15,11 @@ public interface Initializer {
 
     static boolean init(PlatformImpl platform) {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
-        try {
-            String packageVersion = NMS;
-            if(NMS.equals("v1_21_3")) {
-                packageVersion = "v1_21"; // TODO: Refactor nms package to v1_21_3
-            }
 
-            Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSInitializer");
-            try {
-                Initializer initializer = (Initializer) initializerClass.getConstructor().newInstance();
-                initializer.initialize(platform);
-            } catch(ReflectiveOperationException e) {
-                throw new RuntimeException("Error initializing NMS bindings. Report this to Terra.", e);
-            }
-        } catch(ClassNotFoundException e) {
+        Initializer initializer = constructInitializer();
+        if(initializer != null) {
+            initializer.initialize(platform);
+        } else {
             logger.error("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
             logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
             String bypassKey = "IKnowThereAreNoNMSBindingsFor" + NMS + "ButIWillProceedAnyway";
@@ -49,8 +42,34 @@ public interface Initializer {
                 logger.error("Since you enabled the \"{}\" flag, we won't disable Terra. But be warned.", bypassKey);
             }
         }
+
         return true;
     }
 
+    static BukkitAddon nmsAddon(PlatformImpl platform) {
+        Initializer initializer = constructInitializer();
+        return initializer != null ? initializer.getNMSAddon(platform) : new BukkitAddon(platform);
+    }
+
+    private static Initializer constructInitializer() {
+        try {
+            String packageVersion = NMS;
+            if(NMS.equals("v1_21_3")) {
+                packageVersion = "v1_21"; // TODO: Refactor nms package to v1_21_3
+            }
+
+            Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSInitializer");
+            try {
+                return (Initializer) initializerClass.getConstructor().newInstance();
+            } catch(ReflectiveOperationException e) {
+                throw new RuntimeException("Error initializing NMS bindings. Report this to Terra.", e);
+            }
+        } catch(ClassNotFoundException e) {
+            return null;
+        }
+    }
+
     void initialize(PlatformImpl plugin);
+
+    BukkitAddon getNMSAddon(PlatformImpl plugin);
 }
