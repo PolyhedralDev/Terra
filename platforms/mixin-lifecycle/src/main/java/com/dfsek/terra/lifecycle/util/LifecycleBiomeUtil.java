@@ -57,7 +57,7 @@ public final class LifecycleBiomeUtil {
         } else {
             VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
-            net.minecraft.world.biome.Biome minecraftBiome = BiomeUtil.createBiome(biome, Objects.requireNonNull(registry.get(vanilla)),
+            net.minecraft.world.biome.Biome minecraftBiome = BiomeUtil.createBiome(Objects.requireNonNull(registry.get(vanilla)),
                 vanillaBiomeProperties);
 
             Identifier identifier = Identifier.of("terra", BiomeUtil.createBiomeID(pack, id));
