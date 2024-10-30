@@ -35,7 +35,7 @@ public class UserDefinedFunction implements DynamicFunction {
     public static UserDefinedFunction newInstance(FunctionTemplate template) throws ParseException {
         UserDefinedFunction function = CACHE.get(template);
         if(function == null) {
-            Parser parser = new Parser();
+            Parser parser = new Parser(template.getParseOptions());
             Scope parent = new Scope();
 
             Scope functionScope = new Scope().withParent(parent);

@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.noise;
 
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.LinkedHashMap;
@@ -88,6 +89,8 @@ public class NoiseAddon implements AddonInitializer {
             .getHandler(FunctionalEventHandler.class)
             .register(addon, ConfigPackPreLoadEvent.class)
             .then(event -> {
+                ParseOptions expressionParseOptions = event.getPack().getExpressionParseOptions();
+
                 CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
                     NOISE_SAMPLER_TOKEN);
                 event.getPack()
@@ -98,7 +101,7 @@ public class NoiseAddon implements AddonInitializer {
                     .applyLoader(DistanceSampler.DistanceFunction.class,
                         (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                     .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)
-                    .applyLoader(FunctionTemplate.class, FunctionTemplate::new)
+                    .applyLoader(FunctionTemplate.class, () -> new FunctionTemplate(expressionParseOptions))
                     .applyLoader(CubicSpline.Point.class, CubicSplinePointTemplate::new)
                     .applyLoader(DerivativeNoiseSampler.class, DerivativeNoiseSamplerTemplate::new);
 
@@ -156,9 +159,9 @@ public class NoiseAddon implements AddonInitializer {
 
                 Map<String, DimensionApplicableNoiseSampler> packSamplers = new LinkedHashMap<>();
                 Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
-                noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions));
+                noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions, expressionParseOptions));
                 noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"),
-                    () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions));
+                    () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions, expressionParseOptions));
 
                 NoiseConfigPackTemplate template = event.loadTemplate(new NoiseConfigPackTemplate());
                 packSamplers.putAll(template.getSamplers());

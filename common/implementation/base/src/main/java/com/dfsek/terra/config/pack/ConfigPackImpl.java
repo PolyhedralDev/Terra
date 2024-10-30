@@ -19,6 +19,7 @@ package com.dfsek.terra.config.pack;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.config.Configuration;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
@@ -121,6 +122,8 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final RegistryKey key;
 
+    private final ParseOptions parseOptions;
+
     public ConfigPackImpl(File folder, Platform platform) {
         this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
             try {
@@ -167,6 +170,11 @@ public class ConfigPackImpl implements ConfigPack {
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
         this.addons = addonsTemplate.getAddons();
+
+        ConfigPackExpressionOptionsTemplate expressionOptionsTemplate = new ConfigPackExpressionOptionsTemplate();
+        selfLoader.load(expressionOptionsTemplate, packManifest);
+        this.parseOptions = expressionOptionsTemplate.getParseOptions();
+
 
         Map<String, Configuration> configurations = discoverConfigurations();
         registerMeta(configurations);
@@ -261,7 +269,7 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.registerPreprocessor(Meta.class, valuePreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, valuePreprocessor);
 
-        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations);
+        MetaNumberPreprocessor numberPreprocessor = new MetaNumberPreprocessor(configurations, parseOptions);
         selfLoader.registerPreprocessor(Meta.class, numberPreprocessor);
         abstractConfigLoader.registerPreprocessor(Meta.class, numberPreprocessor);
     }
@@ -360,6 +368,11 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public Version getVersion() {
         return template.getVersion();
+    }
+
+    @Override
+    public ParseOptions getExpressionParseOptions() {
+        return parseOptions;
     }
 
     @SuppressWarnings("unchecked,rawtypes")

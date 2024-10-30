@@ -13,6 +13,8 @@ import ca.solostudios.strata.version.VersionRange;
 import java.util.List;
 import java.util.Map;
 
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
+
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.registry.key.Keyed;
@@ -48,6 +50,8 @@ public interface ConfigPack extends LoaderRegistrar,
     String getAuthor();
 
     Version getVersion();
+
+    ParseOptions getExpressionParseOptions();
 
     <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader);
 
