@@ -171,6 +171,11 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.load(addonsTemplate, packManifest);
         this.addons = addonsTemplate.getAddons();
 
+        ConfigPackExpressionOptionsTemplate expressionOptionsTemplate = new ConfigPackExpressionOptionsTemplate();
+        selfLoader.load(expressionOptionsTemplate, packManifest);
+        this.parseOptions = expressionOptionsTemplate.getParseOptions();
+
+
         Map<String, Configuration> configurations = discoverConfigurations();
         registerMeta(configurations);
 
@@ -178,10 +183,6 @@ public class ConfigPackImpl implements ConfigPack {
             new ConfigPackPreLoadEvent(this, template -> selfLoader.load(template, packManifest)));
 
         selfLoader.load(template, packManifest);
-
-        ConfigPackExpressionOptionsTemplate expressionOptionsTemplate = new ConfigPackExpressionOptionsTemplate();
-        selfLoader.load(expressionOptionsTemplate, packManifest);
-        this.parseOptions = expressionOptionsTemplate.getParseOptions();
 
         String namespace;
         String id;
