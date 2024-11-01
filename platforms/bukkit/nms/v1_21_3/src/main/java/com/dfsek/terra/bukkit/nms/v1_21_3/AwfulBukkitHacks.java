@@ -7,7 +7,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -34,9 +33,9 @@ public class AwfulBukkitHacks {
     public static void registerBiomes(ConfigRegistry configRegistry) {
         try {
             LOGGER.info("Hacking biome registry...");
-            WritableRegistry<Biome> biomeRegistry = (WritableRegistry<Biome>) RegistryFetcher.biomeRegistry();
+            MappedRegistry<Biome> biomeRegistry = (MappedRegistry<Biome>) RegistryFetcher.biomeRegistry();
 
-            Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, false);
+            Reflection.MAPPED_REGISTRY.setFrozen(biomeRegistry, false);
 
             configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
                 try {
@@ -95,7 +94,7 @@ public class AwfulBukkitHacks {
                                 () -> LOGGER.error("No such biome: {}", tb))),
                         () -> LOGGER.error("No vanilla biome: {}", vb)));
 
-            ((MappedRegistry<Biome>) biomeRegistry).bindAllTagsToEmpty();
+            biomeRegistry.bindAllTagsToEmpty();
             ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
 
         } catch(SecurityException | IllegalArgumentException exception) {
