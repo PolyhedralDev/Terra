@@ -31,21 +31,20 @@ public class StructureCell {
 
     private final int chunkOriginZ;
 
-    public StructureCell(StructureLayerGridImpl layer, ProtoWorld world, SeededVector2Key origin) {
+    public StructureCell(StructureLayerGridImpl layer, ProtoWorld world, SeededVector2Key gridPos) {
         System.out.println("Generating structure cell");
         this.size = layer.getGridSizeChunks();
 
-        this.chunkOriginX = origin.x * size;
-        this.chunkOriginZ = origin.z * size;
+        this.chunkOriginX = gridPos.x * size;
+        this.chunkOriginZ = gridPos.z * size;
 
         this.chunks = new Chunk[size][size];
-        WorldView worldView = new WorldView(world);
 
         for (int x = 0; x < size; ++x) {
             for (int z = 0; z < size; ++z) {
-                int chunkX = origin.x + x;
-                int chunkZ = origin.z + z;
-                chunks[x][z] = new CopyOnWriteDelegatedChunk(layer.getPrevious().getChunk(world, chunkX, chunkZ, origin.seed));
+                int chunkX = chunkOriginX + x;
+                int chunkZ = chunkOriginZ + z;
+                chunks[x][z] = new CopyOnWriteDelegatedChunk(layer.getPrevious().getChunk(world, chunkX, chunkZ, gridPos.seed));
             }
         }
         int minCoord = (chunkOriginX + layer.getPadding()) * 16;
@@ -56,8 +55,9 @@ public class StructureCell {
         int structureY = (world.getMinHeight() + world.getMaxHeight()) / 2;
         Vector3Int structureOrigin = Vector3Int.of(structureX, structureY, structureZ);
 
-        Structure structure = layer.getStructures().get(layer.getDistribution(), structureOrigin, origin.seed);
+        Structure structure = layer.getStructures().get(layer.getDistribution(), structureOrigin, gridPos.seed);
 
+        WorldView worldView = new WorldView(world);
         structure.generate(structureOrigin, worldView, null /* TODO */, Rotation.NONE /* TODO */);
     }
 
