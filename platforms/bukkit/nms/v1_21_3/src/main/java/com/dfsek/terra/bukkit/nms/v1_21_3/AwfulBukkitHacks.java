@@ -102,7 +102,6 @@ public class AwfulBukkitHacks {
 
             resetTags(biomeRegistry);
             bindTags(biomeRegistry, collect);
-//            ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
 
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
