@@ -17,6 +17,7 @@ import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldGetter;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldSetter;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.MethodName;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies;
+import xyz.jpenilla.reflectionremapper.proxy.annotation.Static;
 
 import java.util.Collection;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 public class Reflection {
     public static final MappedRegistryProxy MAPPED_REGISTRY;
+    public static final MappedRegistryTagSetProxy MAPPED_REGISTRY_TAG_SET;
     public static final StructureManagerProxy STRUCTURE_MANAGER;
 
     public static final ReferenceProxy REFERENCE;
@@ -41,6 +43,7 @@ public class Reflection {
             Reflection.class.getClassLoader());
 
         MAPPED_REGISTRY = reflectionProxyFactory.reflectionProxy(MappedRegistryProxy.class);
+        MAPPED_REGISTRY_TAG_SET = reflectionProxyFactory.reflectionProxy(MappedRegistryTagSetProxy.class);
         STRUCTURE_MANAGER = reflectionProxyFactory.reflectionProxy(StructureManagerProxy.class);
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
         CHUNKMAP = reflectionProxyFactory.reflectionProxy(ChunkMapProxy.class);
@@ -55,8 +58,21 @@ public class Reflection {
         @FieldGetter("byKey")
         <T> Map<ResourceKey<T>, Reference<T>> getByKey(MappedRegistry<T> instance);
 
+        @FieldSetter("allTags")
+        <T> void setAllTags(MappedRegistry<T> instance, Object obj);
+
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
+
+        @MethodName("createTag")
+        <T> HolderSet.Named<T> invokeCreateTag(MappedRegistry<T> instance, TagKey<T> tag);
+    }
+
+    @Proxies(className = "net.minecraft.core.MappedRegistry$TagSet")
+    public interface MappedRegistryTagSetProxy {
+        @MethodName("fromMap")
+        @Static
+        <T> Object invokeFromMap(Map<TagKey<T>, HolderSet.Named<T>> map);
     }
 
 
@@ -71,6 +87,9 @@ public class Reflection {
     public interface ReferenceProxy {
         @MethodName("bindValue")
         <T> void invokeBindValue(Reference<T> instance, T value);
+
+        @MethodName("bindTags")
+        <T> void invokeBindTags(Reference<T> instance, Collection<TagKey<T>> tags);
     }
 
     @Proxies(ChunkMap.class)
