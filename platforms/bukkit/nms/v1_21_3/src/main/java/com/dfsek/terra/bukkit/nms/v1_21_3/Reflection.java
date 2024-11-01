@@ -27,7 +27,7 @@ public class Reflection {
 
 
     public static final ChunkMapProxy CHUNKMAP;
-    public static final HolderSetProxy HOLDER_SET;
+    public static final HolderSetNamedProxy HOLDER_SET;
     public static final BiomeProxy BIOME;
 
     static {
@@ -39,7 +39,7 @@ public class Reflection {
         STRUCTURE_MANAGER = reflectionProxyFactory.reflectionProxy(StructureManagerProxy.class);
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
         CHUNKMAP = reflectionProxyFactory.reflectionProxy(ChunkMapProxy.class);
-        HOLDER_SET = reflectionProxyFactory.reflectionProxy(HolderSetProxy.class);
+        HOLDER_SET = reflectionProxyFactory.reflectionProxy(HolderSetNamedProxy.class);
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
 
@@ -73,10 +73,10 @@ public class Reflection {
         void setWorldGenContext(ChunkMap instance, WorldGenContext worldGenContext);
     }
 
-    @Proxies(HolderSet.class)
-    public interface HolderSetProxy {
+    @Proxies(HolderSet.Named.class)
+    public interface HolderSetNamedProxy {
         @MethodName("contents")
-        <T> List<Holder<T>> invokeContents(HolderSet<T> instance);
+        <T> List<Holder<T>> invokeContents(HolderSet.Named<T> instance);
     }
 
     @Proxies(Biome.class)
