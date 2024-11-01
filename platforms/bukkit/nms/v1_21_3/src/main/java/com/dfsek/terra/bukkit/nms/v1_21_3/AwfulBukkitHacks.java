@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -35,8 +36,10 @@ public class AwfulBukkitHacks {
             LOGGER.info("Hacking biome registry...");
             MappedRegistry<Biome> biomeRegistry = (MappedRegistry<Biome>) RegistryFetcher.biomeRegistry();
 
+            // Unfreeze the biome registry to allow modification
             Reflection.MAPPED_REGISTRY.setFrozen(biomeRegistry, false);
 
+            // Register the terra biomes to the registry
             configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
@@ -66,6 +69,8 @@ public class AwfulBukkitHacks {
                 }
             }));
 
+            Reflection.MAPPED_REGISTRY.setFrozen(biomeRegistry, true); // freeze registry again :)
+
             LOGGER.info("Doing tag garbage....");
             Map<TagKey<Biome>, List<Holder<Biome>>> collect = biomeRegistry
                 .getTags() // streamKeysAndEntries
@@ -92,14 +97,17 @@ public class AwfulBukkitHacks {
                                 () -> LOGGER.error("No such biome: {}", tb))),
                         () -> LOGGER.error("No vanilla biome: {}", vb)));
 
-            biomeRegistry.bindAllTagsToEmpty();
+            resetTags(biomeRegistry);
             ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
-
-            Reflection.MAPPED_REGISTRY.setFrozen(biomeRegistry, true); // freeze registry again :)
 
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    private static void resetTags(MappedRegistry<?> registry) {
+        registry.getTags().forEach(entryList -> Reflection.HOLDER_SET.invokeBind(entryList, List.of()));
+        Reflection.MAPPED_REGISTRY.getByKey(registry).values().forEach(entry -> Reflection.HOLDER_REFERENCE.invokeBindTags(entry, Set.of()));
     }
 }
 

@@ -4,7 +4,9 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ChunkMap;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
@@ -16,7 +18,9 @@ import xyz.jpenilla.reflectionremapper.proxy.annotation.FieldSetter;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.MethodName;
 import xyz.jpenilla.reflectionremapper.proxy.annotation.Proxies;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 public class Reflection {
@@ -27,6 +31,7 @@ public class Reflection {
 
 
     public static final ChunkMapProxy CHUNKMAP;
+    public static final HolderReferenceProxy HOLDER_REFERENCE;
     public static final HolderSetNamedProxy HOLDER_SET;
     public static final BiomeProxy BIOME;
 
@@ -39,6 +44,7 @@ public class Reflection {
         STRUCTURE_MANAGER = reflectionProxyFactory.reflectionProxy(StructureManagerProxy.class);
         REFERENCE = reflectionProxyFactory.reflectionProxy(ReferenceProxy.class);
         CHUNKMAP = reflectionProxyFactory.reflectionProxy(ChunkMapProxy.class);
+        HOLDER_REFERENCE = reflectionProxyFactory.reflectionProxy(HolderReferenceProxy.class);
         HOLDER_SET = reflectionProxyFactory.reflectionProxy(HolderSetNamedProxy.class);
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
     }
@@ -46,6 +52,9 @@ public class Reflection {
 
     @Proxies(MappedRegistry.class)
     public interface MappedRegistryProxy {
+        @FieldGetter("byKey")
+        <T> Map<ResourceKey<T>, Reference<T>> getByKey(MappedRegistry<T> instance);
+
         @FieldSetter("frozen")
         void setFrozen(MappedRegistry<?> instance, boolean frozen);
     }
@@ -73,8 +82,17 @@ public class Reflection {
         void setWorldGenContext(ChunkMap instance, WorldGenContext worldGenContext);
     }
 
+    @Proxies(Holder.Reference.class)
+    public interface HolderReferenceProxy {
+        @MethodName("bindTags")
+        <T> void invokeBindTags(Holder.Reference<T> instance, Collection<TagKey<T>> tags);
+    }
+
     @Proxies(HolderSet.Named.class)
     public interface HolderSetNamedProxy {
+        @MethodName("bind")
+        <T> void invokeBind(HolderSet.Named<T> instance, List<Holder<T>> entries);
+
         @MethodName("contents")
         <T> List<Holder<T>> invokeContents(HolderSet.Named<T> instance);
     }
