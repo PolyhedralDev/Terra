@@ -2,9 +2,10 @@ package com.dfsek.terra.bukkit.nms.v1_21_3;
 
 import com.dfsek.terra.bukkit.nms.v1_21_3.config.VanillaBiomeProperties;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.registries.Registries;
@@ -18,9 +19,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
@@ -98,11 +101,46 @@ public class AwfulBukkitHacks {
                         () -> LOGGER.error("No vanilla biome: {}", vb)));
 
             resetTags(biomeRegistry);
-            ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
+            bindTags(biomeRegistry, collect);
+//            ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
 
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    private static <T> void bindTags(MappedRegistry<T> registry, Map<TagKey<T>, List<Holder<T>>> tagEntries) {
+        Map<Holder.Reference<T>, List<TagKey<T>>> map = new IdentityHashMap<>();
+        Reflection.MAPPED_REGISTRY.getByKey(registry).values().forEach(entry -> map.put(entry, new ArrayList<>()));
+        tagEntries.forEach((tag, entries) -> {
+            for (Holder<T> holder : entries) {
+//                if (!holder.canSerializeIn(registry.asLookup())) {
+//                    throw new IllegalStateException("Can't create named set " + tag + " containing value " + holder + " from outside registry " + this);
+//                }
+
+                if (!(holder instanceof Holder.Reference<T> reference)) {
+                    throw new IllegalStateException("Found direct holder " + holder + " value in tag " + tag);
+                }
+
+                map.get(reference).add(tag);
+            }
+        });
+//        Set<TagKey<T>> set = Sets.difference(registry.tags.keySet(), tagEntries.keySet());
+//        if (!set.isEmpty()) {
+//            LOGGER.warn(
+//                "Not all defined tags for registry {} are present in data pack: {}",
+//                registry.key(),
+//                set.stream().map(tag -> tag.location().toString()).sorted().collect(Collectors.joining(", "))
+//            );
+//        }
+
+        Map<TagKey<T>, HolderSet.Named<T>> map2 = new IdentityHashMap<>(registry.getTags().collect(Collectors.toMap(
+            Named::key,
+            (named) -> named
+        )));
+        tagEntries.forEach((tag, entries) -> Reflection.HOLDER_SET.invokeBind(map2.computeIfAbsent(tag, key -> Reflection.MAPPED_REGISTRY.invokeCreateTag(registry, key)), entries));
+        map.forEach(Reflection.HOLDER_REFERENCE::invokeBindTags);
+        Reflection.MAPPED_REGISTRY.setAllTags(registry, Reflection.MAPPED_REGISTRY_TAG_SET.invokeFromMap(map2));
     }
 
     private static void resetTags(MappedRegistry<?> registry) {
