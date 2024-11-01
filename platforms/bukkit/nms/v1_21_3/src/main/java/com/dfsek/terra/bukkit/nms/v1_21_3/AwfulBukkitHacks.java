@@ -66,8 +66,6 @@ public class AwfulBukkitHacks {
                 }
             }));
 
-            Reflection.MAPPED_REGISTRY.setFrozen((MappedRegistry<?>) biomeRegistry, true); // freeze registry again :)
-
             LOGGER.info("Doing tag garbage....");
             Map<TagKey<Biome>, List<Holder<Biome>>> collect = biomeRegistry
                 .getTags() // streamKeysAndEntries
@@ -96,6 +94,8 @@ public class AwfulBukkitHacks {
 
             biomeRegistry.bindAllTagsToEmpty();
             ImmutableMap.copyOf(collect).forEach(biomeRegistry::bindTag);
+
+            Reflection.MAPPED_REGISTRY.setFrozen(biomeRegistry, true); // freeze registry again :)
 
         } catch(SecurityException | IllegalArgumentException exception) {
             throw new RuntimeException(exception);
