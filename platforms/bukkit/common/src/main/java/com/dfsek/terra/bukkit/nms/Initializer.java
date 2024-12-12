@@ -54,6 +54,9 @@ public interface Initializer {
     private static Initializer constructInitializer() {
         try {
             String packageVersion = NMS;
+            if (NMS.equals("v_1_21_4")) {
+                packageVersion = "v1_21_3";
+            }
 
             Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSInitializer");
             try {
