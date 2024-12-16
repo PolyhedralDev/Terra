@@ -17,12 +17,14 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
+
 /**
  * @author daoge_cmd
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
-
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(
+        BlockPropertyTypes.LIQUID_DEPTH.createValue(0)
+    );
 
     @Override
     public int centerChunkX() {
@@ -41,10 +43,11 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        AllayBlockState allayBlockState = (AllayBlockState)data;
-        boolean containsWater = allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
+        AllayBlockState allayBlockState = (AllayBlockState) data;
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        if (containsWater) context.setBlockState(x, y, z, WATER, 1);
+        if(allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
+            context.setBlockState(x, y, z, WATER, 1);
+        }
     }
 
     @Override

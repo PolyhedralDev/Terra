@@ -6,6 +6,7 @@ import org.allaymc.api.block.type.BlockType;
 import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.api.block.state.BlockState;
 
+
 /**
  * @author daoge_cmd
  */
@@ -17,7 +18,7 @@ public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.t
 
     @Override
     public boolean isSolid() {
-        return allayBlockType.getMaterial().isSolid();
+        return allayBlockType.getDefaultState().getBlockStateData().isSolid();
     }
 
     @Override

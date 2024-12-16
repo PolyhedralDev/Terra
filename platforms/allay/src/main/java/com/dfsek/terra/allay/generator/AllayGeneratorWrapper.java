@@ -24,11 +24,11 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+
 /**
  * @author daoge_cmd
  */
 public class AllayGeneratorWrapper implements GeneratorWrapper {
-
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "seed";
 
@@ -46,6 +46,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         if(packName == null) {
             throw new IllegalArgumentException("Missing config pack name");
         }
+
         this.seed = Long.parseLong(options.getOrDefault(OPTION_SEED, "0"));
         this.configPack = getConfigPack(packName);
         this.chunkGenerator = createGenerator(this.configPack);
@@ -59,7 +60,6 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .onDimensionSet(dimension -> {
                 this.allayServerWorld = new AllayServerWorld(this, dimension);
                 this.worldProperties = new WorldProperties() {
-
                     private final Object fakeHandle = new Object();
 
                     @Override
@@ -82,8 +82,19 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
                         return fakeHandle;
                     }
                 };
-            })
-            .build();
+            }).build();
+    }
+
+    protected static ConfigPack getConfigPack(String packName) {
+        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
+        return byId.orElseGet(
+            () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
+                .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))
+        );
+    }
+
+    protected static ChunkGenerator createGenerator(ConfigPack configPack) {
+        return configPack.getGeneratorProvider().newInstance(configPack);
     }
 
     @Override
@@ -112,8 +123,8 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         return this.allayWorldGenerator;
     }
 
-    protected class AllayNoiser implements Noiser {
 
+    protected class AllayNoiser implements Noiser {
         @Override
         public boolean apply(NoiseContext context) {
             UnsafeChunk chunk = context.getCurrentChunk();
@@ -145,8 +156,8 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         }
     }
 
-    protected class AllayPopulator implements Populator {
 
+    protected class AllayPopulator implements Populator {
         @Override
         public boolean apply(PopulateContext context) {
             AllayProtoWorld tmp = new AllayProtoWorld(allayServerWorld, context);
@@ -164,17 +175,5 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         public String getName() {
             return "TERRA_POPULATOR";
         }
-    }
-
-    protected static ConfigPack getConfigPack(String packName) {
-        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
-        return byId.orElseGet(
-            () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
-                .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))
-        );
-    }
-
-    protected static ChunkGenerator createGenerator(ConfigPack configPack) {
-        return configPack.getGeneratorProvider().newInstance(configPack);
     }
 }
