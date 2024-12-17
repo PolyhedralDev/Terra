@@ -25,6 +25,7 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
  * @author daoge_cmd
  */
 public class AllayPlatform extends AbstractPlatform {
+
     public static final Set<AllayGeneratorWrapper> GENERATOR_WRAPPERS = new HashSet<>();
 
     protected static final AllayWorldHandle ALLAY_WORLD_HANDLE = new AllayWorldHandle();
@@ -81,14 +82,12 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(BlockState.class, ($, o, $$, $$$) -> ALLAY_WORLD_HANDLE.createBlockState((String) o))
-            .registerLoader(PlatformBiome.class, ($, o, $$, depthTracker) -> parseBiome((String) o, depthTracker));
+        registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> ALLAY_WORLD_HANDLE.createBlockState((String) o))
+            .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker));
     }
 
     protected AllayBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
-        if(!id.startsWith("minecraft:")) {
-            throw new LoadException("Invalid biome identifier " + id, depthTracker);
-        }
+        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
         return new AllayBiome(BiomeId.fromId(Mapping.biomeIdJeToBe(id)));
     }
 }

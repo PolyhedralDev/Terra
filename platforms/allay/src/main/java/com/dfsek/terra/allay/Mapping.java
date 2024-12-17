@@ -25,6 +25,7 @@ import java.util.TreeMap;
  * @author daoge_cmd
  */
 public final class Mapping {
+
     private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
     private static final Map<BlockState, JeBlockState> BLOCK_STATE_BE_TO_JE = new Object2ObjectOpenHashMap<>();
     private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
@@ -89,10 +90,7 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("biomes mapping not found");
                 return false;
             }
-            Set<Entry<String, Map<String, Integer>>> mappings = JSONUtils.from(
-                stream,
-                new TypeToken<Map<String, Map<String, Integer>>>() {}
-            ).entrySet();
+            Set<Entry<String, Map<String, Integer>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
             mappings.forEach(mapping -> BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id")));
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
@@ -107,10 +105,7 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("items mapping not found");
                 return false;
             }
-            Set<Entry<String, Map<String, Object>>> mappings = JSONUtils.from(
-                stream,
-                new TypeToken<Map<String, Map<String, Object>>>() {}
-            ).entrySet();
+            Set<Entry<String, Map<String, Object>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>() {}).entrySet();
             mappings.forEach(mapping -> {
                 ItemType<?> item = ItemTypeSafeGetter
                     .name((String) mapping.getValue().get("bedrock_identifier"))
@@ -132,10 +127,7 @@ public final class Mapping {
                 return false;
             }
             // noinspection unchecked
-            List<Map<String, Map<String, Object>>> mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(
-                stream,
-                new TypeToken<Map<String, Object>>() {}
-            ).get("mappings");
+            List<Map<String, Map<String, Object>>> mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>() {}).get("mappings");
             mappings.forEach(mapping -> {
                 JeBlockState jeState = createJeBlockState(mapping.get("java_state"));
                 BlockState beState = createBeBlockState(mapping.get("bedrock_state"));
@@ -167,7 +159,8 @@ public final class Mapping {
     }
 
     private static BlockState createBeBlockState(Map<String, Object> data) {
-        Getter getter = BlockStateSafeGetter.name("minecraft:" + data.get("bedrock_identifier"));
+        Getter getter = BlockStateSafeGetter
+            .name("minecraft:" + data.get("bedrock_identifier"));
         if(data.containsKey("state")) {
             // noinspection unchecked
             convertValueType((Map<String, Object>) data.get("state")).forEach(getter::property);
@@ -190,7 +183,6 @@ public final class Mapping {
 
     private static JeBlockState createJeBlockState(Map<String, Object> data) {
         // noinspection unchecked
-        return JeBlockState.create((String) data.get("Name"),
-            new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
+        return JeBlockState.create((String) data.get("Name"), new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
     }
 }

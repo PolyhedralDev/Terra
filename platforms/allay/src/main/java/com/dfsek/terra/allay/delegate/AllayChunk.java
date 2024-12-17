@@ -21,8 +21,7 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         AllayBlockState allayBlockState = (AllayBlockState) data;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        boolean containsWater = allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
-        if (containsWater) {
+        if (allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
             allayChunk.setBlockState(x, y, z, WATER, 1);
         }
     }

@@ -21,6 +21,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
  * @author daoge_cmd
  */
 public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAccessibleContext context) implements ProtoWorld {
+
     private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override
