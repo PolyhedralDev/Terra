@@ -14,6 +14,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
  * @author daoge_cmd
  */
 public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
+
     private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override

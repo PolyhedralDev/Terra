@@ -45,11 +45,8 @@ public class JeBlockState {
         if(properties.size() == defaultProperties.size()) {
             return;
         }
-        defaultProperties
-            .entrySet()
-            .stream()
-            .filter(entry -> !properties.containsKey(entry.getKey()))
-            .forEach(entry -> properties.put(entry.getKey(), entry.getValue()));
+        defaultProperties.entrySet().stream().filter(entry -> !properties.containsKey(entry.getKey())).forEach(
+            entry -> properties.put(entry.getKey(), entry.getValue()));
     }
 
     private JeBlockState(String identifier, TreeMap<String, String> properties) {
