@@ -21,7 +21,6 @@ import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
-
 /**
  * @author daoge_cmd
  */
@@ -82,8 +81,8 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(BlockState.class, ($, o, $$, $$$) -> ALLAY_WORLD_HANDLE.createBlockState((String) o));
-        registry.registerLoader(PlatformBiome.class, ($, o, $$, depthTracker) -> parseBiome((String) o, depthTracker));
+        registry.registerLoader(BlockState.class, ($, o, $$, $$$) -> ALLAY_WORLD_HANDLE.createBlockState((String) o))
+            .registerLoader(PlatformBiome.class, ($, o, $$, depthTracker) -> parseBiome((String) o, depthTracker));
     }
 
     protected AllayBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {

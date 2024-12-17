@@ -6,11 +6,10 @@ import org.allaymc.api.item.enchantment.EnchantmentInstance;
 import com.dfsek.terra.api.inventory.Item;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
-
 /**
  * @author daoge_cmd
  */
-public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terra.api.inventory.ItemStack {
+public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terra.api.inventory.ItemStack{
     @Override
     public int getAmount() {
         return allayItemStack.getCount();
@@ -35,7 +34,7 @@ public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terr
     public void setItemMeta(ItemMeta meta) {
         ItemStack targetItem = ((AllayItemMeta) meta).allayItemStack();
         allayItemStack.removeAllEnchantments();
-        for(EnchantmentInstance enchantment : targetItem.getEnchantments()) {
+        for (EnchantmentInstance enchantment : targetItem.getEnchantments()) {
             allayItemStack.addEnchantment(enchantment.getType(), enchantment.getLevel());
         }
         allayItemStack.setLore(targetItem.getLore());

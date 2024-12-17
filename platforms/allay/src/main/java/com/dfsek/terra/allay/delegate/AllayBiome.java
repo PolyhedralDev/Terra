@@ -4,7 +4,6 @@ import org.allaymc.api.world.biome.BiomeType;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
-
 /**
  * @author daoge_cmd
  */

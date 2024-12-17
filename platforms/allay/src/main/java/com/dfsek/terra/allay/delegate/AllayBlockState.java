@@ -7,15 +7,13 @@ import com.dfsek.terra.allay.JeBlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 
-
 /**
  * @author daoge_cmd
  */
 public final class AllayBlockState implements com.dfsek.terra.api.block.state.BlockState {
-    public static final AllayBlockState AIR = new AllayBlockState(
-        BlockTypes.AIR.getDefaultState(),
-        JeBlockState.fromString("minecraft:air")
-    );
+
+    public static final AllayBlockState AIR = new AllayBlockState(BlockTypes.AIR.getDefaultState(),
+        JeBlockState.fromString("minecraft:air"));
 
     private final BlockState allayBlockState;
     private final JeBlockState jeBlockState;
@@ -68,15 +66,9 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
         return allayBlockState;
     }
 
-    public BlockState allayBlockState() {
-        return allayBlockState;
-    }
+    public BlockState allayBlockState() { return allayBlockState; }
 
-    public boolean containsWater() {
-        return containsWater;
-    }
+    public boolean containsWater() { return containsWater; }
 
-    public JeBlockState jeBlockState() {
-        return jeBlockState;
-    }
+    public JeBlockState jeBlockState()  { return jeBlockState; }
 }
