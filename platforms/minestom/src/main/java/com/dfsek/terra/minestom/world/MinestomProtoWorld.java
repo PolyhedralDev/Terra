@@ -7,41 +7,23 @@ import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.Chunk;
-
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-
-import com.dfsek.terra.api.world.info.WorldProperties;
-
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.instance.Instance;
-import net.minestom.server.world.DimensionType;
+import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 
 
-public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
-    private final Instance instance;
-    private final ConfigPack pack;
-    private final long seed;
-    private final DimensionType dimensionType;
-    private final MinestomChunkGeneratorWrapper wrapper;
-
-    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed) {
-        this.instance = instance;
-        this.pack = pack;
-        this.seed = seed;
-
-        this.dimensionType = MinecraftServer.getDimensionTypeRegistry().get(instance.getDimensionType());
-
-        this.wrapper = new MinestomChunkGeneratorWrapper(
-            pack.getGeneratorProvider().newInstance(pack),
-            this
-        );
-
-        instance.setGenerator(this.wrapper);
+public class MinestomProtoWorld implements ProtoWorld {
+    @Override
+    public int centerChunkX() {
+        return 0;
     }
 
     @Override
-    public Chunk getChunkAt(int x, int z) {
+    public int centerChunkZ() {
+        return 0;
+    }
+
+    @Override
+    public ServerWorld getWorld() {
         return null;
     }
 
@@ -67,40 +49,36 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
 
     @Override
     public ChunkGenerator getGenerator() {
-        return wrapper.getGenerator();
+        return null;
     }
 
     @Override
     public BiomeProvider getBiomeProvider() {
-        return pack.getBiomeProvider();
+        return null;
     }
 
     @Override
     public ConfigPack getPack() {
-        return pack;
+        return null;
     }
 
     @Override
     public long getSeed() {
-        return seed;
+        return 0;
     }
 
     @Override
     public int getMaxHeight() {
-        return dimensionType.maxY();
+        return 0;
     }
 
     @Override
     public int getMinHeight() {
-        return dimensionType.minY();
+        return 0;
     }
 
     @Override
     public Object getHandle() {
-        return instance;
-    }
-
-    public DimensionType getDimensionType() {
-        return dimensionType;
+        return null;
     }
 }
