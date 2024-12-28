@@ -9,27 +9,51 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
+
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.Block.Setter;
 
 
 public class MinestomProtoWorld implements ProtoWorld {
+    private final GeneratedChunkCache cache;
+    private final int x;
+    private final int z;
+    private final ServerWorld world;
+    private final Setter modifier;
+
+    public MinestomProtoWorld(
+        GeneratedChunkCache cache,
+        int x,
+        int z,
+        ServerWorld world,
+        Setter modifier
+    ) {
+        this.cache = cache;
+        this.x = x;
+        this.z = z;
+        this.world = world;
+        this.modifier = modifier;
+    }
+
     @Override
     public int centerChunkX() {
-        return 0;
+        return x;
     }
 
     @Override
     public int centerChunkZ() {
-        return 0;
+        return z;
     }
 
     @Override
     public ServerWorld getWorld() {
-        return null;
+        return world;
     }
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-
+        modifier.setBlock(this.x * 16 + x, y, this.z * 16 + z, (Block) data.getHandle());
     }
 
     @Override
@@ -39,7 +63,10 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public BlockState getBlockState(int x, int y, int z) {
-        return null;
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        return cache.at(chunkX + this.x, chunkZ + this.z)
+            .getBlock(x & 15, y, z & 15);
     }
 
     @Override
@@ -49,36 +76,36 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public ChunkGenerator getGenerator() {
-        return null;
+        return world.getGenerator();
     }
 
     @Override
     public BiomeProvider getBiomeProvider() {
-        return null;
+        return world.getBiomeProvider();
     }
 
     @Override
     public ConfigPack getPack() {
-        return null;
+        return world.getPack();
     }
 
     @Override
     public long getSeed() {
-        return 0;
+        return world.getSeed();
     }
 
     @Override
     public int getMaxHeight() {
-        return 0;
+        return world.getMaxHeight();
     }
 
     @Override
     public int getMinHeight() {
-        return 0;
+        return world.getMinHeight();
     }
 
     @Override
     public Object getHandle() {
-        return null;
+        return world;
     }
 }
