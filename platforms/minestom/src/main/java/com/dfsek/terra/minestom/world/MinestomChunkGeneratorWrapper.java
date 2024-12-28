@@ -2,7 +2,8 @@ package com.dfsek.terra.minestom.world;
 
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
-import com.dfsek.terra.minestom.chunk.MinestomProtoChunk;
+import com.dfsek.terra.minestom.chunk.CachedChunk;
+import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.generator.GenerationUnit;
@@ -11,12 +12,12 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class MinestomChunkGeneratorWrapper implements Generator {
+    private final GeneratedChunkCache cache;
     private final ChunkGenerator generator;
-    private final TerraMinestomWorld world;
 
     public MinestomChunkGeneratorWrapper(ChunkGenerator generator, TerraMinestomWorld world) {
         this.generator = generator;
-        this.world = world;
+        this.cache = new GeneratedChunkCache(world.getDimensionType(), generator, world);
     }
 
     public ChunkGenerator getGenerator() {
@@ -24,13 +25,10 @@ public class MinestomChunkGeneratorWrapper implements Generator {
     }
 
     @Override
-    public void generate(@NotNull GenerationUnit generationUnit) {
-        MinestomProtoChunk protoChunk = new MinestomProtoChunk(
-            world.getMaxHeight(),
-            world.getMinHeight(),
-            generationUnit.modifier()
-        );
-        Point start = generationUnit.absoluteStart();
-        generator.generateChunkData(protoChunk, world, world.getBiomeProvider(), start.chunkX(), start.chunkZ());
+    public void generate(@NotNull GenerationUnit unit) {
+        Point start = unit.absoluteStart();
+        CachedChunk chunk = cache.at(start.chunkX(), start.chunkZ());
+
+        chunk.writeRelative(unit.modifier());
     }
 }

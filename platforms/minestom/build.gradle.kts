@@ -6,10 +6,7 @@ val javaMainClass = "com.dfsek.terra.minestom.TerraMinestomExample"
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
-
-    //shadedApi("commons-io", "commons-io", Versions.Libraries.Internal.apacheIO)
-    //shadedApi("com.github.Querz", "NBT", Versions.CLI.nbt)
-
+    shadedApi("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
     shadedImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
     implementation("net.minestom", "minestom-snapshots", Versions.Minestom.minestom)

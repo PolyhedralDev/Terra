@@ -7,7 +7,6 @@ import com.dfsek.terra.api.block.state.properties.Property;
 import net.minestom.server.instance.block.Block;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -15,7 +14,11 @@ public class MinestomBlockState implements BlockState {
     private final Block block;
 
     public MinestomBlockState(Block block) {
-        this.block = block;
+        if (block == null) {
+            this.block = Block.AIR;
+        } else {
+            this.block = block;
+        }
     }
     
     public MinestomBlockState(String data) {
