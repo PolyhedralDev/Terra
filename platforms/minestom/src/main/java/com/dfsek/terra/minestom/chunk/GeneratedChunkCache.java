@@ -39,7 +39,7 @@ public class GeneratedChunkCache {
         return chunk;
     }
 
-    public CachedChunk at(int x, int y) {
-        return cache.get(Pair.of(x, y));
+    public CachedChunk at(int x, int z) {
+        return cache.get(Pair.of(x, z));
     }
 }
