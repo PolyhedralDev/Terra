@@ -75,4 +75,8 @@ object Versions {
         const val nbt = "6.1"
         const val logback = "1.5.8"
     }
+    
+    object Minestom {
+        const val minestom = "187931e50b"
+    }
 }
