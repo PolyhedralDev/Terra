@@ -32,11 +32,11 @@ public class MinestomChunkGeneratorWrapper implements Generator {
         Point start = unit.absoluteStart();
         CachedChunk chunk = cache.at(start.chunkX(), start.chunkZ());
 
-        //chunk.writeRelative(unit.modifier());
+        chunk.writeRelative(unit.modifier());
 
-        if (start.chunkX() % 2 == 0 && start.chunkZ() % 2 == 0) {
-            chunk.writeRelative(unit.modifier());
-        }
+        //if (start.chunkX() % 2 == 0 && start.chunkZ() % 2 == 0) {
+            //chunk.writeRelative(unit.modifier());
+        //}
 
         unit.fork(setter -> {
             MinestomProtoWorld protoWorld = new MinestomProtoWorld(

@@ -18,7 +18,8 @@ public class TerraMinestomExample {
             .createInstanceContainer();
 
         TerraMinestomWorldBuilder.from(instance)
-            .packById("OVERWORLD")
+            .packById("DEFMOD")
+            .seed(0)
             .attach();
 
         for(int x = -1; x <= 1; x++) {

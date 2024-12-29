@@ -7,6 +7,7 @@ import com.dfsek.terra.api.block.state.properties.Property;
 import net.minestom.server.instance.block.Block;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -44,7 +45,7 @@ public class MinestomBlockState implements BlockState {
 
     @Override
     public boolean matches(BlockState other) {
-        return ((MinestomBlockState) other).block == block;
+        return ((MinestomBlockState) other).block.compare(block);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class MinestomBlockState implements BlockState {
     @Override
     public String getAsString(boolean properties) {
         String name = block.namespace().asString();
-        if (!properties) {
+        if (!properties || block.properties().isEmpty()) {
             return name;
         }
 
@@ -94,5 +95,10 @@ public class MinestomBlockState implements BlockState {
     @Override
     public Object getHandle() {
         return block;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(block.id());
     }
 }

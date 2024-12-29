@@ -32,4 +32,17 @@ public class MinestomBlockType implements BlockType {
     public Object getHandle() {
         return block;
     }
+
+    @Override
+    public int hashCode() {
+        return block.id();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof MinestomBlockType other) {
+            return block.id() == other.block.id();
+        }
+        return false;
+    }
 }
