@@ -53,7 +53,13 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        modifier.setBlock(this.x * 16 + x, y, this.z * 16 + z, (Block) data.getHandle());
+        int globalX = this.x * 16 + x;
+        int globalZ = this.z * 16 + z;
+        modifier.setBlock(globalX, y, globalZ, (Block) data.getHandle());
+        int cx = globalX >> 4;
+        int cz = globalZ >> 4;
+        cache.at(cx, cz)
+            .setBlock(x & 15, y, z & 15, data);
     }
 
     @Override
