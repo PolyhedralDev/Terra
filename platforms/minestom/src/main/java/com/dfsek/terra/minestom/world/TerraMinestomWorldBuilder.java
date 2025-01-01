@@ -47,6 +47,10 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
+    public TerraMinestomWorldBuilder defaultPack() {
+        return this.packById("OVERWORLD");
+    }
+
     public TerraMinestomWorldBuilder seed(long seed) {
         this.seed = seed;
         return this;
