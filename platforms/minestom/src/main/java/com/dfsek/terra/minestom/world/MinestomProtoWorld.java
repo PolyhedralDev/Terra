@@ -11,6 +11,8 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
+import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
+
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.Block.Setter;
 
@@ -62,7 +64,10 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
-        return null;
+        TerraMinestomWorld world = (TerraMinestomWorld) this.world;
+        DeferredMinestomEntity entity = new DeferredMinestomEntity(x, y, z, entityType, world);
+        world.enqueueEntitySpawn(entity);
+        return entity;
     }
 
     @Override
