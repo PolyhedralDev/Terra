@@ -51,6 +51,15 @@ fun Project.configureDependencies() {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "Sonatype Snapshots"
         }
+        maven("https://repo.opencollab.dev/maven-releases/") {
+            name = "OpenCollab Releases"
+        }
+        maven("https://repo.opencollab.dev/maven-snapshots/") {
+            name = "OpenCollab Snapshots"
+        }
+        maven("https://storehouse.okaeri.eu/repository/maven-public/") {
+            name = "Okaeri"
+        }
     }
     
     dependencies {

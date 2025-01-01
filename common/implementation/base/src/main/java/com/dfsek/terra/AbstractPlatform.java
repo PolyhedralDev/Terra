@@ -310,6 +310,24 @@ public abstract class AbstractPlatform implements Platform {
         }
     }
 
+    public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
+        try {
+            Class aClass = Class.forName(className);
+            int threads = aClass.getField(fieldName).getInt(null);
+            logger.info("{} found, setting {} generation threads.", project, threads);
+            return threads;
+        } catch(ClassNotFoundException e) {
+            logger.info("{} not found.", project);
+        } catch(NoSuchFieldException e) {
+            logger.warn("{} found, but {} field not found this probably means {0} has changed its code and " +
+                        "Terra has not updated to reflect that.", project, fieldName);
+        } catch(IllegalAccessException e) {
+            logger.error("Failed to access {} field in {}, assuming 1 generation thread.", fieldName, project, e);
+        }
+        return 0;
+
+    }
+
     @Override
     public void register(TypeRegistry registry) {
         loaders.register(registry);
@@ -338,5 +356,10 @@ public abstract class AbstractPlatform implements Platform {
     @Override
     public @NotNull Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public int getGenerationThreads() {
+        return 1;
     }
 }

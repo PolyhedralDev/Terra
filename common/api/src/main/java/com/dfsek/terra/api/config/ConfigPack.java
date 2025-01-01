@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -12,6 +12,8 @@ import ca.solostudios.strata.version.VersionRange;
 
 import java.util.List;
 import java.util.Map;
+
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.properties.PropertyHolder;
@@ -48,6 +50,8 @@ public interface ConfigPack extends LoaderRegistrar,
     String getAuthor();
 
     Version getVersion();
+
+    ParseOptions getExpressionParseOptions();
 
     <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader);
 

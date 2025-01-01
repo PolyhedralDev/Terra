@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -35,7 +35,7 @@ public class UserDefinedFunction implements DynamicFunction {
     public static UserDefinedFunction newInstance(FunctionTemplate template) throws ParseException {
         UserDefinedFunction function = CACHE.get(template);
         if(function == null) {
-            Parser parser = new Parser();
+            Parser parser = new Parser(template.getParseOptions());
             Scope parent = new Scope();
 
             Scope functionScope = new Scope().withParent(parent);
