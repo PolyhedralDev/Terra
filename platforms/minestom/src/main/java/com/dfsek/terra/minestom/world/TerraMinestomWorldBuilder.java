@@ -5,6 +5,8 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 
 import com.dfsek.terra.minestom.MinestomPlatform;
+import com.dfsek.terra.minestom.api.EntityFactory;
+import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 
@@ -16,6 +18,7 @@ public class TerraMinestomWorldBuilder {
     private final Instance instance;
     private ConfigPack pack;
     private long seed = new Random().nextLong();
+    private EntityFactory factory = new DefaultEntityFactory();
 
     private TerraMinestomWorldBuilder(Instance instance) { this.instance = instance; }
 
@@ -56,7 +59,12 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
+    public TerraMinestomWorldBuilder entityFactory(EntityFactory factory) {
+        this.factory = factory;
+        return this;
+    }
+
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(instance, pack, seed);
+        return new TerraMinestomWorld(instance, pack, seed, factory);
     }
 }
