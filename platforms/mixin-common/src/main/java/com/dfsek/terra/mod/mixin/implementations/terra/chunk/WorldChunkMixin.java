@@ -49,9 +49,6 @@ public abstract class WorldChunkMixin {
     @Nullable
     public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, boolean moved);
 
-    @Shadow
-    public abstract TickSchedulers getTickSchedulers();
-
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
         setBlockState(blockPos, (net.minecraft.block.BlockState) data, false);

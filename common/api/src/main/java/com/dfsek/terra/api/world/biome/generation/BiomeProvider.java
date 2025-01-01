@@ -1,11 +1,13 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
  */
 
 package com.dfsek.terra.api.world.biome.generation;
+
+import com.dfsek.terra.api.Platform;
 
 import org.jetbrains.annotations.Contract;
 
@@ -91,7 +93,7 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
 
-    default CachingBiomeProvider caching() {
+    default CachingBiomeProvider caching(Platform platform) {
         if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
             return cachingBiomeProvider;
         }

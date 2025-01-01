@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2024 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -116,12 +116,12 @@ public abstract class SimplexStyleSampler extends DerivativeNoiseFunction {
 
     @Override
     public double[] getNoiseDerivativeRaw(long seed, double x, double y) {
-        return new double[]{ 0, 0, 0 };
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
     }
 
     @Override
     public double[] getNoiseDerivativeRaw(long seed, double x, double y, double z) {
-        return new double[]{ 0, 0, 0, 0 };
+        throw new UnsupportedOperationException("Implementation failed to check or set isDifferentiable correctly");
     }
 
     @Override
