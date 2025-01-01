@@ -8,10 +8,14 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import net.minestom.server.world.DimensionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class GeneratedChunkCache {
+    private static final Logger log = LoggerFactory.getLogger(GeneratedChunkCache.class);
     private final LoadingCache<Pair<Integer, Integer>, CachedChunk> cache;
     private final DimensionType dimensionType;
     private final ChunkGenerator generator;
@@ -24,7 +28,8 @@ public class GeneratedChunkCache {
         this.world = world;
         this.biomeProvider = world.getBiomeProvider();
         this.cache = Caffeine.newBuilder()
-            .maximumSize(32)
+            .maximumSize(128)
+            .recordStats()
             .build((Pair<Integer, Integer> key) -> generateChunk(key.getLeft(), key.getRight()));
     }
 
@@ -37,6 +42,11 @@ public class GeneratedChunkCache {
             x, z
         );
         return chunk;
+    }
+
+    public void displayStats() {
+        CacheStats stats = cache.stats();
+        log.info("Avg load time: {}ms | Hit rate: {}% | Load Count: {}", stats.averageLoadPenalty(), stats.hitRate() * 100, stats.loadCount());
     }
 
     public CachedChunk at(int x, int z) {

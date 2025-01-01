@@ -1,5 +1,6 @@
 package com.dfsek.terra.minestom;
 
+import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 import net.minestom.server.MinecraftServer;
@@ -12,6 +13,7 @@ import net.minestom.server.instance.Instance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -19,10 +21,12 @@ public class TerraMinestomExample {
     private static final Logger logger = LoggerFactory.getLogger(TerraMinestomExample.class);
     private final MinecraftServer server = MinecraftServer.init();
     private final Instance instance = MinecraftServer.getInstanceManager().createInstanceContainer();
+    private TerraMinestomWorld world;
 
     public void attachTerra() {
-        TerraMinestomWorldBuilder.from(instance)
+        world = TerraMinestomWorldBuilder.from(instance)
             .defaultPack()
+            .seed(0)
             .attach();
     }
 
@@ -37,7 +41,7 @@ public class TerraMinestomExample {
     }
 
     public void preloadWorldAndMeasure() {
-        int radius = 6;
+        int radius = 12;
         int chunksLoading = (radius * 2 + 1) * (radius * 2 + 1);
         AtomicInteger chunksLeft = new AtomicInteger(chunksLoading);
 
@@ -56,6 +60,8 @@ public class TerraMinestomExample {
                             (end - start) / 1000000.0,
                             chunksPerSecond
                         );
+
+                        world.displayStats();
                     } else if (left % 20 == 0) {
                         sendProgressBar(chunksLoading - left, chunksLoading);
                     }
@@ -75,6 +81,12 @@ public class TerraMinestomExample {
         });
     }
 
+    public void addScheduler() {
+        MinecraftServer.getSchedulerManager().buildTask(() -> world.displayStats())
+            .repeat(Duration.ofSeconds(10))
+            .schedule();
+    }
+
     public void bind() {
         logger.info("Starting server on port 25565");
         server.start("localhost", 25565);
@@ -84,6 +96,7 @@ public class TerraMinestomExample {
         TerraMinestomExample example = new TerraMinestomExample();
         example.attachTerra();
         example.preloadWorldAndMeasure();
+        example.addScheduler();
         example.addListeners();
         example.bind();
     }

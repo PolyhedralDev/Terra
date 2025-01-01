@@ -67,6 +67,10 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         return MinestomEntity.spawn(x, y, z, entityType, this);
     }
 
+    public void displayStats() {
+        wrapper.displayStats();
+    }
+
     @Override
     public BlockState getBlockState(int x, int y, int z) {
         return new MinestomBlockState(instance.getBlock(x, y, z));

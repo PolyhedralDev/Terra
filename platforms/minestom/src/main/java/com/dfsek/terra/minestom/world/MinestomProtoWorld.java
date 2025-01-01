@@ -9,6 +9,7 @@ import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
+import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
 import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
@@ -21,14 +22,14 @@ public class MinestomProtoWorld implements ProtoWorld {
     private final GeneratedChunkCache cache;
     private final int x;
     private final int z;
-    private final ServerWorld world;
+    private final TerraMinestomWorld world;
     private final Setter modifier;
 
     public MinestomProtoWorld(
         GeneratedChunkCache cache,
         int x,
         int z,
-        ServerWorld world,
+        TerraMinestomWorld world,
         Setter modifier
     ) {
         this.cache = cache;
@@ -74,8 +75,8 @@ public class MinestomProtoWorld implements ProtoWorld {
     public BlockState getBlockState(int x, int y, int z) {
         int chunkX = x >> 4;
         int chunkZ = z >> 4;
-        return cache.at(chunkX, chunkZ)
-            .getBlock(x & 15, y, z & 15);
+        CachedChunk chunk = cache.at(chunkX, chunkZ);
+        return chunk.getBlock(x & 15, y, z & 15);
     }
 
     @Override
