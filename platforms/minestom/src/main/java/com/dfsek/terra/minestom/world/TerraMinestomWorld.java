@@ -5,7 +5,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.Chunk;
@@ -16,6 +15,7 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
+import com.dfsek.terra.minestom.api.filter.ChunkFilter;
 import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
 
@@ -23,9 +23,6 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.world.DimensionType;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
@@ -36,7 +33,7 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
     private final MinestomChunkGeneratorWrapper wrapper;
     private final EntityFactory factory;
 
-    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed, EntityFactory factory) {
+    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed, EntityFactory factory, ChunkFilter filter) {
         this.instance = instance;
         this.pack = pack;
         this.seed = seed;
@@ -45,7 +42,8 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
 
         this.wrapper = new MinestomChunkGeneratorWrapper(
             pack.getGeneratorProvider().newInstance(pack),
-            this
+            this,
+            filter
         );
         this.factory = factory;
 

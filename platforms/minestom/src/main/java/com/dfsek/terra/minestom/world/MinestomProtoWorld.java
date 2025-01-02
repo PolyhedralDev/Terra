@@ -56,16 +56,12 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        int cx = x >> 4;
-        int cz = y >> 4;
         modifier.setBlock(x, y, z, (Block) data.getHandle());
-        cache.at(cx, cz)
-            .setBlock(x & 15, y, z & 15, data);
     }
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
-        TerraMinestomWorld world = (TerraMinestomWorld) this.world;
+        TerraMinestomWorld world = this.world;
         DeferredMinestomEntity entity = new DeferredMinestomEntity(x, y, z, entityType, world);
         world.enqueueEntitySpawn(entity);
         return entity;

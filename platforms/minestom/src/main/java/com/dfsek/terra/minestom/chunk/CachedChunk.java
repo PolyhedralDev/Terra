@@ -5,6 +5,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
+
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.generator.UnitModifier;
 import org.jetbrains.annotations.NotNull;
@@ -20,9 +21,9 @@ public class CachedChunk implements ProtoChunk {
         this.maxHeight = maxHeight;
         this.blocks = new Block[16][maxHeight - minHeight + 1][16];
 
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < maxHeight - minHeight + 1; y++) {
+        for(int x = 0; x < 16; x++) {
+            for(int z = 0; z < 16; z++) {
+                for(int y = 0; y < maxHeight - minHeight + 1; y++) {
                     blocks[x][y][z] = Block.AIR;
                 }
             }
