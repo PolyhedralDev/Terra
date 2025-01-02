@@ -78,7 +78,7 @@ public class TerraMinestomExample {
                         );
 
                         world.displayStats();
-                    } else if(left % 20 == 0) {
+                    } else if(left % 60 == 0) {
                         sendProgressBar(chunksLoading - left, chunksLoading);
                     }
                 });
