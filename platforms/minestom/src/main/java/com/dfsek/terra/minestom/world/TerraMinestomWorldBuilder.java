@@ -5,8 +5,10 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 
 import com.dfsek.terra.minestom.MinestomPlatform;
+import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.api.filter.ChunkFilter;
+import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
@@ -20,8 +22,9 @@ public class TerraMinestomWorldBuilder {
     private final Instance instance;
     private ConfigPack pack;
     private long seed = new Random().nextLong();
-    private EntityFactory factory = new DefaultEntityFactory();
+    private EntityFactory entityFactory = new DefaultEntityFactory();
     private ChunkFilter filter;
+    private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
 
     private TerraMinestomWorldBuilder(Instance instance) { this.instance = instance; }
 
@@ -63,7 +66,12 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorldBuilder entityFactory(EntityFactory factory) {
-        this.factory = factory;
+        this.entityFactory = factory;
+        return this;
+    }
+
+    public TerraMinestomWorldBuilder blockEntityFactory(BlockEntityFactory factory) {
+        this.blockEntityFactory = factory;
         return this;
     }
 
@@ -73,6 +81,6 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(instance, pack, seed, factory, filter);
+        return new TerraMinestomWorld(instance, pack, seed, entityFactory, filter, blockEntityFactory);
     }
 }

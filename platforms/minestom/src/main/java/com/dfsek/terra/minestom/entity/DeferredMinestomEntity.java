@@ -6,6 +6,8 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 
+import net.minestom.server.coordinate.Pos;
+
 
 public class DeferredMinestomEntity implements Entity {
     private final EntityType type;
@@ -25,6 +27,10 @@ public class DeferredMinestomEntity implements Entity {
     @Override
     public Vector3 position() {
         return Vector3.of(x, y, z);
+    }
+
+    public Pos pos() {
+        return new Pos(x, y, z);
     }
 
     @Override

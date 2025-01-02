@@ -63,7 +63,7 @@ public class MinestomProtoWorld implements ProtoWorld {
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
         TerraMinestomWorld world = this.world;
         DeferredMinestomEntity entity = new DeferredMinestomEntity(x, y, z, entityType, world);
-        world.enqueueEntitySpawn(entity);
+        world.enqueue(entity.pos(), (chunk) -> entity.spawn());
         return entity;
     }
 
@@ -77,7 +77,7 @@ public class MinestomProtoWorld implements ProtoWorld {
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return world.getBlockEntity(x, y, z);
     }
 
     @Override
