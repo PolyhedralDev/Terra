@@ -5,12 +5,16 @@ import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 
 import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
+import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
+import com.dfsek.terra.minestom.entity.MinestomEntityType;
 import com.dfsek.terra.minestom.item.MinestomItemHandle;
 
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
@@ -33,7 +37,10 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
-        registry.registerLoader(PlatformBiome.class, (TypeLoader<PlatformBiome>) (annotatedType, o, configLoader, depthTracker) -> () -> o);
+        registry
+            .registerLoader(PlatformBiome.class, new MinestomBiomeLoader())
+            .registerLoader(EntityType.class, (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
+            .registerLoader(BlockState.class, (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o));
     }
 
     @Override
@@ -59,13 +66,13 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public @NotNull File getDataFolder() {
         File file = new File("./terra/");
-        if (!file.exists()) file.mkdirs();
+        if(!file.exists()) file.mkdirs();
         return file;
     }
 
 
     public static MinestomPlatform getInstance() {
-        if (INSTANCE == null) {
+        if(INSTANCE == null) {
             INSTANCE = new MinestomPlatform();
         }
         return INSTANCE;
