@@ -13,16 +13,20 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.api.filter.ChunkFilter;
-import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
 
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.BlockVec;
+import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.world.DimensionType;
+
+import java.util.function.Consumer;
 
 
 public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
@@ -31,21 +35,30 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
     private final long seed;
     private final DimensionType dimensionType;
     private final MinestomChunkGeneratorWrapper wrapper;
-    private final EntityFactory factory;
+    private final EntityFactory entityFactory;
+    private final BlockEntityFactory blockEntityFactory;
 
-    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed, EntityFactory factory, ChunkFilter filter) {
+    public TerraMinestomWorld(
+        Instance instance,
+        ConfigPack pack,
+        long seed,
+        EntityFactory entityFactory,
+        ChunkFilter filter,
+        BlockEntityFactory blockEntityFactory
+    ) {
         this.instance = instance;
         this.pack = pack;
         this.seed = seed;
 
         this.dimensionType = MinecraftServer.getDimensionTypeRegistry().get(instance.getDimensionType());
+        this.blockEntityFactory = blockEntityFactory;
 
         this.wrapper = new MinestomChunkGeneratorWrapper(
             pack.getGeneratorProvider().newInstance(pack),
             this,
             filter
         );
-        this.factory = factory;
+        this.entityFactory = entityFactory;
 
         instance.setGenerator(this.wrapper);
     }
@@ -76,7 +89,7 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return blockEntityFactory.createBlockEntity(new BlockVec(x, y, z));
     }
 
     @Override
@@ -119,12 +132,10 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
     }
 
     public EntityFactory getEntityFactory() {
-        return factory;
+        return entityFactory;
     }
 
-    public void enqueueEntitySpawn(DeferredMinestomEntity deferredMinestomEntity) {
-        int chunkX = deferredMinestomEntity.position().getBlockX() >> 4;
-        int chunkZ = deferredMinestomEntity.position().getBlockZ() >> 4;
-        instance.loadChunk(chunkX, chunkZ).thenAccept(chunk -> deferredMinestomEntity.spawn());
+    public void enqueue(Point position, Consumer<net.minestom.server.instance.Chunk> action) {
+        instance.loadChunk(position.chunkX(), position.chunkZ()).thenAccept(action);
     }
 }
