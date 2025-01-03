@@ -4,6 +4,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
+import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
@@ -13,7 +14,7 @@ import net.minestom.server.instance.generator.Generator;
 import org.jetbrains.annotations.NotNull;
 
 
-public class MinestomChunkGeneratorWrapper implements Generator {
+public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrapper {
     private final GeneratedChunkCache cache;
     private ChunkGenerator generator;
     private final TerraMinestomWorld world;
@@ -58,5 +59,10 @@ public class MinestomChunkGeneratorWrapper implements Generator {
 
     public void displayStats() {
         cache.displayStats();
+    }
+
+    @Override
+    public ChunkGenerator getHandle() {
+        return generator;
     }
 }
