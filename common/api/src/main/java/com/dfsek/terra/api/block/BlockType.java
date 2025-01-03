@@ -13,9 +13,6 @@ import com.dfsek.terra.api.block.state.BlockState;
 
 /**
  * Represents a type of block
- * <p>
- * Important! You <b>need</b> to implement a proper equals() and hashCode() here in
- * your platform implementation for surface decorations to show up
  */
 public interface BlockType extends Handle {
     /**
