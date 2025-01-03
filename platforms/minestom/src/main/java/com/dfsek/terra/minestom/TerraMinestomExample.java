@@ -20,6 +20,7 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.LightingChunk;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +32,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TerraMinestomExample {
     private static final Logger logger = LoggerFactory.getLogger(TerraMinestomExample.class);
     private final MinecraftServer server = MinecraftServer.init();
-    private Instance instance = MinecraftServer.getInstanceManager().createInstanceContainer();
+    private Instance instance;
     private TerraMinestomWorld world;
 
     public void createNewInstance() {
         instance = MinecraftServer.getInstanceManager().createInstanceContainer();
+        instance.setChunkSupplier(LightingChunk::new);
     }
 
     public void attachTerra(ChunkFilter filter) {
@@ -114,6 +116,7 @@ public class TerraMinestomExample {
 
     public static void main(String[] args) {
         TerraMinestomExample example = new TerraMinestomExample();
+        example.createNewInstance();
         example.attachTerra(null);
         example.preloadWorldAndMeasure();
         example.addScheduler();
