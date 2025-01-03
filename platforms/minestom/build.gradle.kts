@@ -26,6 +26,10 @@ application {
     mainClass.set(javaMainClass)
 }
 
+tasks.named("jar") {
+    finalizedBy("installAddonsIntoDefaultJar")
+}
+
 tasks.getByName("run").setProperty("workingDir", file("./run"))
 
 addonDir(project.file("./run/terra/addons"), tasks.named("run").get())
