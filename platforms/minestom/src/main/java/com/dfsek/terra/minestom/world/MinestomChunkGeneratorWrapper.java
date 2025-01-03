@@ -1,9 +1,9 @@
 package com.dfsek.terra.minestom.world;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
-import com.dfsek.terra.minestom.api.filter.ChunkFilter;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
@@ -15,14 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class MinestomChunkGeneratorWrapper implements Generator {
     private final GeneratedChunkCache cache;
-    private final ChunkGenerator generator;
+    private ChunkGenerator generator;
     private final TerraMinestomWorld world;
-    private final ChunkFilter filter;
+    private ConfigPack pack;
 
-    public MinestomChunkGeneratorWrapper(ChunkGenerator generator, TerraMinestomWorld world, ChunkFilter filter) {
+    public MinestomChunkGeneratorWrapper(ChunkGenerator generator, TerraMinestomWorld world, ConfigPack pack) {
         this.generator = generator;
         this.world = world;
-        this.filter = filter;
+        this.pack = pack;
         this.cache = new GeneratedChunkCache(world.getDimensionType(), generator, world);
     }
 
@@ -36,18 +36,24 @@ public class MinestomChunkGeneratorWrapper implements Generator {
         int x = start.chunkX();
         int z = start.chunkZ();
         CachedChunk chunk = cache.at(x, z);
-        if(filter == null || filter.shouldPlaceTerrain(x, z))
-            chunk.writeRelative(unit.modifier());
+        chunk.writeRelative(unit.modifier());
 
-        if(filter == null || filter.shouldPlaceFeatures(x, z)) {
-            unit.fork(setter -> {
-                MinestomProtoWorld protoWorld = new MinestomProtoWorld(cache, x, z, world, setter);
+        unit.fork(setter -> {
+            MinestomProtoWorld protoWorld = new MinestomProtoWorld(cache, x, z, world, setter);
 
-                for(GenerationStage stage : world.getPack().getStages()) {
-                    stage.populate(protoWorld);
-                }
-            });
-        }
+            for(GenerationStage stage : world.getPack().getStages()) {
+                stage.populate(protoWorld);
+            }
+        });
+    }
+
+    public ConfigPack getPack() {
+        return pack;
+    }
+
+    public void setPack(ConfigPack pack) {
+        this.pack = pack;
+        this.generator = pack.getGeneratorProvider().newInstance(pack);
     }
 
     public void displayStats() {

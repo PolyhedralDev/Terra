@@ -17,14 +17,20 @@ import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
 import com.dfsek.terra.minestom.entity.MinestomEntityType;
 import com.dfsek.terra.minestom.item.MinestomItemHandle;
 
+import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
 
+import net.minestom.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 
 
 public final class MinestomPlatform extends AbstractPlatform {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MinestomPlatform.class);
     private static MinestomPlatform INSTANCE = null;
     private final MinestomWorldHandle worldHandle = new MinestomWorldHandle();
     private final MinestomItemHandle itemHandle = new MinestomItemHandle();
@@ -45,7 +51,20 @@ public final class MinestomPlatform extends AbstractPlatform {
 
     @Override
     public boolean reload() {
-        return false;
+        getTerraConfig().load(this);
+        getRawConfigRegistry().clear();
+        boolean succeed = getRawConfigRegistry().loadAll(this);
+
+        MinecraftServer.getInstanceManager().getInstances().forEach(world -> {
+            if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {
+                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                    wrapper.setPack(pack);
+                    LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUniqueId());
+                });
+            }
+        });
+
+        return succeed;
     }
 
     @Override

@@ -7,12 +7,10 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.minestom.MinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
-import com.dfsek.terra.minestom.api.filter.ChunkFilter;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -23,7 +21,6 @@ public class TerraMinestomWorldBuilder {
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
-    private ChunkFilter filter;
     private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
 
     private TerraMinestomWorldBuilder(Instance instance) { this.instance = instance; }
@@ -75,12 +72,7 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
-    public TerraMinestomWorldBuilder filtered(@Nullable ChunkFilter filter) {
-        this.filter = filter;
-        return this;
-    }
-
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(instance, pack, seed, entityFactory, filter, blockEntityFactory);
+        return new TerraMinestomWorld(instance, pack, seed, entityFactory, blockEntityFactory);
     }
 }
