@@ -15,26 +15,26 @@ public class MinestomBlockState implements BlockState {
     private final Block block;
 
     public MinestomBlockState(Block block) {
-        if (block == null) {
+        if(block == null) {
             this.block = Block.AIR;
         } else {
             this.block = block;
         }
     }
-    
+
     public MinestomBlockState(String data) {
-        if (!data.contains("[")) {
+        if(!data.contains("[")) {
             block = Block.fromNamespaceId(data);
             return;
         }
-        
+
         String[] split = data.split("\\[");
         String namespaceId = split[0];
         String properties = split[1].substring(0, split[1].length() - 1);
         Block block = Block.fromNamespaceId(namespaceId);
         HashMap<String, String> propertiesMap = new HashMap<>();
 
-        for (String property : properties.split(",")) {
+        for(String property : properties.split(",")) {
             String[] kv = property.split("=");
             propertiesMap.put(kv[0].strip(), kv[1].strip());
         }
@@ -71,18 +71,12 @@ public class MinestomBlockState implements BlockState {
     @Override
     public String getAsString(boolean properties) {
         String name = block.namespace().asString();
-        if (!properties || block.properties().isEmpty()) {
+        if(!properties || block.properties().isEmpty()) {
             return name;
         }
 
-        name += "[" + block
-                    .properties()
-                    .entrySet()
-                    .stream()
-                    .map(entry ->
-                        entry.getKey() + "=" + entry.getValue()
-                    )
-                    .collect(Collectors.joining(",")) + "]";
+        name += "[" + block.properties().entrySet().stream().map(entry -> entry.getKey() + "=" + entry.getValue()).collect(
+            Collectors.joining(",")) + "]";
 
         return name;
     }

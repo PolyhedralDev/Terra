@@ -37,13 +37,8 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
     private final EntityFactory entityFactory;
     private final BlockEntityFactory blockEntityFactory;
 
-    public TerraMinestomWorld(
-        Instance instance,
-        ConfigPack pack,
-        long seed,
-        EntityFactory entityFactory,
-        BlockEntityFactory blockEntityFactory
-    ) {
+    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed, EntityFactory entityFactory,
+                              BlockEntityFactory blockEntityFactory) {
         this.instance = instance;
         this.pack = pack;
         this.seed = seed;
@@ -51,11 +46,7 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         this.dimensionType = MinecraftServer.getDimensionTypeRegistry().get(instance.getDimensionType());
         this.blockEntityFactory = blockEntityFactory;
 
-        this.wrapper = new MinestomChunkGeneratorWrapper(
-            pack.getGeneratorProvider().newInstance(pack),
-            this,
-            pack
-        );
+        this.wrapper = new MinestomChunkGeneratorWrapper(pack.getGeneratorProvider().newInstance(pack), this, pack);
         this.entityFactory = entityFactory;
 
         instance.setGenerator(this.wrapper);

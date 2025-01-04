@@ -40,7 +40,7 @@ public class MinestomBlockType implements BlockType {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MinestomBlockType other) {
+        if(obj instanceof MinestomBlockType other) {
             return block.id() == other.block.id();
         }
         return false;

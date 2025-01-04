@@ -27,26 +27,20 @@ public class GeneratedChunkCache {
         this.generator = generator;
         this.world = world;
         this.biomeProvider = world.getBiomeProvider();
-        this.cache = Caffeine.newBuilder()
-            .maximumSize(128)
-            .recordStats()
-            .build((Pair<Integer, Integer> key) -> generateChunk(key.getLeft(), key.getRight()));
+        this.cache = Caffeine.newBuilder().maximumSize(128).recordStats().build(
+            (Pair<Integer, Integer> key) -> generateChunk(key.getLeft(), key.getRight()));
     }
 
     private CachedChunk generateChunk(int x, int z) {
         CachedChunk chunk = new CachedChunk(dimensionType.minY(), dimensionType.maxY());
-        generator.generateChunkData(
-            chunk,
-            world,
-            biomeProvider,
-            x, z
-        );
+        generator.generateChunkData(chunk, world, biomeProvider, x, z);
         return chunk;
     }
 
     public void displayStats() {
         CacheStats stats = cache.stats();
-        log.info("Avg load time: {}ms | Hit rate: {}% | Load Count: {}", stats.averageLoadPenalty(), stats.hitRate() * 100, stats.loadCount());
+        log.info("Avg load time: {}ms | Hit rate: {}% | Load Count: {}", stats.averageLoadPenalty(), stats.hitRate() * 100,
+            stats.loadCount());
     }
 
     public CachedChunk at(int x, int z) {

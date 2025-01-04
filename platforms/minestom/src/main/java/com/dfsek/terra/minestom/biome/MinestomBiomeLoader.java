@@ -25,7 +25,7 @@ public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {
         String id = (String) o;
         NamespaceID biomeID = NamespaceID.from(id);
         Biome biome = biomeRegistry.get(biomeID);
-        if (biome == null) throw new LoadException("Biome %s does not exist in registry".formatted(id), depthTracker);
+        if(biome == null) throw new LoadException("Biome %s does not exist in registry".formatted(id), depthTracker);
         return new MinestomBiome(biome);
     }
 }

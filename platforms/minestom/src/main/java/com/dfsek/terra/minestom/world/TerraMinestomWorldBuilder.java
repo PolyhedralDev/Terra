@@ -9,6 +9,7 @@ import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 
@@ -39,11 +40,7 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorldBuilder packById(String id) {
-        this.pack = MinestomPlatform
-            .getInstance()
-            .getConfigRegistry()
-            .getByID(id)
-            .orElseThrow();
+        this.pack = MinestomPlatform.getInstance().getConfigRegistry().getByID(id).orElseThrow();
 
         return this;
     }
