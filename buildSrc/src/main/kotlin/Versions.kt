@@ -79,6 +79,6 @@ object Versions {
     }
     
     object Allay {
-        const val api = "0.1.0"
+        const val api = "0.1.2"
     }
 }
