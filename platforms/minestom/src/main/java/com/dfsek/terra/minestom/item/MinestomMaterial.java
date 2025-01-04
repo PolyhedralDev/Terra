@@ -19,12 +19,7 @@ public class MinestomMaterial implements Item {
 
     @Override
     public ItemStack newItemStack(int amount) {
-        return new MinestomItemStack(
-            net.minestom.server.item.ItemStack
-                .builder(delegate)
-                .amount(amount)
-                .build()
-        );
+        return new MinestomItemStack(net.minestom.server.item.ItemStack.builder(delegate).amount(amount).build());
     }
 
     @Override

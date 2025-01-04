@@ -1,32 +1,25 @@
 package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
-
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-
 import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
 import com.dfsek.terra.minestom.entity.MinestomEntityType;
 import com.dfsek.terra.minestom.item.MinestomItemHandle;
-
 import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
-
 import net.minestom.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
 
 
 public final class MinestomPlatform extends AbstractPlatform {

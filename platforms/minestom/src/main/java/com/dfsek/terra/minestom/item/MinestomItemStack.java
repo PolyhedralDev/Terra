@@ -50,10 +50,8 @@ public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStac
         EnchantmentList enchantmentList = base.get(ItemComponent.ENCHANTMENTS);
         if(enchantmentList != null) {
             enchantmentList.enchantments().forEach((enchantmentKey, integer) -> {
-                enchantments.put(new MinestomEnchantment(
-                        Objects.requireNonNull(MinecraftServer.getEnchantmentRegistry().get(enchantmentKey))),
-                    integer
-                );
+                enchantments.put(
+                    new MinestomEnchantment(Objects.requireNonNull(MinecraftServer.getEnchantmentRegistry().get(enchantmentKey))), integer);
             });
         }
         return new MinestomItemMeta(enchantments);
@@ -63,12 +61,10 @@ public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStac
     public void setItemMeta(ItemMeta meta) {
         HashMap<Key<net.minestom.server.item.enchant.Enchantment>, Integer> enchantments = new HashMap<>();
         DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
-        meta
-            .getEnchantments()
-            .forEach((key, value) -> {
-                MinestomEnchantment enchantment = (MinestomEnchantment) key;
-                enchantments.put(registry.getKey(enchantment.getHandle()), value);
-            });
+        meta.getEnchantments().forEach((key, value) -> {
+            MinestomEnchantment enchantment = (MinestomEnchantment) key;
+            enchantments.put(registry.getKey(enchantment.getHandle()), value);
+        });
 
         EnchantmentList list = new EnchantmentList(enchantments);
         base = base.with(ItemComponent.ENCHANTMENTS, list);

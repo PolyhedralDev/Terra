@@ -25,13 +25,7 @@ public class MinestomProtoWorld implements ProtoWorld {
     private final TerraMinestomWorld world;
     private final Setter modifier;
 
-    public MinestomProtoWorld(
-        GeneratedChunkCache cache,
-        int x,
-        int z,
-        TerraMinestomWorld world,
-        Setter modifier
-    ) {
+    public MinestomProtoWorld(GeneratedChunkCache cache, int x, int z, TerraMinestomWorld world, Setter modifier) {
         this.cache = cache;
         this.x = x;
         this.z = z;
