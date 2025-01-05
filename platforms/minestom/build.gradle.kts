@@ -9,8 +9,8 @@ dependencies {
     shadedApi("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
     shadedImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
-    implementation("net.minestom", "minestom-snapshots", Versions.Minestom.minestom)
-    implementation("org.slf4j", "slf4j-simple", Versions.Libraries.slf4j)
+    compileOnly("net.minestom", "minestom-snapshots", Versions.Minestom.minestom)
+    compileOnly("org.slf4j", "slf4j-simple", Versions.Libraries.slf4j)
 }
 
 tasks.withType<Jar> {
