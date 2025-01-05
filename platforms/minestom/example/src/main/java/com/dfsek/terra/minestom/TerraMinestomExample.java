@@ -1,12 +1,8 @@
 package com.dfsek.terra.minestom;
 
-import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
-
 import net.kyori.adventure.text.Component;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.command.builder.Command;
-import net.minestom.server.command.builder.arguments.number.ArgumentInteger;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
@@ -18,6 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.dfsek.terra.minestom.world.TerraMinestomWorld;
+import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 
 public class TerraMinestomExample {
