@@ -1,7 +1,3 @@
-plugins {
-    application
-}
-
 dependencies {
     shadedApi(project(":common:implementation:base"))
     shadedApi("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
