@@ -77,7 +77,9 @@ public final class MinestomPlatform extends AbstractPlatform {
 
     @Override
     public @NotNull File getDataFolder() {
-        File file = new File("./terra/");
+        String pathName = System.getProperty("terra.datafolder");
+        if (pathName == null) pathName = "./terra/";
+        File file = new File(pathName);
         if(!file.exists()) file.mkdirs();
         return file;
     }
