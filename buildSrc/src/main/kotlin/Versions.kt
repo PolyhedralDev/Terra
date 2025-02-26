@@ -81,4 +81,8 @@ object Versions {
     object Allay {
         const val api = "0.1.3"
     }
+    
+    object Minestom {
+        const val minestom = "187931e50b"
+    }
 }
