@@ -1,38 +1,38 @@
 {
-    "acacia_button": {
+    "minecraft:acacia_button": {
         "face": "wall",
         "facing": "north",
         "powered": "false"
     },
     "minecraft:acacia_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:acacia_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:acacia_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:acacia_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:acacia_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:acacia_log": {
         "axis": "y"
@@ -49,21 +49,21 @@
         "waterlogged": "false"
     },
     "minecraft:acacia_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:acacia_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:acacia_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:acacia_wall_hanging_sign": {
         "facing": "north",
@@ -91,21 +91,21 @@
     "minecraft:ancient_debris": {},
     "minecraft:andesite": {},
     "minecraft:andesite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:andesite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:andesite_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:anvil": {
@@ -120,14 +120,14 @@
     "minecraft:azalea": {},
     "minecraft:azalea_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:azure_bluet": {},
     "minecraft:bamboo": {
-        "age": "0",
-        "leaves": "none",
-        "stage": "0"
+        "stage": "0",
+        "age_1": "0",
+        "bamboo_leaves": "none"
     },
     "minecraft:bamboo_block": {
         "axis": "y"
@@ -138,40 +138,40 @@
         "powered": "false"
     },
     "minecraft:bamboo_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:bamboo_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:bamboo_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:bamboo_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:bamboo_mosaic": {},
     "minecraft:bamboo_mosaic_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:bamboo_mosaic_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:bamboo_planks": {},
     "minecraft:bamboo_pressure_plate": {
@@ -183,21 +183,21 @@
         "waterlogged": "false"
     },
     "minecraft:bamboo_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:bamboo_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:bamboo_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:bamboo_wall_hanging_sign": {
         "facing": "north",
@@ -208,8 +208,8 @@
         "waterlogged": "false"
     },
     "minecraft:barrel": {
-        "facing": "north",
-        "open": "false"
+        "open": "false",
+        "facing": "north"
     },
     "minecraft:barrier": {
         "waterlogged": "false"
@@ -220,25 +220,25 @@
     "minecraft:beacon": {},
     "minecraft:bedrock": {},
     "minecraft:bee_nest": {
-        "facing": "north",
-        "honey_level": "0"
+        "honey_level": "0",
+        "facing": "north"
     },
     "minecraft:beehive": {
-        "facing": "north",
-        "honey_level": "0"
+        "honey_level": "0",
+        "facing": "north"
     },
     "minecraft:beetroots": {
-        "age": "0"
+        "age_3": "0"
     },
     "minecraft:bell": {
-        "attachment": "floor",
+        "powered": "false",
         "facing": "north",
-        "powered": "false"
+        "bell_attachment": "floor"
     },
     "minecraft:big_dripleaf": {
         "facing": "north",
-        "tilt": "none",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "tilt": "none"
     },
     "minecraft:big_dripleaf_stem": {
         "facing": "north",
@@ -250,34 +250,34 @@
         "powered": "false"
     },
     "minecraft:birch_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:birch_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:birch_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:birch_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:birch_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:birch_log": {
         "axis": "y"
@@ -294,21 +294,21 @@
         "waterlogged": "false"
     },
     "minecraft:birch_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:birch_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:birch_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:birch_wall_hanging_sign": {
         "facing": "north",
@@ -330,8 +330,8 @@
         "part": "foot"
     },
     "minecraft:black_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:black_candle_cake": {
@@ -348,11 +348,11 @@
     },
     "minecraft:black_stained_glass": {},
     "minecraft:black_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:black_terracotta": {},
     "minecraft:black_wall_banner": {
@@ -361,26 +361,26 @@
     "minecraft:black_wool": {},
     "minecraft:blackstone": {},
     "minecraft:blackstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:blackstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:blackstone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:blast_furnace": {
-        "facing": "north",
-        "lit": "false"
+        "lit": "false",
+        "facing": "north"
     },
     "minecraft:blue_banner": {
         "rotation": "0"
@@ -391,8 +391,8 @@
         "part": "foot"
     },
     "minecraft:blue_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:blue_candle_cake": {
@@ -411,11 +411,11 @@
     },
     "minecraft:blue_stained_glass": {},
     "minecraft:blue_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:blue_terracotta": {},
     "minecraft:blue_wall_banner": {
@@ -443,21 +443,21 @@
         "has_bottle_2": "false"
     },
     "minecraft:brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:bricks": {},
@@ -470,8 +470,8 @@
         "part": "foot"
     },
     "minecraft:brown_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:brown_candle_cake": {
@@ -487,21 +487,21 @@
     "minecraft:brown_mushroom_block": {
         "down": "true",
         "east": "true",
-        "north": "true",
+        "west": "true",
         "south": "true",
-        "up": "true",
-        "west": "true"
+        "north": "true",
+        "up": "true"
     },
     "minecraft:brown_shulker_box": {
         "facing": "up"
     },
     "minecraft:brown_stained_glass": {},
     "minecraft:brown_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:brown_terracotta": {},
     "minecraft:brown_wall_banner": {
@@ -531,20 +531,20 @@
     },
     "minecraft:calcite": {},
     "minecraft:calibrated_sculk_sensor": {
-        "facing": "north",
-        "power": "0",
         "sculk_sensor_phase": "inactive",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "power": "0"
     },
     "minecraft:campfire": {
-        "facing": "north",
         "lit": "true",
-        "signal_fire": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "signal_fire": "false"
     },
     "minecraft:candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:candle_cake": {
@@ -571,8 +571,8 @@
         "waterlogged": "false"
     },
     "minecraft:chain_command_block": {
-        "conditional": "false",
-        "facing": "north"
+        "facing": "north",
+        "conditional": "false"
     },
     "minecraft:cherry_button": {
         "face": "wall",
@@ -580,34 +580,34 @@
         "powered": "false"
     },
     "minecraft:cherry_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:cherry_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:cherry_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:cherry_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:cherry_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:cherry_log": {
         "axis": "y"
@@ -624,21 +624,21 @@
         "waterlogged": "false"
     },
     "minecraft:cherry_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cherry_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:cherry_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:cherry_wall_hanging_sign": {
         "facing": "north",
@@ -653,20 +653,20 @@
     },
     "minecraft:chest": {
         "facing": "north",
-        "type": "single",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "chest_type": "single"
     },
     "minecraft:chipped_anvil": {
         "facing": "north"
     },
     "minecraft:chiseled_bookshelf": {
         "facing": "north",
-        "chiseled_bookshelf_slot_0_occupied": "false",
-        "chiseled_bookshelf_slot_1_occupied": "false",
         "chiseled_bookshelf_slot_2_occupied": "false",
         "chiseled_bookshelf_slot_3_occupied": "false",
-        "chiseled_bookshelf_slot_4_occupied": "false",
-        "chiseled_bookshelf_slot_5_occupied": "false"
+        "chiseled_bookshelf_slot_0_occupied": "false",
+        "chiseled_bookshelf_slot_5_occupied": "false",
+        "chiseled_bookshelf_slot_1_occupied": "false",
+        "chiseled_bookshelf_slot_4_occupied": "false"
     },
     "minecraft:chiseled_copper": {},
     "minecraft:chiseled_deepslate": {},
@@ -674,76 +674,78 @@
     "minecraft:chiseled_polished_blackstone": {},
     "minecraft:chiseled_quartz_block": {},
     "minecraft:chiseled_red_sandstone": {},
+    "minecraft:chiseled_resin_bricks": {},
     "minecraft:chiseled_sandstone": {},
     "minecraft:chiseled_stone_bricks": {},
     "minecraft:chiseled_tuff": {},
     "minecraft:chiseled_tuff_bricks": {},
     "minecraft:chorus_flower": {
-        "age": "0"
+        "age_5": "0"
     },
     "minecraft:chorus_plant": {
+        "west": "false",
         "down": "false",
         "east": "false",
-        "north": "false",
         "south": "false",
-        "up": "false",
-        "west": "false"
+        "north": "false",
+        "up": "false"
     },
     "minecraft:clay": {},
+    "minecraft:closed_eyeblossom": {},
     "minecraft:coal_block": {},
     "minecraft:coal_ore": {},
     "minecraft:coarse_dirt": {},
     "minecraft:cobbled_deepslate": {},
     "minecraft:cobbled_deepslate_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cobbled_deepslate_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:cobbled_deepslate_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:cobblestone": {},
     "minecraft:cobblestone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cobblestone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:cobblestone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:cobweb": {},
     "minecraft:cocoa": {
-        "age": "0",
+        "age_2": "0",
         "facing": "north"
     },
     "minecraft:command_block": {
-        "conditional": "false",
-        "facing": "north"
+        "facing": "north",
+        "conditional": "false"
     },
     "minecraft:comparator": {
-        "facing": "north",
+        "powered": "false",
         "mode_comparator": "compare",
-        "powered": "false"
+        "facing": "north"
     },
     "minecraft:composter": {
         "level_composter": "0"
@@ -753,26 +755,26 @@
     },
     "minecraft:copper_block": {},
     "minecraft:copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:copper_ore": {},
     "minecraft:copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:cornflower": {},
     "minecraft:cracked_deepslate_bricks": {},
@@ -786,13 +788,18 @@
         "triggered": "false"
     },
     "minecraft:crafting_table": {},
+    "minecraft:creaking_heart": {
+        "active": "false",
+        "axis": "y",
+        "natural": "false"
+    },
     "minecraft:creeper_head": {
         "powered": "false",
         "rotation": "0"
     },
     "minecraft:creeper_wall_head": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:crimson_button": {
         "face": "wall",
@@ -800,29 +807,29 @@
         "powered": "false"
     },
     "minecraft:crimson_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:crimson_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:crimson_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:crimson_fungus": {},
     "minecraft:crimson_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:crimson_hyphae": {
@@ -839,24 +846,24 @@
         "waterlogged": "false"
     },
     "minecraft:crimson_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:crimson_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:crimson_stem": {
         "axis": "y"
     },
     "minecraft:crimson_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:crimson_wall_hanging_sign": {
         "facing": "north",
@@ -869,24 +876,24 @@
     "minecraft:crying_obsidian": {},
     "minecraft:cut_copper": {},
     "minecraft:cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:cut_red_sandstone": {},
     "minecraft:cut_red_sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cut_sandstone": {},
     "minecraft:cut_sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:cyan_banner": {
         "rotation": "0"
@@ -897,8 +904,8 @@
         "part": "foot"
     },
     "minecraft:cyan_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:cyan_candle_cake": {
@@ -915,11 +922,11 @@
     },
     "minecraft:cyan_stained_glass": {},
     "minecraft:cyan_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:cyan_terracotta": {},
     "minecraft:cyan_wall_banner": {
@@ -936,34 +943,34 @@
         "powered": "false"
     },
     "minecraft:dark_oak_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:dark_oak_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:dark_oak_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:dark_oak_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:dark_oak_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:dark_oak_log": {
         "axis": "y"
@@ -980,21 +987,21 @@
         "waterlogged": "false"
     },
     "minecraft:dark_oak_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:dark_oak_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:dark_oak_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:dark_oak_wall_hanging_sign": {
         "facing": "north",
@@ -1009,14 +1016,14 @@
     },
     "minecraft:dark_prismarine": {},
     "minecraft:dark_prismarine_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:dark_prismarine_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:daylight_detector": {
         "inverted": "false",
@@ -1087,21 +1094,21 @@
         "axis": "y"
     },
     "minecraft:deepslate_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:deepslate_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:deepslate_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:deepslate_bricks": {},
@@ -1116,21 +1123,21 @@
         "lit": "false"
     },
     "minecraft:deepslate_tile_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:deepslate_tile_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:deepslate_tile_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:deepslate_tiles": {},
@@ -1143,28 +1150,28 @@
     "minecraft:diamond_ore": {},
     "minecraft:diorite": {},
     "minecraft:diorite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:diorite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:diorite_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:dirt": {},
     "minecraft:dirt_path": {},
     "minecraft:dispenser": {
-        "facing": "north",
-        "triggered": "false"
+        "triggered": "false",
+        "facing": "north"
     },
     "minecraft:dragon_egg": {},
     "minecraft:dragon_head": {
@@ -1172,14 +1179,14 @@
         "rotation": "0"
     },
     "minecraft:dragon_wall_head": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:dried_kelp_block": {},
     "minecraft:dripstone_block": {},
     "minecraft:dropper": {
-        "facing": "north",
-        "triggered": "false"
+        "triggered": "false",
+        "facing": "north"
     },
     "minecraft:emerald_block": {},
     "minecraft:emerald_ore": {},
@@ -1195,21 +1202,21 @@
     },
     "minecraft:end_stone": {},
     "minecraft:end_stone_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:end_stone_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:end_stone_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:end_stone_bricks": {},
@@ -1220,48 +1227,48 @@
     "minecraft:exposed_chiseled_copper": {},
     "minecraft:exposed_copper": {},
     "minecraft:exposed_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:exposed_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:exposed_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:exposed_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:exposed_cut_copper": {},
     "minecraft:exposed_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:exposed_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:farmland": {
         "moisture": "0"
     },
     "minecraft:fern": {},
     "minecraft:fire": {
-        "age": "0",
+        "west": "false",
         "east": "false",
         "north": "false",
         "south": "false",
-        "up": "false",
-        "west": "false"
+        "age": "0",
+        "up": "false"
     },
     "minecraft:fire_coral": {
         "waterlogged": "true"
@@ -1279,55 +1286,55 @@
     "minecraft:flowering_azalea": {},
     "minecraft:flowering_azalea_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:frogspawn": {},
     "minecraft:frosted_ice": {
-        "age": "0"
+        "age_3": "0"
     },
     "minecraft:furnace": {
-        "facing": "north",
-        "lit": "false"
+        "lit": "false",
+        "facing": "north"
     },
     "minecraft:gilded_blackstone": {},
     "minecraft:glass": {},
     "minecraft:glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:glow_lichen": {
+        "west": "false",
         "down": "false",
         "east": "false",
-        "north": "false",
         "south": "false",
-        "up": "false",
         "waterlogged": "false",
-        "west": "false"
+        "north": "false",
+        "up": "false"
     },
     "minecraft:glowstone": {},
     "minecraft:gold_block": {},
     "minecraft:gold_ore": {},
     "minecraft:granite": {},
     "minecraft:granite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:granite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:granite_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:grass_block": {
@@ -1343,8 +1350,8 @@
         "part": "foot"
     },
     "minecraft:gray_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:gray_candle_cake": {
@@ -1361,11 +1368,11 @@
     },
     "minecraft:gray_stained_glass": {},
     "minecraft:gray_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:gray_terracotta": {},
     "minecraft:gray_wall_banner": {
@@ -1381,8 +1388,8 @@
         "part": "foot"
     },
     "minecraft:green_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:green_candle_cake": {
@@ -1399,11 +1406,11 @@
     },
     "minecraft:green_stained_glass": {},
     "minecraft:green_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:green_terracotta": {},
     "minecraft:green_wall_banner": {
@@ -1454,27 +1461,27 @@
     "minecraft:infested_stone": {},
     "minecraft:infested_stone_bricks": {},
     "minecraft:iron_bars": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:iron_block": {},
     "minecraft:iron_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:iron_ore": {},
     "minecraft:iron_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:jack_o_lantern": {
         "facing": "north"
@@ -1491,34 +1498,34 @@
         "powered": "false"
     },
     "minecraft:jungle_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:jungle_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:jungle_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:jungle_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:jungle_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:jungle_log": {
         "axis": "y"
@@ -1535,21 +1542,21 @@
         "waterlogged": "false"
     },
     "minecraft:jungle_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:jungle_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:jungle_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:jungle_wall_hanging_sign": {
         "facing": "north",
@@ -1588,9 +1595,9 @@
     },
     "minecraft:lava_cauldron": {},
     "minecraft:lectern": {
+        "powered": "false",
         "facing": "north",
-        "has_book": "false",
-        "powered": "false"
+        "has_book": "false"
     },
     "minecraft:lever": {
         "face": "wall",
@@ -1610,8 +1617,8 @@
         "part": "foot"
     },
     "minecraft:light_blue_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:light_blue_candle_cake": {
@@ -1628,11 +1635,11 @@
     },
     "minecraft:light_blue_stained_glass": {},
     "minecraft:light_blue_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:light_blue_terracotta": {},
     "minecraft:light_blue_wall_banner": {
@@ -1648,8 +1655,8 @@
         "part": "foot"
     },
     "minecraft:light_gray_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:light_gray_candle_cake": {
@@ -1666,11 +1673,11 @@
     },
     "minecraft:light_gray_stained_glass": {},
     "minecraft:light_gray_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:light_gray_terracotta": {},
     "minecraft:light_gray_wall_banner": {
@@ -1681,8 +1688,8 @@
         "power": "0"
     },
     "minecraft:lightning_rod": {
-        "facing": "up",
         "powered": "false",
+        "facing": "up",
         "waterlogged": "false"
     },
     "minecraft:lilac": {
@@ -1699,8 +1706,8 @@
         "part": "foot"
     },
     "minecraft:lime_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:lime_candle_cake": {
@@ -1717,11 +1724,11 @@
     },
     "minecraft:lime_stained_glass": {},
     "minecraft:lime_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:lime_terracotta": {},
     "minecraft:lime_wall_banner": {
@@ -1741,8 +1748,8 @@
         "part": "foot"
     },
     "minecraft:magenta_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:magenta_candle_cake": {
@@ -1759,11 +1766,11 @@
     },
     "minecraft:magenta_stained_glass": {},
     "minecraft:magenta_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:magenta_terracotta": {},
     "minecraft:magenta_wall_banner": {
@@ -1777,34 +1784,34 @@
         "powered": "false"
     },
     "minecraft:mangrove_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:mangrove_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:mangrove_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:mangrove_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:mangrove_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:mangrove_log": {
         "axis": "y"
@@ -1814,9 +1821,9 @@
         "powered": "false"
     },
     "minecraft:mangrove_propagule": {
-        "age": "0",
-        "hanging": "false",
+        "age_4": "0",
         "stage": "0",
+        "hanging": "false",
         "waterlogged": "false"
     },
     "minecraft:mangrove_roots": {
@@ -1827,21 +1834,21 @@
         "waterlogged": "false"
     },
     "minecraft:mangrove_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:mangrove_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:mangrove_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:mangrove_wall_hanging_sign": {
         "facing": "north",
@@ -1866,63 +1873,63 @@
     "minecraft:moss_carpet": {},
     "minecraft:mossy_cobblestone": {},
     "minecraft:mossy_cobblestone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:mossy_cobblestone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:mossy_cobblestone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:mossy_stone_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:mossy_stone_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:mossy_stone_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:mossy_stone_bricks": {},
     "minecraft:moving_piston": {
-        "facing": "north",
-        "type": "normal"
+        "piston_type": "normal",
+        "facing": "north"
     },
     "minecraft:mud": {},
     "minecraft:mud_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:mud_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:mud_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:mud_bricks": {},
@@ -1932,37 +1939,37 @@
     "minecraft:mushroom_stem": {
         "down": "true",
         "east": "true",
-        "north": "true",
+        "west": "true",
         "south": "true",
-        "up": "true",
-        "west": "true"
+        "north": "true",
+        "up": "true"
     },
     "minecraft:mycelium": {
         "snowy": "false"
     },
     "minecraft:nether_brick_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:nether_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:nether_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:nether_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:nether_bricks": {},
@@ -1973,15 +1980,15 @@
     "minecraft:nether_quartz_ore": {},
     "minecraft:nether_sprouts": {},
     "minecraft:nether_wart": {
-        "age": "0"
+        "age_3": "0"
     },
     "minecraft:nether_wart_block": {},
     "minecraft:netherite_block": {},
     "minecraft:netherrack": {},
     "minecraft:note_block": {
-        "noteblock_instrument": "harp",
+        "powered": "false",
         "note": "0",
-        "powered": "false"
+        "noteblock_instrument": "harp"
     },
     "minecraft:oak_button": {
         "face": "wall",
@@ -1989,34 +1996,34 @@
         "powered": "false"
     },
     "minecraft:oak_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:oak_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:oak_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:oak_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:oak_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:oak_log": {
         "axis": "y"
@@ -2033,21 +2040,21 @@
         "waterlogged": "false"
     },
     "minecraft:oak_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:oak_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:oak_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:oak_wall_hanging_sign": {
         "facing": "north",
@@ -2061,13 +2068,14 @@
         "axis": "y"
     },
     "minecraft:observer": {
-        "facing": "south",
-        "powered": "false"
+        "powered": "false",
+        "facing": "south"
     },
     "minecraft:obsidian": {},
     "minecraft:ochre_froglight": {
         "axis": "y"
     },
+    "minecraft:open_eyeblossom": {},
     "minecraft:orange_banner": {
         "rotation": "0"
     },
@@ -2077,8 +2085,8 @@
         "part": "foot"
     },
     "minecraft:orange_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:orange_candle_cake": {
@@ -2095,11 +2103,11 @@
     },
     "minecraft:orange_stained_glass": {},
     "minecraft:orange_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:orange_terracotta": {},
     "minecraft:orange_tulip": {},
@@ -2111,39 +2119,127 @@
     "minecraft:oxidized_chiseled_copper": {},
     "minecraft:oxidized_copper": {},
     "minecraft:oxidized_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:oxidized_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:oxidized_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:oxidized_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:oxidized_cut_copper": {},
     "minecraft:oxidized_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:oxidized_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:packed_ice": {},
     "minecraft:packed_mud": {},
+    "minecraft:pale_hanging_moss": {
+        "tip": "true"
+    },
+    "minecraft:pale_moss_block": {},
+    "minecraft:pale_moss_carpet": {
+        "north": "none",
+        "bottom": "true",
+        "south": "none",
+        "east": "none",
+        "west": "none"
+    },
+    "minecraft:pale_oak_button": {
+        "face": "wall",
+        "facing": "north",
+        "powered": "false"
+    },
+    "minecraft:pale_oak_door": {
+        "powered": "false",
+        "facing": "north",
+        "open": "false",
+        "hinge": "left",
+        "half": "lower"
+    },
+    "minecraft:pale_oak_fence": {
+        "west": "false",
+        "waterlogged": "false",
+        "east": "false",
+        "south": "false",
+        "north": "false"
+    },
+    "minecraft:pale_oak_fence_gate": {
+        "powered": "false",
+        "in_wall": "false",
+        "facing": "north",
+        "open": "false"
+    },
+    "minecraft:pale_oak_hanging_sign": {
+        "rotation": "0",
+        "attached": "false",
+        "waterlogged": "false"
+    },
+    "minecraft:pale_oak_leaves": {
+        "distance": "7",
+        "waterlogged": "false",
+        "persistent": "false"
+    },
+    "minecraft:pale_oak_log": {
+        "axis": "y"
+    },
+    "minecraft:pale_oak_planks": {},
+    "minecraft:pale_oak_pressure_plate": {
+        "powered": "false"
+    },
+    "minecraft:pale_oak_sapling": {
+        "stage": "0"
+    },
+    "minecraft:pale_oak_sign": {
+        "rotation": "0",
+        "waterlogged": "false"
+    },
+    "minecraft:pale_oak_slab": {
+        "waterlogged": "false",
+        "type": "bottom"
+    },
+    "minecraft:pale_oak_stairs": {
+        "half": "bottom",
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
+    },
+    "minecraft:pale_oak_trapdoor": {
+        "powered": "false",
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
+    },
+    "minecraft:pale_oak_wall_hanging_sign": {
+        "facing": "north",
+        "waterlogged": "false"
+    },
+    "minecraft:pale_oak_wall_sign": {
+        "facing": "north",
+        "waterlogged": "false"
+    },
+    "minecraft:pale_oak_wood": {
+        "axis": "y"
+    },
     "minecraft:pearlescent_froglight": {
         "axis": "y"
     },
@@ -2151,16 +2247,16 @@
         "half": "lower"
     },
     "minecraft:petrified_oak_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:piglin_head": {
         "powered": "false",
         "rotation": "0"
     },
     "minecraft:piglin_wall_head": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:pink_banner": {
         "rotation": "0"
@@ -2171,8 +2267,8 @@
         "part": "foot"
     },
     "minecraft:pink_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:pink_candle_cake": {
@@ -2193,11 +2289,11 @@
     },
     "minecraft:pink_stained_glass": {},
     "minecraft:pink_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:pink_terracotta": {},
     "minecraft:pink_tulip": {},
@@ -2206,17 +2302,17 @@
     },
     "minecraft:pink_wool": {},
     "minecraft:piston": {
-        "extended": "false",
-        "facing": "north"
+        "facing": "north",
+        "extended": "false"
     },
     "minecraft:piston_head": {
+        "piston_type": "normal",
         "facing": "north",
-        "short": "false",
-        "type": "normal"
+        "short": "false"
     },
     "minecraft:pitcher_crop": {
-        "age": "0",
-        "half": "lower"
+        "half": "lower",
+        "age_4": "0"
     },
     "minecraft:pitcher_plant": {
         "half": "lower"
@@ -2226,48 +2322,48 @@
         "rotation": "0"
     },
     "minecraft:player_wall_head": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:podzol": {
         "snowy": "false"
     },
     "minecraft:pointed_dripstone": {
-        "thickness": "tip",
         "vertical_direction": "up",
+        "thickness": "tip",
         "waterlogged": "false"
     },
     "minecraft:polished_andesite": {},
     "minecraft:polished_andesite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_andesite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_basalt": {
         "axis": "y"
     },
     "minecraft:polished_blackstone": {},
     "minecraft:polished_blackstone_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_blackstone_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_blackstone_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:polished_blackstone_bricks": {},
@@ -2280,81 +2376,81 @@
         "powered": "false"
     },
     "minecraft:polished_blackstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_blackstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_blackstone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:polished_deepslate": {},
     "minecraft:polished_deepslate_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_deepslate_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_deepslate_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:polished_diorite": {},
     "minecraft:polished_diorite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_diorite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_granite": {},
     "minecraft:polished_granite_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_granite_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_tuff": {},
     "minecraft:polished_tuff_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:polished_tuff_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:polished_tuff_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:poppy": {},
@@ -2371,6 +2467,7 @@
     "minecraft:potted_brown_mushroom": {},
     "minecraft:potted_cactus": {},
     "minecraft:potted_cherry_sapling": {},
+    "minecraft:potted_closed_eyeblossom": {},
     "minecraft:potted_cornflower": {},
     "minecraft:potted_crimson_fungus": {},
     "minecraft:potted_crimson_roots": {},
@@ -2383,8 +2480,10 @@
     "minecraft:potted_lily_of_the_valley": {},
     "minecraft:potted_mangrove_propagule": {},
     "minecraft:potted_oak_sapling": {},
+    "minecraft:potted_open_eyeblossom": {},
     "minecraft:potted_orange_tulip": {},
     "minecraft:potted_oxeye_daisy": {},
+    "minecraft:potted_pale_oak_sapling": {},
     "minecraft:potted_pink_tulip": {},
     "minecraft:potted_poppy": {},
     "minecraft:potted_red_mushroom": {},
@@ -2397,7 +2496,7 @@
     "minecraft:potted_wither_rose": {},
     "minecraft:powder_snow": {},
     "minecraft:powder_snow_cauldron": {
-        "level_cauldron": "1"
+        "level": "1"
     },
     "minecraft:powered_rail": {
         "powered": "false",
@@ -2406,32 +2505,32 @@
     },
     "minecraft:prismarine": {},
     "minecraft:prismarine_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:prismarine_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:prismarine_bricks": {},
     "minecraft:prismarine_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:prismarine_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:prismarine_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:pumpkin": {},
@@ -2447,8 +2546,8 @@
         "part": "foot"
     },
     "minecraft:purple_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:purple_candle_cake": {
@@ -2465,11 +2564,11 @@
     },
     "minecraft:purple_stained_glass": {},
     "minecraft:purple_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:purple_terracotta": {},
     "minecraft:purple_wall_banner": {
@@ -2481,14 +2580,14 @@
         "axis": "y"
     },
     "minecraft:purpur_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:purpur_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:quartz_block": {},
     "minecraft:quartz_bricks": {},
@@ -2496,18 +2595,18 @@
         "axis": "y"
     },
     "minecraft:quartz_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:quartz_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:rail": {
-        "rail_shape": "north_south",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "rail_shape": "north_south"
     },
     "minecraft:raw_copper_block": {},
     "minecraft:raw_gold_block": {},
@@ -2521,8 +2620,8 @@
         "part": "foot"
     },
     "minecraft:red_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:red_candle_cake": {
@@ -2538,48 +2637,48 @@
     "minecraft:red_mushroom_block": {
         "down": "true",
         "east": "true",
-        "north": "true",
+        "west": "true",
         "south": "true",
-        "up": "true",
-        "west": "true"
+        "north": "true",
+        "up": "true"
     },
     "minecraft:red_nether_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:red_nether_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:red_nether_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:red_nether_bricks": {},
     "minecraft:red_sand": {},
     "minecraft:red_sandstone": {},
     "minecraft:red_sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:red_sandstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:red_sandstone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:red_shulker_box": {
@@ -2587,11 +2686,11 @@
     },
     "minecraft:red_stained_glass": {},
     "minecraft:red_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:red_terracotta": {},
     "minecraft:red_tulip": {},
@@ -2610,26 +2709,55 @@
         "lit": "true"
     },
     "minecraft:redstone_wall_torch": {
-        "facing": "north",
-        "lit": "true"
+        "lit": "true",
+        "facing": "north"
     },
     "minecraft:redstone_wire": {
+        "west_redstone": "none",
         "east_redstone": "none",
-        "north_redstone": "none",
-        "power": "0",
         "south_redstone": "none",
-        "west_redstone": "none"
+        "north_redstone": "none",
+        "power": "0"
     },
     "minecraft:reinforced_deepslate": {},
     "minecraft:repeater": {
-        "delay": "1",
+        "powered": "false",
         "facing": "north",
-        "locked": "false",
-        "powered": "false"
+        "delay": "1",
+        "locked": "false"
     },
     "minecraft:repeating_command_block": {
-        "conditional": "false",
-        "facing": "north"
+        "facing": "north",
+        "conditional": "false"
+    },
+    "minecraft:resin_block": {},
+    "minecraft:resin_brick_slab": {
+        "waterlogged": "false",
+        "type": "bottom"
+    },
+    "minecraft:resin_brick_stairs": {
+        "half": "bottom",
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
+    },
+    "minecraft:resin_brick_wall": {
+        "north": "none",
+        "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
+        "west": "none"
+    },
+    "minecraft:resin_bricks": {},
+    "minecraft:resin_clump": {
+        "west": "false",
+        "down": "false",
+        "east": "false",
+        "south": "false",
+        "waterlogged": "false",
+        "north": "false",
+        "up": "false"
     },
     "minecraft:respawn_anchor": {
         "respawn_anchor_charges": "0"
@@ -2641,26 +2769,26 @@
     "minecraft:sand": {},
     "minecraft:sandstone": {},
     "minecraft:sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:sandstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:sandstone_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:scaffolding": {
-        "bottom": "false",
         "stability_distance": "7",
+        "bottom": "false",
         "waterlogged": "false"
     },
     "minecraft:sculk": {},
@@ -2668,28 +2796,28 @@
         "bloom": "false"
     },
     "minecraft:sculk_sensor": {
-        "power": "0",
         "sculk_sensor_phase": "inactive",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "power": "0"
     },
     "minecraft:sculk_shrieker": {
         "can_summon": "false",
-        "shrieking": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "shrieking": "false"
     },
     "minecraft:sculk_vein": {
+        "west": "false",
         "down": "false",
         "east": "false",
-        "north": "false",
         "south": "false",
-        "up": "false",
         "waterlogged": "false",
-        "west": "false"
+        "north": "false",
+        "up": "false"
     },
     "minecraft:sea_lantern": {},
     "minecraft:sea_pickle": {
-        "pickles": "1",
-        "waterlogged": "true"
+        "waterlogged": "true",
+        "pickles": "1"
     },
     "minecraft:seagrass": {},
     "minecraft:short_grass": {},
@@ -2702,8 +2830,8 @@
         "rotation": "0"
     },
     "minecraft:skeleton_wall_skull": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:slime_block": {},
     "minecraft:small_amethyst_bud": {
@@ -2711,53 +2839,53 @@
         "waterlogged": "false"
     },
     "minecraft:small_dripleaf": {
-        "facing": "north",
         "half": "lower",
+        "facing": "north",
         "waterlogged": "false"
     },
     "minecraft:smithing_table": {},
     "minecraft:smoker": {
-        "facing": "north",
-        "lit": "false"
+        "lit": "false",
+        "facing": "north"
     },
     "minecraft:smooth_basalt": {},
     "minecraft:smooth_quartz": {},
     "minecraft:smooth_quartz_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:smooth_quartz_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:smooth_red_sandstone": {},
     "minecraft:smooth_red_sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:smooth_red_sandstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:smooth_sandstone": {},
     "minecraft:smooth_sandstone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:smooth_sandstone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:smooth_stone": {},
     "minecraft:smooth_stone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:sniffer_egg": {
         "hatch": "0"
@@ -2767,10 +2895,10 @@
     },
     "minecraft:snow_block": {},
     "minecraft:soul_campfire": {
-        "facing": "north",
         "lit": "true",
-        "signal_fire": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "signal_fire": "false"
     },
     "minecraft:soul_fire": {},
     "minecraft:soul_lantern": {
@@ -2792,34 +2920,34 @@
         "powered": "false"
     },
     "minecraft:spruce_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:spruce_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:spruce_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:spruce_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:spruce_leaves": {
         "distance": "7",
-        "persistent": "false",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "persistent": "false"
     },
     "minecraft:spruce_log": {
         "axis": "y"
@@ -2836,21 +2964,21 @@
         "waterlogged": "false"
     },
     "minecraft:spruce_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:spruce_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:spruce_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:spruce_wall_hanging_sign": {
         "facing": "north",
@@ -2864,26 +2992,26 @@
         "axis": "y"
     },
     "minecraft:sticky_piston": {
-        "extended": "false",
-        "facing": "north"
+        "facing": "north",
+        "extended": "false"
     },
     "minecraft:stone": {},
     "minecraft:stone_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:stone_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:stone_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:stone_bricks": {},
@@ -2896,14 +3024,14 @@
         "powered": "false"
     },
     "minecraft:stone_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:stone_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:stonecutter": {
         "facing": "north"
@@ -2959,6 +3087,12 @@
     "minecraft:stripped_oak_wood": {
         "axis": "y"
     },
+    "minecraft:stripped_pale_oak_log": {
+        "axis": "y"
+    },
+    "minecraft:stripped_pale_oak_wood": {
+        "axis": "y"
+    },
     "minecraft:stripped_spruce_log": {
         "axis": "y"
     },
@@ -2988,7 +3122,7 @@
         "dusted": "0"
     },
     "minecraft:sweet_berry_bush": {
-        "age": "0"
+        "age_3": "0"
     },
     "minecraft:tall_grass": {
         "half": "lower"
@@ -3007,30 +3141,30 @@
     "minecraft:torch": {},
     "minecraft:torchflower": {},
     "minecraft:torchflower_crop": {
-        "age": "0"
+        "age_1": "0"
     },
     "minecraft:trapped_chest": {
         "facing": "north",
-        "type": "single",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "chest_type": "single"
     },
     "minecraft:trial_spawner": {
         "ominous": "false",
         "trial_spawner_state": "inactive"
     },
     "minecraft:tripwire": {
+        "powered": "false",
         "attached": "false",
         "disarmed": "false",
+        "west": "false",
         "east": "false",
-        "north": "false",
-        "powered": "false",
         "south": "false",
-        "west": "false"
+        "north": "false"
     },
     "minecraft:tripwire_hook": {
+        "powered": "false",
         "attached": "false",
-        "facing": "north",
-        "powered": "false"
+        "facing": "north"
     },
     "minecraft:tube_coral": {
         "waterlogged": "true"
@@ -3045,40 +3179,40 @@
     },
     "minecraft:tuff": {},
     "minecraft:tuff_brick_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:tuff_brick_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:tuff_brick_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:tuff_bricks": {},
     "minecraft:tuff_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:tuff_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:tuff_wall": {
-        "east": "none",
         "north": "none",
-        "south": "none",
-        "up": "true",
         "waterlogged": "false",
+        "up": "true",
+        "south": "none",
+        "east": "none",
         "west": "none"
     },
     "minecraft:turtle_egg": {
@@ -3091,18 +3225,18 @@
     "minecraft:twisting_vines_plant": {},
     "minecraft:vault": {
         "facing": "north",
-        "ominous": "false",
-        "vault_state": "inactive"
+        "vault_state": "inactive",
+        "ominous": "false"
     },
     "minecraft:verdant_froglight": {
         "axis": "y"
     },
     "minecraft:vine": {
+        "west": "false",
         "east": "false",
-        "north": "false",
         "south": "false",
-        "up": "false",
-        "west": "false"
+        "north": "false",
+        "up": "false"
     },
     "minecraft:void_air": {},
     "minecraft:wall_torch": {
@@ -3114,29 +3248,29 @@
         "powered": "false"
     },
     "minecraft:warped_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:warped_fence": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:warped_fence_gate": {
-        "facing": "north",
+        "powered": "false",
         "in_wall": "false",
-        "open": "false",
-        "powered": "false"
+        "facing": "north",
+        "open": "false"
     },
     "minecraft:warped_fungus": {},
     "minecraft:warped_hanging_sign": {
-        "attached": "false",
         "rotation": "0",
+        "attached": "false",
         "waterlogged": "false"
     },
     "minecraft:warped_hyphae": {
@@ -3153,24 +3287,24 @@
         "waterlogged": "false"
     },
     "minecraft:warped_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:warped_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:warped_stem": {
         "axis": "y"
     },
     "minecraft:warped_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:warped_wall_hanging_sign": {
         "facing": "north",
@@ -3185,177 +3319,177 @@
         "level": "0"
     },
     "minecraft:water_cauldron": {
-        "level_cauldron": "1"
+        "level": "1"
     },
     "minecraft:waxed_chiseled_copper": {},
     "minecraft:waxed_copper_block": {},
     "minecraft:waxed_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:waxed_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:waxed_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:waxed_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:waxed_cut_copper": {},
     "minecraft:waxed_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:waxed_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:waxed_exposed_chiseled_copper": {},
     "minecraft:waxed_exposed_copper": {},
     "minecraft:waxed_exposed_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:waxed_exposed_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:waxed_exposed_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:waxed_exposed_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:waxed_exposed_cut_copper": {},
     "minecraft:waxed_exposed_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:waxed_exposed_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:waxed_oxidized_chiseled_copper": {},
     "minecraft:waxed_oxidized_copper": {},
     "minecraft:waxed_oxidized_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:waxed_oxidized_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:waxed_oxidized_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:waxed_oxidized_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:waxed_oxidized_cut_copper": {},
     "minecraft:waxed_oxidized_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:waxed_oxidized_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:waxed_weathered_chiseled_copper": {},
     "minecraft:waxed_weathered_copper": {},
     "minecraft:waxed_weathered_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:waxed_weathered_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:waxed_weathered_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:waxed_weathered_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:waxed_weathered_cut_copper": {},
     "minecraft:waxed_weathered_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:waxed_weathered_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:weathered_chiseled_copper": {},
     "minecraft:weathered_copper": {},
     "minecraft:weathered_copper_bulb": {
-        "lit": "false",
-        "powered": "false"
+        "powered": "false",
+        "lit": "false"
     },
     "minecraft:weathered_copper_door": {
+        "powered": "false",
         "facing": "north",
-        "half": "lower",
-        "hinge": "left",
         "open": "false",
-        "powered": "false"
+        "hinge": "left",
+        "half": "lower"
     },
     "minecraft:weathered_copper_grate": {
         "waterlogged": "false"
     },
     "minecraft:weathered_copper_trapdoor": {
-        "facing": "north",
-        "half": "bottom",
-        "open": "false",
         "powered": "false",
-        "waterlogged": "false"
+        "facing": "north",
+        "open": "false",
+        "waterlogged": "false",
+        "half": "bottom"
     },
     "minecraft:weathered_cut_copper": {},
     "minecraft:weathered_cut_copper_slab": {
-        "type": "bottom",
-        "waterlogged": "false"
+        "waterlogged": "false",
+        "type": "bottom"
     },
     "minecraft:weathered_cut_copper_stairs": {
-        "facing": "north",
         "half": "bottom",
-        "shape": "straight",
-        "waterlogged": "false"
+        "facing": "north",
+        "waterlogged": "false",
+        "shape": "straight"
     },
     "minecraft:weeping_vines": {
         "age": "0"
@@ -3374,8 +3508,8 @@
         "part": "foot"
     },
     "minecraft:white_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:white_candle_cake": {
@@ -3392,11 +3526,11 @@
     },
     "minecraft:white_stained_glass": {},
     "minecraft:white_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:white_terracotta": {},
     "minecraft:white_tulip": {},
@@ -3410,8 +3544,8 @@
         "rotation": "0"
     },
     "minecraft:wither_skeleton_wall_skull": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     },
     "minecraft:yellow_banner": {
         "rotation": "0"
@@ -3422,8 +3556,8 @@
         "part": "foot"
     },
     "minecraft:yellow_candle": {
-        "candles": "1",
         "lit": "false",
+        "candles": "1",
         "waterlogged": "false"
     },
     "minecraft:yellow_candle_cake": {
@@ -3440,11 +3574,11 @@
     },
     "minecraft:yellow_stained_glass": {},
     "minecraft:yellow_stained_glass_pane": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
+        "west": "false",
         "waterlogged": "false",
-        "west": "false"
+        "east": "false",
+        "south": "false",
+        "north": "false"
     },
     "minecraft:yellow_terracotta": {},
     "minecraft:yellow_wall_banner": {
@@ -3456,7 +3590,7 @@
         "rotation": "0"
     },
     "minecraft:zombie_wall_head": {
-        "facing": "north",
-        "powered": "false"
+        "powered": "false",
+        "facing": "north"
     }
 }
