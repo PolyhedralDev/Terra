@@ -26,8 +26,7 @@ public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         AllayBlockState allayBlockState = (AllayBlockState) blockState;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        boolean containsWater = allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER);
-        if (containsWater) {
+        if(allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
             allayChunk.setBlockState(x, y, z, WATER, 1);
         }
     }

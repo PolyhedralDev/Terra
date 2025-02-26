@@ -1,7 +1,5 @@
 package com.dfsek.terra.allay.delegate;
 
-import org.allaymc.api.block.property.type.BlockPropertyTypes;
-import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.Dimension;
 
 import com.dfsek.terra.allay.Mapping;
@@ -21,12 +19,9 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
  * @author daoge_cmd
  */
 public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dimension allayDimension) implements ServerWorld {
-
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
-
     @Override
     public Chunk getChunkAt(int x, int z) {
-        return new AllayChunk(this, allayDimension.getChunkService().getChunk(x ,z));
+        return new AllayChunk(this, allayDimension.getChunkService().getChunk(x, z));
     }
 
     @Override
