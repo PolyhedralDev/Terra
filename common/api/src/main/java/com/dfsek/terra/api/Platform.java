@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -81,4 +81,7 @@ public interface Platform extends LoaderRegistrar {
     @NotNull
     @Contract(pure = true)
     Profiler getProfiler();
+
+    @Contract(pure = true)
+    int getGenerationThreads();
 }

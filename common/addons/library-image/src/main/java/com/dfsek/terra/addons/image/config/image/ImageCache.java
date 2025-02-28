@@ -17,6 +17,10 @@ import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.util.generic.Lazy;
 
+import com.github.benmanes.caffeine.cache.Scheduler;
+
+import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
+
 
 /*
  * Cache prevents configs from loading the same image multiple times into memory
@@ -26,7 +30,7 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
         ImageLibraryPackConfigTemplate config = pack.getContext().get(ImageLibraryPackConfigTemplate.class);
         ImageCache images;
         if(!pack.getContext().has(ImageCache.class)) {
-            var cacheBuilder = Caffeine.newBuilder();
+            var cacheBuilder = Caffeine.newBuilder().executor(CACHE_EXECUTOR).scheduler(Scheduler.systemScheduler());
             if(config.unloadOnTimeout()) cacheBuilder.expireAfterAccess(config.getCacheTimeout(), TimeUnit.SECONDS);
             images = new ImageCache(cacheBuilder.build(s -> loadImage(s, files)));
             pack.getContext().put(images);
