@@ -8,4 +8,5 @@ dependencies {
 
     api("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
 
+    api("com.dfsek", "paralithic", Versions.Libraries.paralithic)
 }

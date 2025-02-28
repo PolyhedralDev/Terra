@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -34,7 +34,11 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("lookup")
     @Default
     private @Meta NoiseSampler lookup = new OpenSimplex2Sampler();
-
+    
+    @Value("salt-lookup")
+    @Default
+    private @Meta boolean saltLookup = true;
+    
     @Override
     public NoiseSampler get() {
         CellularSampler sampler = new CellularSampler();
@@ -44,6 +48,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
         sampler.setReturnType(cellularReturnType);
         sampler.setDistanceFunction(cellularDistanceFunction);
         sampler.setSalt(salt);
+        sampler.setSaltLookup(saltLookup);
         return sampler;
     }
 }

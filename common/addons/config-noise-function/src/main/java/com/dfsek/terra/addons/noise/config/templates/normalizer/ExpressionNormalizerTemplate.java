@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -29,6 +30,7 @@ public class ExpressionNormalizerTemplate extends NormalizerTemplate<ExpressionN
 
     private final Map<String, DimensionApplicableNoiseSampler> globalSamplers;
     private final Map<String, FunctionTemplate> globalFunctions;
+    private final ParseOptions parseOptions;
 
     @Value("expression")
     private @Meta String expression;
@@ -46,9 +48,11 @@ public class ExpressionNormalizerTemplate extends NormalizerTemplate<ExpressionN
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
 
     public ExpressionNormalizerTemplate(Map<String, DimensionApplicableNoiseSampler> globalSamplers,
-                                        Map<String, FunctionTemplate> globalFunctions) {
+                                        Map<String, FunctionTemplate> globalFunctions,
+                                        ParseOptions parseOptions) {
         this.globalSamplers = globalSamplers;
         this.globalFunctions = globalFunctions;
+        this.parseOptions = parseOptions;
     }
 
     @Override
@@ -58,7 +62,7 @@ public class ExpressionNormalizerTemplate extends NormalizerTemplate<ExpressionN
         var mergedSamplers = new HashMap<>(globalSamplers);
         mergedSamplers.putAll(samplers);
         try {
-            return new ExpressionNormalizer(function, convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars);
+            return new ExpressionNormalizer(function, convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars, parseOptions);
         } catch(ParseException e) {
             throw new RuntimeException("Failed to parse expression.", e);
         }

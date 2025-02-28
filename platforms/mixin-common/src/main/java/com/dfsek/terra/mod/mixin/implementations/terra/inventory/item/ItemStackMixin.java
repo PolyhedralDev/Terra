@@ -19,7 +19,7 @@ package com.dfsek.terra.mod.mixin.implementations.terra.inventory.item;
 
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.component.ComponentMap;
-import net.minecraft.component.ComponentMapImpl;
+import net.minecraft.component.MergedComponentMap;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
@@ -37,7 +37,7 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 public abstract class ItemStackMixin {
     @Shadow
     @Final
-    private ComponentMapImpl components;
+    private MergedComponentMap components;
 
     @Shadow
     public abstract int getCount();

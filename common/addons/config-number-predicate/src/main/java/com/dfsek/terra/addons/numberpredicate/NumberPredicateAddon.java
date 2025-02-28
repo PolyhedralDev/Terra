@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -30,7 +30,7 @@ public class NumberPredicateAddon implements AddonInitializer {
         plugin.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(addon, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().applyLoader(DoublePredicate.class, new DoublePredicateLoader()))
+            .then(event -> event.getPack().applyLoader(DoublePredicate.class, new DoublePredicateLoader(event.getPack().getExpressionParseOptions())))
             .priority(50)
             .failThrough();
     }

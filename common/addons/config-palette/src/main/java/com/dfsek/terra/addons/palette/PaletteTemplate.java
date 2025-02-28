@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -23,7 +23,7 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
-    private @Meta NoiseSampler noise = NoiseSampler.zero();
+    private @Meta NoiseSampler defaultSampler = NoiseSampler.zero();
 
     @Value("id")
     @Final
@@ -40,7 +40,7 @@ public class PaletteTemplate implements AbstractableTemplate {
         return palette;
     }
 
-    public NoiseSampler getNoise() {
-        return noise;
+    public NoiseSampler getDefaultSampler() {
+        return defaultSampler;
     }
 }
