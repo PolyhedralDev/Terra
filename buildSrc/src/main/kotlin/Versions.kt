@@ -5,7 +5,7 @@ object Versions {
     
     object Libraries {
         const val tectonic = "4.2.1"
-        const val paralithic = "0.7.1"
+        const val paralithic = "0.8.1"
         const val strata = "1.3.2"
         
         const val cloud = "2.0.0"
@@ -28,7 +28,7 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.106.1+${Mod.minecraft}"
+        const val fabricAPI = "0.118.0+${Mod.minecraft}"
         const val cloud = "2.0.0-beta.9"
     }
 //
@@ -40,9 +40,9 @@ object Versions {
     object Mod {
         const val mixin = "0.15.3+mixin.0.8.7"
         
-        const val minecraft = "1.21.3"
-        const val yarn = "$minecraft+build.2"
-        const val fabricLoader = "0.16.7"
+        const val minecraft = "1.21.4"
+        const val yarn = "$minecraft+build.8"
+        const val fabricLoader = "0.16.10"
         
         const val architecuryLoom = "1.7.413"
         const val architecturyPlugin = "3.4.159"
@@ -55,8 +55,8 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21.3"
-        const val paperBuild = "$minecraft-R0.1-20241025.163321-1"
+        const val minecraft = "1.21.4"
+        const val paperBuild = "$minecraft-R0.1-20241211.212446-17"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.1"
@@ -79,6 +79,10 @@ object Versions {
     }
     
     object Allay {
-        const val api = "0114e0b290"
+        const val api = "0.1.3"
+    }
+    
+    object Minestom {
+        const val minestom = "187931e50b"
     }
 }

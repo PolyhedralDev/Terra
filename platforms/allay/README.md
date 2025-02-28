@@ -2,7 +2,7 @@
 
 ## Resource files
 
-Current mapping version: je 1.21 to be 1.21.30
+Current mapping version: je 1.21.4 to be 1.21.50
 
 - `mapping/biomes.json` obtain from GeyserMC/mappings.
 - `mapping/items.json` obtain from GeyserMC/mappings.

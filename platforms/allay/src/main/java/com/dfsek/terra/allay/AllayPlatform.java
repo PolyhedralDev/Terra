@@ -46,7 +46,7 @@ public class AllayPlatform extends AbstractPlatform {
                 var dimension = wrapper.getAllayWorldGenerator().getDimension();
                 TerraAllayPlugin.INSTANCE.getPluginLogger().info(
                     "Replaced pack in chunk generator for world {}",
-                    dimension.getWorld().getWorldData().getName() + ":" + dimension.getDimensionInfo().dimensionId()
+                    dimension.getWorld().getWorldData().getDisplayName() + ":" + dimension.getDimensionInfo().dimensionId()
                 );
             });
         });
