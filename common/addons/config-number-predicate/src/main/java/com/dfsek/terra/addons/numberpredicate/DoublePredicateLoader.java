@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.numberpredicate;
 
 import com.dfsek.paralithic.Expression;
 import com.dfsek.paralithic.eval.parser.Parser;
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.paralithic.eval.parser.Scope;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.api.depth.DepthTracker;
@@ -15,6 +16,13 @@ import java.util.function.DoublePredicate;
 
 
 public class DoublePredicateLoader implements TypeLoader<DoublePredicate> {
+
+    private final ParseOptions parseOptions;
+
+    public DoublePredicateLoader(ParseOptions parseOptions) {
+        this.parseOptions = parseOptions;
+    }
+
     @Override
     public DoublePredicate load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader,
                                 DepthTracker depthTracker) throws LoadException {
@@ -22,7 +30,7 @@ public class DoublePredicateLoader implements TypeLoader<DoublePredicate> {
             Scope scope = new Scope();
             scope.addInvocationVariable("value");
             try {
-                Expression expression = new Parser().parse(expressionString, scope);
+                Expression expression = new Parser(parseOptions).parse(expressionString, scope);
                 return d -> expression.evaluate(d) != 0; // Paralithic expressions treat '!= 0' as true
             } catch(ParseException e) {
                 throw new LoadException("Failed to parse double predicate expression", e, depthTracker);

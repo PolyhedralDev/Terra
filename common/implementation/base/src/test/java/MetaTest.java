@@ -1,3 +1,4 @@
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.tectonic.api.config.Configuration;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -32,7 +33,7 @@ public class MetaTest {
         loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
-        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap, new ParseOptions()));
 
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
@@ -53,7 +54,7 @@ public class MetaTest {
         loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
-        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap, new ParseOptions()));
 
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
@@ -75,7 +76,7 @@ public class MetaTest {
         loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
-        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap, new ParseOptions()));
 
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 
@@ -96,7 +97,7 @@ public class MetaTest {
         loader.registerPreprocessor(Meta.class, new MetaStringPreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaListLikePreprocessor(configurationMap));
         loader.registerPreprocessor(Meta.class, new MetaMapPreprocessor(configurationMap));
-        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap));
+        loader.registerPreprocessor(Meta.class, new MetaNumberPreprocessor(configurationMap, new ParseOptions()));
 
         loader.registerPreprocessor(Meta.class, new MetaValuePreprocessor(configurationMap));
 

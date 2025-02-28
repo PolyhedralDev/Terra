@@ -32,9 +32,21 @@ public class NMSBiomeInjector {
             .waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()))
             .waterFogColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanilla.getWaterFogColor()))
             .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
-            .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getSpecialEffects().getGrassColorModifier()))
-            .grassColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(), vanilla.getSpecialEffects().getGrassColorOverride().orElseGet(() -> Reflection.BIOME.invokeGrassColorFromTexture(vanilla))))
-            .foliageColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
+            .grassColorModifier(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getSpecialEffects().getGrassColorModifier()));
+//            .grassColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(), vanilla.getSpecialEffects().getGrassColorOverride().orElseGet(() -> Reflection.BIOME.invokeGrassColorFromTexture(vanilla))))
+//            .foliageColorOverride(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
+
+        if(vanillaBiomeProperties.getGrassColor() == null) {
+            vanilla.getSpecialEffects().getGrassColorOverride().ifPresent(effects::grassColorOverride);
+        } else {
+            effects.grassColorOverride(vanillaBiomeProperties.getGrassColor());
+        }
+
+        if(vanillaBiomeProperties.getFoliageColor() == null) {
+            vanilla.getSpecialEffects().getFoliageColorOverride().ifPresent(effects::foliageColorOverride);
+        } else {
+            effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
+        }
 
         if(vanillaBiomeProperties.getParticleConfig() == null) {
             vanilla.getSpecialEffects().getAmbientParticleSettings().ifPresent(effects::ambientParticle);

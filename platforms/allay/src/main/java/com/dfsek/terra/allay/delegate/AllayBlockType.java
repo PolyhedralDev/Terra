@@ -17,7 +17,7 @@ public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.t
 
     @Override
     public boolean isSolid() {
-        return allayBlockType.getMaterial().isSolid();
+        return allayBlockType.getDefaultState().getBlockStateData().isSolid();
     }
 
     @Override

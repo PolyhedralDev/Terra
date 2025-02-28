@@ -40,9 +40,8 @@ public class TerraAllayPlugin extends Plugin {
                 AllayGeneratorWrapper wrapper = new AllayGeneratorWrapper(preset);
                 AllayPlatform.GENERATOR_WRAPPERS.add(wrapper);
                 return wrapper.getAllayWorldGenerator();
-            } catch (IllegalArgumentException e) {
-                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset);
-                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Reason: {}", e.getMessage());
+            } catch(IllegalArgumentException e) {
+                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset, e);
                 return Registries.WORLD_GENERATOR_FACTORIES.get("FLAT").apply("");
             }
         });
