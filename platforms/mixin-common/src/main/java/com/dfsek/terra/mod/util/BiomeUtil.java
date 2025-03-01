@@ -17,6 +17,8 @@ import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
 import com.dfsek.terra.mod.mixin.invoke.BiomeInvoker;
 
+import net.minecraft.world.biome.GenerationSettings;
+
 
 public class BiomeUtil {
     public static final Map<Identifier, List<Identifier>>
@@ -81,7 +83,7 @@ public class BiomeUtil {
 
         return builder
             .effects(effects.build())
-            .generationSettings(vanilla.getGenerationSettings())
+            .generationSettings(new GenerationSettings.Builder().build())
             .build();
     }
 
