@@ -7,6 +7,10 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
+import java.util.Collections;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
+
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.noise.NoiseSampler;
@@ -18,9 +22,6 @@ import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
-
-import java.util.Collections;
-import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -83,7 +84,9 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                 .forEach(y -> feature.getStructure(world, x, y, z)
                                                     .generate(Vector3Int.of(x, y, z),
                                                         world,
-                                                        new Random(coordinateSeed * 31 + y),
+                                                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                                                "Xoroshiro128PlusPlus")
+                                                            .create(coordinateSeed * 31 + y),
                                                         Rotation.NONE)
                                                 );
                                         }

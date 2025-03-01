@@ -45,8 +45,7 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
         MinecraftServer.getInstanceManager().getInstances().forEach(world -> {
             if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {

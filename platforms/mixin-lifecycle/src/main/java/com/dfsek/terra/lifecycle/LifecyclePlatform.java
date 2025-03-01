@@ -8,6 +8,7 @@ import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 
 import net.minecraft.MinecraftVersion;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -39,6 +40,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
     private static final AtomicReference<Registry<Enchantment>> ENCHANTMENT = new AtomicReference<>();
+    private static final AtomicReference<DynamicRegistryManager.Immutable> DYNAMIC_REGISTRY_MANAGER = new AtomicReference<>();
     private static MinecraftServer server;
     private int generationThreads;
 
@@ -65,7 +67,9 @@ public abstract class LifecyclePlatform extends ModPlatform {
         ENCHANTMENT.set(enchantmentRegistry);
     }
 
-
+    public static void setDynamicRegistryManager(DynamicRegistryManager.Immutable dynamicRegistryManager) {
+        DYNAMIC_REGISTRY_MANAGER.set(dynamicRegistryManager);
+    }
 
     @Override
     public MinecraftServer getServer() {
@@ -79,9 +83,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
-
+        boolean succeed = loadConfigPacks();
 
         if(server != null) {
             LifecycleBiomeUtil.registerBiomes(server.getRegistryManager().getOrThrow(RegistryKeys.BIOME));

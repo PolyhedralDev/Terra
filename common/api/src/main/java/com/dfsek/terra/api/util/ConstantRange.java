@@ -10,7 +10,7 @@ package com.dfsek.terra.api.util;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 
 public class ConstantRange implements Range {
@@ -36,7 +36,7 @@ public class ConstantRange implements Range {
     }
 
     @Override
-    public int get(Random r) {
+    public int get(RandomGenerator r) {
         return r.nextInt(min, max);
     }
 

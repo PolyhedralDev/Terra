@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.commands.structure;
 
+
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.context.CommandContext;
@@ -7,7 +8,8 @@ import org.incendo.cloud.description.Description;
 import org.incendo.cloud.parser.standard.EnumParser;
 import org.incendo.cloud.parser.standard.LongParser;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -57,7 +59,11 @@ public class StructureCommandAddon implements AddonInitializer {
                             structure.generate(
                                 sender.position().toInt(),
                                 sender.world(),
-                                ((Long) context.get("seed") == 0) ? new Random() : new Random(context.get("seed")),
+                                ((Long) context.get("seed") == 0)
+                                ? RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                                    .create()
+                                : RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                                    .create(context.get("seed")),
                                 context.get("rotation")
                             );
                         })

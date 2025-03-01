@@ -38,8 +38,7 @@ public class AllayPlatform extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
         GENERATOR_WRAPPERS.forEach(wrapper -> {
             getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
@@ -51,6 +50,7 @@ public class AllayPlatform extends AbstractPlatform {
                 );
             });
         });
+
         return succeed;
     }
 
