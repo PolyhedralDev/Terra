@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 
 import java.util.Locale;
@@ -90,7 +91,7 @@ public class NMSBiomeInjector {
 
         return builder
             .specialEffects(effects.build())
-            .generationSettings(vanilla.getGenerationSettings())
+            .generationSettings(new BiomeGenerationSettings.PlainBuilder().build())
             .build();
     }
 
