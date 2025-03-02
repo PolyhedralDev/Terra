@@ -155,7 +155,7 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         BlockState[] array = new BlockState[world.getHeight()];
         WorldProperties properties = new NMSWorldProperties(seed, world);
         BiomeProvider biomeProvider = pack.getBiomeProvider();
-        for(int y = properties.getMaxHeight() - 1; y >= properties.getMinHeight(); y--) {
+        for(int y = properties.getMaxHeight(); y >= properties.getMinHeight(); y--) {
             array[y - properties.getMinHeight()] = ((CraftBlockData) delegate.getBlock(properties, x, y, z, biomeProvider)
                 .getHandle()).getState();
         }
