@@ -12,7 +12,7 @@ import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilder;
 

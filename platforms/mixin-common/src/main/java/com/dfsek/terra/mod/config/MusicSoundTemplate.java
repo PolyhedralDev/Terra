@@ -7,7 +7,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {

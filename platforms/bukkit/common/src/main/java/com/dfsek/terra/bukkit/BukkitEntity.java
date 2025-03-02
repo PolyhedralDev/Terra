@@ -21,7 +21,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 
 import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 

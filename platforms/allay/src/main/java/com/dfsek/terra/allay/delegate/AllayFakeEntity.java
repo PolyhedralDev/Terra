@@ -1,7 +1,7 @@
 package com.dfsek.terra.allay.delegate;
 
 import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 
 /**

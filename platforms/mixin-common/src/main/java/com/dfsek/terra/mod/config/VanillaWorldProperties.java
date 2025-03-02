@@ -6,8 +6,8 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import net.minecraft.util.Identifier;
 
 import com.dfsek.terra.api.properties.Properties;
-import com.dfsek.terra.api.util.ConstantRange;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.ConstantRange;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class VanillaWorldProperties implements ConfigTemplate, Properties {

@@ -3,7 +3,6 @@ package com.dfsek.terra.mod.util;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -13,19 +12,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.IntProviderType;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.Builder;
-import net.minecraft.world.biome.BiomeEffects;
-import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
@@ -33,14 +25,12 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.data.Codecs;
 import com.dfsek.terra.mod.implmentation.TerraIntProvider;
-import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
 import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 

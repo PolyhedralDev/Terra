@@ -16,21 +16,21 @@ import java.util.function.Predicate;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector2Int;
 
 
 public class BorderStage implements Stage {
     private final String border;
-    private final NoiseSampler noiseSampler;
+    private final Sampler Sampler;
     private final ProbabilityCollection<PipelineBiome> replace;
     private final String replaceTag;
     private final Vector2Int[] borderPoints;
 
-    public BorderStage(String border, String replaceTag, NoiseSampler noiseSampler, ProbabilityCollection<PipelineBiome> replace) {
+    public BorderStage(String border, String replaceTag, Sampler Sampler, ProbabilityCollection<PipelineBiome> replace) {
         this.border = border;
-        this.noiseSampler = noiseSampler;
+        this.Sampler = Sampler;
         this.replace = replace;
         this.replaceTag = replaceTag;
         List<Vector2Int> points = new ArrayList<>();
@@ -50,7 +50,7 @@ public class BorderStage implements Stage {
             for(Vector2Int point : borderPoints) {
                 PipelineBiome current = viewPoint.getRelativeBiome(point.getX(), point.getZ());
                 if(current != null && current.getTags().contains(border)) {
-                    PipelineBiome replacement = replace.get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(), viewPoint.worldSeed());
+                    PipelineBiome replacement = replace.get(Sampler, viewPoint.worldX(), viewPoint.worldZ(), viewPoint.worldSeed());
                     return replacement.isSelf() ? center : replacement;
                 }
             }
