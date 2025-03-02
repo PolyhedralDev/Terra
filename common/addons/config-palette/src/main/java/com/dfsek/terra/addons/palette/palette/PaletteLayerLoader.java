@@ -13,7 +13,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
@@ -23,7 +23,7 @@ public class PaletteLayerLoader implements ObjectTemplate<PaletteLayerHolder> {
 
     @Value("sampler")
     @Default
-    private @Meta NoiseSampler sampler = null;
+    private @Meta Sampler sampler = null;
 
     @Value("layers")
     private @Meta int layers;

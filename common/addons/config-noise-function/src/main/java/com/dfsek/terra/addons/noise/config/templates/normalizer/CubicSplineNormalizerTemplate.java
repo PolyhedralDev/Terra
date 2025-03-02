@@ -1,23 +1,24 @@
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+
+import com.dfsek.seismic.algorithms.sampler.normalizer.CubicSplineNormalizer;
+import com.dfsek.seismic.type.CubicSpline;
+import com.dfsek.seismic.type.CubicSpline.Point;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.noise.math.CubicSpline;
-import com.dfsek.terra.addons.noise.math.CubicSpline.Point;
-import com.dfsek.terra.addons.noise.normalizer.CubicSplineNoiseSampler;
+import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
-
-public class CubicSplineNormalizerTemplate extends NormalizerTemplate<CubicSplineNoiseSampler> {
+public class CubicSplineNormalizerTemplate extends NormalizerTemplate<CubicSplineNormalizer> {
 
     @Value("points")
     private @Meta List<@Meta Point> points;
 
     @Override
-    public NoiseSampler get() {
-        return new CubicSplineNoiseSampler(function, new CubicSpline(points));
+    public Sampler get() {
+        return new CubicSplineNormalizer(function, new CubicSpline(points));
     }
 }

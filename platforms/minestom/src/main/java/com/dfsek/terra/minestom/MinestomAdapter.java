@@ -1,6 +1,6 @@
 package com.dfsek.terra.minestom;
 
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 
 import net.minestom.server.coordinate.Point;
 import net.minestom.server.coordinate.Pos;

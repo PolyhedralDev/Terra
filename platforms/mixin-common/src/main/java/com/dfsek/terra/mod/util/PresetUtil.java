@@ -27,7 +27,7 @@ import java.util.Locale;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.MetaPack;
-import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.config.VanillaWorldProperties;

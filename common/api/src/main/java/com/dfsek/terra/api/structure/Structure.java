@@ -9,8 +9,8 @@ package com.dfsek.terra.api.structure;
 
 import java.util.random.RandomGenerator;
 
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

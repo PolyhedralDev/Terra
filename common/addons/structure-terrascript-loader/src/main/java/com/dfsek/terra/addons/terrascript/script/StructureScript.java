@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.seismic.math.algebra.AlgebraFunctions;
+import com.dfsek.seismic.math.trigonometry.TrigonometryFunctions;
+import com.dfsek.seismic.type.Rotation;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +46,7 @@ import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -105,14 +106,14 @@ public class StructureScript implements Structure, Keyed<StructureScript> {
             .registerFunction("pow", new BinaryNumberFunctionBuilder(
                 (number, number2) -> Math.pow(number.doubleValue(), number2.doubleValue())))
             .registerFunction("sqrt", new UnaryNumberFunctionBuilder(number -> Math.sqrt(number.doubleValue())))
-            .registerFunction("rsqrt", new UnaryNumberFunctionBuilder(number -> MathUtil.invSqrt(number.doubleValue())))
+            .registerFunction("rsqrt", new UnaryNumberFunctionBuilder(number -> AlgebraFunctions.invSqrt(number.doubleValue())))
             .registerFunction("floor", new UnaryNumberFunctionBuilder(number -> Math.floor(number.doubleValue())))
             .registerFunction("ceil", new UnaryNumberFunctionBuilder(number -> Math.ceil(number.doubleValue())))
             .registerFunction("log", new UnaryNumberFunctionBuilder(number -> Math.log(number.doubleValue())))
             .registerFunction("round", new UnaryNumberFunctionBuilder(number -> Math.round(number.doubleValue())))
-            .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> MathUtil.sin(number.doubleValue())))
-            .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> MathUtil.cos(number.doubleValue())))
-            .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> MathUtil.tan(number.doubleValue())))
+            .registerFunction("sin", new UnaryNumberFunctionBuilder(number -> TrigonometryFunctions.sin(number.doubleValue())))
+            .registerFunction("cos", new UnaryNumberFunctionBuilder(number -> TrigonometryFunctions.cos(number.doubleValue())))
+            .registerFunction("tan", new UnaryNumberFunctionBuilder(number -> TrigonometryFunctions.tan(number.doubleValue())))
             .registerFunction("asin", new UnaryNumberFunctionBuilder(number -> Math.asin(number.doubleValue())))
             .registerFunction("acos", new UnaryNumberFunctionBuilder(number -> Math.acos(number.doubleValue())))
             .registerFunction("atan", new UnaryNumberFunctionBuilder(number -> Math.atan(number.doubleValue())))
