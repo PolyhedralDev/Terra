@@ -1,8 +1,6 @@
 package com.dfsek.terra.allay.delegate;
 
-import org.allaymc.api.item.data.ItemId;
 import org.allaymc.api.item.type.ItemType;
-import org.allaymc.api.registry.Registries;
 
 import com.dfsek.terra.api.inventory.Item;
 
@@ -16,7 +14,7 @@ public final class AllayItemType implements Item {
 
     public AllayItemType(ItemType<?> allayItemType) {
         this.allayItemType = allayItemType;
-        this.maxDurability = Registries.ITEM_DATA.get(ItemId.fromIdentifier(allayItemType.getIdentifier())).maxDamage();
+        this.maxDurability = allayItemType.getItemData().maxDamage();
     }
 
     @Override
