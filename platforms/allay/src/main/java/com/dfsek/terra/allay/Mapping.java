@@ -29,7 +29,8 @@ import java.util.TreeMap;
 
 
 /**
- * @author daoge_cmd | IWareQ
+ * @author daoge_cmd
+ * @author IWareQ
  */
 public final class Mapping {
     private static final Gson GSON = new GsonBuilder()
@@ -245,11 +246,7 @@ public final class Mapping {
     }
 
 
-    /**
-     * @see <a
-     *     href="https://stackoverflow.com/questions/59655279/is-there-an-easy-way-to-make-gson-skip-a-field-if-theres-an-error
-     *     -deserializing">IgnoreFailureTypeAdapterFactory</a>
-     */
+    // see https://stackoverflow.com/questions/59655279/is-there-an-easy-way-to-make-gson-skip-a-field-if-theres-an-error-deserializing
     public static class IgnoreFailureTypeAdapterFactory implements TypeAdapterFactory {
         @Override
         public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
