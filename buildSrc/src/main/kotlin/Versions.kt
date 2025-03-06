@@ -80,6 +80,7 @@ object Versions {
     
     object Allay {
         const val api = "0.2.0"
+        const val gson = "2.12.1"
     }
     
     object Minestom {
