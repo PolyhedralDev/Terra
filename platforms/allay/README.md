@@ -1,23 +1,5 @@
 # Allay platform
 
-## Use
-
-```yaml
-# world-settings.yml
-worlds:
-  world:
-    enable: true
-    runtime-only: false
-    storage-type: LEVELDB
-    overworld:
-      generator-type: TERRA
-      generator-preset: pack=overworld;seed=<a number>
-    nether: null
-    the-end: null
-default-world: world
-
-```
-
 ## Resource files
 
 Current mapping version: je 1.21.4 to be 1.21.50
