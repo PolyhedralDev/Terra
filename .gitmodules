@@ -1,6 +1,0 @@
-[submodule "platforms/allay/src/main/resources/mappings"]
-	path = platforms/allay/src/main/resources/mappings
-	url = https://github.com/GeyserMC/mappings
-[submodule "platforms/allay/src/main/resources/mappings-generator"]
-	path = platforms/allay/src/main/resources/mappings-generator
-	url = https://github.com/GeyserMC/mappings-generator
