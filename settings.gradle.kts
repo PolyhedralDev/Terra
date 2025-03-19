@@ -38,6 +38,9 @@ pluginManagement {
         maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
+        maven("https://repo.papermc.io/repository/maven-public/") {
+            name = "PaperMC"
+        }
     }
 }
 

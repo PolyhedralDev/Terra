@@ -1,8 +1,11 @@
-apply(plugin = "io.papermc.paperweight.userdev")
+//apply(plugin = "io.papermc.paperweight.userdev")
+plugins {
+    id("io.papermc.paperweight.userdev")
+}
 
 dependencies {
     api(project(":platforms:bukkit:common"))
-    paperDevBundle(Versions.Bukkit.paperDevBundle)
+    paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
     implementation("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
