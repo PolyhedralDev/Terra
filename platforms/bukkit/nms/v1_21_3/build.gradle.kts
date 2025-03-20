@@ -1,4 +1,3 @@
-//apply(plugin = "io.papermc.paperweight.userdev")
 plugins {
     id("io.papermc.paperweight.userdev")
 }
