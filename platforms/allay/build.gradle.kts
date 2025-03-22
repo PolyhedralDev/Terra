@@ -22,9 +22,9 @@ dependencies {
 
     compileOnly("org.allaymc.allay", "api", Versions.Allay.api)
 
-    geyserMappings("GeyserMC.mappings:items:3626653@json")
-    geyserMappings("GeyserMC.mappings:biomes:3626653@json")
-    geyserMappings("GeyserMC.mappings-generator:generator_blocks:366618e@json")
+    geyserMappings("GeyserMC.mappings", "items", Versions.Allay.mappings, ext = "json")
+    geyserMappings("GeyserMC.mappings", "biomes", Versions.Allay.mappings, ext = "json")
+    geyserMappings("GeyserMC.mappings-generator", "generator_blocks", Versions.Allay.mappingsGenerator, ext = "json")
 }
 
 tasks.processResources {
