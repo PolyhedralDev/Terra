@@ -81,6 +81,8 @@ object Versions {
     object Allay {
         const val api = "0.2.0"
         const val gson = "2.12.1"
+        const val mappings = "3626653"
+        const val mappingsGenerator = "366618e"
     }
     
     object Minestom {
