@@ -26,6 +26,11 @@ tasks {
         minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
+
+        downloadPlugins {
+            modrinth("viaversion", "5.2.0")
+            modrinth("viabackwards", "5.2.0")
+        }
     }
 }
 

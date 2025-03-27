@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 
 
-public class SpawnEntryTemplate implements ObjectTemplate<SpawnerData> {
+public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
     @Value("type")
     @Default
     private EntityType<?> type = null;
@@ -23,9 +23,17 @@ public class SpawnEntryTemplate implements ObjectTemplate<SpawnerData> {
     @Value("max-group-size")
     @Default
     private Integer maxGroupSize = null;
+
+    public Integer getWeight() {
+        return weight;
+    }
+
+    public SpawnerData getSpawnerData() {
+        return new SpawnerData(type, minGroupSize, maxGroupSize);
+    }
     
     @Override
-    public SpawnerData get() {
-        return new SpawnerData(type, weight, minGroupSize, maxGroupSize);
+    public SpawnEntryConfig get() {
+        return this;
     }
 }

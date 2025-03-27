@@ -15,13 +15,13 @@ public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
 
     @Value("entries")
     @Default
-    private List<SpawnerData> entries = null;
+    private List<SpawnEntryConfig> entries = null;
 
     public MobCategory getGroup() {
         return group;
     }
 
-    public List<SpawnerData> getEntries() {
+    public List<SpawnEntryConfig> getEntries() {
         return entries;
     }
 
