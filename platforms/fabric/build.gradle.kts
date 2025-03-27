@@ -24,12 +24,12 @@ dependencies {
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-    modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
-
-    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
-    include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
-
-    modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
+//    modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
+//
+//    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+//    include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+//
+//    modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
 }
 
 loom {
