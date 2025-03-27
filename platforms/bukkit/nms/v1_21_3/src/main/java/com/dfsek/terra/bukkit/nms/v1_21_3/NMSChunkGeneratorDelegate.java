@@ -116,10 +116,10 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                     if(noise > threshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), ((CraftBlockData) ((BukkitBlockState) delegate
                             .getPalette(x + xi, y, z + zi, world, biomeProvider)
-                            .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), false);
+                            .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), 0);
                         depth++;
                     } else if(noise < airThreshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), false);
+                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), 0);
                     } else {
                         depth = 0;
                     }
