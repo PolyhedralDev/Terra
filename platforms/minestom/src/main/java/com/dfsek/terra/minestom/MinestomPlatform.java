@@ -14,12 +14,16 @@ import com.dfsek.terra.minestom.entity.MinestomEntityType;
 import com.dfsek.terra.minestom.item.MinestomItemHandle;
 import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
+import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
 import net.minestom.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+
 
 
 public final class MinestomPlatform extends AbstractPlatform {
@@ -45,18 +49,32 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        boolean succeed = loadConfigPacks();
+        getRawConfigRegistry().clear();
+
+        try {
+            getRawConfigRegistry().loadAll(this);
+        } catch (IOException e) {
+            LOGGER.error("Failed to load configurations due to I/O error", e);
+            return false; // reload failed
+        } catch (PackLoadFailuresException e) {
+            LOGGER.error("Failed to load configurations due to pack load failures", e);
+            return false; // reload failed
+        } catch (Exception e) {
+            // Catch any other exceptions that might be thrown
+            LOGGER.error("Failed to load configurations due to unexpected error", e);
+            return false;
+        }
 
         MinecraftServer.getInstanceManager().getInstances().forEach(world -> {
             if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {
                 getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
                     wrapper.setPack(pack);
-                    LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUniqueId());
+                    LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUuid());
                 });
             }
         });
 
-        return succeed;
+        return true;
     }
 
     @Override
@@ -82,7 +100,6 @@ public final class MinestomPlatform extends AbstractPlatform {
         if(!file.exists()) file.mkdirs();
         return file;
     }
-
 
     public static MinestomPlatform getInstance() {
         if(INSTANCE == null) {
