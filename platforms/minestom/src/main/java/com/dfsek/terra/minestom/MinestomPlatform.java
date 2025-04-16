@@ -49,21 +49,7 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-
-        try {
-            getRawConfigRegistry().loadAll(this);
-        } catch (IOException e) {
-            LOGGER.error("Failed to load configurations due to I/O error", e);
-            return false; // reload failed
-        } catch (PackLoadFailuresException e) {
-            LOGGER.error("Failed to load configurations due to pack load failures", e);
-            return false; // reload failed
-        } catch (Exception e) {
-            // Catch any other exceptions that might be thrown
-            LOGGER.error("Failed to load configurations due to unexpected error", e);
-            return false;
-        }
+        boolean succeed = loadConfigPacks();
 
         MinecraftServer.getInstanceManager().getInstances().forEach(world -> {
             if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {
@@ -74,8 +60,9 @@ public final class MinestomPlatform extends AbstractPlatform {
             }
         });
 
-        return true;
+        return succeed;
     }
+
 
     @Override
     public @NotNull WorldHandle getWorldHandle() {
