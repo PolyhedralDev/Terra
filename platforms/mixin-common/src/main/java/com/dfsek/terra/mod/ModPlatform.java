@@ -44,7 +44,7 @@ import com.dfsek.terra.mod.config.MusicSoundTemplate;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.SoundEventTemplate;
 import com.dfsek.terra.mod.config.SpawnCostConfig;
-import com.dfsek.terra.mod.config.SpawnEntryTemplate;
+import com.dfsek.terra.mod.config.SpawnEntryConfig;
 import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
 import com.dfsek.terra.mod.config.SpawnTypeConfig;
 import com.dfsek.terra.mod.config.VillagerTypeTemplate;
@@ -90,7 +90,7 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(MusicSound.class, MusicSoundTemplate::new)
             .registerLoader(EntityType.class, EntityTypeTemplate::new)
             .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-            .registerLoader(SpawnEntry.class, SpawnEntryTemplate::new)
+            .registerLoader(SpawnEntry.class, SpawnEntryConfig::new)
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
