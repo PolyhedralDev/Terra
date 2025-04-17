@@ -65,7 +65,7 @@ public abstract class WorldChunkMixin {
 
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
-            false);
+            0);
     }
 
     @Intrinsic

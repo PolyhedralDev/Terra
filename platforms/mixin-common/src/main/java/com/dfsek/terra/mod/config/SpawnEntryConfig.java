@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 
 
-public class SpawnEntryTemplate implements ObjectTemplate<SpawnEntry> {
+public class SpawnEntryConfig implements ObjectTemplate<SpawnEntry> {
     @Value("type")
     @Default
     private EntityType<?> type = null;
@@ -24,8 +24,12 @@ public class SpawnEntryTemplate implements ObjectTemplate<SpawnEntry> {
     @Default
     private Integer maxGroupSize = null;
 
+    public Integer getWeight() {
+        return weight;
+    }
+
     @Override
     public SpawnEntry get() {
-        return new SpawnEntry(type, weight, minGroupSize, maxGroupSize);
+        return new SpawnEntry(type, minGroupSize, maxGroupSize);
     }
 }
