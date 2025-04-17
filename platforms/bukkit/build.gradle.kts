@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_21_3", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_21_5", configuration = "reobf"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
@@ -28,8 +28,8 @@ tasks {
         pluginJars(shadowJar.get().archiveFile)
 
         downloadPlugins {
-            modrinth("viaversion", "5.2.0")
-            modrinth("viabackwards", "5.2.0")
+            modrinth("viaversion", "5.3.2")
+            modrinth("viabackwards", "5.3.2")
         }
     }
 }
