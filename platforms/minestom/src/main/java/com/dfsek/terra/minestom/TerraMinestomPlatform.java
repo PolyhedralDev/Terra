@@ -2,6 +2,7 @@ package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
@@ -14,34 +15,41 @@ import com.dfsek.terra.minestom.entity.MinestomEntityType;
 import com.dfsek.terra.minestom.item.MinestomItemHandle;
 import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
-import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
+
+import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.instance.Instance;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 
 
+public final class TerraMinestomPlatform extends AbstractPlatform {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerraMinestomPlatform.class);
+    private final WorldHandle worldHandle;
+    private final ItemHandle itemHandle;
+    private final TypeLoader<PlatformBiome> biomeTypeLoader;
 
-public final class MinestomPlatform extends AbstractPlatform {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MinestomPlatform.class);
-    private static MinestomPlatform INSTANCE = null;
-    private final MinestomWorldHandle worldHandle = new MinestomWorldHandle();
-    private final MinestomItemHandle itemHandle = new MinestomItemHandle();
-
-    private MinestomPlatform() {
+    public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader) {
+        this.worldHandle = worldHandle;
+        this.itemHandle = itemHandle;
+        this.biomeTypeLoader = biomeTypeLoader;
         load();
         getEventManager().callEvent(new PlatformInitializationEvent());
+    }
+
+    public TerraMinestomPlatform() {
+        this(new MinestomWorldHandle(), new MinestomItemHandle(), new MinestomBiomeLoader());
     }
 
     @Override
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry
-            .registerLoader(PlatformBiome.class, new MinestomBiomeLoader())
+            .registerLoader(PlatformBiome.class, biomeTypeLoader)
             .registerLoader(EntityType.class, (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
             .registerLoader(BlockState.class, (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o));
     }
@@ -82,16 +90,17 @@ public final class MinestomPlatform extends AbstractPlatform {
     @Override
     public @NotNull File getDataFolder() {
         String pathName = System.getProperty("terra.datafolder");
-        if (pathName == null) pathName = "./terra/";
+        if(pathName == null) pathName = "./terra/";
         File file = new File(pathName);
         if(!file.exists()) file.mkdirs();
         return file;
     }
 
-    public static MinestomPlatform getInstance() {
-        if(INSTANCE == null) {
-            INSTANCE = new MinestomPlatform();
-        }
-        return INSTANCE;
+    public TerraMinestomWorldBuilder worldBuilder(Instance instance) {
+        return new TerraMinestomWorldBuilder(this, instance);
+    }
+
+    public TerraMinestomWorldBuilder worldBuilder() {
+        return new TerraMinestomWorldBuilder(this, MinecraftServer.getInstanceManager().createInstanceContainer());
     }
 }
