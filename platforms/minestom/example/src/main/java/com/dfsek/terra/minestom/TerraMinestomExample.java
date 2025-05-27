@@ -31,7 +31,8 @@ public class TerraMinestomExample {
     }
 
     public void attachTerra() {
-        world = TerraMinestomWorldBuilder.from(instance)
+        TerraMinestomPlatform platform = new TerraMinestomPlatform();
+        world = platform.worldBuilder(instance)
             .defaultPack()
             .attach();
     }

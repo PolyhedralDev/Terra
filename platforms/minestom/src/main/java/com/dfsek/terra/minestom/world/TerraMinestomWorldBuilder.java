@@ -4,7 +4,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
 
-import com.dfsek.terra.minestom.MinestomPlatform;
+import com.dfsek.terra.minestom.TerraMinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
@@ -18,20 +18,16 @@ import java.util.function.Function;
 
 
 public class TerraMinestomWorldBuilder {
+    private final TerraMinestomPlatform platform;
     private final Instance instance;
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
 
-    private TerraMinestomWorldBuilder(Instance instance) { this.instance = instance; }
-
-    public static TerraMinestomWorldBuilder from(Instance instance) {
-        return new TerraMinestomWorldBuilder(instance);
-    }
-
-    public static TerraMinestomWorldBuilder builder() {
-        return new TerraMinestomWorldBuilder(MinecraftServer.getInstanceManager().createInstanceContainer());
+    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
+        this.platform = platform;
+        this.instance = instance;
     }
 
     public TerraMinestomWorldBuilder pack(ConfigPack pack) {
@@ -40,13 +36,13 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorldBuilder packById(String id) {
-        this.pack = MinestomPlatform.getInstance().getConfigRegistry().getByID(id).orElseThrow();
+        this.pack = platform.getConfigRegistry().getByID(id).orElseThrow();
 
         return this;
     }
 
     public TerraMinestomWorldBuilder findPack(Function<CheckedRegistry<ConfigPack>, ConfigPack> fn) {
-        this.pack = fn.apply(MinestomPlatform.getInstance().getConfigRegistry());
+        this.pack = fn.apply(platform.getConfigRegistry());
         return this;
     }
 
