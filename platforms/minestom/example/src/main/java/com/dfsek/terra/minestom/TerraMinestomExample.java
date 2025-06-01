@@ -122,12 +122,15 @@ public class TerraMinestomExample {
 
         private void regenerate() {
             instance.sendMessage(Component.text("Regenerating world"));
+            Instance oldInstance = instance;
             createNewInstance();
             attachTerra();
             preloadWorldAndMeasure();
             MinecraftServer.getConnectionManager().getOnlinePlayers().forEach(player ->
                 player.setInstance(instance, new Pos(0, 100, 0))
             );
+
+            MinecraftServer.getInstanceManager().unregisterInstance(oldInstance);
         }
     }
 }
