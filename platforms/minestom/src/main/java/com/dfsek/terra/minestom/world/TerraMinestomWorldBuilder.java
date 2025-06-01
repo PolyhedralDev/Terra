@@ -66,6 +66,6 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(instance, pack, seed, entityFactory, blockEntityFactory);
+        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory);
     }
 }

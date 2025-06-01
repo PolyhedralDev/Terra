@@ -3,10 +3,16 @@ package com.dfsek.terra.minestom.chunk;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.minestom.biome.MinestomBiome;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 
+import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.generator.GenerationUnit;
 import net.minestom.server.instance.generator.UnitModifier;
 import org.jetbrains.annotations.NotNull;
 
