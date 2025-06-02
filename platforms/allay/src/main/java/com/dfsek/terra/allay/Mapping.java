@@ -1,36 +1,48 @@
 package com.dfsek.terra.allay;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.allaymc.api.block.type.BlockState;
 import org.allaymc.api.block.type.BlockStateSafeGetter;
-import org.allaymc.api.block.type.BlockStateSafeGetter.Getter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.item.type.ItemTypeSafeGetter;
-import org.allaymc.api.utils.JSONUtils;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.Objects;
 import java.util.TreeMap;
 
 
 /**
  * @author daoge_cmd
+ * @author IWareQ
  */
 public final class Mapping {
+    private static final Gson GSON = new GsonBuilder()
+        .registerTypeAdapterFactory(new IgnoreFailureTypeAdapterFactory())
+        .create();
 
     private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
-    private static final Map<BlockState, JeBlockState> BLOCK_STATE_BE_TO_JE = new Object2ObjectOpenHashMap<>();
-    private static final Map<Integer, BlockState> BLOCK_STATE_JE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
-    private static final Map<String, ItemType<?>> ITEM_ID_JE_TO_BE = new Object2ObjectOpenHashMap<>();
-    private static final Map<String, Integer> BIOME_ID_JE_TO_BE = new Object2IntOpenHashMap<>();
+    private static final Map<BlockState, JeBlockState> BE_BLOCK_STATE_TO_JE = new Object2ObjectOpenHashMap<>();
+    private static final Map<Integer, BlockState> JE_BLOCK_STATE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
+    private static final Map<String, ItemType<?>> JE_ITEM_ID_TO_BE = new Object2ObjectOpenHashMap<>();
+    private static final Map<String, Integer> JE_BIOME_ID_TO_BE = new Object2IntOpenHashMap<>();
+
     private static final BlockState BE_AIR_STATE = BlockTypes.AIR.getDefaultState();
 
     public static void init() {
@@ -41,11 +53,11 @@ public final class Mapping {
     }
 
     public static JeBlockState blockStateBeToJe(BlockState beBlockState) {
-        return BLOCK_STATE_BE_TO_JE.get(beBlockState);
+        return BE_BLOCK_STATE_TO_JE.get(beBlockState);
     }
 
     public static BlockState blockStateJeToBe(JeBlockState jeBlockState) {
-        BlockState result = BLOCK_STATE_JE_HASH_TO_BE.get(jeBlockState.getHash());
+        BlockState result = JE_BLOCK_STATE_HASH_TO_BE.get(jeBlockState.getHash());
         if(result == null) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find be block state for {}", jeBlockState);
             return BE_AIR_STATE;
@@ -54,7 +66,7 @@ public final class Mapping {
     }
 
     public static ItemType<?> itemIdJeToBe(String jeItemId) {
-        return ITEM_ID_JE_TO_BE.get(jeItemId);
+        return JE_ITEM_ID_TO_BE.get(jeItemId);
     }
 
     // Enchantment identifiers are same in both versions
@@ -68,15 +80,16 @@ public final class Mapping {
     }
 
     public static int biomeIdJeToBe(String jeBiomeId) {
-        return BIOME_ID_JE_TO_BE.get(jeBiomeId);
+        return JE_BIOME_ID_TO_BE.get(jeBiomeId);
     }
 
     public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
-        Map<String, String> defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
+        var defaultProperties = JE_BLOCK_DEFAULT_PROPERTIES.get(jeBlockIdentifier);
         if(defaultProperties == null) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().warn("Failed to find default properties for {}", jeBlockIdentifier);
             return Map.of();
         }
+
         return defaultProperties;
     }
 
@@ -90,8 +103,9 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("biomes mapping not found");
                 return false;
             }
-            Set<Entry<String, Map<String, Integer>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Integer>>>(){}).entrySet();
-            mappings.forEach(mapping -> BIOME_ID_JE_TO_BE.put(mapping.getKey(), mapping.getValue().get("bedrock_id")));
+
+            Map<String, BiomeMapping> mappings = from(stream, new TypeToken<>() {});
+            mappings.forEach((javaId, mapping) -> JE_BIOME_ID_TO_BE.put(javaId, mapping.bedrockId()));
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
             return false;
@@ -105,17 +119,18 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("items mapping not found");
                 return false;
             }
-            Set<Entry<String, Map<String, Object>>> mappings = JSONUtils.from(stream, new TypeToken<Map<String, Map<String, Object>>>() {}).entrySet();
-            mappings.forEach(mapping -> {
-                ItemType<?> item = ItemTypeSafeGetter
-                    .name((String) mapping.getValue().get("bedrock_identifier"))
-                    // NOTICE: should be cast to double
-                    .meta(((Double) mapping.getValue().get("bedrock_data")).intValue())
+
+            Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {});
+            mappings.forEach((javaId, mapping) -> {
+                ItemType<?> itemType = ItemTypeSafeGetter
+                    .name(mapping.bedrockId())
+                    .meta(mapping.bedrockData())
                     .itemType();
-                ITEM_ID_JE_TO_BE.put(mapping.getKey(), item);
+                JE_ITEM_ID_TO_BE.put(javaId, itemType);
             });
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load items mapping", e);
+            return false;
         }
         return true;
     }
@@ -126,16 +141,18 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("blocks mapping not found");
                 return false;
             }
-            // noinspection unchecked
-            List<Map<String, Map<String, Object>>> mappings = (List<Map<String, Map<String, Object>>>) JSONUtils.from(stream, new TypeToken<Map<String, Object>>() {}).get("mappings");
+
+            Map<String, List<BlockMapping>> root = from(stream, new TypeToken<>() {});
+            List<BlockMapping> mappings = root.get("mappings");
             mappings.forEach(mapping -> {
-                JeBlockState jeState = createJeBlockState(mapping.get("java_state"));
-                BlockState beState = createBeBlockState(mapping.get("bedrock_state"));
-                BLOCK_STATE_BE_TO_JE.put(beState, jeState);
-                BLOCK_STATE_JE_HASH_TO_BE.put(jeState.getHash(), beState);
+                JeBlockState jeState = createJeBlockState(mapping.javaState());
+                BlockState beState = createBeBlockState(mapping.bedrockState());
+                BE_BLOCK_STATE_TO_JE.put(beState, jeState);
+                JE_BLOCK_STATE_HASH_TO_BE.put(jeState.getHash(), beState);
             });
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load blocks mapping", e);
+            return false;
         }
         return true;
     }
@@ -146,30 +163,30 @@ public final class Mapping {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("je_block_default_states.json not found");
                 return false;
             }
-            Map<String, Map<String, String>> states = JSONUtils.from(stream, new TypeToken<>() {});
-            for(Entry<String, Map<String, String>> entry : states.entrySet()) {
-                String identifier = entry.getKey();
-                Map<String, String> properties = entry.getValue();
-                JE_BLOCK_DEFAULT_PROPERTIES.put(identifier, properties);
-            }
+
+            Map<String, Map<String, String>> states = from(stream, new TypeToken<>() {});
+            JE_BLOCK_DEFAULT_PROPERTIES.putAll(states);
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
         return true;
     }
 
-    private static BlockState createBeBlockState(Map<String, Object> data) {
-        Getter getter = BlockStateSafeGetter
-            .name("minecraft:" + data.get("bedrock_identifier"));
-        if(data.containsKey("state")) {
-            // noinspection unchecked
-            convertValueType((Map<String, Object>) data.get("state")).forEach(getter::property);
+    private static JeBlockState createJeBlockState(BlockMapping.JavaState state) {
+        Map<String, String> properties = state.properties() == null ? Map.of() : state.properties();
+        return JeBlockState.create(state.name(), new TreeMap<>(properties));
+    }
+
+    private static BlockState createBeBlockState(BlockMapping.BedrockState state) {
+        BlockStateSafeGetter.Getter getter = BlockStateSafeGetter.name("minecraft:" + state.bedrockId());
+        if(state.state() != null) {
+            convertValueType(state.state()).forEach(getter::property);
         }
         return getter.blockState();
     }
 
     private static Map<String, Object> convertValueType(Map<String, Object> data) {
-        TreeMap<String, Object> result = new TreeMap<>();
+        Map<String, Object> result = new TreeMap<>();
         for(Entry<String, Object> entry : data.entrySet()) {
             if(entry.getValue() instanceof Number number) {
                 // Convert double to int because the number in json is double
@@ -178,11 +195,78 @@ public final class Mapping {
                 result.put(entry.getKey(), entry.getValue());
             }
         }
+
         return result;
     }
 
-    private static JeBlockState createJeBlockState(Map<String, Object> data) {
-        // noinspection unchecked
-        return JeBlockState.create((String) data.get("Name"), new TreeMap<>((Map<String, String>) data.getOrDefault("Properties", Map.of())));
+    public static <V> V from(InputStream inputStream, TypeToken<V> typeToken) {
+        JsonReader reader = new JsonReader(new InputStreamReader(Objects.requireNonNull(inputStream)));
+        return GSON.fromJson(reader, typeToken.getType());
+    }
+
+    public record BiomeMapping(
+        @SerializedName("bedrock_id")
+        int bedrockId
+    ) {
+    }
+
+
+    public record ItemMapping(
+        @SerializedName("bedrock_identifier")
+        String bedrockId,
+        @SerializedName("bedrock_data")
+        int bedrockData
+    ) {
+    }
+
+
+    public record BlockMapping(
+        @SerializedName("java_state")
+        BlockMapping.JavaState javaState,
+        @SerializedName("bedrock_state")
+        BlockMapping.BedrockState bedrockState
+    ) {
+        public record JavaState(
+            @SerializedName("Name")
+            String name,
+            @Nullable
+            @SerializedName("Properties")
+            Map<String, String> properties
+        ) {
+        }
+
+
+        public record BedrockState(
+            @SerializedName("bedrock_identifier")
+            String bedrockId,
+            @Nullable
+            Map<String, Object> state
+        ) {
+        }
+    }
+
+
+    // see https://stackoverflow.com/questions/59655279/is-there-an-easy-way-to-make-gson-skip-a-field-if-theres-an-error-deserializing
+    public static class IgnoreFailureTypeAdapterFactory implements TypeAdapterFactory {
+        @Override
+        public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> typeToken) {
+            TypeAdapter<T> delegate = gson.getDelegateAdapter(this, typeToken);
+            return new TypeAdapter<>() {
+                @Override
+                public void write(JsonWriter writer, T value) throws IOException {
+                    delegate.write(writer, value);
+                }
+
+                @Override
+                public T read(JsonReader reader) throws IOException {
+                    try {
+                        return delegate.read(reader);
+                    } catch(Exception e) {
+                        reader.skipValue();
+                        return null;
+                    }
+                }
+            };
+        }
     }
 }
