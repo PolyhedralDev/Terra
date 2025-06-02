@@ -45,8 +45,8 @@ object Versions {
         const val yarn = "$minecraft+build.8"
         const val fabricLoader = "0.16.10"
         
-        const val architecuryLoom = "1.7.413"
-        const val architecturyPlugin = "3.4.159"
+        const val architecuryLoom = "1.9.428"
+        const val architecturyPlugin = "3.4.161"
 
     }
 //
@@ -57,13 +57,13 @@ object Versions {
     
     object Bukkit {
         const val minecraft = "1.21.4"
-        const val paperBuild = "$minecraft-R0.1-20241211.212446-17"
+        const val paperBuild = "$minecraft-R0.1-20250317.101324-208"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.1"
         const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"
-        const val paperWeight = "1.7.2"
+        const val paperWeight = "2.0.0-beta.16"
         const val cloud = "2.0.0-beta.10"
     }
     
@@ -80,7 +80,10 @@ object Versions {
     }
     
     object Allay {
-        const val api = "0.1.3"
+        const val api = "0.2.0"
+        const val gson = "2.12.1"
+        const val mappings = "3626653"
+        const val mappingsGenerator = "366618e"
     }
     
     object Minestom {
