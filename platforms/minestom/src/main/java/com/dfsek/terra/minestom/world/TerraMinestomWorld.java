@@ -16,6 +16,9 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
+import com.dfsek.terra.minestom.biome.BiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomCustomBiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomCustomBiomePool;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
 
@@ -44,7 +47,8 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         ConfigPack pack,
         long seed,
         EntityFactory entityFactory,
-        BlockEntityFactory blockEntityFactory
+        BlockEntityFactory blockEntityFactory,
+        BiomeFactory factory
     ) {
         this.instance = instance;
         this.pack = pack;
@@ -53,7 +57,13 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         this.dimensionType = MinecraftServer.getDimensionTypeRegistry().get(instance.getDimensionType());
         this.blockEntityFactory = blockEntityFactory;
 
-        this.wrapper = new MinestomChunkGeneratorWrapper(platform, pack.getGeneratorProvider().newInstance(pack), this, pack);
+        this.wrapper = new MinestomChunkGeneratorWrapper(
+            platform,
+            pack.getGeneratorProvider().newInstance(pack),
+            this,
+            pack,
+            new MinestomCustomBiomePool(pack, new MinestomCustomBiomeFactory())
+        );
         this.entityFactory = entityFactory;
 
         instance.setGenerator(this.wrapper);
