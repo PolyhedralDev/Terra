@@ -14,14 +14,14 @@ import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.source.SamplerSource;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class SamplerSourceTemplate extends SourceTemplate {
     @Value("sampler")
     @Description("The sampler used to distribute biomes.")
-    private @Meta NoiseSampler noise;
+    private @Meta Sampler noise;
 
     @Value("biomes")
     @Description("The biomes to be distributed.")

@@ -23,7 +23,7 @@ import net.minecraft.world.HeightLimitView;
 
 import java.util.random.RandomGenerator;
 
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
 

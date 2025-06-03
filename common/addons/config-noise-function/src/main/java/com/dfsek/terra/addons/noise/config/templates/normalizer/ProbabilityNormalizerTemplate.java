@@ -1,12 +1,12 @@
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
-import com.dfsek.terra.addons.noise.normalizer.ProbabilityNormalizer;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.algorithms.sampler.normalizer.ProbabilityNormalizer;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class ProbabilityNormalizerTemplate extends NormalizerTemplate<ProbabilityNormalizer> {
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         return new ProbabilityNormalizer(function);
     }
 }

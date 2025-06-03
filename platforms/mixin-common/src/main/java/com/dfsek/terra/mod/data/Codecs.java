@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.ConstantRange;
+import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.generation.GenerationSettings;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
