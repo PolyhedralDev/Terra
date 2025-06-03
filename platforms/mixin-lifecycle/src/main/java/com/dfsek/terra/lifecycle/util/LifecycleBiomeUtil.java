@@ -72,7 +72,7 @@ public final class LifecycleBiomeUtil {
                     minecraftBiome));
             }
 
-            Map<RegistryKey<net.minecraft.world.biome.Biome>, VillagerType> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
+            Map<RegistryKey<net.minecraft.world.biome.Biome>, RegistryKey<VillagerType>> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
 
             villagerMap.put(RegistryKey.of(RegistryKeys.BIOME, identifier),
                 Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),

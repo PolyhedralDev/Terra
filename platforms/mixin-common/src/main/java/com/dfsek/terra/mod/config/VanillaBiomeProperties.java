@@ -3,6 +3,7 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.sound.BiomeAdditionsSound;
 import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
@@ -87,7 +88,8 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("villager-type")
     @Default
-    private VillagerType villagerType = null;
+    private
+    RegistryKey<VillagerType> villagerType = null;
 
     public Integer getGrassColor() {
         return grassColor;
@@ -157,7 +159,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return spawnSettings;
     }
 
-    public VillagerType getVillagerType() {
+    public RegistryKey<VillagerType> getVillagerType() {
         return villagerType;
     }
 }
