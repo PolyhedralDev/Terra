@@ -6,22 +6,22 @@ import com.dfsek.terra.api.world.biome.Biome;
 import java.util.HashMap;
 
 
-public class MinestomCustomBiomePool {
-    private final HashMap<String, NativeBiome> biomes = new HashMap<>();
-    private final MinestomCustomBiomeFactory factory;
+public class MinestomUserDefinedBiomePool {
+    private final HashMap<String, UserDefinedBiome> biomes = new HashMap<>();
+    private final MinestomUserDefinedBiomeFactory factory;
     private final ConfigPack configPack;
 
-    public MinestomCustomBiomePool(ConfigPack configPack, MinestomCustomBiomeFactory factory) {
+    public MinestomUserDefinedBiomePool(ConfigPack configPack, MinestomUserDefinedBiomeFactory factory) {
         this.configPack = configPack;
         this.factory = factory;
     }
 
-    public NativeBiome getBiome(Biome source) {
-        NativeBiome nativeBiome = biomes.get(source.getID());
-        if(nativeBiome != null) return nativeBiome;
-        nativeBiome = factory.create(configPack, source);
-        biomes.put(source.getID(), nativeBiome);
-        return nativeBiome;
+    public UserDefinedBiome getBiome(Biome source) {
+        UserDefinedBiome userDefinedBiome = biomes.get(source.getID());
+        if(userDefinedBiome != null) return userDefinedBiome;
+        userDefinedBiome = factory.create(configPack, source);
+        biomes.put(source.getID(), userDefinedBiome);
+        return userDefinedBiome;
     }
 
     public void preloadBiomes(Iterable<Biome> biomesToLoad) {

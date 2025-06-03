@@ -24,7 +24,7 @@ import com.dfsek.terra.minestom.item.MinestomItemHandle;
 import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
 import com.dfsek.terra.minestom.world.MinestomWorldHandle;
 
-import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
+import com.dfsek.terra.minestom.api.TerraMinestomWorldBuilder;
 
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -45,11 +46,13 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     private final WorldHandle worldHandle;
     private final ItemHandle itemHandle;
     private final TypeLoader<PlatformBiome> biomeTypeLoader;
+    private final ArrayList<BaseAddon> platformAddons = new ArrayList<>(List.of(new MinestomAddon(this)));
 
-    public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader) {
+    public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader, BaseAddon... extraAddons) {
         this.worldHandle = worldHandle;
         this.itemHandle = itemHandle;
         this.biomeTypeLoader = biomeTypeLoader;
+        this.platformAddons.addAll(List.of(extraAddons));
         load();
         getEventManager().callEvent(new PlatformInitializationEvent());
     }
@@ -115,16 +118,16 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
         return file;
     }
 
+    @Override
+    protected Iterable<BaseAddon> platformAddon() {
+        return platformAddons;
+    }
+
     public TerraMinestomWorldBuilder worldBuilder(Instance instance) {
         return new TerraMinestomWorldBuilder(this, instance);
     }
 
     public TerraMinestomWorldBuilder worldBuilder() {
         return new TerraMinestomWorldBuilder(this, MinecraftServer.getInstanceManager().createInstanceContainer());
-    }
-
-    @Override
-    protected Iterable<BaseAddon> platformAddon() {
-        return List.of(new MinestomAddon(this));
     }
 }

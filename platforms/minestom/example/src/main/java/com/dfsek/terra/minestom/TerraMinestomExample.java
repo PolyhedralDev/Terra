@@ -16,7 +16,6 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 
 public class TerraMinestomExample {

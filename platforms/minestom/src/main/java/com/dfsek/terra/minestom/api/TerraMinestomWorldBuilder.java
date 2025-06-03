@@ -1,18 +1,15 @@
-package com.dfsek.terra.minestom.world;
+package com.dfsek.terra.minestom.api;
 
 import com.dfsek.terra.api.config.ConfigPack;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
 
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
-import com.dfsek.terra.minestom.api.BlockEntityFactory;
-import com.dfsek.terra.minestom.api.EntityFactory;
-import com.dfsek.terra.minestom.biome.BiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomCustomBiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 
-import net.minestom.server.MinecraftServer;
+import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 import net.minestom.server.instance.Instance;
 
 import java.util.Random;
@@ -26,7 +23,7 @@ public class TerraMinestomWorldBuilder {
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
-    private BiomeFactory biomeFactory = new MinestomCustomBiomeFactory();
+    private BiomeFactory biomeFactory = new MinestomUserDefinedBiomeFactory();
 
     public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
         this.platform = platform;

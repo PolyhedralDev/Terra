@@ -1,7 +1,7 @@
 package com.dfsek.terra.minestom.biome;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.minestom.api.BiomeFactory;
 import com.dfsek.terra.minestom.config.VanillaBiomeProperties;
 
 import net.kyori.adventure.key.Key;
@@ -17,12 +17,12 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-public class MinestomCustomBiomeFactory implements BiomeFactory {
+public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
     private final DynamicRegistry<Biome> biomeRegistry = MinecraftServer.getBiomeRegistry();
     private final @NotNull Biome plainsBiome = Objects.requireNonNull(biomeRegistry.get(Key.key("minecraft:plains")));
 
     @Override
-    public NativeBiome create(ConfigPack pack, com.dfsek.terra.api.world.biome.Biome source) {
+    public UserDefinedBiome create(ConfigPack pack, com.dfsek.terra.api.world.biome.Biome source) {
         VanillaBiomeProperties properties = source.getContext().get(VanillaBiomeProperties.class);
         DynamicRegistry.Key<Biome> parentKey = ((MinestomBiome) source.getPlatformBiome()).getHandle();
         Biome parent = mergeNullable(biomeRegistry.get(parentKey), plainsBiome);
@@ -58,7 +58,7 @@ public class MinestomCustomBiomeFactory implements BiomeFactory {
             .build();
 
         DynamicRegistry.Key<Biome> registryKey = MinecraftServer.getBiomeRegistry().register(key, target);
-        return new NativeBiome(key, registryKey, source.getID(), target);
+        return new UserDefinedBiome(key, registryKey, source.getID(), target);
     }
 
     private static <T> T mergeNullable(T first, T second) {

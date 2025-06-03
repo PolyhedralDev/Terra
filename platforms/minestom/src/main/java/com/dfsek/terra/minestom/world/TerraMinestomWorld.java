@@ -16,9 +16,9 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
-import com.dfsek.terra.minestom.biome.BiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomCustomBiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomCustomBiomePool;
+import com.dfsek.terra.minestom.api.BiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
 
@@ -62,7 +62,7 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
             pack.getGeneratorProvider().newInstance(pack),
             this,
             pack,
-            new MinestomCustomBiomePool(pack, new MinestomCustomBiomeFactory())
+            new MinestomUserDefinedBiomePool(pack, new MinestomUserDefinedBiomeFactory())
         );
         this.entityFactory = entityFactory;
 
