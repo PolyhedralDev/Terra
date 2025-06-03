@@ -22,7 +22,7 @@ import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -34,11 +34,11 @@ public class PipelineBiomeProvider implements BiomeProvider {
     private final LoadingCache<SeededVector2Key, BiomeChunk> biomeChunkCache;
     private final int chunkSize;
     private final int resolution;
-    private final NoiseSampler mutator;
+    private final Sampler mutator;
     private final double noiseAmp;
     private final Set<Biome> biomes;
 
-    public PipelineBiomeProvider(Pipeline pipeline, int resolution, NoiseSampler mutator, double noiseAmp) {
+    public PipelineBiomeProvider(Pipeline pipeline, int resolution, Sampler mutator, double noiseAmp) {
         this.resolution = resolution;
         this.mutator = mutator;
         this.noiseAmp = noiseAmp;
@@ -83,8 +83,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
 
     public Biome getBiome(int x, int z, long seed) {
 
-        x += mutator.noise(seed + 1, x, z) * noiseAmp;
-        z += mutator.noise(seed + 2, x, z) * noiseAmp;
+        x += mutator.getSample(seed + 1, x, z) * noiseAmp;
+        z += mutator.getSample(seed + 2, x, z) * noiseAmp;
 
         x /= resolution;
         z /= resolution;

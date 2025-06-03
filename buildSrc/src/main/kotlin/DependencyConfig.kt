@@ -60,6 +60,12 @@ fun Project.configureDependencies() {
         maven("https://storehouse.okaeri.eu/repository/maven-public/") {
             name = "Okaeri"
         }
+        maven("https://maven.solo-studios.ca/releases") {
+            name = "Solo Studios"
+        }
+        maven("https://maven.solo-studios.ca/snapshots") {
+            name = "Solo Studios"
+        }
     }
     
     dependencies {

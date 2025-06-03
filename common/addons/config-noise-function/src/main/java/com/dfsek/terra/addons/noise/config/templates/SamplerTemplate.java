@@ -14,11 +14,11 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.tectonic.api.exception.ValidationException;
 
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public abstract class SamplerTemplate<T extends NoiseSampler> implements ValidatedConfigTemplate, ObjectTemplate<NoiseSampler> {
+public abstract class SamplerTemplate<T extends Sampler> implements ValidatedConfigTemplate, ObjectTemplate<Sampler> {
     @Value("dimensions")
     @Default
     private @Meta int dimensions = 2;
