@@ -14,17 +14,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+import com.dfsek.seismic.type.vector.Vector2Int;
+
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector2Int;
 
 
 public class BorderListStage implements Stage {
     private final String border;
-    private final NoiseSampler noiseSampler;
+    private final Sampler Sampler;
     private final ProbabilityCollection<PipelineBiome> replaceDefault;
     private final String defaultReplace;
     private final Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace;
@@ -32,9 +33,9 @@ public class BorderListStage implements Stage {
     private final Vector2Int[] borderPoints;
 
     public BorderListStage(Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace, String border, String defaultReplace,
-                           NoiseSampler noiseSampler, ProbabilityCollection<PipelineBiome> replaceDefault) {
+                           Sampler Sampler, ProbabilityCollection<PipelineBiome> replaceDefault) {
         this.border = border;
-        this.noiseSampler = noiseSampler;
+        this.Sampler = Sampler;
         this.replaceDefault = replaceDefault;
         this.defaultReplace = defaultReplace;
         this.replace = replace;
@@ -67,11 +68,11 @@ public class BorderListStage implements Stage {
                 PipelineBiome current = viewPoint.getRelativeBiome(point.getX(), point.getZ());
                 if(current != null && current.getTags().contains(border)) {
                     if(replace.containsKey(center)) {
-                        PipelineBiome replacement = replace.get(center).get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(),
+                        PipelineBiome replacement = replace.get(center).get(Sampler, viewPoint.worldX(), viewPoint.worldZ(),
                             viewPoint.worldSeed());
                         return replacement.isSelf() ? center : replacement;
                     }
-                    PipelineBiome replacement = replaceDefault.get(noiseSampler, viewPoint.worldX(), viewPoint.worldZ(),
+                    PipelineBiome replacement = replaceDefault.get(Sampler, viewPoint.worldX(), viewPoint.worldZ(),
                         viewPoint.worldSeed());
                     return replacement.isSelf() ? center : replacement;
                 }

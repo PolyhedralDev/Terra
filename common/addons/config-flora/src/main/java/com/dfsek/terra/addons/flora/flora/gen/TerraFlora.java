@@ -13,14 +13,15 @@ import java.util.List;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
 
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -31,13 +32,13 @@ public class TerraFlora implements Structure {
 
     private final MaterialSet testRotation;
 
-    private final NoiseSampler distribution;
+    private final Sampler distribution;
 
     private final String id;
 
     public TerraFlora(List<BlockLayer> layers, boolean physics, boolean ceiling,
                       MaterialSet testRotation,
-                      NoiseSampler distribution, String id) {
+                      Sampler distribution, String id) {
         this.physics = physics;
         this.testRotation = testRotation;
         this.ceiling = ceiling;

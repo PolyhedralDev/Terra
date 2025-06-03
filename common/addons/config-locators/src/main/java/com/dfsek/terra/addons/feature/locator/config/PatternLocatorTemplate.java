@@ -14,7 +14,7 @@ import com.dfsek.terra.addons.feature.locator.locators.PatternLocator;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.feature.Locator;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class PatternLocatorTemplate implements ObjectTemplate<Locator> {

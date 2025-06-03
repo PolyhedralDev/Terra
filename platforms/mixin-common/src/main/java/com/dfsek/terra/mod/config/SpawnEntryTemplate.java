@@ -6,7 +6,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.entity.EntityType;
 import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class SpawnEntryTemplate implements ObjectTemplate<SpawnEntry> {

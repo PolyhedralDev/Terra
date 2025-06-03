@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.util.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector2Int;
 import com.dfsek.terra.cli.world.CLIWorld;
 
 import picocli.CommandLine;

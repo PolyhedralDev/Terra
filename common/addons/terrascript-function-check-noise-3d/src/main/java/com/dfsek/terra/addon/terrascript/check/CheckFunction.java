@@ -15,9 +15,8 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.WritableWorld;
 
@@ -41,12 +40,10 @@ public class CheckFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
 
-        Vector2 xz = Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
-        RotationUtil.rotateVector(xz, arguments.getRotation());
-
-        Vector3 location = arguments.getOrigin().toVector3Mutable().add(
+        Vector3 location = arguments.getOrigin().toFloat().mutable().add(
             Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
                 (int) Math.round(xz.getZ()))).immutable();
 
@@ -64,7 +61,7 @@ public class CheckFunction implements Function<String> {
     }
 
     private String apply(Vector3 vector, WritableWorld world) {
-        int y = vector.getBlockY();
+        int y = vector.getFloorY();
         if(y >= world.getMaxHeight() || y < 0) return "AIR";
         SamplerProvider cache = ((NoiseChunkGenerator3D) world.getGenerator()).samplerProvider();
         double comp = sample(vector.getX(), vector.getY(), vector.getZ(), cache, world);
@@ -72,7 +69,7 @@ public class CheckFunction implements Function<String> {
         if(comp > 0) return "LAND"; // If noise val is greater than zero, location will always be land.
 
         //BiomeProvider provider = tw.getBiomeProvider();
-        //TerraBiome b = provider.getBiome(vector.getBlockX(), vector.getBlockZ());
+        //TerraBiome b = provider.getBiome(vector.getFloorX(), vector.getFloorZ());
 
         /*if(vector.getY() > c.getSeaLevel())*/
         return "AIR"; // Above sea level

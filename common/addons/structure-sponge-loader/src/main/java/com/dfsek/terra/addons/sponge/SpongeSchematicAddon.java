@@ -31,7 +31,7 @@ import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.FileUtil;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 
 
 public class SpongeSchematicAddon implements AddonInitializer {

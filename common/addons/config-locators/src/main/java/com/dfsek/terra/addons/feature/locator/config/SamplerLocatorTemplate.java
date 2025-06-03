@@ -14,13 +14,13 @@ import java.util.List;
 
 import com.dfsek.terra.addons.feature.locator.locators.SamplerLocator;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.structure.feature.Locator;
 
 
 public class SamplerLocatorTemplate implements ObjectTemplate<Locator> {
     @Value("samplers")
-    private @Meta List<@Meta NoiseSampler> samplers;
+    private @Meta List<@Meta Sampler> samplers;
 
     @Override
     public Locator get() {
