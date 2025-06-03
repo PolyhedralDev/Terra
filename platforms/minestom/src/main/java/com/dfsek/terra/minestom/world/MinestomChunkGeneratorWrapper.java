@@ -7,9 +7,8 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.minestom.biome.MinestomCustomBiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomCustomBiomePool;
-import com.dfsek.terra.minestom.biome.NativeBiome;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
+import com.dfsek.terra.minestom.biome.UserDefinedBiome;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
@@ -28,14 +27,14 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
     private final TerraMinestomWorld world;
     private final BiomeProvider biomeProvider;
     private ConfigPack pack;
-    private final MinestomCustomBiomePool biomePool;
+    private final MinestomUserDefinedBiomePool biomePool;
 
     public MinestomChunkGeneratorWrapper(
         Platform platform,
         ChunkGenerator generator,
         TerraMinestomWorld world,
         ConfigPack pack,
-        MinestomCustomBiomePool biomePool
+        MinestomUserDefinedBiomePool biomePool
     ) {
         this.generator = generator;
         this.world = world;
@@ -61,8 +60,8 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
         UnitModifier modifier = unit.modifier();
         chunk.writeRelative(modifier);
 
-        NativeBiome nativeBiome = biomePool.getBiome(biomeProvider.getBiome(blockX, 100, blockZ, world.getSeed()));
-        modifier.fillBiome(nativeBiome.registry());
+        UserDefinedBiome userDefinedBiome = biomePool.getBiome(biomeProvider.getBiome(blockX, 100, blockZ, world.getSeed()));
+        modifier.fillBiome(userDefinedBiome.registry());
 
         unit.fork(setter -> {
             MinestomProtoWorld protoWorld = new MinestomProtoWorld(cache, x, z, world, setter);
