@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -9,8 +9,8 @@ package com.dfsek.terra.addons.noise.config.templates.noise;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.NoiseFunction;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
@@ -21,7 +21,7 @@ public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
     }
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         NoiseFunction sampler = samplerSupplier.get();
         sampler.setFrequency(frequency);
         sampler.setSalt(salt);

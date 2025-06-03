@@ -18,28 +18,30 @@
 package com.dfsek.terra.config.preprocessor;
 
 import com.dfsek.paralithic.eval.parser.Parser;
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.tectonic.api.config.Configuration;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.reflection.TypeKey;
+
 
 public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
     public static final TypeKey<String> META_STRING_KEY = new TypeKey<@Meta String>() {
     };
+    private final ParseOptions parseOptions;
 
-    public MetaNumberPreprocessor(Map<String, Configuration> configs) {
+    public MetaNumberPreprocessor(Map<String, Configuration> configs, ParseOptions parseOptions) {
         super(configs);
+        this.parseOptions = parseOptions;
     }
 
     private static boolean isNumber(Class<?> clazz) {
@@ -57,7 +59,7 @@ public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {
         if(t.getType() instanceof Class && isNumber((Class<?>) t.getType()) && c instanceof String) {
             String expression = (String) loader.loadType(META_STRING_KEY.getAnnotatedType(), c, depthTracker);
             try {
-                return (Result<T>) Result.overwrite(new Parser().eval(expression), depthTracker);
+                return (Result<T>) Result.overwrite(new Parser(parseOptions).eval(expression), depthTracker);
             } catch(ParseException e) {
                 throw new LoadException("Invalid expression: ", e, depthTracker);
             }

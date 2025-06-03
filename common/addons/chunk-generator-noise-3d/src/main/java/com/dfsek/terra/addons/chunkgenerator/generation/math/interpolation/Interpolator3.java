@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,8 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.util.MathUtil;
+
+import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
 
 
 /**
@@ -36,7 +37,8 @@ public class Interpolator3 {
         this.bottom = new Interpolator(_100, _110, _101, _111);
     }
 
+    //TODO this system is not very good, replace it wholesale
     public double trilerp(double x, double y, double z) {
-        return MathUtil.lerp(x, top.bilerp(y, z), bottom.bilerp(y, z));
+        return InterpolationFunctions.lerp(top.bilerp(y, z), bottom.bilerp(y, z), x);
     }
 }

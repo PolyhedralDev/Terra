@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,8 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-import com.dfsek.terra.api.util.MathUtil;
+
+import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
 
 
 /**
@@ -31,6 +32,7 @@ public class Interpolator {
         this.v3 = v3;
     }
 
+    //TODO this system is not very good, replace it wholesale
     /**
      * 2D Bilinear interpolation between 4 points on a unit square.
      *
@@ -40,8 +42,8 @@ public class Interpolator {
      * @return double - The interpolated value.
      */
     public double bilerp(double s, double t) {
-        double v01 = MathUtil.lerp(s, v0, v1);
-        double v23 = MathUtil.lerp(s, v2, v3);
-        return MathUtil.lerp(t, v01, v23);
+        double v01 = InterpolationFunctions.lerp(v0, v1, s);
+        double v23 = InterpolationFunctions.lerp(v2, v3, s);
+        return InterpolationFunctions.lerp(v01, v23, t);
     }
 }

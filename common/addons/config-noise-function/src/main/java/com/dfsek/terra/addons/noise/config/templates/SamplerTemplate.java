@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -14,11 +14,11 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.tectonic.api.exception.ValidationException;
 
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public abstract class SamplerTemplate<T extends NoiseSampler> implements ValidatedConfigTemplate, ObjectTemplate<NoiseSampler> {
+public abstract class SamplerTemplate<T extends Sampler> implements ValidatedConfigTemplate, ObjectTemplate<Sampler> {
     @Value("dimensions")
     @Default
     private @Meta int dimensions = 2;

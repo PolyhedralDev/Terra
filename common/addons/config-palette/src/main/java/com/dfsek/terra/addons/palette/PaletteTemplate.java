@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -16,14 +16,14 @@ import java.util.List;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
-    private @Meta NoiseSampler noise = NoiseSampler.zero();
+    private @Meta Sampler defaultSampler = Sampler.zero();
 
     @Value("id")
     @Final
@@ -40,7 +40,7 @@ public class PaletteTemplate implements AbstractableTemplate {
         return palette;
     }
 
-    public NoiseSampler getNoise() {
-        return noise;
+    public Sampler getDefaultSampler() {
+        return defaultSampler;
     }
 }

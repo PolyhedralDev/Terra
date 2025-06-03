@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -12,7 +12,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.feature.locator.patterns.MatchPattern;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class SolidMatchPatternTemplate implements ObjectTemplate<Pattern> {

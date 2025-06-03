@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,15 +7,15 @@
 
 package com.dfsek.terra.addons.noise.config.templates;
 
+import com.dfsek.seismic.algorithms.sampler.KernelSampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.exception.ValidationException;
 
 import java.util.List;
 
-import com.dfsek.terra.addons.noise.samplers.KernelSampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
@@ -29,14 +29,14 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> {
     private @Meta double factor = 1;
 
     @Value("sampler")
-    private @Meta NoiseSampler function;
+    private @Meta Sampler function;
 
     @Value("frequency")
     @Default
     private @Meta double frequency = 1;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         double[][] k = new double[kernel.size()][kernel.get(0).size()];
 
         for(int x = 0; x < kernel.size(); x++) {

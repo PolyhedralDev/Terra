@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,32 +7,25 @@
 
 package com.dfsek.terra.addons.biome.image;
 
-import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
+import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
+import com.dfsek.terra.addons.image.converter.ColorConverter;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class ImageBiomeProvider implements BiomeProvider {
-    private final Map<Color, Biome> colorBiomeMap = new HashMap<>();
-    private final BufferedImage image;
     private final int resolution;
-    private final Align align;
 
-    public ImageBiomeProvider(Set<Biome> registry, BufferedImage image, int resolution, Align align) {
-        this.image = image;
+    private final ColorConverter<Biome> colorConverter;
+
+    private final ColorSampler colorSampler;
+
+    public ImageBiomeProvider(ColorConverter<Biome> colorConverter, ColorSampler colorSampler, int resolution) {
         this.resolution = resolution;
-        this.align = align;
-        registry.forEach(biome -> colorBiomeMap.put(new Color(biome.getColor()), biome));
-    }
-
-    private static int distance(Color a, Color b) {
-        return Math.abs(a.getRed() - b.getRed()) + Math.abs(a.getGreen() - b.getGreen()) + Math.abs(a.getBlue() - b.getBlue());
+        this.colorConverter = colorConverter;
+        this.colorSampler = colorSampler;
     }
 
     @Override
@@ -43,15 +36,7 @@ public class ImageBiomeProvider implements BiomeProvider {
     public Biome getBiome(int x, int z) {
         x /= resolution;
         z /= resolution;
-        Color color = align.getColor(image, x, z);
-        return colorBiomeMap.get(colorBiomeMap.keySet()
-            .stream()
-            .reduce(colorBiomeMap.keySet().stream().findAny().orElseThrow(IllegalStateException::new),
-                (running, element) -> {
-                    int d1 = distance(color, running);
-                    int d2 = distance(color, element);
-                    return d1 < d2 ? running : element;
-                }));
+        return colorConverter.apply(colorSampler.apply(x, z));
     }
 
     @Override
@@ -61,24 +46,6 @@ public class ImageBiomeProvider implements BiomeProvider {
 
     @Override
     public Iterable<Biome> getBiomes() {
-        return colorBiomeMap.values();
-    }
-
-    public enum Align {
-        CENTER {
-            @Override
-            public Color getColor(BufferedImage image, int x, int z) {
-                return new Color(image.getRGB(Math.floorMod(x - image.getWidth() / 2, image.getWidth()),
-                    Math.floorMod(z - image.getHeight() / 2, image.getHeight())));
-            }
-        },
-        NONE {
-            @Override
-            public Color getColor(BufferedImage image, int x, int z) {
-                return new Color(image.getRGB(Math.floorMod(x, image.getWidth()), Math.floorMod(z, image.getHeight())));
-            }
-        };
-
-        public abstract Color getColor(BufferedImage image, int x, int z);
+        return colorConverter.getEntries();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -10,7 +10,7 @@ package com.dfsek.terra.api.structure.feature;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntConsumer;
 
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.util.function.IntToBooleanFunction;
 import com.dfsek.terra.api.util.generic.Lazy;
 

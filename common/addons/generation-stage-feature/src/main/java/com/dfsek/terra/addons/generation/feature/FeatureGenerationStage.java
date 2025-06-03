@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,20 +7,22 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
+import java.util.Collections;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
+
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
-
-import java.util.Collections;
-import java.util.Random;
 
 
 public class FeatureGenerationStage implements GenerationStage, StringIdentifiable {
@@ -32,12 +34,12 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
 
     private final int resolution;
     private final PropertyKey<BiomeFeatures> biomeFeaturesKey;
-    private final NoiseSampler blendSampler;
+    private final Sampler blendSampler;
     private final boolean doBlending;
     private final double blendAmplitude;
 
     public FeatureGenerationStage(Platform platform, String id, int resolution, PropertyKey<BiomeFeatures> biomeFeaturesKey,
-                                  NoiseSampler blendSampler, double blendAmplitude) {
+                                  Sampler blendSampler, double blendAmplitude) {
         this.platform = platform;
         this.id = id;
         this.profile = "feature_stage:" + id;
@@ -61,8 +63,8 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                 int tz = cz + chunkZ;
                 world.getBiomeProvider()
                     .getColumn(
-                        tx + (doBlending ? (int) (blendSampler.noise(seed, tx, tz) * blendAmplitude) : 0),
-                        tz + (doBlending ? (int) (blendSampler.noise(seed + 1, tx, tz) * blendAmplitude) : 0),
+                        tx + (doBlending ? (int) (blendSampler.getSample(seed, tx, tz) * blendAmplitude) : 0),
+                        tz + (doBlending ? (int) (blendSampler.getSample(seed + 1, tx, tz) * blendAmplitude) : 0),
                         world)
                     .forRanges(resolution, (min, max, biome) -> {
                         for(int subChunkX = 0; subChunkX < resolution; subChunkX++) {
@@ -83,7 +85,9 @@ public class FeatureGenerationStage implements GenerationStage, StringIdentifiab
                                                 .forEach(y -> feature.getStructure(world, x, y, z)
                                                     .generate(Vector3Int.of(x, y, z),
                                                         world,
-                                                        new Random(coordinateSeed * 31 + y),
+                                                        RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                                                "Xoroshiro128PlusPlus")
+                                                            .create(coordinateSeed * 31 + y),
                                                         Rotation.NONE)
                                                 );
                                         }

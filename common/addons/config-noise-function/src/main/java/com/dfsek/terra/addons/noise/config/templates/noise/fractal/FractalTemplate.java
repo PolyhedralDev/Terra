@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,13 +7,13 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise.fractal;
 
+import com.dfsek.seismic.algorithms.sampler.noise.fractal.FractalNoiseFunction;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
-import com.dfsek.terra.addons.noise.samplers.noise.fractal.FractalNoiseFunction;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public abstract class FractalTemplate<T extends FractalNoiseFunction> extends SamplerTemplate<T> {
@@ -34,5 +34,5 @@ public abstract class FractalTemplate<T extends FractalNoiseFunction> extends Sa
     protected @Meta double weightedStrength = 0.0D;
 
     @Value("sampler")
-    protected @Meta NoiseSampler function;
+    protected @Meta Sampler function;
 }

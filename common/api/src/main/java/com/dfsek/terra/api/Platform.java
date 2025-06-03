@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -14,6 +14,7 @@ import java.io.File;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
@@ -63,6 +64,10 @@ public interface Platform extends LoaderRegistrar {
 
     @NotNull
     @Contract(pure = true)
+    CheckedRegistry<MetaPack> getMetaConfigRegistry();
+
+    @NotNull
+    @Contract(pure = true)
     Registry<BaseAddon> getAddons();
 
     @NotNull
@@ -81,4 +86,7 @@ public interface Platform extends LoaderRegistrar {
     @NotNull
     @Contract(pure = true)
     Profiler getProfiler();
+
+    @Contract(pure = true)
+    int getGenerationThreads();
 }

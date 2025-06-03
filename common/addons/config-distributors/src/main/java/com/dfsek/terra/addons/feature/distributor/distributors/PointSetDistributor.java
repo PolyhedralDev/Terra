@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
+import java.util.Set;
+
 import com.dfsek.terra.addons.feature.distributor.util.Point;
 import com.dfsek.terra.api.structure.feature.Distributor;
-
-import java.util.Set;
 
 
 public class PointSetDistributor implements Distributor {

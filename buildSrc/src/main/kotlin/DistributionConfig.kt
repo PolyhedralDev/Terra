@@ -4,9 +4,11 @@ import java.io.File
 import java.io.FileWriter
 import java.net.URL
 import java.nio.file.FileSystems
+import java.nio.file.Path
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
+import org.gradle.jvm.tasks.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
@@ -19,6 +21,25 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.createFile
 import kotlin.io.path.exists
 
+private fun Project.installAddonsInto(dest: Path) {
+    FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
+        forSubProjects(":common:addons") {
+            val jar = getJarTask()
+            
+            logger.info("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
+            
+            val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
+            val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
+            
+            if (!addonPath.exists()) {
+                addonPath.parent.createDirectories()
+                addonPath.createFile()
+                jar.archiveFile.get().asFile.toPath().copyTo(addonPath, overwrite = true)
+            }
+            
+        }
+    }
+}
 
 fun Project.configureDistribution() {
     apply(plugin = "com.gradleup.shadow")
@@ -26,10 +47,12 @@ fun Project.configureDistribution() {
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         group = "terra"
         doFirst {
-            file("${buildDir}/resources/main/packs/").deleteRecursively()
-            val defaultPackUrl =
-                URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
-            downloadPack(defaultPackUrl, project)
+            try {
+                file("${buildDir}/resources/main/packs/").deleteRecursively()
+                val defaultPackUrl =
+                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
+                downloadPack(defaultPackUrl, project)
+            } catch (_:Exception) {}
         }
     }
     
@@ -48,25 +71,17 @@ fun Project.configureDistribution() {
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
             val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().path
-            
-            
-            FileSystems.newFileSystem(dest, mapOf("create" to "false"), null).use { fs ->
-                forSubProjects(":common:addons") {
-                    val jar = getJarTask()
-                    
-                    logger.info("Packaging addon ${jar.archiveFileName.get()} to $dest. size: ${jar.archiveFile.get().asFile.length() / 1024}KB")
-                    
-                    val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
-                    val addonPath = fs.getPath("/addons/$boot${jar.archiveFileName.get()}")
-                    
-                    if (!addonPath.exists()) {
-                        addonPath.parent.createDirectories()
-                        addonPath.createFile()
-                        jar.archiveFile.get().asFile.toPath().copyTo(addonPath, overwrite = true)
-                    }
-                    
-                }
-            }
+            installAddonsInto(dest)
+        }
+    }
+    
+    tasks.create("installAddonsIntoDefaultJar") {
+        group = "terra"
+        dependsOn(compileAddons)
+        
+        doLast {
+            val dest = tasks.named<Jar>("jar").get().archiveFile.get().path
+            installAddonsInto(dest)
         }
     }
     
@@ -133,7 +148,6 @@ fun Project.configureDistribution() {
         version = project.version
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
-        relocate("com.dfsek.paralithic", "com.dfsek.terra.lib.paralithic")
         relocate("org.json", "com.dfsek.terra.lib.json")
         relocate("org.yaml", "com.dfsek.terra.lib.yaml")
         

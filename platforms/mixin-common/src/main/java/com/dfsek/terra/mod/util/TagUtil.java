@@ -1,8 +1,8 @@
 package com.dfsek.terra.mod.util;
 
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.TagGroupLoader.RegistryTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.registry.tag.WorldPresetTags;
 import net.minecraft.world.biome.Biome;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public final class TagUtil {
@@ -24,37 +25,44 @@ public final class TagUtil {
     }
 
     private static <T> Map<TagKey<T>, List<RegistryEntry<T>>> tagsToMutableMap(Registry<T> registry) {
-        return registry
-            .streamTagsAndEntries()
-            .collect(HashMap::new,
-                (map, pair) ->
-                    map.put(pair.getFirst(), new ArrayList<>(pair.getSecond().stream().toList())),
-                HashMap::putAll);
+        return registry.streamTags().collect(HashMap::new,
+            (map, tag) -> map.put(tag.getTag(), tag.stream().collect(Collectors.toList())),
+            HashMap::putAll);
     }
 
     public static void registerWorldPresetTags(Registry<WorldPreset> registry) {
-        logger.info("Doing preset tag garbage....");
+        logger.info("Registering Preset Tags.");
         Map<TagKey<WorldPreset>, List<RegistryEntry<WorldPreset>>> collect = tagsToMutableMap(registry);
 
         PresetUtil
             .getPresets()
-            .forEach(id -> MinecraftUtil
-                .getEntry(registry, id)
+            .forEach(pair -> MinecraftUtil
+                .getEntry(registry, pair.getLeft())
                 .ifPresentOrElse(
-                    preset -> collect
-                        .computeIfAbsent(WorldPresetTags.NORMAL, tag -> new ArrayList<>())
-                        .add(preset),
-                    () -> logger.error("Preset {} does not exist!", id)));
+                    preset -> {
+                        boolean useExtendedTag = pair.getRight(); // Get the boolean value from the pair
+                        collect
+                            .computeIfAbsent(useExtendedTag ? WorldPresetTags.EXTENDED : WorldPresetTags.NORMAL, tag -> new ArrayList<>())
+                            .add(preset);
+                    },
+                    () -> logger.error("Preset {} does not exist!", pair.getLeft())));
 
-        registry.clearTags();
-        registry.populateTags(ImmutableMap.copyOf(collect));
+        registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
+
+
+        if(logger.isDebugEnabled()) {
+            registry.streamEntries()
+                .map(e -> e.registryKey().getValue() + ": " +
+                          e.streamTags().reduce("", (s, t) -> t.id() + ", " + s, String::concat))
+                .forEach(logger::debug);
+        }
     }
 
     public static void registerBiomeTags(Registry<Biome> registry) {
         logger.info("Doing biome tag garbage....");
         Map<TagKey<Biome>, List<RegistryEntry<Biome>>> collect = tagsToMutableMap(registry);
 
-        MinecraftUtil
+        BiomeUtil
             .getTerraBiomeMap()
             .forEach((vb, terraBiomes) ->
                 MinecraftUtil
@@ -90,8 +98,7 @@ public final class TagUtil {
                                         tb))),
                         () -> logger.error("No vanilla biome: {}", vb)));
 
-        registry.clearTags();
-        registry.populateTags(ImmutableMap.copyOf(collect));
+        registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
 
         if(logger.isDebugEnabled()) {
             registry.streamEntries()

@@ -1,8 +1,8 @@
 preRelease(true)
 
-versionProjects(":common:api", version("6.5.1"))
-versionProjects(":common:implementation", version("6.5.1"))
-versionProjects(":platforms", version("6.5.1"))
+versionProjects(":common:api", version("7.0.0"))
+versionProjects(":common:implementation", version("7.0.0"))
+versionProjects(":platforms", version("7.0.0"))
 
 
 allprojects {
@@ -44,6 +44,7 @@ afterEvaluate {
         configureDistribution()
     }
     project(":platforms:bukkit:common").configureDistribution()
+    project(":platforms:minestom:example").configureDistribution()
     forSubProjects(":common:addons") {
         apply(plugin = "com.gradleup.shadow")
 

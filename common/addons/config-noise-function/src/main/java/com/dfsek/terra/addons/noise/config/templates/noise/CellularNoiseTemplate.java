@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,20 +7,22 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.seismic.type.DistanceFunction;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
+
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings("FieldMayBeFinal")
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default
-    private CellularSampler.@Meta DistanceFunction cellularDistanceFunction = CellularSampler.DistanceFunction.EuclideanSq;
+    private @Meta DistanceFunction cellularDistanceFunction = DistanceFunction.EuclideanSq;
 
     @Value("return")
     @Default
@@ -33,10 +35,14 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Value("lookup")
     @Default
-    private @Meta NoiseSampler lookup = new OpenSimplex2Sampler();
+    private @Meta Sampler lookup = new OpenSimplex2Sampler();
+
+    @Value("salt-lookup")
+    @Default
+    private @Meta boolean saltLookup = true;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         CellularSampler sampler = new CellularSampler();
         sampler.setNoiseLookup(lookup);
         sampler.setFrequency(frequency);
@@ -44,6 +50,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
         sampler.setReturnType(cellularReturnType);
         sampler.setDistanceFunction(cellularDistanceFunction);
         sampler.setSalt(salt);
+        sampler.setSaltLookup(saltLookup);
         return sampler;
     }
 }

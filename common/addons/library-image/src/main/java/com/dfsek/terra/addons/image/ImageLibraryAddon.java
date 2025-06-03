@@ -15,8 +15,8 @@ import com.dfsek.terra.addons.image.config.colorsampler.mutate.RotateColorSample
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.TranslateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
 import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
-import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
-import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.ChannelSamplerTemplate;
+import com.dfsek.terra.addons.image.config.sampler.DistanceTransformSamplerTemplate;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.operator.DistanceTransform;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
@@ -26,7 +26,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
@@ -39,7 +39,7 @@ public class ImageLibraryAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<ColorSampler>>> COLOR_PICKER_REGISTRY_KEY = new TypeKey<>() {
     };
 
-    public static final TypeKey<Supplier<ObjectTemplate<NoiseSampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
+    public static final TypeKey<Supplier<ObjectTemplate<Sampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
     };
     @Inject
     private Platform platform;
@@ -60,8 +60,8 @@ public class ImageLibraryAddon implements AddonInitializer {
             .then(event -> {
                 ConfigPack pack = event.getPack();
                 CheckedRegistry<Supplier<ObjectTemplate<Image>>> imageRegistry = pack.getOrCreateRegistry(IMAGE_REGISTRY_KEY);
-                imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack.getLoader(), pack));
-                imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack.getLoader(), pack));
+                imageRegistry.register(addon.key("BITMAP"), () -> new ImageTemplate(pack));
+                imageRegistry.register(addon.key("STITCHED_BITMAP"), () -> new StitchedImageTemplate(pack));
             })
             .then(event -> {
                 event.getPack()
@@ -71,10 +71,10 @@ public class ImageLibraryAddon implements AddonInitializer {
                         (type, o, loader, depthTracker) -> DistanceTransform.Normalization.valueOf((String) o))
                     .applyLoader(ColorString.class, new ColorLoader());
 
-                CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
+                CheckedRegistry<Supplier<ObjectTemplate<Sampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
                     NOISE_SAMPLER_TOKEN);
-                noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformNoiseSamplerTemplate::new);
-                noiseRegistry.register(addon.key("CHANNEL"), ChannelNoiseSamplerTemplate::new);
+                noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformSamplerTemplate::new);
+                noiseRegistry.register(addon.key("CHANNEL"), ChannelSamplerTemplate::new);
             })
             .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.type.Rotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +23,7 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector2;
 
 
 public class StructureFunction implements Function<Boolean> {
@@ -60,8 +59,8 @@ public class StructureFunction implements Function<Boolean> {
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
 
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         String app = id.apply(implementationArguments, scope);

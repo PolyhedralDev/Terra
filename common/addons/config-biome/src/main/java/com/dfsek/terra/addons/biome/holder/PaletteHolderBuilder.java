@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.biome.holder;
 
-import com.dfsek.terra.api.world.chunk.generation.util.Palette;
-
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 
 public class PaletteHolderBuilder {

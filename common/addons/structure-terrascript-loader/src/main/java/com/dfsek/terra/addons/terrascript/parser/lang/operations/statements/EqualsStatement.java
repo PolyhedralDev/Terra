@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -13,7 +13,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.operations.BinaryOperation;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
-import static com.dfsek.terra.api.util.MathUtil.EPSILON;
+import static com.dfsek.seismic.math.floatingpoint.FloatingPointConstants.EPSILON;
 
 
 public class EqualsStatement extends BinaryOperation<Object, Boolean> {

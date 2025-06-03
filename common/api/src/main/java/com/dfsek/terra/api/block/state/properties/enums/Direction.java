@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -7,7 +7,8 @@
 
 package com.dfsek.terra.api.block.state.properties.enums;
 
-import com.dfsek.terra.api.util.Rotation;
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.api.util.generic.Construct;
 
 

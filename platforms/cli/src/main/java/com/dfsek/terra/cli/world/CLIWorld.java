@@ -22,8 +22,8 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.vector.Vector2Int;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -43,6 +43,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     private final ChunkGenerator chunkGenerator;
     private final BiomeProvider biomeProvider;
     private final ConfigPack pack;
+    private final boolean noSave;
     private final AtomicInteger amount = new AtomicInteger(0);
 
     private final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() - 1);
@@ -51,7 +52,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     long seed,
                     int maxHeight,
                     int minHeight,
-                    ConfigPack pack) {
+                    ConfigPack pack, boolean noSave) {
         this.size = size;
         this.maxHeight = maxHeight;
         this.minHeight = minHeight;
@@ -59,6 +60,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
         this.chunkGenerator = pack.getGeneratorProvider().newInstance(pack);
         this.biomeProvider = pack.getBiomeProvider();
         this.pack = pack;
+        this.noSave = noSave;
 
 
         size += 1;
@@ -73,6 +75,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
     }
 
     public void generate() {
+        ArrayList<Double> CPSHistory = new ArrayList<>();
         int sizeChunks = size * 32;
         List<Future<?>> futures = new ArrayList<>();
         final AtomicLong start = new AtomicLong(System.nanoTime());
@@ -83,7 +86,13 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                 futures.add(executor.submit(() -> {
                     try {
                         int num = amount.getAndIncrement();
-                        CLIChunk chunk = getChunkAt(finalX, finalZ);
+                        CLIChunk chunk;
+                        if (!noSave) {
+                            chunk = getChunkAt(finalX, finalZ);
+                        } else {
+                            chunk = new CLIChunk(Math.floorMod(finalX, 32), Math.floorMod(finalZ, 32), this);
+                        }
+
                         BiomeProvider cachingBiomeProvider = pack.getBiomeProvider();
                         chunkGenerator.generateChunkData(chunk, this, cachingBiomeProvider, finalX, finalZ);
                         CLIProtoWorld protoWorld = new CLIProtoWorld(this, cachingBiomeProvider, finalX, finalZ);
@@ -91,6 +100,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                         if(num % 240 == 239) {
                             long time = System.nanoTime();
                             double cps = num / ((double) (time - start.get()) / 1000000000);
+                            CPSHistory.add(cps);
                             LOGGER.info("Generating chunk at ({}, {}), generated {} chunks at {}cps", finalX, finalZ, num, cps);
                             amount.set(0);
                             start.set(System.nanoTime());
@@ -109,6 +119,8 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                 e.printStackTrace();
             }
         }
+
+        LOGGER.info("Average CPS: {}", CPSHistory.stream().mapToDouble(d -> d).average().orElse(0));
     }
 
     @Override

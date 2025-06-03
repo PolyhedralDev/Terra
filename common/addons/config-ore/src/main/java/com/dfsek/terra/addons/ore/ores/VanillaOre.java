@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -9,15 +9,17 @@ package com.dfsek.terra.addons.ore.ores;
 
 import java.util.BitSet;
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+
+import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
+import com.dfsek.seismic.math.trigonometry.TrigonometryFunctions;
+import com.dfsek.seismic.type.Rotation;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.MathUtil;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
@@ -44,16 +46,16 @@ public class VanillaOre implements Structure {
     }
 
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         float randomRadian = random.nextFloat() * (float) Math.PI;
         double eighthSize = size / 8.0F;
 
         // Place points to form a line segment
-        double startX = (double) location.getX() + MathUtil.sin(randomRadian) * eighthSize;
-        double endX = (double) location.getX() - MathUtil.sin(randomRadian) * eighthSize;
+        double startX = (double) location.getX() + TrigonometryFunctions.sin(randomRadian) * eighthSize;
+        double endX = (double) location.getX() - TrigonometryFunctions.sin(randomRadian) * eighthSize;
 
-        double startZ = (double) location.getZ() + MathUtil.cos(randomRadian) * eighthSize;
-        double endZ = (double) location.getZ() - MathUtil.cos(randomRadian) * eighthSize;
+        double startZ = (double) location.getZ() + TrigonometryFunctions.cos(randomRadian) * eighthSize;
+        double endZ = (double) location.getZ() - TrigonometryFunctions.cos(randomRadian) * eighthSize;
 
         double startY = location.getY() + random.nextInt(3) - 2;
         double endY = location.getY() + random.nextInt(3) - 2;
@@ -64,12 +66,12 @@ public class VanillaOre implements Structure {
         // Compute initial point positions and radius
         for(int i = 0; i < sizeInt; ++i) {
             float t = (float) i / (float) sizeInt;
-            double xt = MathUtil.lerp(t, startX, endX);
-            double yt = MathUtil.lerp(t, startY, endY);
-            double zt = MathUtil.lerp(t, startZ, endZ);
+            double xt = InterpolationFunctions.lerp(startX, endX, t);
+            double yt = InterpolationFunctions.lerp(startY, endY, t);
+            double zt = InterpolationFunctions.lerp(startZ, endZ, t);
             double roll = random.nextDouble() * size / 16.0;
             // Taper radius closer to line ends
-            double radius = ((MathUtil.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
+            double radius = ((TrigonometryFunctions.sin((float) Math.PI * t) + 1.0F) * roll + 1.0) / 2.0;
             points[i * 4] = xt;
             points[i * 4 + 1] = yt;
             points[i * 4 + 2] = zt;

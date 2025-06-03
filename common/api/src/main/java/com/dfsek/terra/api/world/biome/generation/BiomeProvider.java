@@ -1,11 +1,13 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
  */
 
 package com.dfsek.terra.api.world.biome.generation;
+
+import com.dfsek.terra.api.Platform;
 
 import org.jetbrains.annotations.Contract;
 
@@ -14,8 +16,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.dfsek.terra.api.util.Column;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
@@ -47,7 +49,7 @@ public interface BiomeProvider {
      */
     @Contract(pure = true)
     default Biome getBiome(Vector3 vector3, long seed) {
-        return getBiome(vector3.getBlockX(), vector3.getBlockY(), vector3.getBlockZ(), seed);
+        return getBiome(vector3.getFloorX(), vector3.getFloorY(), vector3.getFloorZ(), seed);
     }
 
     /**
@@ -91,7 +93,7 @@ public interface BiomeProvider {
         return StreamSupport.stream(getBiomes().spliterator(), false);
     }
 
-    default CachingBiomeProvider caching() {
+    default CachingBiomeProvider caching(Platform platform) {
         if(this instanceof CachingBiomeProvider cachingBiomeProvider) {
             return cachingBiomeProvider;
         }

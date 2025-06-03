@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra API is licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in the common/api directory.
@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.api.util.collection;
 
+import com.dfsek.seismic.math.normalization.NormalizationFunctions;
+import com.dfsek.seismic.type.sampler.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -15,15 +17,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 
 
 public class ProbabilityCollection<E> implements Collection<E> {
@@ -43,35 +43,35 @@ public class ProbabilityCollection<E> implements Collection<E> {
     }
 
     @SuppressWarnings("unchecked")
-    public E get(Random r) {
+    public E get(RandomGenerator r) {
         if(array.length == 0) return null;
         return (E) array[r.nextInt(array.length)];
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, double x, double y, double z, long seed) {
+    public E get(Sampler n, double x, double y, double z, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, x, y, z), array.length)];
+        return (E) array[NormalizationFunctions.normalizeIndex(n.getSample(seed, x, y, z), array.length)];
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, Vector3Int vector3Int, long seed) {
+    public E get(Sampler n, Vector3Int vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+        return (E) array[(int) NormalizationFunctions.normalizeIndex(n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
             array.length)];
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, Vector3 vector3Int, long seed) {
+    public E get(Sampler n, Vector3 vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+        return (E) array[(int) NormalizationFunctions.normalizeIndex(n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
             array.length)];
     }
 
     @SuppressWarnings("unchecked")
-    public E get(NoiseSampler n, double x, double z, long seed) {
+    public E get(Sampler n, double x, double z, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) MathUtil.normalizeIndex(n.noise(seed, x, z), array.length)];
+        return (E) array[(int) NormalizationFunctions.normalizeIndex(n.getSample(seed, x, z), array.length)];
     }
 
     @SuppressWarnings("unchecked")
@@ -197,17 +197,17 @@ public class ProbabilityCollection<E> implements Collection<E> {
         }
 
         @Override
-        public T get(Random r) {
+        public T get(RandomGenerator r) {
             return single;
         }
 
         @Override
-        public T get(NoiseSampler n, double x, double y, double z, long seed) {
+        public T get(Sampler n, double x, double y, double z, long seed) {
             return single;
         }
 
         @Override
-        public T get(NoiseSampler n, double x, double z, long seed) {
+        public T get(Sampler n, double x, double z, long seed) {
             return single;
         }
 

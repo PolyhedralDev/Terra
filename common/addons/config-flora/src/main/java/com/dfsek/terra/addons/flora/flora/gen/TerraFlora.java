@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -10,16 +10,18 @@ package com.dfsek.terra.addons.flora.flora.gen;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
+
+import com.dfsek.seismic.type.Rotation;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -30,13 +32,13 @@ public class TerraFlora implements Structure {
 
     private final MaterialSet testRotation;
 
-    private final NoiseSampler distribution;
+    private final Sampler distribution;
 
     private final String id;
 
     public TerraFlora(List<BlockLayer> layers, boolean physics, boolean ceiling,
                       MaterialSet testRotation,
-                      NoiseSampler distribution, String id) {
+                      Sampler distribution, String id) {
         this.physics = physics;
         this.testRotation = testRotation;
         this.ceiling = ceiling;
@@ -71,7 +73,7 @@ public class TerraFlora implements Structure {
     }
 
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         boolean doRotation = testRotation.size() > 0;
         int size = layers.size();
         int c = ceiling ? -1 : 1;
@@ -86,7 +88,9 @@ public class TerraFlora implements Structure {
                 location.getZ(), world.getSeed());
             if(doRotation) {
                 Direction oneFace = new ArrayList<>(faces).get(
-                    new Random(location.getX() ^ location.getZ()).nextInt(faces.size())); // Get random face.
+                    RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus")
+                        .create(location.getX() ^ location.getZ())
+                        .nextInt(faces.size())); // Get RandomGenerator face.
             }
             world.setBlockState(location.mutable().add(0, i + c, 0).immutable(), data, physics);
         }

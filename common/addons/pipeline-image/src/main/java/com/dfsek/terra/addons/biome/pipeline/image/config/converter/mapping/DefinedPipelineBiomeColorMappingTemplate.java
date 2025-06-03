@@ -5,7 +5,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.Map;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.image.config.ColorLoader.ColorString;
 import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;
 import com.dfsek.terra.addons.image.util.MapUtil;

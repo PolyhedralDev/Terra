@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,19 +7,22 @@
 
 package com.dfsek.terra.addons.noise.config.templates;
 
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import com.dfsek.terra.api.config.meta.Meta;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
-import com.dfsek.terra.api.config.meta.Meta;
-
 
 @SuppressWarnings("unused")
 public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
+    private final ParseOptions parseOptions;
+
     @Value("arguments")
     private List<String> args;
 
@@ -29,6 +32,10 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> functions = new LinkedHashMap<>();
+
+    public FunctionTemplate(ParseOptions parseOptions) {
+        this.parseOptions = parseOptions;
+    }
 
     @Override
     public FunctionTemplate get() {
@@ -45,6 +52,10 @@ public class FunctionTemplate implements ObjectTemplate<FunctionTemplate> {
 
     public LinkedHashMap<String, FunctionTemplate> getFunctions() {
         return functions;
+    }
+
+    public ParseOptions getParseOptions() {
+        return parseOptions;
     }
 
     @Override

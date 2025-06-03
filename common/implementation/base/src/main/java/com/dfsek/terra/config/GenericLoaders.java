@@ -19,6 +19,7 @@ package com.dfsek.terra.config;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.tectonic.api.TypeRegistry;
 
 import java.util.LinkedHashMap;
@@ -28,11 +29,10 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.terra.config.loaders.ExpressionParserOptionsTemplate;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
@@ -53,14 +53,15 @@ public class GenericLoaders implements LoaderRegistrar {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
-                .registerLoader(Range.class, new RangeLoader())
-                .registerLoader(Version.class, new VersionLoader())
-                .registerLoader(MaterialSet.class, new MaterialSetLoader())
-                .registerLoader(VersionRange.class, new VersionRangeLoader())
-                .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
+            .registerLoader(Range.class, new RangeLoader())
+            .registerLoader(Version.class, new VersionLoader())
+            .registerLoader(MaterialSet.class, new MaterialSetLoader())
+            .registerLoader(VersionRange.class, new VersionRangeLoader())
+            .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
+            .registerLoader(ParseOptions.class, ExpressionParserOptionsTemplate::new);
+
                 .registerLoader(Vector3.class, new Vector3Loader())
                 .registerLoader(Vector3Int.class, new Vector3IntLoader());
-        
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
                 .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform

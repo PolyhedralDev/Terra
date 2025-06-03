@@ -6,8 +6,3 @@ dependencies {
     compileOnlyApi(project(":common:addons:manifest-addon-loader"))
     api("com.dfsek", "paralithic", Versions.Libraries.paralithic)
 }
-
-
-tasks.named<ShadowJar>("shadowJar") {
-    relocate("com.dfsek.paralithic", "com.dfsek.terra.addons.numberpredicate.lib.paralithic")
-}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2023 Polyhedral Development
+ * Copyright (c) 2020-2025 Polyhedral Development
  *
  * The Terra Core Addons are licensed under the terms of the MIT License. For more details,
  * reference the LICENSE file in this module's root directory.
@@ -7,7 +7,7 @@
 
 package com.dfsek.terra.addons.structure.structures.loot.functions;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Damageable;
@@ -36,12 +36,12 @@ public class DamageFunction implements LootFunction {
      * Applies the function to an ItemStack.
      *
      * @param original The ItemStack on which to apply the function.
-     * @param r        The Random instance to use.
+     * @param r        The RandomGenerator instance to use.
      *
      * @return - ItemStack - The mutated ItemStack.
      */
     @Override
-    public ItemStack apply(ItemStack original, Random r) {
+    public ItemStack apply(ItemStack original, RandomGenerator r) {
         if(original == null) return null;
         if(!original.isDamageable()) return original;
         ItemMeta meta = original.getItemMeta();
