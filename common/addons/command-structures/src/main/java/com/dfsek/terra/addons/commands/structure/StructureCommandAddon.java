@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.commands.structure;
 
 
+import com.dfsek.seismic.type.Rotation;
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.context.CommandContext;
@@ -22,7 +23,6 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 

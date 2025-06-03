@@ -5,8 +5,9 @@ object Versions {
     
     object Libraries {
         const val tectonic = "4.2.1"
-        const val paralithic = "0.8.1"
+        const val paralithic = "1.0.3"
         const val strata = "1.3.2"
+        const val seismic = "0.3.4"
         
         const val cloud = "2.0.0"
         
@@ -80,7 +81,10 @@ object Versions {
     }
     
     object Allay {
-        const val api = "0.1.3"
+        const val api = "0.2.0"
+        const val gson = "2.12.1"
+        const val mappings = "3626653"
+        const val mappingsGenerator = "366618e"
     }
     
     object Minestom {

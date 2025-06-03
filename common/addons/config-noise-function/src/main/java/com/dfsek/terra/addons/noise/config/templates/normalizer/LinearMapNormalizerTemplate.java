@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+import com.dfsek.seismic.algorithms.sampler.normalizer.LinearMapNormalizer;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.normalizer.LinearMapNormalizer;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class LinearMapNormalizerTemplate extends NormalizerTemplate<LinearMapNormalizer> {
@@ -25,7 +25,7 @@ public class LinearMapNormalizerTemplate extends NormalizerTemplate<LinearMapNor
     private @Meta double bTo;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         return new LinearMapNormalizer(function, aFrom, aTo, bFrom, bTo);
     }
 }

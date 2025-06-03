@@ -2,11 +2,12 @@ package com.dfsek.terra.addons.structure.mutator;
 
 import java.util.random.RandomGenerator;
 
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.util.ReadInterceptor;
 import com.dfsek.terra.api.world.util.WriteInterceptor;

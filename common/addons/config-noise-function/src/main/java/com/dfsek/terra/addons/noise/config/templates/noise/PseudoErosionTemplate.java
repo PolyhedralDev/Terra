@@ -1,12 +1,12 @@
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.PseudoErosionSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.samplers.noise.PseudoErosionSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
+import com.dfsek.seismic.type.sampler.DerivativeSampler;
 
 
 public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
@@ -45,7 +45,7 @@ public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
 
     @Value("sampler")
     @Default
-    private DerivativeNoiseSampler heightSampler = new OpenSimplex2Sampler();
+    private DerivativeSampler heightSampler = new OpenSimplex2Sampler();
 
     @Value("slope-mask.enable")
     @Default

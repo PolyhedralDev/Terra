@@ -3,14 +3,14 @@ package com.dfsek.terra.addons.biome.pipeline.stage.expander;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class FractalExpander implements Expander {
 
-    private final NoiseSampler sampler;
+    private final Sampler sampler;
 
-    public FractalExpander(NoiseSampler sampler) {
+    public FractalExpander(Sampler sampler) {
         this.sampler = sampler;
     }
 
@@ -20,7 +20,7 @@ public class FractalExpander implements Expander {
         int xMod2 = viewPoint.gridX() % 2;
         int zMod2 = viewPoint.gridZ() % 2;
 
-        double roll = sampler.noise(viewPoint.worldSeed(), viewPoint.worldX(), viewPoint.worldZ());
+        double roll = sampler.getSample(viewPoint.worldSeed(), viewPoint.worldX(), viewPoint.worldZ());
 
         if(xMod2 == 1 && zMod2 == 0) { // Pick one of 2 neighbors on X axis randomly
             return roll > 0 ? viewPoint.getRelativeBiome(-1, 0) : viewPoint.getRelativeBiome(1, 0);
