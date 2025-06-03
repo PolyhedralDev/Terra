@@ -7,6 +7,8 @@ import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
+import com.dfsek.terra.minestom.biome.BiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomCustomBiomeFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 
@@ -24,6 +26,7 @@ public class TerraMinestomWorldBuilder {
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
+    private BiomeFactory biomeFactory = new MinestomCustomBiomeFactory();
 
     public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
         this.platform = platform;
@@ -65,7 +68,12 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
+    public TerraMinestomWorldBuilder biomeFactory(BiomeFactory factory) {
+        this.biomeFactory = factory;
+        return this;
+    }
+
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory);
+        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomeFactory);
     }
 }
