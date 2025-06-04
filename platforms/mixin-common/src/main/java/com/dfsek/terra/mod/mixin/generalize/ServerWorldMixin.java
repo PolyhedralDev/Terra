@@ -45,18 +45,4 @@ public abstract class ServerWorldMixin extends World {
         }
         return instance.matchesKey(tRegistryKey);
     }
-
-    @Redirect(method = "<init>",
-              at = @At(value = "INVOKE",
-                       target = "Lnet/minecraft/village/raid/RaidManager;nameFor(Lnet/minecraft/registry/entry/RegistryEntry;)" +
-                                "Ljava/lang/String;"))
-    public String nameForProxy(RegistryEntry<DimensionType> dimensionTypeEntry) {
-        RegistryEntry<DimensionType> entry = dimensionTypeEntry;
-        if(this.getRegistryKey() == World.END) {
-            Registry<DimensionType> dimensionTypeRegistry = getRegistryManager().getOrThrow(RegistryKeys.DIMENSION_TYPE);
-            entry = dimensionTypeRegistry.getEntry(dimensionTypeRegistry.get(DimensionTypes.THE_NETHER));
-
-        }
-        return RaidManager.nameFor(entry);
-    }
 }
