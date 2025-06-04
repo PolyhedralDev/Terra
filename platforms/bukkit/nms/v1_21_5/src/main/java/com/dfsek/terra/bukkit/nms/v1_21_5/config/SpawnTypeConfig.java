@@ -1,28 +1,27 @@
-package com.dfsek.terra.mod.config;
+package com.dfsek.terra.bukkit.nms.v1_21_5.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.entity.SpawnGroup;
-
 import java.util.List;
+import net.minecraft.world.entity.MobCategory;
 
 
 public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
     @Value("group")
     @Default
-    private SpawnGroup group = null;
+    private MobCategory group = null;
 
     @Value("entries")
     @Default
-    private List<SpawnEntryConfig> entry = null;
+    private List<SpawnEntryConfig> entries = null;
 
-    public SpawnGroup getGroup() {
+    public MobCategory getGroup() {
         return group;
     }
 
-    public List<SpawnEntryConfig> getEntry() {
-        return entry;
+    public List<SpawnEntryConfig> getEntries() {
+        return entries;
     }
 
     @Override
