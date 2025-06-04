@@ -48,7 +48,8 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         long seed,
         EntityFactory entityFactory,
         BlockEntityFactory blockEntityFactory,
-        BiomeFactory factory
+        BiomeFactory factory,
+        boolean doFineGrainedBiomes
     ) {
         this.instance = instance;
         this.pack = pack;
@@ -62,7 +63,8 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
             pack.getGeneratorProvider().newInstance(pack),
             this,
             pack,
-            new MinestomUserDefinedBiomePool(pack, new MinestomUserDefinedBiomeFactory())
+            new MinestomUserDefinedBiomePool(pack, factory),
+            doFineGrainedBiomes
         );
         this.entityFactory = entityFactory;
 

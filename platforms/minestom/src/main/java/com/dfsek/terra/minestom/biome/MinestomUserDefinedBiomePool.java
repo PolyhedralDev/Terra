@@ -2,16 +2,17 @@ package com.dfsek.terra.minestom.biome;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.minestom.api.BiomeFactory;
 
 import java.util.HashMap;
 
 
 public class MinestomUserDefinedBiomePool {
     private final HashMap<String, UserDefinedBiome> biomes = new HashMap<>();
-    private final MinestomUserDefinedBiomeFactory factory;
+    private final BiomeFactory factory;
     private final ConfigPack configPack;
 
-    public MinestomUserDefinedBiomePool(ConfigPack configPack, MinestomUserDefinedBiomeFactory factory) {
+    public MinestomUserDefinedBiomePool(ConfigPack configPack, BiomeFactory factory) {
         this.configPack = configPack;
         this.factory = factory;
     }
