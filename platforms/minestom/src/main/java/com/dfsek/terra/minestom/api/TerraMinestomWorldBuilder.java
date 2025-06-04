@@ -22,13 +22,14 @@ public class TerraMinestomWorldBuilder {
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
-    private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
+    private BlockEntityFactory blockEntityFactory;
     private BiomeFactory biomeFactory = new MinestomUserDefinedBiomeFactory();
     private boolean doFineGrainedBiomes = true;
 
     public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
         this.platform = platform;
         this.instance = instance;
+        this.blockEntityFactory = new DefaultBlockEntityFactory(instance);
     }
 
     public TerraMinestomWorldBuilder pack(ConfigPack pack) {
