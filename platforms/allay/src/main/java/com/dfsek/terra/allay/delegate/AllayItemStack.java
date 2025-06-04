@@ -38,7 +38,7 @@ public record AllayItemStack(ItemStack allayItemStack) implements com.dfsek.terr
             allayItemStack.addEnchantment(enchantment.getType(), enchantment.getLevel());
         }
         allayItemStack.setLore(targetItem.getLore());
-        allayItemStack.setDurability(targetItem.getDurability());
+        allayItemStack.setDamage(targetItem.getDamage());
         allayItemStack.setCustomName(targetItem.getCustomName());
         allayItemStack.setMeta(targetItem.getMeta());
     }
