@@ -16,8 +16,8 @@ import org.allaymc.api.block.type.BlockStateSafeGetter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.item.type.ItemTypeSafeGetter;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
