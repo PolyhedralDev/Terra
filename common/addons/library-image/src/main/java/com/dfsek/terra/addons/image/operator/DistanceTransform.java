@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.image.operator;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
 
@@ -220,7 +220,7 @@ public class DistanceTransform {
     }
 
 
-    public static class Noise implements NoiseSampler {
+    public static class Noise implements Sampler {
 
         private final DistanceTransform transform;
 
@@ -230,14 +230,14 @@ public class DistanceTransform {
         }
 
         @Override
-        public double noise(long seed, double x, double y) {
+        public double getSample(long seed, double x, double y) {
             if(x < 0 || y < 0 || x >= transform.width || y >= transform.height) return transform.minDistance;
             return transform.distances[(int) Math.floor(x)][(int) Math.floor(y)];
         }
 
         @Override
-        public double noise(long seed, double x, double y, double z) {
-            return noise(seed, x, z);
+        public double getSample(long seed, double x, double y, double z) {
+            return getSample(seed, x, z);
         }
     }
 }

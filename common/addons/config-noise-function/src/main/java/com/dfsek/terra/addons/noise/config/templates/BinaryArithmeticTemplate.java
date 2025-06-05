@@ -1,22 +1,22 @@
 package com.dfsek.terra.addons.noise.config.templates;
 
+import com.dfsek.seismic.algorithms.sampler.arithmetic.BinaryArithmeticSampler;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import java.util.function.BiFunction;
 
-import com.dfsek.terra.addons.noise.samplers.arithmetic.BinaryArithmeticSampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class BinaryArithmeticTemplate<T extends BinaryArithmeticSampler> extends SamplerTemplate<T> {
-    private final BiFunction<NoiseSampler, NoiseSampler, T> function;
+    private final BiFunction<Sampler, Sampler, T> function;
     @Value("left")
-    private @Meta NoiseSampler left;
+    private @Meta Sampler left;
     @Value("right")
-    private @Meta NoiseSampler right;
+    private @Meta Sampler right;
 
-    public BinaryArithmeticTemplate(BiFunction<NoiseSampler, NoiseSampler, T> function) {
+    public BinaryArithmeticTemplate(BiFunction<Sampler, Sampler, T> function) {
         this.function = function;
     }
 

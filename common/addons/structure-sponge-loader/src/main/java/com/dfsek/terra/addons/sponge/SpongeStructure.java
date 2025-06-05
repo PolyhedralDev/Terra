@@ -9,13 +9,14 @@ package com.dfsek.terra.addons.sponge;
 
 import java.util.random.RandomGenerator;
 
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector2Int;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -44,7 +45,7 @@ public class SpongeStructure implements Structure, Keyed<SpongeStructure> {
             for(int z = 0; z < blocks[x].length; z++) {
                 int oX = x + offsetX;
                 int oZ = z + offsetZ;
-                Vector2Int r = Vector2Int.of(oX, oZ).rotate(rotation);
+                Vector2Int r = Vector2Int.Mutable.of(oX, oZ).rotate(rotation);
                 int rX = r.getX();
                 int rZ = r.getZ();
                 for(int y = 0; y < blocks[x][z].length; y++) {
