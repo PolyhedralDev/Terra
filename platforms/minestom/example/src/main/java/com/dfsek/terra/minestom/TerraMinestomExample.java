@@ -6,6 +6,7 @@ import net.minestom.server.command.builder.Command;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
+import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.LightingChunk;
@@ -16,7 +17,6 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 
 public class TerraMinestomExample {
@@ -24,6 +24,7 @@ public class TerraMinestomExample {
     private final MinecraftServer server = MinecraftServer.init();
     private Instance instance;
     private TerraMinestomWorld world;
+    private final TerraMinestomPlatform platform = new TerraMinestomPlatform();
 
     public void createNewInstance() {
         instance = MinecraftServer.getInstanceManager().createInstanceContainer();
@@ -31,8 +32,9 @@ public class TerraMinestomExample {
     }
 
     public void attachTerra() {
-        world = TerraMinestomWorldBuilder.from(instance)
+        world = platform.worldBuilder(instance)
             .defaultPack()
+            .doFineGrainedBiomes(false)
             .attach();
     }
 
@@ -121,12 +123,16 @@ public class TerraMinestomExample {
 
         private void regenerate() {
             instance.sendMessage(Component.text("Regenerating world"));
+            Instance oldInstance = instance;
+            platform.reload();
             createNewInstance();
             attachTerra();
             preloadWorldAndMeasure();
             MinecraftServer.getConnectionManager().getOnlinePlayers().forEach(player ->
                 player.setInstance(instance, new Pos(0, 100, 0))
             );
+
+            MinecraftServer.getInstanceManager().unregisterInstance(oldInstance);
         }
     }
 }

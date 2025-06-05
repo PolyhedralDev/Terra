@@ -8,8 +8,8 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a factory interface for creating instances of BlockEntity
- * at a specified BlockVec position. This is not implemented directly because
- * Minestom does not define a way to build block entities out of the box.
+ * at a specified BlockVec position. For more fine-grained control, users
+ * may supply their own version of this interface.
  */
 public interface BlockEntityFactory {
     @Nullable BlockEntity createBlockEntity(BlockVec position);

@@ -11,6 +11,7 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.world.biome.Biome;
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -21,6 +22,7 @@ public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {
     @Override
     public PlatformBiome load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader,
                               DepthTracker depthTracker) throws LoadException {
+        @Subst("name:value")
         String id = (String) o;
         Key key = Key.key(id);
         Biome biome = biomeRegistry.get(key);
