@@ -12,14 +12,14 @@ import java.util.Objects;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class SmoothStage implements Stage {
 
-    private final NoiseSampler sampler;
+    private final Sampler sampler;
 
-    public SmoothStage(NoiseSampler sampler) {
+    public SmoothStage(Sampler sampler) {
         this.sampler = sampler;
     }
 
@@ -30,7 +30,7 @@ public class SmoothStage implements Stage {
         PipelineBiome left = viewPoint.getRelativeBiome(0, 1);
         PipelineBiome right = viewPoint.getRelativeBiome(0, -1);
 
-        double roll = sampler.noise(viewPoint.worldSeed(), viewPoint.worldX(), viewPoint.worldZ());
+        double roll = sampler.getSample(viewPoint.worldSeed(), viewPoint.worldX(), viewPoint.worldZ());
 
         boolean vert = Objects.equals(top, bottom);
         boolean horiz = Objects.equals(left, right);

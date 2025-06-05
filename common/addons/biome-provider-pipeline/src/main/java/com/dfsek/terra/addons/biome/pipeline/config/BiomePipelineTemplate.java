@@ -19,7 +19,7 @@ import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.PipelineImpl;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -36,7 +36,7 @@ public class BiomePipelineTemplate implements ObjectTemplate<BiomeProvider> {
     @Value("blend.sampler")
     @Default
     @Description("A sampler to use for blending the edges of biomes via domain warping.")
-    protected @Meta NoiseSampler blendSampler = NoiseSampler.zero();
+    protected @Meta Sampler blendSampler = Sampler.zero();
     @Value("blend.amplitude")
     @Default
     @Description("The amplitude at which to perform blending.")

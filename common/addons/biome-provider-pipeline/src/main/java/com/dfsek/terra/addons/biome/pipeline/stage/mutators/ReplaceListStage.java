@@ -15,18 +15,18 @@ import java.util.stream.Stream;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
 public class ReplaceListStage implements Stage {
     private final Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace;
-    private final NoiseSampler sampler;
+    private final Sampler sampler;
     private final ProbabilityCollection<PipelineBiome> replaceDefault;
     private final String defaultTag;
 
     public ReplaceListStage(Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace, String defaultTag,
-                            ProbabilityCollection<PipelineBiome> replaceDefault, NoiseSampler sampler) {
+                            ProbabilityCollection<PipelineBiome> replaceDefault, Sampler sampler) {
         this.replace = replace;
         this.sampler = sampler;
         this.defaultTag = defaultTag;

@@ -13,11 +13,11 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public abstract class StageTemplate implements ObjectTemplate<Stage> {
     @Value("sampler")
     @Description("Sampler to use for stage distribution.")
-    protected @Meta NoiseSampler noise;
+    protected @Meta Sampler noise;
 }

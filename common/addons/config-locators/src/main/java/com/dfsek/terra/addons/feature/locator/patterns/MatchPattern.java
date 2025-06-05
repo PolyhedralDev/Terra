@@ -10,7 +10,7 @@ package com.dfsek.terra.addons.feature.locator.patterns;
 import java.util.function.Predicate;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 

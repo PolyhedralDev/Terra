@@ -14,7 +14,7 @@ import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.StructureSpawn;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 
