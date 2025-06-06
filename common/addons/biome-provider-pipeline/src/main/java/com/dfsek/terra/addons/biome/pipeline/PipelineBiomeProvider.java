@@ -83,8 +83,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
 
     public Biome getBiome(int x, int z, long seed) {
 
-        x += mutator.getSample(seed + 1, x, z) * noiseAmp;
-        z += mutator.getSample(seed + 2, x, z) * noiseAmp;
+        x += (int) (mutator.getSample(seed + 1, x, z) * noiseAmp);
+        z += (int) (mutator.getSample(seed + 2, x, z) * noiseAmp);
 
         x /= resolution;
         z /= resolution;

@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -37,10 +39,10 @@ public class SetMarkFunction implements Function<Void> {
             z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
-        arguments.setMark(Vector3.of((int) Math.floor(xz.getX()),
-                (int) Math.floor(
+        arguments.setMark(Vector3.of(FloatingPointFunctions.floor(xz.getX()),
+                FloatingPointFunctions.floor(
                     y.apply(implementationArguments, scope).doubleValue()),
-                (int) Math.floor(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable(),
+                FloatingPointFunctions.floor(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable(),
             mark.apply(implementationArguments, scope));
         return null;
     }
