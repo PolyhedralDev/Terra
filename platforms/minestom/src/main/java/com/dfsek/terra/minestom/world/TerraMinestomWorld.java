@@ -13,8 +13,12 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+import com.dfsek.terra.minestom.TerraMinestomPlatform;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
+import com.dfsek.terra.minestom.api.BiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
 
@@ -37,8 +41,16 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
     private final EntityFactory entityFactory;
     private final BlockEntityFactory blockEntityFactory;
 
-    public TerraMinestomWorld(Instance instance, ConfigPack pack, long seed, EntityFactory entityFactory,
-                              BlockEntityFactory blockEntityFactory) {
+    public TerraMinestomWorld(
+        TerraMinestomPlatform platform,
+        Instance instance,
+        ConfigPack pack,
+        long seed,
+        EntityFactory entityFactory,
+        BlockEntityFactory blockEntityFactory,
+        BiomeFactory factory,
+        boolean doFineGrainedBiomes
+    ) {
         this.instance = instance;
         this.pack = pack;
         this.seed = seed;
@@ -46,7 +58,14 @@ public final class TerraMinestomWorld implements ServerWorld, WorldProperties {
         this.dimensionType = MinecraftServer.getDimensionTypeRegistry().get(instance.getDimensionType());
         this.blockEntityFactory = blockEntityFactory;
 
-        this.wrapper = new MinestomChunkGeneratorWrapper(pack.getGeneratorProvider().newInstance(pack), this, pack);
+        this.wrapper = new MinestomChunkGeneratorWrapper(
+            platform,
+            pack.getGeneratorProvider().newInstance(pack),
+            this,
+            pack,
+            new MinestomUserDefinedBiomePool(pack, factory),
+            doFineGrainedBiomes
+        );
         this.entityFactory = entityFactory;
 
         instance.setGenerator(this.wrapper);

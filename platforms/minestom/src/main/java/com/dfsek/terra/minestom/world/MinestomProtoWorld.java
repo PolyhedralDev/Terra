@@ -5,6 +5,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -16,6 +17,11 @@ import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
 
 import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.block.Block.Setter;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.WeakHashMap;
 
 
 public class MinestomProtoWorld implements ProtoWorld {
@@ -51,6 +57,10 @@ public class MinestomProtoWorld implements ProtoWorld {
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         modifier.setBlock(x, y, z, (Block) data.getHandle());
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        CachedChunk chunk = cache.at(chunkX, chunkZ);
+        chunk.setBlock(x & 15, y, z & 15, data);
     }
 
     @Override

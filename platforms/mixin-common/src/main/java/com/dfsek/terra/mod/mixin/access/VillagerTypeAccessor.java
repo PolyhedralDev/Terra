@@ -12,7 +12,7 @@ import java.util.Map;
 @Mixin(VillagerType.class)
 public interface VillagerTypeAccessor {
     @Accessor("BIOME_TO_TYPE")
-    static Map<RegistryKey<Biome>, VillagerType> getBiomeTypeToIdMap() {
+    static Map<RegistryKey<Biome>, RegistryKey<VillagerType>> getBiomeTypeToIdMap() {
         throw new AssertionError("Untransformed Accessor!");
     }
 }

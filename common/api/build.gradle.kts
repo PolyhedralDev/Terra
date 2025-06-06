@@ -2,6 +2,7 @@ dependencies {
 
     compileOnlyApi("org.slf4j", "slf4j-api", Versions.Libraries.slf4j)
     testImplementation("org.slf4j", "slf4j-api", Versions.Libraries.slf4j)
+
     api("org.incendo", "cloud-core", Versions.Libraries.cloud)
 
 
