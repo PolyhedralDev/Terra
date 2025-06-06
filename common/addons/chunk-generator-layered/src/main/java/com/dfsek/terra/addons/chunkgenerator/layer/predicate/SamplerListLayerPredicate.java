@@ -4,7 +4,7 @@ import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.addons.chunkgenerator.math.RelationalOperator;
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 

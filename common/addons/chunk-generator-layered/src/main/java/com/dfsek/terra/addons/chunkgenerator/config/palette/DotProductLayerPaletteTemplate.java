@@ -13,7 +13,7 @@ import com.dfsek.terra.addons.chunkgenerator.math.pointset.generative.AdjacentPo
 import com.dfsek.terra.addons.chunkgenerator.palette.DoubleNavigableHolder;
 import com.dfsek.terra.addons.chunkgenerator.util.InstanceWrapper;
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 
 

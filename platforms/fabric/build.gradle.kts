@@ -38,16 +38,6 @@ loom {
     mixin {
         defaultRefmapName.set("terra.fabric.refmap.json")
     }
-    
-    launches {
-        named("client") {
-            property("fabric.log.level", "info")
-        }
-        named("server") {
-            property("fabric.log.level", "info")
-        }
-    }
-
 }
 
 

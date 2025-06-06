@@ -4,7 +4,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 
 
 public class SimplePointSet implements PointSet {

@@ -10,7 +10,7 @@ import java.lang.reflect.AnnotatedType;
 import java.util.List;
 import java.util.Map;
 
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 
 public class Vector3IntLoader implements TypeLoader<Vector3Int> {
     

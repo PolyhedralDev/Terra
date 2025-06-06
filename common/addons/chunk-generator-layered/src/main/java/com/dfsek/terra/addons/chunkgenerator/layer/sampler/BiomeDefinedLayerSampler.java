@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.chunkgenerator.layer.sampler;
 import com.dfsek.tectonic.api.config.template.dynamic.DynamicTemplate;
 import com.dfsek.tectonic.api.config.template.dynamic.DynamicValue;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.addons.chunkgenerator.LayeredChunkGeneratorAddon;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
@@ -23,9 +23,9 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 
 public class BiomeDefinedLayerSampler implements LayerSampler {
     
-    private final NoiseSampler defaultSampler;
+    private final Sampler defaultSampler;
     
-    public BiomeDefinedLayerSampler(@Nullable NoiseSampler defaultSampler) {
+    public BiomeDefinedLayerSampler(@Nullable Sampler defaultSampler) {
         this.defaultSampler = defaultSampler;
     }
     
@@ -36,10 +36,10 @@ public class BiomeDefinedLayerSampler implements LayerSampler {
                             .get(BiomeLayerSamplers.class)
                             .samplers()
                             .get(this)
-                            .noise(world.getSeed(), x, y, z);
+                            .getSample(world.getSeed(), x, y, z);
     }
     
-    private Optional<NoiseSampler> getDefaultSampler() {
+    private Optional<Sampler> getDefaultSampler() {
         return Optional.ofNullable(defaultSampler);
     }
     
@@ -56,7 +56,7 @@ public class BiomeDefinedLayerSampler implements LayerSampler {
                     String id = registryKey.getID();
                     String fieldName = id + "LayerSampler";
                     samplerFields.put(biomeLayerSampler, fieldName);
-                    DynamicValue.Builder<NoiseSampler> value = DynamicValue.builder("generation.samplers." + id, NoiseSampler.class);
+                    DynamicValue.Builder<Sampler> value = DynamicValue.builder("generation.samplers." + id, Sampler.class);
                     biomeLayerSampler.getDefaultSampler().ifPresent(value::setDefault);
                     templateBuilder.value(fieldName, value.build());
                 }
@@ -64,12 +64,12 @@ public class BiomeDefinedLayerSampler implements LayerSampler {
             
             DynamicTemplate layerSamplerBiomeTemplate = event.load(templateBuilder.build());
             
-            Map<BiomeDefinedLayerSampler, NoiseSampler> samplerMap = samplerFields.entrySet().stream().collect(
-                    Collectors.toMap(Entry::getKey, entry -> layerSamplerBiomeTemplate.get(entry.getValue(), NoiseSampler.class)));
+            Map<BiomeDefinedLayerSampler, Sampler> samplerMap = samplerFields.entrySet().stream().collect(
+                    Collectors.toMap(Entry::getKey, entry -> layerSamplerBiomeTemplate.get(entry.getValue(), Sampler.class)));
             event.getLoadedObject(Biome.class).getContext().put(new BiomeLayerSamplers(samplerMap));
         }
     };
     
-    public record BiomeLayerSamplers(Map<BiomeDefinedLayerSampler, NoiseSampler> samplers) implements Properties {
+    public record BiomeLayerSamplers(Map<BiomeDefinedLayerSampler, Sampler> samplers) implements Properties {
     }
 }

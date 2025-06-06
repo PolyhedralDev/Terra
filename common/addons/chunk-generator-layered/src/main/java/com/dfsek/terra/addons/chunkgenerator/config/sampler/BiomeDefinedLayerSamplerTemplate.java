@@ -7,14 +7,14 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.addons.chunkgenerator.layer.sampler.BiomeDefinedLayerSampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class BiomeDefinedLayerSamplerTemplate implements ObjectTemplate<LayerSampler> {
     
     @Value("default")
     @Default
-    private @Meta NoiseSampler defaultSampler = null;
+    private @Meta Sampler defaultSampler = null;
     
     @Override
     public LayerSampler get() {

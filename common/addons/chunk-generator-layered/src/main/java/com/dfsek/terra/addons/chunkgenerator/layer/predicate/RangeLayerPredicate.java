@@ -1,7 +1,7 @@
 package com.dfsek.terra.addons.chunkgenerator.layer.predicate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 

@@ -7,8 +7,8 @@ import com.dfsek.terra.addons.chunkgenerator.api.LayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.api.LayerSampler;
 import com.dfsek.terra.addons.chunkgenerator.math.pointset.PointSet;
 import com.dfsek.terra.addons.chunkgenerator.palette.DoubleNavigableHolder;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 import com.dfsek.terra.api.world.info.WorldProperties;
@@ -36,7 +36,7 @@ public class DotProductLayerPalette extends LayerPalette {
         Vector3.Mutable surfaceNormalApproximation = Vector3.Mutable.of(0, 0, 0);
         for(Vector3Int point : samplePoints) {
             double scalar = -sampler.sample(x+point.getX(), y+point.getY(), z+point.getZ(), world, biomeProvider);
-            surfaceNormalApproximation.add(point.toVector3Mutable().multiply(scalar));
+            surfaceNormalApproximation.add(point.toFloat().mutable().mulScalar(scalar));
         }
         return palettes.get(direction.dot(surfaceNormalApproximation.normalize()));
     }

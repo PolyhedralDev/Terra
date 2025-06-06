@@ -5,7 +5,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.chunkgenerator.api.LayerPredicate;
 import com.dfsek.terra.addons.chunkgenerator.layer.predicate.RangeLayerPredicate;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class RangeLayerPredicateTemplate implements ObjectTemplate<LayerPredicate> {
