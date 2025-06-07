@@ -57,7 +57,7 @@ public class PlatformImpl extends AbstractPlatform {
     private int generationThreads;
 
     public PlatformImpl(TerraBukkitPlugin plugin) {
-        generationThreads = getGenerationThreadsWithReflection("ca.spottedleaf.moonrise.common.util.MoonriseCommon", "WORKER_THREADS", "Moonrise");
+        generationThreads = getMoonriseGenerationThreadsWithReflection();
         if (generationThreads == 0) {
             generationThreads = 1;
         }
