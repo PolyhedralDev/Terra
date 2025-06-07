@@ -104,9 +104,6 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
 
     private void preloadBiomes() {
         this.biomePool.preloadBiomes(world.getBiomeProvider().getBiomes());
-        for(Player player : MinecraftServer.getConnectionManager().getOnlinePlayers()) {
-            player.startConfigurationPhase();
-        }
     }
 
     public void displayStats() {
