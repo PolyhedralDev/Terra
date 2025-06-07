@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
@@ -40,9 +42,9 @@ public class CheckBlockFunction implements Function<String> {
         String data = arguments.getWorld()
             .getBlockState(arguments.getOrigin().toFloat()
                 .mutable()
-                .add(Vector3.of((int) Math.round(xz.getX()),
+                .add(Vector3.of(FloatingPointFunctions.round(xz.getX()),
                     y.apply(implementationArguments, scope)
-                        .doubleValue(), (int) Math.round(xz.getZ()))))
+                        .doubleValue(), FloatingPointFunctions.round(xz.getZ()))))
             .getAsString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;

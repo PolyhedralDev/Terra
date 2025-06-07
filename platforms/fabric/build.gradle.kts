@@ -38,7 +38,6 @@ loom {
     mixin {
         defaultRefmapName.set("terra.fabric.refmap.json")
     }
-
 }
 
 

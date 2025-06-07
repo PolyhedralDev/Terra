@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
 
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
@@ -28,8 +29,8 @@ public class LazilyEvaluatedInterpolator {
                                        PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {
         this.noisePropertiesKey = noisePropertiesKey;
-        int hSamples = (int) Math.ceil(16.0 / horizontalRes);
-        int vSamples = (int) Math.ceil((double) (max - min) / verticalRes);
+        int hSamples = FloatingPointFunctions.ceil(16.0 / horizontalRes);
+        int vSamples = FloatingPointFunctions.ceil((double) (max - min) / verticalRes);
         this.zMul = (hSamples + 1);
         this.yMul = zMul * zMul;
         samples = new Double[yMul * (vSamples + 1)];

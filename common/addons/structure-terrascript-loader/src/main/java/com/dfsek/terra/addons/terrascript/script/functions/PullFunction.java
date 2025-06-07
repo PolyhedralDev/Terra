@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -43,8 +45,8 @@ public class PullFunction implements Function<Void> {
         Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
             z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
-        Vector3.Mutable mutable = Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-            (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
+        Vector3.Mutable mutable = Vector3.of(FloatingPointFunctions.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
+            FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
             if(!arguments.getWorld().getBlockState(mutable).isAir()) {
                 arguments.getWorld().setBlockState(mutable, data);

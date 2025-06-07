@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,9 +72,9 @@ public class BlockFunction implements Function<Void> {
         Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
             z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
         try {
-            Vector3.Mutable set = Vector3.of((int) Math.round(xz.getX()),
+            Vector3.Mutable set = Vector3.of(FloatingPointFunctions.round(xz.getX()),
                 y.apply(implementationArguments, scope).doubleValue(),
-                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
+                FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));

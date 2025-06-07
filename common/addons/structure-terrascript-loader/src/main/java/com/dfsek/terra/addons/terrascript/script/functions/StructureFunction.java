@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.type.Rotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,17 +78,17 @@ public class StructureFunction implements Function<Boolean> {
             if(script instanceof StructureScript structureScript) {
                 return structureScript.generate(arguments.getOrigin(),
                     arguments.getWorld()
-                        .buffer((int) Math.round(xz.getX()),
+                        .buffer(FloatingPointFunctions.round(xz.getX()),
                             y.apply(implementationArguments, scope).intValue(),
-                            (int) Math.round(xz.getZ())),
+                            FloatingPointFunctions.round(xz.getZ())),
                     arguments.getRandom(),
                     arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
                 arguments.getWorld()
-                    .buffer((int) Math.round(xz.getX()),
+                    .buffer(FloatingPointFunctions.round(xz.getX()),
                         y.apply(implementationArguments, scope).intValue(),
-                        (int) Math.round(xz.getZ())),
+                        FloatingPointFunctions.round(xz.getZ())),
                 arguments.getRandom(),
                 arguments.getRotation().rotate(rotation1));
         }).orElseGet(() -> {
