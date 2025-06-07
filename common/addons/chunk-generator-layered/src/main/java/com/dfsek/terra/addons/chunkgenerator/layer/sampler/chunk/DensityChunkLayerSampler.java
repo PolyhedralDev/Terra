@@ -46,8 +46,8 @@ public class DensityChunkLayerSampler implements ChunkLayerSampler {
 
         samples = new double[blendExtentYExtent * blendExtent];
 
-        int xOrigin = chunkX << 4;
-        int zOrigin = chunkZ << 4;
+        int xOrigin = (chunkX << 4) - 1;
+        int zOrigin = (chunkZ << 4) - 1;
 
         for (int x = 0; x < 18; x += blendDensity) {
             for (int z = 0; z < 18; z += blendDensity) {
