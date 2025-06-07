@@ -13,9 +13,8 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 
 
 public class CheckBlockFunction implements Function<String> {
@@ -34,14 +33,12 @@ public class CheckBlockFunction implements Function<String> {
     public String apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                z.apply(implementationArguments, scope).doubleValue()),
-            arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+                z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         String data = arguments.getWorld()
-            .getBlockState(arguments.getOrigin()
-                .toVector3()
+            .getBlockState(arguments.getOrigin().toFloat()
                 .mutable()
                 .add(Vector3.of((int) Math.round(xz.getX()),
                     y.apply(implementationArguments, scope)

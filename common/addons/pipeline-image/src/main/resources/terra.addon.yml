@@ -12,4 +12,4 @@ website:
 license: MIT License
 depends:
   library-image: "1.+"
-  biome-provider-pipeline-v2: "1.+"
+  biome-provider-pipeline: "2.+"

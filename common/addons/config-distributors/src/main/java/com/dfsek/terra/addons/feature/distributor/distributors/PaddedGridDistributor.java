@@ -1,9 +1,13 @@
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
+
+import com.dfsek.seismic.algorithms.hashing.HashingFunctions;
+
+import com.dfsek.seismic.math.integer.IntegerFunctions;
 
 import com.dfsek.terra.api.structure.feature.Distributor;
-import com.dfsek.terra.api.util.MathUtil;
 
 
 public class PaddedGridDistributor implements Distributor {
@@ -24,7 +28,8 @@ public class PaddedGridDistributor implements Distributor {
         int cellX = Math.floorDiv(x, cellWidth);
         int cellZ = Math.floorDiv(z, cellWidth);
 
-        Random random = new Random((MathUtil.murmur64(MathUtil.squash(cellX, cellZ)) ^ seed) + salt);
+        RandomGenerator random = RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(
+            (HashingFunctions.murmur64(IntegerFunctions.squash(cellX, cellZ)) ^ seed) + salt);
 
         int pointX = random.nextInt(width) + cellX * cellWidth;
         int pointZ = random.nextInt(width) + cellZ * cellWidth;

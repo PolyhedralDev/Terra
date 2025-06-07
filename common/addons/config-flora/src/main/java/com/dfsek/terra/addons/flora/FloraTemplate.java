@@ -16,7 +16,7 @@ import java.util.List;
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.MaterialSet;
 
 
@@ -41,13 +41,13 @@ public class FloraTemplate implements AbstractableTemplate {
     private @Meta List<@Meta BlockLayer> layers;
 
     @Value("layer-distribution")
-    private @Meta NoiseSampler noiseDistribution;
+    private @Meta Sampler noiseDistribution;
 
     public boolean doPhysics() {
         return doPhysics;
     }
 
-    public NoiseSampler getNoiseDistribution() {
+    public Sampler getNoiseDistribution() {
         return noiseDistribution;
     }
 

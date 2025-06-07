@@ -1,11 +1,11 @@
 package com.dfsek.terra.addons.noise.config;
 
+import com.dfsek.seismic.type.CubicSpline.Point;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
-import com.dfsek.terra.addons.noise.math.CubicSpline.Point;
-import com.dfsek.terra.api.config.meta.Meta;
 
+import com.dfsek.terra.api.config.meta.Meta;
 
 public class CubicSplinePointTemplate implements ObjectTemplate<Point> {
 

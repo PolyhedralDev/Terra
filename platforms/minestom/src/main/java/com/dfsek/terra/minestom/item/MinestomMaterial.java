@@ -5,7 +5,6 @@ import com.dfsek.terra.api.inventory.ItemStack;
 
 import net.minestom.server.item.Material;
 
-
 public class MinestomMaterial implements Item {
     private final Material delegate;
 
@@ -14,7 +13,7 @@ public class MinestomMaterial implements Item {
     }
 
     public MinestomMaterial(String id) {
-        this.delegate = Material.fromNamespaceId(id);
+        this.delegate = Material.fromId(Integer.parseInt(id));
     }
 
     @Override

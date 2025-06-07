@@ -31,20 +31,24 @@ public final class TagUtil {
     }
 
     public static void registerWorldPresetTags(Registry<WorldPreset> registry) {
-        logger.info("Doing preset tag garbage....");
+        logger.info("Registering Preset Tags.");
         Map<TagKey<WorldPreset>, List<RegistryEntry<WorldPreset>>> collect = tagsToMutableMap(registry);
 
         PresetUtil
             .getPresets()
-            .forEach(id -> MinecraftUtil
-                .getEntry(registry, id)
+            .forEach(pair -> MinecraftUtil
+                .getEntry(registry, pair.getLeft())
                 .ifPresentOrElse(
-                    preset -> collect
-                        .computeIfAbsent(WorldPresetTags.NORMAL, tag -> new ArrayList<>())
-                        .add(preset),
-                    () -> logger.error("Preset {} does not exist!", id)));
+                    preset -> {
+                        boolean useExtendedTag = pair.getRight(); // Get the boolean value from the pair
+                        collect
+                            .computeIfAbsent(useExtendedTag ? WorldPresetTags.EXTENDED : WorldPresetTags.NORMAL, tag -> new ArrayList<>())
+                            .add(preset);
+                    },
+                    () -> logger.error("Preset {} does not exist!", pair.getLeft())));
 
         registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
+
 
         if(logger.isDebugEnabled()) {
             registry.streamEntries()

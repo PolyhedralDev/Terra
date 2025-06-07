@@ -6,7 +6,7 @@ import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 import net.minestom.server.MinecraftServer;
-import net.minestom.server.item.ItemComponent;
+import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.component.EnchantmentList;
 import net.minestom.server.registry.DynamicRegistry;
@@ -47,7 +47,7 @@ public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStac
     @Override
     public ItemMeta getItemMeta() {
         HashMap<Enchantment, Integer> enchantments = new HashMap<>();
-        EnchantmentList enchantmentList = base.get(ItemComponent.ENCHANTMENTS);
+        EnchantmentList enchantmentList = base.get(DataComponents.ENCHANTMENTS);
         if(enchantmentList != null) {
             enchantmentList.enchantments().forEach((enchantmentKey, integer) -> {
                 enchantments.put(
@@ -67,6 +67,6 @@ public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStac
         });
 
         EnchantmentList list = new EnchantmentList(enchantments);
-        base = base.with(ItemComponent.ENCHANTMENTS, list);
+        base = base.with(DataComponents.ENCHANTMENTS, list);
     }
 }

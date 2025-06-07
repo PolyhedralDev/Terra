@@ -1,15 +1,16 @@
 package com.dfsek.terra.addons.structure.mutator;
 
+import java.util.random.RandomGenerator;
+
+import com.dfsek.seismic.type.Rotation;
+
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.util.ReadInterceptor;
 import com.dfsek.terra.api.world.util.WriteInterceptor;
-
-import java.util.Random;
 
 
 public class MutatedStructure implements Structure, Keyed<MutatedStructure> {
@@ -32,7 +33,7 @@ public class MutatedStructure implements Structure, Keyed<MutatedStructure> {
     }
 
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         return base.generate(location,
             world
                 .buffer()

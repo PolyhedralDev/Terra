@@ -1,17 +1,17 @@
 package com.dfsek.terra.addons.noise.config.templates;
 
+import com.dfsek.seismic.algorithms.sampler.TranslateSampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.samplers.TranslateSampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class TranslateSamplerTemplate extends SamplerTemplate<TranslateSampler> {
 
     @Value("sampler")
-    private NoiseSampler sampler;
+    private Sampler sampler;
 
     @Value("x")
     @Default
@@ -26,7 +26,7 @@ public class TranslateSamplerTemplate extends SamplerTemplate<TranslateSampler> 
     private @Meta double z = 0;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         return new TranslateSampler(sampler, x, y, z);
     }
 }

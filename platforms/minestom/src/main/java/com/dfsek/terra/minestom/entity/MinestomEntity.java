@@ -1,7 +1,7 @@
 package com.dfsek.terra.minestom.entity;
 
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 
 import com.dfsek.terra.minestom.MinestomAdapter;

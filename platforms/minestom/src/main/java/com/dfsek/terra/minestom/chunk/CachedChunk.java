@@ -3,47 +3,53 @@ package com.dfsek.terra.minestom.chunk;
 
 import com.dfsek.terra.api.block.state.BlockState;
 
+import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
+import com.dfsek.terra.minestom.biome.MinestomBiome;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 
+import net.minestom.server.coordinate.Point;
 import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.generator.GenerationUnit;
 import net.minestom.server.instance.generator.UnitModifier;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
 
 
 public class CachedChunk implements ProtoChunk {
     private final int minHeight;
     private final int maxHeight;
-    private final Block[][][] blocks;
+    private final Block[] blocks;
 
     public CachedChunk(int minHeight, int maxHeight) {
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
-        this.blocks = new Block[16][maxHeight - minHeight + 1][16];
-
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                for(int y = 0; y < maxHeight - minHeight + 1; y++) {
-                    blocks[x][y][z] = Block.AIR;
-                }
-            }
-        }
+        this.blocks = new Block[16 * (maxHeight - minHeight + 1) * 16];
+        Arrays.fill(blocks, Block.AIR);
     }
 
     public void writeRelative(UnitModifier modifier) {
-        modifier.setAllRelative((x, y, z) -> blocks[x][y][z]);
+        modifier.setAllRelative((x, y, z) -> blocks[getIndex(x, y + minHeight, z)]);
     }
 
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         Block block = (Block) blockState.getHandle();
         if(block == null) return;
-        blocks[x][y - minHeight][z] = block;
+        blocks[getIndex(x, y, z)] = block;
+    }
+
+    private int getIndex(int x, int y, int z) {
+        int y_normalized = y - minHeight;
+        return x + (z * 16) + (y_normalized * 256);
     }
 
     @Override
     public @NotNull BlockState getBlock(int x, int y, int z) {
-        return new MinestomBlockState(blocks[x][y - minHeight][z]);
+        return new MinestomBlockState(blocks[getIndex(x, y, z)]);
     }
 
     @Override

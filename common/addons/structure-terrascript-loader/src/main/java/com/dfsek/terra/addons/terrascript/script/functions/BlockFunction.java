@@ -22,9 +22,8 @@ import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 
 
 public class BlockFunction implements Function<Void> {
@@ -69,12 +68,12 @@ public class BlockFunction implements Function<Void> {
 
     void setBlock(ImplementationArguments implementationArguments, Scope scope,
                   TerraImplementationArguments arguments, BlockState rot) {
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
         try {
             Vector3.Mutable set = Vector3.of((int) Math.round(xz.getX()),
                 y.apply(implementationArguments, scope).doubleValue(),
-                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin());
+                (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
             BlockState current = arguments.getWorld().getBlockState(set);
             if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
                 arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));

@@ -3,9 +3,10 @@ package com.dfsek.terra.minestom.item;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 
+import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.item.Material;
-import net.minestom.server.utils.NamespaceID;
+import net.minestom.server.registry.DynamicRegistry;
 
 import java.util.Objects;
 
@@ -16,11 +17,13 @@ public class MinestomEnchantment implements Enchantment {
 
     public MinestomEnchantment(net.minestom.server.item.enchant.Enchantment delegate) {
         this.delegate = delegate;
-        id = Objects.requireNonNull(delegate.registry()).raw();
+        DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
+        this.id = Objects.requireNonNull(registry.getKey(delegate)).toString();
     }
 
     public MinestomEnchantment(String id) {
-        this.delegate = MinecraftServer.getEnchantmentRegistry().get(NamespaceID.from(id));
+        Key key = Key.key(id);
+        this.delegate = MinecraftServer.getEnchantmentRegistry().get(key);
         this.id = id;
     }
 
@@ -31,7 +34,19 @@ public class MinestomEnchantment implements Enchantment {
 
     @Override
     public boolean conflictsWith(Enchantment other) {
-        return delegate.exclusiveSet().contains(NamespaceID.from(((MinestomEnchantment) other).id));
+        var otherDelegate = ((MinestomEnchantment) other).delegate;
+        delegate.exclusiveSet();
+
+        // Get the registry key for the other enchantment to use in contains
+        try {
+            DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
+            DynamicRegistry.Key<net.minestom.server.item.enchant.Enchantment> otherKey = registry.getKey(otherDelegate);
+            return delegate.exclusiveSet().contains(otherKey);
+        } catch (Exception e) {
+            // If the key approach fails, fall back to a more basic implementation
+            String otherId = ((MinestomEnchantment) other).id;
+            return otherId.equals(this.id);
+        }
     }
 
     @Override

@@ -3,18 +3,18 @@ package com.dfsek.terra.api.world;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 
 public interface WritableWorld extends ReadableWorld {
     default void setBlockState(Vector3 position, BlockState data, boolean physics) {
-        setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
+        setBlockState(position.getFloorX(), position.getFloorY(), position.getFloorZ(), data, physics);
     }
 
     default void setBlockState(Vector3.Mutable position, BlockState data, boolean physics) {
-        setBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ(), data, physics);
+        setBlockState(position.getFloorX(), position.getFloorY(), position.getFloorZ(), data, physics);
     }
 
     default void setBlockState(Vector3Int position, BlockState data, boolean physics) {
