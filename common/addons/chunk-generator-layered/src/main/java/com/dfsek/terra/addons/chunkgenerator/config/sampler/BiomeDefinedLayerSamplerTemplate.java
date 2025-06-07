@@ -10,7 +10,7 @@ import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.seismic.type.sampler.Sampler;
 
 
-public class BiomeDefinedLayerSamplerTemplate implements ObjectTemplate<LayerSampler> {
+public class BiomeDefinedLayerSamplerTemplate extends LayerSamplerTemplate {
     
     @Value("default")
     @Default
@@ -18,6 +18,6 @@ public class BiomeDefinedLayerSamplerTemplate implements ObjectTemplate<LayerSam
     
     @Override
     public LayerSampler get() {
-        return new BiomeDefinedLayerSampler(defaultSampler);
+        return new BiomeDefinedLayerSampler(defaultSampler, blend);
     }
 }

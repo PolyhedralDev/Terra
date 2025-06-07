@@ -3,6 +3,9 @@ package com.dfsek.terra.addons.chunkgenerator.layer.sampler;
 import com.dfsek.tectonic.api.config.template.dynamic.DynamicTemplate;
 import com.dfsek.tectonic.api.config.template.dynamic.DynamicValue;
 
+import com.dfsek.terra.addons.chunkgenerator.api.chunk.ChunkLayerSampler;
+import com.dfsek.terra.addons.chunkgenerator.layer.sampler.blend.BlendProperties;
+
 import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +27,11 @@ import com.dfsek.terra.api.world.info.WorldProperties;
 public class BiomeDefinedLayerSampler implements LayerSampler {
     
     private final Sampler defaultSampler;
+    private final BlendProperties blendProperties;
     
-    public BiomeDefinedLayerSampler(@Nullable Sampler defaultSampler) {
+    public BiomeDefinedLayerSampler(@Nullable Sampler defaultSampler, BlendProperties blendProperties) {
         this.defaultSampler = defaultSampler;
+        this.blendProperties = blendProperties;
     }
     
     @Override
@@ -38,7 +43,17 @@ public class BiomeDefinedLayerSampler implements LayerSampler {
                             .get(this)
                             .getSample(world.getSeed(), x, y, z);
     }
-    
+
+    @Override
+    public ChunkLayerSampler getChunk(int chunkX, int chunkZ, WorldProperties world, BiomeProvider biomeProvider) {
+        return null;
+    }
+
+    @Override
+    public double getBlendWeight() {
+        return blendProperties.weight();
+    }
+
     private Optional<Sampler> getDefaultSampler() {
         return Optional.ofNullable(defaultSampler);
     }

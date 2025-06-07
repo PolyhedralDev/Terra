@@ -1,6 +1,10 @@
 package com.dfsek.terra.addons.chunkgenerator;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+
+import com.dfsek.terra.addons.chunkgenerator.config.sampler.ElevationLayerSamplerTemplate;
+import com.dfsek.terra.addons.chunkgenerator.layer.sampler.ElevationLayerSampler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +38,7 @@ import com.dfsek.terra.addons.chunkgenerator.config.predicate.SamplerListLayerPr
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PaletteLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.resolve.PredicateLayerResolverTemplate;
 import com.dfsek.terra.addons.chunkgenerator.config.sampler.BiomeDefinedLayerSamplerTemplate;
-import com.dfsek.terra.addons.chunkgenerator.config.sampler.SimpleLayerSamplerTemplate;
+import com.dfsek.terra.addons.chunkgenerator.config.sampler.DensityLayerSamplerTemplate;
 import com.dfsek.terra.addons.chunkgenerator.generation.LayeredChunkGenerator;
 import com.dfsek.terra.addons.chunkgenerator.layer.palette.BiomeDefinedLayerPalette;
 import com.dfsek.terra.addons.chunkgenerator.layer.sampler.BiomeDefinedLayerSampler;
@@ -55,7 +59,7 @@ import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorPr
 
 public class LayeredChunkGeneratorAddon implements AddonInitializer {
     
-    private static final Logger logger = LoggerFactory.getLogger(LayeredChunkGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger( LayeredChunkGeneratorAddon.class);
     
     public static final TypeKey<Supplier<ObjectTemplate<PointSet>>> POINT_SET_TYPE_TOKEN = new TypeKey<>() {
     };
@@ -116,7 +120,8 @@ public class LayeredChunkGeneratorAddon implements AddonInitializer {
                 .then(event -> {
                     CheckedRegistry<Supplier<ObjectTemplate<LayerSampler>>> samplerTypeRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TYPE_TOKEN);
                     CheckedRegistry<InstanceWrapper<LayerSampler>> samplerRegistry = event.getPack().getOrCreateRegistry(LAYER_SAMPLER_TOKEN);
-                    samplerTypeRegistry.register(addon.key("SIMPLE"), SimpleLayerSamplerTemplate::new);
+                    samplerTypeRegistry.register(addon.key("DENSITY"), DensityLayerSamplerTemplate::new);
+                    samplerTypeRegistry.register(addon.key("ELEVATION"), ElevationLayerSamplerTemplate::new);
                     samplerTypeRegistry.register(addon.key("BIOME_DEFINED"), BiomeDefinedLayerSamplerTemplate::new);
                     
                     event.loadTemplate(new LayerSamplerPackConfigTemplate()).getSamplers().forEach((key, sampler) -> {
