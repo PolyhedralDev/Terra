@@ -1,8 +1,8 @@
 preRelease(true)
 
-versionProjects(":common:api", version("6.6.2"))
-versionProjects(":common:implementation", version("6.6.2"))
-versionProjects(":platforms", version("6.6.2"))
+versionProjects(":common:api", version("6.6.3"))
+versionProjects(":common:implementation", version("6.6.3"))
+versionProjects(":platforms", version("6.6.3"))
 
 
 allprojects {
