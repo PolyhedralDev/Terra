@@ -1,7 +1,7 @@
 repositories {
     maven {
         name = "onarandombox"
-        url = uri("https://repo.onarandombox.com/content/groups/public/")
+        url = uri("https://repo.onarandombox.com/multiverse-releases")
     }
 }
 
