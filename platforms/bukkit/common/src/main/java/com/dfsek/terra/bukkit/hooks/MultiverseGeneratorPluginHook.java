@@ -8,7 +8,6 @@ import org.mvplugins.multiverse.external.jetbrains.annotations.NotNull;
 import org.mvplugins.multiverse.external.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.List;
 
 public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
 
@@ -27,7 +26,13 @@ public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
 
     @Override
     public @Nullable Collection<String> getExampleUsages() {
-        return List.of("/mv create example_world NORMAL -g Terra:OVERWORLD");
+        return platform.getConfigRegistry()
+            .entries()
+            .stream()
+            .map(Keyed::getID)
+            .map("/mv create example_world NORMAL -g Terra:%s"::formatted)
+            .limit(5) // reasonable amount
+            .toList();
     }
 
     @Override
