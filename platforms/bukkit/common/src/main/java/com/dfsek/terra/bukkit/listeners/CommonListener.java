@@ -40,13 +40,13 @@ public class CommonListener implements Listener {
     }
 
     @EventHandler
-    public void onPluginEnable(PluginEnableEvent e) {
-        if(e.getPlugin().getName().equals("Multiverse-Core")) {
+    public void onPluginEnable(PluginEnableEvent event) {
+        if(event.getPlugin().getName().equals("Multiverse-Core")) {
             try {
                 MultiverseCoreApi.get().getGeneratorProvider()
                     .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
-            } catch(Exception ex) {
-                logger.error("Failed to register Terra generator plugin to multiverse.", ex);
+            } catch (Exception e) {
+                logger.error("Failed to register Terra generator plugin to multiverse.", e);
             }
         }
     }
