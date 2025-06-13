@@ -41,8 +41,8 @@ object Versions {
     object Mod {
         const val mixin = "0.15.5+mixin.0.8.7"
         
-        const val minecraft = "1.21.6-pre3"
-        const val yarn = "$minecraft+build.5"
+        const val minecraft = "1.21.6-rc1"
+        const val yarn = "$minecraft+build.1"
         const val fabricLoader = "0.16.14"
         
         const val architecuryLoom = "1.10.431"
