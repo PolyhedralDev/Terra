@@ -17,13 +17,40 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
+
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
+import org.mvplugins.multiverse.core.MultiverseCoreApi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * Listener for events on all implementations.
  */
 public class CommonListener implements Listener {
-    public CommonListener() {
+    private static final Logger logger = LoggerFactory.getLogger(CommonListener.class);
+    private final Platform platform;
+
+    public CommonListener(Platform platform) {
+        this.platform = platform;
+    }
+
+    @EventHandler
+    public void onPluginEnable(PluginEnableEvent event) {
+        if(event.getPlugin().getName().equals("Multiverse-Core")) {
+            try {
+                Class.forName("org.mvplugins.multiverse.core.MultiverseCoreApi");
+                MultiverseCoreApi.get().getGeneratorProvider()
+                    .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
+            } catch(ClassNotFoundException e) {
+                logger.debug("Multiverse v5 is not installed.");
+            } catch(IllegalStateException e) {
+                logger.error("Failed to register Terra generator plugin to multiverse.", e);
+            }
+        }
     }
 }
