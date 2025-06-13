@@ -43,9 +43,12 @@ public class CommonListener implements Listener {
     public void onPluginEnable(PluginEnableEvent event) {
         if(event.getPlugin().getName().equals("Multiverse-Core")) {
             try {
+                Class.forName("org.mvplugins.multiverse.core.MultiverseCoreApi");
                 MultiverseCoreApi.get().getGeneratorProvider()
                     .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
-            } catch (Exception e) {
+            } catch (ClassNotFoundException e) {
+                logger.debug("Multiverse v5 is not installed.");
+            } catch (IllegalStateException e) {
                 logger.error("Failed to register Terra generator plugin to multiverse.", e);
             }
         }
