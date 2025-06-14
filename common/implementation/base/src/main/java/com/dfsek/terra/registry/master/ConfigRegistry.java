@@ -55,7 +55,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         for(File dir : Objects.requireNonNull(packsFolder.listFiles(File::isDirectory))) {
             try {
                 load(dir, platform);
-            } catch(ConfigException e) {
+            } catch(RuntimeException e) {
                 logger.error("Error loading config pack {}", dir.getName(), e);
                 valid = false;
             }
@@ -65,7 +65,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
             try {
                 logger.info("Loading ZIP archive: {}", zip.getName());
                 load(new ZipFile(zip), platform);
-            } catch(IOException | ConfigException e) {
+            } catch(IOException | RuntimeException e) {
                 logger.error("Error loading config pack {}", zip.getName(), e);
                 valid = false;
             }
