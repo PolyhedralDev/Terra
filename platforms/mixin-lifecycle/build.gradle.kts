@@ -15,10 +15,10 @@ dependencies {
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
-        exclude("net.fabricmc")
-        exclude("net.fabricmc.fabric-api")
-    }
+//    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+//        exclude("net.fabricmc")
+//        exclude("net.fabricmc.fabric-api")
+//    }
 }
 
 loom {
