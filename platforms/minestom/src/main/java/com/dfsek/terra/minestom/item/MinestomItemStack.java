@@ -10,7 +10,7 @@ import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.component.EnchantmentList;
 import net.minestom.server.registry.DynamicRegistry;
-import net.minestom.server.registry.DynamicRegistry.Key;
+import net.minestom.server.registry.RegistryKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStac
 
     @Override
     public void setItemMeta(ItemMeta meta) {
-        HashMap<Key<net.minestom.server.item.enchant.Enchantment>, Integer> enchantments = new HashMap<>();
+        HashMap<RegistryKey<net.minestom.server.item.enchant.Enchantment>, Integer> enchantments = new HashMap<>();
         DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
         meta.getEnchantments().forEach((key, value) -> {
             MinestomEnchantment enchantment = (MinestomEnchantment) key;

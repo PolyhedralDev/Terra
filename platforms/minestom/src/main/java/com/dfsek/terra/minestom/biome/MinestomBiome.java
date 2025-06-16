@@ -2,17 +2,17 @@ package com.dfsek.terra.minestom.biome;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
-import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.world.biome.Biome;
 
 
 public class MinestomBiome implements PlatformBiome {
-    private final DynamicRegistry.Key<Biome> biome;
+    private final RegistryKey<Biome> biome;
 
-    public MinestomBiome(DynamicRegistry.Key<Biome> biome) { this.biome = biome; }
+    public MinestomBiome(RegistryKey<Biome> biome) { this.biome = biome; }
 
     @Override
-    public DynamicRegistry.Key<Biome> getHandle() {
+    public RegistryKey<Biome> getHandle() {
         return biome;
     }
 }
