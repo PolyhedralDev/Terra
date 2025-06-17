@@ -20,6 +20,8 @@ package com.dfsek.terra.config;
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
 import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.tectonic.api.TypeRegistry;
 
 import java.util.LinkedHashMap;
@@ -37,6 +39,8 @@ import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
 import com.dfsek.terra.config.loaders.MaterialSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
+import com.dfsek.terra.config.loaders.Vector3IntLoader;
+import com.dfsek.terra.config.loaders.Vector3Loader;
 import com.dfsek.terra.config.loaders.VersionLoader;
 import com.dfsek.terra.config.loaders.VersionRangeLoader;
 
@@ -56,8 +60,9 @@ public class GenericLoaders implements LoaderRegistrar {
             .registerLoader(MaterialSet.class, new MaterialSetLoader())
             .registerLoader(VersionRange.class, new VersionRangeLoader())
             .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
-            .registerLoader(ParseOptions.class, ExpressionParserOptionsTemplate::new);
-
+            .registerLoader(ParseOptions.class, ExpressionParserOptionsTemplate::new)
+            .registerLoader(Vector3.class, new Vector3Loader())
+            .registerLoader(Vector3Int.class, new Vector3IntLoader());
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
                 .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
