@@ -72,6 +72,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
     @Default
     private Float ambientLight = null;
 
+    @Value("minecraft.cloud-height")
+    @Default
+    private Integer cloudHeight = null;
+
     @Value("minecraft.monster-settings")
     @Default
     private MonsterSettingsConfig monsterSettings = null;
@@ -151,6 +155,10 @@ public class VanillaWorldProperties implements ConfigTemplate, Properties {
 
     public Float getAmbientLight() {
         return ambientLight;
+    }
+
+    public Integer getCloudHeight() {
+        return cloudHeight;
     }
 
     public MonsterSettingsConfig getMonsterSettings() {

@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -370,6 +372,28 @@ public abstract class AbstractPlatform implements Platform {
         }
         return 0;
 
+    }
+    
+    private static final String moonrise = "Moonrise";
+    public static int getMoonriseGenerationThreadsWithReflection() {
+        try {
+            Class<?> prioritisedThreadPoolClazz = Class.forName("ca.spottedleaf.concurrentutil.executor.thread.PrioritisedThreadPool");
+            Method getCoreThreadsMethod = prioritisedThreadPoolClazz.getDeclaredMethod("getCoreThreads");
+            getCoreThreadsMethod.setAccessible(true);
+            Class<?> moonriseCommonClazz = Class.forName("ca.spottedleaf.moonrise.common.util.MoonriseCommon");
+            Object pool = moonriseCommonClazz.getDeclaredField("WORKER_POOL").get(null);
+            int threads = ((Thread[]) getCoreThreadsMethod.invoke(pool)).length;
+            logger.info("{} found, setting {} generation threads.", moonrise, threads);
+            return threads;
+        } catch (ClassNotFoundException e) {
+            logger.info("{} not found.", moonrise);
+        } catch (NoSuchMethodException | NoSuchFieldException e) {
+            logger.warn("{} found, but field/method not found this probably means {0} has changed its code and " +
+                        "Terra has not updated to reflect that.", moonrise);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logger.error("Failed to access thread values in {}, assuming 1 generation thread.", moonrise, e);
+        }
+        return 0;
     }
 
     @Override

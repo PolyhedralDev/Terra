@@ -26,6 +26,12 @@ include(":platforms:minestom:example")
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven("https://maven.solo-studios.ca/releases") {
+            name = "Solo Studios"
+        }
+        maven("https://maven.solo-studios.ca/snapshots") {
+            name = "Solo Studios"
+        }
         maven("https://maven.fabricmc.net") {
             name = "Fabric Maven"
         }

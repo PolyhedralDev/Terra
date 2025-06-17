@@ -47,7 +47,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     public LifecyclePlatform() {
         generationThreads = getGenerationThreadsWithReflection("com.ishland.c2me.base.common.GlobalExecutors", "GLOBAL_EXECUTOR_PARALLELISM", "C2ME");
         if (generationThreads == 0) {
-            generationThreads = getGenerationThreadsWithReflection("ca.spottedleaf.moonrise.common.util.MoonriseCommon", "WORKER_THREADS", "Moonrise");
+            generationThreads = getMoonriseGenerationThreadsWithReflection();
         } if (generationThreads == 0) {
             generationThreads = 1;
         }
@@ -109,7 +109,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
         super.platformAddon().forEach(addons::add);
 
-        String mcVersion = MinecraftVersion.CURRENT.getName();
+        String mcVersion = MinecraftVersion.CURRENT.name();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
         } catch(ParseException e) {

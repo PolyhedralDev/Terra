@@ -1,10 +1,14 @@
 plugins {
+    id("io.papermc.paperweight.userdev")
     id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
 dependencies {
+    // Required for :platforms:bukkit:runDevBundleServer task
+    paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
+
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_21_5", configuration = "reobf"))
+    shaded(project(":platforms:bukkit:nms:v1_21_6"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
