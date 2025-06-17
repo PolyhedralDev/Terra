@@ -7,6 +7,7 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
 
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
+    compileOnly("io.github.llamalad7:mixinextras-common:${Versions.Mod.mixinExtras}")
     annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
 
@@ -15,10 +16,11 @@ dependencies {
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-//    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
-//        exclude("net.fabricmc")
-//        exclude("net.fabricmc.fabric-api")
-//    }
+    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+        exclude("net.fabricmc")
+        exclude("net.fabricmc.fabric-api")
+        exclude("me.lucko", "fabric-permissions-api")
+    }
 }
 
 loom {
