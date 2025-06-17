@@ -7,6 +7,7 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.item.Material;
 import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.registry.RegistryKey;
 
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class MinestomEnchantment implements Enchantment {
         // Get the registry key for the other enchantment to use in contains
         try {
             DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
-            DynamicRegistry.Key<net.minestom.server.item.enchant.Enchantment> otherKey = registry.getKey(otherDelegate);
+            RegistryKey<net.minestom.server.item.enchant.Enchantment> otherKey = registry.getKey(otherDelegate);
             return delegate.exclusiveSet().contains(otherKey);
         } catch (Exception e) {
             // If the key approach fails, fall back to a more basic implementation
