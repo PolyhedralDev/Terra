@@ -35,9 +35,25 @@ public class BiomeUtil {
             .skyColor(Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanilla.getSkyColor()))
             .grassColorModifier(
                 Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColorModifier(), vanilla.getEffects().getGrassColorModifier()))
-            .grassColor(Objects.requireNonNullElse(vanillaBiomeProperties.getGrassColor(),
-                vanilla.getEffects().getGrassColor().orElseGet(() -> ((BiomeInvoker) ((Object) vanilla)).invokeGetDefaultGrassColor())))
-            .foliageColor(Objects.requireNonNullElse(vanillaBiomeProperties.getFoliageColor(), vanilla.getFoliageColor()));
+            .musicVolume(Objects.requireNonNullElse(vanillaBiomeProperties.getMusicVolume(), vanilla.getMusicVolume()));
+
+        if(vanillaBiomeProperties.getGrassColor() == null) {
+            vanilla.getEffects().getGrassColor().ifPresent(effects::grassColor);
+        } else {
+            effects.grassColor(vanillaBiomeProperties.getGrassColor());
+        }
+
+        if(vanillaBiomeProperties.getFoliageColor() == null) {
+            vanilla.getEffects().getFoliageColor().ifPresent(effects::foliageColor);
+        } else {
+            effects.foliageColor(vanillaBiomeProperties.getFoliageColor());
+        }
+
+        if(vanillaBiomeProperties.getDryFoliageColor() == null) {
+            vanilla.getEffects().getDryFoliageColor().ifPresent(effects::dryFoliageColor);
+        } else {
+            effects.dryFoliageColor(vanillaBiomeProperties.getDryFoliageColor());
+        }
 
         if(vanillaBiomeProperties.getParticleConfig() == null) {
             vanilla.getEffects().getParticleConfig().ifPresent(effects::particleConfig);

@@ -38,6 +38,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private Integer foliageColor = null;
 
+    @Value("colors.dry-foliage")
+    @Default
+    private Integer dryFoliageColor = null;
+
     @Value("colors.sky")
     @Default
     private Integer skyColor = null;
@@ -82,6 +86,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private Music music = null;
 
+    @Value("sound.music-volume")
+    @Default
+    private Float musicVolume = null;
+
     @Value("spawning")
     @Default
     private MobSpawnSettings spawnSettings = null;
@@ -96,6 +104,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     public Integer getFoliageColor() {
         return foliageColor;
+    }
+
+    public Integer getDryFoliageColor() {
+        return dryFoliageColor;
     }
 
     public Integer getGrassColor() {
