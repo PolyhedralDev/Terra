@@ -107,7 +107,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
         super.platformAddon().forEach(addons::add);
 
-        String mcVersion = MinecraftVersion.CURRENT.getName();
+        String mcVersion = MinecraftVersion.CURRENT.name();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
         } catch(ParseException e) {

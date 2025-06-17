@@ -34,11 +34,4 @@ public class MinecraftServerMixin {
                                    WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo ci) {
         LifecyclePlatform.setServer((MinecraftServer) (Object) this);
     }
-
-    @Inject(method = "shutdown()V", at = @At("RETURN"))
-    private void injectShutdown(CallbackInfo ci) {
-        ModPlatform platform = CommonPlatform.get();
-        platform.getRawConfigRegistry().clear();
-        initialized = false;
-    }
 }
