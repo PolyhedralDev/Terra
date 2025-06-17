@@ -26,7 +26,9 @@ dependencies {
 
     modImplementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
 
-    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+        exclude("me.lucko", "fabric-permissions-api")
+    }
     include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
 
     modRuntimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
