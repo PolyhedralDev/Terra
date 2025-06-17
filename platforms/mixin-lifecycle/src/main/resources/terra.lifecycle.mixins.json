@@ -12,9 +12,6 @@
     "lifecycle.RegistryLoaderMixin",
     "lifecycle.SaveLoadingMixin"
   ],
-  "client": [
-      "lifecycle.CreateWorldScreenMixin"
-  ],
   "server": [
   ],
   "injectors": {

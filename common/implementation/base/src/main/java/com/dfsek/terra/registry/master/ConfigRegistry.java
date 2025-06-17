@@ -44,13 +44,13 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
-        List<IOException> failedLoads = new ArrayList<>();
+        List<Exception> failedLoads = new ArrayList<>();
         try(Stream<Path> packs = Files.list(packsDirectory)) {
             packs.forEach(path -> {
                 try {
                     ConfigPack pack = new ConfigPackImpl(path, platform);
                     registerChecked(pack.getRegistryKey(), pack);
-                } catch(IOException e) {
+                } catch(IOException | RuntimeException e) {
                     failedLoads.add(e);
                 }
             });

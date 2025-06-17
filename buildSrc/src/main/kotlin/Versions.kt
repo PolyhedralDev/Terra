@@ -11,7 +11,7 @@ object Versions {
         
         const val cloud = "2.0.0"
         
-        const val caffeine = "3.2.0"
+        const val caffeine = "3.2.1"
         
         const val slf4j = "2.0.17"
 
@@ -23,13 +23,13 @@ object Versions {
             const val asm = "9.8"
             const val snakeYml = "2.4"
             const val jetBrainsAnnotations = "26.0.2"
-            const val junit = "5.13.0"
+            const val junit = "5.13.1"
             const val nbt = "6.1"
         }
     }
     
     object Fabric {
-        const val fabricAPI = "0.125.3+${Mod.minecraft}"
+        const val fabricAPI = "0.127.0+${Mod.minecraft}"
         const val cloud = "2.0.0-beta.10"
     }
 //
@@ -40,8 +40,9 @@ object Versions {
     
     object Mod {
         const val mixin = "0.15.5+mixin.0.8.7"
+        const val mixinExtras = "0.4.1"
         
-        const val minecraft = "1.21.5"
+        const val minecraft = "1.21.6"
         const val yarn = "$minecraft+build.1"
         const val fabricLoader = "0.16.14"
         
@@ -56,18 +57,18 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21.5-R0.1"
-        const val paperBuild = "$minecraft-20250529.121722-14"
+        const val minecraft = "1.21.6-R0.1"
+        const val paperBuild = "$minecraft-20250617.170821-8"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.2"
-        const val paperDevBundle = "$minecraft-20250529.121722-99"
+        const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"
         const val paperWeight = "2.0.0-beta.17"
         const val cloud = "2.0.0-beta.10"
     }
     
-    //
+//
 //    object Sponge {
 //        const val sponge = "9.0.0-SNAPSHOT"
 //        const val mixin = "0.8.2"
