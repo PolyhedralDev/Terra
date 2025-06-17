@@ -8,7 +8,7 @@ import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 import net.kyori.adventure.key.Key;
-import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.registry.RegistryKey;
 import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +21,6 @@ public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {
         @Subst("name:value")
         String id = (String) o;
         Key key = Key.key(id);
-        return new MinestomBiome(DynamicRegistry.Key.of(key));
+        return new MinestomBiome(RegistryKey.unsafeOf(key));
     }
 }

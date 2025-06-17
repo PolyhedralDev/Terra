@@ -8,6 +8,7 @@ import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.color.Color;
 import net.minestom.server.registry.DynamicRegistry;
+import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.world.biome.Biome;
 import net.minestom.server.world.biome.BiomeEffects;
 import org.intellij.lang.annotations.Subst;
@@ -24,7 +25,7 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
     @Override
     public UserDefinedBiome create(ConfigPack pack, com.dfsek.terra.api.world.biome.Biome source) {
         VanillaBiomeProperties properties = source.getContext().get(VanillaBiomeProperties.class);
-        DynamicRegistry.Key<Biome> parentKey = ((MinestomBiome) source.getPlatformBiome()).getHandle();
+        RegistryKey<Biome> parentKey = ((MinestomBiome) source.getPlatformBiome()).getHandle();
         Biome parent = mergeNullable(biomeRegistry.get(parentKey), plainsBiome);
         BiomeEffects parentEffects = parent.effects();
         Key key = Key.key("terra", createBiomeID(pack, source.getID()));
@@ -57,7 +58,7 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
             .effects(effectsBuilder.build())
             .build();
 
-        DynamicRegistry.Key<Biome> registryKey = MinecraftServer.getBiomeRegistry().register(key, target);
+        RegistryKey<Biome> registryKey = MinecraftServer.getBiomeRegistry().register(key, target);
         return new UserDefinedBiome(key, registryKey, source.getID(), target);
     }
 
