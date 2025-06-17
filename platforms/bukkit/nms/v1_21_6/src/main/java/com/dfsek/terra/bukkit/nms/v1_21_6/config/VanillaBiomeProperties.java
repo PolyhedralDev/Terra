@@ -166,6 +166,10 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return music;
     }
 
+    public Float getMusicVolume() {
+        return musicVolume;
+    }
+
     public MobSpawnSettings getSpawnSettings() {
         return spawnSettings;
     }
