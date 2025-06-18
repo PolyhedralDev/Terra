@@ -66,6 +66,9 @@ fun Project.configureDependencies() {
         maven("https://storehouse.okaeri.eu/repository/maven-public/") {
             name = "Okaeri"
         }
+        maven("https://repo.onarandombox.com/multiverse-releases") {
+            name = "onarandombox"
+        }
     }
     
     dependencies {
