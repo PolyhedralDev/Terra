@@ -60,7 +60,6 @@ public class DimensionUtil {
     private static MonsterSettings getMonsterSettings(DimensionType defaultDimension, MonsterSettingsConfig monsterSettingsConfig) {
         MonsterSettings defaultMonsterSettings = defaultDimension.monsterSettings();
 
-
         return new MonsterSettings(
             monsterSettingsConfig.getPiglinSafe() == null ? defaultMonsterSettings.piglinSafe() : monsterSettingsConfig.getPiglinSafe(),
             monsterSettingsConfig.getHasRaids() == null ? defaultMonsterSettings.hasRaids() : monsterSettingsConfig.getHasRaids(),
