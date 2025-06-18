@@ -1,14 +1,13 @@
 package com.dfsek.terra.minestom.block;
 
+import net.minestom.server.instance.block.Block;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
-
-import net.minestom.server.instance.block.Block;
-
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 public class MinestomBlockState implements BlockState {
@@ -23,24 +22,10 @@ public class MinestomBlockState implements BlockState {
     }
 
     public MinestomBlockState(String data) {
-        if(!data.contains("[")) {
-            block = Block.fromNamespaceId(data);
-            return;
+        block = Block.fromState(data);
+        if (block == null) {
+            throw new IllegalArgumentException("Invalid block state: " + data);
         }
-
-        String[] split = data.split("\\[");
-        String namespaceId = split[0];
-        String properties = split[1].substring(0, split[1].length() - 1);
-        Block block = Block.fromNamespaceId(namespaceId);
-        HashMap<String, String> propertiesMap = new HashMap<>();
-
-        for(String property : properties.split(",")) {
-            String[] kv = property.split("=");
-            propertiesMap.put(kv[0].strip(), kv[1].strip());
-        }
-
-        assert block != null;
-        this.block = block.withProperties(propertiesMap);
     }
 
     @Override
@@ -70,7 +55,7 @@ public class MinestomBlockState implements BlockState {
 
     @Override
     public String getAsString(boolean properties) {
-        String name = block.namespace().asString();
+        String name = block.key().asString();
         if(!properties || block.properties().isEmpty()) {
             return name;
         }

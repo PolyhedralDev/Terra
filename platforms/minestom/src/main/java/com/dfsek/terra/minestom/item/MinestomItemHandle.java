@@ -23,6 +23,6 @@ public class MinestomItemHandle implements ItemHandle {
 
     @Override
     public Set<Enchantment> getEnchantments() {
-        return MinecraftServer.getEnchantmentRegistry().values().stream().map(MinestomEnchantment::new).collect(Collectors.toSet());
+        return MinecraftServer.getEnchantmentRegistry().keys().stream().map(MinestomEnchantment::new).collect(Collectors.toSet());
     }
 }
