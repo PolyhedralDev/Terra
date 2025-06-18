@@ -14,7 +14,7 @@ public class MinestomMaterial implements Item {
     }
 
     public MinestomMaterial(String id) {
-        this.delegate = Material.fromNamespaceId(id);
+        this.delegate = Material.fromKey(id);
     }
 
     @Override

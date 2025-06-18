@@ -8,7 +8,7 @@ public class MinestomEntityType implements com.dfsek.terra.api.entity.EntityType
     private final EntityType delegate;
 
     public MinestomEntityType(String id) {
-        delegate = EntityType.fromNamespaceId(id);
+        delegate = EntityType.fromKey(id);
     }
 
     @Override
