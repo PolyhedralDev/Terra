@@ -1,7 +1,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
+import com.dfsek.seismic.type.vector.Vector3;
+
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public enum SlantCalculationMethod {
@@ -22,7 +23,7 @@ public enum SlantCalculationMethod {
             Vector3.Mutable normalApproximation = Vector3.Mutable.of(0, 0, 0);
             for(Vector3 point : DOT_PRODUCT_SAMPLE_POINTS) {
                 var scalar = -sampler.sample(x + point.getX(), y + point.getY(), z + point.getZ());
-                normalApproximation.add(point.mutable().multiply(scalar));
+                normalApproximation.add(point.mutable().mulScalar(scalar));
             }
             return DOT_PRODUCT_DIRECTION.dot(normalApproximation.normalize());
         }

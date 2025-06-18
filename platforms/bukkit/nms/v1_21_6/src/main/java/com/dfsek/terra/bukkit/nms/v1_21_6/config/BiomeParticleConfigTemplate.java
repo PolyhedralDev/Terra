@@ -15,17 +15,17 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
     @Value("particle")
     @Default
     private String particle = null;
-    
+
     @Value("probability")
     @Default
     private Integer probability = null;
-    
+
     @Override
     public AmbientParticleSettings get() {
         if(particle == null || probability == null) {
             return null;
         }
-        
+
         try {
             return new AmbientParticleSettings(ParticleArgument.readParticle(new StringReader(particle),
                 (Provider) BuiltInRegistries.PARTICLE_TYPE.asHolderIdMap()), probability);

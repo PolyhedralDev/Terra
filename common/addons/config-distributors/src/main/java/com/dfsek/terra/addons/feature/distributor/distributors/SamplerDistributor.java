@@ -7,22 +7,23 @@
 
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import com.dfsek.terra.api.structure.feature.Distributor;
 
 
 public class SamplerDistributor implements Distributor {
-    private final NoiseSampler sampler;
+    private final Sampler sampler;
 
     private final double threshold;
 
-    public SamplerDistributor(NoiseSampler sampler, double threshold) {
+    public SamplerDistributor(Sampler sampler, double threshold) {
         this.sampler = sampler;
         this.threshold = threshold;
     }
 
     @Override
     public boolean matches(int x, int z, long seed) {
-        return sampler.noise(seed, x, z) < threshold;
+        return sampler.getSample(seed, x, z) < threshold;
     }
 }

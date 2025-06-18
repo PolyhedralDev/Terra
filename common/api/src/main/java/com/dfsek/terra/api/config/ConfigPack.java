@@ -9,11 +9,11 @@ package com.dfsek.terra.api.config;
 
 import ca.solostudios.strata.version.Version;
 import ca.solostudios.strata.version.VersionRange;
+import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-
-import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.properties.PropertyHolder;
@@ -45,7 +45,7 @@ public interface ConfigPack extends LoaderRegistrar,
 
     List<GenerationStage> getStages();
 
-    Loader getLoader();
+    Path getRootPath();
 
     String getAuthor();
 

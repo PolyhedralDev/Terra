@@ -1,43 +1,47 @@
 package com.dfsek.terra.cli;
 
+import com.dfsek.seismic.type.vector.Vector2Int;
 import net.querz.mca.MCAUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.util.vector.Vector2Int;
 import com.dfsek.terra.cli.world.CLIWorld;
-
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.Option;
 
 
 //TODO auto pull in version
 @Command(name = "TerraCLI", mixinStandardHelpOptions = true, version = "6.6.0",
          description = "Generates a Terra World and saves it in minecraft region format.")
 public final class TerraCLI implements Callable<Integer> {
-    @Option(names = { "-s", "--size"}, description = "Number of regions to generate.")
+    @Option(names = { "-s", "--size" }, description = "Number of regions to generate.")
     private int size = 2;
 
-    @Option(names = { "-p", "--pack"}, description = "Config pack to use.")
+    @Option(names = { "-p", "--pack" }, description = "Config pack to use.")
     private String pack = "OVERWORLD";
 
-    @Option(names = { "--seed"}, description = "Seed for world generation.")
+    @Option(names = { "--seed" }, description = "Seed for world generation.")
     private long seed = 0;
 
-    @Option(names = { "--max-height"}, description = "Maximum height of the world.")
+    @Option(names = { "--max-height" }, description = "Maximum height of the world.")
     private int maxHeight = 320;
 
-    @Option(names = { "--min-height"}, description = "Minimum height of the world.")
+    @Option(names = { "--min-height" }, description = "Minimum height of the world.")
     private int minHeight = -64;
 
-    @Option(names = { "--no-save"}, description = "Don't save the world to disk.")
+    @Option(names = { "--no-save" }, description = "Don't save the world to disk.")
     private boolean noSave = false;
+
+    public static void main(String... args) {
+        int exitCode = new CommandLine(new TerraCLI()).execute(args);
+        System.exit(exitCode);
+    }
 
     @Override
     public Integer call() {
@@ -69,10 +73,5 @@ public final class TerraCLI implements Callable<Integer> {
         }
         LOGGER.info("Done.");
         return 0;
-    }
-
-    public static void main(String... args) {
-        int exitCode = new CommandLine(new TerraCLI()).execute(args);
-        System.exit(exitCode);
     }
 }

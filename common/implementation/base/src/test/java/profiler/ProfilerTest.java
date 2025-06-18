@@ -17,10 +17,10 @@
 
 package profiler;
 
-import org.junit.jupiter.api.Test;
-
 import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.profiler.ProfilerImpl;
+
+import org.junit.jupiter.api.Test;
 
 
 public class ProfilerTest {

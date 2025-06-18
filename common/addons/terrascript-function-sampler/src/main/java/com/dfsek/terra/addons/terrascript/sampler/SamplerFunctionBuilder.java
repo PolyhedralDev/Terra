@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
+import com.dfsek.terra.addons.noise.config.DimensionApplicableSampler;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
 import com.dfsek.terra.addons.terrascript.parser.lang.constants.NumericConstant;
@@ -15,10 +15,10 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 
 
 public class SamplerFunctionBuilder implements FunctionBuilder<com.dfsek.terra.addons.terrascript.parser.lang.functions.Function<Number>> {
-    private final Map<String, DimensionApplicableNoiseSampler> samplers2d;
-    private final Map<String, DimensionApplicableNoiseSampler> samplers3d;
+    private final Map<String, DimensionApplicableSampler> samplers2d;
+    private final Map<String, DimensionApplicableSampler> samplers3d;
 
-    public SamplerFunctionBuilder(Map<String, DimensionApplicableNoiseSampler> samplers) {
+    public SamplerFunctionBuilder(Map<String, DimensionApplicableSampler> samplers) {
         this.samplers2d = new HashMap<>();
         this.samplers3d = new HashMap<>();
 

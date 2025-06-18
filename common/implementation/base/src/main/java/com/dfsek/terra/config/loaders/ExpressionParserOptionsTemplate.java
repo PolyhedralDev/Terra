@@ -13,7 +13,7 @@ public class ExpressionParserOptionsTemplate implements ObjectTemplate<ParseOpti
     @Value("use-let-expressions")
     @Default
     private boolean useLetExpressions = DEFAULT_PARSE_OPTIONS.useLetExpressions();
-    
+
     @Override
     public ParseOptions get() {
         return new ParseOptions(useLetExpressions);

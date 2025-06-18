@@ -11,15 +11,15 @@ public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
     @Value("type")
     @Default
     private EntityType<?> type = null;
-    
+
     @Value("weight")
     @Default
     private Integer weight = null;
-    
+
     @Value("min-group-size")
     @Default
     private Integer minGroupSize = null;
-    
+
     @Value("max-group-size")
     @Default
     private Integer maxGroupSize = null;
@@ -31,7 +31,7 @@ public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
     public SpawnerData getSpawnerData() {
         return new SpawnerData(type, minGroupSize, maxGroupSize);
     }
-    
+
     @Override
     public SpawnEntryConfig get() {
         return this;

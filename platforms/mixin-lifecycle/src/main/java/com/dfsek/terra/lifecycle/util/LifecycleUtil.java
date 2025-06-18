@@ -12,10 +12,6 @@ import com.dfsek.terra.mod.CommonPlatform;
 
 
 public final class LifecycleUtil {
-    private LifecycleUtil() {
-
-    }
-
     public static void initialize(MutableRegistry<Biome> biomeMutableRegistry, MutableRegistry<WorldPreset> worldPresetMutableRegistry) {
         CommonPlatform.get().getEventManager().callEvent(new PlatformInitializationEvent());
         LifecycleBiomeUtil.registerBiomes(biomeMutableRegistry);
