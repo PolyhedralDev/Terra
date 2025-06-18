@@ -19,8 +19,6 @@ import java.net.Proxy;
 
 import com.dfsek.terra.lifecycle.LifecyclePlatform;
 
-import static com.dfsek.terra.lifecycle.util.LifecycleUtil.initialized;
-
 
 @Mixin(MinecraftServer.class)
 public class MinecraftServerMixin {
