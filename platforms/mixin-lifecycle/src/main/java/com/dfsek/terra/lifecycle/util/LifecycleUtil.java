@@ -12,8 +12,6 @@ import com.dfsek.terra.mod.CommonPlatform;
 
 
 public final class LifecycleUtil {
-    public static boolean initialized = false;
-
     private LifecycleUtil() {
 
     }
