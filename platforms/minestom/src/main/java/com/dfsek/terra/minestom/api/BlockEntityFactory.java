@@ -1,9 +1,9 @@
 package com.dfsek.terra.minestom.api;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-
 import net.minestom.server.coordinate.BlockVec;
 import org.jetbrains.annotations.Nullable;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
 
 
 /**

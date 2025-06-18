@@ -9,6 +9,8 @@ package com.dfsek.terra.api.util.collection;
 
 import com.dfsek.seismic.math.normalization.NormalizationFunctions;
 import com.dfsek.seismic.type.sampler.Sampler;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -22,8 +24,6 @@ import java.util.function.Function;
 import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.util.mutable.MutableInteger;
-import com.dfsek.seismic.type.vector.Vector3;
-import com.dfsek.seismic.type.vector.Vector3Int;
 
 
 public class ProbabilityCollection<E> implements Collection<E> {
@@ -57,14 +57,16 @@ public class ProbabilityCollection<E> implements Collection<E> {
     @SuppressWarnings("unchecked")
     public E get(Sampler n, Vector3Int vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) NormalizationFunctions.normalizeIndex(n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+        return (E) array[(int) NormalizationFunctions.normalizeIndex(
+            n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
             array.length)];
     }
 
     @SuppressWarnings("unchecked")
     public E get(Sampler n, Vector3 vector3Int, long seed) {
         if(array.length == 0) return null;
-        return (E) array[(int) NormalizationFunctions.normalizeIndex(n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
+        return (E) array[(int) NormalizationFunctions.normalizeIndex(
+            n.getSample(seed, vector3Int.getX(), vector3Int.getY(), vector3Int.getZ()),
             array.length)];
     }
 

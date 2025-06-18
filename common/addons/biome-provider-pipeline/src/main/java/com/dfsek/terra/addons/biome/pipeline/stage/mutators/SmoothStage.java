@@ -7,12 +7,13 @@
 
 package com.dfsek.terra.addons.biome.pipeline.stage.mutators;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import java.util.Objects;
 
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class SmoothStage implements Stage {

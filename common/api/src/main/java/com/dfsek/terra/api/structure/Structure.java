@@ -7,10 +7,11 @@
 
 package com.dfsek.terra.api.structure;
 
-import java.util.random.RandomGenerator;
-
 import com.dfsek.seismic.type.Rotation;
 import com.dfsek.seismic.type.vector.Vector3Int;
+
+import java.util.random.RandomGenerator;
+
 import com.dfsek.terra.api.world.WritableWorld;
 
 

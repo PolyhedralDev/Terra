@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -15,7 +16,6 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -37,8 +37,7 @@ public class BiomeFunction implements Function<String> {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
 
         Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
-                z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
-
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         BiomeProvider grid = arguments.getWorld().getBiomeProvider();

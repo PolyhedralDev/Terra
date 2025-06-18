@@ -7,15 +7,15 @@
 
 package com.dfsek.terra.addons.terrascript.script;
 
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.random.RandomGenerator;
 
-import com.dfsek.seismic.type.Rotation;
-
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
-import com.dfsek.seismic.type.vector.Vector3;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

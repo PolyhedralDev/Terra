@@ -1,14 +1,14 @@
 package com.dfsek.terra.minestom.block;
 
-import com.dfsek.terra.api.block.BlockType;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.block.state.properties.Property;
-
 import net.minestom.server.instance.block.Block;
 
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import com.dfsek.terra.api.block.BlockType;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.properties.Property;
 
 
 public class MinestomBlockState implements BlockState {

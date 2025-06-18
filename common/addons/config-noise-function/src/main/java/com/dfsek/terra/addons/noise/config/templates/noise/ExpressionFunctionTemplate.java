@@ -10,6 +10,7 @@ package com.dfsek.terra.addons.noise.config.templates.noise;
 import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.sampler.noise.ExpressionNoiseFunction;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
@@ -21,7 +22,6 @@ import com.dfsek.terra.addons.noise.config.DimensionApplicableSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 import static com.dfsek.terra.addons.noise.paralithic.FunctionUtil.convertFunctionsAndSamplers;
 
@@ -58,7 +58,8 @@ public class ExpressionFunctionTemplate extends SamplerTemplate<ExpressionNoiseF
         var mergedSamplers = new HashMap<>(globalSamplers);
         mergedSamplers.putAll(samplers);
         try {
-            return new ExpressionNoiseFunction(convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars, parseOptions);
+            return new ExpressionNoiseFunction(convertFunctionsAndSamplers(mergedFunctions, mergedSamplers), expression, vars,
+                parseOptions);
         } catch(ParseException e) {
             throw new RuntimeException("Failed to parse expression.", e);
         }

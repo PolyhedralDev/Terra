@@ -1,10 +1,5 @@
 package com.dfsek.terra.minestom.item;
 
-import com.dfsek.terra.api.inventory.Item;
-
-import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.inventory.item.ItemMeta;
-
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.component.DataComponents;
 import net.minestom.server.item.ItemStack;
@@ -15,6 +10,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Objects;
+
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 public class MinestomItemStack implements com.dfsek.terra.api.inventory.ItemStack {

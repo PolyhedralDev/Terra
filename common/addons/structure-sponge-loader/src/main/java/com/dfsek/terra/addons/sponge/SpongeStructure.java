@@ -7,16 +7,16 @@
 
 package com.dfsek.terra.addons.sponge;
 
-import java.util.random.RandomGenerator;
-
 import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.seismic.type.vector.Vector2Int;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

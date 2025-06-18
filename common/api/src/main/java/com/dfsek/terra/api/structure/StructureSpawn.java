@@ -7,9 +7,8 @@
 
 package com.dfsek.terra.api.structure;
 
-import org.jetbrains.annotations.ApiStatus.Experimental;
-
 import com.dfsek.seismic.type.vector.Vector3;
+import org.jetbrains.annotations.ApiStatus.Experimental;
 
 
 @Experimental

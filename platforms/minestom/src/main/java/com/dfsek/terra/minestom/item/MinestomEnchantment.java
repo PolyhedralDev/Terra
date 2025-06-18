@@ -1,8 +1,5 @@
 package com.dfsek.terra.minestom.item;
 
-import com.dfsek.terra.api.inventory.ItemStack;
-import com.dfsek.terra.api.inventory.item.Enchantment;
-
 import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.item.Material;
@@ -10,6 +7,9 @@ import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.registry.RegistryKey;
 
 import java.util.Objects;
+
+import com.dfsek.terra.api.inventory.ItemStack;
+import com.dfsek.terra.api.inventory.item.Enchantment;
 
 
 public class MinestomEnchantment implements Enchantment {
@@ -43,7 +43,7 @@ public class MinestomEnchantment implements Enchantment {
             DynamicRegistry<net.minestom.server.item.enchant.Enchantment> registry = MinecraftServer.getEnchantmentRegistry();
             RegistryKey<net.minestom.server.item.enchant.Enchantment> otherKey = registry.getKey(otherDelegate);
             return delegate.exclusiveSet().contains(otherKey);
-        } catch (Exception e) {
+        } catch(Exception e) {
             // If the key approach fails, fall back to a more basic implementation
             String otherId = ((MinestomEnchantment) other).id;
             return otherId.equals(this.id);

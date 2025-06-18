@@ -1,9 +1,10 @@
 package com.dfsek.terra.api.world;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.seismic.type.vector.Vector3Int;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.state.BlockState;
 
 
 /**

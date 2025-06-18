@@ -2,6 +2,7 @@ package com.dfsek.terra.minestom.entity;
 
 import net.minestom.server.entity.EntityType;
 
+
 public class MinestomEntityType implements com.dfsek.terra.api.entity.EntityType {
     private final EntityType delegate;
 

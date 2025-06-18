@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.generation.feature.config;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.ValidatedConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -8,7 +9,6 @@ import com.dfsek.tectonic.api.exception.ValidationException;
 
 import com.dfsek.terra.addons.generation.feature.FeatureGenerationStage;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 

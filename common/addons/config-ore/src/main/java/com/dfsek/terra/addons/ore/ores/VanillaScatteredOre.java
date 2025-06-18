@@ -1,14 +1,14 @@
 package com.dfsek.terra.addons.ore.ores;
 
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import java.util.Map;
 import java.util.random.RandomGenerator;
-
-import com.dfsek.seismic.type.Rotation;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.util.collection.MaterialSet;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;

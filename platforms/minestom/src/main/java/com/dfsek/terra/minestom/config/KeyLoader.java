@@ -20,7 +20,7 @@ public class KeyLoader implements TypeLoader<Key> {
         @NotNull ConfigLoader configLoader,
         DepthTracker depthTracker
     ) throws LoadException {
-        if(!(o instanceof @Subst("a:o") String stringKey)) {
+        if(!(o instanceof @Subst("a:o")String stringKey)) {
             throw new LoadException("Value is not a String", depthTracker);
         }
         try {

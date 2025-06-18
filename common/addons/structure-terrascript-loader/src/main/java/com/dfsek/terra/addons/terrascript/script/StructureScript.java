@@ -10,6 +10,7 @@ package com.dfsek.terra.addons.terrascript.script;
 import com.dfsek.seismic.math.algebra.AlgebraFunctions;
 import com.dfsek.seismic.math.trigonometry.TrigonometryFunctions;
 import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,6 @@ import com.dfsek.terra.api.registry.key.Keyed;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 

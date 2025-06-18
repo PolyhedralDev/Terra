@@ -2,30 +2,6 @@ package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.handle.ItemHandle;
-import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.minestom.addon.MinestomAddon;
-import com.dfsek.terra.minestom.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.minestom.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
-import com.dfsek.terra.minestom.config.KeyLoader;
-import com.dfsek.terra.minestom.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.minestom.config.RGBLikeLoader;
-import com.dfsek.terra.minestom.config.SoundEventTemplate;
-import com.dfsek.terra.minestom.entity.MinestomEntityType;
-import com.dfsek.terra.minestom.item.MinestomItemHandle;
-import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
-import com.dfsek.terra.minestom.world.MinestomWorldHandle;
-
-import com.dfsek.terra.minestom.api.TerraMinestomWorldBuilder;
-
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
@@ -40,6 +16,28 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dfsek.terra.AbstractPlatform;
+import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.minestom.addon.MinestomAddon;
+import com.dfsek.terra.minestom.api.TerraMinestomWorldBuilder;
+import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
+import com.dfsek.terra.minestom.config.BiomeAdditionsSoundTemplate;
+import com.dfsek.terra.minestom.config.BiomeMoodSoundTemplate;
+import com.dfsek.terra.minestom.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.minestom.config.KeyLoader;
+import com.dfsek.terra.minestom.config.RGBLikeLoader;
+import com.dfsek.terra.minestom.config.SoundEventTemplate;
+import com.dfsek.terra.minestom.entity.MinestomEntityType;
+import com.dfsek.terra.minestom.item.MinestomItemHandle;
+import com.dfsek.terra.minestom.world.MinestomChunkGeneratorWrapper;
+import com.dfsek.terra.minestom.world.MinestomWorldHandle;
+
 
 public final class TerraMinestomPlatform extends AbstractPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(TerraMinestomPlatform.class);
@@ -48,7 +46,8 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     private final TypeLoader<PlatformBiome> biomeTypeLoader;
     private final ArrayList<BaseAddon> platformAddons = new ArrayList<>(List.of(new MinestomAddon(this)));
 
-    public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader, BaseAddon... extraAddons) {
+    public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader,
+                                 BaseAddon... extraAddons) {
         this.worldHandle = worldHandle;
         this.itemHandle = itemHandle;
         this.biomeTypeLoader = biomeTypeLoader;
@@ -68,8 +67,10 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
             .registerLoader(PlatformBiome.class, biomeTypeLoader)
             .registerLoader(RGBLike.class, new RGBLikeLoader())
             .registerLoader(Key.class, new KeyLoader())
-            .registerLoader(EntityType.class, (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
-            .registerLoader(BlockState.class, (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o))
+            .registerLoader(EntityType.class,
+                (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
+            .registerLoader(BlockState.class,
+                (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o))
             .registerLoader(BiomeEffects.Particle.class, BiomeParticleConfigTemplate::new)
             .registerLoader(BiomeEffects.MoodSound.class, BiomeMoodSoundTemplate::new)
             .registerLoader(BiomeEffects.AdditionsSound.class, BiomeAdditionsSoundTemplate::new)

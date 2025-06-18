@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.palette.palette;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 

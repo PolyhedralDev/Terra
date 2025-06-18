@@ -67,7 +67,7 @@ public abstract class ModPlatform extends AbstractPlatform {
         });
         getRawConfigRegistry()
             .forEach(pack -> {
-                    PresetUtil.createDefault(pack, this, configPacksInMetaPack.contains(pack.getID())).apply(registerFunction);
+                PresetUtil.createDefault(pack, this, configPacksInMetaPack.contains(pack.getID())).apply(registerFunction);
             });
     }
 

@@ -1,8 +1,5 @@
 package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
-import com.dfsek.terra.mod.CommonPlatform;
-import com.dfsek.terra.mod.ModPlatform;
-
 import com.mojang.datafixers.DataFixer;
 import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.server.MinecraftServer;

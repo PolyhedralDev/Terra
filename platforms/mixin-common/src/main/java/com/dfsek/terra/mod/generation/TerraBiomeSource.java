@@ -21,7 +21,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeSource;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil;
 import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

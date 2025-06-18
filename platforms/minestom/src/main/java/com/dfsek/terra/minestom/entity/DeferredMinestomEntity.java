@@ -1,12 +1,12 @@
 package com.dfsek.terra.minestom.entity;
 
+import com.dfsek.seismic.type.vector.Vector3;
+import net.minestom.server.coordinate.Pos;
+
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-
-import net.minestom.server.coordinate.Pos;
 
 
 public class DeferredMinestomEntity implements Entity {

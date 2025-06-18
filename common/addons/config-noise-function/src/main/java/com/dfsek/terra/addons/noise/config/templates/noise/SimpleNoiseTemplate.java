@@ -7,10 +7,10 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
-import java.util.function.Supplier;
-
 import com.dfsek.seismic.algorithms.sampler.noise.NoiseFunction;
 import com.dfsek.seismic.type.sampler.Sampler;
+
+import java.util.function.Supplier;
 
 
 public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {

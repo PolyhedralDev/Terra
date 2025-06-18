@@ -30,7 +30,8 @@ public class NumberPredicateAddon implements AddonInitializer {
         plugin.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(addon, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().applyLoader(DoublePredicate.class, new DoublePredicateLoader(event.getPack().getExpressionParseOptions())))
+            .then(event -> event.getPack()
+                .applyLoader(DoublePredicate.class, new DoublePredicateLoader(event.getPack().getExpressionParseOptions())))
             .priority(50)
             .failThrough();
     }

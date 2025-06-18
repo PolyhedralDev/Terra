@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.palette;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Final;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -16,7 +17,6 @@ import java.util.List;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })

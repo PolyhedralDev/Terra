@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline.config;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Description;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -19,7 +20,6 @@ import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.PipelineImpl;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 

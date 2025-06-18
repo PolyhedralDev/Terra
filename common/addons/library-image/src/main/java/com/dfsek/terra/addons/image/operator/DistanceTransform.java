@@ -1,9 +1,10 @@
 package com.dfsek.terra.addons.image.operator;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 import static com.dfsek.terra.addons.image.util.MathUtil.lerp;
 

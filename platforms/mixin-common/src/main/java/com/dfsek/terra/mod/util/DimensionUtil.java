@@ -51,7 +51,9 @@ public class DimensionUtil {
             : TagKey.of(RegistryKeys.BLOCK, vanillaWorldProperties.getInfiniburn()),
             vanillaWorldProperties.getEffects() == null ? defaultDimension.effects() : vanillaWorldProperties.getEffects(),
             vanillaWorldProperties.getAmbientLight() == null ? defaultDimension.ambientLight() : vanillaWorldProperties.getAmbientLight(),
-            vanillaWorldProperties.getCloudHeight() == null ? defaultDimension.cloudHeight() : vanillaWorldProperties.getCloudHeight().describeConstable(),
+            vanillaWorldProperties.getCloudHeight() == null
+            ? defaultDimension.cloudHeight()
+            : vanillaWorldProperties.getCloudHeight().describeConstable(),
             monsterSettings
         );
     }

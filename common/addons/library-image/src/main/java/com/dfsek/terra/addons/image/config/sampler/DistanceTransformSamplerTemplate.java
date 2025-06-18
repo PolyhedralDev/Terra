@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.image.config.sampler;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
@@ -9,7 +10,6 @@ import com.dfsek.terra.addons.image.operator.DistanceTransform;
 import com.dfsek.terra.addons.image.operator.DistanceTransform.CostFunction;
 import com.dfsek.terra.addons.image.operator.DistanceTransform.Normalization;
 import com.dfsek.terra.addons.image.util.ColorUtil.Channel;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class DistanceTransformSamplerTemplate implements ObjectTemplate<Sampler> {

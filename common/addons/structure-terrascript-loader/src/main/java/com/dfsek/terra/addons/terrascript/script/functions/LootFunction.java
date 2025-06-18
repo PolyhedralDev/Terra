@@ -7,6 +7,8 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,8 +29,6 @@ import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
-import com.dfsek.seismic.type.vector.Vector2;
-import com.dfsek.seismic.type.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {
@@ -56,7 +56,7 @@ public class LootFunction implements Function<Void> {
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
         Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
-                z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         String id = data.apply(implementationArguments, scope);

@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.pipeline.api;
 
-import com.dfsek.terra.api.util.cache.SeededVector2Key;
-
 import java.util.List;
+
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
 
 
 public interface Pipeline {

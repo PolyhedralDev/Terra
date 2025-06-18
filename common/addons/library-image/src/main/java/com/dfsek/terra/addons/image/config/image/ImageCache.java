@@ -2,6 +2,7 @@ package com.dfsek.terra.addons.image.config.image;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Scheduler;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -17,8 +18,6 @@ import com.dfsek.terra.addons.image.image.SuppliedImage;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.util.generic.Lazy;
-
-import com.github.benmanes.caffeine.cache.Scheduler;
 
 import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
 

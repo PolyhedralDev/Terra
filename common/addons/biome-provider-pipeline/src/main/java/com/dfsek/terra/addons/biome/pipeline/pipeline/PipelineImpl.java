@@ -1,7 +1,5 @@
 package com.dfsek.terra.addons.biome.pipeline.pipeline;
 
-import com.dfsek.terra.api.util.cache.SeededVector2Key;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +10,7 @@ import com.dfsek.terra.addons.biome.pipeline.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
 import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
 
 
 public class PipelineImpl implements Pipeline {

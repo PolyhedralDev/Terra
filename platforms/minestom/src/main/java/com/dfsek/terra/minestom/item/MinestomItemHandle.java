@@ -1,13 +1,13 @@
 package com.dfsek.terra.minestom.item;
 
-import com.dfsek.terra.api.handle.ItemHandle;
-import com.dfsek.terra.api.inventory.Item;
-import com.dfsek.terra.api.inventory.item.Enchantment;
-
 import net.minestom.server.MinecraftServer;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.dfsek.terra.api.handle.ItemHandle;
+import com.dfsek.terra.api.inventory.Item;
+import com.dfsek.terra.api.inventory.item.Enchantment;
 
 
 public class MinestomItemHandle implements ItemHandle {

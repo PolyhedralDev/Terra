@@ -1,17 +1,15 @@
 package com.dfsek.terra.addons.noise.config.sampler;
 
 import com.dfsek.seismic.type.sampler.Sampler;
-
-import com.dfsek.terra.api.util.cache.DoubleSeededVector2Key;
-import com.dfsek.terra.api.util.cache.DoubleSeededVector3Key;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-
-import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
-
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
 import org.jetbrains.annotations.ApiStatus.Experimental;
+
+import com.dfsek.terra.api.util.cache.DoubleSeededVector2Key;
+import com.dfsek.terra.api.util.cache.DoubleSeededVector3Key;
+import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
 
 import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
 
@@ -25,7 +23,7 @@ public class CacheSampler implements Sampler {
 
     public CacheSampler(Sampler sampler, int dimensions) {
         this.sampler = sampler;
-        if (dimensions == 2) {
+        if(dimensions == 2) {
             this.cache2D = ThreadLocal.withInitial(() -> {
                 LoadingCache<DoubleSeededVector2Key, Double> cache = Caffeine
                     .newBuilder()
