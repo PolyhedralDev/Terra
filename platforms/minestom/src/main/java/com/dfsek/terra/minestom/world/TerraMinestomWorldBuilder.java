@@ -22,9 +22,12 @@ public class TerraMinestomWorldBuilder {
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
-    private BlockEntityFactory blockEntityFactory = new DefaultBlockEntityFactory();
+    private BlockEntityFactory blockEntityFactory;
 
-    private TerraMinestomWorldBuilder(Instance instance) { this.instance = instance; }
+    private TerraMinestomWorldBuilder(Instance instance) {
+        this.instance = instance;
+        this.blockEntityFactory = new DefaultBlockEntityFactory(instance);
+    }
 
     public static TerraMinestomWorldBuilder from(Instance instance) {
         return new TerraMinestomWorldBuilder(instance);
