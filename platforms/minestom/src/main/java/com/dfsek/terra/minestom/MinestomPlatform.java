@@ -52,7 +52,7 @@ public final class MinestomPlatform extends AbstractPlatform {
             if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {
                 getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
                     wrapper.setPack(pack);
-                    LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUniqueId());
+                    LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUuid());
                 });
             }
         });
