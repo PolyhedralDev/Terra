@@ -1,6 +1,7 @@
 package com.dfsek.terra.addons.chunkgenerator.config.noise;
 
 import com.dfsek.seismic.type.sampler.Sampler;
+
 import com.dfsek.terra.api.properties.Properties;
 
 

@@ -7,17 +7,16 @@
 
 package com.dfsek.terra.api.world.biome.generation;
 
-import com.dfsek.terra.api.Platform;
-
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
 import org.jetbrains.annotations.Contract;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.util.Column;
-import com.dfsek.seismic.type.vector.Vector3;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.info.WorldProperties;
 

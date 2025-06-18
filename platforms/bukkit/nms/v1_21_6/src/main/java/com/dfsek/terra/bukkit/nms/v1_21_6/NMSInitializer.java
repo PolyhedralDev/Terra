@@ -1,9 +1,8 @@
 package com.dfsek.terra.bukkit.nms.v1_21_6;
 
-import com.dfsek.terra.bukkit.BukkitAddon;
-
 import org.bukkit.Bukkit;
 
+import com.dfsek.terra.bukkit.BukkitAddon;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.nms.Initializer;
 

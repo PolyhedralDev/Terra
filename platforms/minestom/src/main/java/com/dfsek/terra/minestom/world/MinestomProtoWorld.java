@@ -1,27 +1,20 @@
 package com.dfsek.terra.minestom.world;
 
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.Block.Setter;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
-
 import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
-
-import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.Block.Setter;
-
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.WeakHashMap;
 
 
 public class MinestomProtoWorld implements ProtoWorld {

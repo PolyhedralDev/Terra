@@ -1,10 +1,10 @@
 package com.dfsek.terra.minestom.biome;
 
+import java.util.HashMap;
+
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.minestom.api.BiomeFactory;
-
-import java.util.HashMap;
 
 
 public class MinestomUserDefinedBiomePool {

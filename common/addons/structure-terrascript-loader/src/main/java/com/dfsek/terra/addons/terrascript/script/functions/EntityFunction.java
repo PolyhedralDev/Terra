@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
+
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -19,8 +22,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
-import com.dfsek.seismic.type.vector.Vector2;
-import com.dfsek.seismic.type.vector.Vector3;
 
 
 public class EntityFunction implements Function<Void> {

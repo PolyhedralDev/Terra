@@ -1,5 +1,7 @@
 package com.dfsek.terra.cli.world;
 
+import com.dfsek.seismic.type.vector.Vector2Int;
+import com.dfsek.seismic.type.vector.Vector3;
 import com.google.common.collect.Streams;
 import net.querz.mca.MCAFile;
 import org.slf4j.Logger;
@@ -22,8 +24,6 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.seismic.type.vector.Vector2Int;
-import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -87,7 +87,7 @@ public class CLIWorld implements ServerWorld, NBTSerializable<Stream<Pair<Vector
                     try {
                         int num = amount.getAndIncrement();
                         CLIChunk chunk;
-                        if (!noSave) {
+                        if(!noSave) {
                             chunk = getChunkAt(finalX, finalZ);
                         } else {
                             chunk = new CLIChunk(Math.floorMod(finalX, 32), Math.floorMod(finalZ, 32), this);

@@ -8,9 +8,26 @@
 package com.dfsek.terra.addons.noise;
 
 import com.dfsek.paralithic.eval.parser.Parser.ParseOptions;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.AdditionSampler;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.DivisionSampler;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.MaxSampler;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.MinSampler;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.MultiplicationSampler;
+import com.dfsek.seismic.algorithms.sampler.arithmetic.SubtractionSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.random.GaussianNoiseSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.random.PositiveWhiteNoiseSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.random.WhiteNoiseSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2SSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.PerlinSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.SimplexSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.value.ValueCubicSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.value.ValueSampler;
 import com.dfsek.seismic.type.CubicSpline;
 import com.dfsek.seismic.type.DistanceFunction;
+import com.dfsek.seismic.type.sampler.DerivativeSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.LinkedHashMap;
@@ -52,17 +69,9 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.seismic.type.sampler.DerivativeSampler;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-import com.dfsek.seismic.algorithms.sampler.noise.*;
-import com.dfsek.seismic.algorithms.sampler.noise.simplex.*;
-import com.dfsek.seismic.algorithms.sampler.noise.fractal.*;
-import com.dfsek.seismic.algorithms.sampler.noise.random.*;
-import com.dfsek.seismic.algorithms.sampler.noise.value.*;
-import com.dfsek.seismic.algorithms.sampler.normalizer.*;
-import com.dfsek.seismic.algorithms.sampler.arithmetic.*;
+
 
 public class NoiseAddon implements AddonInitializer {
     public static final TypeKey<Supplier<ObjectTemplate<Sampler>>> NOISE_SAMPLER_TOKEN = new TypeKey<>() {
@@ -147,7 +156,8 @@ public class NoiseAddon implements AddonInitializer {
 
                 Map<String, DimensionApplicableSampler> packSamplers = new LinkedHashMap<>();
                 Map<String, FunctionTemplate> packFunctions = new LinkedHashMap<>();
-                noiseRegistry.register(addon.key("EXPRESSION"), () -> new ExpressionFunctionTemplate(packSamplers, packFunctions, expressionParseOptions));
+                noiseRegistry.register(addon.key("EXPRESSION"),
+                    () -> new ExpressionFunctionTemplate(packSamplers, packFunctions, expressionParseOptions));
                 noiseRegistry.register(addon.key("EXPRESSION_NORMALIZER"),
                     () -> new ExpressionNormalizerTemplate(packSamplers, packFunctions, expressionParseOptions));
 

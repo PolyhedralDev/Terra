@@ -88,23 +88,56 @@ public abstract class AbstractPlatform implements Platform {
     private static final Logger logger = LoggerFactory.getLogger(AbstractPlatform.class);
 
     private static final MutableBoolean LOADED = new MutableBoolean(false);
+    private static final String moonrise = "Moonrise";
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final MetaConfigRegistry metaConfigRegistry = new MetaConfigRegistry();
-
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
-
     private final CheckedRegistry<MetaPack> checkedMetaConfigRegistry = new CheckedRegistryImpl<>(metaConfigRegistry);
-
     private final Profiler profiler = new ProfilerImpl();
-
     private final GenericLoaders loaders = new GenericLoaders(this);
-
     private final PluginConfigImpl config = new PluginConfigImpl();
-
     private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
-
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
+
+    public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
+        try {
+            Class aClass = Class.forName(className);
+            int threads = aClass.getField(fieldName).getInt(null);
+            logger.info("{} found, setting {} generation threads.", project, threads);
+            return threads;
+        } catch(ClassNotFoundException e) {
+            logger.info("{} not found.", project);
+        } catch(NoSuchFieldException e) {
+            logger.warn("{} found, but {} field not found this probably means {0} has changed its code and " +
+                        "Terra has not updated to reflect that.", project, fieldName);
+        } catch(IllegalAccessException e) {
+            logger.error("Failed to access {} field in {}, assuming 1 generation thread.", fieldName, project, e);
+        }
+        return 0;
+
+    }
+
+    public static int getMoonriseGenerationThreadsWithReflection() {
+        try {
+            Class<?> prioritisedThreadPoolClazz = Class.forName("ca.spottedleaf.concurrentutil.executor.thread.PrioritisedThreadPool");
+            Method getCoreThreadsMethod = prioritisedThreadPoolClazz.getDeclaredMethod("getCoreThreads");
+            getCoreThreadsMethod.setAccessible(true);
+            Class<?> moonriseCommonClazz = Class.forName("ca.spottedleaf.moonrise.common.util.MoonriseCommon");
+            Object pool = moonriseCommonClazz.getDeclaredField("WORKER_POOL").get(null);
+            int threads = ((Thread[]) getCoreThreadsMethod.invoke(pool)).length;
+            logger.info("{} found, setting {} generation threads.", moonrise, threads);
+            return threads;
+        } catch(ClassNotFoundException e) {
+            logger.info("{} not found.", moonrise);
+        } catch(NoSuchMethodException | NoSuchFieldException e) {
+            logger.warn("{} found, but field/method not found this probably means {0} has changed its code and " +
+                        "Terra has not updated to reflect that.", moonrise);
+        } catch(IllegalAccessException | InvocationTargetException e) {
+            logger.error("Failed to access thread values in {}, assuming 1 generation thread.", moonrise, e);
+        }
+        return 0;
+    }
 
     public ConfigRegistry getRawConfigRegistry() {
         return configRegistry;
@@ -354,46 +387,6 @@ public abstract class AbstractPlatform implements Platform {
         } catch(IOException e) {
             logger.error("Error while dumping resources...", e);
         }
-    }
-
-    public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
-        try {
-            Class aClass = Class.forName(className);
-            int threads = aClass.getField(fieldName).getInt(null);
-            logger.info("{} found, setting {} generation threads.", project, threads);
-            return threads;
-        } catch(ClassNotFoundException e) {
-            logger.info("{} not found.", project);
-        } catch(NoSuchFieldException e) {
-            logger.warn("{} found, but {} field not found this probably means {0} has changed its code and " +
-                        "Terra has not updated to reflect that.", project, fieldName);
-        } catch(IllegalAccessException e) {
-            logger.error("Failed to access {} field in {}, assuming 1 generation thread.", fieldName, project, e);
-        }
-        return 0;
-
-    }
-    
-    private static final String moonrise = "Moonrise";
-    public static int getMoonriseGenerationThreadsWithReflection() {
-        try {
-            Class<?> prioritisedThreadPoolClazz = Class.forName("ca.spottedleaf.concurrentutil.executor.thread.PrioritisedThreadPool");
-            Method getCoreThreadsMethod = prioritisedThreadPoolClazz.getDeclaredMethod("getCoreThreads");
-            getCoreThreadsMethod.setAccessible(true);
-            Class<?> moonriseCommonClazz = Class.forName("ca.spottedleaf.moonrise.common.util.MoonriseCommon");
-            Object pool = moonriseCommonClazz.getDeclaredField("WORKER_POOL").get(null);
-            int threads = ((Thread[]) getCoreThreadsMethod.invoke(pool)).length;
-            logger.info("{} found, setting {} generation threads.", moonrise, threads);
-            return threads;
-        } catch (ClassNotFoundException e) {
-            logger.info("{} not found.", moonrise);
-        } catch (NoSuchMethodException | NoSuchFieldException e) {
-            logger.warn("{} found, but field/method not found this probably means {0} has changed its code and " +
-                        "Terra has not updated to reflect that.", moonrise);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            logger.error("Failed to access thread values in {}, assuming 1 generation thread.", moonrise, e);
-        }
-        return 0;
     }
 
     @Override

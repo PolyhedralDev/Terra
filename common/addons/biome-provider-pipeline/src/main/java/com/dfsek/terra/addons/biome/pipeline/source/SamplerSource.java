@@ -7,9 +7,10 @@
 
 package com.dfsek.terra.addons.biome.pipeline.source;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import com.dfsek.terra.addons.biome.pipeline.api.Source;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 

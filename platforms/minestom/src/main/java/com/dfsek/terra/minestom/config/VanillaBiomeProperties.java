@@ -3,14 +3,13 @@ package com.dfsek.terra.minestom.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
-import com.dfsek.terra.api.properties.Properties;
-
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.world.biome.Biome.TemperatureModifier;
 import net.minestom.server.world.biome.BiomeEffects;
 import net.minestom.server.world.biome.BiomeEffects.GrassColorModifier;
+
+import com.dfsek.terra.api.properties.Properties;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
@@ -74,9 +73,9 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
     @Default
     private BiomeEffects.AdditionsSound additionsSound = null;
 
-//    @Value("sound.music")
-//    @Default
-//    private MusicSound music = null;
+    //    @Value("sound.music")
+    //    @Default
+    //    private MusicSound music = null;
 
     public RGBLike getGrassColor() {
         return grassColor;

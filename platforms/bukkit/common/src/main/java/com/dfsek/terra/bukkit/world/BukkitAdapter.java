@@ -18,6 +18,7 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.seismic.type.vector.Vector3;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,7 +35,6 @@ import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.info.WorldProperties;

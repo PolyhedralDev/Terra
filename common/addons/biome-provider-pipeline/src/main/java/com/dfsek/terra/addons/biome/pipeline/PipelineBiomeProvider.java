@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.addons.biome.pipeline;
 
-import com.dfsek.terra.api.util.cache.SeededVector2Key;
-
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
@@ -22,9 +21,9 @@ import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Pipeline;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.util.cache.SeededVector2Key;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 

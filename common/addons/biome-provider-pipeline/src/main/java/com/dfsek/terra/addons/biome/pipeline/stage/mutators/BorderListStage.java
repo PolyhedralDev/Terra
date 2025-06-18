@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.biome.pipeline.stage.mutators;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+import com.dfsek.seismic.type.vector.Vector2Int;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,12 +17,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.dfsek.seismic.type.vector.Vector2Int;
-
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 
 

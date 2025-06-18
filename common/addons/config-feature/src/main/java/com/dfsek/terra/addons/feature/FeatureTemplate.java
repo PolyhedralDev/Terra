@@ -7,12 +7,12 @@
 
 package com.dfsek.terra.addons.feature;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Final;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.structure.feature.Distributor;
 import com.dfsek.terra.api.structure.feature.Locator;

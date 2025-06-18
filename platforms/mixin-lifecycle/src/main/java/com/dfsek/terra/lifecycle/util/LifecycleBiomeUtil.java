@@ -1,7 +1,5 @@
 package com.dfsek.terra.lifecycle.util;
 
-import com.dfsek.terra.mod.util.BiomeUtil;
-
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -21,6 +19,7 @@ import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
+import com.dfsek.terra.mod.util.BiomeUtil;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -51,7 +50,7 @@ public final class LifecycleBiomeUtil {
                                       Registry<net.minecraft.world.biome.Biome> registry) {
         RegistryKey<net.minecraft.world.biome.Biome> vanilla = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(registry);
 
-        if (vanilla == null) {
+        if(vanilla == null) {
             logger.error("""
                          Failed to get Vanilla Biome Regiestry key!
                          Terra Biome ID: {}
@@ -65,9 +64,9 @@ public final class LifecycleBiomeUtil {
 
 
             net.minecraft.world.biome.Biome vanilaBiome = registry.get(vanilla);
-            if (vanilaBiome == null) {
+            if(vanilaBiome == null) {
                 String vanillaBiomeName;
-                if (vanilla != null ) {
+                if(vanilla != null) {
                     vanillaBiomeName = vanilla.getValue().toString();
                 } else {
                     vanillaBiomeName = "NULL";
@@ -94,7 +93,8 @@ public final class LifecycleBiomeUtil {
                     minecraftBiome));
             }
 
-            Map<RegistryKey<net.minecraft.world.biome.Biome>, RegistryKey<VillagerType>> villagerMap = VillagerTypeAccessor.getBiomeTypeToIdMap();
+            Map<RegistryKey<net.minecraft.world.biome.Biome>, RegistryKey<VillagerType>> villagerMap =
+                VillagerTypeAccessor.getBiomeTypeToIdMap();
 
             villagerMap.put(RegistryKey.of(RegistryKeys.BIOME, identifier),
                 Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),

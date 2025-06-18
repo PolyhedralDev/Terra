@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.image;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import java.util.function.Supplier;
@@ -26,7 +27,6 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 

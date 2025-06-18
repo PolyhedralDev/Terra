@@ -1,10 +1,11 @@
 package com.dfsek.terra.api.world;
 
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.seismic.type.vector.Vector3;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
 
 

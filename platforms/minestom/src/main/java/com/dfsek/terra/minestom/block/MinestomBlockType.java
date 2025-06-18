@@ -1,9 +1,9 @@
 package com.dfsek.terra.minestom.block;
 
+import net.minestom.server.instance.block.Block;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
-
-import net.minestom.server.instance.block.Block;
 
 
 public class MinestomBlockType implements BlockType {

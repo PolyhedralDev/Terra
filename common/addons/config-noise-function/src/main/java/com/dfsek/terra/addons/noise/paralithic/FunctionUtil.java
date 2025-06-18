@@ -2,16 +2,13 @@ package com.dfsek.terra.addons.noise.paralithic;
 
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
+import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction2;
+import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction3;
+import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction2;
+import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction3;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction2;
-
-import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction3;
-import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction2;
-
-import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction3;
 
 import com.dfsek.terra.addons.noise.config.DimensionApplicableSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;

@@ -1,9 +1,5 @@
 package com.dfsek.terra.minestom.biome;
 
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.minestom.api.BiomeFactory;
-import com.dfsek.terra.minestom.config.VanillaBiomeProperties;
-
 import net.kyori.adventure.key.Key;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.color.Color;
@@ -17,10 +13,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Locale;
 import java.util.Objects;
 
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.minestom.api.BiomeFactory;
+import com.dfsek.terra.minestom.config.VanillaBiomeProperties;
+
 
 public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
     private final DynamicRegistry<Biome> biomeRegistry = MinecraftServer.getBiomeRegistry();
     private final @NotNull Biome plainsBiome = Objects.requireNonNull(biomeRegistry.get(Key.key("minecraft:plains")));
+
+    private static <T> T mergeNullable(T first, T second) {
+        if(first == null) return second;
+        return first;
+    }
+
+    @Subst("value")
+    protected static String createBiomeID(ConfigPack pack, String biomeId) {
+        return pack.getID().toLowerCase() + "/" + biomeId.toLowerCase(Locale.ROOT);
+    }
 
     @Override
     public UserDefinedBiome create(ConfigPack pack, com.dfsek.terra.api.world.biome.Biome source) {
@@ -46,7 +56,7 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
             .music(parentEffects.music())
             .musicVolume(parentEffects.musicVolume());
 
-        if (effectsBuilder.build().equals(BiomeEffects.PLAINS_EFFECTS)) {
+        if(effectsBuilder.build().equals(BiomeEffects.PLAINS_EFFECTS)) {
             effectsBuilder.fogColor(new Color(0xC0D8FE)); // circumvent a minestom bug
         }
 
@@ -60,15 +70,5 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
 
         RegistryKey<Biome> registryKey = MinecraftServer.getBiomeRegistry().register(key, target);
         return new UserDefinedBiome(key, registryKey, source.getID(), target);
-    }
-
-    private static <T> T mergeNullable(T first, T second) {
-        if (first == null) return second;
-        return first;
-    }
-
-    @Subst("value")
-    protected static String createBiomeID(ConfigPack pack, String biomeId) {
-        return pack.getID().toLowerCase() + "/" + biomeId.toLowerCase(Locale.ROOT);
     }
 }

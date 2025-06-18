@@ -8,6 +8,7 @@ import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 
 import com.dfsek.terra.api.util.range.Range;
 
+
 public class SpawnEntryConfig implements ObjectTemplate<SpawnEntry> {
     @Value("type")
     @Default

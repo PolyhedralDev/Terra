@@ -7,18 +7,18 @@
 
 package com.dfsek.terra.addons.generation.feature;
 
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.sampler.Sampler;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import java.util.Collections;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
 
-import com.dfsek.seismic.type.Rotation;
-
 import com.dfsek.terra.addons.generation.feature.config.BiomeFeatures;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
-import com.dfsek.seismic.type.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;

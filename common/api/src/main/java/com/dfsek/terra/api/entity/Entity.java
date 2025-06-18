@@ -7,8 +7,9 @@
 
 package com.dfsek.terra.api.entity;
 
-import com.dfsek.terra.api.Handle;
 import com.dfsek.seismic.type.vector.Vector3;
+
+import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.world.ServerWorld;
 
 

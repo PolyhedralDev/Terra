@@ -1,11 +1,10 @@
 package com.dfsek.terra.addons.feature.distributor.distributors;
 
+import com.dfsek.seismic.algorithms.hashing.HashingFunctions;
+import com.dfsek.seismic.math.integer.IntegerFunctions;
+
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
-
-import com.dfsek.seismic.algorithms.hashing.HashingFunctions;
-
-import com.dfsek.seismic.math.integer.IntegerFunctions;
 
 import com.dfsek.terra.api.structure.feature.Distributor;
 

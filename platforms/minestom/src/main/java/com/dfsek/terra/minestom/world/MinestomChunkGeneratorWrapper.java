@@ -1,10 +1,15 @@
 package com.dfsek.terra.minestom.world;
 
+import net.minestom.server.coordinate.Point;
+import net.minestom.server.instance.generator.GenerationUnit;
+import net.minestom.server.instance.generator.Generator;
+import net.minestom.server.instance.generator.UnitModifier;
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
@@ -12,23 +17,15 @@ import com.dfsek.terra.minestom.biome.UserDefinedBiome;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
 
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.coordinate.Point;
-import net.minestom.server.entity.Player;
-import net.minestom.server.instance.generator.GenerationUnit;
-import net.minestom.server.instance.generator.Generator;
-import net.minestom.server.instance.generator.UnitModifier;
-import org.jetbrains.annotations.NotNull;
-
 
 public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrapper {
     private final GeneratedChunkCache cache;
-    private ChunkGenerator generator;
     private final TerraMinestomWorld world;
     private final BiomeProvider biomeProvider;
     private final boolean doFineGrainedBiomes;
-    private ConfigPack pack;
     private final MinestomUserDefinedBiomePool biomePool;
+    private ChunkGenerator generator;
+    private ConfigPack pack;
 
     public MinestomChunkGeneratorWrapper(
         Platform platform,

@@ -1,10 +1,9 @@
 package com.dfsek.terra.addons.noise.config.templates;
 
 import com.dfsek.seismic.type.sampler.DerivativeSampler;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.exception.ValidationException;
-
-import com.dfsek.seismic.type.sampler.Sampler;
 
 
 public class DerivativeSamplerTemplate extends SamplerTemplate<DerivativeSampler> {

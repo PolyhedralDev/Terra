@@ -17,15 +17,15 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
 
 
 /**

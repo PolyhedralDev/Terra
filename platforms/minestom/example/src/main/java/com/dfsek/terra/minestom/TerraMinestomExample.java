@@ -6,7 +6,6 @@ import net.minestom.server.command.builder.Command;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
-import net.minestom.server.event.player.PlayerDisconnectEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.LightingChunk;
@@ -22,9 +21,20 @@ import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 public class TerraMinestomExample {
     private static final Logger logger = LoggerFactory.getLogger(TerraMinestomExample.class);
     private final MinecraftServer server = MinecraftServer.init();
+    private final TerraMinestomPlatform platform = new TerraMinestomPlatform();
     private Instance instance;
     private TerraMinestomWorld world;
-    private final TerraMinestomPlatform platform = new TerraMinestomPlatform();
+
+    public static void main(String[] args) {
+        TerraMinestomExample example = new TerraMinestomExample();
+        example.createNewInstance();
+        example.attachTerra();
+        example.preloadWorldAndMeasure();
+        example.addScheduler();
+        example.addListeners();
+        example.addCommands();
+        example.bind();
+    }
 
     public void createNewInstance() {
         instance = MinecraftServer.getInstanceManager().createInstanceContainer();
@@ -104,16 +114,6 @@ public class TerraMinestomExample {
         server.start("localhost", 25565);
     }
 
-    public static void main(String[] args) {
-        TerraMinestomExample example = new TerraMinestomExample();
-        example.createNewInstance();
-        example.attachTerra();
-        example.preloadWorldAndMeasure();
-        example.addScheduler();
-        example.addListeners();
-        example.addCommands();
-        example.bind();
-    }
 
     public class RegenerateCommand extends Command {
         public RegenerateCommand() {

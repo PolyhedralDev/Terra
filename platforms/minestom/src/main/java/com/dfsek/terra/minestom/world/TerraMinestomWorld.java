@@ -1,27 +1,5 @@
 package com.dfsek.terra.minestom.world;
 
-import com.dfsek.terra.api.block.entity.BlockEntity;
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
-import com.dfsek.terra.api.world.chunk.Chunk;
-
-import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
-
-import com.dfsek.terra.api.world.info.WorldProperties;
-
-import com.dfsek.terra.minestom.TerraMinestomPlatform;
-import com.dfsek.terra.minestom.api.BlockEntityFactory;
-import com.dfsek.terra.minestom.api.EntityFactory;
-import com.dfsek.terra.minestom.api.BiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
-import com.dfsek.terra.minestom.block.MinestomBlockState;
-import com.dfsek.terra.minestom.entity.MinestomEntity;
-
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.coordinate.Point;
@@ -30,6 +8,24 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.world.DimensionType;
 
 import java.util.function.Consumer;
+
+import com.dfsek.terra.api.block.entity.BlockEntity;
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
+import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.minestom.TerraMinestomPlatform;
+import com.dfsek.terra.minestom.api.BiomeFactory;
+import com.dfsek.terra.minestom.api.BlockEntityFactory;
+import com.dfsek.terra.minestom.api.EntityFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
+import com.dfsek.terra.minestom.block.MinestomBlockState;
+import com.dfsek.terra.minestom.entity.MinestomEntity;
 
 
 public final class TerraMinestomWorld implements ServerWorld, WorldProperties {

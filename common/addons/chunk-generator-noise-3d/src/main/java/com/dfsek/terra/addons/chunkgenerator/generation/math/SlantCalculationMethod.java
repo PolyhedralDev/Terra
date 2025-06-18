@@ -1,7 +1,8 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math;
 
-import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 import com.dfsek.seismic.type.vector.Vector3;
+
+import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.Sampler3D;
 
 
 public enum SlantCalculationMethod {

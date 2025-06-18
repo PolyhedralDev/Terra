@@ -43,7 +43,7 @@ public final class MinecraftUtil {
 
     public static <T> Optional<RegistryEntry<T>> getEntry(Registry<T> registry, Identifier identifier) {
         return registry.getOptionalValue(identifier)
-                .flatMap(id -> Optional.ofNullable(registry.getEntry(id)));
+            .flatMap(id -> Optional.ofNullable(registry.getEntry(id)));
     }
 
     public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
@@ -79,8 +79,8 @@ public final class MinecraftUtil {
     }
 
     private static void registerFlora(com.dfsek.terra.api.world.biome.Biome biome, ConfigPack pack,
-                                     com.dfsek.terra.api.registry.key.RegistryKey id,
-                                     Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
+                                      com.dfsek.terra.api.registry.key.RegistryKey id,
+                                      Registry<net.minecraft.world.biome.Biome> biomeRegistry) {
         RegistryKey<net.minecraft.world.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         biomeRegistry.getOptionalValue(vanillaKey)
             .ifPresentOrElse(vanillaBiome -> {

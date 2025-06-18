@@ -7,13 +7,15 @@
 
 package com.dfsek.terra.addons.palette.palette;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+
 
 /**
  * A class representation of a "slice" of the world.
@@ -25,12 +27,12 @@ public class PaletteImpl implements Palette {
     public PaletteImpl(List<PaletteLayerHolder> layers, Sampler defaultSampler) {
         List<PaletteLayer> layerArray = new ArrayList<>();
 
-        for (PaletteLayerHolder holder : layers) {
+        for(PaletteLayerHolder holder : layers) {
             PaletteLayer layer;
             ProbabilityCollection<BlockState> materials = holder.getLayer();
             Sampler sampler = holder.getSampler() == null ? defaultSampler : holder.getSampler();
             layer = new PaletteLayer(materials, sampler);
-            for (int i = 0; i < holder.getSize(); i++)
+            for(int i = 0; i < holder.getSize(); i++)
                 layerArray.add(layer);
         }
 

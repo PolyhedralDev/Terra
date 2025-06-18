@@ -10,12 +10,11 @@ package com.dfsek.terra.addons.noise.config.templates.noise;
 import com.dfsek.seismic.algorithms.sampler.noise.CellularSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.seismic.type.DistanceFunction;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.seismic.type.sampler.Sampler;
 
 
 @SuppressWarnings("FieldMayBeFinal")

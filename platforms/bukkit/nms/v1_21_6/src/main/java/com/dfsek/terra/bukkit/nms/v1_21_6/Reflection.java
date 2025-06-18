@@ -68,6 +68,7 @@ public class Reflection {
         <T> HolderSet.Named<T> invokeCreateTag(MappedRegistry<T> instance, TagKey<T> tag);
     }
 
+
     @Proxies(className = "net.minecraft.core.MappedRegistry$TagSet")
     public interface MappedRegistryTagSetProxy {
         @MethodName("fromMap")
@@ -92,6 +93,7 @@ public class Reflection {
         <T> void invokeBindTags(Reference<T> instance, Collection<TagKey<T>> tags);
     }
 
+
     @Proxies(ChunkMap.class)
     public interface ChunkMapProxy {
         @FieldGetter("worldGenContext")
@@ -101,11 +103,13 @@ public class Reflection {
         void setWorldGenContext(ChunkMap instance, WorldGenContext worldGenContext);
     }
 
+
     @Proxies(Holder.Reference.class)
     public interface HolderReferenceProxy {
         @MethodName("bindTags")
         <T> void invokeBindTags(Holder.Reference<T> instance, Collection<TagKey<T>> tags);
     }
+
 
     @Proxies(HolderSet.Named.class)
     public interface HolderSetNamedProxy {
@@ -115,6 +119,7 @@ public class Reflection {
         @MethodName("contents")
         <T> List<Holder<T>> invokeContents(HolderSet.Named<T> instance);
     }
+
 
     @Proxies(Biome.class)
     public interface BiomeProxy {

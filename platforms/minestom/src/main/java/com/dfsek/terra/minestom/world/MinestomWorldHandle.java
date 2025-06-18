@@ -1,14 +1,13 @@
 package com.dfsek.terra.minestom.world;
 
+import net.minestom.server.instance.block.Block;
+import org.jetbrains.annotations.NotNull;
+
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
-
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.entity.MinestomEntityType;
-
-import net.minestom.server.instance.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 
 public class MinestomWorldHandle implements WorldHandle {

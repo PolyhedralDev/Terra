@@ -3,9 +3,6 @@ package com.dfsek.terra.lifecycle;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-
 import net.minecraft.MinecraftVersion;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -45,10 +42,12 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private int generationThreads;
 
     public LifecyclePlatform() {
-        generationThreads = getGenerationThreadsWithReflection("com.ishland.c2me.base.common.GlobalExecutors", "GLOBAL_EXECUTOR_PARALLELISM", "C2ME");
-        if (generationThreads == 0) {
+        generationThreads = getGenerationThreadsWithReflection("com.ishland.c2me.base.common.GlobalExecutors",
+            "GLOBAL_EXECUTOR_PARALLELISM", "C2ME");
+        if(generationThreads == 0) {
             generationThreads = getMoonriseGenerationThreadsWithReflection();
-        } if (generationThreads == 0) {
+        }
+        if(generationThreads == 0) {
             generationThreads = 1;
         }
         CommonPlatform.initialize(this);

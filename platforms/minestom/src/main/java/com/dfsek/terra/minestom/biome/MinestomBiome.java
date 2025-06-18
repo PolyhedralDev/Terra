@@ -1,9 +1,9 @@
 package com.dfsek.terra.minestom.biome;
 
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.world.biome.Biome;
+
+import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 public class MinestomBiome implements PlatformBiome {
