@@ -1,8 +1,5 @@
 repositories {
-    maven {
-        name = "onarandombox"
-        url = uri("https://repo.onarandombox.com/multiverse-releases")
-    }
+
 }
 
 dependencies {
@@ -10,7 +7,7 @@ dependencies {
 
     compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
 
-    compileOnly("org.mvplugins.multiverse.core", "multiverse-core", "5.0.0")
+    compileOnly("org.mvplugins.multiverse.core", "multiverse-core", Versions.Bukkit.multiverse)
 
     shadedApi("io.papermc", "paperlib", Versions.Bukkit.paperLib)
 
