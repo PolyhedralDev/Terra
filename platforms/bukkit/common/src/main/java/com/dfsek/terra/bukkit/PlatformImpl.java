@@ -23,7 +23,10 @@ import com.dfsek.tectonic.api.exception.LoadException;
 
 import com.dfsek.terra.bukkit.nms.Initializer;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -132,7 +135,8 @@ public class PlatformImpl extends AbstractPlatform {
     }
 
     private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
-        if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
-        return new BukkitPlatformBiome(org.bukkit.block.Biome.valueOf(id.toUpperCase(Locale.ROOT).substring(10)));
+        NamespacedKey key = NamespacedKey.fromString(id);
+        if(key == null || !key.namespace().equals("minecraft")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
+        return new BukkitPlatformBiome(RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME).getOrThrow(key));
     }
 }
