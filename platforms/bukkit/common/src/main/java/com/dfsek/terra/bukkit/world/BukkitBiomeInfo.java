@@ -5,4 +5,4 @@ import com.dfsek.terra.api.properties.Properties;
 import org.bukkit.NamespacedKey;
 
 
-public record BukkitBiomeInfo(NamespacedKey vanillaBiomeKey) implements Properties {}
+public record BukkitBiomeInfo(NamespacedKey biomeKey) implements Properties {}
