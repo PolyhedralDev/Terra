@@ -2,6 +2,8 @@ package com.dfsek.terra.bukkit.nms.v1_21_6;
 
 import com.dfsek.terra.bukkit.nms.v1_21_6.config.VanillaBiomeProperties;
 
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderSet;
@@ -62,6 +64,7 @@ public class AwfulBukkitHacks {
                     Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, RegistrationInfo.BUILT_IN);
                     Reflection.REFERENCE.invokeBindValue(holder, platform); // IMPORTANT: bind holder.
 
+                    platformBiome.getContext().put(new BukkitBiomeInfo(vanillaBukkitKey));
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
 
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.location());
