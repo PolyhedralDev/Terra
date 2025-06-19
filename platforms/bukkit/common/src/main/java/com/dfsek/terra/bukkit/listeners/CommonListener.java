@@ -95,12 +95,14 @@ public class CommonListener implements Listener {
 
         NamespacedKey biomeKey = wolf.getWorld().getBiome(wolf.getLocation()).getKey();
         pack.getBiomeProvider().stream()
-            .map(biome -> ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                .get(BukkitBiomeInfo.class)
-                .vanillaBiomeKey())
-            .filter(biomeKey::equals)
+            .filter(biome -> ((BukkitPlatformBiome) biome.getPlatformBiome()).getHandle()
+                .getKey().equals(biomeKey))
             .findFirst()
-            .ifPresent(vanillaBiomeKey -> {
+            .ifPresent(biome -> {
+                NamespacedKey vanillaBiomeKey = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
+                    .get(BukkitBiomeInfo.class)
+                    .vanillaBiomeKey();
+
                 switch(vanillaBiomeKey.toString()) {
                     case "minecraft:snowy_taiga" -> wolf.setVariant(Variant.ASHEN);
                     case "minecraft:old_growth_pine_taiga" -> wolf.setVariant(Variant.BLACK);
