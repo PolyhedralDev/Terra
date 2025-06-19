@@ -22,7 +22,13 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
 
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
 import org.bukkit.event.EventHandler;
@@ -89,9 +95,21 @@ public class CommonListener implements Listener {
             return;
         }
 
-        // TODO: Implement logic to calculate variant
-        if (wolf.getWorld().getBiome(wolf.getLocation()).getKey().toString().equalsIgnoreCase("terra:overworld/overworld/taiga")) {
-            wolf.setVariant(Variant.RUSTY);
+        // TODO: This is not functional
+        pack.getBiomeProvider().stream()
+            .map(biome -> RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME)
+                .getOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
+                    .get(BukkitBiomeInfo.class)
+                    .vanillaBiomeKey()));
+
+
+        Biome biome = wolf.getWorld().getBiome(wolf.getLocation());
+        switch(biome.getKey().toString()) {
+            case "minecraft:snowy_taiga" -> wolf.setVariant(Variant.ASHEN);
+            case "minecraft:old_growth_pine_taiga" -> wolf.setVariant(Variant.BLACK);
+            case "minecraft:old_growth_spruce_taiga" -> wolf.setVariant(Variant.CHESTNUT);
+            case "minecraft:grove" -> wolf.setVariant(Variant.SNOWY);
+            case "minecraft:forest" -> wolf.setVariant(Variant.WOODS);
         }
     }
 }
