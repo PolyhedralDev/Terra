@@ -23,7 +23,6 @@ import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginEnableEvent;
-import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +43,7 @@ public class CommonListener implements Listener {
         if(event.getPlugin().getName().equals("Multiverse-Core")) {
             try {
                 Class.forName("org.mvplugins.multiverse.core.MultiverseCoreApi");
-                MultiverseCoreApi.get().getGeneratorProvider()
-                    .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
+                MultiverseGeneratorPluginHook.register(platform);
             } catch(ClassNotFoundException e) {
                 logger.debug("Multiverse v5 is not installed.");
             } catch(IllegalStateException e) {
