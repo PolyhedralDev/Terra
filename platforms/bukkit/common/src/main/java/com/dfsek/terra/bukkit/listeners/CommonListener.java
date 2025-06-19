@@ -25,10 +25,8 @@ import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
 import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
-import io.papermc.paper.registry.RegistryAccess;
-import io.papermc.paper.registry.RegistryKey;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
 import org.bukkit.event.EventHandler;
@@ -95,21 +93,21 @@ public class CommonListener implements Listener {
             return;
         }
 
-        // TODO: This is not functional
+        NamespacedKey biomeKey = wolf.getWorld().getBiome(wolf.getLocation()).getKey();
         pack.getBiomeProvider().stream()
-            .map(biome -> RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME)
-                .getOrThrow(((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                    .get(BukkitBiomeInfo.class)
-                    .vanillaBiomeKey()));
-
-
-        Biome biome = wolf.getWorld().getBiome(wolf.getLocation());
-        switch(biome.getKey().toString()) {
-            case "minecraft:snowy_taiga" -> wolf.setVariant(Variant.ASHEN);
-            case "minecraft:old_growth_pine_taiga" -> wolf.setVariant(Variant.BLACK);
-            case "minecraft:old_growth_spruce_taiga" -> wolf.setVariant(Variant.CHESTNUT);
-            case "minecraft:grove" -> wolf.setVariant(Variant.SNOWY);
-            case "minecraft:forest" -> wolf.setVariant(Variant.WOODS);
-        }
+            .map(biome -> ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
+                .get(BukkitBiomeInfo.class)
+                .vanillaBiomeKey())
+            .filter(biomeKey::equals)
+            .findFirst()
+            .ifPresent(vanillaBiomeKey -> {
+                switch(vanillaBiomeKey.toString()) {
+                    case "minecraft:snowy_taiga" -> wolf.setVariant(Variant.ASHEN);
+                    case "minecraft:old_growth_pine_taiga" -> wolf.setVariant(Variant.BLACK);
+                    case "minecraft:old_growth_spruce_taiga" -> wolf.setVariant(Variant.CHESTNUT);
+                    case "minecraft:grove" -> wolf.setVariant(Variant.SNOWY);
+                    case "minecraft:forest" -> wolf.setVariant(Variant.WOODS);
+                }
+            });
     }
 }
