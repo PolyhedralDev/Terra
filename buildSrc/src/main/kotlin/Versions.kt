@@ -89,6 +89,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "1_21_5-1e8b8693ac"
+        const val minestom = "1_21_6-c3ccee696b"
     }
 }

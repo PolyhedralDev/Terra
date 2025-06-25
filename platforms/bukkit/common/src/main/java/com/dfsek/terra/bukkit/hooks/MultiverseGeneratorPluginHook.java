@@ -1,5 +1,9 @@
 package com.dfsek.terra.bukkit.hooks;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.registry.key.Keyed;
+
+import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.generators.GeneratorPlugin;
 import org.mvplugins.multiverse.external.jetbrains.annotations.NotNull;
 import org.mvplugins.multiverse.external.jetbrains.annotations.Nullable;
@@ -44,5 +48,10 @@ public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
     @Override
     public @NotNull String getPluginName() {
         return "Terra";
+    }
+
+    public static void register(Platform platform) {
+        MultiverseCoreApi.get().getGeneratorProvider()
+            .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
     }
 }

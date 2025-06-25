@@ -1,5 +1,9 @@
 package com.dfsek.terra.bukkit.nms.v1_21_6;
 
+import com.dfsek.terra.bukkit.nms.v1_21_6.config.VanillaBiomeProperties;
+
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderSet;
@@ -54,14 +58,14 @@ public class AwfulBukkitHacks {
                     Biome platform = NMSBiomeInjector.createBiome(biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value(),
                         vanillaBiomeProperties);
 
-                    ResourceKey<Biome> delegateKey = ResourceKey.create(
-                        Registries.BIOME,
-                        ResourceLocation.fromNamespaceAndPath("terra", NMSBiomeInjector.createBiomeID(pack, key))
-                    );
+                    ResourceLocation delegateMinecraftKey = ResourceLocation.fromNamespaceAndPath("terra", NMSBiomeInjector.createBiomeID(pack, key));
+                    NamespacedKey delegateBukkitKey = NamespacedKey.fromString(delegateMinecraftKey.toString());
+                    ResourceKey<Biome> delegateKey = ResourceKey.create(Registries.BIOME, delegateMinecraftKey);
 
                     Reference<Biome> holder = biomeRegistry.register(delegateKey, platform, RegistrationInfo.BUILT_IN);
                     Reflection.REFERENCE.invokeBindValue(holder, platform); // IMPORTANT: bind holder.
 
+                    platformBiome.getContext().put(new BukkitBiomeInfo(delegateBukkitKey));
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
 
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.location());
