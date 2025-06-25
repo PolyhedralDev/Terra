@@ -14,14 +14,14 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 public class BiomeExtrusionProvider implements BiomeProvider {
     private final BiomeProvider delegate;
     private final Set<Biome> biomes;
-    private final List<Extrusion> extrusions;
+    private final Extrusion[] extrusions;
     private final int resolution;
 
     public BiomeExtrusionProvider(BiomeProvider delegate, List<Extrusion> extrusions, int resolution) {
         this.delegate = delegate;
         this.biomes = delegate.stream().collect(Collectors.toSet());
         extrusions.forEach(e -> biomes.addAll(e.getBiomes()));
-        this.extrusions = extrusions;
+        this.extrusions = extrusions.toArray(new Extrusion[0]);
         this.resolution = resolution;
     }
 
@@ -33,8 +33,8 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     }
 
     public Biome extrude(Biome original, int x, int y, int z, long seed) {
-        for(Extrusion extrusion : extrusions) {
-            original = extrusion.extrude(original, x, y, z, seed);
+        for(int i = 0; i < extrusions.length; i++) {
+            original = extrusions[i].extrude(original, x, y, z, seed);
         }
         return original;
     }
