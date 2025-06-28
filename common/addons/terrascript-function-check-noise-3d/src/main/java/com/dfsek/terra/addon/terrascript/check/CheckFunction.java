@@ -9,6 +9,9 @@ package com.dfsek.terra.addon.terrascript.check;
 
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
+
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
