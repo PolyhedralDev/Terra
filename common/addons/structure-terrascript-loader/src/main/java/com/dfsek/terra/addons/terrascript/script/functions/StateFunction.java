@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
-import com.dfsek.seismic.type.vector.Vector2;
-import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +42,8 @@ public class StateFunction implements Function<Void> {
             z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
-        Vector3 origin = Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
-            (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable();
+        Vector3 origin = Vector3.of(FloatingPointFunctions.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
+            FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable();
         try {
             BlockEntity state = arguments.getWorld().getBlockEntity(origin);
             state.applyState(data.apply(implementationArguments, scope));
