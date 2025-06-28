@@ -13,10 +13,11 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
+import com.dfsek.terra.addons.noise.config.templates.noise.NoiseTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 
 
-public abstract class FractalTemplate<T extends FractalNoiseFunction> extends SamplerTemplate<T> {
+public abstract class FractalTemplate<T extends FractalNoiseFunction> extends NoiseTemplate<T> {
     @Value("octaves")
     @Default
     protected @Meta int octaves = 3;

@@ -34,7 +34,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Value("lookup")
     @Default
-    private @Meta Sampler lookup = new OpenSimplex2Sampler();
+    private @Meta Sampler lookup = new OpenSimplex2Sampler(0.02d, 0);
 
     @Value("salt-lookup")
     @Default
@@ -42,14 +42,7 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Override
     public Sampler get() {
-        CellularSampler sampler = new CellularSampler();
-        sampler.setNoiseLookup(lookup);
-        sampler.setFrequency(frequency);
-        sampler.setJitterModifier(cellularJitter);
-        sampler.setReturnType(cellularReturnType);
-        sampler.setDistanceFunction(cellularDistanceFunction);
-        sampler.setSalt(salt);
-        sampler.setSaltLookup(saltLookup);
+        CellularSampler sampler = new CellularSampler(frequency, salt, lookup, cellularDistanceFunction, cellularReturnType, cellularJitter, saltLookup);
         return sampler;
     }
 }

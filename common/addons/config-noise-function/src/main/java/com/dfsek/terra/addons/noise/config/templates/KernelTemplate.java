@@ -45,8 +45,7 @@ public class KernelTemplate extends SamplerTemplate<KernelSampler> {
             }
         }
 
-        KernelSampler sampler = new KernelSampler(k, function);
-        sampler.setFrequency(frequency);
+        KernelSampler sampler = new KernelSampler(frequency, k, function);
         return sampler;
     }
 

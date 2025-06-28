@@ -15,11 +15,7 @@ import com.dfsek.seismic.type.sampler.Sampler;
 public class RidgedFractalTemplate extends FractalTemplate<RidgedFractalSampler> {
     @Override
     public Sampler get() {
-        RidgedFractalSampler sampler = new RidgedFractalSampler(function);
-        sampler.setGain(fractalGain);
-        sampler.setLacunarity(fractalLacunarity);
-        sampler.setOctaves(octaves);
-        sampler.setWeightedStrength(weightedStrength);
+        RidgedFractalSampler sampler = new RidgedFractalSampler(salt, function, fractalGain, fractalLacunarity, weightedStrength, octaves);
         return sampler;
     }
 }
