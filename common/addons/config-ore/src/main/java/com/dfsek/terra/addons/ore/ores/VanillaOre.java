@@ -7,6 +7,11 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
+import java.util.BitSet;
+import java.util.Map;
+import java.util.random.RandomGenerator;
+
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
 import com.dfsek.seismic.math.trigonometry.TrigonometryFunctions;
 import com.dfsek.seismic.type.Rotation;
@@ -104,7 +109,7 @@ public class VanillaOre implements Structure {
             }
         }
 
-        int outset = (int) Math.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
+        int outset = FloatingPointFunctions.ceil((size / 16.0F * 2.0F + 1.0F) / 2.0F);
         int x = (int) (location.getX() - Math.ceil(eighthSize) - outset);
         int y = location.getY() - 2 - outset;
         int z = (int) (location.getZ() - Math.ceil(eighthSize) - outset);

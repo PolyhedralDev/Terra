@@ -1,6 +1,6 @@
 package com.dfsek.terra.addons.image.operator;
 
-import com.dfsek.seismic.type.sampler.Sampler;
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.ColorUtil;
@@ -233,7 +233,7 @@ public class DistanceTransform {
         @Override
         public double getSample(long seed, double x, double y) {
             if(x < 0 || y < 0 || x >= transform.width || y >= transform.height) return transform.minDistance;
-            return transform.distances[(int) Math.floor(x)][(int) Math.floor(y)];
+            return transform.distances[FloatingPointFunctions.floor(x)][FloatingPointFunctions.floor(y)];
         }
 
         @Override

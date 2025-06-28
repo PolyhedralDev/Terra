@@ -2,6 +2,8 @@ package com.dfsek.terra.addons.biome.pipeline.pipeline;
 
 import java.util.List;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;
 import com.dfsek.terra.addons.biome.pipeline.api.Stage;
@@ -98,7 +100,7 @@ public class BiomeChunkImpl implements BiomeChunk {
         // chunk samples points on the same overall grid.
         // Without this, shared chunk borders (required because of adjacent cell reads) will not be identical
         // because points would be sampled on grids at different offsets, resulting in artifacts at borders.
-        return (int) Math.ceil((double) finalGridOrigin / initialGridInterval) * initialGridInterval;
+        return FloatingPointFunctions.ceil((double) finalGridOrigin / initialGridInterval) * initialGridInterval;
     }
 
     private static int calculateFinalGridOrigin(int totalExpanderCount, List<Stage> stages) {
