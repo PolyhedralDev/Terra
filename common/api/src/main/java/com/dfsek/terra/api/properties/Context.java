@@ -17,7 +17,7 @@ public class Context {
     private static final AtomicInteger size = new AtomicInteger(0);
     private static final Map<Class<? extends Properties>, PropertyKey<?>> properties = new HashMap<>();
     private final Map<Class<? extends Properties>, Properties> map = new HashMap<>();
-    private final AtomicReference<Properties[]> list = new AtomicReference<>(new Properties[size.get()]);
+    private Properties[] list = new Properties[size.get()];
 
     @SuppressWarnings("unchecked")
     public static <T extends Properties> PropertyKey<T> create(Class<T> clazz) {
@@ -38,19 +38,19 @@ public class Context {
         return this;
     }
 
-    public <T extends Properties> Context put(PropertyKey<T> key, T properties) {
-        list.updateAndGet(p -> {
-            if(p.length == size.get()) return p;
+    public synchronized <T extends Properties> Context put(PropertyKey<T> key, T properties) {
+        if(list.length != size.get()) {
             Properties[] p2 = new Properties[size.get()];
-            System.arraycopy(p, 0, p2, 0, p.length);
-            return p2;
-        })[key.key] = properties;
+            System.arraycopy(list, 0, p2, 0, list.length);
+            list = p2;
+        }
+        list[key.key] = properties;
         return this;
     }
 
     @SuppressWarnings("unchecked")
     public <T extends Properties> T get(PropertyKey<T> key) {
-        return (T) list.get()[key.key];
+        return (T) list[key.key];
     }
 
     public <T extends Properties> boolean has(Class<T> test) {

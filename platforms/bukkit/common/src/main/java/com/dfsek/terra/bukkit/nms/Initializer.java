@@ -1,10 +1,9 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.BukkitAddon;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dfsek.terra.bukkit.BukkitAddon;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 
@@ -54,7 +53,7 @@ public interface Initializer {
     private static Initializer constructInitializer() {
         try {
             String packageVersion = NMS;
-            if (NMS.equals("v1_21_5")) {
+            if(NMS.equals("v1_21_5")) {
                 packageVersion = "v1_21_6";
             }
 

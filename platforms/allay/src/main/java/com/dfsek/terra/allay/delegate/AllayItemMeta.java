@@ -10,6 +10,7 @@ import java.util.Map;
 import com.dfsek.terra.api.inventory.item.Enchantment;
 import com.dfsek.terra.api.inventory.item.ItemMeta;
 
+
 /**
  * @author daoge_cmd
  */
@@ -23,7 +24,7 @@ public record AllayItemMeta(ItemStack allayItemStack) implements ItemMeta {
     @Override
     public Map<Enchantment, Integer> getEnchantments() {
         Map<Enchantment, Integer> results = new HashMap<>();
-        for (EnchantmentInstance allayEnchantmentInstance : allayItemStack.getEnchantments()) {
+        for(EnchantmentInstance allayEnchantmentInstance : allayItemStack.getEnchantments()) {
             results.put(new AllayEnchantment(allayEnchantmentInstance.getType()), allayEnchantmentInstance.getLevel());
         }
         return results;

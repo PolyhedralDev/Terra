@@ -44,6 +44,7 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
+import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
@@ -60,7 +61,7 @@ public class PlatformImpl extends AbstractPlatform {
 
     public PlatformImpl(TerraBukkitPlugin plugin) {
         generationThreads = getMoonriseGenerationThreadsWithReflection();
-        if (generationThreads == 0) {
+        if(generationThreads == 0) {
             generationThreads = 1;
         }
         this.plugin = plugin;
@@ -74,8 +75,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {

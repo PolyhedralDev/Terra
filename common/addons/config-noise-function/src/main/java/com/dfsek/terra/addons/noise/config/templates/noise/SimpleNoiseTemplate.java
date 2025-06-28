@@ -7,24 +7,29 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.NoiseFunction;
+import com.dfsek.seismic.type.sampler.Sampler;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.noise.samplers.noise.NoiseFunction;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
+public class SimpleNoiseTemplate<T extends NoiseFunction> extends NoiseTemplate<NoiseFunction> {
+    private final Class<T> samplerClass;
 
-public class SimpleNoiseTemplate extends NoiseTemplate<NoiseFunction> {
-    private final Supplier<NoiseFunction> samplerSupplier;
-
-    public SimpleNoiseTemplate(Supplier<NoiseFunction> samplerSupplier) {
-        this.samplerSupplier = samplerSupplier;
+    public SimpleNoiseTemplate(Class<T> samplerClass) {
+        this.samplerClass = samplerClass;
     }
 
     @Override
-    public NoiseSampler get() {
-        NoiseFunction sampler = samplerSupplier.get();
-        sampler.setFrequency(frequency);
-        sampler.setSalt(salt);
+    public Sampler get() {
+        NoiseFunction sampler = null;
+        try {
+            sampler = samplerClass.getConstructor(double.class, long.class)
+                    .newInstance(frequency, salt);
+        } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
         return sampler;
     }
 }

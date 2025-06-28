@@ -1,13 +1,13 @@
 package com.dfsek.terra.minestom.block;
 
-import com.dfsek.terra.api.util.vector.Vector3;
-
+import com.dfsek.seismic.type.vector.Vector3;
 import net.minestom.server.coordinate.BlockVec;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.block.Block;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+
 
 public class MinestomBlockEntity implements BlockEntity {
     private final Instance instance;

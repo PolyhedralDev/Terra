@@ -7,10 +7,14 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
+import java.util.random.RandomGenerator;
+import java.util.random.RandomGeneratorFactory;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -26,9 +30,6 @@ import com.dfsek.terra.api.event.events.world.generation.LootPopulateEvent;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.structure.LootTable;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class LootFunction implements Function<Void> {
@@ -55,9 +56,8 @@ public class LootFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-                z.apply(implementationArguments, scope).doubleValue()),
-            arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         String id = data.apply(implementationArguments, scope);
@@ -65,10 +65,10 @@ public class LootFunction implements Function<Void> {
 
         registry.get(RegistryKey.parse(id))
             .ifPresentOrElse(table -> {
-                    Vector3 apply = Vector3.of((int) Math.round(xz.getX()),
+                    Vector3 apply = Vector3.of(FloatingPointFunctions.round(xz.getX()),
                         y.apply(implementationArguments, scope)
                             .intValue(),
-                        (int) Math.round(xz.getZ())).mutable().add(arguments.getOrigin()).immutable();
+                        FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable();
 
                     try {
                         BlockEntity data = arguments.getWorld().getBlockEntity(apply);
@@ -84,7 +84,8 @@ public class LootFunction implements Function<Void> {
                         if(event.isCancelled()) return;
 
                         event.getTable().fillInventory(container.getInventory(),
-                            new Random(apply.hashCode()));
+                            RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of(
+                                "Xoroshiro128PlusPlus").create(apply.hashCode()));
                         data.update(false);
                     } catch(Exception e) {
                         LOGGER.error("Could not apply loot at {}", apply, e);

@@ -43,7 +43,7 @@ public class ProbabilityCollectionLoader implements TypeLoader<ProbabilityCollec
             AnnotatedType generic = pType.getAnnotatedActualTypeArguments()[0];
             if(o instanceof Map) {
                 Map<Object, Object> map = (Map<Object, Object>) o;
-                if (map.size() == 1) {
+                if(map.size() == 1) {
                     Object onlyKey = map.keySet().iterator().next();
                     return new ProbabilityCollection.Singleton<>(configLoader.loadType(generic, onlyKey, depthTracker));
                 }

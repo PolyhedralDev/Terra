@@ -12,7 +12,7 @@ public class VillagerTypeTemplate implements ObjectTemplate<VillagerType> {
     @Value("id")
     @Default
     private ResourceLocation id = null;
-    
+
     @Override
     public VillagerType get() {
         return BuiltInRegistries.VILLAGER_TYPE.get(id).orElseThrow().value();

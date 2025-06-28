@@ -10,6 +10,10 @@ import org.mvplugins.multiverse.external.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.registry.key.Keyed;
+
+
 public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
 
     private final Platform platform;

@@ -1,7 +1,6 @@
 package com.dfsek.terra.api.util.cache;
 
 
-
 public class SeededVector3Key {
     public int x;
     public int y;

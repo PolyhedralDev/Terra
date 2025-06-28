@@ -7,9 +7,10 @@
 
 package com.dfsek.terra.addons.feature.locator.locators;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import java.util.List;
 
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
 import com.dfsek.terra.api.structure.feature.Locator;
 import com.dfsek.terra.api.world.chunk.generation.util.Column;
@@ -17,9 +18,9 @@ import com.dfsek.terra.api.world.chunk.generation.util.Column.BinaryColumnBuilde
 
 
 public class SamplerLocator implements Locator {
-    private final List<NoiseSampler> samplers;
+    private final List<Sampler> samplers;
 
-    public SamplerLocator(List<NoiseSampler> samplers) {
+    public SamplerLocator(List<Sampler> samplers) {
         this.samplers = samplers;
     }
 
@@ -42,7 +43,7 @@ public class SamplerLocator implements Locator {
 
         long seed = column.getWorld().getSeed();
         samplers.forEach(sampler -> {
-            int y = floorToInt(sampler.noise(seed, column.getX(), column.getZ()));
+            int y = floorToInt(sampler.getSample(seed, column.getX(), column.getZ()));
             if(y >= column.getMaxY() || y < column.getMinY()) return;
             results.set(y);
         });

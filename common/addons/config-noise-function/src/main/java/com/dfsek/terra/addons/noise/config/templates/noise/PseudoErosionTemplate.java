@@ -1,12 +1,12 @@
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.PseudoErosionSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.seismic.type.sampler.DerivativeSampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.samplers.noise.PseudoErosionSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 
 
 public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
@@ -45,7 +45,7 @@ public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
 
     @Value("sampler")
     @Default
-    private DerivativeNoiseSampler heightSampler = new OpenSimplex2Sampler();
+    private DerivativeSampler heightSampler = new OpenSimplex2Sampler(0.02d, 0);
 
     @Value("slope-mask.enable")
     @Default
@@ -69,11 +69,9 @@ public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
 
     @Override
     public PseudoErosionSampler get() {
-        PseudoErosionSampler pseudoErosion = new PseudoErosionSampler(octaves, gain, lacunarity,
+        PseudoErosionSampler pseudoErosion = new PseudoErosionSampler(frequency, salt, octaves, gain, lacunarity,
             slopeStrength, branchStrength, strength,
             erosionFrequency, heightSampler, slopeMask, slopeMaskFull, slopeMaskNone, jitterModifier, averageErosionImpulses);
-        pseudoErosion.setFrequency(frequency);
-        pseudoErosion.setSalt(salt);
         return pseudoErosion;
     }
 }
