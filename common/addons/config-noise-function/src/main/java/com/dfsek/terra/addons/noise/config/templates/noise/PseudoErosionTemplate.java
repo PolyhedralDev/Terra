@@ -45,7 +45,7 @@ public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
 
     @Value("sampler")
     @Default
-    private DerivativeSampler heightSampler = new OpenSimplex2Sampler();
+    private DerivativeSampler heightSampler = new OpenSimplex2Sampler(0.02d, 0);
 
     @Value("slope-mask.enable")
     @Default
@@ -69,11 +69,9 @@ public class PseudoErosionTemplate extends NoiseTemplate<PseudoErosionSampler> {
 
     @Override
     public PseudoErosionSampler get() {
-        PseudoErosionSampler pseudoErosion = new PseudoErosionSampler(octaves, gain, lacunarity,
+        PseudoErosionSampler pseudoErosion = new PseudoErosionSampler(frequency, salt, octaves, gain, lacunarity,
             slopeStrength, branchStrength, strength,
             erosionFrequency, heightSampler, slopeMask, slopeMaskFull, slopeMaskNone, jitterModifier, averageErosionImpulses);
-        pseudoErosion.setFrequency(frequency);
-        pseudoErosion.setSalt(salt);
         return pseudoErosion;
     }
 }

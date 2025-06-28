@@ -23,12 +23,7 @@ public class PingPongTemplate extends FractalTemplate<PingPongSampler> {
 
     @Override
     public Sampler get() {
-        PingPongSampler sampler = new PingPongSampler(function);
-        sampler.setGain(fractalGain);
-        sampler.setLacunarity(fractalLacunarity);
-        sampler.setOctaves(octaves);
-        sampler.setWeightedStrength(weightedStrength);
-        sampler.setPingPongStrength(pingPong);
+        PingPongSampler sampler = new PingPongSampler(salt, function, fractalGain, fractalLacunarity, weightedStrength, octaves, pingPong);
         return sampler;
     }
 }

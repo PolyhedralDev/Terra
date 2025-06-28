@@ -119,21 +119,21 @@ public class NoiseAddon implements AddonInitializer {
                 noiseRegistry.register(addon.key("PING_PONG"), PingPongTemplate::new);
                 noiseRegistry.register(addon.key("RIDGED"), RidgedFractalTemplate::new);
 
-                noiseRegistry.register(addon.key("OPEN_SIMPLEX_2"), () -> new SimpleNoiseTemplate(OpenSimplex2Sampler::new));
-                noiseRegistry.register(addon.key("OPEN_SIMPLEX_2S"), () -> new SimpleNoiseTemplate(OpenSimplex2SSampler::new));
-                noiseRegistry.register(addon.key("PERLIN"), () -> new SimpleNoiseTemplate(PerlinSampler::new));
-                noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate(SimplexSampler::new));
+                noiseRegistry.register(addon.key("OPEN_SIMPLEX_2"), () -> new SimpleNoiseTemplate<>(OpenSimplex2Sampler.class));
+                noiseRegistry.register(addon.key("OPEN_SIMPLEX_2S"), () -> new SimpleNoiseTemplate<>(OpenSimplex2SSampler.class));
+                noiseRegistry.register(addon.key("PERLIN"), () -> new SimpleNoiseTemplate<>(PerlinSampler.class));
+                noiseRegistry.register(addon.key("SIMPLEX"), () -> new SimpleNoiseTemplate<>(SimplexSampler.class));
                 noiseRegistry.register(addon.key("GABOR"), GaborNoiseTemplate::new);
                 noiseRegistry.register(addon.key("PSEUDOEROSION"), PseudoErosionTemplate::new);
 
-                noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate(ValueSampler::new));
-                noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate(ValueCubicSampler::new));
+                noiseRegistry.register(addon.key("VALUE"), () -> new SimpleNoiseTemplate<>(ValueSampler.class));
+                noiseRegistry.register(addon.key("VALUE_CUBIC"), () -> new SimpleNoiseTemplate<>(ValueCubicSampler.class));
 
                 noiseRegistry.register(addon.key("CELLULAR"), CellularNoiseTemplate::new);
 
-                noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate(WhiteNoiseSampler::new));
-                noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate(PositiveWhiteNoiseSampler::new));
-                noiseRegistry.register(addon.key("GAUSSIAN"), () -> new SimpleNoiseTemplate(GaussianNoiseSampler::new));
+                noiseRegistry.register(addon.key("WHITE_NOISE"), () -> new SimpleNoiseTemplate<>(WhiteNoiseSampler.class));
+                noiseRegistry.register(addon.key("POSITIVE_WHITE_NOISE"), () -> new SimpleNoiseTemplate<>(PositiveWhiteNoiseSampler.class));
+                noiseRegistry.register(addon.key("GAUSSIAN"), () -> new SimpleNoiseTemplate<>(GaussianNoiseSampler.class));
 
                 noiseRegistry.register(addon.key("DISTANCE"), DistanceSamplerTemplate::new);
 

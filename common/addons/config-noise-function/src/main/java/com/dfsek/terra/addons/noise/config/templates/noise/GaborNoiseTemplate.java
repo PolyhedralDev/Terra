@@ -37,16 +37,13 @@ public class GaborNoiseTemplate extends NoiseTemplate<GaborSampler> {
     @Default
     private @Meta double f0 = 0.625;
 
+    @Value("a")
+    @Default
+    private @Meta double a = 0.1;
+
     @Override
     public Sampler get() {
-        GaborSampler gaborSampler = new GaborSampler();
-        gaborSampler.setFrequency(frequency);
-        gaborSampler.setRotation(rotation);
-        gaborSampler.setIsotropic(isotropic);
-        gaborSampler.setDeviation(deviation);
-        gaborSampler.setImpulsesPerKernel(impulses);
-        gaborSampler.setFrequency0(f0);
-        gaborSampler.setSalt(salt);
+        GaborSampler gaborSampler = new GaborSampler(frequency, salt, f0, deviation, rotation, impulses, a, isotropic);
         return gaborSampler;
     }
 }

@@ -9,7 +9,7 @@ import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 
 
-public class DistanceSamplerTemplate extends SamplerTemplate<DistanceSampler> {
+public class DistanceSamplerTemplate extends NoiseTemplate<DistanceSampler> {
 
     @Value("distance-function")
     @Default
@@ -37,6 +37,6 @@ public class DistanceSamplerTemplate extends SamplerTemplate<DistanceSampler> {
 
     @Override
     public DistanceSampler get() {
-        return new DistanceSampler(distanceFunction, x, y, z, normalize, normalizeRadius);
+        return new DistanceSampler(salt, distanceFunction, x, y, z, normalize, normalizeRadius);
     }
 }
