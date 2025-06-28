@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.type.vector.Vector2;
 import com.dfsek.seismic.type.vector.Vector3;
 
@@ -44,9 +45,9 @@ public class BiomeFunction implements Function<String> {
 
         return grid.getBiome(arguments.getOrigin().toFloat()
             .mutable()
-            .add(Vector3.of((int) Math.round(xz.getX()),
+            .add(Vector3.of(FloatingPointFunctions.round(xz.getX()),
                 y.apply(implementationArguments, scope).intValue(),
-                (int) Math.round(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
+                FloatingPointFunctions.round(xz.getZ()))).immutable(), arguments.getWorld().getSeed()).getID();
     }
 
     @Override

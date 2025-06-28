@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.addon.terrascript.check;
 
-import com.dfsek.seismic.type.vector.Vector2;
-import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 
 import com.dfsek.terra.addons.chunkgenerator.generation.NoiseChunkGenerator3D;
 import com.dfsek.terra.addons.chunkgenerator.generation.math.samplers.SamplerProvider;
@@ -45,8 +44,8 @@ public class CheckFunction implements Function<String> {
             z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
         Vector3 location = arguments.getOrigin().toFloat().mutable().add(
-            Vector3.of((int) Math.round(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
-                (int) Math.round(xz.getZ()))).immutable();
+            Vector3.of(FloatingPointFunctions.round(xz.getX()), y.apply(implementationArguments, scope).doubleValue(),
+                FloatingPointFunctions.round(xz.getZ()))).immutable();
 
         return apply(location, arguments.getWorld());
     }
