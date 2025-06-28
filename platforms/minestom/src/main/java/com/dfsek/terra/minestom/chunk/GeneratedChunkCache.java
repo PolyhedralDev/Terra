@@ -15,7 +15,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 public class GeneratedChunkCache {
     private static final Logger log = LoggerFactory.getLogger(GeneratedChunkCache.class);
-    private final LoadingCache<Pair<Integer, Integer>, CachedChunk> cache;
+    private final LoadingCache<Long, CachedChunk> cache;
     private final DimensionType dimensionType;
     private final ChunkGenerator generator;
     private final ServerWorld world;
@@ -29,7 +29,7 @@ public class GeneratedChunkCache {
         this.cache = Caffeine.newBuilder()
             .maximumSize(128)
             .recordStats()
-            .build((Pair<Integer, Integer> key) -> generateChunk(key.getLeft(), key.getRight()));
+            .build((Long key) -> generateChunk(unpackX(key), unpackZ(key)));
     }
 
     private CachedChunk generateChunk(int x, int z) {
@@ -50,6 +50,18 @@ public class GeneratedChunkCache {
     }
 
     public CachedChunk at(int x, int z) {
-        return cache.get(Pair.of(x, z));
+        return cache.get(pack(x, z));
+    }
+
+    private long pack(final int x, final int z) {
+        return ((long) x & 0xFFFFFFFFL) << 32 | (z & 0xFFFFFFFFL);
+    }
+
+    private int unpackX(long packed) {
+        return (int) (packed >> 32);
+    }
+
+    private int unpackZ(long packed) {
+        return (int) packed;
     }
 }
