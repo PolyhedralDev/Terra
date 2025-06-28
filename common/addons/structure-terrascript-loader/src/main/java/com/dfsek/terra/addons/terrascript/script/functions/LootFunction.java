@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.terrascript.script.functions;
 
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
