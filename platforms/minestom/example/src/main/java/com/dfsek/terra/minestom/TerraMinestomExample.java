@@ -44,7 +44,6 @@ public class TerraMinestomExample {
     public void attachTerra() {
         world = platform.worldBuilder(instance)
             .defaultPack()
-            .doFineGrainedBiomes(false)
             .attach();
     }
 
