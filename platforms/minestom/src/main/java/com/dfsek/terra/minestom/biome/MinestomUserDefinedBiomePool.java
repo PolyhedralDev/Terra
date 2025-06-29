@@ -1,6 +1,8 @@
 package com.dfsek.terra.minestom.biome;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.IdentityHashMap;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -8,7 +10,8 @@ import com.dfsek.terra.minestom.api.BiomeFactory;
 
 
 public class MinestomUserDefinedBiomePool {
-    private final HashMap<String, UserDefinedBiome> biomes = new HashMap<>();
+    private final IdentityHashMap<Biome, UserDefinedBiome> biomes = new IdentityHashMap<>();
+    private final HashSet<String> createdBiomes = new HashSet<>();
     private final BiomeFactory factory;
     private final ConfigPack configPack;
 
@@ -18,18 +21,21 @@ public class MinestomUserDefinedBiomePool {
     }
 
     public UserDefinedBiome getBiome(Biome source) {
-        UserDefinedBiome userDefinedBiome = biomes.get(source.getID());
+        UserDefinedBiome userDefinedBiome = biomes.get(source);
         if(userDefinedBiome != null) return userDefinedBiome;
         userDefinedBiome = factory.create(configPack, source);
-        biomes.put(source.getID(), userDefinedBiome);
+        biomes.put(source, userDefinedBiome);
+        createdBiomes.add(source.getID());
         return userDefinedBiome;
     }
 
     public void preloadBiomes(Iterable<Biome> biomesToLoad) {
         biomesToLoad
             .forEach(biome -> {
-                if(!this.biomes.containsKey(biome.getID())) {
-                    this.biomes.put(biome.getID(), factory.create(configPack, biome));
+                if(!this.createdBiomes.contains(biome.getID())) {
+                    UserDefinedBiome udf = factory.create(configPack, biome);
+                    this.biomes.put(biome, udf);
+                    this.createdBiomes.add(biome.getID());
                 }
             });
     }
