@@ -1,8 +1,5 @@
 package com.dfsek.terra.bukkit.hooks;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.registry.key.Keyed;
-
 import org.mvplugins.multiverse.core.MultiverseCoreApi;
 import org.mvplugins.multiverse.core.world.generators.GeneratorPlugin;
 import org.mvplugins.multiverse.external.jetbrains.annotations.NotNull;

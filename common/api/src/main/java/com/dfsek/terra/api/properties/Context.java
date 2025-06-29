@@ -10,7 +10,6 @@ package com.dfsek.terra.api.properties;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Context {

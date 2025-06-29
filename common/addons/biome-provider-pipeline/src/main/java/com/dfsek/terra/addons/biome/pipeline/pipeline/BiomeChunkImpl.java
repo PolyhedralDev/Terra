@@ -1,8 +1,8 @@
 package com.dfsek.terra.addons.biome.pipeline.pipeline;
 
-import java.util.List;
-
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+
+import java.util.List;
 
 import com.dfsek.terra.addons.biome.pipeline.api.BiomeChunk;
 import com.dfsek.terra.addons.biome.pipeline.api.Expander;

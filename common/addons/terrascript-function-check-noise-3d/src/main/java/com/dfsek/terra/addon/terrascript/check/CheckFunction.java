@@ -8,7 +8,6 @@
 package com.dfsek.terra.addon.terrascript.check;
 
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
-
 import com.dfsek.seismic.type.vector.Vector2;
 import com.dfsek.seismic.type.vector.Vector3;
 
