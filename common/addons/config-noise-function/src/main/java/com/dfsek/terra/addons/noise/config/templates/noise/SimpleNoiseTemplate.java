@@ -11,7 +11,6 @@ import com.dfsek.seismic.algorithms.sampler.noise.NoiseFunction;
 import com.dfsek.seismic.type.sampler.Sampler;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.function.Supplier;
 
 
 public class SimpleNoiseTemplate<T extends NoiseFunction> extends NoiseTemplate<NoiseFunction> {

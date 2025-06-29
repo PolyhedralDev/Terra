@@ -7,10 +7,6 @@
 
 package com.dfsek.terra.addons.ore.ores;
 
-import java.util.BitSet;
-import java.util.Map;
-import java.util.random.RandomGenerator;
-
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
 import com.dfsek.seismic.math.trigonometry.TrigonometryFunctions;

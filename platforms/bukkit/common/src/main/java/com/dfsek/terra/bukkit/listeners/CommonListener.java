@@ -17,14 +17,6 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
-import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
-
-import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Wolf;
@@ -38,6 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 /**
