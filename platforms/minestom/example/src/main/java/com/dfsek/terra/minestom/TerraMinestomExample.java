@@ -59,7 +59,7 @@ public class TerraMinestomExample {
     }
 
     public void preloadWorldAndMeasure() {
-        int radius = 12;
+        int radius = 32;
         int chunksLoading = (radius * 2 + 1) * (radius * 2 + 1);
         AtomicInteger chunksLeft = new AtomicInteger(chunksLoading);
 

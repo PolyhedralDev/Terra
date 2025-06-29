@@ -15,8 +15,14 @@ import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctio
  * Class for bilinear interpolation of values arranged on a unit square.
  */
 public class Interpolator3 {
-    private final Interpolator bottom;
-    private final Interpolator top;
+    private final double _000;
+    private final double _001;
+    private final double _010;
+    private final double _011;
+    private final double _100;
+    private final double _101;
+    private final double _110;
+    private final double _111;
 
     /**
      * Constructs an interpolator with given values as vertices of a unit cube.
@@ -33,12 +39,21 @@ public class Interpolator3 {
                          double _010, double _110,
                          double _001, double _101,
                          double _011, double _111) {
-        this.top = new Interpolator(_000, _010, _001, _011);
-        this.bottom = new Interpolator(_100, _110, _101, _111);
+        this._000 = _000;
+        this._001 = _001;
+        this._010 = _010;
+        this._011 = _011;
+        this._100 = _100;
+        this._101 = _101;
+        this._110 = _110;
+        this._111 = _111;
     }
 
-    //TODO this system is not very good, replace it wholesale
     public double trilerp(double x, double y, double z) {
-        return InterpolationFunctions.lerp(top.bilerp(y, z), bottom.bilerp(y, z), x);
+        return InterpolationFunctions.triLerp(
+            _000, _001, _010, _011,
+            _100, _101, _110, _111,
+            x, y, z
+        );
     }
 }
