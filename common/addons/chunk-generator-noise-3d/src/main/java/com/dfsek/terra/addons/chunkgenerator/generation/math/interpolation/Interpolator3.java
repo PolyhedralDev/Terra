@@ -7,8 +7,7 @@
 
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
-
-import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
+import com.dfsek.seismic.math.arithmetic.ArithmeticFunctions;
 
 
 /**
@@ -50,10 +49,14 @@ public class Interpolator3 {
     }
 
     public double trilerp(double x, double y, double z) {
-        return InterpolationFunctions.triLerp(
-            _000, _001, _010, _011,
-            _100, _101, _110, _111,
-            x, y, z
-        );
+        double a = ArithmeticFunctions.fma(2, x, -1);
+        double b = ArithmeticFunctions.fma(2, y, -1);
+        double g = ArithmeticFunctions.fma(2, z, -1);
+
+        // using explicit fma here somehow makes this slower
+        return ((1 - g) * (1 - b) * (1 - a) * _000 + (1 - g) * (1 - b) * (1 + a) * _100 +
+                (1 - g) * (1 + b) * (1 - a) * _010 + (1 - g) * (1 + b) * (1 + a) * _110 +
+                (1 + g) * (1 - b) * (1 - a) * _001 + (1 + g) * (1 - b) * (1 + a) * _101 +
+                (1 + g) * (1 + b) * (1 - a) * _011 + (1 + g) * (1 + b) * (1 + a) * _111) / 8;
     }
 }
