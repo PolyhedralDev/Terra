@@ -29,7 +29,7 @@ object Versions {
     
     object Fabric {
         const val fabricAPI = "0.128.1+${Mod.minecraft}"
-        const val cloud = "2.0.0-beta.10"
+        const val cloud = "2.0.0-beta.11"
     }
 //
 //    object Quilt {
