@@ -11,6 +11,7 @@ debug:
   profiler: false
   script: false
 dump-default: true
+biome-key-format: "%pack_id%/%biome_namespace%/%biome_id%"
 biome-search-resolution: 4
 cache:
   structure: 32

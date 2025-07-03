@@ -5,20 +5,20 @@ import java.util.regex.Pattern;
 
 
 public final class RegistryKey implements StringIdentifiable, Namespaced {
-    private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
+    private static final Pattern ID_PATTERN = Pattern.compile("^[a-zA-Z0-9/_-]*$");
     private final String namespace;
     private final String id;
 
     private RegistryKey(String namespace, String id) {
         if(!ID_PATTERN.matcher(namespace).matches()) {
             throw new IllegalArgumentException(
-                "Namespace must only contain alphanumeric characters, hyphens, and underscores. \"" + namespace +
+                "Namespace must only contain alphanumeric characters, hyphens, underscores and forward slashes. \"" + namespace +
                 "\" is not a valid namespace.");
         }
 
         if(!ID_PATTERN.matcher(id).matches()) {
             throw new IllegalArgumentException(
-                "ID must only contain alphanumeric characters, hyphens, and underscores. \"" + id +
+                "ID must only contain alphanumeric characters, hyphens, underscores and forward slashes. \"" + id +
                 "\" is not a valid ID.");
         }
 

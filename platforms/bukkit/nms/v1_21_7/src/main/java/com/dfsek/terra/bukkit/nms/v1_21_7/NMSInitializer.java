@@ -11,7 +11,7 @@ import com.dfsek.terra.bukkit.nms.Initializer;
 public class NMSInitializer implements Initializer {
     @Override
     public void initialize(PlatformImpl platform) {
-        AwfulBukkitHacks.registerBiomes(platform.getRawConfigRegistry());
+        AwfulBukkitHacks.registerBiomes(platform);
         Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), platform.getPlugin());
     }
 
