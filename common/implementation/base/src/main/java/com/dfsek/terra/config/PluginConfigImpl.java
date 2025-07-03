@@ -55,6 +55,10 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Default
     private boolean debugLog = false;
 
+    @Value("biome-key-format")
+    @Default
+    private String biomeKeyFormat = "%pack_id%/%biome_namespace%/%biome_id%";
+
     @Value("biome-search-resolution")
     @Default
     private int biomeSearch = 4;
@@ -122,6 +126,11 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Override
     public boolean isDebugLog() {
         return debugLog;
+    }
+
+    @Override
+    public String getBiomeKeyFormat() {
+        return biomeKeyFormat;
     }
 
     @Override
