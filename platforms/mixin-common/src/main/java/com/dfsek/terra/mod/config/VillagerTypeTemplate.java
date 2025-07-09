@@ -12,10 +12,10 @@ import net.minecraft.village.VillagerType;
 public class VillagerTypeTemplate implements ObjectTemplate<RegistryKey<VillagerType>> {
     @Value("id")
     @Default
-    private String id = null;
+    private Identifier id = null;
 
     @Override
     public RegistryKey<VillagerType> get() {
-        return RegistryKey.of(RegistryKeys.VILLAGER_TYPE, Identifier.ofVanilla(id));
+        return RegistryKey.of(RegistryKeys.VILLAGER_TYPE, id);
     }
 }
