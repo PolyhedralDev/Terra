@@ -15,14 +15,14 @@ public class SpawnTypeConfig implements ObjectTemplate<SpawnTypeConfig> {
 
     @Value("entries")
     @Default
-    private List<SpawnEntryConfig> entry = null;
+    private List<SpawnEntryConfig> entries = null;
 
     public SpawnGroup getGroup() {
         return group;
     }
 
-    public List<SpawnEntryConfig> getEntry() {
-        return entry;
+    public List<SpawnEntryConfig> getEntries() {
+        return entries;
     }
 
     @Override
