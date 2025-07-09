@@ -90,7 +90,7 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(MusicSound.class, MusicSoundTemplate::new)
             .registerLoader(EntityType.class, EntityTypeTemplate::new)
             .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-            .registerLoader(SpawnEntry.class, SpawnEntryConfig::new)
+            .registerLoader(SpawnEntryConfig.class, SpawnEntryConfig::new)
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);

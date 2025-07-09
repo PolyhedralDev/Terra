@@ -28,7 +28,7 @@ public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
         return weight;
     }
 
-    public SpawnerData getSpawnerData() {
+    public SpawnerData getSpawnEntry() {
         return new SpawnerData(type, minGroupSize, maxGroupSize);
     }
     
