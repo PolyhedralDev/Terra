@@ -1,12 +1,11 @@
-package com.dfsek.terra.mod.config;
+package com.dfsek.terra.bukkit.nms.v1_21_7.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 
-import com.dfsek.terra.api.util.range.Range;
 
 public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
     @Value("type")
@@ -17,16 +16,20 @@ public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
     @Default
     private Integer weight = null;
 
-    @Value("group-size")
+    @Value("min-group-size")
     @Default
-    private Range groupSize = null;
+    private Integer minGroupSize = null;
+
+    @Value("max-group-size")
+    @Default
+    private Integer maxGroupSize = null;
 
     public Integer getWeight() {
         return weight;
     }
 
-    public SpawnEntry getSpawnEntry() {
-        return new SpawnEntry(type, groupSize.getMin(), groupSize.getMax());
+    public SpawnerData getSpawnEntry() {
+        return new SpawnerData(type, minGroupSize, maxGroupSize);
     }
 
     @Override
