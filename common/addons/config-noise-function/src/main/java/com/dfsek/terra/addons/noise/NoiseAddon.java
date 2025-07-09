@@ -14,7 +14,8 @@ import com.dfsek.seismic.algorithms.sampler.arithmetic.MaxSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.MinSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.MultiplicationSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.SubtractionSampler;
-import com.dfsek.seismic.algorithms.sampler.noise.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularStyleSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.random.GaussianNoiseSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.random.PositiveWhiteNoiseSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.random.WhiteNoiseSampler;
@@ -95,8 +96,8 @@ public class NoiseAddon implements AddonInitializer {
                 event.getPack()
                     .applyLoader(DistanceFunction.class,
                         (type, o, loader, depthTracker) -> DistanceFunction.valueOf((String) o))
-                    .applyLoader(CellularSampler.ReturnType.class,
-                        (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
+                    .applyLoader(CellularStyleSampler.CellularReturnType.class,
+                        (type, o, loader, depthTracker) -> CellularStyleSampler.CellularReturnType.valueOf((String) o))
                     .applyLoader(DistanceFunction.class,
                         (type, o, loader, depthTracker) -> DistanceFunction.valueOf((String) o))
                     .applyLoader(DimensionApplicableSampler.class, DimensionApplicableSampler::new)

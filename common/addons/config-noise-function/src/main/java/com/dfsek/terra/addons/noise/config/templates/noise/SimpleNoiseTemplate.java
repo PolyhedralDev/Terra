@@ -22,7 +22,7 @@ public class SimpleNoiseTemplate<T extends NoiseFunction> extends NoiseTemplate<
 
     @Override
     public Sampler get() {
-        NoiseFunction sampler = null;
+        NoiseFunction sampler;
         try {
             sampler = samplerClass.getConstructor(double.class, long.class)
                     .newInstance(frequency, salt);
