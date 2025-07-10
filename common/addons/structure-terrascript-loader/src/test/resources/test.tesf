@@ -1,10 +1,10 @@
-bool thing1 = 2 > (2+2) || false;
+bool thing1 = 2 > (2 + 2) || false;
 
-if(2 > 2 || 3 + 4 <= 2 && 4 + 5 > 2 / 3) {
+if (2 > 2 || 3 + 4 <= 2 && 4 + 5 > 2 / 3) {
     test("ok", 2);
 }
 
-test("minecraft:green_w" + "ool", (2 * (3+1) * (2 * (1+1))));
+test("minecraft:green_w" + "ool", (2 * (3 + 1) * (2 * (1 + 1))));
 //
 
 num testVar = 3.4;
@@ -21,7 +21,7 @@ bool iftest = false;
 bool truetest = false;
 
 num iterator = 0;
-num thing = 4 - 2-2+2-2+2;
+num thing = 4 - 2 - 2 + 2 - 2 + 2;
 test("4 - 2 = " + thing, 2);
 
 thing = -2;
@@ -31,54 +31,54 @@ test("--2 = " + thing, 2);
 
 
 
-for(num i = 0; i < 5; i = i + 1) {
+for (num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);
-    if(i > 1 + 1) {
+    if (i > 1 + 1) {
         test("more than 2", iterator);
         continue;
     }
 }
 
-for(num i = 0; i < 5; i = i + 1) {
+for (num i = 0; i < 5; i = i + 1) {
     test("i = " + i, iterator);
 }
 
-for(num j = 0; j < 5; j = j + 1) test("single statement j = " + j, iterator);
+for (num j = 0; j < 5; j = j + 1) test("single statement j = " + j, iterator);
 
-if(4 + 2 == 2 + 4) {
+if (4 + 2 == 2 + 4) {
     test("new thing " + 2, iterator);
 }
 
-while(iterator < 5) {
+while (iterator < 5) {
     test("always, even after " + 2, iterator);
     iterator = iterator + 1;
-    if(iterator > 2) {
+    if (iterator > 2) {
         continue;
     }
     test("not after " + 2, iterator);
 }
 
-if(true) test("single statement" + 2, iterator);
-else if(true) test("another single statement" + 2, iterator);
+if (true) test("single statement" + 2, iterator);
+else if (true) test("another single statement" + 2, iterator);
 
-if(true) {
-    test("true!" + 2, iterator);
-} else {
-     test("false!" + 2, iterator);
- }
-
-if(false) {
+if (true) {
     test("true!" + 2, iterator);
 } else {
     test("false!" + 2, iterator);
 }
 
-if(false) {
-    test("true again!" + 2, iterator);
-} else if(true == true) {
-   test("false again!" + 2, iterator);
+if (false) {
+    test("true!" + 2, iterator);
 } else {
-   test("not logged!" + 2, iterator);
+    test("false!" + 2, iterator);
+}
+
+if (false) {
+    test("true again!" + 2, iterator);
+} else if (true == true) {
+    test("false again!" + 2, iterator);
+} else {
+    test("not logged!" + 2, iterator);
 }
 
 
@@ -91,7 +91,7 @@ fsdfsd
 
 test("fdsgdf" + 2, 1 + testVar);
 
-if(true && !(boolean && false) && true) {
+if (true && !(boolean && false) && true) {
     num scopedVar = 2;
     test("if statement" + 2 + stringVar, 1 + testVar + scopedVar);
 }
