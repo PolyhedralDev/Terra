@@ -1,6 +1,6 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.BukkitAddon;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +13,11 @@ public interface Initializer {
     String NMS = VersionUtil.getMinecraftVersionInfo().toString().replace(".", "_");
     String TERRA_PACKAGE = Initializer.class.getPackageName();
 
-    static boolean init(PlatformImpl platform) {
+    static PlatformImpl init(TerraBukkitPlugin plugin) {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
 
-        Initializer initializer = constructInitializer();
-        if(initializer != null) {
-            initializer.initialize(platform);
-        } else {
+        PlatformImpl platform = constructPlatform(plugin);
+        if (platform == null) {
             logger.error("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
             logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
             String bypassKey = "IKnowThereAreNoNMSBindingsFor" + NMS + "ButIWillProceedAnyway";
@@ -27,7 +25,7 @@ public interface Initializer {
                 logger.error("Because of this **TERRA HAS BEEN DISABLED**.");
                 logger.error("Do not come ask us why it is not working.");
                 logger.error("If you wish to proceed anyways, you can add the JVM System Property \"{}\" to enable the plugin.", bypassKey);
-                return false;
+                return null;
             } else {
                 logger.error("");
                 logger.error("");
@@ -43,24 +41,21 @@ public interface Initializer {
             }
         }
 
-        return true;
+        return platform;
     }
 
-    static BukkitAddon nmsAddon(PlatformImpl platform) {
-        Initializer initializer = constructInitializer();
-        return initializer != null ? initializer.getNMSAddon(platform) : new BukkitAddon(platform);
-    }
-
-    private static Initializer constructInitializer() {
+    private static PlatformImpl constructPlatform(TerraBukkitPlugin plugin) {
         try {
             String packageVersion = NMS;
             if (NMS.equals("v1_21_5") || NMS.equals("v1_21_6")) {
                 packageVersion = "v1_21_7";
             }
 
-            Class<?> initializerClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSInitializer");
+            Class<?> platformClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSPlatform");
             try {
-                return (Initializer) initializerClass.getConstructor().newInstance();
+                return (PlatformImpl) platformClass
+                    .getConstructor(TerraBukkitPlugin.class)
+                    .newInstance(plugin);
             } catch(ReflectiveOperationException e) {
                 throw new RuntimeException("Error initializing NMS bindings. Report this to Terra.", e);
             }
@@ -68,8 +63,4 @@ public interface Initializer {
             return null;
         }
     }
-
-    void initialize(PlatformImpl plugin);
-
-    BukkitAddon getNMSAddon(PlatformImpl plugin);
 }
