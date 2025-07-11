@@ -19,6 +19,11 @@ public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
         this.platform = platform;
     }
 
+    public static void register(Platform platform) {
+        MultiverseCoreApi.get().getGeneratorProvider()
+            .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
+    }
+
     @Override
     public @NotNull Collection<String> suggestIds(@Nullable String s) {
         return platform.getConfigRegistry().entries().stream()
@@ -45,10 +50,5 @@ public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
     @Override
     public @NotNull String getPluginName() {
         return "Terra";
-    }
-
-    public static void register(Platform platform) {
-        MultiverseCoreApi.get().getGeneratorProvider()
-            .registerGeneratorPlugin(new MultiverseGeneratorPluginHook(platform));
     }
 }

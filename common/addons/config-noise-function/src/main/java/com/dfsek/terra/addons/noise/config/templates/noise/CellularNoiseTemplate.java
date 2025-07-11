@@ -7,8 +7,8 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
-import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularStyleSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularStyleSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.seismic.type.DistanceFunction;
 import com.dfsek.seismic.type.sampler.Sampler;
@@ -32,7 +32,6 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Default
     private @Meta double cellularJitter = 1.0D;
 
-
     @Value("lookup")
     @Default
     private @Meta Sampler lookup = new OpenSimplex2Sampler(0.02d, 0);
@@ -43,7 +42,8 @@ public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
 
     @Override
     public Sampler get() {
-        CellularSampler sampler = new CellularSampler(frequency, salt, lookup, cellularDistanceFunction, cellularReturnType, cellularJitter, saltLookup);
+        CellularSampler sampler = new CellularSampler(frequency, salt, lookup, cellularDistanceFunction, cellularReturnType, cellularJitter,
+            saltLookup);
         return sampler;
     }
 }

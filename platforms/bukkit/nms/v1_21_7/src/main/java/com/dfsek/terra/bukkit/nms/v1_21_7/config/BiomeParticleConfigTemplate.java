@@ -7,10 +7,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.ParticleArgument;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.HolderLookup.RegistryLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.AmbientParticleSettings;
 
 import java.util.stream.Stream;
@@ -24,7 +21,7 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
     @Value("probability")
     @Default
     private Float probability = 0.1f;
-    
+
     @Override
     public AmbientParticleSettings get() {
         if(particle == null) {

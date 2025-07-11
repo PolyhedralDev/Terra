@@ -1,14 +1,5 @@
 package com.dfsek.terra.minestom.world;
 
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.coordinate.BlockVec;
-import net.minestom.server.coordinate.Point;
-import net.minestom.server.instance.Instance;
-import net.minestom.server.instance.block.Block;
-import net.minestom.server.world.DimensionType;
-
-import java.util.function.Consumer;
-
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -26,6 +17,15 @@ import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
 import com.dfsek.terra.minestom.block.MinestomBlockState;
 import com.dfsek.terra.minestom.entity.MinestomEntity;
+
+import net.minestom.server.MinecraftServer;
+import net.minestom.server.coordinate.BlockVec;
+import net.minestom.server.coordinate.Point;
+import net.minestom.server.instance.Instance;
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.world.DimensionType;
+
+import java.util.function.Consumer;
 
 
 public final class TerraMinestomWorld implements ServerWorld, WorldProperties {

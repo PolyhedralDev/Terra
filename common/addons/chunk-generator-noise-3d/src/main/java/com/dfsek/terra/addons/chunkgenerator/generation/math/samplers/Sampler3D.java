@@ -28,7 +28,8 @@ public class Sampler3D {
     }
 
     public double sample(double x, double y, double z) {
-        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FloatingPointFunctions.round(x), FloatingPointFunctions.round(z));
+        return interpolator.getNoise(x, y, z) + elevationInterpolator.getElevation(FloatingPointFunctions.round(x),
+            FloatingPointFunctions.round(z));
     }
 
     public double sample(int x, int y, int z) {

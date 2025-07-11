@@ -14,7 +14,6 @@ import com.dfsek.seismic.algorithms.sampler.arithmetic.MaxSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.MinSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.MultiplicationSampler;
 import com.dfsek.seismic.algorithms.sampler.arithmetic.SubtractionSampler;
-import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularStyleSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.random.GaussianNoiseSampler;
 import com.dfsek.seismic.algorithms.sampler.noise.random.PositiveWhiteNoiseSampler;

@@ -25,7 +25,7 @@ public class SimpleNoiseTemplate<T extends NoiseFunction> extends NoiseTemplate<
         NoiseFunction sampler;
         try {
             sampler = samplerClass.getConstructor(double.class, long.class)
-                    .newInstance(frequency, salt);
+                .newInstance(frequency, salt);
         } catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
