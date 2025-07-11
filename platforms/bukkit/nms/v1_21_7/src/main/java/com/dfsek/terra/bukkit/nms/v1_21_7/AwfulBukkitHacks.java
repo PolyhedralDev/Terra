@@ -1,9 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_21_7;
 
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.VanillaBiomeProperties;
-
-import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderSet;
@@ -29,7 +25,8 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
+import com.dfsek.terra.bukkit.nms.v1_21_7.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
@@ -61,7 +58,8 @@ public class AwfulBukkitHacks {
                     Biome platform = NMSBiomeInjector.createBiome(biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value(),
                         vanillaBiomeProperties);
 
-                    ResourceLocation delegateMinecraftKey = ResourceLocation.fromNamespaceAndPath("terra", NMSBiomeInjector.createBiomeID(pack, key));
+                    ResourceLocation delegateMinecraftKey = ResourceLocation.fromNamespaceAndPath("terra",
+                        NMSBiomeInjector.createBiomeID(pack, key));
                     NamespacedKey delegateBukkitKey = NamespacedKey.fromString(delegateMinecraftKey.toString());
                     ResourceKey<Biome> delegateKey = ResourceKey.create(Registries.BIOME, delegateMinecraftKey);
 

@@ -130,6 +130,7 @@ public class Reflection {
         int invokeGrassColorFromTexture(Biome instance);
     }
 
+
     @Proxies(VillagerType.class)
     public interface VillagerTypeProxy {
         @Static

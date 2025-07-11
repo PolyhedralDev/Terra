@@ -1,6 +1,11 @@
 package com.dfsek.terra.cli;
 
 import com.dfsek.seismic.type.vector.Vector2Int;
+
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.cli.world.CLIWorld;
+
 import net.querz.mca.MCAUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +15,6 @@ import picocli.CommandLine.Option;
 
 import java.io.IOException;
 import java.util.concurrent.Callable;
-
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.cli.world.CLIWorld;
 
 
 //TODO auto pull in version

@@ -3,7 +3,6 @@ package com.dfsek.terra.bukkit.nms.v1_21_7.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;

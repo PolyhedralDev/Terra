@@ -20,7 +20,6 @@ import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;

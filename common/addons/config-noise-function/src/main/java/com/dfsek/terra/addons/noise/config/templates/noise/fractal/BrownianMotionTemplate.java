@@ -15,7 +15,8 @@ import com.dfsek.seismic.type.sampler.Sampler;
 public class BrownianMotionTemplate extends FractalTemplate<BrownianMotionSampler> {
     @Override
     public Sampler get() {
-        BrownianMotionSampler sampler = new BrownianMotionSampler(salt, function, fractalGain, fractalLacunarity, weightedStrength, octaves);
+        BrownianMotionSampler sampler = new BrownianMotionSampler(salt, function, fractalGain, fractalLacunarity, weightedStrength,
+            octaves);
         return sampler;
     }
 }
