@@ -7,6 +7,7 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;
@@ -36,6 +37,7 @@ public class Reflection {
     public static final HolderReferenceProxy HOLDER_REFERENCE;
     public static final HolderSetNamedProxy HOLDER_SET;
     public static final BiomeProxy BIOME;
+    public static final VillagerTypeProxy VILLAGER_TYPE;
 
     static {
         ReflectionRemapper reflectionRemapper = ReflectionRemapper.forReobfMappingsInPaperJar();
@@ -50,6 +52,7 @@ public class Reflection {
         HOLDER_REFERENCE = reflectionProxyFactory.reflectionProxy(HolderReferenceProxy.class);
         HOLDER_SET = reflectionProxyFactory.reflectionProxy(HolderSetNamedProxy.class);
         BIOME = reflectionProxyFactory.reflectionProxy(BiomeProxy.class);
+        VILLAGER_TYPE = reflectionProxyFactory.reflectionProxy(VillagerTypeProxy.class);
     }
 
 
@@ -125,5 +128,12 @@ public class Reflection {
     public interface BiomeProxy {
         @MethodName("getGrassColorFromTexture")
         int invokeGrassColorFromTexture(Biome instance);
+    }
+
+    @Proxies(VillagerType.class)
+    public interface VillagerTypeProxy {
+        @Static
+        @FieldGetter("BY_BIOME")
+        Map<ResourceKey<Biome>, ResourceKey<VillagerType>> getByBiome();
     }
 }
