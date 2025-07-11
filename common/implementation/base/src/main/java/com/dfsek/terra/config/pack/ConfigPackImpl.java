@@ -34,15 +34,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -52,15 +52,12 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigFactory;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.ConfigType;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.event.events.config.ConfigurationDiscoveryEvent;
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
@@ -73,15 +70,12 @@ import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
-import com.dfsek.terra.api.util.generic.Construct;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
-import com.dfsek.terra.config.fileloaders.FolderLoader;
-import com.dfsek.terra.config.fileloaders.ZIPLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
@@ -108,7 +102,7 @@ public class ConfigPackImpl implements ConfigPack {
     private final AbstractConfigLoader abstractConfigLoader = new AbstractConfigLoader();
     private final ConfigLoader selfLoader = new ConfigLoader();
     private final Platform platform;
-    private final Loader loader;
+    private final Path rootPath;
 
     private final Map<BaseAddon, VersionRange> addons;
 
@@ -124,40 +118,29 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final ParseOptions parseOptions;
 
-    public ConfigPackImpl(File folder, Platform platform) {
-        this(new FolderLoader(folder.toPath()), Construct.construct(() -> {
-            try {
-                return new YamlConfiguration(new FileInputStream(new File(folder, "pack.yml")), "pack.yml");
-            } catch(FileNotFoundException e) {
-                throw new UncheckedIOException("No pack.yml file found in " + folder.getAbsolutePath(), e);
-            }
-        }), platform);
-    }
-
-    public ConfigPackImpl(ZipFile file, Platform platform) {
-        this(new ZIPLoader(file), Construct.construct(() -> {
-            ZipEntry pack = null;
-            Enumeration<? extends ZipEntry> entries = file.entries();
-            while(entries.hasMoreElements()) {
-                ZipEntry entry = entries.nextElement();
-                if(entry.getName().equals("pack.yml")) pack = entry;
-            }
-
-            if(pack == null) throw new IllegalArgumentException("No pack.yml file found in " + file.getName());
-
-            try {
-                return new YamlConfiguration(file.getInputStream(pack), "pack.yml");
-            } catch(IOException e) {
-                throw new UncheckedIOException("Unable to load pack.yml from ZIP file", e);
-            }
-        }), platform);
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private ConfigPackImpl(Loader loader, Configuration packManifest, Platform platform) {
+    @SuppressWarnings({ "rawtypes" })
+    public ConfigPackImpl(Path path, Platform platform) throws IOException {
         long start = System.nanoTime();
 
-        this.loader = loader;
+        if(Files.notExists(path)) throw new FileNotFoundException("Could not load config pack, " + path + " does not exist");
+
+        if(Files.isDirectory(path)) {
+            this.rootPath = path;
+        } else if(Files.isRegularFile(path)) {
+            if(!path.getFileName().toString().endsWith(".zip")) {
+                throw new IOException("Could not load config pack, file " + path + " is not a zip");
+            }
+            FileSystem zipfs = FileSystems.newFileSystem(path);
+            this.rootPath = zipfs.getPath("/");
+        } else {
+            throw new IOException("Could not load config pack from " + path);
+        }
+
+        Path packManifestPath = rootPath.resolve("pack.yml");
+        if(Files.notExists(packManifestPath)) throw new IOException("No pack.yml found in " + path);
+        Configuration packManifest = new YamlConfiguration(Files.newInputStream(packManifestPath),
+            packManifestPath.getFileName().toString());
+
         this.platform = platform;
         this.configTypeRegistry = createConfigRegistry();
 
@@ -246,7 +229,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     private Map<String, Configuration> discoverConfigurations() {
         Map<String, Configuration> configurations = new HashMap<>();
-        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this, loader,
+        platform.getEventManager().callEvent(new ConfigurationDiscoveryEvent(this,
             (s, c) -> configurations.put(s.replace("\\", "/"),
                 c))); // Create all the configs.
         return configurations;
@@ -291,7 +274,7 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public void register(TypeRegistry registry) {
         registry.registerLoader(ConfigType.class, configTypeRegistry)
-            .registerLoader(BufferedImage.class, new BufferedImageLoader(loader, this));
+            .registerLoader(BufferedImage.class, new BufferedImageLoader(this));
         registryMap.forEach(registry::registerLoader);
         shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
     }
@@ -317,7 +300,6 @@ public class ConfigPackImpl implements ConfigPack {
         return seededBiomeProvider;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> typeKey) {
         return (CheckedRegistry<T>) registryMap.computeIfAbsent(typeKey.getType(), c -> {
@@ -356,8 +338,8 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    public Loader getLoader() {
-        return loader;
+    public Path getRootPath() {
+        return rootPath;
     }
 
     @Override
@@ -375,7 +357,7 @@ public class ConfigPackImpl implements ConfigPack {
         return parseOptions;
     }
 
-    @SuppressWarnings("unchecked,rawtypes")
+    @SuppressWarnings("rawtypes")
     @Override
     public <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader) {
         ShortcutHolder<?> holder = shortcuts
@@ -419,12 +401,10 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> CheckedRegistry<T> getRegistry(Type type) {
         return (CheckedRegistry<T>) registryMap.get(type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <T> CheckedRegistry<T> getCheckedRegistry(Type type) throws IllegalStateException {
         return (CheckedRegistry<T>) registryMap.get(type);

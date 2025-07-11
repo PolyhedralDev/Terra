@@ -1,8 +1,10 @@
 package com.dfsek.terra.addons.chunkgenerator.generation.math.interpolation;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+import com.dfsek.seismic.math.numericanalysis.interpolation.InterpolationFunctions;
+
 import com.dfsek.terra.addons.chunkgenerator.config.noise.BiomeNoiseProperties;
 import com.dfsek.terra.api.properties.PropertyKey;
-import com.dfsek.terra.api.util.MathUtil;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
@@ -27,8 +29,8 @@ public class LazilyEvaluatedInterpolator {
                                        PropertyKey<BiomeNoiseProperties> noisePropertiesKey, int min, int horizontalRes, int verticalRes,
                                        long seed) {
         this.noisePropertiesKey = noisePropertiesKey;
-        int hSamples = (int) Math.ceil(16.0 / horizontalRes);
-        int vSamples = (int) Math.ceil((double) (max - min) / verticalRes);
+        int hSamples = FloatingPointFunctions.ceil(16.0 / horizontalRes);
+        int vSamples = FloatingPointFunctions.ceil((double) (max - min) / verticalRes);
         this.zMul = (hSamples + 1);
         this.yMul = zMul * zMul;
         samples = new Double[yMul * (vSamples + 1)];
@@ -56,7 +58,7 @@ public class LazilyEvaluatedInterpolator {
                 .getContext()
                 .get(noisePropertiesKey)
                 .carving()
-                .noise(seed, xi, y, zi);
+                .getSample(seed, xi, y, zi);
             samples[index] = sample;
         }
         return sample;
@@ -81,10 +83,10 @@ public class LazilyEvaluatedInterpolator {
 
         double xFrac = (double) (x % horizontalRes) / horizontalRes;
         double zFrac = (double) (z % horizontalRes) / horizontalRes;
-        double lerp_bottom_0 = MathUtil.lerp(zFrac, sample_0_0_0, sample_0_0_1);
-        double lerp_bottom_1 = MathUtil.lerp(zFrac, sample_1_0_0, sample_1_0_1);
+        double lerp_bottom_0 = InterpolationFunctions.lerp(sample_0_0_0, sample_0_0_1, zFrac);
+        double lerp_bottom_1 = InterpolationFunctions.lerp(sample_1_0_0, sample_1_0_1, zFrac);
 
-        double lerp_bottom = MathUtil.lerp(xFrac, lerp_bottom_0, lerp_bottom_1);
+        double lerp_bottom = InterpolationFunctions.lerp(lerp_bottom_0, lerp_bottom_1, xFrac);
 
         if(yRange) { // we can do bilerp
             return lerp_bottom;
@@ -100,11 +102,11 @@ public class LazilyEvaluatedInterpolator {
         double sample_1_1_0 = sample(xIndex + 1, yIndex + 1, zIndex, x + horizontalRes, y + verticalRes, z);
         double sample_1_1_1 = sample(xIndex + 1, yIndex + 1, zIndex + 1, x + horizontalRes, y + verticalRes, z + horizontalRes);
 
-        double lerp_top_0 = MathUtil.lerp(zFrac, sample_0_1_0, sample_0_1_1);
-        double lerp_top_1 = MathUtil.lerp(zFrac, sample_1_1_0, sample_1_1_1);
+        double lerp_top_0 = InterpolationFunctions.lerp(sample_0_1_0, sample_0_1_1, zFrac);
+        double lerp_top_1 = InterpolationFunctions.lerp(sample_1_1_0, sample_1_1_1, zFrac);
 
-        double lerp_top = MathUtil.lerp(xFrac, lerp_top_0, lerp_top_1);
+        double lerp_top = InterpolationFunctions.lerp(lerp_top_0, lerp_top_1, xFrac);
 
-        return MathUtil.lerp(yFrac, lerp_bottom, lerp_top);
+        return InterpolationFunctions.lerp(lerp_bottom, lerp_top, yFrac);
     }
 }

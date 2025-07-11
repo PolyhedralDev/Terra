@@ -1,23 +1,24 @@
 package com.dfsek.terra.addons.terrascript.sampler;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ConstantSamplerFunction implements Function<Number> {
     private final Returnable<Number> x, y, z;
-    private final NoiseSampler sampler;
+    private final Sampler sampler;
 
 
     private final boolean twoD;
     private final Position position;
 
-    public ConstantSamplerFunction(NoiseSampler sampler,
+    public ConstantSamplerFunction(Sampler sampler,
                                    Returnable<Number> x,
                                    Returnable<Number> y,
                                    Returnable<Number> z,
@@ -39,10 +40,10 @@ public class ConstantSamplerFunction implements Function<Number> {
         double z = this.z.apply(implementationArguments, scope).doubleValue();
 
         if(twoD) {
-            return sampler.noise(arguments.getWorld().getSeed(), x, z);
+            return sampler.getSample(arguments.getWorld().getSeed(), x, z);
         } else {
             double y = this.y.apply(implementationArguments, scope).doubleValue();
-            return sampler.noise(arguments.getWorld().getSeed(), x, y, z);
+            return sampler.getSample(arguments.getWorld().getSeed(), x, y, z);
         }
     }
 

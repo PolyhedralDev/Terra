@@ -1,10 +1,10 @@
 package com.dfsek.terra.minestom.item;
 
-import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.inventory.item.ItemMeta;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 public class MinestomItemMeta implements ItemMeta {

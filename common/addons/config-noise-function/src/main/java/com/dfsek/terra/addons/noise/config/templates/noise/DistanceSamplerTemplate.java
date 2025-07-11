@@ -1,19 +1,18 @@
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.DistanceSampler;
+import com.dfsek.seismic.type.DistanceFunction;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
-import com.dfsek.terra.addons.noise.samplers.noise.DistanceSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.DistanceSampler.DistanceFunction;
 import com.dfsek.terra.api.config.meta.Meta;
 
 
-public class DistanceSamplerTemplate extends SamplerTemplate<DistanceSampler> {
+public class DistanceSamplerTemplate extends NoiseTemplate<DistanceSampler> {
 
     @Value("distance-function")
     @Default
-    private DistanceSampler.@Meta DistanceFunction distanceFunction = DistanceFunction.Euclidean;
+    private @Meta DistanceFunction distanceFunction = DistanceFunction.Euclidean;
 
     @Value("point.x")
     @Default
@@ -37,6 +36,6 @@ public class DistanceSamplerTemplate extends SamplerTemplate<DistanceSampler> {
 
     @Override
     public DistanceSampler get() {
-        return new DistanceSampler(distanceFunction, x, y, z, normalize, normalizeRadius);
+        return new DistanceSampler(salt, distanceFunction, x, y, z, normalize, normalizeRadius);
     }
 }
