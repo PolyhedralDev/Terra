@@ -20,6 +20,7 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
@@ -30,10 +31,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.List;
 
 import com.dfsek.terra.AbstractPlatform;
-import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
@@ -41,7 +40,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
-import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
@@ -97,11 +95,6 @@ public class PlatformImpl extends AbstractPlatform {
     }
 
     @Override
-    protected Iterable<BaseAddon> platformAddon() {
-        return List.of(Initializer.nmsAddon(this));
-    }
-
-    @Override
     public @NotNull WorldHandle getWorldHandle() {
         return handle;
     }
@@ -130,7 +123,7 @@ public class PlatformImpl extends AbstractPlatform {
 
     }
 
-    private BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
+    protected BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
         NamespacedKey key = NamespacedKey.fromString(id);
         if(key == null || !key.namespace().equals("minecraft")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
         return new BukkitPlatformBiome(RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME).getOrThrow(key));

@@ -14,6 +14,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.npc.VillagerType;
 import net.minecraft.world.level.biome.Biome;
 import org.bukkit.NamespacedKey;
 import org.slf4j.Logger;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,7 @@ public class AwfulBukkitHacks {
             configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
                 try {
                     BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
+
                     NamespacedKey vanillaBukkitKey = platformBiome.getHandle().getKey();
                     ResourceLocation vanillaMinecraftKey = ResourceLocation.fromNamespaceAndPath(vanillaBukkitKey.getNamespace(),
                         vanillaBukkitKey.getKey());
@@ -67,6 +70,12 @@ public class AwfulBukkitHacks {
 
                     platformBiome.getContext().put(new BukkitBiomeInfo(delegateBukkitKey));
                     platformBiome.getContext().put(new NMSBiomeInfo(delegateKey));
+
+                    Map<ResourceKey<Biome>, ResourceKey<VillagerType>> villagerMap = Reflection.VILLAGER_TYPE.getByBiome();
+
+                    villagerMap.put(delegateKey,
+                        Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
+                            villagerMap.getOrDefault(delegateKey, VillagerType.PLAINS)));
 
                     terraBiomeMap.computeIfAbsent(vanillaMinecraftKey, i -> new ArrayList<>()).add(delegateKey.location());
 

@@ -3,6 +3,8 @@ package com.dfsek.terra.bukkit.nms.v1_21_7.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
+
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.npc.VillagerType;
@@ -95,7 +97,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("villager-type")
     @Default
-    private VillagerType villagerType = null;
+    private ResourceKey<VillagerType> villagerType = null;
 
     public Integer getFogColor() {
         return fogColor;
@@ -173,7 +175,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return spawnSettings;
     }
 
-    public VillagerType getVillagerType() {
+    public ResourceKey<VillagerType> getVillagerType() {
         return villagerType;
     }
 }
