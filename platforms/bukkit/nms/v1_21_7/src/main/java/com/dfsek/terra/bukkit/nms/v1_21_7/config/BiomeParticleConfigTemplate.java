@@ -18,11 +18,11 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
     
     @Value("probability")
     @Default
-    private Integer probability = null;
+    private Float probability = 0.1f;
     
     @Override
     public AmbientParticleSettings get() {
-        if(particle == null || probability == null) {
+        if(particle == null) {
             return null;
         }
         
