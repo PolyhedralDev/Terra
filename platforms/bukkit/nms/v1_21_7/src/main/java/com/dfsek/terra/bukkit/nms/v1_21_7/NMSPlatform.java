@@ -80,7 +80,7 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(Music.class, MusicSoundTemplate::new)
             .registerLoader(EntityType.class, EntityTypeTemplate::new)
             .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-            .registerLoader(SpawnerData.class, SpawnEntryConfig::new)
+            .registerLoader(SpawnEntryConfig.class, SpawnEntryConfig::new)
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
