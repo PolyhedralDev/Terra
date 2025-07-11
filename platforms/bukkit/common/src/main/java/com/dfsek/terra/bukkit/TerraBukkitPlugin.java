@@ -51,7 +51,7 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
 
-    private final PlatformImpl platform = new PlatformImpl(this);
+    private PlatformImpl platform;
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
 
     private AsyncScheduler asyncScheduler = this.getServer().getAsyncScheduler();
@@ -64,12 +64,13 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
-        platform.getEventManager().callEvent(new PlatformInitializationEvent());
-
-        if(!Initializer.init(platform)) {
+        platform = Initializer.init(this);
+        if(platform == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        platform.getEventManager().callEvent(new PlatformInitializationEvent());
 
         try {
             LegacyPaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
