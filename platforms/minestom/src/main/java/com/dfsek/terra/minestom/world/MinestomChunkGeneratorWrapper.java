@@ -1,9 +1,13 @@
 package com.dfsek.terra.minestom.world;
 
 import net.minestom.server.coordinate.Point;
+import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.generator.GenerationUnit;
 import net.minestom.server.instance.generator.Generator;
+import net.minestom.server.instance.generator.GeneratorImpl.AreaModifierImpl;
+import net.minestom.server.instance.generator.GeneratorImpl.SectionModifierImpl;
 import net.minestom.server.instance.generator.UnitModifier;
+import net.minestom.server.instance.palette.Palette;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.Platform;
@@ -22,25 +26,21 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
     private final GeneratedChunkCache cache;
     private final TerraMinestomWorld world;
     private final BiomeProvider biomeProvider;
-    private final boolean doFineGrainedBiomes;
     private final MinestomUserDefinedBiomePool biomePool;
     private ChunkGenerator generator;
     private ConfigPack pack;
 
     public MinestomChunkGeneratorWrapper(
-        Platform platform,
         ChunkGenerator generator,
         TerraMinestomWorld world,
         ConfigPack pack,
-        MinestomUserDefinedBiomePool biomePool,
-        boolean doFineGrainedBiomes
+        MinestomUserDefinedBiomePool biomePool
     ) {
         this.generator = generator;
         this.world = world;
         this.pack = pack;
         this.biomePool = biomePool;
         this.biomeProvider = pack.getBiomeProvider();
-        this.doFineGrainedBiomes = doFineGrainedBiomes;
         this.cache = new GeneratedChunkCache(world.getDimensionType(), generator, world, biomeProvider);
         preloadBiomes();
     }
@@ -49,6 +49,7 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
         return generator;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Override
     public void generate(@NotNull GenerationUnit unit) {
         Point start = unit.absoluteStart();
@@ -56,27 +57,33 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
         int z = start.chunkZ();
         int blockX = start.blockX();
         int blockZ = start.blockZ();
-        int minY = world.getMinHeight();
-        int maxY = world.getMaxHeight();
         CachedChunk chunk = cache.at(x, z);
         UnitModifier modifier = unit.modifier();
         chunk.writeRelative(modifier);
 
-        if(doFineGrainedBiomes) {
-            for(int y = minY; y < maxY; y++) {
-                for(int absoluteX = blockX; absoluteX < blockX + 16; absoluteX++) {
-                    for(int absoluteZ = blockZ; absoluteZ < blockZ + 16; absoluteZ++) {
-                        UserDefinedBiome userDefinedBiome = biomePool.getBiome(
-                            biomeProvider.getBiome(absoluteX, y, absoluteZ, world.getSeed())
-                        );
-                        modifier.setBiome(absoluteX, y, absoluteZ, userDefinedBiome.registry());
+        AreaModifierImpl areaModifiers = (AreaModifierImpl) modifier;
+        for(GenerationUnit section : areaModifiers.sections()) {
+            SectionModifierImpl sectionModifier = (SectionModifierImpl) section.modifier();
+            Palette biomes = sectionModifier.genSection().biomes();
+            int minY = section.absoluteStart().blockY();
+            for(int relativeX = 0; relativeX < 16; relativeX += 1) {
+                int absoluteX = blockX + relativeX;
+                for(int relativeZ = 0; relativeZ < 16; relativeZ  += 1) {
+                    int absoluteZ = blockZ + relativeZ;
+                    for(int relativeY = 0; relativeY < 16; relativeY  += 1) {
+                        int absoluteY = minY + relativeY;
+
+                        if (relativeX % 4 == 0 && relativeY % 4 == 0 && relativeZ % 4 == 0) {
+                            UserDefinedBiome userDefinedBiome = biomePool.getBiome(
+                                biomeProvider.getBiome(absoluteX, absoluteY, absoluteZ, world.getSeed())
+                            );
+
+                            int registryId = userDefinedBiome.registryId();
+                            biomes.set(relativeX / 4, relativeY / 4, relativeZ / 4, registryId);
+                        }
                     }
                 }
             }
-        } else {
-            // TODO: remove with feature flag once minestom fixed biome encoding
-            UserDefinedBiome userDefinedBiome = biomePool.getBiome(biomeProvider.getBiome(blockX, 100, blockZ, world.getSeed()));
-            modifier.fillBiome(userDefinedBiome.registry());
         }
 
         unit.fork(setter -> {

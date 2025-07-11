@@ -22,7 +22,6 @@ public class TerraMinestomWorldBuilder {
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory;
     private BiomeFactory biomeFactory = new MinestomUserDefinedBiomeFactory();
-    private boolean doFineGrainedBiomes = true;
 
     public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
         this.platform = platform;
@@ -70,20 +69,7 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
-    /**
-     * Due to a current bug with the minestom biome encoder, sometimes, the client gets kicked when decoding a chunk
-     * packet with more than one biome. Until this is fixed in minestom, one can disable fine-grained biomes to prevent
-     * this issue.
-     *
-     * @deprecated Scheduled for removal once Minestom rolls out a fix
-     */
-    @Deprecated
-    public TerraMinestomWorldBuilder doFineGrainedBiomes(boolean doFineGrainedBiomes) {
-        this.doFineGrainedBiomes = doFineGrainedBiomes;
-        return this;
-    }
-
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomeFactory, doFineGrainedBiomes);
+        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomeFactory);
     }
 }
