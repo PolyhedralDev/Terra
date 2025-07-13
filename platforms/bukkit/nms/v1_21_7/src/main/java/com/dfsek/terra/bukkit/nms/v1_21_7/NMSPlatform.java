@@ -4,7 +4,10 @@ import com.dfsek.tectonic.api.TypeRegistry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 
+import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
@@ -39,7 +42,6 @@ import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData;
 import org.bukkit.Bukkit;
 
 import java.util.List;
@@ -50,7 +52,7 @@ public class NMSPlatform extends PlatformImpl {
 
     public NMSPlatform(TerraBukkitPlugin plugin) {
         super(plugin);
-        AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry());
+
         Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), plugin);
     }
 
@@ -84,6 +86,19 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+    }
+
+    @Override
+    protected InternalAddon load() {
+        InternalAddon internalAddon = super.load();
+
+        this.getEventManager().getHandler(FunctionalEventHandler.class)
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .priority(1)
+            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
+            .global();
+
+        return internalAddon;
     }
 
     @Override
