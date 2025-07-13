@@ -7,48 +7,43 @@
 
 package com.dfsek.terra.addons.noise.config.templates.noise;
 
+import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.cellular.CellularStyleSampler;
+import com.dfsek.seismic.algorithms.sampler.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.seismic.type.DistanceFunction;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
-import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 @SuppressWarnings("FieldMayBeFinal")
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default
-    private CellularSampler.@Meta DistanceFunction cellularDistanceFunction = CellularSampler.DistanceFunction.EuclideanSq;
+    private @Meta DistanceFunction cellularDistanceFunction = DistanceFunction.EuclideanSq;
 
     @Value("return")
     @Default
-    private CellularSampler.@Meta ReturnType cellularReturnType = CellularSampler.ReturnType.Distance;
+    private CellularStyleSampler.@Meta CellularReturnType cellularReturnType = CellularStyleSampler.CellularReturnType.Distance;
 
     @Value("jitter")
     @Default
     private @Meta double cellularJitter = 1.0D;
 
-
     @Value("lookup")
     @Default
-    private @Meta NoiseSampler lookup = new OpenSimplex2Sampler();
-    
+    private @Meta Sampler lookup = new OpenSimplex2Sampler(0.02d, 0);
+
     @Value("salt-lookup")
     @Default
     private @Meta boolean saltLookup = true;
-    
+
     @Override
-    public NoiseSampler get() {
-        CellularSampler sampler = new CellularSampler();
-        sampler.setNoiseLookup(lookup);
-        sampler.setFrequency(frequency);
-        sampler.setJitterModifier(cellularJitter);
-        sampler.setReturnType(cellularReturnType);
-        sampler.setDistanceFunction(cellularDistanceFunction);
-        sampler.setSalt(salt);
-        sampler.setSaltLookup(saltLookup);
+    public Sampler get() {
+        CellularSampler sampler = new CellularSampler(frequency, salt, lookup, cellularDistanceFunction, cellularReturnType, cellularJitter,
+            saltLookup);
         return sampler;
     }
 }

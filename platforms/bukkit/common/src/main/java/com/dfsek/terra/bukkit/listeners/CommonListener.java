@@ -17,14 +17,6 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
-import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
-import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
-
-import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
-import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
-
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Wolf;
@@ -38,6 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
+import com.dfsek.terra.api.Platform;
+import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 /**
@@ -70,26 +69,26 @@ public class CommonListener implements Listener {
 
     @EventHandler
     public void onWolfSpawn(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof Wolf wolf)) {
+        if(!(event.getEntity() instanceof Wolf wolf)) {
             return;
         }
 
         // Doesn't apply if variant has already been applied
-        if (wolf.getVariant() != Variant.PALE) {
+        if(wolf.getVariant() != Variant.PALE) {
             return;
         }
 
-        if (!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
+        if(!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
             return;
         }
 
         World world = wolf.getWorld();
-        if (!(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper)) {
+        if(!(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper)) {
             return;
         }
 
         ConfigPack pack = platform.getConfigRegistry().get(wrapper.getPack().getRegistryKey()).orElse(null);
-        if (pack == null) {
+        if(pack == null) {
             return;
         }
 

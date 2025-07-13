@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +25,6 @@ import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.Rotation;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
 
 
 public class StructureFunction implements Function<Boolean> {
@@ -60,8 +60,8 @@ public class StructureFunction implements Function<Boolean> {
         if(arguments.getRecursions() > platform.getTerraConfig().getMaxRecursion())
             throw new RuntimeException("Structure recursion too deep: " + arguments.getRecursions());
 
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
         String app = id.apply(implementationArguments, scope);
@@ -78,17 +78,17 @@ public class StructureFunction implements Function<Boolean> {
             if(script instanceof StructureScript structureScript) {
                 return structureScript.generate(arguments.getOrigin(),
                     arguments.getWorld()
-                        .buffer((int) Math.round(xz.getX()),
+                        .buffer(FloatingPointFunctions.round(xz.getX()),
                             y.apply(implementationArguments, scope).intValue(),
-                            (int) Math.round(xz.getZ())),
+                            FloatingPointFunctions.round(xz.getZ())),
                     arguments.getRandom(),
                     arguments.getRotation().rotate(rotation1), arguments.getRecursions() + 1);
             }
             return script.generate(arguments.getOrigin(),
                 arguments.getWorld()
-                    .buffer((int) Math.round(xz.getX()),
+                    .buffer(FloatingPointFunctions.round(xz.getX()),
                         y.apply(implementationArguments, scope).intValue(),
-                        (int) Math.round(xz.getZ())),
+                        FloatingPointFunctions.round(xz.getZ())),
                 arguments.getRandom(),
                 arguments.getRotation().rotate(rotation1));
         }).orElseGet(() -> {

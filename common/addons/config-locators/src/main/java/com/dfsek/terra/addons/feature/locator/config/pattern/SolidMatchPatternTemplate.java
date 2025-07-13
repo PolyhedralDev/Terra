@@ -12,7 +12,7 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.addons.feature.locator.patterns.MatchPattern;
 import com.dfsek.terra.addons.feature.locator.patterns.Pattern;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class SolidMatchPatternTemplate implements ObjectTemplate<Pattern> {

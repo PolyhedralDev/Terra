@@ -20,7 +20,6 @@ package com.dfsek.terra.bukkit;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
-
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
@@ -56,7 +55,7 @@ public class PlatformImpl extends AbstractPlatform {
 
     public PlatformImpl(TerraBukkitPlugin plugin) {
         generationThreads = getMoonriseGenerationThreadsWithReflection();
-        if (generationThreads == 0) {
+        if(generationThreads == 0) {
             generationThreads = 1;
         }
         this.plugin = plugin;
@@ -70,8 +69,7 @@ public class PlatformImpl extends AbstractPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
+        boolean succeed = loadConfigPacks();
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {

@@ -27,10 +27,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.AnnotatedType;
+import java.nio.file.Files;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.properties.Properties;
 
 
@@ -39,12 +39,10 @@ import com.dfsek.terra.api.properties.Properties;
  */
 @Deprecated
 public class BufferedImageLoader implements TypeLoader<BufferedImage> {
-    private final Loader files;
 
     private final ConfigPack pack;
 
-    public BufferedImageLoader(Loader files, ConfigPack pack) {
-        this.files = files;
+    public BufferedImageLoader(ConfigPack pack) {
         this.pack = pack;
         if(!pack.getContext().has(ImageCache.class))
             pack.getContext().put(new ImageCache(new ConcurrentHashMap<>()));
@@ -55,7 +53,7 @@ public class BufferedImageLoader implements TypeLoader<BufferedImage> {
     throws LoadException {
         return pack.getContext().get(ImageCache.class).map.computeIfAbsent((String) c, s -> {
             try {
-                return ImageIO.read(files.get(s));
+                return ImageIO.read(Files.newInputStream(pack.getRootPath().resolve(s)));
             } catch(IOException e) {
                 throw new LoadException("Unable to load image", e, depthTracker);
             }

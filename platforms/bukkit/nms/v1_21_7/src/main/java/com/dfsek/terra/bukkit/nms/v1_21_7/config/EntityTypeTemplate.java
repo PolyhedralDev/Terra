@@ -12,7 +12,7 @@ public class EntityTypeTemplate implements ObjectTemplate<EntityType<?>> {
     @Value("id")
     @Default
     private ResourceLocation id = null;
-    
+
     @Override
     public EntityType<?> get() {
         return BuiltInRegistries.ENTITY_TYPE.get(id).orElseThrow().value();

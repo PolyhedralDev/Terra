@@ -1,15 +1,14 @@
 package com.dfsek.terra.minestom.entity;
 
-import com.dfsek.terra.api.entity.EntityType;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.world.ServerWorld;
-
-import com.dfsek.terra.minestom.MinestomAdapter;
-import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-
+import com.dfsek.seismic.type.vector.Vector3;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.Entity;
 import net.minestom.server.instance.Instance;
+
+import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.minestom.MinestomAdapter;
+import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 
 
 public class MinestomEntity implements com.dfsek.terra.api.entity.Entity {
@@ -19,6 +18,13 @@ public class MinestomEntity implements com.dfsek.terra.api.entity.Entity {
     public MinestomEntity(Entity delegate, TerraMinestomWorld world) {
         this.delegate = delegate;
         this.world = world;
+    }
+
+    public static MinestomEntity spawn(double x, double y, double z, EntityType type, TerraMinestomWorld world) {
+        Instance instance = world.getHandle();
+        Entity entity = world.getEntityFactory().createEntity(((MinestomEntityType) type).getHandle());
+        entity.setInstance(instance, new Pos(x, y, z));
+        return new MinestomEntity(entity, world);
     }
 
     @Override
@@ -44,12 +50,5 @@ public class MinestomEntity implements com.dfsek.terra.api.entity.Entity {
     @Override
     public Object getHandle() {
         return delegate;
-    }
-
-    public static MinestomEntity spawn(double x, double y, double z, EntityType type, TerraMinestomWorld world) {
-        Instance instance = world.getHandle();
-        Entity entity = world.getEntityFactory().createEntity(((MinestomEntityType) type).getHandle());
-        entity.setInstance(instance, new Pos(x, y, z));
-        return new MinestomEntity(entity, world);
     }
 }

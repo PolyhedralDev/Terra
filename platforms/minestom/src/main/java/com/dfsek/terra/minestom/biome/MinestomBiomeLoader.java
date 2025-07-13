@@ -4,28 +4,23 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-
 import net.kyori.adventure.key.Key;
-import net.minestom.server.MinecraftServer;
-import net.minestom.server.registry.DynamicRegistry;
-import net.minestom.server.world.biome.Biome;
+import net.minestom.server.registry.RegistryKey;
+import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+
 
 public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {
-    private final DynamicRegistry<Biome> biomeRegistry = MinecraftServer.getBiomeRegistry();
-
     @Override
     public PlatformBiome load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader,
                               DepthTracker depthTracker) throws LoadException {
+        @Subst("name:value")
         String id = (String) o;
-        Key biomeID = Key.key(id);
-        Biome biome = biomeRegistry.get(biomeID);
-        if(biome == null) throw new LoadException("Biome %s does not exist in registry".formatted(id), depthTracker);
-        return new MinestomBiome(biome);
+        Key key = Key.key(id);
+        return new MinestomBiome(RegistryKey.unsafeOf(key));
     }
 }
