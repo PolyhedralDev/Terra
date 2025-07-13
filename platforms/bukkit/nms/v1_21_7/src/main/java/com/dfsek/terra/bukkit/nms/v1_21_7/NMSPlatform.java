@@ -4,7 +4,10 @@ import com.dfsek.tectonic.api.TypeRegistry;
 
 import com.dfsek.tectonic.api.exception.LoadException;
 
+import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
@@ -49,7 +52,14 @@ public class NMSPlatform extends PlatformImpl {
 
     public NMSPlatform(TerraBukkitPlugin plugin) {
         super(plugin);
-        AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry());
+
+        // TODO: Check if there is a better way to handle InternalAddon
+        this.getEventManager().getHandler(FunctionalEventHandler.class)
+            .register(new InternalAddon(), PlatformInitializationEvent.class)
+            .priority(1)
+            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
+            .global();
+
         Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), plugin);
     }
 
