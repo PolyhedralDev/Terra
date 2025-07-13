@@ -53,13 +53,6 @@ public class NMSPlatform extends PlatformImpl {
     public NMSPlatform(TerraBukkitPlugin plugin) {
         super(plugin);
 
-        // TODO: Check if there is a better way to handle InternalAddon
-        this.getEventManager().getHandler(FunctionalEventHandler.class)
-            .register(new InternalAddon(), PlatformInitializationEvent.class)
-            .priority(1)
-            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
-            .global();
-
         Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), plugin);
     }
 
@@ -93,6 +86,19 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+    }
+
+    @Override
+    protected InternalAddon load() {
+        InternalAddon internalAddon = super.load();
+
+        this.getEventManager().getHandler(FunctionalEventHandler.class)
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .priority(1)
+            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
+            .global();
+
+        return internalAddon;
     }
 
     @Override
