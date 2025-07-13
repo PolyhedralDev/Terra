@@ -2,6 +2,8 @@ package com.dfsek.terra.bukkit.nms.v1_21_7;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.exception.LoadException;
+
+import com.dfsek.terra.addon.InternalAddon;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
@@ -41,7 +43,7 @@ public class NMSPlatform extends PlatformImpl {
 
     public NMSPlatform(TerraBukkitPlugin plugin) {
         super(plugin);
-        AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry());
+
         Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), plugin);
     }
 
@@ -75,6 +77,19 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
             .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+    }
+
+    @Override
+    protected InternalAddon load() {
+        InternalAddon internalAddon = super.load();
+
+        this.getEventManager().getHandler(FunctionalEventHandler.class)
+            .register(internalAddon, PlatformInitializationEvent.class)
+            .priority(1)
+            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
+            .global();
+
+        return internalAddon;
     }
 
     @Override
