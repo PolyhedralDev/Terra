@@ -108,7 +108,7 @@ public abstract class AbstractPlatform implements Platform {
         return Collections.emptySet();
     }
 
-    protected void load() {
+    protected InternalAddon load() {
         if(LOADED.get()) {
             throw new IllegalStateException(
                 "Someone tried to initialize Terra, but Terra has already initialized. This is most likely due to a broken platform " +
@@ -159,6 +159,8 @@ public abstract class AbstractPlatform implements Platform {
 
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
+
+        return internalAddon;
     }
 
     protected InternalAddon loadAddons() {
