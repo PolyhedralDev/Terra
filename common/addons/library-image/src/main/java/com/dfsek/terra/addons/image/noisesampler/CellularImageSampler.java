@@ -61,7 +61,6 @@ public class CellularImageSampler implements NoiseSampler {
                 int rgb = image.getRGB(x, y) & 0xFFFFFF; // Ignore alpha
                 if (rgb == 0xFFFFFF) { // Pure white
                     featurePoints.add(Vector2.of(x, y));
-                    System.out.println(Vector2.of(x, y));
                 }
             }
         }
@@ -80,7 +79,6 @@ public class CellularImageSampler implements NoiseSampler {
                 if(featurePoints.isEmpty()) {
                     featurePoints = extractWhitePixels(image);
                     tree = new KDTree(featurePoints);
-                    System.out.println("CellularImageSampler initialized!");
                 }
                 initialized = true;
             });
@@ -108,28 +106,9 @@ public class CellularImageSampler implements NoiseSampler {
             distance2 = applyDistanceFunction(distanceFunction, query.distanceSquared(nearest.get(2)));
         }
 
-        System.out.printf("distance0: " + distance0);
-        System.out.printf("distance0: " + distance1);
-        System.out.printf("distance0: " + distance2);
 
         double distanceX = nearest.get(0).getX();
         double distanceZ = nearest.get(0).getZ();
-
-        System.out.printf("Distance: " + (distance0 - 1));
-        System.out.printf("Distance2: " + (distance1- 1));
-        System.out.printf("Distance2Add: " + ((distance1 + distance0) * 0.5 - 1));
-        System.out.printf("Distance2Sub: " + (distance1 - distance0 - 1));
-        System.out.printf("Distance2Mul: " + (distance1 * distance0 * 0.5 - 1));
-        System.out.printf("Distance2Div: " + (distance0 / distance1 - 1));
-        System.out.printf("NoiseLookup: " + noiseLookup.noise(sl, distanceX, distanceZ));
-        System.out.printf("LocalNoiseLookup: " + noiseLookup.noise(sl, x  - distanceX, z - distanceZ));
-        System.out.printf("Distance3: " + (distance2 - 1));
-        System.out.printf("Distance3Add: " + ((distance2 + distance0) * 0.5 - 1));
-        System.out.printf("Distance3Sub: " + (distance2 - distance0 - 1));
-        System.out.printf("Distance3Mul: " + (distance2 * distance0 - 1));
-        System.out.printf("Distance3Div: " + (distance0 / distance2 - 1));
-        System.out.printf("Angle: " + Math.atan2(distanceX - x, distanceZ - z));
-        System.out.printf("CellValue: " + hashNormalized((int) distanceX, (int) distanceZ));
 
         return switch(returnType) {
             case Distance -> distance0 - 1;
