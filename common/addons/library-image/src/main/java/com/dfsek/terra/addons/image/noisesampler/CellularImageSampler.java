@@ -27,6 +27,10 @@ public class CellularImageSampler implements NoiseSampler {
     private ReturnType returnType = ReturnType.Distance;
     private NoiseSampler noiseLookup;
     private Image image;
+    private volatile CompletableFuture<Void> initFuture;
+    private final Object initLock = new Object();
+    private KDTree tree;
+
 
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
@@ -47,8 +51,6 @@ public class CellularImageSampler implements NoiseSampler {
     }
 
 
-    private volatile boolean initialized = false;
-
 
 
     public List<Vector2> extractWhitePixels(Image image) {
@@ -67,17 +69,26 @@ public class CellularImageSampler implements NoiseSampler {
         return featurePoints;
     }
 
-    private KDTree tree;
-
-
-
 
     @Override
     public double noise(long sl, double x, double z) {
 
-        featurePoints = extractWhitePixels(image);
-        tree = new KDTree(featurePoints);
-        
+        initializeAsyncIfNeeded();
+
+        if (initFuture == null || !initFuture.isDone()) {
+            // Still loading — return fallback like 0
+            return 0.0;
+        }
+
+        try {
+            initFuture.get(); // Ensure it's fully initialized
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0.0;
+        }
+
+        System.out.println(featurePoints);
+
         int xr = (int) Math.round(x);
         int zr = (int) Math.round(z);
 
@@ -122,6 +133,21 @@ public class CellularImageSampler implements NoiseSampler {
 
         };
     }
+
+    private void initializeAsyncIfNeeded() {
+        if (initFuture == null) {
+            synchronized (initLock) {
+                if (initFuture == null) {
+                    initFuture = CompletableFuture.runAsync(() -> {
+                        featurePoints = extractWhitePixels(image);
+                        tree = new KDTree(featurePoints);
+                        System.out.println("KDTree initialized with " + featurePoints.size() + " white pixels.");
+                    });
+                }
+            }
+        }
+    }
+
 
     private double hashNormalized(int x, int z) {
         int h = x * 73428767 ^ z * 912367;
