@@ -31,8 +31,6 @@ public class CellularImageSampler implements NoiseSampler {
     private final Object initLock = new Object();
     private KDTree tree;
 
-
-
     public void setDistanceFunction(DistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
     }
@@ -40,7 +38,6 @@ public class CellularImageSampler implements NoiseSampler {
     public void setNoiseLookup(NoiseSampler noiseLookup) {
         this.noiseLookup = noiseLookup;
     }
-
 
     public void setReturnType(ReturnType returnType) {
         this.returnType = returnType;
@@ -50,25 +47,22 @@ public class CellularImageSampler implements NoiseSampler {
         this.image = image;
     }
 
-
-
-
     public List<Vector2> extractWhitePixels(Image image) {
         int width = image.getWidth();
         int height = image.getHeight();
-        
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int rgb = image.getRGB(x, y) & 0xFFFFFF; // Ignore alpha
-                if (rgb == 0xFFFFFF) { // Pure white
-                    featurePoints.add(Vector2.of(x, y));
+                int rgb = image.getRGB(x, y) & 0xFFFFFF;
+                if (rgb == 0xFFFFFF) {
+                    Vector2 point = Vector2.of(x, y);
+                    featurePoints.add(point);
                 }
             }
         }
+
         return featurePoints;
     }
-
 
     @Override
     public double noise(long sl, double x, double z) {
@@ -76,31 +70,24 @@ public class CellularImageSampler implements NoiseSampler {
         initializeAsyncIfNeeded();
 
         if (initFuture == null || !initFuture.isDone()) {
-            // Still loading — return fallback like 0
             return 0.0;
         }
 
         try {
-            initFuture.get(); // Ensure it's fully initialized
+            initFuture.get();
         } catch (Exception e) {
-            e.printStackTrace();
             return 0.0;
         }
 
-        System.out.println(featurePoints);
-
         int xr = (int) Math.round(x);
         int zr = (int) Math.round(z);
-
         Vector2 query = Vector2.of(xr, zr);
 
         List<Vector2> nearest = tree.kNearest(query, 3);
 
-        double distance0 = Double.MAX_VALUE;
-        double distance1 = Double.MAX_VALUE;
-        double distance2 = Double.MAX_VALUE;
+        double distance0, distance1, distance2;
 
-        if(distanceFunction == DistanceFunction.Manhattan) {
+        if (distanceFunction == DistanceFunction.Manhattan) {
             distance0 = Math.abs(query.getX() - nearest.get(0).getX()) + Math.abs(query.getZ() - nearest.get(0).getZ());
             distance1 = Math.abs(query.getX() - nearest.get(1).getX()) + Math.abs(query.getZ() - nearest.get(1).getZ());
             distance2 = Math.abs(query.getX() - nearest.get(2).getX()) + Math.abs(query.getZ() - nearest.get(2).getZ());
@@ -110,11 +97,12 @@ public class CellularImageSampler implements NoiseSampler {
             distance2 = applyDistanceFunction(distanceFunction, query.distanceSquared(nearest.get(2)));
         }
 
-
         double distanceX = nearest.get(0).getX();
         double distanceZ = nearest.get(0).getZ();
 
-        return switch(returnType) {
+        ReturnType type = returnType;
+
+        double result = switch(type) {
             case Distance -> distance0 - 1;
             case Distance2 -> distance1 - 1;
             case Distance2Add -> (distance1 + distance0) * 0.5 - 1;
@@ -122,7 +110,7 @@ public class CellularImageSampler implements NoiseSampler {
             case Distance2Mul -> distance1 * distance0 * 0.5 - 1;
             case Distance2Div -> distance0 / distance1 - 1;
             case NoiseLookup -> noiseLookup.noise(sl, distanceX, distanceZ);
-            case LocalNoiseLookup -> noiseLookup.noise(sl, x  - distanceX, z - distanceZ);
+            case LocalNoiseLookup -> noiseLookup.noise(sl, x - distanceX, z - distanceZ);
             case Distance3 -> distance2 - 1;
             case Distance3Add -> (distance2 + distance0) * 0.5 - 1;
             case Distance3Sub -> distance2 - distance0 - 1;
@@ -130,8 +118,11 @@ public class CellularImageSampler implements NoiseSampler {
             case Distance3Div -> distance0 / distance2 - 1;
             case Angle -> Math.atan2(distanceX - x, distanceZ - z);
             case CellValue -> hashNormalized((int) distanceX, (int) distanceZ);
-
         };
+
+
+
+        return result;
     }
 
     private void initializeAsyncIfNeeded() {
@@ -141,37 +132,28 @@ public class CellularImageSampler implements NoiseSampler {
                     initFuture = CompletableFuture.runAsync(() -> {
                         featurePoints = extractWhitePixels(image);
                         tree = new KDTree(featurePoints);
-                        System.out.println("KDTree initialized with " + featurePoints.size() + " white pixels.");
                     });
                 }
             }
         }
     }
 
-
     private double hashNormalized(int x, int z) {
         int h = x * 73428767 ^ z * 912367;
         h ^= (h >>> 13);
         h *= 0x85ebca6b;
         h ^= (h >>> 16);
-        return (h & 0x7FFFFFFF) / (double) 0x7FFFFFFF * 2.0 - 1.0;  // Map to [-1.0, 1.0)
+        return (h & 0x7FFFFFFF) / (double) 0x7FFFFFFF * 2.0 - 1.0;
     }
-
 
     private double applyDistanceFunction(DistanceFunction function, double distSq) {
         return switch (function) {
             case Euclidean -> Math.sqrt(distSq);
             case EuclideanSq -> distSq;
-            case Manhattan -> {
-                // This is just a fallback interpretation
-                yield Math.sqrt(distSq) * 1.5; // Approximate
-            }
+            case Manhattan -> Math.sqrt(distSq) * 1.5;
             case Hybrid -> Math.sqrt(distSq) + 0.25 * distSq;
         };
     }
-
-
-
 
     @Override
     public double noise(long seed, double x, double y, double z) {
@@ -184,7 +166,6 @@ public class CellularImageSampler implements NoiseSampler {
         Manhattan,
         Hybrid
     }
-
 
     public enum ReturnType {
         Distance,
@@ -203,5 +184,5 @@ public class CellularImageSampler implements NoiseSampler {
         Angle,
         CellValue
     }
-
 }
+
