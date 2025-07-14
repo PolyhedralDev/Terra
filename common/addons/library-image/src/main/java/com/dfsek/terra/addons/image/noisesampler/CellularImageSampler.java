@@ -74,17 +74,10 @@ public class CellularImageSampler implements NoiseSampler {
 
     @Override
     public double noise(long sl, double x, double z) {
-        if(!initialized){
-            CompletableFuture.runAsync(() -> {
-                if(featurePoints.isEmpty()) {
-                    featurePoints = extractWhitePixels(image);
-                    tree = new KDTree(featurePoints);
-                }
-                initialized = true;
-            });
 
-        }
-
+        featurePoints = extractWhitePixels(image);
+        tree = new KDTree(featurePoints);
+        
         int xr = (int) Math.round(x);
         int zr = (int) Math.round(z);
 
