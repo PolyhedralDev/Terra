@@ -10,8 +10,6 @@ package com.dfsek.terra.addons.image.noisesampler;
 import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.KDTree;
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.vector.Vector2;
 
@@ -77,7 +75,6 @@ public class CellularImageSampler implements NoiseSampler {
                 if (rgb == 0xFFFFFF) {
                     Vector2 point = Vector2.of(x + offsetX, y + offsetZ);
                     points.add(point);
-                    System.out.println(point);
                 }
             }
         }
