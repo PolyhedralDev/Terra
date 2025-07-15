@@ -65,10 +65,14 @@ public class KDTree {
     public List<Vector2> kNearest(Vector2 target, int k) {
         PriorityQueue<Neighbor> best = new PriorityQueue<>(Comparator.comparingDouble(n -> -n.distSq));
         kNearest(root, target, k, best);
+        List<Neighbor> sorted = new ArrayList<>(best);
+        sorted.sort(Comparator.comparingDouble(n -> n.distSq));
+
         List<Vector2> result = new ArrayList<>();
-        for (Neighbor n : best) result.add(n.point);
+        for (Neighbor n : sorted) result.add(n.point);
         return result;
     }
+
 
     private void kNearest(Node node, Vector2 target, int k, PriorityQueue<Neighbor> best) {
         if (node == null) return;

@@ -7,8 +7,11 @@
 
 package com.dfsek.terra.addons.image.noisesampler;
 
+import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.KDTree;
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.entity.Player;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.vector.Vector2;
 
@@ -31,6 +34,8 @@ public class CellularImageSampler implements NoiseSampler {
     private final Object initLock = new Object();
     private KDTree tree;
     private volatile boolean initialized = false;
+    private Alignment alignment = Alignment.NONE;
+
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
@@ -48,21 +53,39 @@ public class CellularImageSampler implements NoiseSampler {
         this.image = image;
     }
 
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
+
     public List<Vector2> extractWhitePixels(Image image) {
         int width = image.getWidth();
         int height = image.getHeight();
+
+        int offsetX = 0;
+        int offsetZ = 0;
+
+        if (alignment == Alignment.CENTER) {
+            offsetX = -width / 2;
+            offsetZ = -height / 2;
+        }
+
+        List<Vector2> points = new ArrayList<>();
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int rgb = image.getRGB(x, y) & 0xFFFFFF;
                 if (rgb == 0xFFFFFF) {
-                    Vector2 point = Vector2.of(x, y);
-                    featurePoints.add(point);
+                    Vector2 point = Vector2.of(x + offsetX, y + offsetZ);
+                    points.add(point);
+                    System.out.println(point);
                 }
             }
         }
-        return featurePoints;
+
+        return points;
     }
+
+
 
     @Override
     public double noise(long sl, double x, double z) {
@@ -132,10 +155,9 @@ public class CellularImageSampler implements NoiseSampler {
             if (!initialized) {
                 initFuture = CompletableFuture.runAsync(() -> {
                     List<Vector2> whitePixels = extractWhitePixels(image);
-                    tree = new KDTree(whitePixels);
-                }).thenRun(() -> {
-                    initialized = true;
-                });
+                    this.featurePoints = whitePixels;  // Safe reassignment
+                    this.tree = new KDTree(whitePixels);
+                }).thenRun(() -> initialized = true);
             }
         }
 

@@ -5,6 +5,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 
+import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.noisesampler.CellularImageSampler;
 import com.dfsek.terra.api.config.meta.Meta;
@@ -28,6 +29,10 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
     @Default
     private @Meta NoiseSampler lookup;
 
+    @Value("align")
+    @Default
+    private @Meta Alignment align;
+
     @Override
     public NoiseSampler get() {
         CellularImageSampler sampler = new CellularImageSampler();
@@ -35,6 +40,7 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
         sampler.setReturnType(cellularReturnType);
         sampler.setDistanceFunction(cellularDistanceFunction);
         sampler.setNoiseLookup(lookup);
+        sampler.setAlignment(align);
         return sampler;
     }
 }
