@@ -31,9 +31,9 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
     @Override
     public NoiseSampler get() {
         CellularImageSampler sampler = new CellularImageSampler();
+        sampler.setImage(image);
         sampler.setReturnType(cellularReturnType);
         sampler.setDistanceFunction(cellularDistanceFunction);
-        sampler.setImage(image);
         sampler.setNoiseLookup(lookup);
         return sampler;
     }

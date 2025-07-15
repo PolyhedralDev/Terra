@@ -30,6 +30,7 @@ public class CellularImageSampler implements NoiseSampler {
     private volatile CompletableFuture<Void> initFuture;
     private final Object initLock = new Object();
     private KDTree tree;
+    private volatile boolean initialized = false;
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
@@ -60,14 +61,13 @@ public class CellularImageSampler implements NoiseSampler {
                 }
             }
         }
-
         return featurePoints;
     }
 
     @Override
     public double noise(long sl, double x, double z) {
 
-        initializeAsyncIfNeeded();
+        initializeIfNeeded();
 
         if (initFuture == null || !initFuture.isDone()) {
             return 0.0;
@@ -102,6 +102,8 @@ public class CellularImageSampler implements NoiseSampler {
 
         ReturnType type = returnType;
 
+
+
         double result = switch(type) {
             case Distance -> distance0 - 1;
             case Distance2 -> distance1 - 1;
@@ -120,21 +122,27 @@ public class CellularImageSampler implements NoiseSampler {
             case CellValue -> hashNormalized((int) distanceX, (int) distanceZ);
         };
 
-
-
         return result;
     }
 
-    private void initializeAsyncIfNeeded() {
-        if (initFuture == null) {
-            synchronized (initLock) {
-                if (initFuture == null) {
-                    initFuture = CompletableFuture.runAsync(() -> {
-                        featurePoints = extractWhitePixels(image);
-                        tree = new KDTree(featurePoints);
-                    });
-                }
+    private void initializeIfNeeded() {
+        if (initialized) return;
+
+        synchronized (initLock) {
+            if (!initialized) {
+                initFuture = CompletableFuture.runAsync(() -> {
+                    List<Vector2> whitePixels = extractWhitePixels(image);
+                    tree = new KDTree(whitePixels);
+                }).thenRun(() -> {
+                    initialized = true;
+                });
             }
+        }
+
+        try {
+            initFuture.get(); // block until KDTree is ready
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize KDTree", e);
         }
     }
 
