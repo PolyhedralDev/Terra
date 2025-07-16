@@ -41,6 +41,9 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
         sampler.setDistanceFunction(cellularDistanceFunction);
         sampler.setNoiseLookup(lookup);
         sampler.setAlignment(align);
+        if(!sampler.isTreeSet()){
+            sampler.doKDTree();
+        }
         return sampler;
     }
 }

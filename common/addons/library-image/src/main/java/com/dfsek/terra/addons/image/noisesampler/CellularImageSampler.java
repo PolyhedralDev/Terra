@@ -16,23 +16,24 @@ import com.dfsek.terra.api.util.vector.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
  * NoiseSampler implementation for A Modified Cellular (Voronoi/Worley) Noise with Image Sampling for Seeding White pixels #FFFFFF being seeds
  */
 public class CellularImageSampler implements NoiseSampler {
-    private List<Vector2> featurePoints = new ArrayList<>();
     private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
     private ReturnType returnType = ReturnType.Distance;
     private NoiseSampler noiseLookup;
     private Image image;
-    private volatile CompletableFuture<Void> initFuture;
-    private final Object initLock = new Object();
     private KDTree tree;
-    private volatile boolean initialized = false;
     private Alignment alignment = Alignment.NONE;
+    private static final Map<Integer, CompletableFuture<KDTree>> treeFutures = new ConcurrentHashMap<>();
+
 
 
     public void setDistanceFunction(DistanceFunction distanceFunction) {
@@ -55,6 +56,25 @@ public class CellularImageSampler implements NoiseSampler {
         this.alignment = alignment;
     }
 
+    private int hash() {
+        return Objects.hash(alignment.name());
+    }
+
+    public boolean isTreeSet() {
+        CompletableFuture<KDTree> future = treeFutures.get(hash());
+        return future != null && future.isDone() && !future.isCompletedExceptionally();
+    }
+
+    public void doKDTree() {
+        treeFutures.computeIfAbsent(hash(), h -> CompletableFuture.supplyAsync(() -> {
+            List<Vector2> whitePixels = extractWhitePixels(image);
+            return new KDTree(whitePixels);
+        })).thenAccept(tree -> {
+            this.tree = tree;
+        });
+    }
+
+
     public List<Vector2> extractWhitePixels(Image image) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -75,6 +95,7 @@ public class CellularImageSampler implements NoiseSampler {
                 if (rgb == 0xFFFFFF) {
                     Vector2 point = Vector2.of(x + offsetX, y + offsetZ);
                     points.add(point);
+
                 }
             }
         }
@@ -82,21 +103,18 @@ public class CellularImageSampler implements NoiseSampler {
         return points;
     }
 
-
-
     @Override
     public double noise(long sl, double x, double z) {
+        CompletableFuture<KDTree> future = treeFutures.get(hash());
 
-        initializeIfNeeded();
-
-        if (initFuture == null || !initFuture.isDone()) {
-            return 0.0;
+        if (future == null || future.isCompletedExceptionally()) {
+            throw new IllegalStateException("KDTree not initialized for image.");
         }
 
         try {
-            initFuture.get();
+            tree = future.get();
         } catch (Exception e) {
-            return 0.0;
+            throw new RuntimeException("Error retrieving KDTree", e);
         }
 
         int xr = (int) Math.round(x);
@@ -145,25 +163,6 @@ public class CellularImageSampler implements NoiseSampler {
         return result;
     }
 
-    private void initializeIfNeeded() {
-        if (initialized) return;
-
-        synchronized (initLock) {
-            if (!initialized) {
-                initFuture = CompletableFuture.runAsync(() -> {
-                    List<Vector2> whitePixels = extractWhitePixels(image);
-                    this.featurePoints = whitePixels;  // Safe reassignment
-                    this.tree = new KDTree(whitePixels);
-                }).thenRun(() -> initialized = true);
-            }
-        }
-
-        try {
-            initFuture.get(); // block until KDTree is ready
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize KDTree", e);
-        }
-    }
 
     private double hashNormalized(int x, int z) {
         int h = x * 73428767 ^ z * 912367;
