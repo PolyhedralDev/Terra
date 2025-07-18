@@ -5,6 +5,8 @@ import com.dfsek.terra.api.util.vector.Vector2;
 import java.util.*;
 
 public class KDTree {
+
+
     private static class Node {
         Vector2 point;
         Node left, right;
@@ -106,13 +108,5 @@ public class KDTree {
         return axis == 0 ? v.getX() : v.getZ();
     }
 
-    private static class Neighbor {
-        Vector2 point;
-        double distSq;
-
-        Neighbor(Vector2 point, double distSq) {
-            this.point = point;
-            this.distSq = distSq;
-        }
-    }
+    private record Neighbor(Vector2 point, double distSq) {}
 }
