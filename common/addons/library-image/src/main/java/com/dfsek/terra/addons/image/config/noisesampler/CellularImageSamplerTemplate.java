@@ -11,6 +11,9 @@ import com.dfsek.terra.api.noise.CellularDistanceFunction;
 import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
+import java.util.Random;
+import java.util.random.RandomGenerator;
+
 
 public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler> {
 
@@ -33,11 +36,9 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
     @Default
     private @Meta Alignment align;
 
-
     @Value("hash")
     @Default
     private @Meta String hash = "";
-
 
     @Override
     public NoiseSampler get() {
