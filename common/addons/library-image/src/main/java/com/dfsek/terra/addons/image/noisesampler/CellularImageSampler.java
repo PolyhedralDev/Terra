@@ -138,8 +138,6 @@ public class CellularImageSampler implements NoiseSampler {
 
         ReturnType type = returnType;
 
-
-
         double result = switch(type) {
             case Distance -> distance0 - 1;
             case Distance2 -> distance1 - 1;
