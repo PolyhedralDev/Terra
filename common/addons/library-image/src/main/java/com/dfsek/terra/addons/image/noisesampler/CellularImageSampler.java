@@ -12,8 +12,6 @@ import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.KDTree;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.vector.Vector2;
-
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
