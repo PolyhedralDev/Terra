@@ -10,6 +10,8 @@ package com.dfsek.terra.addons.image.noisesampler;
 import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.util.KDTree;
+import com.dfsek.terra.api.noise.CellularDistanceFunction;
+import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.vector.Vector2;
 import java.util.ArrayList;
@@ -24,8 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * NoiseSampler implementation for A Modified Cellular (Voronoi/Worley) Noise with Image Sampling for Seeding White pixels #FFFFFF being seeds
  */
 public class CellularImageSampler implements NoiseSampler {
-    private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
-    private ReturnType returnType = ReturnType.Distance;
+    private CellularDistanceFunction distanceFunction = CellularDistanceFunction.EuclideanSq;
+    private CellularReturnType returnType = CellularReturnType.Distance;
     private NoiseSampler noiseLookup;
     private Image image;
     private KDTree tree;
@@ -34,7 +36,7 @@ public class CellularImageSampler implements NoiseSampler {
 
 
 
-    public void setDistanceFunction(DistanceFunction distanceFunction) {
+    public void setDistanceFunction(CellularDistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
     }
 
@@ -42,7 +44,7 @@ public class CellularImageSampler implements NoiseSampler {
         this.noiseLookup = noiseLookup;
     }
 
-    public void setReturnType(ReturnType returnType) {
+    public void setReturnType(CellularReturnType returnType) {
         this.returnType = returnType;
     }
 
@@ -123,7 +125,7 @@ public class CellularImageSampler implements NoiseSampler {
 
         double distance0, distance1, distance2;
 
-        if (distanceFunction == DistanceFunction.Manhattan) {
+        if (distanceFunction == CellularDistanceFunction.Manhattan) {
             distance0 = Math.abs(query.getX() - nearest.get(0).getX()) + Math.abs(query.getZ() - nearest.get(0).getZ());
             distance1 = Math.abs(query.getX() - nearest.get(1).getX()) + Math.abs(query.getZ() - nearest.get(1).getZ());
             distance2 = Math.abs(query.getX() - nearest.get(2).getX()) + Math.abs(query.getZ() - nearest.get(2).getZ());
@@ -136,7 +138,7 @@ public class CellularImageSampler implements NoiseSampler {
         double distanceX = nearest.get(0).getX();
         double distanceZ = nearest.get(0).getZ();
 
-        ReturnType type = returnType;
+        CellularReturnType type = returnType;
 
         double result = switch(type) {
             case Distance -> distance0 - 1;
@@ -168,7 +170,7 @@ public class CellularImageSampler implements NoiseSampler {
         return (h & 0x7FFFFFFF) / (double) 0x7FFFFFFF * 2.0 - 1.0;
     }
 
-    private double applyDistanceFunction(DistanceFunction function, double distSq) {
+    private double applyDistanceFunction(CellularDistanceFunction function, double distSq) {
         return switch (function) {
             case Euclidean -> Math.sqrt(distSq);
             case EuclideanSq -> distSq;
@@ -180,31 +182,6 @@ public class CellularImageSampler implements NoiseSampler {
     @Override
     public double noise(long seed, double x, double y, double z) {
         return noise(seed, x, z);
-    }
-
-    public enum DistanceFunction {
-        Euclidean,
-        EuclideanSq,
-        Manhattan,
-        Hybrid
-    }
-
-    public enum ReturnType {
-        Distance,
-        Distance2,
-        Distance2Add,
-        Distance2Sub,
-        Distance2Mul,
-        Distance2Div,
-        NoiseLookup,
-        LocalNoiseLookup,
-        Distance3,
-        Distance3Add,
-        Distance3Sub,
-        Distance3Mul,
-        Distance3Div,
-        Angle,
-        CellValue
     }
 }
 
