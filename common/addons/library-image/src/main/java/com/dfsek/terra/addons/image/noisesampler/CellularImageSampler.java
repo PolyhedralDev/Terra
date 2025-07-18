@@ -102,7 +102,7 @@ public class CellularImageSampler implements NoiseSampler {
 
     @Override
     public double noise(long sl, double x, double z) {
-        tree = treeMap.get(hash);
+        KDTree tree = treeMap.get(hash);
 
         int xr = (int) Math.round(x);
         int zr = (int) Math.round(z);
