@@ -36,7 +36,7 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
 
     @Value("hash")
     @Default
-    private @Meta String hash;
+    private @Meta String hash = "";
 
 
     @Override
@@ -47,7 +47,8 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
         sampler.setDistanceFunction(cellularDistanceFunction);
         sampler.setNoiseLookup(lookup);
         sampler.setAlignment(align);
-        if(!sampler.isTreeSet()){
+        sampler.setHash(hash);
+        if(!sampler.hasTree(hash)){
             sampler.doKDTree();
         }
         return sampler;
