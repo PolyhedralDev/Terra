@@ -68,6 +68,8 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
+import com.dfsek.terra.api.noise.CellularDistanceFunction;
+import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.DerivativeNoiseSampler;
 import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -94,10 +96,10 @@ public class NoiseAddon implements AddonInitializer {
                 CheckedRegistry<Supplier<ObjectTemplate<NoiseSampler>>> noiseRegistry = event.getPack().getOrCreateRegistry(
                     NOISE_SAMPLER_TOKEN);
                 event.getPack()
-                    .applyLoader(CellularSampler.DistanceFunction.class,
-                        (type, o, loader, depthTracker) -> CellularSampler.DistanceFunction.valueOf((String) o))
-                    .applyLoader(CellularSampler.ReturnType.class,
-                        (type, o, loader, depthTracker) -> CellularSampler.ReturnType.valueOf((String) o))
+                    .applyLoader(CellularDistanceFunction.class,
+                        (type, o, loader, depthTracker) -> CellularDistanceFunction.valueOf((String) o))
+                    .applyLoader(CellularReturnType.class,
+                        (type, o, loader, depthTracker) -> CellularReturnType.valueOf((String) o))
                     .applyLoader(DistanceSampler.DistanceFunction.class,
                         (type, o, loader, depthTracker) -> DistanceSampler.DistanceFunction.valueOf((String) o))
                     .applyLoader(DimensionApplicableNoiseSampler.class, DimensionApplicableNoiseSampler::new)

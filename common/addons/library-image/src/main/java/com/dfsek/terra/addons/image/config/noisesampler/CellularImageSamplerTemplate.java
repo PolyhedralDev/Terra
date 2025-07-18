@@ -7,6 +7,8 @@ import com.dfsek.terra.addons.image.colorsampler.image.transform.Alignment;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.noisesampler.CellularImageSampler;
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.noise.CellularDistanceFunction;
+import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -17,11 +19,11 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
 
     @Value("distance")
     @Default
-    private CellularImageSampler.@Meta DistanceFunction cellularDistanceFunction = CellularImageSampler.DistanceFunction.EuclideanSq;
+    private @Meta CellularDistanceFunction cellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
 
     @Value("return")
     @Default
-    private CellularImageSampler.@Meta ReturnType cellularReturnType = CellularImageSampler.ReturnType.Distance;
+    private CellularReturnType cellularReturnType = CellularReturnType.Distance;
 
     @Value("lookup")
     @Default
@@ -30,6 +32,12 @@ public class CellularImageSamplerTemplate implements ObjectTemplate<NoiseSampler
     @Value("align")
     @Default
     private @Meta Alignment align;
+
+
+    @Value("hash")
+    @Default
+    private @Meta String hash;
+
 
     @Override
     public NoiseSampler get() {
