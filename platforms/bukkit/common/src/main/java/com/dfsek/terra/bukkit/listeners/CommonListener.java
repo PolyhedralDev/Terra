@@ -27,6 +27,7 @@ import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Wolf.Variant;
 import org.bukkit.event.EventHandler;
@@ -34,6 +35,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.event.world.ChunkLoadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,18 +70,9 @@ public class CommonListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onWolfSpawn(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof Wolf wolf)) {
-            return;
-        }
-
+    private void applyWolfVariant(Wolf wolf) {
         // Doesn't apply if variant has already been applied
         if (wolf.getVariant() != Variant.PALE) {
-            return;
-        }
-
-        if (!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
             return;
         }
 
@@ -112,5 +105,32 @@ public class CommonListener implements Listener {
                     case "minecraft:forest" -> wolf.setVariant(Variant.WOODS);
                 }
             });
+    }
+
+    @EventHandler
+    public void onWolfSpawn(CreatureSpawnEvent event) {
+        if (!(event.getEntity() instanceof Wolf wolf)) {
+            return;
+        }
+
+        if (!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
+            logger.info("Ignoring wolf spawned with reason: " + event.getSpawnReason());
+            return;
+        }
+
+        applyWolfVariant(wolf);
+    }
+
+    @EventHandler
+    public void onChunkGenerate(ChunkLoadEvent event) {
+        if (!event.isNewChunk()) {
+            return;
+        }
+
+        for (Entity entity : event.getChunk().getEntities()) {
+            if (entity instanceof Wolf wolf) {
+                applyWolfVariant(wolf);
+            }
+        }
     }
 }
