@@ -8,7 +8,7 @@ dependencies {
     paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
 
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms:v1_21_7"))
+    shaded(project(":platforms:bukkit:nms:v1_21_8"))
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
