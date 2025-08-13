@@ -114,7 +114,7 @@ public class CommonListener implements Listener {
         }
 
         if (!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
-            logger.info("Ignoring wolf spawned with reason: " + event.getSpawnReason());
+            logger.debug("Ignoring wolf spawned with reason: " + event.getSpawnReason());
             return;
         }
 
