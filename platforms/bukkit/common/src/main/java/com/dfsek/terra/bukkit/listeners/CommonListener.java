@@ -48,7 +48,7 @@ import java.util.List;
 public class CommonListener implements Listener {
     private static final Logger logger = LoggerFactory.getLogger(CommonListener.class);
     private static final List<SpawnReason> WOLF_VARIANT_SPAWN_REASONS = List.of(
-        SpawnReason.SPAWNER, SpawnReason.TRIAL_SPAWNER, SpawnReason.SPAWNER_EGG, SpawnReason.DEFAULT
+        SpawnReason.SPAWNER, SpawnReason.TRIAL_SPAWNER, SpawnReason.SPAWNER_EGG, SpawnReason.NATURAL
     );
     private final Platform platform;
 
