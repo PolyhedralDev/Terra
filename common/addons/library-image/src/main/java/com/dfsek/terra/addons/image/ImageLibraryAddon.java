@@ -15,6 +15,7 @@ import com.dfsek.terra.addons.image.config.colorsampler.mutate.RotateColorSample
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.TranslateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
 import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
+import com.dfsek.terra.addons.image.config.noisesampler.CellularImageSamplerTemplate;
 import com.dfsek.terra.addons.image.config.noisesampler.ChannelNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.config.noisesampler.DistanceTransformNoiseSamplerTemplate;
 import com.dfsek.terra.addons.image.image.Image;
@@ -75,6 +76,7 @@ public class ImageLibraryAddon implements AddonInitializer {
                     NOISE_SAMPLER_TOKEN);
                 noiseRegistry.register(addon.key("DISTANCE_TRANSFORM"), DistanceTransformNoiseSamplerTemplate::new);
                 noiseRegistry.register(addon.key("CHANNEL"), ChannelNoiseSamplerTemplate::new);
+                noiseRegistry.register(addon.key("CELLULAR_IMAGE"), CellularImageSamplerTemplate::new);
             })
             .then(event -> {
                 CheckedRegistry<Supplier<ObjectTemplate<ColorSampler>>> colorSamplerRegistry = event.getPack().getOrCreateRegistry(

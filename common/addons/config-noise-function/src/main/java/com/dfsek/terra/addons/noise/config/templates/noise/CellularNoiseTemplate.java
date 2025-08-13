@@ -13,6 +13,8 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.terra.addons.noise.samplers.noise.CellularSampler;
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
 import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.noise.CellularDistanceFunction;
+import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -20,11 +22,11 @@ import com.dfsek.terra.api.noise.NoiseSampler;
 public class CellularNoiseTemplate extends NoiseTemplate<CellularSampler> {
     @Value("distance")
     @Default
-    private CellularSampler.@Meta DistanceFunction cellularDistanceFunction = CellularSampler.DistanceFunction.EuclideanSq;
+    private @Meta CellularDistanceFunction cellularDistanceFunction = CellularDistanceFunction.EuclideanSq;
 
     @Value("return")
     @Default
-    private CellularSampler.@Meta ReturnType cellularReturnType = CellularSampler.ReturnType.Distance;
+    private @Meta CellularReturnType cellularReturnType = CellularReturnType.Distance;
 
     @Value("jitter")
     @Default

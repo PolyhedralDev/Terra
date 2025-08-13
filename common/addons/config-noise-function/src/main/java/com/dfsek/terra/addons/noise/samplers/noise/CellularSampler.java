@@ -8,6 +8,8 @@
 package com.dfsek.terra.addons.noise.samplers.noise;
 
 import com.dfsek.terra.addons.noise.samplers.noise.simplex.OpenSimplex2Sampler;
+import com.dfsek.terra.api.noise.CellularDistanceFunction;
+import com.dfsek.terra.api.noise.CellularReturnType;
 import com.dfsek.terra.api.noise.NoiseSampler;
 
 
@@ -192,8 +194,8 @@ public class CellularSampler extends NoiseFunction {
         };
 
 
-    private DistanceFunction distanceFunction = DistanceFunction.EuclideanSq;
-    private ReturnType returnType = ReturnType.Distance;
+    private CellularDistanceFunction distanceFunction = CellularDistanceFunction.EuclideanSq;
+    private CellularReturnType returnType = CellularReturnType.Distance;
     private double jitterModifier = 1.0;
 
     private NoiseSampler noiseLookup;
@@ -204,7 +206,7 @@ public class CellularSampler extends NoiseFunction {
         noiseLookup = new OpenSimplex2Sampler();
     }
 
-    public void setDistanceFunction(DistanceFunction distanceFunction) {
+    public void setDistanceFunction(CellularDistanceFunction distanceFunction) {
         this.distanceFunction = distanceFunction;
     }
 
@@ -216,7 +218,7 @@ public class CellularSampler extends NoiseFunction {
         this.noiseLookup = noiseLookup;
     }
 
-    public void setReturnType(ReturnType returnType) {
+    public void setReturnType(CellularReturnType returnType) {
         this.returnType = returnType;
     }
     
@@ -277,10 +279,10 @@ public class CellularSampler extends NoiseFunction {
             xPrimed += PRIME_X;
         }
 
-        if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
+        if(distanceFunction == CellularDistanceFunction.Euclidean && returnType != CellularReturnType.CellValue) {
             distance0 = Math.sqrt(distance0);
 
-            if (returnType != ReturnType.Distance) {
+            if (returnType != CellularReturnType.Distance) {
                 distance1 = Math.sqrt(distance1);
             }
         }
@@ -369,10 +371,10 @@ public class CellularSampler extends NoiseFunction {
             xPrimed += PRIME_X;
         }
 
-        if(distanceFunction == DistanceFunction.Euclidean && returnType != ReturnType.CellValue) {
+        if(distanceFunction == CellularDistanceFunction.Euclidean && returnType != CellularReturnType.CellValue) {
             distance0 = Math.sqrt(distance0);
 
-            if (returnType != ReturnType.Distance) {
+            if (returnType != CellularReturnType.Distance) {
                 distance1 = Math.sqrt(distance1);
             }
         }
@@ -394,31 +396,5 @@ public class CellularSampler extends NoiseFunction {
             case Distance3Div -> distance0 / distance2 - 1;
             case Angle -> Math.atan2(y / frequency - centerY, x / frequency - centerX);
         };
-    }
-
-    public enum DistanceFunction {
-        Euclidean,
-        EuclideanSq,
-        Manhattan,
-        Hybrid
-    }
-
-
-    public enum ReturnType {
-        CellValue,
-        Distance,
-        Distance2,
-        Distance2Add,
-        Distance2Sub,
-        Distance2Mul,
-        Distance2Div,
-        NoiseLookup,
-        LocalNoiseLookup,
-        Distance3,
-        Distance3Add,
-        Distance3Sub,
-        Distance3Mul,
-        Distance3Div,
-        Angle
     }
 }
