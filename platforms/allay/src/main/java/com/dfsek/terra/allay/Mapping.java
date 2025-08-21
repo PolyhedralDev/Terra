@@ -157,15 +157,21 @@ public final class Mapping {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     private static boolean initJeBlockDefaultProperties() {
-        try(InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("je_block_default_states.json")) {
+        try(InputStream stream = Mapping.class.getClassLoader().getResourceAsStream("je_blocks.json")) {
             if(stream == null) {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("je_block_default_states.json not found");
                 return false;
             }
 
-            Map<String, Map<String, String>> states = from(stream, new TypeToken<>() {});
-            JE_BLOCK_DEFAULT_PROPERTIES.putAll(states);
+            Map<String, List<Map<String, ?>>> data = from(stream, new TypeToken<>() {});
+            for(var entry : data.entrySet()) {
+                JE_BLOCK_DEFAULT_PROPERTIES.put(
+                    "minecraft:" + entry.getKey(),
+                    (Map<String, String>) entry.getValue().get(1)
+                );
+            }
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
@@ -244,7 +250,6 @@ public final class Mapping {
         ) {
         }
     }
-
 
     // see https://stackoverflow.com/questions/59655279/is-there-an-easy-way-to-make-gson-skip-a-field-if-theres-an-error-deserializing
     public static class IgnoreFailureTypeAdapterFactory implements TypeAdapterFactory {
