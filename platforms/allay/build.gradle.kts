@@ -15,6 +15,10 @@ val geyserMappings: Configuration by configurations.register("geyserMappings") {
     isCanBeConsumed = false
 }
 
+val mcmeta: Configuration by configurations.register("mcmeta") {
+    isCanBeConsumed = false
+}
+
 dependencies {
     shadedApi(project(":common:implementation:base"))
 
@@ -25,6 +29,8 @@ dependencies {
     geyserMappings("GeyserMC.mappings", "items", Versions.Allay.mappings, ext = "json")
     geyserMappings("GeyserMC.mappings", "biomes", Versions.Allay.mappings, ext = "json")
     geyserMappings("GeyserMC.mappings-generator", "new_generator_blocks", Versions.Allay.mappingsGenerator, ext = "json")
+
+    mcmeta("misode.mcmeta", "blocks/data", Versions.Allay.mcmeta, ext ="json")
 }
 
 tasks.processResources {
@@ -33,5 +39,8 @@ tasks.processResources {
 
         // rather jank, but whatever
         rename("(?:new_generator_)?([^-]+)-(.*)\\.json", "$1.json")
+    }
+    from(mcmeta) {
+        rename("data-(.*)\\.json", "je_blocks.json")
     }
 }
