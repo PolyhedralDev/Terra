@@ -81,7 +81,7 @@ object Versions {
     }
     
     object Allay {
-        const val api = "0.7.1"
+        const val api = "0.12.0-SNAPSHOT"
         const val gson = "2.13.1"
         
         const val mappings = "8002ed6"
