@@ -27,7 +27,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion(Versions.Bukkit.minecraft)
+        minecraftVersion(Versions.Bukkit.runPaperMinecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
 
