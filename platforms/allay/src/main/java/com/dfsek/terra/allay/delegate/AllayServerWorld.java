@@ -21,7 +21,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dimension allayDimension) implements ServerWorld {
     @Override
     public Chunk getChunkAt(int x, int z) {
-        return new AllayChunk(this, allayDimension.getChunkService().getChunk(x, z));
+        return new AllayChunk(this, allayDimension.getChunkManager().getChunk(x, z));
     }
 
     @Override

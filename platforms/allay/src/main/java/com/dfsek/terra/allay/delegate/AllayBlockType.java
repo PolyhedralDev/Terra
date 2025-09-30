@@ -1,6 +1,6 @@
 package com.dfsek.terra.allay.delegate;
 
-import org.allaymc.api.block.tag.BlockTags;
+import org.allaymc.api.block.data.BlockTags;
 import org.allaymc.api.block.type.BlockType;
 
 import com.dfsek.terra.allay.Mapping;

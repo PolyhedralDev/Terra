@@ -8,19 +8,17 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.allaymc.api.block.type.BlockState;
-import org.allaymc.api.block.type.BlockStateSafeGetter;
+import org.allaymc.api.block.type.BlockStateGetter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
-import org.allaymc.api.item.type.ItemTypeSafeGetter;
+import org.allaymc.api.item.type.ItemTypeGetter;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,11 +35,11 @@ public final class Mapping {
         .registerTypeAdapterFactory(new IgnoreFailureTypeAdapterFactory())
         .create();
 
-    private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new Object2ObjectOpenHashMap<>();
-    private static final Map<BlockState, JeBlockState> BE_BLOCK_STATE_TO_JE = new Object2ObjectOpenHashMap<>();
-    private static final Map<Integer, BlockState> JE_BLOCK_STATE_HASH_TO_BE = new Int2ObjectOpenHashMap<>();
-    private static final Map<String, ItemType<?>> JE_ITEM_ID_TO_BE = new Object2ObjectOpenHashMap<>();
-    private static final Map<String, Integer> JE_BIOME_ID_TO_BE = new Object2IntOpenHashMap<>();
+    private static final Map<String, Map<String, String>> JE_BLOCK_DEFAULT_PROPERTIES = new HashMap<>();
+    private static final Map<BlockState, JeBlockState> BE_BLOCK_STATE_TO_JE = new HashMap<>();
+    private static final Map<Integer, BlockState> JE_BLOCK_STATE_HASH_TO_BE = new HashMap<>();
+    private static final Map<String, ItemType<?>> JE_ITEM_ID_TO_BE = new HashMap<>();
+    private static final Map<String, Integer> JE_BIOME_ID_TO_BE = new HashMap<>();
 
     private static final BlockState BE_AIR_STATE = BlockTypes.AIR.getDefaultState();
 
@@ -122,7 +120,7 @@ public final class Mapping {
 
             Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {});
             mappings.forEach((javaId, mapping) -> {
-                ItemType<?> itemType = ItemTypeSafeGetter
+                ItemType<?> itemType = ItemTypeGetter
                     .name(mapping.bedrockId())
                     .meta(mapping.bedrockData())
                     .itemType();
@@ -184,7 +182,7 @@ public final class Mapping {
     }
 
     private static BlockState createBeBlockState(BlockMapping.BedrockState state) {
-        BlockStateSafeGetter.Getter getter = BlockStateSafeGetter.name("minecraft:" + state.bedrockId());
+        BlockStateGetter.Getter getter = BlockStateGetter.name("minecraft:" + state.bedrockId());
         if(state.state() != null) {
             convertValueType(state.state()).forEach(getter::property);
         }

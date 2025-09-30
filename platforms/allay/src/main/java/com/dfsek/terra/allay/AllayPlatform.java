@@ -3,8 +3,8 @@ package com.dfsek.terra.allay;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
+import org.allaymc.api.registry.Registries;
 import org.allaymc.api.server.Server;
-import org.allaymc.api.world.biome.BiomeId;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -88,6 +88,6 @@ public class AllayPlatform extends AbstractPlatform {
 
     protected AllayBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
         if(!id.startsWith("minecraft:")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
-        return new AllayBiome(BiomeId.fromId(Mapping.biomeIdJeToBe(id)));
+        return new AllayBiome(Registries.BIOMES.getByK1(Mapping.biomeIdJeToBe(id)));
     }
 }
