@@ -28,7 +28,7 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.129.0+${Mod.minecraft}"
+        const val fabricAPI = "0.133.14+${Mod.minecraft}"
         const val cloud = "2.0.0-beta.11"
     }
 //
@@ -41,12 +41,12 @@ object Versions {
         const val mixin = "0.15.5+mixin.0.8.7"
         const val mixinExtras = "0.4.1"
         
-        const val minecraft = "1.21.8"
+        const val minecraft = "1.21.9"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.16.14"
+        const val fabricLoader = "0.17.2"
         
-        const val architecuryLoom = "1.10.431"
-        const val architecturyPlugin = "3.4.161"
+        const val architecuryLoom = "1.11.440"
+        const val architecturyPlugin = "3.4.162"
 
     }
 //
@@ -56,8 +56,8 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21.8-R0.1"
-        const val paperBuild = "$minecraft-20250717.233435-4"
+        const val minecraft = "1.21.9-rc1-R0.1"
+        const val paperBuild = "$minecraft-20250930.133904-13"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.2"
