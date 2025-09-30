@@ -18,6 +18,9 @@
 package com.dfsek.terra.bukkit.world;
 
 
+import com.dfsek.terra.bukkit.CloudCommandSender;
+
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +41,6 @@ import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.info.WorldProperties;
-import com.dfsek.terra.bukkit.BukkitCommandSender;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.BukkitPlayer;
 import com.dfsek.terra.bukkit.world.block.BukkitBlockTypeAndItem;
@@ -157,16 +159,16 @@ public final class BukkitAdapter {
         return Vector3.of(vector.getX(), vector.getY(), vector.getZ());
     }
 
-    public static CommandSender adapt(org.bukkit.command.CommandSender sender) {
-        return new BukkitCommandSender(sender);
+    public static CommandSender adapt(CommandSourceStack sender) {
+        return new CloudCommandSender(sender);
     }
 
     public static Entity adapt(org.bukkit.entity.Entity entity) {
         return new BukkitEntity(entity);
     }
 
-    public static org.bukkit.command.CommandSender adapt(CommandSender sender) {
-        return ((BukkitCommandSender) sender).getHandle();
+    public static CommandSourceStack adapt(CommandSender sender) {
+        return ((CloudCommandSender) sender).getHandle();
     }
 
     public static ServerWorld adapt(org.bukkit.World world) {
