@@ -4,10 +4,10 @@ package com.dfsek.terra.mod.mixin.generalize;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.WorldGenerationProgressListener;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.random.RandomSequencesState;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkLoadProgress;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.level.ServerWorldProperties;
@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
 public abstract class ServerWorldMixin extends World {
     public ServerWorldMixin(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties,
                             RegistryKey<World> worldKey, DimensionOptions dimensionOptions,
-                            WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed,
+                            ChunkLoadProgress chunkLoadProgress, boolean debugWorld, long seed,
                             List<SpecialSpawner> spawners, boolean shouldTickTime, @Nullable RandomSequencesState randomSequencesState) {
         super(properties, worldKey, server.getRegistryManager(), dimensionOptions.dimensionTypeEntry(), false, debugWorld, seed,
             server.getMaxChainedNeighborUpdates());
