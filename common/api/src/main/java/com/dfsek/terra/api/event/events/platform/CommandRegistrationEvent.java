@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.event.events.platform;
 
+import org.incendo.cloud.CommandManager;
+
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.event.events.Event;
-
-import org.incendo.cloud.CommandManager;
 
 
 public class CommandRegistrationEvent implements Event {

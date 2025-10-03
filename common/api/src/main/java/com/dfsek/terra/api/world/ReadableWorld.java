@@ -1,9 +1,10 @@
 package com.dfsek.terra.api.world;
 
+import com.dfsek.seismic.type.vector.Vector3;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.vector.Vector3;
-import com.dfsek.terra.api.util.vector.Vector3Int;
 
 
 /**
@@ -29,7 +30,7 @@ public interface ReadableWorld extends World {
      * @return {@link BlockState} at coordinates.
      */
     default BlockState getBlockState(Vector3 position) {
-        return getBlockState(position.getBlockX(), position.getBlockY(), position.getBlockZ());
+        return getBlockState(position.getFloorX(), position.getFloorY(), position.getFloorZ());
     }
 
     /**
@@ -46,7 +47,7 @@ public interface ReadableWorld extends World {
     BlockEntity getBlockEntity(int x, int y, int z);
 
     default BlockEntity getBlockEntity(Vector3 position) {
-        return getBlockEntity(position.getBlockX(), position.getBlockY(), position.getBlockZ());
+        return getBlockEntity(position.getFloorX(), position.getFloorY(), position.getFloorZ());
     }
 
     default BlockEntity getBlockEntity(Vector3Int position) {

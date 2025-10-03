@@ -1,6 +1,5 @@
 package com.dfsek.terra.minestom.entity;
 
-
 import net.minestom.server.entity.EntityType;
 
 

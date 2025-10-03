@@ -8,23 +8,21 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.function.Supplier;
 
-import com.dfsek.terra.addons.biome.pipeline.api.delegate.BiomeDelegate;
-import com.dfsek.terra.addons.biome.pipeline.api.stage.Stage;
-import com.dfsek.terra.addons.biome.pipeline.config.BiomeDelegateLoader;
+import com.dfsek.terra.addons.biome.pipeline.api.Source;
+import com.dfsek.terra.addons.biome.pipeline.api.Stage;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.config.BiomePipelineTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.SamplerSourceTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.PipelineBiomeLoader;
+import com.dfsek.terra.addons.biome.pipeline.config.source.SamplerSourceTemplate;
 import com.dfsek.terra.addons.biome.pipeline.config.stage.expander.ExpanderStageTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothMutatorTemplate;
-import com.dfsek.terra.addons.biome.pipeline.source.BiomeSource;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderListStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.BorderStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceListStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.ReplaceStageTemplate;
+import com.dfsek.terra.addons.biome.pipeline.config.stage.mutator.SmoothStageTemplate;
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
@@ -41,13 +39,13 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 public class BiomePipelineAddon implements AddonInitializer {
 
-    public static final TypeKey<Supplier<ObjectTemplate<BiomeSource>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {
+    public static final TypeKey<Supplier<ObjectTemplate<Source>>> SOURCE_REGISTRY_KEY = new TypeKey<>() {
     };
+
     public static final TypeKey<Supplier<ObjectTemplate<Stage>>> STAGE_REGISTRY_KEY = new TypeKey<>() {
     };
     public static final TypeKey<Supplier<ObjectTemplate<BiomeProvider>>> PROVIDER_REGISTRY_KEY = new TypeKey<>() {
     };
-    private static final Logger logger = LoggerFactory.getLogger(BiomePipelineAddon.class);
     @Inject
     private Platform platform;
 
@@ -65,7 +63,7 @@ public class BiomePipelineAddon implements AddonInitializer {
                 providerRegistry.register(addon.key("PIPELINE"), BiomePipelineTemplate::new);
             })
             .then(event -> {
-                CheckedRegistry<Supplier<ObjectTemplate<BiomeSource>>> sourceRegistry = event.getPack().getOrCreateRegistry(
+                CheckedRegistry<Supplier<ObjectTemplate<Source>>> sourceRegistry = event.getPack().getOrCreateRegistry(
                     SOURCE_REGISTRY_KEY);
                 sourceRegistry.register(addon.key("SAMPLER"), SamplerSourceTemplate::new);
             })
@@ -73,11 +71,11 @@ public class BiomePipelineAddon implements AddonInitializer {
                 CheckedRegistry<Supplier<ObjectTemplate<Stage>>> stageRegistry = event.getPack().getOrCreateRegistry(
                     STAGE_REGISTRY_KEY);
                 stageRegistry.register(addon.key("FRACTAL_EXPAND"), ExpanderStageTemplate::new);
-                stageRegistry.register(addon.key("SMOOTH"), SmoothMutatorTemplate::new);
-                stageRegistry.register(addon.key("REPLACE"), ReplaceMutatorTemplate::new);
-                stageRegistry.register(addon.key("REPLACE_LIST"), ReplaceListMutatorTemplate::new);
-                stageRegistry.register(addon.key("BORDER"), BorderMutatorTemplate::new);
-                stageRegistry.register(addon.key("BORDER_LIST"), BorderListMutatorTemplate::new);
+                stageRegistry.register(addon.key("SMOOTH"), SmoothStageTemplate::new);
+                stageRegistry.register(addon.key("REPLACE"), ReplaceStageTemplate::new);
+                stageRegistry.register(addon.key("REPLACE_LIST"), ReplaceListStageTemplate::new);
+                stageRegistry.register(addon.key("BORDER"), BorderStageTemplate::new);
+                stageRegistry.register(addon.key("BORDER_LIST"), BorderListStageTemplate::new);
             })
             .failThrough();
         platform.getEventManager()
@@ -85,12 +83,7 @@ public class BiomePipelineAddon implements AddonInitializer {
             .register(addon, ConfigPackPostLoadEvent.class)
             .then(event -> {
                 Registry<Biome> biomeRegistry = event.getPack().getRegistry(Biome.class);
-                event.getPack().applyLoader(BiomeDelegate.class, new BiomeDelegateLoader(biomeRegistry));
+                event.getPack().applyLoader(PipelineBiome.class, new PipelineBiomeLoader(biomeRegistry));
             });
-
-        if(platform.getTerraConfig().isDebugLog())
-            logger.warn(
-                "The biome-provider-pipeline addon is deprecated and scheduled for removal in Terra 7.0. It is recommended to use the" +
-                " biome-provider-pipeline-v2 addon for future pack development instead.");
     }
 }

@@ -5,8 +5,9 @@ object Versions {
     
     object Libraries {
         const val tectonic = "4.2.1"
-        const val paralithic = "0.8.1"
+        const val paralithic = "2.0.1"
         const val strata = "1.3.2"
+        const val seismic = "2.0.4"
         
         const val cloud = "2.0.0"
         
@@ -89,6 +90,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "1_21_6-c3ccee696b"
+        const val minestom = "1_21_6-a40d7115d4"
     }
 }

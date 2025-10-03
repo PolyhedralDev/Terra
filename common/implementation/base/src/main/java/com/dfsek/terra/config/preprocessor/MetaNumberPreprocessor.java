@@ -25,14 +25,13 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.preprocessor.Result;
-
-import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.reflection.TypeKey;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
+
+import com.dfsek.terra.api.config.meta.Meta;
+import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
 public class MetaNumberPreprocessor extends MetaPreprocessor<Meta> {

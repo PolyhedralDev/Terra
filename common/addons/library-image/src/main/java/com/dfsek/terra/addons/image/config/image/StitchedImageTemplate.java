@@ -11,12 +11,10 @@ import java.io.IOException;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.image.StitchedImage;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.Loader;
 
 
 public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedConfigTemplate {
 
-    private final Loader files;
     private final ConfigPack pack;
     @Value("path-format")
     private String path;
@@ -28,8 +26,7 @@ public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedCo
     @Default
     private boolean zeroIndexed = false;
 
-    public StitchedImageTemplate(Loader files, ConfigPack pack) {
-        this.files = files;
+    public StitchedImageTemplate(ConfigPack pack) {
         this.pack = pack;
     }
 
@@ -39,7 +36,7 @@ public class StitchedImageTemplate implements ObjectTemplate<Image>, ValidatedCo
         for(int i = 0; i < rows; i++) {
             for(int j = 0; j < cols; j++) {
                 try {
-                    grid[i][j] = ImageCache.load(getFormattedPath(i, j), pack, files);
+                    grid[i][j] = ImageCache.load(getFormattedPath(i, j), pack);
                 } catch(IOException e) {
                     throw new RuntimeException(e);
                 }

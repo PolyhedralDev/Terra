@@ -104,7 +104,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, BiomeMapping> mappings = from(stream, new TypeToken<>() {});
+            Map<String, BiomeMapping> mappings = from(stream, new TypeToken<>() {
+            });
             mappings.forEach((javaId, mapping) -> JE_BIOME_ID_TO_BE.put(javaId, mapping.bedrockId()));
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
@@ -120,7 +121,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {});
+            Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {
+            });
             mappings.forEach((javaId, mapping) -> {
                 ItemType<?> itemType = ItemTypeSafeGetter
                     .name(mapping.bedrockId())
@@ -142,7 +144,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, List<BlockMapping>> root = from(stream, new TypeToken<>() {});
+            Map<String, List<BlockMapping>> root = from(stream, new TypeToken<>() {
+            });
             List<BlockMapping> mappings = root.get("mappings");
             mappings.forEach(mapping -> {
                 JeBlockState jeState = createJeBlockState(mapping.javaState());
@@ -164,7 +167,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, Map<String, String>> states = from(stream, new TypeToken<>() {});
+            Map<String, Map<String, String>> states = from(stream, new TypeToken<>() {
+            });
             JE_BLOCK_DEFAULT_PROPERTIES.putAll(states);
         } catch(IOException e) {
             throw new RuntimeException(e);

@@ -30,8 +30,8 @@ import java.lang.reflect.AnnotatedType;
 import java.util.Map;
 
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.ConstantRange;
-import com.dfsek.terra.api.util.Range;
+import com.dfsek.terra.api.util.range.ConstantRange;
+import com.dfsek.terra.api.util.range.Range;
 
 
 public class RangeLoader implements TypeLoader<Range> {

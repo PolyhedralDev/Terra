@@ -83,7 +83,8 @@ public final class BiomeUtil {
                 Objects.requireNonNullElse(vanillaBiomeProperties.getVillagerType(),
                     villagerMap.getOrDefault(vanilla.getKey().orElseThrow(), VillagerType.PLAINS)));
 
-            com.dfsek.terra.mod.util.BiomeUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(), i -> new ArrayList<>()).add(
+            com.dfsek.terra.mod.util.BiomeUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.getKey().orElseThrow().getValue(),
+                i -> new ArrayList<>()).add(
                 identifier);
         }
     }

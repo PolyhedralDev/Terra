@@ -32,7 +32,7 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeParticle
             return new BiomeParticleConfig(
                 ParticleEffectArgumentType.readParameters(new StringReader(particle),
                     RegistryWrapper.WrapperLookup.of(Stream.of(Registries.PARTICLE_TYPE))),
-            probability);
+                probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);
         }

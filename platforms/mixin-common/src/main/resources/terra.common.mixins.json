@@ -9,7 +9,7 @@
         "access.StateAccessor",
         "access.StructureAccessorAccessor",
         "access.VillagerTypeAccessor",
-        "fix.NetherFossilOptimization",
+        "generalize.ServerWorldMixin",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
         "implementations.terra.BiomeMixin",
         "implementations.terra.HandleImplementationMixin",

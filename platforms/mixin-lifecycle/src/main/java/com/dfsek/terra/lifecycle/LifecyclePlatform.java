@@ -3,12 +3,9 @@ package com.dfsek.terra.lifecycle;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-
-import com.dfsek.terra.api.util.reflection.ReflectionUtil;
-
-import net.minecraft.MinecraftVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -40,14 +37,17 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
     private static final AtomicReference<Registry<Enchantment>> ENCHANTMENT = new AtomicReference<>();
+    private static final AtomicReference<DynamicRegistryManager.Immutable> DYNAMIC_REGISTRY_MANAGER = new AtomicReference<>();
     private static MinecraftServer server;
     private int generationThreads;
 
     public LifecyclePlatform() {
-        generationThreads = getGenerationThreadsWithReflection("com.ishland.c2me.base.common.GlobalExecutors", "GLOBAL_EXECUTOR_PARALLELISM", "C2ME");
-        if (generationThreads == 0) {
+        generationThreads = getGenerationThreadsWithReflection("com.ishland.c2me.base.common.GlobalExecutors",
+            "GLOBAL_EXECUTOR_PARALLELISM", "C2ME");
+        if(generationThreads == 0) {
             generationThreads = getMoonriseGenerationThreadsWithReflection();
-        } if (generationThreads == 0) {
+        }
+        if(generationThreads == 0) {
             generationThreads = 1;
         }
         CommonPlatform.initialize(this);
@@ -66,7 +66,9 @@ public abstract class LifecyclePlatform extends ModPlatform {
         ENCHANTMENT.set(enchantmentRegistry);
     }
 
-
+    public static void setDynamicRegistryManager(DynamicRegistryManager.Immutable dynamicRegistryManager) {
+        DYNAMIC_REGISTRY_MANAGER.set(dynamicRegistryManager);
+    }
 
     @Override
     public MinecraftServer getServer() {
@@ -80,9 +82,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        getRawConfigRegistry().clear();
-        boolean succeed = getRawConfigRegistry().loadAll(this);
-
+        boolean succeed = loadConfigPacks();
 
         if(server != null) {
             LifecycleBiomeUtil.registerBiomes(server.getRegistryManager().getOrThrow(RegistryKeys.BIOME));
