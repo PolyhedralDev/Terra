@@ -10,9 +10,9 @@ package com.dfsek.terra.api.structure.feature;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntConsumer;
 
-import com.dfsek.terra.api.util.Range;
 import com.dfsek.terra.api.util.function.IntToBooleanFunction;
 import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.util.range.Range;
 
 
 /**

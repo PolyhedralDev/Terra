@@ -12,7 +12,7 @@ import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.addons.structure.structures.loot.functions.AmountFunction;
 import com.dfsek.terra.addons.structure.structures.loot.functions.DamageFunction;
@@ -85,11 +85,11 @@ public class Entry {
     /**
      * Fetches a single ItemStack from the Entry, applying all functions to it.
      *
-     * @param r The Random instance to apply functions with
+     * @param r The RandomGenerator instance to apply functions with
      *
      * @return ItemStack - The ItemStack with all functions applied.
      */
-    public ItemStack getItem(Random r) {
+    public ItemStack getItem(RandomGenerator r) {
         ItemStack item = this.item.newItemStack(1);
         for(LootFunction f : functions) {
             item = f.apply(item, r);

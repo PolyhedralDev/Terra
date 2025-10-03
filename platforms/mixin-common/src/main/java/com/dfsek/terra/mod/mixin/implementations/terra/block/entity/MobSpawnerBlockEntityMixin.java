@@ -55,7 +55,8 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
 
     public EntityType terra$getSpawnedType() {
         return (EntityType) Registries.ENTITY_TYPE.getEntry(
-            Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id").orElseThrow())).orElseThrow();
+                Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id").orElseThrow()))
+            .orElseThrow();
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {

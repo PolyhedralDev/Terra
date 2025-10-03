@@ -3,7 +3,7 @@ package com.dfsek.terra.addons.biome.pipeline.image.config.converter;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.biome.pipeline.v2.api.biome.PipelineBiome;
+import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.image.config.converter.ExactColorConverterTemplate;
 import com.dfsek.terra.addons.image.converter.mapping.ColorMapping;
 

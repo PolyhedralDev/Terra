@@ -19,10 +19,14 @@ public class SaveLoadingMixin {
                  "Ljava/util/concurrent/CompletableFuture;",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/server/DataPackContents;reload(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/CombinedDynamicRegistries;Ljava/util/List;Lnet/minecraft/resource/featuretoggle/FeatureSet;Lnet/minecraft/server/command/CommandManager$RegistrationEnvironment;ILjava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;"),
+            target = "Lnet/minecraft/server/DataPackContents;reload(Lnet/minecraft/resource/ResourceManager;" +
+                     "Lnet/minecraft/registry/CombinedDynamicRegistries;Ljava/util/List;Lnet/minecraft/resource/featuretoggle/FeatureSet;" +
+                     "Lnet/minecraft/server/command/CommandManager$RegistrationEnvironment;ILjava/util/concurrent/Executor;" +
+                     "Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;"),
         index = 1
     )
-    private static CombinedDynamicRegistries<ServerDynamicRegistryType> grabManager(CombinedDynamicRegistries<ServerDynamicRegistryType> dynamicRegistries) {
+    private static CombinedDynamicRegistries<ServerDynamicRegistryType> grabManager(
+        CombinedDynamicRegistries<ServerDynamicRegistryType> dynamicRegistries) {
         MinecraftUtil.registerFlora(dynamicRegistries.getCombinedRegistryManager().getOrThrow(RegistryKeys.BIOME));
         return dynamicRegistries;
     }

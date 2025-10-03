@@ -11,26 +11,26 @@ import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import com.dfsek.terra.addons.noise.config.DimensionApplicableSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.properties.Properties;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 @SuppressWarnings("FieldMayBeFinal")
 public class NoiseConfigPackTemplate implements ConfigTemplate, Properties {
     @Value("samplers")
     @Default
-    private @Meta Map<String, @Meta DimensionApplicableNoiseSampler> noiseBuilderMap = new LinkedHashMap<>();
+    private @Meta Map<String, @Meta DimensionApplicableSampler> noiseBuilderMap = new LinkedHashMap<>();
 
     @Value("functions")
     @Default
     private @Meta LinkedHashMap<String, @Meta FunctionTemplate> expressions = new LinkedHashMap<>();
 
-    public Map<String, DimensionApplicableNoiseSampler> getSamplers() {
+    public Map<String, DimensionApplicableSampler> getSamplers() {
         return noiseBuilderMap;
     }
 

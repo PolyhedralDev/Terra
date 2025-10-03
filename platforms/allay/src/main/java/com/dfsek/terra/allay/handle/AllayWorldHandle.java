@@ -9,6 +9,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 
+
 /**
  * @author daoge_cmd
  */
@@ -29,6 +30,7 @@ public class AllayWorldHandle implements WorldHandle {
     public @NotNull EntityType getEntity(@NotNull String id) {
         return new EntityType() {
             private final Object fakeEntityType = new Object();
+
             @Override
             public Object getHandle() {
                 return fakeEntityType;

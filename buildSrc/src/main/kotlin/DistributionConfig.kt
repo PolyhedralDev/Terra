@@ -52,7 +52,8 @@ fun Project.configureDistribution() {
                 val defaultPackUrl =
                     URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
                 downloadPack(defaultPackUrl, project)
-            } catch (_:Exception) {}
+            } catch (_: Exception) {
+            }
         }
     }
     

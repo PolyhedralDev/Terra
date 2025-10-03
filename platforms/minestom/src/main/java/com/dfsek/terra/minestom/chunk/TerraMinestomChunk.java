@@ -1,18 +1,17 @@
 package com.dfsek.terra.minestom.chunk;
 
-import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.world.ServerWorld;
-import com.dfsek.terra.api.world.chunk.Chunk;
-
-import com.dfsek.terra.minestom.block.MinestomBlockState;
-
 import net.minestom.server.instance.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.world.ServerWorld;
+import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.minestom.block.MinestomBlockState;
+
 
 public class TerraMinestomChunk implements Chunk {
-    private net.minestom.server.instance.Chunk delegate;
     private final ServerWorld world;
+    private net.minestom.server.instance.Chunk delegate;
 
     public TerraMinestomChunk(net.minestom.server.instance.Chunk delegate, ServerWorld world) {
         this.delegate = delegate;

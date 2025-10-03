@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
+
 import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
@@ -19,9 +22,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.event.events.world.generation.EntitySpawnEvent;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class EntityFunction implements Function<Void> {
@@ -45,13 +45,13 @@ public class EntityFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
         Entity entity = arguments.getWorld().spawnEntity(Vector3.of(xz.getX(), y.apply(implementationArguments, scope).doubleValue(),
                 xz.getZ())
             .mutable()
-            .add(arguments.getOrigin())
+            .add(arguments.getOrigin().toFloat())
             .add(0.5, 0, 0.5)
             .immutable(), data);
         platform.getEventManager().callEvent(new EntitySpawnEvent(entity.world().getPack(), entity));

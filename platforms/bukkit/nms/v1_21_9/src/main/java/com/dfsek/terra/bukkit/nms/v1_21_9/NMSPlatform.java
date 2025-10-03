@@ -1,34 +1,7 @@
 package com.dfsek.terra.bukkit.nms.v1_21_9;
 
 import com.dfsek.tectonic.api.TypeRegistry;
-
 import com.dfsek.tectonic.api.exception.LoadException;
-
-import com.dfsek.terra.addon.InternalAddon;
-import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
-import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.bukkit.PlatformImpl;
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.EntityTypeTemplate;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.MusicSoundTemplate;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SoundEventTemplate;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnCostConfig;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnEntryConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnSettingsTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnTypeConfig;
-
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.VillagerTypeTemplate;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
@@ -46,6 +19,25 @@ import org.bukkit.Bukkit;
 
 import java.util.List;
 import java.util.Locale;
+
+import com.dfsek.terra.addon.InternalAddon;
+import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.bukkit.PlatformImpl;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeAdditionsSoundTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeMoodSoundTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.EntityTypeTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.MusicSoundTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.SoundEventTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnCostConfig;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnEntryConfig;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnSettingsTemplate;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnTypeConfig;
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.VillagerTypeTemplate;
 
 
 public class NMSPlatform extends PlatformImpl {
@@ -74,7 +66,7 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(GrassColorModifier.class,
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
-            .registerLoader(MobCategory.class, (type, o, loader, depthTracker) ->  MobCategory.valueOf((String) o))
+            .registerLoader(MobCategory.class, (type, o, loader, depthTracker) -> MobCategory.valueOf((String) o))
             .registerLoader(AmbientParticleSettings.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)
             .registerLoader(AmbientMoodSettings.class, BiomeMoodSoundTemplate::new)

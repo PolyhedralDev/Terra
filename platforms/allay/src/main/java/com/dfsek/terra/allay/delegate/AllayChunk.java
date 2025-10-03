@@ -10,18 +10,20 @@ import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.world.ServerWorld;
 
+
 /**
  * @author daoge_cmd
  */
 public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfsek.terra.api.world.chunk.Chunk {
 
-    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
+    private static final org.allaymc.api.block.type.BlockState WATER = BlockTypes.WATER.ofState(
+        BlockPropertyTypes.LIQUID_DEPTH.createValue(0));
 
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         AllayBlockState allayBlockState = (AllayBlockState) data;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
-        if (allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
+        if(allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
             allayChunk.setBlockState(x, y, z, WATER, 1);
         }
     }

@@ -7,19 +7,17 @@ import net.minecraft.registry.Registries;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 
+import com.dfsek.terra.api.util.range.Range;
+
 
 public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
     @Value("sound")
     @Default
     private SoundEvent sound = null;
 
-    @Value("min-delay")
+    @Value("delay")
     @Default
-    private Integer minDelay = null;
-
-    @Value("max-delay")
-    @Default
-    private Integer maxDelay = null;
+    private Range delay = null;
 
     @Value("replace-current-music")
     @Default
@@ -27,10 +25,10 @@ public class MusicSoundTemplate implements ObjectTemplate<MusicSound> {
 
     @Override
     public MusicSound get() {
-        if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
+        if(sound == null || delay == null || replaceCurrentMusic == null) {
             return null;
         } else {
-            return new MusicSound(Registries.SOUND_EVENT.getEntry(sound), minDelay, maxDelay, replaceCurrentMusic);
+            return new MusicSound(Registries.SOUND_EVENT.getEntry(sound), delay.getMin(), delay.getMax(), replaceCurrentMusic);
         }
     }
 }

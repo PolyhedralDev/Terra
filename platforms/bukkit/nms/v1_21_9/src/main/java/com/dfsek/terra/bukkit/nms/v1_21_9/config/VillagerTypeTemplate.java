@@ -13,7 +13,7 @@ public class VillagerTypeTemplate implements ObjectTemplate<ResourceKey<Villager
     @Value("id")
     @Default
     private ResourceLocation id = null;
-    
+
     @Override
     public ResourceKey<VillagerType> get() {
         return ResourceKey.create(BuiltInRegistries.VILLAGER_TYPE.key(), id);

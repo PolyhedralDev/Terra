@@ -7,11 +7,11 @@
 
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+import com.dfsek.seismic.algorithms.sampler.normalizer.PosterizationNormalizer;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.normalizer.PosterizationNormalizer;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
@@ -20,7 +20,7 @@ public class PosterizationNormalizerTemplate extends NormalizerTemplate<Posteriz
     private @Meta int steps;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         return new PosterizationNormalizer(function, steps);
     }
 }

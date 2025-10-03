@@ -1,11 +1,10 @@
 package com.dfsek.terra.bukkit.nms;
 
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.bukkit.PlatformImpl;
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 
 
@@ -17,7 +16,7 @@ public interface Initializer {
         Logger logger = LoggerFactory.getLogger(Initializer.class);
 
         PlatformImpl platform = constructPlatform(plugin);
-        if (platform == null) {
+        if(platform == null) {
             logger.error("NMS bindings for version {} do not exist. Support for this version is limited.", NMS);
             logger.error("This is usually due to running Terra on an unsupported Minecraft version.");
             String bypassKey = "IKnowThereAreNoNMSBindingsFor" + NMS + "ButIWillProceedAnyway";

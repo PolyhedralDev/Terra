@@ -17,13 +17,13 @@
 
 package com.dfsek.terra.bukkit.world.block.state;
 
+import com.dfsek.seismic.type.vector.Vector3;
 import org.bukkit.block.Container;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.vector.Vector3;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
