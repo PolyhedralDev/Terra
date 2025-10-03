@@ -1,6 +1,6 @@
 object Versions {
     object Terra {
-        const val overworldConfig = "v1.5.2"
+        const val overworldConfig = "latest"
     }
     
     object Libraries {
