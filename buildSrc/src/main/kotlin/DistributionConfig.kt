@@ -49,9 +49,18 @@ fun Project.configureDistribution() {
         doFirst {
             try {
                 file("${buildDir}/resources/main/packs/").deleteRecursively()
-                val defaultPackUrl =
+                val overworldPackUrl =
                     URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/Overworld.zip")
-                downloadPack(defaultPackUrl, project)
+                val reimagENDPackUrl =
+                    URL("https://github.com/PolyhedralDev/ReimagEND/releases/download/" + Versions.Terra.reimagENDConfig + "/ReimagEND.zip")
+                val tartarusPackUrl =
+                    URL("https://github.com/PolyhedralDev/Tartarus/releases/download/" + Versions.Terra.tartarusConfig + "/Tartarus.zip")
+                val defaultPackUrl =
+                    URL("https://github.com/PolyhedralDev/DefaultMetapack/releases/download/" + Versions.Terra.defaultConfig + "/default.zip")
+                downloadPack(overworldPackUrl, project)
+                downloadPack(reimagENDPackUrl, project)
+                downloadPack(tartarusPackUrl, project)
+                downloadPack(defaultPackUrl, project, true)
             } catch (_: Exception) {
             }
         }
@@ -164,9 +173,10 @@ fun Project.configureDistribution() {
     }
 }
 
-fun downloadPack(packUrl: URL, project: Project) {
+fun downloadPack(packUrl: URL, project: Project, metapack: Boolean = false) {
     val fileName = packUrl.file.substring(packUrl.file.lastIndexOf("/"))
-    val file = File("${project.buildDir}/resources/main/packs/${fileName}")
+    val resourceType = if (metapack) "metapacks" else "packs"
+    val file = File("${project.buildDir}/resources/main/${resourceType}/${fileName}")
     file.parentFile.mkdirs()
     file.outputStream().write(packUrl.readBytes())
 }

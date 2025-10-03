@@ -1,6 +1,9 @@
 object Versions {
     object Terra {
         const val overworldConfig = "latest"
+        const val reimagENDConfig = "latest"
+        const val tartarusConfig = "latest"
+        const val defaultConfig = "latest"
     }
     
     object Libraries {
