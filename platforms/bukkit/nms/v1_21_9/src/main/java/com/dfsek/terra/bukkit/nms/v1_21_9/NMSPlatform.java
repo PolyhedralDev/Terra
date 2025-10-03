@@ -50,17 +50,6 @@ import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.EntityTypeTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.MusicSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.SoundEventTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.SpawnCostConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.SpawnEntryConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.SpawnSettingsTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.SpawnTypeConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_7.config.VillagerTypeTemplate;
 
 
 public class NMSPlatform extends PlatformImpl {
