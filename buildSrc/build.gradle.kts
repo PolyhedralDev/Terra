@@ -23,7 +23,7 @@ repositories {
 dependencies {
     //TODO Allow pulling from Versions.kt
     implementation("com.gradleup.shadow", "shadow-gradle-plugin", "8.3.6")
-
+    implementation("me.champeau.jmh", "me.champeau.jmh.gradle.plugin", "0.7.3")
     implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "2.0.0-beta.17")
     implementation("org.ow2.asm", "asm", "9.8")
     implementation("org.ow2.asm", "asm-tree", "9.8")
