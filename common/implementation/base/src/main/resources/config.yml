@@ -20,3 +20,4 @@ script:
 ignored-resources:
 #  - "addons"
 #  - "packs"
+#  - "metapacks"
