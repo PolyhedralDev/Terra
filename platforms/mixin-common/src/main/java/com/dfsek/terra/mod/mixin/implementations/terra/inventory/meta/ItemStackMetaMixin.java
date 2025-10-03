@@ -17,17 +17,21 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
-import com.dfsek.terra.api.inventory.item.Enchantment;
-import com.dfsek.terra.api.inventory.item.ItemMeta;
-
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Implements;
+import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.dfsek.terra.api.inventory.item.Enchantment;
+import com.dfsek.terra.api.inventory.item.ItemMeta;
 
 
 @Mixin(ItemStack.class)

@@ -108,11 +108,11 @@ public class CommonListener implements Listener {
 
     @EventHandler
     public void onWolfSpawn(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof Wolf wolf)) {
+        if(!(event.getEntity() instanceof Wolf wolf)) {
             return;
         }
 
-        if (!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
+        if(!WOLF_VARIANT_SPAWN_REASONS.contains(event.getSpawnReason())) {
             logger.debug("Ignoring wolf spawned with reason: " + event.getSpawnReason());
             return;
         }
@@ -122,12 +122,12 @@ public class CommonListener implements Listener {
 
     @EventHandler
     public void onChunkGenerate(ChunkLoadEvent event) {
-        if (!event.isNewChunk()) {
+        if(!event.isNewChunk()) {
             return;
         }
 
-        for (Entity entity : event.getChunk().getEntities()) {
-            if (entity instanceof Wolf wolf) {
+        for(Entity entity : event.getChunk().getEntities()) {
+            if(entity instanceof Wolf wolf) {
                 applyWolfVariant(wolf);
             }
         }

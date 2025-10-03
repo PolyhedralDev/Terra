@@ -1,9 +1,9 @@
 package com.dfsek.terra.api.registry.meta;
 
+import java.lang.reflect.Type;
+
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.util.reflection.TypeKey;
-
-import java.lang.reflect.Type;
 
 
 public interface CheckedRegistryHolder extends RegistryHolder {

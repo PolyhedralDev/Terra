@@ -3,7 +3,6 @@ package com.dfsek.terra.lifecycle;
 import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
-import net.minecraft.MinecraftVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.DynamicRegistryManager;
