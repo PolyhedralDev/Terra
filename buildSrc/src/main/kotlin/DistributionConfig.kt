@@ -50,7 +50,7 @@ fun Project.configureDistribution() {
             try {
                 file("${buildDir}/resources/main/packs/").deleteRecursively()
                 val defaultPackUrl =
-                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
+                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/Overworld.zip")
                 downloadPack(defaultPackUrl, project)
             } catch (_: Exception) {
             }
