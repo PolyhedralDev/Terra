@@ -46,12 +46,7 @@ public interface Initializer {
 
     private static PlatformImpl constructPlatform(TerraBukkitPlugin plugin) {
         try {
-            String packageVersion = NMS;
-            if (NMS.equals("v1_21_5") || NMS.equals("v1_21_6") || NMS.equals("v1_21_7")) {
-                packageVersion = "v1_21_8";
-            }
-
-            Class<?> platformClass = Class.forName(TERRA_PACKAGE + "." + packageVersion + ".NMSPlatform");
+            Class<?> platformClass = Class.forName(TERRA_PACKAGE + "." + NMS + ".NMSPlatform");
             try {
                 return (PlatformImpl) platformClass
                     .getConstructor(TerraBukkitPlugin.class)
