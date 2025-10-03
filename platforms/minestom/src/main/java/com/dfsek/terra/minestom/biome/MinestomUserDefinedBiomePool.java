@@ -1,6 +1,5 @@
 package com.dfsek.terra.minestom.biome;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 

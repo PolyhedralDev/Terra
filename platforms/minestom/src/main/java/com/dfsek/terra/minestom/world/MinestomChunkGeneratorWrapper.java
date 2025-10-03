@@ -1,7 +1,6 @@
 package com.dfsek.terra.minestom.world;
 
 import net.minestom.server.coordinate.Point;
-import net.minestom.server.instance.block.Block;
 import net.minestom.server.instance.generator.GenerationUnit;
 import net.minestom.server.instance.generator.Generator;
 import net.minestom.server.instance.generator.GeneratorImpl.AreaModifierImpl;
@@ -10,7 +9,6 @@ import net.minestom.server.instance.generator.UnitModifier;
 import net.minestom.server.instance.palette.Palette;
 import org.jetbrains.annotations.NotNull;
 
-import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -68,12 +66,12 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
             int minY = section.absoluteStart().blockY();
             for(int relativeX = 0; relativeX < 16; relativeX += 1) {
                 int absoluteX = blockX + relativeX;
-                for(int relativeZ = 0; relativeZ < 16; relativeZ  += 1) {
+                for(int relativeZ = 0; relativeZ < 16; relativeZ += 1) {
                     int absoluteZ = blockZ + relativeZ;
-                    for(int relativeY = 0; relativeY < 16; relativeY  += 1) {
+                    for(int relativeY = 0; relativeY < 16; relativeY += 1) {
                         int absoluteY = minY + relativeY;
 
-                        if (relativeX % 4 == 0 && relativeY % 4 == 0 && relativeZ % 4 == 0) {
+                        if(relativeX % 4 == 0 && relativeY % 4 == 0 && relativeZ % 4 == 0) {
                             UserDefinedBiome userDefinedBiome = biomePool.getBiome(
                                 biomeProvider.getBiome(absoluteX, absoluteY, absoluteZ, world.getSeed())
                             );

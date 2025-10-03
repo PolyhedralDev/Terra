@@ -1,9 +1,5 @@
 package com.dfsek.terra.bukkit.nms.v1_21_9;
 
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.VanillaBiomeProperties;
-
-import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
-
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderSet;
@@ -29,6 +25,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.dfsek.terra.bukkit.nms.v1_21_9.config.VanillaBiomeProperties;
 import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import com.dfsek.terra.registry.master.ConfigRegistry;

@@ -1,14 +1,14 @@
 package com.dfsek.terra.bukkit;
 
-import com.dfsek.terra.api.command.CommandSender;
-import com.dfsek.terra.api.entity.Entity;
-import com.dfsek.terra.api.entity.Player;
-import com.dfsek.terra.bukkit.world.BukkitAdapter;
-
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.ChatColor;
 
 import java.util.Optional;
+
+import com.dfsek.terra.api.command.CommandSender;
+import com.dfsek.terra.api.entity.Entity;
+import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class CloudCommandSender implements CommandSender {
