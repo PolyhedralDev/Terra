@@ -4,6 +4,7 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.MinecraftVersion;
+import net.minecraft.SharedConstants;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -108,7 +109,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
         super.platformAddon().forEach(addons::add);
 
-        String mcVersion = MinecraftVersion.CURRENT.name();
+        String mcVersion = SharedConstants.getGameVersion().name();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
         } catch(ParseException e) {
