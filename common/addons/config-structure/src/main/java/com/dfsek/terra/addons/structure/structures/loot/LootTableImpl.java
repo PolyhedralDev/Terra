@@ -14,7 +14,7 @@ import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.inventory.Inventory;
@@ -44,7 +44,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
     }
 
     @Override
-    public void fillInventory(Inventory i, Random r) {
+    public void fillInventory(Inventory i, RandomGenerator r) {
         List<ItemStack> loot = getLoot(r);
         for(ItemStack stack : loot) {
             int attempts = 0;
@@ -70,7 +70,7 @@ public class LootTableImpl implements com.dfsek.terra.api.structure.LootTable {
     }
 
     @Override
-    public List<ItemStack> getLoot(Random r) {
+    public List<ItemStack> getLoot(RandomGenerator r) {
         List<ItemStack> itemList = new ArrayList<>();
         for(Pool pool : pools) {
             itemList.addAll(pool.getItems(r));

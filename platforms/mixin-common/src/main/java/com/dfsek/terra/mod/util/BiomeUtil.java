@@ -5,6 +5,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Builder;
 import net.minecraft.world.biome.BiomeEffects;
+import net.minecraft.world.biome.GenerationSettings;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +16,6 @@ import java.util.Objects;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
 import com.dfsek.terra.mod.mixin.access.BiomeAccessor;
-import com.dfsek.terra.mod.mixin.invoke.BiomeInvoker;
-
-import net.minecraft.world.biome.GenerationSettings;
 
 
 public class BiomeUtil {

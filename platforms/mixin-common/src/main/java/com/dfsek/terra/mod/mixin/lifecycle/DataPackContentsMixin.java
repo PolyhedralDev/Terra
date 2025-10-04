@@ -17,16 +17,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.dfsek.terra.mod.util.MinecraftUtil;
-import com.dfsek.terra.mod.util.TagUtil;
-
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+
+import com.dfsek.terra.mod.util.MinecraftUtil;
+import com.dfsek.terra.mod.util.TagUtil;
 
 
 @Mixin(DataPackContents.class)
@@ -38,7 +36,11 @@ public class DataPackContentsMixin {
     /*
      * #refresh populates all tags in the registries
      */
-    @Inject(method = "reload(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/CombinedDynamicRegistries;Ljava/util/List;Lnet/minecraft/resource/featuretoggle/FeatureSet;Lnet/minecraft/server/command/CommandManager$RegistrationEnvironment;ILjava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;", at = @At("RETURN"))
+    @Inject(method = "reload(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/CombinedDynamicRegistries;Ljava/util/List;" +
+                     "Lnet/minecraft/resource/featuretoggle/FeatureSet;" +
+                     "Lnet/minecraft/server/command/CommandManager$RegistrationEnvironment;ILjava/util/concurrent/Executor;" +
+                     "Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;",
+            at = @At("RETURN"))
     private static void injectReload(ResourceManager resourceManager,
                                      CombinedDynamicRegistries<ServerDynamicRegistryType> dynamicRegistries,
                                      List<PendingTagLoad<?>> pendingTagLoads, FeatureSet enabledFeatures,

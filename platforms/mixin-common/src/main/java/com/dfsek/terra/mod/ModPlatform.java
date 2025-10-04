@@ -20,15 +20,14 @@ import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
 import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.SpawnSettings.SpawnEntry;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.WorldPreset;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.BiConsumer;
 
 import com.dfsek.terra.AbstractPlatform;
@@ -60,8 +59,16 @@ public abstract class ModPlatform extends AbstractPlatform {
     public abstract MinecraftServer getServer();
 
     public void registerWorldTypes(BiConsumer<Identifier, WorldPreset> registerFunction) {
+        HashSet<String> configPacksInMetaPack = new HashSet<>();
+        getRawMetaConfigRegistry().forEach(pack -> {
+            PresetUtil.createMetaPackPreset(pack, this, false).apply(registerFunction);
+            pack.packs().forEach((k, v) -> configPacksInMetaPack.add(v.getID()));
+        });
         getRawConfigRegistry()
-            .forEach(pack -> PresetUtil.createDefault(pack, this).apply(registerFunction));
+            .forEach(pack -> {
+                boolean packInMetapack = configPacksInMetaPack.contains(pack.getID());
+                PresetUtil.createDefault(pack, this, packInMetapack, packInMetapack).apply(registerFunction);
+            });
     }
 
     @Override
@@ -74,14 +81,11 @@ public abstract class ModPlatform extends AbstractPlatform {
                     throw new LoadException("Invalid identifier: " + o, depthTracker);
                 return identifier;
             })
-            .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase(
-                Locale.ROOT)))
+            .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase()))
             .registerLoader(GrassColorModifier.class,
-                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                    Locale.ROOT)))
-            .registerLoader(GrassColorModifier.class,
-                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
-                    Locale.ROOT)))
+                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase()))
+            .registerLoader(TemperatureModifier.class,
+                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
             .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
             .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)

@@ -1,9 +1,9 @@
 package com.dfsek.terra.minestom.block;
 
+import net.minestom.server.instance.block.Block;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
-
-import net.minestom.server.instance.block.Block;
 
 
 public class MinestomBlockType implements BlockType {
@@ -41,7 +41,7 @@ public class MinestomBlockType implements BlockType {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof MinestomBlockType other) {
-            return block.id() == other.block.id();
+            return block.stateId() == other.block.stateId();
         }
         return false;
     }

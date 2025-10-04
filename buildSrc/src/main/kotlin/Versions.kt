@@ -1,12 +1,16 @@
 object Versions {
     object Terra {
-        const val overworldConfig = "v1.5.2"
+        const val overworldConfig = "latest"
+        const val reimagENDConfig = "latest"
+        const val tartarusConfig = "latest"
+        const val defaultConfig = "latest"
     }
     
     object Libraries {
         const val tectonic = "4.2.1"
-        const val paralithic = "0.8.1"
+        const val paralithic = "2.0.1"
         const val strata = "1.3.2"
+        const val seismic = "2.0.4"
         
         const val cloud = "2.0.0"
         
@@ -28,7 +32,7 @@ object Versions {
     }
     
     object Fabric {
-        const val fabricAPI = "0.129.0+${Mod.minecraft}"
+        const val fabricAPI = "0.133.14+${Mod.minecraft}"
         const val cloud = "2.0.0-beta.11"
     }
 //
@@ -41,12 +45,12 @@ object Versions {
         const val mixin = "0.15.5+mixin.0.8.7"
         const val mixinExtras = "0.4.1"
         
-        const val minecraft = "1.21.8"
+        const val minecraft = "1.21.9"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.16.14"
+        const val fabricLoader = "0.17.2"
         
-        const val architecuryLoom = "1.10.431"
-        const val architecturyPlugin = "3.4.161"
+        const val architecuryLoom = "1.11.440"
+        const val architecturyPlugin = "3.4.162"
 
     }
 //
@@ -56,13 +60,14 @@ object Versions {
 //    }
     
     object Bukkit {
-        const val minecraft = "1.21.8-R0.1"
-        const val paperBuild = "$minecraft-20250717.233435-4"
+        const val minecraft = "1.21.9-rc1-R0.1"
+        const val paperBuild = "$minecraft-20250930.133904-13"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.2"
         const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"
+        const val runPaperMinecraft = "1.21.9"
         const val paperWeight = "2.0.0-beta.17"
         const val cloud = "2.0.0-beta.11"
         const val multiverse = "5.0.2"
@@ -91,6 +96,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "1_21_6-c3ccee696b"
+        const val minestom = "1_21_6-a40d7115d4"
     }
 }

@@ -7,15 +7,16 @@
 
 package com.dfsek.terra.addons.terrascript.script.functions;
 
+import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
+import com.dfsek.seismic.type.vector.Vector2;
+import com.dfsek.seismic.type.vector.Vector3;
+
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.util.RotationUtil;
-import com.dfsek.terra.api.util.vector.Vector2;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 public class SetMarkFunction implements Function<Void> {
@@ -34,14 +35,14 @@ public class SetMarkFunction implements Function<Void> {
     @Override
     public Void apply(ImplementationArguments implementationArguments, Scope scope) {
         TerraImplementationArguments arguments = (TerraImplementationArguments) implementationArguments;
-        Vector2 xz = RotationUtil.rotateVector(Vector2.of(x.apply(implementationArguments, scope).doubleValue(),
-            z.apply(implementationArguments, scope).doubleValue()), arguments.getRotation());
+        Vector2 xz = Vector2.Mutable.of(x.apply(implementationArguments, scope).doubleValue(),
+            z.apply(implementationArguments, scope).doubleValue()).rotate(arguments.getRotation());
 
 
-        arguments.setMark(Vector3.of((int) Math.floor(xz.getX()),
-                (int) Math.floor(
+        arguments.setMark(Vector3.of(FloatingPointFunctions.floor(xz.getX()),
+                FloatingPointFunctions.floor(
                     y.apply(implementationArguments, scope).doubleValue()),
-                (int) Math.floor(xz.getZ())).mutable().add(arguments.getOrigin()).immutable(),
+                FloatingPointFunctions.floor(xz.getZ())).mutable().add(arguments.getOrigin().toFloat()).immutable(),
             mark.apply(implementationArguments, scope));
         return null;
     }

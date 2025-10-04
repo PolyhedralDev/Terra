@@ -31,6 +31,7 @@ import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.VanillaBiomeProperties;
+import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 
 public abstract class MinecraftAddon implements BaseAddon {
@@ -44,6 +45,12 @@ public abstract class MinecraftAddon implements BaseAddon {
 
     @Override
     public void initialize() {
+        modPlatform.getEventManager()
+            .getHandler(FunctionalEventHandler.class)
+            .register(this, ConfigPackPostLoadEvent.class)
+            .then(event -> event.getPack().getContext().put(event.loadTemplate(new VanillaWorldProperties())))
+            .priority(100)
+            .global();
         modPlatform.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPreLoadEvent.class)

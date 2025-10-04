@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Collections;
+import java.util.List;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.PluginConfig;
@@ -71,9 +73,9 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Default
     private int providerCache = 32;
 
-    @Value("dump-default")
+    @Value("ignored-resources")
     @Default
-    private boolean dumpDefaultData = true;
+    private List<String> ignoredResources = Collections.emptyList();
 
     @Value("script.max-recursion")
     @Default
@@ -97,11 +99,6 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
             logger.info("Script debug blocks enabled.");
         if(debugLog)
             logger.info("Debug logging enabled.");
-    }
-
-    @Override
-    public boolean dumpDefaultConfig() {
-        return dumpDefaultData;
     }
 
     @Override
@@ -137,6 +134,11 @@ public class PluginConfigImpl implements ConfigTemplate, PluginConfig {
     @Override
     public int getSamplerCache() {
         return samplerCache;
+    }
+
+    @Override
+    public List<String> getIgnoredResources() {
+        return ignoredResources;
     }
 
     @Override

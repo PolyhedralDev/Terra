@@ -70,6 +70,7 @@ public class TerraAllayPlugin extends Plugin {
 
     @EventHandler
     private void onWorldUnload(WorldUnloadEvent event) {
-        AllayPlatform.GENERATOR_WRAPPERS.removeIf(wrapper -> wrapper.getAllayWorldGenerator().getDimension().getWorld() == event.getWorld());
+        AllayPlatform.GENERATOR_WRAPPERS.removeIf(
+            wrapper -> wrapper.getAllayWorldGenerator().getDimension().getWorld() == event.getWorld());
     }
 }

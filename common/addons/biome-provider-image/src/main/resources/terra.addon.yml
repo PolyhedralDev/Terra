@@ -10,3 +10,5 @@ website:
   source: https://github.com/PolyhedralDev/Terra
   docs: https://terra.polydev.org
 license: MIT License
+depends:
+  library-image: "1.+"

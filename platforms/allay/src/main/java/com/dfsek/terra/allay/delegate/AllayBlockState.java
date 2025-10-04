@@ -7,6 +7,7 @@ import com.dfsek.terra.allay.JeBlockState;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.properties.Property;
 
+
 /**
  * @author daoge_cmd
  */
@@ -68,7 +69,7 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
 
     public BlockState allayBlockState() { return allayBlockState; }
 
-    public boolean containsWater() { return containsWater; }
+    public boolean containsWater()      { return containsWater; }
 
     public JeBlockState jeBlockState()  { return jeBlockState; }
 }

@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.palette;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Final;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -16,14 +17,13 @@ import java.util.List;
 import com.dfsek.terra.addons.palette.palette.PaletteLayerHolder;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 public class PaletteTemplate implements AbstractableTemplate {
     @Value("sampler")
     @Default
-    private @Meta NoiseSampler defaultSampler = NoiseSampler.zero();
+    private @Meta Sampler defaultSampler = Sampler.zero();
 
     @Value("id")
     @Final
@@ -40,7 +40,7 @@ public class PaletteTemplate implements AbstractableTemplate {
         return palette;
     }
 
-    public NoiseSampler getDefaultSampler() {
+    public Sampler getDefaultSampler() {
         return defaultSampler;
     }
 }
