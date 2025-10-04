@@ -1,6 +1,6 @@
 package com.dfsek.terra.allay;
 
-import org.allaymc.api.utils.HashUtils;
+import org.allaymc.api.utils.hash.HashUtils;
 
 import java.util.Map;
 import java.util.TreeMap;
