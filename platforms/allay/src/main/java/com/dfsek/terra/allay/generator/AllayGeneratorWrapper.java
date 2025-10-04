@@ -152,11 +152,6 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             }
             return true;
         }
-
-        @Override
-        public String getName() {
-            return "TERRA_NOISER";
-        }
     }
 
 
@@ -173,11 +168,6 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
                 TerraAllayPlugin.INSTANCE.getPluginLogger().error("Error while populating chunk", e);
             }
             return true;
-        }
-
-        @Override
-        public String getName() {
-            return "TERRA_POPULATOR";
         }
     }
 }
