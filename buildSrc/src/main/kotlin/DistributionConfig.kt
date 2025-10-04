@@ -49,6 +49,7 @@ fun Project.configureDistribution() {
         doFirst {
             try {
                 file("${buildDir}/resources/main/packs/").deleteRecursively()
+                file("${buildDir}/resources/main/metapacks/").deleteRecursively()
                 val overworldPackUrl =
                     URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/Overworld.zip")
                 val reimagENDPackUrl =
@@ -104,6 +105,13 @@ fun Project.configureDistribution() {
             packsDir.walkTopDown().forEach {
                 if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
                 resources.computeIfAbsent("packs") { ArrayList() }.add(it.name)
+            }
+            
+            val metaPacksDir = File("${project.buildDir}/resources/main/metapacks/")
+            
+            metaPacksDir.walkTopDown().forEach {
+                if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
+                resources.computeIfAbsent("metappacks") { ArrayList() }.add(it.name)
             }
             
             val langDir = File("${project(":common:implementation").buildDir}/resources/main/lang/")
