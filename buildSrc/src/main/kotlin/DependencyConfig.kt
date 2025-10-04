@@ -57,9 +57,6 @@ fun Project.configureDependencies() {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "Sonatype Snapshots"
         }
-        maven("https://storehouse.okaeri.eu/repository/maven-public/") {
-            name = "Okaeri"
-        }
         maven("https://repo.onarandombox.com/multiverse-releases") {
             name = "onarandombox"
         }
