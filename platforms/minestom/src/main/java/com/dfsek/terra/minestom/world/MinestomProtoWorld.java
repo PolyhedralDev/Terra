@@ -1,5 +1,8 @@
 package com.dfsek.terra.minestom.world;
 
+import net.minestom.server.instance.block.Block;
+import net.minestom.server.instance.block.Block.Setter;
+
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
@@ -11,11 +14,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.minestom.chunk.CachedChunk;
 import com.dfsek.terra.minestom.chunk.GeneratedChunkCache;
-
 import com.dfsek.terra.minestom.entity.DeferredMinestomEntity;
-
-import net.minestom.server.instance.block.Block;
-import net.minestom.server.instance.block.Block.Setter;
 
 
 public class MinestomProtoWorld implements ProtoWorld {
@@ -51,6 +50,10 @@ public class MinestomProtoWorld implements ProtoWorld {
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         modifier.setBlock(x, y, z, (Block) data.getHandle());
+        int chunkX = x >> 4;
+        int chunkZ = z >> 4;
+        CachedChunk chunk = cache.at(chunkX, chunkZ);
+        chunk.setBlock(x & 15, y, z & 15, data);
     }
 
     @Override

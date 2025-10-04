@@ -1,5 +1,6 @@
 package com.dfsek.terra.addons.generation.feature.config;
 
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.ValidatedConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
@@ -8,7 +9,6 @@ import com.dfsek.tectonic.api.exception.ValidationException;
 
 import com.dfsek.terra.addons.generation.feature.FeatureGenerationStage;
 import com.dfsek.terra.api.Platform;
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.properties.PropertyKey;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 
@@ -25,14 +25,14 @@ public class FeatureStageTemplate implements ObjectTemplate<GenerationStage>, Va
 
     @Value("blend.sampler")
     @Default
-    private NoiseSampler blendSampler = new NoiseSampler() {
+    private Sampler blendSampler = new Sampler() {
         @Override
-        public double noise(long seed, double x, double y) {
+        public double getSample(long seed, double x, double y) {
             return 0;
         }
 
         @Override
-        public double noise(long seed, double x, double y, double z) {
+        public double getSample(long seed, double x, double y, double z) {
             return 0;
         }
     };

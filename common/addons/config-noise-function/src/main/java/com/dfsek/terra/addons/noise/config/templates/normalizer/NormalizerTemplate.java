@@ -7,15 +7,15 @@
 
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+import com.dfsek.seismic.algorithms.sampler.normalizer.Normalizer;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
 import com.dfsek.terra.addons.noise.config.templates.SamplerTemplate;
-import com.dfsek.terra.addons.noise.normalizer.Normalizer;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public abstract class NormalizerTemplate<T extends Normalizer> extends SamplerTemplate<T> {
     @Value("sampler")
-    protected @Meta NoiseSampler function;
+    protected @Meta Sampler function;
 }

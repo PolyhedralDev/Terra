@@ -1,13 +1,14 @@
 package com.dfsek.terra.addons.ore.ores;
 
+import com.dfsek.seismic.type.Rotation;
+import com.dfsek.seismic.type.vector.Vector3Int;
+
 import java.util.Map;
-import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.Rotation;
 import com.dfsek.terra.api.util.collection.MaterialSet;
-import com.dfsek.terra.api.util.vector.Vector3Int;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
@@ -24,7 +25,7 @@ public class VanillaScatteredOre extends VanillaOre {
     }
 
     @Override
-    public boolean generate(Vector3Int location, WritableWorld world, Random random, Rotation rotation) {
+    public boolean generate(Vector3Int location, WritableWorld world, RandomGenerator random, Rotation rotation) {
         int i = random.nextInt((int) (size + 1));
         Vector3Int.Mutable mutable = Vector3Int.zero().mutable();
 
@@ -39,7 +40,7 @@ public class VanillaScatteredOre extends VanillaOre {
         return true;
     }
 
-    private void setPos(Vector3Int.Mutable mutable, Random random, Vector3Int location, int spread) {
+    private void setPos(Vector3Int.Mutable mutable, RandomGenerator random, Vector3Int location, int spread) {
         int x = this.getSpread(random, spread);
         int y = this.getSpread(random, spread);
         int z = this.getSpread(random, spread);
@@ -48,7 +49,7 @@ public class VanillaScatteredOre extends VanillaOre {
         mutable.setZ(location.getZ() + z);
     }
 
-    private int getSpread(Random random, int spread) {
+    private int getSpread(RandomGenerator random, int spread) {
         return Math.round((random.nextFloat() - random.nextFloat()) * (float) spread);
     }
 }

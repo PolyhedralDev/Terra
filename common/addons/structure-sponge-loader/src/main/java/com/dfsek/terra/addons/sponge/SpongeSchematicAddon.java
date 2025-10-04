@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.addons.sponge;
 
+import com.dfsek.seismic.type.vector.Vector3Int;
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -16,6 +17,7 @@ import net.querz.nbt.tag.Tag;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
@@ -29,8 +31,7 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.StringUtil;
-import com.dfsek.terra.api.util.vector.Vector3Int;
+import com.dfsek.terra.api.util.FileUtil;
 
 
 public class SpongeSchematicAddon implements AddonInitializer {
@@ -58,13 +59,21 @@ public class SpongeSchematicAddon implements AddonInitializer {
             .register(addon, ConfigPackPreLoadEvent.class)
             .then(event -> {
                 CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
-                event.getPack()
-                    .getLoader()
-                    .open("", ".schem")
-                    .thenEntries(entries -> entries
+                try {
+                    FileUtil.filesWithExtension(event.getPack().getRootPath(), ".schem")
+                        .entrySet()
                         .stream()
-                        .map(entry -> convert(entry.getValue(), StringUtil.fileName(entry.getKey())))
-                        .forEach(structureRegistry::register)).close();
+                        .map(entry -> {
+                            try {
+                                return convert(Files.newInputStream(entry.getValue()), FileUtil.fileName(entry.getKey()));
+                            } catch(IOException e) {
+                                throw new RuntimeException("Failed to load config " + entry.getKey(), e);
+                            }
+                        })
+                        .forEach(structureRegistry::register);
+                } catch(IOException e) {
+                    throw new RuntimeException("Error occurred while reading config pack files", e);
+                }
             })
             .failThrough();
     }

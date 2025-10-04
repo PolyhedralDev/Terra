@@ -2,24 +2,23 @@ package com.dfsek.terra.addons.noise.paralithic;
 
 import com.dfsek.paralithic.eval.tokenizer.ParseException;
 import com.dfsek.paralithic.functions.Function;
+import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction2;
+import com.dfsek.paralithic.functions.dynamic.noise.NoiseFunction3;
+import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction2;
+import com.dfsek.paralithic.functions.dynamic.noise.SaltedNoiseFunction3;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.addons.noise.config.DimensionApplicableNoiseSampler;
+import com.dfsek.terra.addons.noise.config.DimensionApplicableSampler;
 import com.dfsek.terra.addons.noise.config.templates.FunctionTemplate;
-import com.dfsek.terra.addons.noise.paralithic.defined.UserDefinedFunction;
-import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction2;
-import com.dfsek.terra.addons.noise.paralithic.noise.NoiseFunction3;
-import com.dfsek.terra.addons.noise.paralithic.noise.SaltedNoiseFunction2;
-import com.dfsek.terra.addons.noise.paralithic.noise.SaltedNoiseFunction3;
 
 
 public class FunctionUtil {
     private FunctionUtil() { }
 
     public static Map<String, Function> convertFunctionsAndSamplers(Map<String, FunctionTemplate> functions,
-                                                                    Map<String, DimensionApplicableNoiseSampler> samplers)
+                                                                    Map<String, DimensionApplicableSampler> samplers)
     throws ParseException {
         Map<String, Function> functionMap = new HashMap<>();
         for(Map.Entry<String, FunctionTemplate> entry : functions.entrySet()) {

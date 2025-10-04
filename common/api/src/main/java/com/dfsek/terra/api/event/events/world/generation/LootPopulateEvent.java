@@ -7,6 +7,7 @@
 
 package com.dfsek.terra.api.event.events.world.generation;
 
+import com.dfsek.seismic.type.vector.Vector3;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.entity.Container;
@@ -15,7 +16,6 @@ import com.dfsek.terra.api.event.events.AbstractCancellable;
 import com.dfsek.terra.api.event.events.PackEvent;
 import com.dfsek.terra.api.structure.LootTable;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.vector.Vector3;
 
 
 /**

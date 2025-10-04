@@ -7,13 +7,15 @@
 
 package com.dfsek.terra.addons.palette.palette;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.noise.NoiseSampler;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.chunk.generation.util.Palette;
+
 
 /**
  * A class representation of a "slice" of the world.
@@ -22,15 +24,15 @@ import com.dfsek.terra.api.world.chunk.generation.util.Palette;
 public class PaletteImpl implements Palette {
     private final PaletteLayer[] layers;
 
-    public PaletteImpl(List<PaletteLayerHolder> layers, NoiseSampler defaultSampler) {
+    public PaletteImpl(List<PaletteLayerHolder> layers, Sampler defaultSampler) {
         List<PaletteLayer> layerArray = new ArrayList<>();
 
-        for (PaletteLayerHolder holder : layers) {
+        for(PaletteLayerHolder holder : layers) {
             PaletteLayer layer;
             ProbabilityCollection<BlockState> materials = holder.getLayer();
-            NoiseSampler sampler = holder.getSampler() == null ? defaultSampler : holder.getSampler();
+            Sampler sampler = holder.getSampler() == null ? defaultSampler : holder.getSampler();
             layer = new PaletteLayer(materials, sampler);
-            for (int i = 0; i < holder.getSize(); i++)
+            for(int i = 0; i < holder.getSize(); i++)
                 layerArray.add(layer);
         }
 
@@ -44,10 +46,10 @@ public class PaletteImpl implements Palette {
     }
 
     static class PaletteLayer {
-        private final NoiseSampler sampler;
+        private final Sampler sampler;
         private final ProbabilityCollection<BlockState> collection;
 
-        public PaletteLayer(ProbabilityCollection<BlockState> type, NoiseSampler sampler) {
+        public PaletteLayer(ProbabilityCollection<BlockState> type, Sampler sampler) {
             this.sampler = sampler;
             this.collection = type;
         }

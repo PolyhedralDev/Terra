@@ -16,14 +16,25 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-import com.dfsek.terra.minestom.world.TerraMinestomWorldBuilder;
 
 
 public class TerraMinestomExample {
     private static final Logger logger = LoggerFactory.getLogger(TerraMinestomExample.class);
     private final MinecraftServer server = MinecraftServer.init();
+    private final TerraMinestomPlatform platform = new TerraMinestomPlatform();
     private Instance instance;
     private TerraMinestomWorld world;
+
+    public static void main(String[] args) {
+        TerraMinestomExample example = new TerraMinestomExample();
+        example.createNewInstance();
+        example.attachTerra();
+        example.preloadWorldAndMeasure();
+        example.addScheduler();
+        example.addListeners();
+        example.addCommands();
+        example.bind();
+    }
 
     public void createNewInstance() {
         instance = MinecraftServer.getInstanceManager().createInstanceContainer();
@@ -31,7 +42,7 @@ public class TerraMinestomExample {
     }
 
     public void attachTerra() {
-        world = TerraMinestomWorldBuilder.from(instance)
+        world = platform.worldBuilder(instance)
             .defaultPack()
             .attach();
     }
@@ -102,16 +113,6 @@ public class TerraMinestomExample {
         server.start("localhost", 25565);
     }
 
-    public static void main(String[] args) {
-        TerraMinestomExample example = new TerraMinestomExample();
-        example.createNewInstance();
-        example.attachTerra();
-        example.preloadWorldAndMeasure();
-        example.addScheduler();
-        example.addListeners();
-        example.addCommands();
-        example.bind();
-    }
 
     public class RegenerateCommand extends Command {
         public RegenerateCommand() {
@@ -121,12 +122,16 @@ public class TerraMinestomExample {
 
         private void regenerate() {
             instance.sendMessage(Component.text("Regenerating world"));
+            Instance oldInstance = instance;
+            platform.reload();
             createNewInstance();
             attachTerra();
             preloadWorldAndMeasure();
             MinecraftServer.getConnectionManager().getOnlinePlayers().forEach(player ->
                 player.setInstance(instance, new Pos(0, 100, 0))
             );
+
+            MinecraftServer.getInstanceManager().unregisterInstance(oldInstance);
         }
     }
 }

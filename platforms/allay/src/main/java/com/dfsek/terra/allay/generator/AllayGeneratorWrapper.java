@@ -24,6 +24,7 @@ import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 
+
 /**
  * @author daoge_cmd
  */
@@ -86,6 +87,18 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .build();
     }
 
+    protected static ConfigPack getConfigPack(String packName) {
+        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
+        return byId.orElseGet(
+            () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
+                .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))
+        );
+    }
+
+    protected static ChunkGenerator createGenerator(ConfigPack configPack) {
+        return configPack.getGeneratorProvider().newInstance(configPack);
+    }
+
     @Override
     public ChunkGenerator getHandle() {
         return chunkGenerator;
@@ -111,6 +124,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     public WorldGenerator getAllayWorldGenerator() {
         return this.allayWorldGenerator;
     }
+
 
     protected class AllayNoiser implements Noiser {
 
@@ -140,6 +154,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         }
     }
 
+
     protected class AllayPopulator implements Populator {
 
         @Override
@@ -154,17 +169,5 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             }
             return true;
         }
-    }
-
-    protected static ConfigPack getConfigPack(String packName) {
-        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
-        return byId.orElseGet(
-            () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
-                .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))
-        );
-    }
-
-    protected static ChunkGenerator createGenerator(ConfigPack configPack) {
-        return configPack.getGeneratorProvider().newInstance(configPack);
     }
 }

@@ -2,10 +2,13 @@ package com.dfsek.terra.addons.image.config.image;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.benmanes.caffeine.cache.Scheduler;
 
 import javax.imageio.ImageIO;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import com.dfsek.terra.addons.image.config.ImageLibraryPackConfigTemplate;
@@ -13,11 +16,8 @@ import com.dfsek.terra.addons.image.image.BufferedImageWrapper;
 import com.dfsek.terra.addons.image.image.Image;
 import com.dfsek.terra.addons.image.image.SuppliedImage;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.Loader;
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.util.generic.Lazy;
-
-import com.github.benmanes.caffeine.cache.Scheduler;
 
 import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
 
@@ -26,13 +26,13 @@ import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
  * Cache prevents configs from loading the same image multiple times into memory
  */
 record ImageCache(LoadingCache<String, Image> cache) implements Properties {
-    public static Image load(String path, ConfigPack pack, Loader files) throws IOException {
+    public static Image load(String path, ConfigPack pack) throws IOException {
         ImageLibraryPackConfigTemplate config = pack.getContext().get(ImageLibraryPackConfigTemplate.class);
         ImageCache images;
         if(!pack.getContext().has(ImageCache.class)) {
             var cacheBuilder = Caffeine.newBuilder().executor(CACHE_EXECUTOR).scheduler(Scheduler.systemScheduler());
             if(config.unloadOnTimeout()) cacheBuilder.expireAfterAccess(config.getCacheTimeout(), TimeUnit.SECONDS);
-            images = new ImageCache(cacheBuilder.build(s -> loadImage(s, files)));
+            images = new ImageCache(cacheBuilder.build(s -> loadImage(s, pack.getRootPath())));
             pack.getContext().put(images);
         } else images = pack.getContext().get(ImageCache.class);
 
@@ -49,17 +49,8 @@ record ImageCache(LoadingCache<String, Image> cache) implements Properties {
         return images.cache.get(path);
     }
 
-    private static Image loadImage(String path, Loader files) throws IOException {
-        try {
-            return new BufferedImageWrapper(ImageIO.read(files.get(path)));
-        } catch(IllegalArgumentException e) {
-            throw new IllegalArgumentException("Unable to load image (image might be too large?)", e);
-        } catch(IOException e) {
-            if(e instanceof FileNotFoundException) {
-                // Rethrow using nicer message
-                throw new IOException("Unable to load image: No such file or directory: " + path, e);
-            }
-            throw new IOException("Unable to load image", e);
-        }
+    private static Image loadImage(String path, Path directory) throws IOException {
+        InputStream is = Files.newInputStream(directory.resolve(path));
+        return new BufferedImageWrapper(ImageIO.read(is));
     }
 }

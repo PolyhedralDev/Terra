@@ -1,5 +1,7 @@
 package com.dfsek.terra.addons.terrascript.sampler;
 
+import com.dfsek.seismic.type.sampler.Sampler;
+
 import java.util.function.Supplier;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.ImplementationArguments;
@@ -8,14 +10,13 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.parser.lang.functions.Function;
 import com.dfsek.terra.addons.terrascript.script.TerraImplementationArguments;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class SamplerFunction implements Function<Number> {
     private final Returnable<Number> x, y, z;
     private final Returnable<String> function;
 
-    private final java.util.function.Function<Supplier<String>, NoiseSampler> samplerFunction;
+    private final java.util.function.Function<Supplier<String>, Sampler> samplerFunction;
 
     private final boolean twoD;
     private final Position position;
@@ -24,7 +25,7 @@ public class SamplerFunction implements Function<Number> {
                            Returnable<Number> x,
                            Returnable<Number> y,
                            Returnable<Number> z,
-                           java.util.function.Function<Supplier<String>, NoiseSampler> samplerFunction,
+                           java.util.function.Function<Supplier<String>, Sampler> samplerFunction,
                            boolean twoD,
                            Position position) {
         this.x = x;
@@ -43,12 +44,12 @@ public class SamplerFunction implements Function<Number> {
 
         double z = this.z.apply(implementationArguments, scope).doubleValue();
 
-        NoiseSampler sampler = samplerFunction.apply(() -> function.apply(implementationArguments, scope));
+        Sampler sampler = samplerFunction.apply(() -> function.apply(implementationArguments, scope));
         if(twoD) {
-            return sampler.noise(arguments.getWorld().getSeed(), x, z);
+            return sampler.getSample(arguments.getWorld().getSeed(), x, z);
         } else {
             double y = this.y.apply(implementationArguments, scope).doubleValue();
-            return sampler.noise(arguments.getWorld().getSeed(), x, y, z);
+            return sampler.getSample(arguments.getWorld().getSeed(), x, y, z);
         }
     }
 

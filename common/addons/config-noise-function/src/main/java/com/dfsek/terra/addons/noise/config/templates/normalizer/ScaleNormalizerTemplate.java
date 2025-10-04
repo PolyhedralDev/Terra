@@ -1,10 +1,10 @@
 package com.dfsek.terra.addons.noise.config.templates.normalizer;
 
+import com.dfsek.seismic.algorithms.sampler.normalizer.ScaleNormalizer;
+import com.dfsek.seismic.type.sampler.Sampler;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.addons.noise.normalizer.ScaleNormalizer;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.noise.NoiseSampler;
 
 
 public class ScaleNormalizerTemplate extends NormalizerTemplate<ScaleNormalizer> {
@@ -12,7 +12,7 @@ public class ScaleNormalizerTemplate extends NormalizerTemplate<ScaleNormalizer>
     private @Meta double amplitude;
 
     @Override
-    public NoiseSampler get() {
+    public Sampler get() {
         return new ScaleNormalizer(function, amplitude);
     }
 }

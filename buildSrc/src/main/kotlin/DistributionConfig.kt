@@ -49,10 +49,21 @@ fun Project.configureDistribution() {
         doFirst {
             try {
                 file("${buildDir}/resources/main/packs/").deleteRecursively()
+                file("${buildDir}/resources/main/metapacks/").deleteRecursively()
+                val overworldPackUrl =
+                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/Overworld.zip")
+                val reimagENDPackUrl =
+                    URL("https://github.com/PolyhedralDev/ReimagEND/releases/download/" + Versions.Terra.reimagENDConfig + "/ReimagEND.zip")
+                val tartarusPackUrl =
+                    URL("https://github.com/PolyhedralDev/Tartarus/releases/download/" + Versions.Terra.tartarusConfig + "/Tartarus.zip")
                 val defaultPackUrl =
-                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/default.zip")
-                downloadPack(defaultPackUrl, project)
-            } catch (_:Exception) {}
+                    URL("https://github.com/PolyhedralDev/DefaultMetapack/releases/download/" + Versions.Terra.defaultConfig + "/default.zip")
+                downloadPack(overworldPackUrl, project)
+                downloadPack(reimagENDPackUrl, project)
+                downloadPack(tartarusPackUrl, project)
+                downloadPack(defaultPackUrl, project, true)
+            } catch (_: Exception) {
+            }
         }
     }
     
@@ -94,6 +105,13 @@ fun Project.configureDistribution() {
             packsDir.walkTopDown().forEach {
                 if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
                 resources.computeIfAbsent("packs") { ArrayList() }.add(it.name)
+            }
+            
+            val metaPacksDir = File("${project.buildDir}/resources/main/metapacks/")
+            
+            metaPacksDir.walkTopDown().forEach {
+                if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
+                resources.computeIfAbsent("metapacks") { ArrayList() }.add(it.name)
             }
             
             val langDir = File("${project(":common:implementation").buildDir}/resources/main/lang/")
@@ -163,9 +181,10 @@ fun Project.configureDistribution() {
     }
 }
 
-fun downloadPack(packUrl: URL, project: Project) {
+fun downloadPack(packUrl: URL, project: Project, metapack: Boolean = false) {
     val fileName = packUrl.file.substring(packUrl.file.lastIndexOf("/"))
-    val file = File("${project.buildDir}/resources/main/packs/${fileName}")
+    val resourceType = if (metapack) "metapacks" else "packs"
+    val file = File("${project.buildDir}/resources/main/${resourceType}/${fileName}")
     file.parentFile.mkdirs()
     file.outputStream().write(packUrl.readBytes())
 }

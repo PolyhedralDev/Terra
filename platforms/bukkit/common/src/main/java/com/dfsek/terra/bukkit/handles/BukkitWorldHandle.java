@@ -40,13 +40,6 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
-        if(data.equals("minecraft:grass")) { //TODO: remove in 7.0
-            data = "minecraft:short_grass";
-            logger.warn(
-                "Translating minecraft:grass to minecraft:short_grass. In 1.20.3 minecraft:grass was renamed to minecraft:short_grass" +
-                ". You are advised to perform this rename in your config backs as this translation will be removed in the next major " +
-                "version of Terra.");
-        }
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
             data); // somehow bukkit managed to make this not thread safe! :)
         return BukkitBlockState.newInstance(bukkitData);
