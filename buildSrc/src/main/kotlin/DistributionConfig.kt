@@ -111,7 +111,7 @@ fun Project.configureDistribution() {
             
             metaPacksDir.walkTopDown().forEach {
                 if (it.isDirectory || !it.name.endsWith(".zip")) return@forEach
-                resources.computeIfAbsent("metappacks") { ArrayList() }.add(it.name)
+                resources.computeIfAbsent("metapacks") { ArrayList() }.add(it.name)
             }
             
             val langDir = File("${project(":common:implementation").buildDir}/resources/main/lang/")
