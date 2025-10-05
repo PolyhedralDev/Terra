@@ -17,9 +17,14 @@
 
 package com.dfsek.terra.mod.handle;
 
+import com.dfsek.terra.api.block.state.BlockStateExtended;
+
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.argument.BlockArgumentParser;
+import net.minecraft.command.argument.BlockArgumentParser.BlockResult;
+import net.minecraft.command.argument.BlockStateArgument;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -41,10 +46,18 @@ public class MinecraftWorldHandle implements WorldHandle {
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
-            net.minecraft.block.BlockState state = BlockArgumentParser.block(Registries.BLOCK, data, true)
-                .blockState();
-            if(state == null) throw new IllegalArgumentException("Invalid data: " + data);
-            return (BlockState) state;
+            BlockResult blockResult = BlockArgumentParser.block(Registries.BLOCK, data, true);
+            BlockState blockState;
+            if (blockResult.nbt() != null) {
+                net.minecraft.block.BlockState state = blockResult.blockState();
+                NbtCompound nbtCompound = blockResult.nbt();
+                blockState = (BlockStateExtended) new BlockStateArgument(state, blockResult.properties().keySet(), nbtCompound);
+            } else {
+                blockState = (BlockState) blockResult.blockState();
+            }
+
+            if(blockState == null) throw new IllegalArgumentException("Invalid data: " + data);
+            return blockState;
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException(e);
         }

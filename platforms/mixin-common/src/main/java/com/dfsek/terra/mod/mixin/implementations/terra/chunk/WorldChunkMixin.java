@@ -17,8 +17,12 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
+import net.minecraft.command.argument.BlockStateArgument;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.command.SetBlockCommand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.world.gen.feature.EndGatewayFeature;
 import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,23 +52,29 @@ public abstract class WorldChunkMixin {
     @Nullable
     public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags);
 
+    @SuppressWarnings("ConstantValue")
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
-        setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        if (isExtended) {
+            ((BlockStateArgument) data).setBlockState((net.minecraft.server.world.ServerWorld) world, blockPos, 0);
+        } else {
+            setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+        }
+
         if(physics) {
-            net.minecraft.block.BlockState state = ((net.minecraft.block.BlockState) data);
+            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
             if(state.isLiquid()) {
                 world.getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
             } else {
                 world.getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
             }
-
         }
     }
 
-    public void terra$setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        ((net.minecraft.world.chunk.Chunk) (Object) this).setBlockState(new BlockPos(x, y, z), (net.minecraft.block.BlockState) blockState,
-            0);
+    @SuppressWarnings("ConstantValue")
+    public void terra$setBlock(int x, int y, int z, @NotNull BlockState data) {
+        terra$setBlock(x, y, z, data, false);
     }
 
     @Intrinsic

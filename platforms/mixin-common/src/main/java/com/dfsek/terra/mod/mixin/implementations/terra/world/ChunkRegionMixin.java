@@ -17,7 +17,9 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.FluidBlock;
+import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.collection.BoundedRegionArray;
@@ -73,6 +75,10 @@ public abstract class ChunkRegionMixin {
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;
 
+    @Shadow
+    @Final
+    private MultiTickScheduler<Block> blockTickScheduler;
+
 
     @Inject(at = @At("RETURN"),
             method = "<init>(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/util/collection/BoundedRegionArray;" +
@@ -85,12 +91,22 @@ public abstract class ChunkRegionMixin {
 
     @Intrinsic(displace = true)
     public void terraWorld$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        BlockPos pos = new BlockPos(x, y, z);
-        ((ChunkRegion) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data, physics ? 3 : 1042);
-        if(physics && ((net.minecraft.block.BlockState) data).getBlock() instanceof FluidBlock) {
-            fluidTickScheduler.scheduleTick(
-                OrderedTick.create((((FluidBlockInvoker) ((net.minecraft.block.BlockState) data).getBlock())).invokeGetFluidState(
-                    (net.minecraft.block.BlockState) data).getFluid(), pos));
+        BlockPos blockPos = new BlockPos(x, y, z);
+        int flags = physics ? 3 : 1042;
+        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        if (isExtended) {
+            ((BlockStateArgument) data).setBlockState(world, blockPos, flags);
+        } else {
+            ((ChunkRegion) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
+        }
+
+        if(physics) {
+            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
+            if(state.isLiquid()) {
+                fluidTickScheduler.scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
+            } else {
+                blockTickScheduler.scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
+            }
         }
     }
 
