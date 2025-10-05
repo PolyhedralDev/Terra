@@ -17,8 +17,20 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
+import com.dfsek.seismic.math.coord.CoordFunctions;
+import net.minecraft.block.Block;
+import net.minecraft.command.argument.BlockStateArgument;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.WorldProperties;
+import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.tick.MultiTickScheduler;
+import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
@@ -38,9 +50,36 @@ public abstract class ChunkRegionMixin {
     @Final
     private net.minecraft.world.chunk.Chunk centerPos;
 
-    public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState blockState, boolean physics) {
-        ((ChunkRegion) (Object) this).setBlockState(new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)),
-            (net.minecraft.block.BlockState) blockState, 0);
+    @Shadow
+    @Final
+    private ServerWorld world;
+
+    @Shadow
+    @Final
+    private MultiTickScheduler<Block> blockTickScheduler;
+
+    @Shadow
+    @Final
+    private MultiTickScheduler<Fluid> fluidTickScheduler;
+
+    public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState data, boolean physics) {
+        ChunkPos pos = centerPos.getPos();
+        BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x, x), y, CoordFunctions.chunkAndRelativeToAbsolute(pos.z, z));
+        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        if (isExtended) {
+            ((BlockStateArgument) data).setBlockState(world, blockPos, 0);
+        } else {
+            ((ChunkRegion) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+        }
+
+        if(physics) {
+            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
+            if(state.isLiquid()) {
+                fluidTickScheduler.scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
+            } else {
+                blockTickScheduler.scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
+            }
+        }
     }
 
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {

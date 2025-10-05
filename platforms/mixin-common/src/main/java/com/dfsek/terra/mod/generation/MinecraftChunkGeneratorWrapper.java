@@ -17,9 +17,17 @@
 
 package com.dfsek.terra.mod.generation;
 
+import com.dfsek.seismic.math.coord.CoordFunctions;
+
+import com.dfsek.terra.api.block.state.BlockStateExtended;
+
 import com.mojang.serialization.MapCodec;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.command.argument.BlockStateArgument;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -183,9 +191,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         int min = height.getBottomY();
         for(int y = height.getTopYInclusive() - 1; y >= min; y--) {
+            com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
+            BlockState blockState = (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() :  terraBlockState);
             if(heightmap
                 .getBlockPredicate()
-                .test((BlockState) delegate.getBlock(properties, x, y, z, biomeProvider))) return y + 1;
+                .test(blockState)) return y + 1;
         }
         return min;
     }
@@ -196,7 +206,9 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
         for(int y = height.getTopYInclusive() - 1; y >= height.getBottomY(); y--) {
-            array[y - height.getBottomY()] = (BlockState) delegate.getBlock(properties, x, y, z, biomeProvider);
+            com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
+            BlockState blockState = (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() :  terraBlockState);
+            array[y - height.getBottomY()] = blockState;
         }
         return new VerticalBlockSample(height.getBottomY(), array);
     }

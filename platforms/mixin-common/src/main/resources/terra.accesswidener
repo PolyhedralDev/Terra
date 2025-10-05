@@ -3,3 +3,5 @@ accessible class net/minecraft/world/biome/Biome$Weather
 accessible class net/minecraft/world/gen/WorldPresets$Registrar
 accessible field net/minecraft/world/dimension/DimensionOptionsRegistryHolder VANILLA_KEYS Ljava/util/Set;
 accessible class net/minecraft/registry/RegistryLoader$Loader
+extendable class net/minecraft/nbt/NbtElement
+accessible field net/minecraft/block/entity/BlockEntity TYPE_CODEC Lcom/mojang/serialization/Codec;

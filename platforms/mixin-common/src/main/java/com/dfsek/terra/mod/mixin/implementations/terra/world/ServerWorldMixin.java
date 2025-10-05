@@ -17,9 +17,20 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.tick.MultiTickScheduler;
+import net.minecraft.world.tick.OrderedTick;
+import net.minecraft.world.tick.WorldTickScheduler;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -38,10 +49,18 @@ import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
+import org.spongepowered.asm.mixin.Shadow;
+
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
 public abstract class ServerWorldMixin {
+    @Shadow
+    public abstract WorldTickScheduler<Block> getBlockTickScheduler();
+
+    @Shadow
+    public abstract WorldTickScheduler<Fluid> getFluidTickScheduler();
+
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null, SpawnReason.CHUNK_GENERATION);
         entity.setPos(x, y, z);
@@ -50,9 +69,22 @@ public abstract class ServerWorldMixin {
     }
 
     public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        BlockPos pos = new BlockPos(x, y, z);
-        ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(pos, (net.minecraft.block.BlockState) data,
-            physics ? 3 : 1042);
+        BlockPos blockPos = new BlockPos(x, y, z);
+        int flags = physics ? 3 : 1042;
+        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        if (isExtended) {
+            ((BlockStateArgument) data).setBlockState(((net.minecraft.server.world.ServerWorld) (Object) this), blockPos, flags);
+        } else {
+            ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
+        }
+        if(physics) {
+            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
+            if(state.isLiquid()) {
+                getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
+            } else {
+                getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
+            }
+        }
     }
 
     @Intrinsic
