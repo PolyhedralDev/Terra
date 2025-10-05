@@ -115,4 +115,12 @@ public interface BlockState extends Handle {
      * @return Whether this state is air
      */
     boolean isAir();
+
+    /**
+     * Get whether this BlockState is an extended state.
+     * Extended states are states that contain extra data not normally present in a BlockState.
+     *
+     * @return Whether this state is extended.
+     */
+    default boolean isExtended() { return false; }
 }
