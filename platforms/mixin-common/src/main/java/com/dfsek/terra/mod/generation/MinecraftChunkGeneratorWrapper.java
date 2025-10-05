@@ -141,9 +141,17 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
                 for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
                     double noise = structureWeightSampler.sample(new UnblendedNoisePos(x + xi, y, z + zi));
                     if(noise > threshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), (BlockState) delegate
-                            .getPalette(x + xi, y, z + zi, world, biomeProvider)
-                            .get(depth, x + xi, y, z + zi, world.getSeed()), 0);
+                        com.dfsek.terra.api.block.state.BlockState data = delegate.getPalette(x + xi, y, z + zi, world, biomeProvider).get(depth, x + xi, y, z + zi, world.getSeed());
+                        BlockPos blockPos = new BlockPos(x, y, z);
+                        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+                        if (isExtended) {
+                            BlockStateExtended blockStateExtended = (BlockStateExtended) data;
+
+                            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.getState();
+                            chunk.setBlockState(blockPos, blockState, 0);
+                        } else {
+                            chunk.setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+                        }
                         depth++;
                     } else if(noise < airThreshold) {
                         chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 0);
