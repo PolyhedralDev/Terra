@@ -18,20 +18,30 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
 import com.dfsek.seismic.math.coord.CoordFunctions;
+
+import com.dfsek.terra.api.block.state.BlockStateExtended;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.render.DimensionEffects.End;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.feature.EndGatewayFeature;
 import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -44,7 +54,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = Chunk.class, prefix = "terraChunk$"))
-public abstract class ChunkRegionMixin {
+public abstract class ChunkRegionMixin implements StructureWorldAccess {
 
     @Shadow
     @Final
@@ -62,14 +72,41 @@ public abstract class ChunkRegionMixin {
     @Final
     private MultiTickScheduler<Fluid> fluidTickScheduler;
 
+    @Shadow
+    public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
+
+    @Shadow
+    @Nullable
+    public abstract boolean setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags, int maxUpdateDepth);
+
+
     public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState data, boolean physics) {
         ChunkPos pos = centerPos.getPos();
         BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x, x), y, CoordFunctions.chunkAndRelativeToAbsolute(pos.z, z));
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
         if (isExtended) {
-            ((BlockStateArgument) data).setBlockState(world, blockPos, 0);
+            BlockStateArgument arg = ((BlockStateArgument) data);
+            net.minecraft.block.BlockState state = arg.getBlockState();
+            setBlockState(blockPos, state, 0, 512);
+            net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
+            BlockEntity blockEntity;
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended)data).getData());
+            if ("DUMMY".equals(nbt.getString("id", ""))) {
+                if (state.hasBlockEntity()) {
+                    blockEntity = ((BlockEntityProvider)state.getBlock()).createBlockEntity(blockPos, state);
+                } else {
+                    blockEntity = null;
+                }
+            } else {
+                blockEntity = BlockEntity.createFromNbt(blockPos, state, nbt, this.world.getRegistryManager());
+            }
+
+            if (blockEntity != null) {
+                blockEntity.setWorld(this.world);
+                chunk.setBlockEntity(blockEntity);
+            }
         } else {
-            ((ChunkRegion) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+            setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0, 512);
         }
 
         if(physics) {
