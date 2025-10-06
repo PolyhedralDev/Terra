@@ -41,7 +41,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         super(TypeKey.of(ConfigPack.class));
     }
 
-    public void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
+    public synchronized void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
         List<Exception> failedLoads = new ArrayList<>();
