@@ -50,6 +50,7 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
+import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -69,10 +70,23 @@ public abstract class ServerWorldMixin extends World {
     public abstract WorldTickScheduler<Fluid> getFluidTickScheduler();
 
 
-    public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null, SpawnReason.CHUNK_GENERATION);
-        entity.setPos(x, y, z);
-        spawnEntity(entity);
+    public Entity terra$spawnEntity(double x, double y, double z, EntityType data) {
+        boolean isExtended = data.isExtended() && data.getClass().equals(FabricEntityTypeExtended.class);
+        net.minecraft.entity.Entity entity;
+        if(isExtended) {
+            FabricEntityTypeExtended type = ((FabricEntityTypeExtended) data);
+            NbtCompound nbt = (NbtCompound) ((Object) type.getData());
+            entity = net.minecraft.entity.EntityType.loadEntityWithPassengers(nbt, this, SpawnReason.CHUNK_GENERATION, (entityx) -> {
+                entityx.refreshPositionAndAngles(x, y, z, entityx.getYaw(), entityx.getPitch());
+                return entityx;
+            });
+            spawnEntity(entity);
+        } else {
+            entity = ((net.minecraft.entity.EntityType<?>) data).create(this, SpawnReason.CHUNK_GENERATION);
+            entity.setPos(x, y, z);
+            spawnEntity(entity);
+        }
+
         return (Entity) entity;
     }
 
