@@ -5,20 +5,20 @@ import com.dfsek.terra.api.block.BlockData;
 
 public interface BlockStateExtended extends BlockState {
     /**
+     * Gets the BlockData.
+     *
+     * @return BlockData of this BlockStateExtended
+     */
+    BlockData getData();
+
+    /**
      * Sets the BlockData.
      *
      * @param data BlockData to set
      *
      * @return New BlockStateExtended with the given BlockData
      */
-     BlockStateExtended setData(BlockData data);
-
-    /**
-     * Gets the BlockData.
-     *
-     * @return BlockData of this BlockStateExtended
-     */
-    BlockData getData();
+    BlockStateExtended setData(BlockData data);
 
     /**
      * Gets the BlockState.
@@ -28,5 +28,5 @@ public interface BlockStateExtended extends BlockState {
     BlockState getState();
 
     @Override
-    default boolean isExtended() {return true;}
+    default boolean isExtended() { return true; }
 }

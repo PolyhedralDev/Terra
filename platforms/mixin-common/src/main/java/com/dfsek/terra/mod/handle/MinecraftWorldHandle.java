@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.mod.handle;
 
-import com.dfsek.terra.api.block.state.BlockStateExtended;
-
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.Blocks;
@@ -35,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 
@@ -51,10 +50,10 @@ public class MinecraftWorldHandle implements WorldHandle {
         try {
             BlockResult blockResult = BlockArgumentParser.block(Registries.BLOCK, data, true);
             BlockState blockState;
-            if (blockResult.nbt() != null) {
+            if(blockResult.nbt() != null) {
                 net.minecraft.block.BlockState state = blockResult.blockState();
                 NbtCompound nbtCompound = blockResult.nbt();
-                if (state.hasBlockEntity()) {
+                if(state.hasBlockEntity()) {
                     BlockEntity blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(new BlockPos(0, 0, 0), state);
 
                     nbtCompound.putInt("x", 0);

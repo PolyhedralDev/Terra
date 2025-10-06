@@ -102,7 +102,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, BiomeMapping> mappings = from(stream, new TypeToken<>() {});
+            Map<String, BiomeMapping> mappings = from(stream, new TypeToken<>() {
+            });
             mappings.forEach((javaId, mapping) -> JE_BIOME_ID_TO_BE.put(javaId, mapping.bedrockId()));
         } catch(IOException e) {
             TerraAllayPlugin.INSTANCE.getPluginLogger().error("Failed to load biomes mapping", e);
@@ -118,7 +119,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {});
+            Map<String, ItemMapping> mappings = from(stream, new TypeToken<>() {
+            });
             mappings.forEach((javaId, mapping) -> {
                 ItemType<?> itemType = ItemTypeGetter
                     .name(mapping.bedrockId())
@@ -140,7 +142,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, List<BlockMapping>> root = from(stream, new TypeToken<>() {});
+            Map<String, List<BlockMapping>> root = from(stream, new TypeToken<>() {
+            });
             List<BlockMapping> mappings = root.get("mappings");
             mappings.forEach(mapping -> {
                 JeBlockState jeState = createJeBlockState(mapping.javaState());
@@ -163,7 +166,8 @@ public final class Mapping {
                 return false;
             }
 
-            Map<String, List<Map<String, ?>>> data = from(stream, new TypeToken<>() {});
+            Map<String, List<Map<String, ?>>> data = from(stream, new TypeToken<>() {
+            });
             for(var entry : data.entrySet()) {
                 JE_BLOCK_DEFAULT_PROPERTIES.put(
                     "minecraft:" + entry.getKey(),
@@ -248,6 +252,7 @@ public final class Mapping {
         ) {
         }
     }
+
 
     // see https://stackoverflow.com/questions/59655279/is-there-an-easy-way-to-make-gson-skip-a-field-if-theres-an-error-deserializing
     public static class IgnoreFailureTypeAdapterFactory implements TypeAdapterFactory {

@@ -30,7 +30,7 @@ dependencies {
     geyserMappings("GeyserMC.mappings", "biomes", Versions.Allay.mappings, ext = "json")
     geyserMappings("GeyserMC.mappings-generator", "new_generator_blocks", Versions.Allay.mappingsGenerator, ext = "json")
 
-    mcmeta("misode.mcmeta", "blocks/data", Versions.Allay.mcmeta, ext ="json")
+    mcmeta("misode.mcmeta", "blocks/data", Versions.Allay.mcmeta, ext = "json")
 }
 
 tasks.processResources {
