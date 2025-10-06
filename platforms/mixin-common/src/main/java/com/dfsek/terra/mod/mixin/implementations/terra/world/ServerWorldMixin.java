@@ -129,24 +129,24 @@ public abstract class ServerWorldMixin extends World {
     }
 
     public int terra$getMaxHeight() {
-        return (((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY()) +
-               ((net.minecraft.server.world.ServerWorld) (Object) this).getHeight();
+        return ((this).getBottomY()) +
+               (this).getHeight();
     }
 
     public Chunk terra$getChunkAt(int x, int z) {
-        return (Chunk) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunk(x, z);
+        return (Chunk) (this).getChunk(x, z);
     }
 
     public BlockState terra$getBlockState(int x, int y, int z) {
-        return (BlockState) ((net.minecraft.server.world.ServerWorld) (Object) this).getBlockState(new BlockPos(x, y, z));
+        return (BlockState) (this).getBlockState(new BlockPos(x, y, z));
     }
 
     public BlockEntity terra$getBlockEntity(int x, int y, int z) {
-        return MinecraftUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
+        return MinecraftUtil.createState(this, new BlockPos(x, y, z));
     }
 
     public int terra$getMinHeight() {
-        return ((net.minecraft.server.world.ServerWorld) (Object) this).getBottomY();
+        return (this).getBottomY();
     }
 
     public ChunkGenerator terra$getGenerator() {

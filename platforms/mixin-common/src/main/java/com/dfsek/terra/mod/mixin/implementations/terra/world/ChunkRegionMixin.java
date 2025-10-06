@@ -146,11 +146,11 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
     @Intrinsic(displace = true)
     public BlockState terraWorld$getBlockState(int x, int y, int z) {
         BlockPos pos = new BlockPos(x, y, z);
-        return (BlockState) ((ChunkRegion) (Object) this).getBlockState(pos);
+        return (BlockState) (this).getBlockState(pos);
     }
 
     public BlockEntity terraWorld$getBlockEntity(int x, int y, int z) {
-        return MinecraftUtil.createState((WorldAccess) this, new BlockPos(x, y, z));
+        return MinecraftUtil.createState(this, new BlockPos(x, y, z));
     }
 
     public int terraWorld$getMinHeight() {
@@ -168,7 +168,7 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
     public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world, SpawnReason.CHUNK_GENERATION);
         entity.setPos(x, y, z);
-        ((ChunkRegion) (Object) this).spawnEntity(entity);
+        spawnEntity(entity);
         return (Entity) entity;
     }
 
