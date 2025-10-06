@@ -1,6 +1,6 @@
 package com.dfsek.terra.api.block.state;
 
-import com.dfsek.terra.api.block.BlockData;
+import com.dfsek.terra.api.data.ExtendedData;
 
 
 public interface BlockStateExtended extends BlockState {
@@ -9,7 +9,7 @@ public interface BlockStateExtended extends BlockState {
      *
      * @return BlockData of this BlockStateExtended
      */
-    BlockData getData();
+    ExtendedData getData();
 
     /**
      * Sets the BlockData.
@@ -18,7 +18,7 @@ public interface BlockStateExtended extends BlockState {
      *
      * @return New BlockStateExtended with the given BlockData
      */
-    BlockStateExtended setData(BlockData data);
+    BlockStateExtended setData(ExtendedData data);
 
     /**
      * Gets the BlockState.

@@ -52,6 +52,7 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
+import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -162,10 +163,24 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
         return terra$config.getBiomeProvider();
     }
 
-    public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType entityType) {
-        net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(world, SpawnReason.CHUNK_GENERATION);
-        entity.setPos(x, y, z);
-        spawnEntity(entity);
+    @SuppressWarnings("DataFlowIssue")
+    public Entity terraWorld$spawnEntity(double x, double y, double z, EntityType data) {
+        boolean isExtended = data.isExtended() && data.getClass().equals(FabricEntityTypeExtended.class);
+        net.minecraft.entity.Entity entity;
+        if(isExtended) {
+            FabricEntityTypeExtended type = ((FabricEntityTypeExtended) data);
+            NbtCompound nbt = (NbtCompound) ((Object) type.getData());
+            entity = net.minecraft.entity.EntityType.loadEntityWithPassengers(nbt, world, SpawnReason.CHUNK_GENERATION, (entityx) -> {
+                entityx.refreshPositionAndAngles(x, y, z, entityx.getYaw(), entityx.getPitch());
+                return entityx;
+            });
+            spawnEntity(entity);
+        } else {
+            entity = ((net.minecraft.entity.EntityType<?>) data).create(world, SpawnReason.CHUNK_GENERATION);
+            entity.setPos(x, y, z);
+            spawnEntity(entity);
+        }
+
         return (Entity) entity;
     }
 

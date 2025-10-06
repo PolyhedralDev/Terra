@@ -15,10 +15,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import com.dfsek.terra.api.block.BlockData;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.block.state.properties.Property;
+import com.dfsek.terra.api.data.ExtendedData;
 
 
 @Mixin(BlockStateArgument.class)
@@ -72,19 +72,23 @@ public abstract class BlockStateArgumentMixin implements Predicate<CachedBlockPo
 
     @SuppressWarnings({ "ConstantValue", "DataFlowIssue", "EqualsBetweenInconvertibleTypes" })
     @Intrinsic
-    public BlockStateExtended terra$setData(BlockData data) {
+    public BlockStateExtended terra$setData(ExtendedData data) {
         return (BlockStateExtended) new BlockStateArgument(getBlockState(), getProperties(),
             data.getClass().equals(NbtCompound.class) ? ((NbtCompound) ((Object) data)) : null);
     }
 
     @SuppressWarnings("DataFlowIssue")
     @Intrinsic
-    public BlockData terra$getData() {
-        return ((BlockData) ((Object) data));
+    public ExtendedData terra$getData() {
+        return ((ExtendedData) ((Object) data));
     }
 
     @Intrinsic
     public com.dfsek.terra.api.block.state.BlockState terra$getState() {
         return (com.dfsek.terra.api.block.state.BlockState) getBlockState();
+    }
+
+    public Object terra$getHandle() {
+        return getBlockState();
     }
 }

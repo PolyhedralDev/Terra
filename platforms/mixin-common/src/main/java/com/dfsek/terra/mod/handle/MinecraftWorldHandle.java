@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.mod.handle;
 
+import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.Blocks;
@@ -25,7 +26,11 @@ import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.command.argument.BlockArgumentParser.BlockResult;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.StringNbtReader;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry.Reference;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +41,9 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
+
+import static net.minecraft.command.argument.BlockArgumentParser.INVALID_BLOCK_ID_EXCEPTION;
 
 
 public class MinecraftWorldHandle implements WorldHandle {
@@ -45,6 +53,7 @@ public class MinecraftWorldHandle implements WorldHandle {
 
     private static final Logger logger = LoggerFactory.getLogger(MinecraftWorldHandle.class);
 
+    @SuppressWarnings("DataFlowIssue")
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
@@ -61,8 +70,12 @@ public class MinecraftWorldHandle implements WorldHandle {
                     nbtCompound.putInt("z", 0);
 
                     nbtCompound.put("id", BlockEntity.TYPE_CODEC, blockEntity.getType());
+
+                    blockState = (BlockStateExtended) new BlockStateArgument(state, blockResult.properties().keySet(), nbtCompound);
+                } else {
+                    blockState = (BlockState) state;
                 }
-                blockState = (BlockStateExtended) new BlockStateArgument(state, blockResult.properties().keySet(), nbtCompound);
+
             } else {
                 blockState = (BlockState) blockResult.blockState();
             }
@@ -80,10 +93,39 @@ public class MinecraftWorldHandle implements WorldHandle {
     }
 
     @Override
-    public @NotNull EntityType getEntity(@NotNull String id) {
-        if(!id.contains(":")) throw new IllegalArgumentException("Invalid entity identifier " + id);
-        Identifier identifier = Identifier.tryParse(id);
-        if(identifier == null) identifier = Identifier.tryParse(id);
-        return (EntityType) Registries.ENTITY_TYPE.getEntry(identifier).orElseThrow().value();
+    public @NotNull EntityType getEntity(@NotNull String data) {
+        try {
+            Identifier identifier;
+            NbtCompound nbtData = null;
+            StringReader reader = new StringReader(data);
+
+            int i = reader.getCursor();
+
+            identifier = Identifier.fromCommandInput(reader);
+
+            net.minecraft.entity.EntityType<?> entity =
+                (net.minecraft.entity.EntityType<?>) ((Reference<?>) Registries.ENTITY_TYPE.getOptional(
+                    RegistryKey.of(RegistryKeys.ENTITY_TYPE, identifier)).orElseThrow(() -> {
+                    reader.setCursor(i);
+                    return INVALID_BLOCK_ID_EXCEPTION.createWithContext(reader, identifier.toString());
+                })).value();
+
+            if(reader.canRead() && reader.peek() == '{') {
+                nbtData = StringNbtReader.readCompoundAsArgument(reader);
+                nbtData.putString("id", entity.getRegistryEntry().registryKey().getValue().toString());
+            }
+
+            EntityType entityType;
+            if(nbtData != null) {
+                entityType = new FabricEntityTypeExtended(entity, nbtData);
+            } else {
+                entityType = (EntityType) entity;
+            }
+
+            if(identifier == null) throw new IllegalArgumentException("Invalid data: " + data);
+            return entityType;
+        } catch(CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

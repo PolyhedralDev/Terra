@@ -8,7 +8,8 @@
 package com.dfsek.terra.api.entity;
 
 import com.dfsek.terra.api.Handle;
+import com.dfsek.terra.api.data.Extendable;
 
 
-public interface EntityType extends Handle {
+public interface EntityType extends Handle, Extendable {
 }
