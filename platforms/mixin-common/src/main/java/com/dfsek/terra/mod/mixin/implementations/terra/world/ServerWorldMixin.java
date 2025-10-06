@@ -17,12 +17,8 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import com.dfsek.terra.api.block.state.BlockStateExtended;
-import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
@@ -31,22 +27,20 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
 import net.minecraft.world.tick.WorldTickScheduler;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -57,8 +51,6 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
 import com.dfsek.terra.mod.util.MinecraftUtil;
-
-import org.spongepowered.asm.mixin.Shadow;
 
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
@@ -88,16 +80,16 @@ public abstract class ServerWorldMixin extends World {
         BlockPos blockPos = new BlockPos(x, y, z);
         int flags = physics ? 3 : 1042;
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
-        if (isExtended) {
+        if(isExtended) {
             BlockStateArgument arg = ((BlockStateArgument) data);
             net.minecraft.block.BlockState state = arg.getBlockState();
             setBlockState(blockPos, state, flags);
             net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
             net.minecraft.block.entity.BlockEntity blockEntity;
-            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended)data).getData());
-            if ("DUMMY".equals(nbt.getString("id", ""))) {
-                if (state.hasBlockEntity()) {
-                    blockEntity = ((BlockEntityProvider)state.getBlock()).createBlockEntity(blockPos, state);
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
+            if("DUMMY".equals(nbt.getString("id", ""))) {
+                if(state.hasBlockEntity()) {
+                    blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(blockPos, state);
                 } else {
                     blockEntity = null;
                 }
@@ -105,7 +97,7 @@ public abstract class ServerWorldMixin extends World {
                 blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, getRegistryManager());
             }
 
-            if (blockEntity != null) {
+            if(blockEntity != null) {
                 blockEntity.setWorld(this);
                 chunk.setBlockEntity(blockEntity);
             }
@@ -114,7 +106,8 @@ public abstract class ServerWorldMixin extends World {
         }
 
         if(physics) {
-            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
+            net.minecraft.block.BlockState state =
+                isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
             if(state.isLiquid()) {
                 getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
             } else {

@@ -17,8 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk.data;
 
-import com.dfsek.terra.api.block.state.BlockStateExtended;
-
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -36,6 +34,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 
 
@@ -56,7 +55,7 @@ public abstract class ProtoChunkMixin extends Chunk {
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState data) {
         BlockPos blockPos = new BlockPos(x, y, z);
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
-        if (isExtended) {
+        if(isExtended) {
             BlockStateExtended blockStateExtended = (BlockStateExtended) data;
 
             net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.getState();

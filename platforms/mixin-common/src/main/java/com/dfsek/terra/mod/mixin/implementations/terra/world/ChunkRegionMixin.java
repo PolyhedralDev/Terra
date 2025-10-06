@@ -17,11 +17,8 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import com.dfsek.terra.api.block.state.BlockStateExtended;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.FluidBlock;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
@@ -30,7 +27,6 @@ import net.minecraft.util.collection.BoundedRegionArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkGenerationStep;
 import net.minecraft.world.tick.MultiTickScheduler;
@@ -47,6 +43,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.EntityType;
@@ -55,7 +52,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
-import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -99,16 +95,16 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
         BlockPos blockPos = new BlockPos(x, y, z);
         int flags = physics ? 3 : 1042;
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
-        if (isExtended) {
+        if(isExtended) {
             BlockStateArgument arg = ((BlockStateArgument) data);
             net.minecraft.block.BlockState state = arg.getBlockState();
             setBlockState(blockPos, state, flags);
             net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
             net.minecraft.block.entity.BlockEntity blockEntity;
-            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended)data).getData());
-            if ("DUMMY".equals(nbt.getString("id", ""))) {
-                if (state.hasBlockEntity()) {
-                    blockEntity = ((BlockEntityProvider)state.getBlock()).createBlockEntity(blockPos, state);
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
+            if("DUMMY".equals(nbt.getString("id", ""))) {
+                if(state.hasBlockEntity()) {
+                    blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(blockPos, state);
                 } else {
                     blockEntity = null;
                 }
@@ -116,7 +112,7 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
                 blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, getRegistryManager());
             }
 
-            if (blockEntity != null) {
+            if(blockEntity != null) {
                 blockEntity.setWorld(world);
                 chunk.setBlockEntity(blockEntity);
             }
@@ -125,7 +121,8 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
         }
 
         if(physics) {
-            net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
+            net.minecraft.block.BlockState state =
+                isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
             if(state.isLiquid()) {
                 getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
             } else {

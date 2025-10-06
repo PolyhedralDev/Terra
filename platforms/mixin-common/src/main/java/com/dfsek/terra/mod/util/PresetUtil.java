@@ -40,7 +40,8 @@ public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Pair<Identifier, Boolean>> PRESETS = new ArrayList<>();
 
-    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform, boolean extended, boolean packInMetapack) {
+    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform, boolean extended,
+                                                              boolean packInMetapack) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists =
@@ -55,7 +56,8 @@ public class PresetUtil {
 
         HashMap<RegistryKey<DimensionOptions>, DimensionOptions> dimensionMap = new HashMap<>();
 
-        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap, packInMetapack);
+        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap,
+            packInMetapack);
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(),
             dimensionMap);
@@ -111,7 +113,7 @@ public class PresetUtil {
         Identifier dimensionTypeID = Identifier.of("terra", pack.getID().toLowerCase(Locale.ROOT));
 
         DimensionType dimensionType;
-        if (!packInMetapack) {
+        if(!packInMetapack) {
             dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, defaultDimension, platform);
             RegistryKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(
                 dimensionTypeID);
