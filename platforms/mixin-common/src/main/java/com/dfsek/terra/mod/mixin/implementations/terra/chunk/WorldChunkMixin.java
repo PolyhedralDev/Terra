@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
+import com.dfsek.terra.api.block.state.BlockStateExtended;
+
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.SetBlockCommand;
@@ -52,12 +55,18 @@ public abstract class WorldChunkMixin {
     @Nullable
     public abstract net.minecraft.block.BlockState setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags);
 
+    @Shadow
+    protected abstract BlockEntity loadBlockEntity(BlockPos pos, NbtCompound nbt);
+
     @SuppressWarnings("ConstantValue")
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
         if (isExtended) {
-            ((BlockStateArgument) data).setBlockState((net.minecraft.server.world.ServerWorld) world, blockPos, 0);
+            BlockStateArgument arg = ((BlockStateArgument) data);
+            net.minecraft.block.BlockState state = arg.getBlockState();
+            setBlockState(blockPos, state, 0);
+            loadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended)data).getData()));
         } else {
             setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
         }

@@ -20,13 +20,16 @@ package com.dfsek.terra.mod.handle;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.argument.BlockArgumentParser;
 import net.minecraft.command.argument.BlockArgumentParser.BlockResult;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +54,15 @@ public class MinecraftWorldHandle implements WorldHandle {
             if (blockResult.nbt() != null) {
                 net.minecraft.block.BlockState state = blockResult.blockState();
                 NbtCompound nbtCompound = blockResult.nbt();
+                if (state.hasBlockEntity()) {
+                    BlockEntity blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(new BlockPos(0, 0, 0), state);
+
+                    nbtCompound.putInt("x", 0);
+                    nbtCompound.putInt("y", 0);
+                    nbtCompound.putInt("z", 0);
+
+                    nbtCompound.put("id", BlockEntity.TYPE_CODEC, blockEntity.getType());
+                }
                 blockState = (BlockStateExtended) new BlockStateArgument(state, blockResult.properties().keySet(), nbtCompound);
             } else {
                 blockState = (BlockState) blockResult.blockState();

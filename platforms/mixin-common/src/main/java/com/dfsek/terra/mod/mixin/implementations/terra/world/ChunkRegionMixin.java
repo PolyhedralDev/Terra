@@ -17,14 +17,19 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import com.dfsek.terra.api.block.state.BlockStateExtended;
+
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.BoundedRegionArray;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkGenerationStep;
@@ -56,7 +61,7 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 
 @Mixin(ChunkRegion.class)
 @Implements(@Interface(iface = ProtoWorld.class, prefix = "terraWorld$"))
-public abstract class ChunkRegionMixin {
+public abstract class ChunkRegionMixin implements StructureWorldAccess {
     private ConfigPack terra$config;
 
 
@@ -95,17 +100,36 @@ public abstract class ChunkRegionMixin {
         int flags = physics ? 3 : 1042;
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
         if (isExtended) {
-            ((BlockStateArgument) data).setBlockState(world, blockPos, flags);
+            BlockStateArgument arg = ((BlockStateArgument) data);
+            net.minecraft.block.BlockState state = arg.getBlockState();
+            setBlockState(blockPos, state, flags);
+            net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
+            net.minecraft.block.entity.BlockEntity blockEntity;
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended)data).getData());
+            if ("DUMMY".equals(nbt.getString("id", ""))) {
+                if (state.hasBlockEntity()) {
+                    blockEntity = ((BlockEntityProvider)state.getBlock()).createBlockEntity(blockPos, state);
+                } else {
+                    blockEntity = null;
+                }
+            } else {
+                blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, getRegistryManager());
+            }
+
+            if (blockEntity != null) {
+                blockEntity.setWorld(world);
+                chunk.setBlockEntity(blockEntity);
+            }
         } else {
-            ((ChunkRegion) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
+            setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
         }
 
         if(physics) {
             net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
             if(state.isLiquid()) {
-                fluidTickScheduler.scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
+                getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
             } else {
-                blockTickScheduler.scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
+                getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
             }
         }
     }

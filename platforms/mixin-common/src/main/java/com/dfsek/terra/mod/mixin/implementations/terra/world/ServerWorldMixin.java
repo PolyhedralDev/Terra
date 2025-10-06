@@ -17,16 +17,25 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
+import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.mod.mixin.invoke.FluidBlockInvoker;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.FluidBlock;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.MutableWorldProperties;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.tick.MultiTickScheduler;
 import net.minecraft.world.tick.OrderedTick;
 import net.minecraft.world.tick.WorldTickScheduler;
@@ -54,17 +63,24 @@ import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(net.minecraft.server.world.ServerWorld.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
-public abstract class ServerWorldMixin {
+public abstract class ServerWorldMixin extends World {
+    protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager,
+                               RegistryEntry<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed,
+                               int maxChainedNeighborUpdates) {
+        super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
+    }
+
     @Shadow
     public abstract WorldTickScheduler<Block> getBlockTickScheduler();
 
     @Shadow
     public abstract WorldTickScheduler<Fluid> getFluidTickScheduler();
 
+
     public Entity terra$spawnEntity(double x, double y, double z, EntityType entityType) {
         net.minecraft.entity.Entity entity = ((net.minecraft.entity.EntityType<?>) entityType).create(null, SpawnReason.CHUNK_GENERATION);
         entity.setPos(x, y, z);
-        ((net.minecraft.server.world.ServerWorld) (Object) this).spawnEntity(entity);
+        spawnEntity(entity);
         return (Entity) entity;
     }
 
@@ -73,10 +89,30 @@ public abstract class ServerWorldMixin {
         int flags = physics ? 3 : 1042;
         boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
         if (isExtended) {
-            ((BlockStateArgument) data).setBlockState(((net.minecraft.server.world.ServerWorld) (Object) this), blockPos, flags);
+            BlockStateArgument arg = ((BlockStateArgument) data);
+            net.minecraft.block.BlockState state = arg.getBlockState();
+            setBlockState(blockPos, state, flags);
+            net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
+            net.minecraft.block.entity.BlockEntity blockEntity;
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended)data).getData());
+            if ("DUMMY".equals(nbt.getString("id", ""))) {
+                if (state.hasBlockEntity()) {
+                    blockEntity = ((BlockEntityProvider)state.getBlock()).createBlockEntity(blockPos, state);
+                } else {
+                    blockEntity = null;
+                }
+            } else {
+                blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, getRegistryManager());
+            }
+
+            if (blockEntity != null) {
+                blockEntity.setWorld(this);
+                chunk.setBlockEntity(blockEntity);
+            }
         } else {
-            ((net.minecraft.server.world.ServerWorld) (Object) this).setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
+            setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
         }
+
         if(physics) {
             net.minecraft.block.BlockState state = isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
             if(state.isLiquid()) {
