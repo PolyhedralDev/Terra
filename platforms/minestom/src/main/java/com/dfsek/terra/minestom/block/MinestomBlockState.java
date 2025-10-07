@@ -13,6 +13,7 @@ import com.dfsek.terra.api.block.state.properties.Property;
 
 public class MinestomBlockState implements BlockState {
     private final Block block;
+    public static final MinestomBlockState AIR = new MinestomBlockState(Block.AIR);
 
     public MinestomBlockState(Block block) {
         if(block == null) {

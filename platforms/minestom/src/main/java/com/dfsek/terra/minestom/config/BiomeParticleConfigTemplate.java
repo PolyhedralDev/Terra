@@ -35,7 +35,8 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeEffects.
         String[] parts = particle.split("\\{");
         Particle parsedParticle = Particle.fromKey(parts[0]);
         if (parts.length > 1) {
-            LoggerFactory.getLogger(BiomeParticleConfigTemplate.class).warn("Particle {} has additional data, which will be ignored.", particle);
+            LoggerFactory.getLogger(BiomeParticleConfigTemplate.class).warn("Particle {} has additional data, particle will be ignored.", particle);
+            return null;
         }
 
         return new BiomeEffects.Particle(
