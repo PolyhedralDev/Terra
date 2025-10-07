@@ -27,13 +27,13 @@ tasks {
     }
 
     runServer {
-        minecraftVersion(Versions.Bukkit.runPaperMinecraft)
+        minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
 
         downloadPlugins {
-            modrinth("viaversion", "5.3.2")
-            modrinth("viabackwards", "5.3.2")
+            modrinth("viaversion", "5.5.0")
+            modrinth("viabackwards", "5.5.0")
         }
     }
 }

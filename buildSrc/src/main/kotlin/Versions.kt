@@ -19,10 +19,10 @@ object Versions {
         const val slf4j = "2.0.17"
 
         object Internal {
-            const val shadow = "9.2.2"
+            const val shadow = "8.3.9"
             const val apacheText = "1.14.0"
             const val apacheIO = "2.20.0"
-            const val guava = "35.5.0-jre"
+            const val guava = "33.5.0-jre"
             const val asm = "9.9"
             const val snakeYml = "2.5"
             const val jetBrainsAnnotations = "26.0.2-1"
@@ -62,7 +62,7 @@ object Versions {
     object Bukkit {
         const val minecraft = "1.21.10"
         const val nms = "$minecraft-R0.1"
-        const val paperBuild = "$nms-20251007.183616-3 "
+        const val paperBuild = "$nms-20251007.183616-3"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.3"
