@@ -6,6 +6,8 @@ import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.terra.minestom.api.BiomeFactory;
 import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
 
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
+
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
@@ -50,14 +52,14 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle;
     private final TypeLoader<PlatformBiome> biomeTypeLoader;
     private final ArrayList<BaseAddon> platformAddons = new ArrayList<>(List.of(new MinestomAddon(this)));
-    private final BiomeFactory biomeFactory;
+    private final MinestomUserDefinedBiomePool biomePool;
 
     public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader,
                                  BiomeFactory biomeFactory, BaseAddon... extraAddons) {
         this.worldHandle = worldHandle;
         this.itemHandle = itemHandle;
         this.biomeTypeLoader = biomeTypeLoader;
-        this.biomeFactory = biomeFactory;
+        this.biomePool = new MinestomUserDefinedBiomePool(biomeFactory);
         this.platformAddons.addAll(List.of(extraAddons));
         load();
         getEventManager().callEvent(new PlatformInitializationEvent());
@@ -104,11 +106,7 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
 
     public void initializeRegistry() {
         getRawConfigRegistry()
-            .forEach(pack -> {
-                pack.getBiomeProvider().getBiomes().forEach(biome -> {
-
-                });
-            });
+            .forEach(pack -> biomePool.preloadBiomes(pack, pack.getBiomeProvider().getBiomes()));
     }
 
     @Override
@@ -141,7 +139,7 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     }
 
     public TerraMinestomWorldBuilder worldBuilder(Instance instance) {
-        return new TerraMinestomWorldBuilder(this, instance, biomeFactory);
+        return new TerraMinestomWorldBuilder(this, instance, biomePool);
     }
 
     public TerraMinestomWorldBuilder worldBuilder() {

@@ -1,5 +1,7 @@
 package com.dfsek.terra.minestom.api;
 
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
+
 import net.minestom.server.instance.Instance;
 
 import java.util.Random;
@@ -8,7 +10,6 @@ import java.util.function.Function;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
@@ -21,17 +22,17 @@ import org.jspecify.annotations.NonNull;
 public class TerraMinestomWorldBuilder {
     private final TerraMinestomPlatform platform;
     private final Instance instance;
+    private final MinestomUserDefinedBiomePool biomePool;
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory;
-    private BiomeFactory biomeFactory;
 
-    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance, BiomeFactory biomeFactory) {
+    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance, MinestomUserDefinedBiomePool biomePool) {
         this.platform = platform;
         this.instance = instance;
         this.blockEntityFactory = new DefaultBlockEntityFactory(instance);
-        this.biomeFactory = biomeFactory;
+        this.biomePool = biomePool;
     }
 
     public TerraMinestomWorldBuilder pack(ConfigPack pack) {
@@ -82,6 +83,6 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomeFactory);
+        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomePool);
     }
 }
