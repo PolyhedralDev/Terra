@@ -22,11 +22,11 @@ repositories {
 
 dependencies {
     //TODO Allow pulling from Versions.kt
-    implementation("com.gradleup.shadow", "shadow-gradle-plugin", "8.3.6")
+    implementation("com.gradleup.shadow", "shadow-gradle-plugin", "9.2.2")
 
-    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "2.0.0-beta.17")
-    implementation("org.ow2.asm", "asm", "9.8")
-    implementation("org.ow2.asm", "asm-tree", "9.8")
-    implementation("com.dfsek.tectonic", "common", "4.2.1")
-    implementation("org.yaml", "snakeyaml", "2.4")
+    implementation("io.papermc.paperweight.userdev", "io.papermc.paperweight.userdev.gradle.plugin", "2.0.0-beta.19")
+    implementation("org.ow2.asm", "asm", "9.9")
+    implementation("org.ow2.asm", "asm-tree", "9.9")
+    implementation("com.dfsek.tectonic", "common", "4.3.1")
+    implementation("org.yaml", "snakeyaml", "2.5")
 }
