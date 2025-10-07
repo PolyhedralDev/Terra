@@ -22,7 +22,6 @@ import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.WorldChunk;
-import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -36,6 +35,7 @@ import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.world.ServerWorld;
 import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 @Mixin(WorldChunk.class)
@@ -58,24 +58,22 @@ public abstract class WorldChunkMixin {
     @SuppressWarnings("ConstantValue")
     public void terra$setBlock(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
-        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        net.minecraft.block.BlockState state;
+
+        boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
+
         if(isExtended) {
             BlockStateArgument arg = ((BlockStateArgument) data);
-            net.minecraft.block.BlockState state = arg.getBlockState();
+            state = arg.getBlockState();
             setBlockState(blockPos, state, 0);
             loadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).getData()));
         } else {
-            setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+            state = (net.minecraft.block.BlockState) data;
+            setBlockState(blockPos, state, 0);
         }
 
         if(physics) {
-            net.minecraft.block.BlockState state =
-                isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
-            if(state.isLiquid()) {
-                world.getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
-            } else {
-                world.getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
-            }
+            MinecraftUtil.schedulePhysics(state, blockPos, world.getFluidTickScheduler(), world.getBlockTickScheduler());
         }
     }
 

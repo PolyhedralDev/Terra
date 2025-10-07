@@ -19,8 +19,6 @@ package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
 import com.dfsek.seismic.math.coord.CoordFunctions;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.NbtCompound;
@@ -30,7 +28,6 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.tick.MultiTickScheduler;
-import net.minecraft.world.tick.OrderedTick;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -42,6 +39,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.world.chunk.Chunk;
+import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
 @Mixin(ChunkRegion.class)
@@ -76,40 +74,24 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
         ChunkPos pos = centerPos.getPos();
         BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x, x), y,
             CoordFunctions.chunkAndRelativeToAbsolute(pos.z, z));
-        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        net.minecraft.block.BlockState state;
+
+        boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
+
         if(isExtended) {
             BlockStateArgument arg = ((BlockStateArgument) data);
-            net.minecraft.block.BlockState state = arg.getBlockState();
+            state = arg.getBlockState();
             setBlockState(blockPos, state, 0, 512);
             net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
-            BlockEntity blockEntity;
             NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
-            if("DUMMY".equals(nbt.getString("id", ""))) {
-                if(state.hasBlockEntity()) {
-                    blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(blockPos, state);
-                } else {
-                    blockEntity = null;
-                }
-            } else {
-                blockEntity = BlockEntity.createFromNbt(blockPos, state, nbt, this.world.getRegistryManager());
-            }
-
-            if(blockEntity != null) {
-                blockEntity.setWorld(this.world);
-                chunk.setBlockEntity(blockEntity);
-            }
+            MinecraftUtil.loadBlockEntity(chunk, world, blockPos, state, nbt);
         } else {
-            setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0, 512);
+            state = (net.minecraft.block.BlockState) data;
+            setBlockState(blockPos, state, 0, 512);
         }
 
         if(physics) {
-            net.minecraft.block.BlockState state =
-                isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
-            if(state.isLiquid()) {
-                fluidTickScheduler.scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
-            } else {
-                blockTickScheduler.scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
-            }
+            MinecraftUtil.schedulePhysics(state, blockPos, getFluidTickScheduler(), getBlockTickScheduler());
         }
     }
 

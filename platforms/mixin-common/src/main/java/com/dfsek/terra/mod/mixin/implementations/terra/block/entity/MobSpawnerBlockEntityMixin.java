@@ -36,7 +36,7 @@ import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.mod.CommonPlatform;
-import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
+import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
 import com.dfsek.terra.mod.mixin.access.MobSpawnerLogicAccessor;
 
 
@@ -69,7 +69,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
         }
         net.minecraft.entity.EntityType<?> entityType =
             (((net.minecraft.entity.EntityType<?>) (creatureType.isExtended() && creatureType.getClass().equals(
-                FabricEntityTypeExtended.class) ? ((FabricEntityTypeExtended) creatureType).getType() : creatureType)));
+                MinecraftEntityTypeExtended.class) ? ((MinecraftEntityTypeExtended) creatureType).getType() : creatureType)));
         setEntityType(entityType, rand);
     }
 

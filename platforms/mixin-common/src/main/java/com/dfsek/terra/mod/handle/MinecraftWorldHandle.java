@@ -34,14 +34,12 @@ import net.minecraft.registry.entry.RegistryEntry.Reference;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.BlockStateExtended;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
-import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
+import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
 
 import static net.minecraft.command.argument.BlockArgumentParser.INVALID_BLOCK_ID_EXCEPTION;
 
@@ -50,8 +48,6 @@ public class MinecraftWorldHandle implements WorldHandle {
 
 
     private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
-
-    private static final Logger logger = LoggerFactory.getLogger(MinecraftWorldHandle.class);
 
     @SuppressWarnings("DataFlowIssue")
     @Override
@@ -117,7 +113,7 @@ public class MinecraftWorldHandle implements WorldHandle {
 
             EntityType entityType;
             if(nbtData != null) {
-                entityType = new FabricEntityTypeExtended(entity, nbtData);
+                entityType = new MinecraftEntityTypeExtended(entity, nbtData);
             } else {
                 entityType = (EntityType) entity;
             }

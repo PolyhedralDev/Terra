@@ -1,8 +1,14 @@
 package com.dfsek.terra.mod.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockEntityProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.LootableContainerBlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
+import net.minecraft.command.argument.BlockStateArgument;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -10,10 +16,14 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.intprovider.IntProviderType;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.tick.OrderedTick;
+import net.minecraft.world.tick.TickScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +35,13 @@ import com.dfsek.terra.api.block.entity.Container;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.data.Codecs;
+import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
 import com.dfsek.terra.mod.implmentation.TerraIntProvider;
 import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
@@ -46,7 +58,7 @@ public final class MinecraftUtil {
             .flatMap(id -> Optional.ofNullable(registry.getEntry(id)));
     }
 
-    public static BlockEntity createState(WorldAccess worldAccess, BlockPos pos) {
+    public static BlockEntity createBlockEntity(WorldAccess worldAccess, BlockPos pos) {
         net.minecraft.block.entity.BlockEntity entity = worldAccess.getBlockEntity(pos);
         if(entity instanceof SignBlockEntity) {
             return (Sign) entity;
@@ -56,6 +68,42 @@ public final class MinecraftUtil {
             return (Container) entity;
         }
         return null;
+    }
+
+    public static void schedulePhysics(BlockState blockState, BlockPos blockPos, TickScheduler<Fluid> fluidScheduler,
+                                       TickScheduler<Block> blockScheduler) {
+        if(blockState.isLiquid()) {
+            fluidScheduler.scheduleTick(OrderedTick.create(blockState.getFluidState().getFluid(), blockPos));
+        } else {
+            blockScheduler.scheduleTick(OrderedTick.create(blockState.getBlock(), blockPos));
+        }
+    }
+
+    public static boolean isCompatibleBlockStateExtended(com.dfsek.terra.api.block.state.BlockState blockState) {
+        return blockState.isExtended() && BlockStateArgument.class.isAssignableFrom(blockState.getClass());
+    }
+
+    //[Vanilla Copy]
+    public static void loadBlockEntity(Chunk chunk, World world, BlockPos blockPos, BlockState state, NbtCompound nbt) {
+        net.minecraft.block.entity.BlockEntity blockEntity;
+        if("DUMMY".equals(nbt.getString("id", ""))) {
+            if(state.hasBlockEntity()) {
+                blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(blockPos, state);
+            } else {
+                blockEntity = null;
+            }
+        } else {
+            blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, world.getRegistryManager());
+        }
+
+        if(blockEntity != null) {
+            blockEntity.setWorld(world);
+            chunk.setBlockEntity(blockEntity);
+        }
+    }
+
+    public static boolean isCompatibleEntityTypeExtended(EntityType entityType) {
+        return entityType.isExtended() && MinecraftEntityTypeExtended.class.isAssignableFrom(entityType.getClass());
     }
 
     public static void registerIntProviderTypes() {

@@ -9,6 +9,7 @@
         "access.StateAccessor",
         "access.StructureAccessorAccessor",
         "access.VillagerTypeAccessor",
+        "access.WorldChunkAccessor",
         "generalize.ServerWorldMixin",
         "implementations.compat.GenerationSettingsFloraFeaturesMixin",
         "implementations.terra.BiomeMixin",
