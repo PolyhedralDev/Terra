@@ -13,6 +13,10 @@ import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
 
+import net.minestom.server.registry.RegistryKey;
+import net.minestom.server.world.DimensionType;
+import org.jspecify.annotations.NonNull;
+
 
 public class TerraMinestomWorldBuilder {
     private final TerraMinestomPlatform platform;
@@ -36,8 +40,20 @@ public class TerraMinestomWorldBuilder {
 
     public TerraMinestomWorldBuilder packById(String id) {
         this.pack = platform.getConfigRegistry().getByID(id).orElseThrow();
-
         return this;
+    }
+
+    public TerraMinestomWorldBuilder packByMeta(String metaPack, RegistryKey<@NonNull DimensionType> dimensionType) {
+        this.pack = platform.getMetaConfigRegistry()
+            .getByID(metaPack)
+            .orElseThrow(() -> new RuntimeException("Meta Pack " + metaPack + " could not be found"))
+            .packs()
+            .get(dimensionType.key().asString());
+        return this;
+    }
+
+    public TerraMinestomWorldBuilder packByDefaultMeta(RegistryKey<@NonNull DimensionType> dimensionType) {
+        return packByMeta("default", dimensionType);
     }
 
     public TerraMinestomWorldBuilder findPack(Function<CheckedRegistry<ConfigPack>, ConfigPack> fn) {
