@@ -25,12 +25,13 @@ public class TerraMinestomWorldBuilder {
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory;
-    private BiomeFactory biomeFactory = new MinestomUserDefinedBiomeFactory();
+    private BiomeFactory biomeFactory;
 
-    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
+    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance, BiomeFactory biomeFactory) {
         this.platform = platform;
         this.instance = instance;
         this.blockEntityFactory = new DefaultBlockEntityFactory(instance);
+        this.biomeFactory = biomeFactory;
     }
 
     public TerraMinestomWorldBuilder pack(ConfigPack pack) {
@@ -46,14 +47,14 @@ public class TerraMinestomWorldBuilder {
     public TerraMinestomWorldBuilder packByMeta(String metaPack, RegistryKey<@NonNull DimensionType> dimensionType) {
         this.pack = platform.getMetaConfigRegistry()
             .getByID(metaPack)
-            .orElseThrow(() -> new RuntimeException("Meta Pack " + metaPack + " could not be found"))
+            .orElseThrow(() -> new RuntimeException("MetaPack " + metaPack + " could not be found"))
             .packs()
             .get(dimensionType.key().asString());
         return this;
     }
 
     public TerraMinestomWorldBuilder packByDefaultMeta(RegistryKey<@NonNull DimensionType> dimensionType) {
-        return packByMeta("default", dimensionType);
+        return packByMeta("DEFAULT", dimensionType);
     }
 
     public TerraMinestomWorldBuilder findPack(Function<CheckedRegistry<ConfigPack>, ConfigPack> fn) {
@@ -77,11 +78,6 @@ public class TerraMinestomWorldBuilder {
 
     public TerraMinestomWorldBuilder blockEntityFactory(BlockEntityFactory factory) {
         this.blockEntityFactory = factory;
-        return this;
-    }
-
-    public TerraMinestomWorldBuilder biomeFactory(BiomeFactory factory) {
-        this.biomeFactory = factory;
         return this;
     }
 

@@ -2,6 +2,10 @@ package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.minestom.api.BiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
+
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
@@ -9,6 +13,7 @@ import net.minestom.server.instance.Instance;
 import net.minestom.server.sound.SoundEvent;
 import net.minestom.server.world.biome.BiomeEffects;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,19 +50,22 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle;
     private final TypeLoader<PlatformBiome> biomeTypeLoader;
     private final ArrayList<BaseAddon> platformAddons = new ArrayList<>(List.of(new MinestomAddon(this)));
+    private final BiomeFactory biomeFactory;
 
     public TerraMinestomPlatform(WorldHandle worldHandle, ItemHandle itemHandle, TypeLoader<PlatformBiome> biomeTypeLoader,
-                                 BaseAddon... extraAddons) {
+                                 BiomeFactory biomeFactory, BaseAddon... extraAddons) {
         this.worldHandle = worldHandle;
         this.itemHandle = itemHandle;
         this.biomeTypeLoader = biomeTypeLoader;
+        this.biomeFactory = biomeFactory;
         this.platformAddons.addAll(List.of(extraAddons));
         load();
         getEventManager().callEvent(new PlatformInitializationEvent());
+        initializeRegistry(); // Needs to be called before minecraft server bind
     }
 
     public TerraMinestomPlatform() {
-        this(new MinestomWorldHandle(), new MinestomItemHandle(), new MinestomBiomeLoader());
+        this(new MinestomWorldHandle(), new MinestomItemHandle(), new MinestomBiomeLoader(), new MinestomUserDefinedBiomeFactory());
     }
 
     @Override
@@ -94,6 +102,14 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
         return succeed;
     }
 
+    public void initializeRegistry() {
+        getRawConfigRegistry()
+            .forEach(pack -> {
+                pack.getBiomeProvider().getBiomes().forEach(biome -> {
+
+                });
+            });
+    }
 
     @Override
     public @NotNull WorldHandle getWorldHandle() {
@@ -125,10 +141,62 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
     }
 
     public TerraMinestomWorldBuilder worldBuilder(Instance instance) {
-        return new TerraMinestomWorldBuilder(this, instance);
+        return new TerraMinestomWorldBuilder(this, instance, biomeFactory);
     }
 
     public TerraMinestomWorldBuilder worldBuilder() {
-        return new TerraMinestomWorldBuilder(this, MinecraftServer.getInstanceManager().createInstanceContainer());
+        return worldBuilder(MinecraftServer.getInstanceManager().createInstanceContainer());
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private @Nullable WorldHandle worldHandle;
+        private @Nullable ItemHandle itemHandle;
+        private @Nullable TypeLoader<PlatformBiome> biomeTypeLoader;
+        private @Nullable BiomeFactory biomeFactory;
+        private final List<BaseAddon> platformAddons = new ArrayList<>();
+
+        public Builder worldHandle(@Nullable WorldHandle worldHandle) {
+            this.worldHandle = worldHandle;
+            return this;
+        }
+
+        public Builder itemHandle(@Nullable ItemHandle itemHandle) {
+            this.itemHandle = itemHandle;
+            return this;
+        }
+
+        public Builder biomeTypeLoader(@Nullable TypeLoader<PlatformBiome> biomeTypeLoader) {
+            this.biomeTypeLoader = biomeTypeLoader;
+            return this;
+        }
+
+        public Builder addPlatformAddon(BaseAddon addon) {
+            this.platformAddons.add(addon);
+            return this;
+        }
+
+        public Builder biomeFactory(BiomeFactory biomeFactory) {
+            this.biomeFactory = biomeFactory;
+            return this;
+        }
+
+        public TerraMinestomPlatform build() {
+            if(worldHandle == null) worldHandle = new MinestomWorldHandle();
+            if(itemHandle == null) itemHandle = new MinestomItemHandle();
+            if(biomeTypeLoader == null) biomeTypeLoader = new MinestomBiomeLoader();
+            if(biomeFactory == null) biomeFactory = new MinestomUserDefinedBiomeFactory();
+
+            return new TerraMinestomPlatform(
+                worldHandle,
+                itemHandle,
+                biomeTypeLoader,
+                biomeFactory,
+                platformAddons.toArray(new BaseAddon[0])
+            );
+        }
     }
 }
