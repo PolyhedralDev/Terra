@@ -3,7 +3,7 @@ dependencies {
     shadedApi("com.github.ben-manes.caffeine", "caffeine", Versions.Libraries.caffeine)
     shadedImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 
-    compileOnly("net.minestom", "minestom-snapshots", Versions.Minestom.minestom)
+    compileOnly("net.minestom", "minestom", Versions.Minestom.minestom)
 }
 
 tasks.named("jar") {
