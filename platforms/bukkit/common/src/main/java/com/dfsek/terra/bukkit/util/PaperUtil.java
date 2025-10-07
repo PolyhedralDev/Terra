@@ -17,11 +17,11 @@
 
 package com.dfsek.terra.bukkit.util;
 
+import com.dfsek.terra.bukkit.TerraBukkitPlugin;
+
 import io.papermc.lib.PaperLib;
 
 import java.util.concurrent.TimeUnit;
-
-import com.dfsek.terra.bukkit.TerraBukkitPlugin;
 
 import static io.papermc.lib.PaperLib.suggestPaper;
 

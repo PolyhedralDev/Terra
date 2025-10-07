@@ -4,14 +4,15 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.world.biome.PlatformBiome;
+
 import net.kyori.adventure.key.Key;
 import net.minestom.server.registry.RegistryKey;
 import org.intellij.lang.annotations.Subst;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
-
-import com.dfsek.terra.api.world.biome.PlatformBiome;
 
 
 public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {

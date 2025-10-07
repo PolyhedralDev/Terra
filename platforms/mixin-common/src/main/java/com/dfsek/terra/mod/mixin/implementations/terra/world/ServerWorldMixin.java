@@ -18,7 +18,6 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.command.argument.BlockStateArgument;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.fluid.Fluid;
@@ -30,7 +29,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.MutableWorldProperties;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.tick.OrderedTick;
 import net.minecraft.world.tick.WorldTickScheduler;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -50,7 +48,8 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
-import com.dfsek.terra.mod.implmentation.FabricEntityTypeExtended;
+import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
+import com.dfsek.terra.mod.mixin.access.WorldChunkAccessor;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -71,10 +70,10 @@ public abstract class ServerWorldMixin extends World {
 
 
     public Entity terra$spawnEntity(double x, double y, double z, EntityType data) {
-        boolean isExtended = data.isExtended() && data.getClass().equals(FabricEntityTypeExtended.class);
+        boolean isExtended = MinecraftUtil.isCompatibleEntityTypeExtended(data);
         net.minecraft.entity.Entity entity;
         if(isExtended) {
-            FabricEntityTypeExtended type = ((FabricEntityTypeExtended) data);
+            MinecraftEntityTypeExtended type = ((MinecraftEntityTypeExtended) data);
             NbtCompound nbt = (NbtCompound) ((Object) type.getData());
             entity = net.minecraft.entity.EntityType.loadEntityWithPassengers(nbt, this, SpawnReason.CHUNK_GENERATION, (entityx) -> {
                 entityx.refreshPositionAndAngles(x, y, z, entityx.getYaw(), entityx.getPitch());
@@ -92,43 +91,27 @@ public abstract class ServerWorldMixin extends World {
 
     public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
+        net.minecraft.block.BlockState state;
+
         int flags = physics ? 3 : 1042;
-        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
+
         if(isExtended) {
             BlockStateArgument arg = ((BlockStateArgument) data);
-            net.minecraft.block.BlockState state = arg.getBlockState();
+            state = arg.getBlockState();
             setBlockState(blockPos, state, flags);
-            net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
-            net.minecraft.block.entity.BlockEntity blockEntity;
-            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
-            if("DUMMY".equals(nbt.getString("id", ""))) {
-                if(state.hasBlockEntity()) {
-                    blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(blockPos, state);
-                } else {
-                    blockEntity = null;
-                }
-            } else {
-                blockEntity = net.minecraft.block.entity.BlockEntity.createFromNbt(blockPos, state, nbt, getRegistryManager());
-            }
-
-            if(blockEntity != null) {
-                blockEntity.setWorld(this);
-                chunk.setBlockEntity(blockEntity);
-            }
+            net.minecraft.world.chunk.Chunk chunk = getWorldChunk(blockPos);
+            ((WorldChunkAccessor) chunk).invokeLoadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).getData()));
         } else {
-            setBlockState(blockPos, (net.minecraft.block.BlockState) data, flags);
+            state = (net.minecraft.block.BlockState) data;
+            setBlockState(blockPos, state, flags);
         }
 
         if(physics) {
-            net.minecraft.block.BlockState state =
-                isExtended ? ((BlockStateArgument) data).getBlockState() : ((net.minecraft.block.BlockState) data);
-            if(state.isLiquid()) {
-                getFluidTickScheduler().scheduleTick(OrderedTick.create(state.getFluidState().getFluid(), blockPos));
-            } else {
-                getBlockTickScheduler().scheduleTick(OrderedTick.create(state.getBlock(), blockPos));
-            }
+            MinecraftUtil.schedulePhysics(state, blockPos, this.getFluidTickScheduler(), this.getBlockTickScheduler());
         }
     }
+
 
     @Intrinsic
     public long terra$getSeed() {
@@ -149,7 +132,7 @@ public abstract class ServerWorldMixin extends World {
     }
 
     public BlockEntity terra$getBlockEntity(int x, int y, int z) {
-        return MinecraftUtil.createState(this, new BlockPos(x, y, z));
+        return MinecraftUtil.createBlockEntity(this, new BlockPos(x, y, z));
     }
 
     public int terra$getMinHeight() {
