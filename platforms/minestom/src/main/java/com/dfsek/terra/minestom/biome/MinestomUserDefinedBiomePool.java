@@ -12,14 +12,12 @@ public class MinestomUserDefinedBiomePool {
     private final IdentityHashMap<Biome, UserDefinedBiome> biomes = new IdentityHashMap<>();
     private final HashSet<String> createdBiomes = new HashSet<>();
     private final BiomeFactory factory;
-    private final ConfigPack configPack;
 
-    public MinestomUserDefinedBiomePool(ConfigPack configPack, BiomeFactory factory) {
-        this.configPack = configPack;
+    public MinestomUserDefinedBiomePool(BiomeFactory factory) {
         this.factory = factory;
     }
 
-    public UserDefinedBiome getBiome(Biome source) {
+    public UserDefinedBiome getBiome(ConfigPack configPack, Biome source) {
         UserDefinedBiome userDefinedBiome = biomes.get(source);
         if(userDefinedBiome != null) return userDefinedBiome;
         userDefinedBiome = factory.create(configPack, source);
@@ -28,7 +26,7 @@ public class MinestomUserDefinedBiomePool {
         return userDefinedBiome;
     }
 
-    public void preloadBiomes(Iterable<Biome> biomesToLoad) {
+    public void preloadBiomes(ConfigPack configPack, Iterable<Biome> biomesToLoad) {
         biomesToLoad
             .forEach(biome -> {
                 if(!this.createdBiomes.contains(biome.getID())) {

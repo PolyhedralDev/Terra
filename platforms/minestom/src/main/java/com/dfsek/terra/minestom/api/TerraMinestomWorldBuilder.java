@@ -1,5 +1,7 @@
 package com.dfsek.terra.minestom.api;
 
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
+
 import net.minestom.server.instance.Instance;
 
 import java.util.Random;
@@ -8,25 +10,29 @@ import java.util.function.Function;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
+
+import net.minestom.server.registry.RegistryKey;
+import net.minestom.server.world.DimensionType;
+import org.jspecify.annotations.NonNull;
 
 
 public class TerraMinestomWorldBuilder {
     private final TerraMinestomPlatform platform;
     private final Instance instance;
+    private final MinestomUserDefinedBiomePool biomePool;
     private ConfigPack pack;
     private long seed = new Random().nextLong();
     private EntityFactory entityFactory = new DefaultEntityFactory();
     private BlockEntityFactory blockEntityFactory;
-    private BiomeFactory biomeFactory = new MinestomUserDefinedBiomeFactory();
 
-    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance) {
+    public TerraMinestomWorldBuilder(TerraMinestomPlatform platform, Instance instance, MinestomUserDefinedBiomePool biomePool) {
         this.platform = platform;
         this.instance = instance;
         this.blockEntityFactory = new DefaultBlockEntityFactory(instance);
+        this.biomePool = biomePool;
     }
 
     public TerraMinestomWorldBuilder pack(ConfigPack pack) {
@@ -36,8 +42,20 @@ public class TerraMinestomWorldBuilder {
 
     public TerraMinestomWorldBuilder packById(String id) {
         this.pack = platform.getConfigRegistry().getByID(id).orElseThrow();
-
         return this;
+    }
+
+    public TerraMinestomWorldBuilder packByMeta(String metaPack, RegistryKey<@NonNull DimensionType> dimensionType) {
+        this.pack = platform.getMetaConfigRegistry()
+            .getByID(metaPack)
+            .orElseThrow(() -> new RuntimeException("MetaPack " + metaPack + " could not be found"))
+            .packs()
+            .get(dimensionType.key().asString());
+        return this;
+    }
+
+    public TerraMinestomWorldBuilder packByDefaultMeta(RegistryKey<@NonNull DimensionType> dimensionType) {
+        return packByMeta("DEFAULT", dimensionType);
     }
 
     public TerraMinestomWorldBuilder findPack(Function<CheckedRegistry<ConfigPack>, ConfigPack> fn) {
@@ -64,12 +82,7 @@ public class TerraMinestomWorldBuilder {
         return this;
     }
 
-    public TerraMinestomWorldBuilder biomeFactory(BiomeFactory factory) {
-        this.biomeFactory = factory;
-        return this;
-    }
-
     public TerraMinestomWorld attach() {
-        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomeFactory);
+        return new TerraMinestomWorld(platform, instance, pack, seed, entityFactory, blockEntityFactory, biomePool);
     }
 }

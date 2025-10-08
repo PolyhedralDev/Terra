@@ -40,7 +40,6 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
         this.biomePool = biomePool;
         this.biomeProvider = pack.getBiomeProvider();
         this.cache = new GeneratedChunkCache(world.getDimensionType(), generator, world, biomeProvider);
-        preloadBiomes();
     }
 
     public ChunkGenerator getGenerator() {
@@ -73,6 +72,7 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
 
                         if(relativeX % 4 == 0 && relativeY % 4 == 0 && relativeZ % 4 == 0) {
                             UserDefinedBiome userDefinedBiome = biomePool.getBiome(
+                                pack,
                                 biomeProvider.getBiome(absoluteX, absoluteY, absoluteZ, world.getSeed())
                             );
 
@@ -101,11 +101,6 @@ public class MinestomChunkGeneratorWrapper implements Generator, GeneratorWrappe
         this.pack = pack;
         this.generator = pack.getGeneratorProvider().newInstance(pack);
         this.biomePool.invalidate();
-        preloadBiomes();
-    }
-
-    private void preloadBiomes() {
-        this.biomePool.preloadBiomes(world.getBiomeProvider().getBiomes());
     }
 
     public void displayStats() {

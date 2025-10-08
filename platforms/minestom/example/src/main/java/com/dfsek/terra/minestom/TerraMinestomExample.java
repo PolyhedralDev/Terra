@@ -9,6 +9,7 @@ import net.minestom.server.event.player.AsyncPlayerConfigurationEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.instance.LightingChunk;
+import net.minestom.server.world.DimensionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ public class TerraMinestomExample {
 
     public void attachTerra() {
         world = platform.worldBuilder(instance)
-            .defaultPack()
+            .packByDefaultMeta(DimensionType.OVERWORLD)
             .attach();
     }
 

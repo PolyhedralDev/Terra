@@ -96,6 +96,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "1_21_6-a40d7115d4"
+        const val minestom = "2025.10.04-1.21.8"
     }
 }
