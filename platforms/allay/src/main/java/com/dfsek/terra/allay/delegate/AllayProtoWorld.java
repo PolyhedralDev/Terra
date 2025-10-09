@@ -66,7 +66,7 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
         return new AllayBlockEntity(getBlockEntity(context, x, y, z));
     }
 
-    // TODO: add this method to allay-api
+    // TODO: use method in OtherChunkAccessibleContext directly after bumped allay-api version to 0.14.0
     private static org.allaymc.api.blockentity.BlockEntity getBlockEntity(OtherChunkAccessibleContext context, int x, int y, int z) {
         var currentChunk = context.getCurrentChunk();
         var currentChunkX = currentChunk.getX();
