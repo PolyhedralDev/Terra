@@ -10,12 +10,25 @@ import java.util.TreeMap;
  * @author daoge_cmd
  */
 public class JeBlockState {
+
     protected final String identifier;
     protected final TreeMap<String, String> properties;
+
     protected int hash = Integer.MAX_VALUE;
 
     private JeBlockState(String data) {
-        String[] strings = data.replace("[", ",").replace("]", ",").replace(" ", "").split(",");
+        // TODO: support block state with nbt (identifier[properties]{nbt}), for now we just ignore it
+        int braceIndex = data.indexOf('{');
+        if (braceIndex != -1) {
+            data = data.substring(0, braceIndex);
+        }
+
+        String[] strings = data
+            .replace("[", ",")
+            .replace("]", ",")
+            .replace(" ", "")
+            .split(",");
+
         this.identifier = strings[0];
         this.properties = new TreeMap<>();
         if(strings.length > 1) {

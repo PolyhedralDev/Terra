@@ -63,7 +63,24 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return new AllayBlockEntity(getBlockEntity(context, x, y, z));
+    }
+
+    // TODO: add this method to allay-api
+    private static org.allaymc.api.blockentity.BlockEntity getBlockEntity(OtherChunkAccessibleContext context, int x, int y, int z) {
+        var currentChunk = context.getCurrentChunk();
+        var currentChunkX = currentChunk.getX();
+        var currentChunkZ = currentChunk.getZ();
+        var dimInfo = currentChunk.getDimensionInfo();
+
+        if (x >= currentChunkX * 16 && x < currentChunkX * 16 + 16 &&
+            z >= currentChunkZ * 16 && z < currentChunkZ * 16 + 16 &&
+            y >= dimInfo.minHeight() && y <= dimInfo.maxHeight()) {
+            return currentChunk.getBlockEntity(x & 15, y, z & 15);
+        } else {
+            var chunk = context.getChunkSource().getChunk(x >> 4, z >> 4);
+            return chunk == null ? null : chunk.getBlockEntity(x & 15, y, z & 15);
+        }
     }
 
     @Override
