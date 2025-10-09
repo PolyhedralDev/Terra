@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -77,7 +76,6 @@ import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
-import com.dfsek.terra.config.loaders.config.BufferedImageLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaNumberPreprocessor;
@@ -273,8 +271,7 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     public void register(TypeRegistry registry) {
-        registry.registerLoader(ConfigType.class, configTypeRegistry)
-            .registerLoader(BufferedImage.class, new BufferedImageLoader(this));
+        registry.registerLoader(ConfigType.class, configTypeRegistry);
         registryMap.forEach(registry::registerLoader);
         shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
     }
