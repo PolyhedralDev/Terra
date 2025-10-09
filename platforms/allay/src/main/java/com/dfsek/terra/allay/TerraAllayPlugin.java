@@ -15,38 +15,38 @@ import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
  */
 public class TerraAllayPlugin extends Plugin {
 
-    public static TerraAllayPlugin INSTANCE;
-    public static AllayPlatform PLATFORM;
+    public static TerraAllayPlugin instance;
+    public static AllayPlatform platform;
 
     {
-        INSTANCE = this;
+        TerraAllayPlugin.instance = this;
     }
 
     @Override
     public void onLoad() {
-        pluginLogger.info("Starting Terra...");
+        this.pluginLogger.info("Starting Terra...");
 
-        pluginLogger.info("Loading mapping...");
+        this.pluginLogger.info("Loading mapping...");
         Mapping.init();
 
-        pluginLogger.info("Initializing allay platform...");
-        PLATFORM = new AllayPlatform();
-        PLATFORM.getEventManager().callEvent(new PlatformInitializationEvent());
+        this.pluginLogger.info("Initializing allay platform...");
+        TerraAllayPlugin.platform = new AllayPlatform();
+        TerraAllayPlugin.platform.getEventManager().callEvent(new PlatformInitializationEvent());
         // TODO: adapt command manager
 
-        pluginLogger.info("Registering generator...");
+        this.pluginLogger.info("Registering generator...");
         Registries.WORLD_GENERATOR_FACTORIES.register("TERRA", preset -> {
             try {
                 AllayGeneratorWrapper wrapper = new AllayGeneratorWrapper(preset);
                 AllayPlatform.GENERATOR_WRAPPERS.add(wrapper);
                 return wrapper.getAllayWorldGenerator();
             } catch(IllegalArgumentException e) {
-                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Fail to create world generator with preset: {}", preset, e);
+                TerraAllayPlugin.instance.getPluginLogger().error("Fail to create world generator with preset: {}", preset, e);
                 return Registries.WORLD_GENERATOR_FACTORIES.get("FLAT").apply("");
             }
         });
 
-        pluginLogger.info("Terra started");
+        this.pluginLogger.info("Terra started");
     }
 
     @Override
@@ -61,10 +61,10 @@ public class TerraAllayPlugin extends Plugin {
 
     @Override
     public void reload() {
-        if(PLATFORM.reload()) {
-            pluginLogger.info("Terra reloaded successfully.");
+        if(TerraAllayPlugin.platform.reload()) {
+            this.pluginLogger.info("Terra reloaded successfully.");
         } else {
-            pluginLogger.error("Terra failed to reload.");
+            this.pluginLogger.error("Terra failed to reload.");
         }
     }
 

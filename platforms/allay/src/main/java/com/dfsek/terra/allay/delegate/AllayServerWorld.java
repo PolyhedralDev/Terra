@@ -44,7 +44,7 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return new AllayBlockEntity(allayDimension.getBlockEntity(x, y, z));
     }
 
     @Override
