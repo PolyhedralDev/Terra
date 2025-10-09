@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -51,11 +52,11 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
     private final Map<RegistryKey, Entry<T>> objects;
-    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new HashMap<>(), ArrayList::new);
+    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new ConcurrentHashMap<>(), ArrayList::new);
     private final TypeKey<T> typeKey;
 
     public OpenRegistryImpl(TypeKey<T> typeKey) {
-        this(new HashMap<>(), typeKey);
+        this(new ConcurrentHashMap<>(), typeKey);
     }
 
     protected OpenRegistryImpl(Map<RegistryKey, Entry<T>> init, TypeKey<T> typeKey) {
