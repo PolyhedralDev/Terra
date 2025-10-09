@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
 import com.dfsek.terra.api.Platform;
@@ -44,9 +45,9 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
     public synchronized void loadAll(Platform platform) throws IOException, PackLoadFailuresException {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
-        List<Exception> failedLoads = new ArrayList<>();
+        List<Exception> failedLoads = new CopyOnWriteArrayList<>();
         try(Stream<Path> packs = Files.list(packsDirectory)) {
-            packs.forEach(path -> {
+            packs.parallel().forEach(path -> {
                 try {
                     ConfigPack pack = new ConfigPackImpl(path, platform);
                     registerChecked(pack.getRegistryKey(), pack);
