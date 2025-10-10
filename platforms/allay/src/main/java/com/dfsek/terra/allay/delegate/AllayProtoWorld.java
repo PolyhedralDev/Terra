@@ -43,6 +43,11 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
+        var dimensionInfo = allayServerWorld.allayDimension().getDimensionInfo();
+        if (y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+            return;
+        }
+
         AllayBlockState allayBlockState = (AllayBlockState) data;
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if(allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {

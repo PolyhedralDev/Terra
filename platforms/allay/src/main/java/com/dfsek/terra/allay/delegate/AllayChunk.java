@@ -21,6 +21,13 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
 
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
+        var dimensionInfo = allayChunk.getDimensionInfo();
+        if (x < 0 || x > 15 ||
+            z < 0 || z > 15 ||
+            y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+            return;
+        }
+
         AllayBlockState allayBlockState = (AllayBlockState) data;
         allayChunk.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if(allayBlockState.containsWater() || allayChunk.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {

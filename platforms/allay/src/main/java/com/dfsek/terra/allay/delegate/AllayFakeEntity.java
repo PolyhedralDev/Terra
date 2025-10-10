@@ -7,7 +7,7 @@ import com.dfsek.terra.api.world.ServerWorld;
 
 
 /**
- * NOTICE: Entity is not supported currently, and this is a fake implementation.
+ * TODO: Entity is not supported currently, and this is a fake implementation.
  *
  * @author daoge_cmd
  */
