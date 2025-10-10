@@ -43,6 +43,11 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
+        var dimensionInfo = allayServerWorld.allayDimension().getDimensionInfo();
+        if (y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+            return;
+        }
+
         AllayBlockState allayBlockState = (AllayBlockState) data;
         context.setBlockState(x, y, z, allayBlockState.allayBlockState());
         if(allayBlockState.containsWater() || context.getBlockState(x, y, z).getBlockType().hasBlockTag(BlockTags.WATER)) {
@@ -63,7 +68,24 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return new AllayBlockEntity(getBlockEntity(context, x, y, z));
+    }
+
+    // TODO: use method in OtherChunkAccessibleContext directly after bumped allay-api version to 0.14.0
+    private static org.allaymc.api.blockentity.BlockEntity getBlockEntity(OtherChunkAccessibleContext context, int x, int y, int z) {
+        var currentChunk = context.getCurrentChunk();
+        var currentChunkX = currentChunk.getX();
+        var currentChunkZ = currentChunk.getZ();
+        var dimInfo = currentChunk.getDimensionInfo();
+
+        if (x >= currentChunkX * 16 && x < currentChunkX * 16 + 16 &&
+            z >= currentChunkZ * 16 && z < currentChunkZ * 16 + 16 &&
+            y >= dimInfo.minHeight() && y <= dimInfo.maxHeight()) {
+            return currentChunk.getBlockEntity(x & 15, y, z & 15);
+        } else {
+            var chunk = context.getChunkSource().getChunk(x >> 4, z >> 4);
+            return chunk == null ? null : chunk.getBlockEntity(x & 15, y, z & 15);
+        }
     }
 
     @Override

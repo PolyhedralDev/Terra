@@ -28,7 +28,7 @@ dependencies {
 
     geyserMappings("GeyserMC.mappings", "items", Versions.Allay.mappings, ext = "json")
     geyserMappings("GeyserMC.mappings", "biomes", Versions.Allay.mappings, ext = "json")
-    geyserMappings("GeyserMC.mappings-generator", "new_generator_blocks", Versions.Allay.mappingsGenerator, ext = "json")
+    geyserMappings("GeyserMC.mappings-generator", "generator_blocks", Versions.Allay.mappingsGenerator, ext = "json")
 
     mcmeta("misode.mcmeta", "blocks/data", Versions.Allay.mcmeta, ext = "json")
 }
@@ -38,7 +38,7 @@ tasks.processResources {
         into("mapping")
 
         // rather jank, but whatever
-        rename("(?:new_generator_)?([^-]+)-(.*)\\.json", "$1.json")
+        rename("(?:generator_)?([^-]+)-(.*)\\.json", "$1.json")
     }
     from(mcmeta) {
         rename("data-(.*)\\.json", "je_blocks.json")

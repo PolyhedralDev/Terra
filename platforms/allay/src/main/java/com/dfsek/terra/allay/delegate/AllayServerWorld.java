@@ -27,6 +27,11 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
+        var dimensionInfo = allayDimension.getDimensionInfo();
+        if (y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+            return;
+        }
+
         // In dimension#setBlockState() method, Water will be moved to layer 1 if it is placed at layer 0
         allayDimension.setBlockState(x, y, z, ((AllayBlockState) data).allayBlockState());
     }
@@ -44,7 +49,7 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public BlockEntity getBlockEntity(int x, int y, int z) {
-        return null;
+        return new AllayBlockEntity(allayDimension.getBlockEntity(x, y, z));
     }
 
     @Override

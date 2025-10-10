@@ -2,7 +2,7 @@
 
 ## Resource files
 
-Current mapping version: je 1.21.7 to be 1.21.93
+Current mapping version: je 1.21.7 to be 1.21.111
 
 - `mapping/biomes.json` and `mapping/items.json` are obtained from [GeyserMC/mappings](https://github.com/GeyserMC/mappings).
 - `mapping/blocks.json` is obtained from [GeyserMC/mappings-generator](https://github.com/GeyserMC/mappings-generator) (path: `https://github.com/GeyserMC/mappings-generator/blob/master/new_generator_blocks.json`).
