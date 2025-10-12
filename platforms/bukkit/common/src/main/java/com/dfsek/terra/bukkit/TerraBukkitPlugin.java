@@ -40,7 +40,6 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
-import com.dfsek.terra.bukkit.nms.Initializer;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
@@ -60,7 +59,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
-        platform = Initializer.init(this);
+        platform = NMSInitializer.init(this);
         if(platform == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;

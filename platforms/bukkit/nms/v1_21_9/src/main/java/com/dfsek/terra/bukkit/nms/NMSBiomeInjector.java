@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21_9;
+package com.dfsek.terra.bukkit.nms;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.nms.config.VanillaBiomeProperties;
 
 
 public class NMSBiomeInjector {

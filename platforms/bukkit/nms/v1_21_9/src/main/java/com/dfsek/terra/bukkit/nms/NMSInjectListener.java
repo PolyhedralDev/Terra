@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21_9;
+package com.dfsek.terra.bukkit.nms;
 
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
