@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21_9;
+package com.dfsek.terra.bukkit.nms;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

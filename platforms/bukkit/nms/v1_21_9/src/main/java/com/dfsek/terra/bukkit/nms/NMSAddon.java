@@ -1,11 +1,11 @@
-package com.dfsek.terra.bukkit.nms.v1_21_9;
+package com.dfsek.terra.bukkit.nms;
 
 import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.bukkit.BukkitAddon;
 import com.dfsek.terra.bukkit.PlatformImpl;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.nms.config.VanillaBiomeProperties;
 
 
 public class NMSAddon extends BukkitAddon {

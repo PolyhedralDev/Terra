@@ -1,4 +1,4 @@
-package com.dfsek.terra.bukkit.nms.v1_21_9;
+package com.dfsek.terra.bukkit.nms;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.exception.LoadException;
@@ -27,17 +27,17 @@ import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.EntityTypeTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.MusicSoundTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SoundEventTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnCostConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnEntryConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnSettingsTemplate;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.SpawnTypeConfig;
-import com.dfsek.terra.bukkit.nms.v1_21_9.config.VillagerTypeTemplate;
+import com.dfsek.terra.bukkit.nms.config.BiomeAdditionsSoundTemplate;
+import com.dfsek.terra.bukkit.nms.config.BiomeMoodSoundTemplate;
+import com.dfsek.terra.bukkit.nms.config.BiomeParticleConfigTemplate;
+import com.dfsek.terra.bukkit.nms.config.EntityTypeTemplate;
+import com.dfsek.terra.bukkit.nms.config.MusicSoundTemplate;
+import com.dfsek.terra.bukkit.nms.config.SoundEventTemplate;
+import com.dfsek.terra.bukkit.nms.config.SpawnCostConfig;
+import com.dfsek.terra.bukkit.nms.config.SpawnEntryConfig;
+import com.dfsek.terra.bukkit.nms.config.SpawnSettingsTemplate;
+import com.dfsek.terra.bukkit.nms.config.SpawnTypeConfig;
+import com.dfsek.terra.bukkit.nms.config.VillagerTypeTemplate;
 
 
 public class NMSPlatform extends PlatformImpl {
