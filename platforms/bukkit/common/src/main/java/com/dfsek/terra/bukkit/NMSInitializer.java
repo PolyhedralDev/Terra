@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public interface NMSInitializer {
-    List<String> SUPPORTED_VERSIONS = List.of("1.21.9", "1.21.10");
+    List<String> SUPPORTED_VERSIONS = List.of("v1.21.9", "v1.21.10");
     String MINECRAFT_VERSION = VersionUtil.getMinecraftVersionInfo().toString();
     String TERRA_PACKAGE = NMSInitializer.class.getPackageName();
 
