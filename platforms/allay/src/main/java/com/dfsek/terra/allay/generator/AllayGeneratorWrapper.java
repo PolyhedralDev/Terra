@@ -1,17 +1,18 @@
 package com.dfsek.terra.allay.generator;
 
+import com.dfsek.terra.allay.Mapping;
+import com.dfsek.terra.allay.delegate.AllayWorldProperties;
+
+import com.google.common.base.Preconditions;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.chunk.UnsafeChunk;
+import org.allaymc.api.world.data.DimensionInfo;
 import org.allaymc.api.world.generator.WorldGenerator;
 import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
 import org.allaymc.api.world.generator.function.Noiser;
 import org.allaymc.api.world.generator.function.Populator;
-
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
 
 import com.dfsek.terra.allay.TerraAllayPlugin;
 import com.dfsek.terra.allay.delegate.AllayProtoChunk;
@@ -30,27 +31,23 @@ import com.dfsek.terra.api.world.info.WorldProperties;
  */
 public class AllayGeneratorWrapper implements GeneratorWrapper {
 
+    protected static final String OPTION_META_PACK_NAME = "meta-pack";
     protected static final String OPTION_PACK_NAME = "pack";
     protected static final String OPTION_SEED = "seed";
 
-    protected final BiomeProvider biomeProvider;
     protected final long seed;
     protected final WorldGenerator allayWorldGenerator;
-    protected ChunkGenerator chunkGenerator;
+
     protected ConfigPack configPack;
+    protected ChunkGenerator chunkGenerator;
+    protected BiomeProvider biomeProvider;
+
     protected WorldProperties worldProperties;
     protected AllayServerWorld allayServerWorld;
 
     public AllayGeneratorWrapper(String preset) {
-        Map<String, String> options = AllayStringUtils.parseOptions(preset);
-        String packName = options.get(OPTION_PACK_NAME);
-        if(packName == null) {
-            throw new IllegalArgumentException("Missing config pack name");
-        }
-        this.seed = Long.parseLong(options.getOrDefault(OPTION_SEED, "0"));
-        this.configPack = getConfigPack(packName);
-        this.chunkGenerator = createGenerator(this.configPack);
-        this.biomeProvider = this.configPack.getBiomeProvider();
+        var options = AllayStringUtils.parseOptions(preset);
+        this.seed = parseSeed(options.get(OPTION_SEED));
         this.allayWorldGenerator = WorldGenerator
             .builder()
             .name("TERRA")
@@ -59,40 +56,52 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .populators(new AllayPopulator())
             .onDimensionSet(dimension -> {
                 this.allayServerWorld = new AllayServerWorld(this, dimension);
-                this.worldProperties = new WorldProperties() {
+                this.worldProperties = new AllayWorldProperties(this.seed, dimension.getDimensionInfo());
 
-                    private final Object fakeHandle = new Object();
+                var metaPackName = options.get(OPTION_META_PACK_NAME);
+                if (metaPackName != null) {
+                    setConfigPack(getConfigPackByMeta(metaPackName, dimension.getDimensionInfo()));
+                    return;
+                }
 
-                    @Override
-                    public long getSeed() {
-                        return seed;
-                    }
+                var packName = options.get(OPTION_PACK_NAME);
+                if(packName != null) {
+                    setConfigPack(getConfigPackById(packName));
+                    return;
+                }
 
-                    @Override
-                    public int getMaxHeight() {
-                        return dimension.getDimensionInfo().maxHeight();
-                    }
-
-                    @Override
-                    public int getMinHeight() {
-                        return dimension.getDimensionInfo().minHeight();
-                    }
-
-                    @Override
-                    public Object getHandle() {
-                        return fakeHandle;
-                    }
-                };
+                throw new IllegalArgumentException("Either 'pack' or 'meta-pack' option should be specified in the generator preset!");
             })
             .build();
     }
 
-    protected static ConfigPack getConfigPack(String packName) {
-        Optional<ConfigPack> byId = TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName);
-        return byId.orElseGet(
-            () -> TerraAllayPlugin.PLATFORM.getConfigRegistry().getByID(packName.toUpperCase(Locale.ENGLISH))
-                .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packName))
-        );
+    protected static long parseSeed(String str) {
+        if(str == null) {
+            return 0;
+        }
+
+        try {
+            return Long.parseLong(str);
+        } catch(NumberFormatException e) {
+            // Return the hashcode of the string if it cannot be parsed to a long value directly
+            return str.hashCode();
+        }
+    }
+
+    protected static ConfigPack getConfigPackById(String packId) {
+        return TerraAllayPlugin.platform
+            .getConfigRegistry()
+            .getByID(packId)
+            .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packId));
+    }
+
+    protected static ConfigPack getConfigPackByMeta(String metaPackId, DimensionInfo dimensionInfo) {
+        return TerraAllayPlugin.platform
+            .getMetaConfigRegistry()
+            .getByID(metaPackId)
+            .orElseThrow(() -> new IllegalArgumentException("Cant find terra meta pack named " + metaPackId))
+            .packs()
+            .get(Mapping.dimensionIdBeToJe(dimensionInfo.toString()));
     }
 
     protected static ChunkGenerator createGenerator(ConfigPack configPack) {
@@ -101,7 +110,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
 
     @Override
     public ChunkGenerator getHandle() {
-        return chunkGenerator;
+        return this.chunkGenerator;
     }
 
     public BiomeProvider getBiomeProvider() {
@@ -113,8 +122,10 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
     }
 
     public void setConfigPack(ConfigPack configPack) {
+        Preconditions.checkNotNull(configPack, "Config pack cannot be null!");
         this.configPack = configPack;
         this.chunkGenerator = createGenerator(this.configPack);
+        this.biomeProvider = this.configPack.getBiomeProvider();
     }
 
     public long getSeed() {
@@ -165,7 +176,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
                     generationStage.populate(tmp);
                 }
             } catch(Exception e) {
-                TerraAllayPlugin.INSTANCE.getPluginLogger().error("Error while populating chunk", e);
+                TerraAllayPlugin.instance.getPluginLogger().error("Error while populating chunk", e);
             }
             return true;
         }
