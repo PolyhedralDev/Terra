@@ -45,7 +45,7 @@ public class AllayPlatform extends AbstractPlatform {
             getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
                 wrapper.setConfigPack(pack);
                 var dimension = wrapper.getAllayWorldGenerator().getDimension();
-                TerraAllayPlugin.INSTANCE.getPluginLogger().info(
+                TerraAllayPlugin.instance.getPluginLogger().info(
                     "Replaced pack in chunk generator for world {}",
                     dimension.getWorld().getWorldData().getDisplayName() + ":" + dimension.getDimensionInfo().dimensionId()
                 );
@@ -72,7 +72,7 @@ public class AllayPlatform extends AbstractPlatform {
 
     @Override
     public @NotNull File getDataFolder() {
-        return TerraAllayPlugin.INSTANCE.getPluginContainer().dataFolder().toFile();
+        return TerraAllayPlugin.instance.getPluginContainer().dataFolder().toFile();
     }
 
     @Override
