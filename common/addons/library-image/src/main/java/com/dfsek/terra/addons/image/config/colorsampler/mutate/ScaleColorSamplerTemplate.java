@@ -15,9 +15,12 @@ public class ScaleColorSamplerTemplate extends MutateColorSamplerTemplate{
     @Value("z")
     private int scaleZ;
 
+    @Value("interpolation")
+    private String interpolation;
+
 
     @Override
     public ColorSampler get() {
-        return new ScaleColorSampler(sampler, scaleX, scaleZ);
+        return new ScaleColorSampler(sampler, scaleX, scaleZ, interpolation);
     }
 }
