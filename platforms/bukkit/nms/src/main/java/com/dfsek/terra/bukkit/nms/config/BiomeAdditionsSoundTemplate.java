@@ -5,7 +5,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.biome.AmbientAdditionsSettings;
+import net.minecraft.world.attribute.AmbientAdditionsSettings;
 
 
 public class BiomeAdditionsSoundTemplate implements ObjectTemplate<AmbientAdditionsSettings> {

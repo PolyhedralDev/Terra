@@ -5,14 +5,14 @@ import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 
 
 public class VillagerTypeTemplate implements ObjectTemplate<ResourceKey<VillagerType>> {
     @Value("id")
     @Default
-    private ResourceLocation id = null;
+    private Identifier id = null;
 
     @Override
     public ResourceKey<VillagerType> get() {
