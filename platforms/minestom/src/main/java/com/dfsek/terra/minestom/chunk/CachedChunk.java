@@ -33,7 +33,7 @@ public class CachedChunk implements ProtoChunk {
         Block block = (Block) blockState.getHandle();
         if(block == null) return;
         int index = getIndex(x, y, z);
-        if (index > blocks.length || index < 0) return;
+        if(index > blocks.length || index < 0) return;
         blocks[index] = block;
     }
 
@@ -45,7 +45,7 @@ public class CachedChunk implements ProtoChunk {
     @Override
     public @NotNull BlockState getBlock(int x, int y, int z) {
         int index = getIndex(x, y, z);
-        if (index > blocks.length || index < 0) return MinestomBlockState.AIR;
+        if(index > blocks.length || index < 0) return MinestomBlockState.AIR;
         return new MinestomBlockState(blocks[index]);
     }
 

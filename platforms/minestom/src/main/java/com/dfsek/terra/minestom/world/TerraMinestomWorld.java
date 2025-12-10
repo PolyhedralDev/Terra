@@ -20,7 +20,6 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
-import com.dfsek.terra.minestom.api.BiomeFactory;
 import com.dfsek.terra.minestom.api.BlockEntityFactory;
 import com.dfsek.terra.minestom.api.EntityFactory;
 import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;

@@ -22,9 +22,9 @@ public record AllayChunk(ServerWorld world, Chunk allayChunk) implements com.dfs
     @Override
     public void setBlock(int x, int y, int z, BlockState data, boolean physics) {
         var dimensionInfo = allayChunk.getDimensionInfo();
-        if (x < 0 || x > 15 ||
-            z < 0 || z > 15 ||
-            y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+        if(x < 0 || x > 15 ||
+           z < 0 || z > 15 ||
+           y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
             return;
         }
 
