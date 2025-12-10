@@ -2,12 +2,6 @@ package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
-
-import com.dfsek.terra.minestom.api.BiomeFactory;
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
-
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
-
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
@@ -32,8 +26,11 @@ import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.minestom.addon.MinestomAddon;
+import com.dfsek.terra.minestom.api.BiomeFactory;
 import com.dfsek.terra.minestom.api.TerraMinestomWorldBuilder;
 import com.dfsek.terra.minestom.biome.MinestomBiomeLoader;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomeFactory;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
 import com.dfsek.terra.minestom.config.BiomeAdditionsSoundTemplate;
 import com.dfsek.terra.minestom.config.BiomeMoodSoundTemplate;
 import com.dfsek.terra.minestom.config.BiomeParticleConfigTemplate;
@@ -68,6 +65,10 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
 
     public TerraMinestomPlatform() {
         this(new MinestomWorldHandle(), new MinestomItemHandle(), new MinestomBiomeLoader(), new MinestomUserDefinedBiomeFactory());
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     @Override
@@ -146,16 +147,13 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
         return worldBuilder(MinecraftServer.getInstanceManager().createInstanceContainer());
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
 
     public static class Builder {
+        private final List<BaseAddon> platformAddons = new ArrayList<>();
         private @Nullable WorldHandle worldHandle;
         private @Nullable ItemHandle itemHandle;
         private @Nullable TypeLoader<PlatformBiome> biomeTypeLoader;
         private @Nullable BiomeFactory biomeFactory;
-        private final List<BaseAddon> platformAddons = new ArrayList<>();
 
         public Builder worldHandle(@Nullable WorldHandle worldHandle) {
             this.worldHandle = worldHandle;

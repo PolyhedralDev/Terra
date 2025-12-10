@@ -13,7 +13,6 @@ import org.allaymc.api.block.type.BlockStateGetter;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.item.type.ItemType;
 import org.allaymc.api.item.type.ItemTypeGetter;
-import org.allaymc.api.world.data.DimensionInfo;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
@@ -83,7 +82,7 @@ public final class Mapping {
     }
 
     public static String dimensionIdBeToJe(String beDimensionId) {
-        return switch (beDimensionId) {
+        return switch(beDimensionId) {
             case "overworld" -> "minecraft:overworld";
             case "nether" -> "minecraft:the_nether";
             case "the_end" -> "minecraft:the_end";

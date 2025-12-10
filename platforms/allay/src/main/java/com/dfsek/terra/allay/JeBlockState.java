@@ -19,7 +19,7 @@ public class JeBlockState {
     private JeBlockState(String data) {
         // TODO: support block state with nbt (identifier[properties]{nbt}), for now we just ignore it
         int braceIndex = data.indexOf('{');
-        if (braceIndex != -1) {
+        if(braceIndex != -1) {
             data = data.substring(0, braceIndex);
         }
 

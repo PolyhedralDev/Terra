@@ -1,8 +1,5 @@
 package com.dfsek.terra.allay.generator;
 
-import com.dfsek.terra.allay.Mapping;
-import com.dfsek.terra.allay.delegate.AllayWorldProperties;
-
 import com.google.common.base.Preconditions;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
@@ -14,10 +11,12 @@ import org.allaymc.api.world.generator.context.PopulateContext;
 import org.allaymc.api.world.generator.function.Noiser;
 import org.allaymc.api.world.generator.function.Populator;
 
+import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.allay.TerraAllayPlugin;
 import com.dfsek.terra.allay.delegate.AllayProtoChunk;
 import com.dfsek.terra.allay.delegate.AllayProtoWorld;
 import com.dfsek.terra.allay.delegate.AllayServerWorld;
+import com.dfsek.terra.allay.delegate.AllayWorldProperties;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
@@ -59,7 +58,7 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
                 this.worldProperties = new AllayWorldProperties(this.seed, dimension.getDimensionInfo());
 
                 var metaPackName = options.get(OPTION_META_PACK_NAME);
-                if (metaPackName != null) {
+                if(metaPackName != null) {
                     setConfigPack(getConfigPackByMeta(metaPackName, dimension.getDimensionInfo()));
                     return;
                 }

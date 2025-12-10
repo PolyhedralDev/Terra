@@ -1,8 +1,9 @@
 package com.dfsek.terra.minestom.api;
 
-import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
-
 import net.minestom.server.instance.Instance;
+import net.minestom.server.registry.RegistryKey;
+import net.minestom.server.world.DimensionType;
+import org.jspecify.annotations.NonNull;
 
 import java.util.Random;
 import java.util.function.Function;
@@ -10,13 +11,10 @@ import java.util.function.Function;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.minestom.TerraMinestomPlatform;
+import com.dfsek.terra.minestom.biome.MinestomUserDefinedBiomePool;
 import com.dfsek.terra.minestom.block.DefaultBlockEntityFactory;
 import com.dfsek.terra.minestom.entity.DefaultEntityFactory;
 import com.dfsek.terra.minestom.world.TerraMinestomWorld;
-
-import net.minestom.server.registry.RegistryKey;
-import net.minestom.server.world.DimensionType;
-import org.jspecify.annotations.NonNull;
 
 
 public class TerraMinestomWorldBuilder {

@@ -52,7 +52,8 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
     private final Map<RegistryKey, Entry<T>> objects;
-    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new ConcurrentHashMap<>(), ArrayList::new);
+    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new ConcurrentHashMap<>(),
+        ArrayList::new);
     private final TypeKey<T> typeKey;
 
     public OpenRegistryImpl(TypeKey<T> typeKey) {

@@ -1,11 +1,10 @@
 package com.dfsek.terra.allay.delegate;
 
 import com.dfsek.seismic.type.vector.Vector3;
+import org.allaymc.api.blockentity.BlockEntity;
 
 import com.dfsek.terra.allay.Mapping;
 import com.dfsek.terra.api.block.state.BlockState;
-
-import org.allaymc.api.blockentity.BlockEntity;
 
 
 /**
