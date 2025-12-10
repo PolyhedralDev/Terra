@@ -10,7 +10,7 @@ object Versions {
         const val tectonic = "4.3.1"
         const val paralithic = "2.0.1"
         const val strata = "1.3.2"
-        const val seismic = "2.3.0"
+        const val seismic = "2.5.0"
         
         const val cloud = "2.0.0"
         
@@ -47,7 +47,7 @@ object Versions {
         
         const val minecraft = "1.21.10"
         const val yarn = "$minecraft+build.1"
-        const val fabricLoader = "0.17.2"
+        const val fabricLoader = "0.18.2"
         
         const val architecuryLoom = "1.11.451"
         const val architecturyPlugin = "3.4.162"
