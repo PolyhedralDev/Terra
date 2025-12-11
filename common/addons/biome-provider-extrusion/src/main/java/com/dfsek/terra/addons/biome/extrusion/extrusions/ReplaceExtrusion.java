@@ -1,6 +1,11 @@
 package com.dfsek.terra.addons.biome.extrusion.extrusions;
 
 import com.dfsek.seismic.type.sampler.Sampler;
+
+import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.api.ReplaceableBiome;
 import com.dfsek.terra.addons.biome.query.api.BiomeQueries;
@@ -9,11 +14,6 @@ import com.dfsek.terra.api.util.collection.TriStateIntCache;
 import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.world.biome.Biome;
 
-import java.util.Collection;
-import java.util.concurrent.atomic.AtomicLongArray;
-import java.util.function.IntPredicate;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Sets biomes at locations based on a sampler.
@@ -44,7 +44,7 @@ public class ReplaceExtrusion implements Extrusion {
         long state = cache.get(id);
         boolean passes;
 
-        if (state == TriStateIntCache.STATE_UNSET) {
+        if(state == TriStateIntCache.STATE_UNSET) {
             // Only run the test if unset in cache
             passes = hasTag.test(original);
             cache.set(id, passes);
@@ -53,8 +53,8 @@ public class ReplaceExtrusion implements Extrusion {
             passes = (state == TriStateIntCache.STATE_TRUE);
         }
 
-        if (passes) {
-            if (range.isInRange(y)) {
+        if(passes) {
+            if(range.isInRange(y)) {
                 return biomes.get(sampler, x, y, z, seed).get(original);
             }
         }
