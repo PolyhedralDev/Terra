@@ -24,8 +24,22 @@ public class TriStateIntCache {
         ARRAY_BASE_OFFSET = UnsafeUtils.UNSAFE.arrayBaseOffset(long[].class);
     }
 
+    private static int getOptimalMaxKeys(int requestedKeys) {
+        // 192 keys fill the first cache line exactly (along with the 16-byte header)
+        if (requestedKeys <= 192) {
+            return 192;
+        }
+
+        // For every additional line, we fit 256 keys (64 bytes * 4 keys/byte)
+        // We calculate the overflow beyond 192, round up to the nearest 256, and add it back.
+        int overflow = requestedKeys - 192;
+        int chunks = (overflow + 255) >>> 8; // Fast ceil division by 256
+
+        return 192 + (chunks << 8); // chunks * 256
+    }
+
     public TriStateIntCache(int maxKeySize) {
-        this.data = new long[(maxKeySize + 31) >>> 5];
+        this.data = new long[(getOptimalMaxKeys(maxKeySize) + 31) >>> 5];
     }
 
     /**

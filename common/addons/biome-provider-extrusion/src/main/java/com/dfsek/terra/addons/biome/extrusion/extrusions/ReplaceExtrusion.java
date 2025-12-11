@@ -23,9 +23,6 @@ public class ReplaceExtrusion implements Extrusion {
     private final Range range;
     private final ProbabilityCollection<ReplaceableBiome> biomes;
     private final Predicate<Biome> hasTag;
-
-    // Replaced ThreadLocal<HashMap> with a specialized primitive cache.
-    // Shared across all threads safely.
     private final TriStateIntCache cache;
 
     public ReplaceExtrusion(Sampler sampler, Range range, ProbabilityCollection<ReplaceableBiome> biomes, String tag) {
@@ -33,7 +30,7 @@ public class ReplaceExtrusion implements Extrusion {
         this.range = range;
         this.biomes = biomes;
         this.hasTag = BiomeQueries.has(tag);
-        this.cache = new TriStateIntCache(Math.max(512, Biome.INT_ID_COUNTER.get()));
+        this.cache = new TriStateIntCache(Biome.INT_ID_COUNTER.get());
     }
 
     @Override
