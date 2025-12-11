@@ -11,5 +11,5 @@ tasks.named("jar") {
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(25)
+    options.release = 25
 }
