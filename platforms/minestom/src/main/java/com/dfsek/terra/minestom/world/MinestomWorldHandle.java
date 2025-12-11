@@ -15,7 +15,7 @@ public class MinestomWorldHandle implements WorldHandle {
 
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
-        return new MinestomBlockState(data);
+        return MinestomBlockState.fromStateId(data);
     }
 
     @Override
