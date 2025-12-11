@@ -13,6 +13,7 @@ import org.gradle.kotlin.dsl.getByName
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.language.jvm.tasks.ProcessResources
+import org.gradle.plugins.ide.idea.model.IdeaModel
 
 fun Project.configureCompilation() {
     apply(plugin = "maven-publish")
@@ -20,6 +21,13 @@ fun Project.configureCompilation() {
     apply(plugin = "java-library")
     apply(plugin = "idea")
     apply<TectonicDocPlugin>()
+    
+    configure<IdeaModel> {
+        module {
+            isDownloadJavadoc = true
+            isDownloadSources = true
+        }
+    }
     
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_21
