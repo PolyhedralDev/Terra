@@ -20,6 +20,10 @@ tasks.withType<Jar> {
     }
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(25)
+}
+
 application {
     mainClass.set(javaMainClass)
 }
