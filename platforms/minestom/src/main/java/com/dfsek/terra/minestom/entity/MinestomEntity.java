@@ -22,7 +22,8 @@ public class MinestomEntity implements com.dfsek.terra.api.entity.Entity {
 
     public static MinestomEntity spawn(double x, double y, double z, EntityType type, TerraMinestomWorld world) {
         Instance instance = world.getHandle();
-        Entity entity = world.getEntityFactory().createEntity(((MinestomEntityType) type).getHandle());
+        MinestomEntityType entityType = (MinestomEntityType) type;
+        Entity entity = world.getEntityFactory().createEntity(entityType.getHandle(), entityType.getData());
         entity.setInstance(instance, new Pos(x, y, z));
         return new MinestomEntity(entity, world);
     }
