@@ -15,26 +15,27 @@ import com.dfsek.terra.minestom.block.MinestomBlockState;
 public class CachedChunk implements ProtoChunk {
     private final int minHeight;
     private final int maxHeight;
-    private final Block[] blocks;
+    private final MinestomBlockState[] blocks;
 
     public CachedChunk(int minHeight, int maxHeight) {
         this.minHeight = minHeight;
         this.maxHeight = maxHeight;
-        this.blocks = new Block[16 * (maxHeight - minHeight + 1) * 16];
-        Arrays.fill(blocks, Block.AIR);
+        this.blocks = new MinestomBlockState[16 * (maxHeight - minHeight + 1) * 16];
+        Arrays.fill(blocks, MinestomBlockState.AIR);
     }
 
     public void writeRelative(UnitModifier modifier) {
-        modifier.setAllRelative((x, y, z) -> blocks[getIndex(x, y + minHeight, z)]);
+        modifier.setAllRelative((x, y, z) -> blocks[getIndex(x, y + minHeight, z)].block());
     }
 
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        Block block = (Block) blockState.getHandle();
+        MinestomBlockState minestomBlockState = (MinestomBlockState) blockState;
+        Block block = minestomBlockState.block();
         if(block == null) return;
         int index = getIndex(x, y, z);
         if(index > blocks.length || index < 0) return;
-        blocks[index] = block;
+        blocks[index] = minestomBlockState;
     }
 
     private int getIndex(int x, int y, int z) {
@@ -46,7 +47,7 @@ public class CachedChunk implements ProtoChunk {
     public @NotNull BlockState getBlock(int x, int y, int z) {
         int index = getIndex(x, y, z);
         if(index > blocks.length || index < 0) return MinestomBlockState.AIR;
-        return new MinestomBlockState(blocks[index]);
+        return blocks[index];
     }
 
     @Override
