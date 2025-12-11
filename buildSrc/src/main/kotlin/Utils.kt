@@ -1,6 +1,8 @@
 import java.io.ByteArrayOutputStream
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.support.serviceOf
+import org.gradle.process.ExecOperations
 
 
 var isPrerelease = false
@@ -8,7 +10,7 @@ var isPrerelease = false
 
 fun Project.getGitHash(): String {
     val stdout = ByteArrayOutputStream()
-    exec {
+    serviceOf<ExecOperations>().exec {
         commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
         standardOutput = stdout
     }
@@ -17,7 +19,7 @@ fun Project.getGitHash(): String {
 
 fun Project.gitClone(name: String) {
     val stdout = ByteArrayOutputStream()
-    exec {
+    serviceOf<ExecOperations>().exec {
         commandLine = mutableListOf("git", "clone", name)
         standardOutput = stdout
     }
