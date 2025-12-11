@@ -2,18 +2,11 @@ package com.dfsek.terra.addons.feature.distributor.distributors;
 
 import com.dfsek.seismic.algorithms.hashing.HashingFunctions;
 import com.dfsek.seismic.math.integer.IntegerFunctions;
-
-import java.util.random.RandomGenerator;
-import java.util.random.RandomGeneratorFactory;
-
 import com.dfsek.terra.api.structure.feature.Distributor;
-
 
 public class PaddedGridDistributor implements Distributor {
     private final int width;
-
     private final int cellWidth;
-
     private final int salt;
 
     public PaddedGridDistributor(int width, int padding, int salt) {
@@ -27,12 +20,26 @@ public class PaddedGridDistributor implements Distributor {
         int cellX = Math.floorDiv(x, cellWidth);
         int cellZ = Math.floorDiv(z, cellWidth);
 
-        RandomGenerator random = RandomGeneratorFactory.<RandomGenerator.SplittableGenerator>of("Xoroshiro128PlusPlus").create(
-            (HashingFunctions.murmur64(IntegerFunctions.squash(cellX, cellZ)) ^ seed) + salt);
+        int localX = x - (cellX * cellWidth);
+        int localZ = z - (cellZ * cellWidth);
 
-        int pointX = random.nextInt(width) + cellX * cellWidth;
-        int pointZ = random.nextInt(width) + cellZ * cellWidth;
+        if (localX >= width || localZ >= width) {
+            return false;
+        }
 
-        return x == pointX && z == pointZ;
+        long hash = HashingFunctions.murmur64(IntegerFunctions.squash(cellX, cellZ)) ^ seed;
+        hash += salt;
+
+        hash = HashingFunctions.splitMix64(hash);
+        int targetX = (int) ((hash & 0x7FFFFFFFFFFFFFFFL) % width);
+
+        if (localX != targetX) {
+            return false;
+        }
+
+        hash = HashingFunctions.splitMix64(hash);
+        int targetZ = (int) ((hash & 0x7FFFFFFFFFFFFFFFL) % width);
+
+        return localZ == targetZ;
     }
 }
