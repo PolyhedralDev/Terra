@@ -19,7 +19,6 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
-    private final static AtomicInteger INT_ID_COUNTER = new AtomicInteger(0);
     private final PlatformBiome vanilla;
     private final String id;
     private final BiomeTemplate config;

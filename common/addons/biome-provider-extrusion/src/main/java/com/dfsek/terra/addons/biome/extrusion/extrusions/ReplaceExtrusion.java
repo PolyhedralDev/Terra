@@ -33,8 +33,7 @@ public class ReplaceExtrusion implements Extrusion {
         this.range = range;
         this.biomes = biomes;
         this.hasTag = BiomeQueries.has(tag);
-
-        this.cache = new TriStateIntCache(65536);
+        this.cache = new TriStateIntCache(Math.max(512, Biome.INT_ID_COUNTER.get()));
     }
 
     @Override
