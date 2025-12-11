@@ -8,6 +8,7 @@
 package com.dfsek.terra.addons.biome;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.world.biome.Biome;
@@ -18,6 +19,7 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
  * Class representing a config-defined biome
  */
 public class UserDefinedBiome implements Biome {
+    private final static AtomicInteger INT_ID_COUNTER = new AtomicInteger(0);
     private final PlatformBiome vanilla;
     private final String id;
     private final BiomeTemplate config;
@@ -25,6 +27,7 @@ public class UserDefinedBiome implements Biome {
     private final Set<String> tags;
 
     private final Context context = new Context();
+    private final int intID;
 
     public UserDefinedBiome(PlatformBiome vanilla, BiomeTemplate config) {
         this.vanilla = vanilla;
@@ -32,6 +35,7 @@ public class UserDefinedBiome implements Biome {
         this.config = config;
         this.color = config.getColor();
         this.tags = config.getTags();
+        this.intID = INT_ID_COUNTER.getAndIncrement();
         tags.add("BIOME:" + id);
         tags.add("ALL");
     }
@@ -59,6 +63,11 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Set<String> getTags() {
         return tags;
+    }
+
+    @Override
+    public int getIntID() {
+        return intID;
     }
 
     @Override

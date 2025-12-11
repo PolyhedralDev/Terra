@@ -46,6 +46,6 @@ class BaseBiomeColumn implements Column<Biome> {
 
     @Override
     public Biome get(int y) {
-        return biomeProvider.extrude(base, x, y, z, seed);
+        return biomeProvider.pipeline.extrude(base, x, y, z, seed);
     }
 }

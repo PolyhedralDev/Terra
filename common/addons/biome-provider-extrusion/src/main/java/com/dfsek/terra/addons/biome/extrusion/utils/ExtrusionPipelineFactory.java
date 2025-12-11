@@ -1,4 +1,4 @@
-package com.dfsek.terra.addons.biome.extrusion;
+package com.dfsek.terra.addons.biome.extrusion.utils;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
