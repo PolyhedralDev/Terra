@@ -6,15 +6,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipeline;
+import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipelineFactory;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomeExtrusionProvider implements BiomeProvider {
+    public final ExtrusionPipeline pipeline;
     private final BiomeProvider delegate;
     private final Set<Biome> biomes;
-    private final ExtrusionPipeline pipeline;
     private final int resolution;
 
     public BiomeExtrusionProvider(BiomeProvider delegate, List<Extrusion> extrusions, int resolution) {
@@ -30,11 +32,7 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         Biome delegated = delegate.getBiome(x, y, z, seed);
-        return extrude(delegated, x, y, z, seed);
-    }
-
-    public Biome extrude(Biome original, int x, int y, int z, long seed) {
-        return pipeline.extrude(original, x, y, z, seed);
+        return pipeline.extrude(delegated, x, y, z, seed);
     }
 
     @Override

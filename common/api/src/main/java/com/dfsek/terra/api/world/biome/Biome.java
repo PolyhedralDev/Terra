@@ -39,4 +39,12 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
      * @return A {@link Set} of String tags this biome holds.
      */
     Set<String> getTags();
+
+
+    /**
+     * Get the numeric ID of this biome, generated at registration time
+     *
+     * @return The numeric ID.
+     */
+    int getIntID();
 }
