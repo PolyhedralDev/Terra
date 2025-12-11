@@ -27,6 +27,8 @@ public class TerraMinestomExample {
     private TerraMinestomWorld world;
 
     public static void main(String[] args) {
+        System.setProperty("minestom.registry.unsafe-ops", "true");
+
         TerraMinestomExample example = new TerraMinestomExample();
         example.createNewInstance();
         example.attachTerra();
