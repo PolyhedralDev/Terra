@@ -2,10 +2,11 @@ package com.dfsek.terra.api.util.collection;
 
 import java.util.concurrent.atomic.AtomicLongArray;
 
+
 public class TriStateIntCache {
     public static final long STATE_UNSET = 0L;
     public static final long STATE_FALSE = 1L;
-    public static final long STATE_TRUE  = 2L;
+    public static final long STATE_TRUE = 2L;
 
     private static final long BIT_MASK = 3L;
     private final AtomicLongArray data;
@@ -16,6 +17,7 @@ public class TriStateIntCache {
 
     /**
      * Checks the cache state without any allocation.
+     *
      * @return STATE_UNSET (0), STATE_FALSE (1), or STATE_TRUE (2)
      */
     public long get(int key) {
@@ -39,13 +41,13 @@ public class TriStateIntCache {
 
             // Race condition check:
             long existingState = (currentWord >>> bitShift) & BIT_MASK;
-            if (existingState != STATE_UNSET) {
+            if(existingState != STATE_UNSET) {
                 return; // Already set, abort our update
             }
 
             // Create new word with our bit set
             newWord = (currentWord & ~(BIT_MASK << bitShift)) | (targetState << bitShift);
 
-        } while (!data.compareAndSet(arrayIndex, currentWord, newWord));
+        } while(!data.compareAndSet(arrayIndex, currentWord, newWord));
     }
 }
