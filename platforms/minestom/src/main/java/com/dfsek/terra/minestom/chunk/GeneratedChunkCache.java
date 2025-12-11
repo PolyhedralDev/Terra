@@ -4,6 +4,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.stats.CacheStats;
 import net.minestom.server.world.DimensionType;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 
 public class GeneratedChunkCache {
     private static final Logger log = LoggerFactory.getLogger(GeneratedChunkCache.class);
-    private final LoadingCache<Pair<Integer, Integer>, CachedChunk> cache;
+    private final LoadingCache<@NotNull Long, CachedChunk> cache;
     private final DimensionType dimensionType;
     private final ChunkGenerator generator;
     private final ServerWorld world;
@@ -29,7 +30,7 @@ public class GeneratedChunkCache {
         this.cache = Caffeine.newBuilder()
             .maximumSize(128)
             .recordStats()
-            .build((Pair<Integer, Integer> key) -> generateChunk(key.getLeft(), key.getRight()));
+            .build((Long key) -> generateChunk(unpackX(key), unpackZ(key)));
     }
 
     private CachedChunk generateChunk(int x, int z) {
@@ -50,6 +51,18 @@ public class GeneratedChunkCache {
     }
 
     public CachedChunk at(int x, int z) {
-        return cache.get(Pair.of(x, z));
+        return cache.get(pack(x, z));
+    }
+
+    private long pack(final int x, final int z) {
+        return ((long) x) << 32 | z & 0xFFFFFFFFL;
+    }
+
+    private int unpackX(long key) {
+        return (int) (key >>> 32);
+    }
+
+    private int unpackZ(long key) {
+        return (int) key;
     }
 }
