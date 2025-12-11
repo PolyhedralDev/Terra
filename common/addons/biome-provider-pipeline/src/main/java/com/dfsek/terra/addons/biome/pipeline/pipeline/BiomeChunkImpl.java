@@ -73,12 +73,13 @@ public class BiomeChunkImpl implements BiomeChunk {
             lookupArray = tempArray;
 
             // Apply stage to working grid
+            ViewPoint viewPoint = new ViewPoint(this, gridInterval, lookupArray, size);
             for(int gridZ = 0; gridZ < gridSize; gridZ = gridZ + 1) {
                 for(int gridX = 0; gridX < gridSize; gridX = gridX + 1) {
                     int xIndex = gridOrigin + gridX * gridInterval;
                     int zIndex = gridOrigin + gridZ * gridInterval;
-                    biomes[(xIndex * size) + zIndex] = stage.apply(
-                        new ViewPoint(this, gridInterval, gridX, gridZ, xIndex, zIndex, lookupArray, size));
+                    viewPoint.set(gridX, gridZ, xIndex, zIndex);
+                    biomes[(xIndex * size) + zIndex] = stage.apply(viewPoint);
                 }
             }
         }
@@ -157,25 +158,32 @@ public class BiomeChunkImpl implements BiomeChunk {
      */
     public static class ViewPoint {
         private final BiomeChunkImpl chunk;
-        private final PipelineBiome biome;
+        private PipelineBiome biome;
         private final int gridInterval;
-        private final int gridX;
-        private final int gridZ;
-        private final int xIndex;
-        private final int zIndex;
+        private int gridX;
+        private int gridZ;
+        private int xIndex;
+        private int zIndex;
         private final PipelineBiome[] lookupArray;
         private final int size;
 
-        private ViewPoint(BiomeChunkImpl chunk, int gridInterval, int gridX, int gridZ, int xIndex, int zIndex,
+        private ViewPoint(BiomeChunkImpl chunk, int gridInterval,
                           PipelineBiome[] lookupArray, int size) {
             this.chunk = chunk;
             this.gridInterval = gridInterval;
+            this.gridX = 0;
+            this.gridZ = 0;
+            this.xIndex = 0;
+            this.zIndex = 0;
+            this.lookupArray = lookupArray;
+            this.size = size;
+        }
+
+        public void set(int gridX, int gridZ, int xIndex, int zIndex) {
             this.gridX = gridX;
             this.gridZ = gridZ;
             this.xIndex = xIndex;
             this.zIndex = zIndex;
-            this.lookupArray = lookupArray;
-            this.size = size;
             this.biome = lookupArray[(this.xIndex * this.size) + this.zIndex];
         }
 
