@@ -18,7 +18,7 @@ public final class LifecycleEntryPoint {
         logger.info("Initializing Terra {} mod...", modName);
 
         FabricServerCommandManager<CommandSender> manager = new FabricServerCommandManager<>(
-            ExecutionCoordinator.simpleCoordinator(),
+            ExecutionCoordinator.asyncCoordinator(),
             SenderMapper.create(
                 serverCommandSource -> (CommandSender) serverCommandSource,
                 commandSender -> (ServerCommandSource) commandSender)
