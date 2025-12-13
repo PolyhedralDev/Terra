@@ -93,7 +93,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
                 BukkitAdapter::adapt,
                 BukkitAdapter::adapt
             ))
-            .executionCoordinator(ExecutionCoordinator.simpleCoordinator())
+            .executionCoordinator(ExecutionCoordinator.asyncCoordinator())
             .buildOnEnable(this);
 
         commandManager.brigadierManager().setNativeNumberSuggestions(false);
