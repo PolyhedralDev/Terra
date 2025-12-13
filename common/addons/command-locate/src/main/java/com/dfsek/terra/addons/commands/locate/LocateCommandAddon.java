@@ -21,14 +21,10 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.structure.Structure;
 import com.dfsek.terra.api.util.generic.either.Either;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
-import com.dfsek.terra.api.world.info.WorldProperties;
-
-import org.jetbrains.annotations.NotNull;
 
 
 public class LocateCommandAddon implements AddonInitializer {
@@ -62,58 +58,75 @@ public class LocateCommandAddon implements AddonInitializer {
                         .optional("step", IntegerParser.integerParser(1), DefaultValue.constant(16))
                         // Flag: Toggle 3D search (e.g., --3d or -3)
                         .flag(manager.flagBuilder("3d").withAliases("3").build())
+                        // Flag: Auto resolution mode (e.g., --auto or -a)
+                        .flag(manager.flagBuilder("auto").withAliases("a").build())
                         .handler(context -> {
-                            //Gather Context & Arguments
+                            // 1. Gather Context & Arguments
                             Biome targetBiome = context.get("biome");
                             Entity sender = context.sender().getEntity().orElseThrow(
                                 () -> new Error("Only entities can run this command."));
                             World world = sender.world();
-
+                            
+                            // Fetch properties needed for the locator
                             int radius = context.get("radius");
-                            int step = context.get("step");
                             boolean search3D = context.flags().hasFlag("3d");
+                            boolean autoMode = context.flags().hasFlag("auto");
 
-                            //Notify player that search has started (as it might take a moment)
-                            context.sender().sendMessage("Searching for " + targetBiome.getID() + " within " + radius + " blocks...");
+                            // 2. Determine Initial Step
+                            // If Auto: Start at radius / 2 (very coarse check).
+                            // If Manual: Use provided step.
+                            int currentStep = autoMode ? Integer.highestOneBit(radius - 1) : context.get("step");
 
-                            //Execute Search
-                            Optional<Either<Vector3Int, Vector2Int>> result = BiomeLocator.search(
-                                world.getBiomeProvider(),
-                                world,
-                                sender.position().getFloorX(),
-                                sender.position().getFloorZ(),
-                                radius,
-                                step,
-                                found -> found.equals(targetBiome), // Predicate: Match exact biome instance
-                                search3D
-                            );
+                            // Notify player
+                            String modeMsg = autoMode ? " (Auto Mode)" : " (Step: " + currentStep + ")";
+                            context.sender().sendMessage(
+                                "Searching for " + targetBiome.getID() + " within " + radius + " blocks" + modeMsg + "...");
 
-                            //Handle Result
+                            Optional<Either<Vector3Int, Vector2Int>> result;
+
+                            // 3. Execute Search Loop
+                            while(true) {
+                                result = BiomeLocator.search(
+                                    world.getBiomeProvider(),
+                                    world,
+                                    sender.position().getFloorX(),
+                                    sender.position().getFloorZ(),
+                                    radius,
+                                    currentStep,
+                                    found -> found.equals(targetBiome), // Match specific biome instance
+                                    search3D
+                                );
+
+                                // Exit Conditions:
+                                // 1. Found a result
+                                if(result.isPresent()) {
+                                    break;
+                                }
+                                // 2. Not in auto mode (only run once)
+                                if(!autoMode) {
+                                    break;
+                                }
+                                // 3. We just ran a search at step 1 and failed (lowest resolution)
+                                if(currentStep == 1) {
+                                    break;
+                                }
+
+                                // Reduce step for next iteration (Adaptive Search)
+                                currentStep /= 2;
+                                context.sender().sendMessage("No result found, refining search (Step: " + currentStep + ")...");
+                            }
+
+                            // 4. Handle Result
                             if(result.isPresent()) {
                                 Either<Vector3Int, Vector2Int> location = result.get();
                                 String coords;
 
-                                if(location.hasLeft()) {
-                                    // 3D Result
-                                    Optional<Vector3Int> vec = location.getLeft();
-                                    if (vec.isPresent()) {
-                                        Vector3Int vecUnwrapped = vec.get();
-                                        coords = String.format("%d, %d, %d", vecUnwrapped.getX(), vecUnwrapped.getY(), vecUnwrapped.getZ());
-                                    }
-                                    else {
-                                        context.sender().sendMessage("Could not find " + targetBiome.getID() + " within " + radius + " blocks.");
-                                        return;
-                                    }
-                                } else {
-                                    // 2D Result
-                                    Optional<Vector2Int> vec = location.getRight();
-                                    if (vec.isPresent()) {
-                                        Vector2Int vecUnwrapped = vec.get();
-                                        coords = String.format("%d, %d", vecUnwrapped.getX(), vecUnwrapped.getZ());
-                                    } else {
-                                        context.sender().sendMessage("Could not find " + targetBiome.getID() + " within " + radius + " blocks.");
-                                        return;
-                                    }
+                                if(location.hasLeft()) { // 3D Result
+                                    Vector3Int vec = location.getLeft().get();
+                                    coords = String.format("%d, %d, %d", vec.getX(), vec.getY(), vec.getZ());
+                                } else { // 2D Result
+                                    Vector2Int vec = location.getRight().get();
+                                    coords = String.format("%d, ~, %d", vec.getX(), vec.getZ());
                                 }
 
                                 context.sender().sendMessage("Found " + targetBiome.getID() + " at [" + coords + "]");
