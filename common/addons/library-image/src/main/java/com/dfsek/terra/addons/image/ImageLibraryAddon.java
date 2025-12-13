@@ -13,6 +13,7 @@ import com.dfsek.terra.addons.image.config.colorsampler.ConstantColorSamplerTemp
 import com.dfsek.terra.addons.image.config.colorsampler.image.SingleImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.image.TileImageColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.RotateColorSamplerTemplate;
+import com.dfsek.terra.addons.image.config.colorsampler.mutate.ScaleColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.colorsampler.mutate.TranslateColorSamplerTemplate;
 import com.dfsek.terra.addons.image.config.image.ImageTemplate;
 import com.dfsek.terra.addons.image.config.image.StitchedImageTemplate;
@@ -84,6 +85,7 @@ public class ImageLibraryAddon implements AddonInitializer {
                 colorSamplerRegistry.register(addon.key("COLOR"), ConstantColorSamplerTemplate::new);
                 colorSamplerRegistry.register(addon.key("ROTATE"), RotateColorSamplerTemplate::new);
                 colorSamplerRegistry.register(addon.key("TRANSLATE"), TranslateColorSamplerTemplate::new);
+                colorSamplerRegistry.register(addon.key("SCALE"), ScaleColorSamplerTemplate::new);
             });
     }
 }
