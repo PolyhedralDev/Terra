@@ -2,15 +2,15 @@ package com.dfsek.terra.bukkit.nms;
 
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.exception.LoadException;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.Music;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.npc.VillagerType;
-import net.minecraft.world.level.biome.AmbientAdditionsSettings;
-import net.minecraft.world.level.biome.AmbientMoodSettings;
-import net.minecraft.world.level.biome.AmbientParticleSettings;
+import net.minecraft.world.attribute.AmbientAdditionsSettings;
+import net.minecraft.world.attribute.AmbientMoodSettings;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.level.biome.Biome.Precipitation;
 import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
@@ -52,8 +52,8 @@ public class NMSPlatform extends PlatformImpl {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-            .registerLoader(ResourceLocation.class, (type, o, loader, depthTracker) -> {
-                ResourceLocation identifier = ResourceLocation.tryParse((String) o);
+            .registerLoader(Identifier.class, (type, o, loader, depthTracker) -> {
+                Identifier identifier = Identifier.tryParse((String) o);
                 if(identifier == null)
                     throw new LoadException("Invalid identifier: " + o, depthTracker);
                 return identifier;
@@ -67,7 +67,7 @@ public class NMSPlatform extends PlatformImpl {
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
             .registerLoader(MobCategory.class, (type, o, loader, depthTracker) -> MobCategory.valueOf((String) o))
-            .registerLoader(AmbientParticleSettings.class, BiomeParticleConfigTemplate::new)
+            .registerLoader(AmbientParticle.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)
             .registerLoader(AmbientMoodSettings.class, BiomeMoodSoundTemplate::new)
             .registerLoader(AmbientAdditionsSettings.class, BiomeAdditionsSoundTemplate::new)

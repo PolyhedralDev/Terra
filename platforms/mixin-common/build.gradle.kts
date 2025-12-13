@@ -1,5 +1,5 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("dev.architectury.loom") version Versions.Mod.architecturyLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 
@@ -16,7 +16,7 @@ dependencies {
 
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecturyLoom}")
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
     mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
