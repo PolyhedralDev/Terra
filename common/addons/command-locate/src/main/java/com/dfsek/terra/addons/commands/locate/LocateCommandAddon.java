@@ -66,7 +66,7 @@ public class LocateCommandAddon implements AddonInitializer {
                             Entity sender = context.sender().getEntity().orElseThrow(
                                 () -> new Error("Only entities can run this command."));
                             World world = sender.world();
-                            
+
                             // Fetch properties needed for the locator
                             int radius = context.get("radius");
                             boolean search3D = context.flags().hasFlag("3d");
@@ -75,7 +75,8 @@ public class LocateCommandAddon implements AddonInitializer {
                             // 2. Determine Initial Step
                             // If Auto: Start at radius / 2 (very coarse check).
                             // If Manual: Use provided step.
-                            int currentStep = autoMode ? Integer.highestOneBit(radius - 1) : context.get("step");
+                            int stepArg = context.get("step");
+                            int currentStep = autoMode ? Integer.highestOneBit(radius - 1) : stepArg;
 
                             // Notify player
                             String modeMsg = autoMode ? " (Auto Mode)" : " (Step: " + currentStep + ")";
@@ -106,8 +107,8 @@ public class LocateCommandAddon implements AddonInitializer {
                                 if(!autoMode) {
                                     break;
                                 }
-                                // 3. We just ran a search at step 1 and failed (lowest resolution)
-                                if(currentStep == 1) {
+                                // 3. We just ran a search at step arg and failed (lowest resolution)
+                                if(currentStep <= stepArg) {
                                     break;
                                 }
 
