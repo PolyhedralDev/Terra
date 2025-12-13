@@ -2,10 +2,9 @@ package com.dfsek.terra.api.util.collection;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
-import java.lang.reflect.Field;
 
 import com.dfsek.seismic.util.UnsafeUtils;
-import sun.misc.Unsafe;
+
 
 public class TriStateIntCache {
     public static final long STATE_UNSET = 0L;
@@ -16,13 +15,6 @@ public class TriStateIntCache {
     private final long[] data;
 
     private static final VarHandle ARRAY_HANDLE = MethodHandles.arrayElementVarHandle(long[].class);
-
-    private static final long ARRAY_BASE_OFFSET;
-
-    static {
-        assert UnsafeUtils.UNSAFE != null;
-        ARRAY_BASE_OFFSET = UnsafeUtils.UNSAFE.arrayBaseOffset(long[].class);
-    }
 
     private static int getOptimalMaxKeys(int requestedKeys) {
         // 192 keys fill the first cache line exactly (along with the 16-byte header)
@@ -48,7 +40,7 @@ public class TriStateIntCache {
      * @return STATE_UNSET (0), STATE_FALSE (1), or STATE_TRUE (2)
      */
     public long get(int key) {
-        long offset = ARRAY_BASE_OFFSET + ((long)(key >>> 5) << 3);
+        long offset = UnsafeUtils.LONG_ARRAY_BASE + ((long)(key >>> 5) << UnsafeUtils.LONG_ARRAY_SHIFT);
         long currentWord = UnsafeUtils.UNSAFE.getLong(data, offset);
         return (currentWord >>> ((key << 1) & 63)) & BIT_MASK;
     }
