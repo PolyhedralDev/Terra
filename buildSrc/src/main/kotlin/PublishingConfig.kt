@@ -16,16 +16,17 @@ fun Project.configurePublishing() {
         }
         
         repositories {
-            val mavenUrl = "https://repo.codemc.io/repository/maven-releases/"
+            val mavenUrl = "https://maven.solo-studios.ca/releases/"
             //val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
             
             maven(mavenUrl) {
-                val mavenUsername: String? by project
-                val mavenPassword: String? by project
-                if (mavenUsername != null && mavenPassword != null) {
+                val SoloStudiosReleasesUsername: String? by project
+                val SoloStudiosReleasesPassword: String? by project
+                
+                if (SoloStudiosReleasesUsername != null && SoloStudiosReleasesPassword != null) {
                     credentials {
-                        username = mavenUsername
-                        password = mavenPassword
+                        username = SoloStudiosReleasesUsername
+                        password = SoloStudiosReleasesPassword
                     }
                 }
             }

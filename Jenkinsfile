@@ -106,7 +106,8 @@ pipeline {
                     // )
                 ]) {
                     withGradle {
-                        sh './gradlew publishAllPublicationsToSoloStudiosReleasesRepository'
+                        sh './gradlew publish'
+                        //sh './gradlew publishAllPublicationsToSoloStudiosReleasesRepository'
                         // sh './gradlew publishAllPublicationsToSonatypeRepository'
                         // sh './gradlew publishAllPublicationsToCodeMCRepository'
                     }
