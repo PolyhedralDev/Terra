@@ -37,7 +37,7 @@ pipeline {
                 success {
                     archiveArtifacts artifacts: 'platforms/fabric/build/libs/Terra-fabric*.jar,platforms/bukkit/build/libs/Terra-bukkit*-shaded.jar,platforms/allay/build/libs/Terra-allay*.jar,platforms/minestom/build/libs/Terra-minestom*.jar', fingerprint: true, onlyIfSuccessful: true
 
-                    javadoc javadocDir: 'build/docs/javadoc/', keepAll: true
+                    javadoc javadocDir: 'common/api/build/docs/javadoc', keepAll: true
                 }
             }
         }
