@@ -30,6 +30,7 @@ pipeline {
             steps {
                 withGradle {
                     sh './gradlew build --rerun-tasks -x check'
+                    sh './gradlew javadoc'
                 }
             }
 
