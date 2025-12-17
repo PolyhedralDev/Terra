@@ -164,7 +164,6 @@ fun Project.configureDistribution() {
         configurations = listOf(project.configurations["shaded"])
         archiveClassifier.set("shaded")
         version = project.version
-        relocate("com.github.benmanes.caffeine", "com.dfsek.terra.lib.caffeine")
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
         relocate("org.json", "com.dfsek.terra.lib.json")
