@@ -9,6 +9,7 @@ package com.dfsek.terra.api.world.biome;
 
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
@@ -18,6 +19,7 @@ import com.dfsek.terra.api.registry.key.StringIdentifiable;
  * Represents a Terra biome
  */
 public interface Biome extends PropertyHolder, StringIdentifiable {
+    AtomicInteger INT_ID_COUNTER = new AtomicInteger(0);
 
     /**
      * Gets the platform biome this custom biome delegates to.
@@ -39,4 +41,12 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
      * @return A {@link Set} of String tags this biome holds.
      */
     Set<String> getTags();
+
+
+    /**
+     * Get the numeric ID of this biome, generated at registration time
+     *
+     * @return The numeric ID.
+     */
+    int getIntID();
 }

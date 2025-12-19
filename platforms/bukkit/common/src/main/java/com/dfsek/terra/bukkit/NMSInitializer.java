@@ -3,9 +3,9 @@ package com.dfsek.terra.bukkit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.dfsek.terra.bukkit.util.VersionUtil;
-
 import java.util.List;
+
+import com.dfsek.terra.bukkit.util.VersionUtil;
 
 
 public interface NMSInitializer {
@@ -16,8 +16,9 @@ public interface NMSInitializer {
     static PlatformImpl init(TerraBukkitPlugin plugin) {
         Logger logger = LoggerFactory.getLogger(NMSInitializer.class);
 
-        if (!SUPPORTED_VERSIONS.contains(MINECRAFT_VERSION)) {
-            logger.error("You are running your server on Minecraft version {} which is not supported by this version of Terra.", MINECRAFT_VERSION);
+        if(!SUPPORTED_VERSIONS.contains(MINECRAFT_VERSION)) {
+            logger.error("You are running your server on Minecraft version {} which is not supported by this version of Terra.",
+                MINECRAFT_VERSION);
 
             String bypassKey = "IKnowThereAreNoNMSBindingsFor" + MINECRAFT_VERSION.replace(".", "_") + "ButIWillProceedAnyway";
             if(System.getProperty(bypassKey) == null) {

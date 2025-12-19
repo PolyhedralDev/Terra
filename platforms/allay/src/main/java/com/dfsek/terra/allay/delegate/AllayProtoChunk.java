@@ -1,7 +1,7 @@
 package com.dfsek.terra.allay.delegate;
 
-import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.data.BlockTags;
+import org.allaymc.api.block.property.type.BlockPropertyTypes;
 import org.allaymc.api.block.type.BlockTypes;
 import org.allaymc.api.world.chunk.UnsafeChunk;
 import org.jetbrains.annotations.NotNull;
@@ -27,9 +27,9 @@ public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
         var dimensionInfo = allayChunk.getDimensionInfo();
-        if (x < 0 || x > 15 ||
-            z < 0 || z > 15 ||
-            y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+        if(x < 0 || x > 15 ||
+           z < 0 || z > 15 ||
+           y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
             return;
         }
 

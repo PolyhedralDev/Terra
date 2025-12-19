@@ -1,8 +1,8 @@
 package com.dfsek.terra.allay.delegate;
 
-import com.dfsek.terra.api.world.info.WorldProperties;
-
 import org.allaymc.api.world.data.DimensionInfo;
+
+import com.dfsek.terra.api.world.info.WorldProperties;
 
 
 /**

@@ -6,37 +6,33 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
+import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipeline;
+import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipelineFactory;
 import com.dfsek.terra.api.util.Column;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
 public class BiomeExtrusionProvider implements BiomeProvider {
+    public final ExtrusionPipeline pipeline;
     private final BiomeProvider delegate;
     private final Set<Biome> biomes;
-    private final Extrusion[] extrusions;
     private final int resolution;
 
     public BiomeExtrusionProvider(BiomeProvider delegate, List<Extrusion> extrusions, int resolution) {
         this.delegate = delegate;
         this.biomes = delegate.stream().collect(Collectors.toSet());
         extrusions.forEach(e -> biomes.addAll(e.getBiomes()));
-        this.extrusions = extrusions.toArray(new Extrusion[0]);
+
+        this.pipeline = ExtrusionPipelineFactory.create(extrusions);
+
         this.resolution = resolution;
     }
 
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         Biome delegated = delegate.getBiome(x, y, z, seed);
-
-        return extrude(delegated, x, y, z, seed);
-    }
-
-    public Biome extrude(Biome original, int x, int y, int z, long seed) {
-        for(int i = 0; i < extrusions.length; i++) {
-            original = extrusions[i].extrude(original, x, y, z, seed);
-        }
-        return original;
+        return pipeline.extrude(delegated, x, y, z, seed);
     }
 
     @Override
