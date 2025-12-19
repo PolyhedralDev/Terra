@@ -9,9 +9,9 @@ import net.minecraft.sound.BiomeMoodSound;
 import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.village.VillagerType;
+import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
-import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 
 import com.dfsek.terra.api.properties.Properties;
@@ -52,7 +52,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("particles")
     @Default
-    private BiomeParticleConfig particleConfig = null;
+    private AmbientParticle particleConfig = null;
 
     @Value("climate.precipitation")
     @Default
@@ -131,7 +131,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return grassColorModifier;
     }
 
-    public BiomeParticleConfig getParticleConfig() {
+    public AmbientParticle getParticleConfig() {
         return particleConfig;
     }
 
