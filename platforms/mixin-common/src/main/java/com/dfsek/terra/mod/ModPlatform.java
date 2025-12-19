@@ -14,11 +14,11 @@ import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.VillagerType;
+import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Precipitation;
 import net.minecraft.world.biome.Biome.TemperatureModifier;
 import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
-import net.minecraft.world.biome.BiomeParticleConfig;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.dimension.DimensionType;
@@ -87,7 +87,7 @@ public abstract class ModPlatform extends AbstractPlatform {
             .registerLoader(TemperatureModifier.class,
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
             .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
-            .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
+            .registerLoader(AmbientParticle.class, BiomeParticleConfigTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new)
             .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
             .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
