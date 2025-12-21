@@ -5,11 +5,15 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.sound.SoundEvent;
+import net.minestom.server.world.attribute.AmbientParticle;
+import net.minestom.server.world.attribute.AmbientSounds;
 import net.minestom.server.world.biome.Biome.TemperatureModifier;
 import net.minestom.server.world.biome.BiomeEffects;
 import net.minestom.server.world.biome.BiomeEffects.GrassColorModifier;
 
 import com.dfsek.terra.api.properties.Properties;
+
+import java.util.List;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
@@ -43,7 +47,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("particles")
     @Default
-    private BiomeEffects.Particle particleConfig = null;
+    private AmbientParticle particleConfig = null;
 
     @Value("climate.precipitation")
     @Default
@@ -67,11 +71,11 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("sound.mood-sound")
     @Default
-    private BiomeEffects.MoodSound moodSound = null;
+    private AmbientSounds.Mood moodSound = null;
 
     @Value("sound.additions-sound")
     @Default
-    private BiomeEffects.AdditionsSound additionsSound = null;
+    private AmbientSounds.Additions additionsSound = null;
 
     //    @Value("sound.music")
     //    @Default
@@ -105,8 +109,9 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return grassColorModifier;
     }
 
-    public BiomeEffects.Particle getParticleConfig() {
-        return particleConfig;
+    public List<AmbientParticle> getParticleConfig() {
+        if (particleConfig == null) return null;
+        return List.of(particleConfig);
     }
 
     public Boolean getPrecipitation() {
@@ -125,15 +130,12 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return downfall;
     }
 
-    public SoundEvent getLoopSound() {
-        return loopSound;
-    }
-
-    public BiomeEffects.MoodSound getMoodSound() {
-        return moodSound;
-    }
-
-    public BiomeEffects.AdditionsSound getAdditionsSound() {
-        return additionsSound;
+    public AmbientSounds getAmbientSoundConfig() {
+        List<AmbientSounds.Additions> additions = additionsSound == null ? List.of() : List.of(additionsSound);
+        return new AmbientSounds(
+            loopSound,
+            moodSound,
+            additions
+        );
     }
 }
