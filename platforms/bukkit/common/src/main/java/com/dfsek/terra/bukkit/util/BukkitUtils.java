@@ -21,7 +21,20 @@ public class BukkitUtils {
 
     public static EntityType getEntityType(String id) {
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
+<<<<<<< HEAD
         String entityID = id.toUpperCase(Locale.ROOT).substring(10);
+=======
+
+        // TerraScript entity identifiers may append NBT-like data in braces
+        // (e.g. minecraft:end_crystal{ShowBottom:0}). Bukkit's EntityType parser
+        // cannot handle this, so strip any trailing brace section.
+        String raw = id.substring(10);
+        int brace = raw.indexOf('{');
+        if(brace != -1) raw = raw.substring(0, brace);
+
+        String entityID = raw.toUpperCase(Locale.ROOT)
+                             .replace('-', '_');
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
 
         return new BukkitEntityType(switch(entityID) {
             case "END_CRYSTAL" -> org.bukkit.entity.EntityType.END_CRYSTAL;

@@ -1,8 +1,14 @@
 preRelease(true)
 
+<<<<<<< HEAD
 versionProjects(":common:api", version("7.0.0"))
 versionProjects(":common:implementation", version("7.0.0"))
 versionProjects(":platforms", version("7.0.0"))
+=======
+versionProjects(":common:api", version("7.0.3"))
+versionProjects(":common:implementation", version("7.0.3"))
+versionProjects(":platforms", version("7.0.3"))
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
 
 
 allprojects {

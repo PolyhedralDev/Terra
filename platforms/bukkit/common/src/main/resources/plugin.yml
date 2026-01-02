@@ -4,6 +4,13 @@ version: "@VERSION@"
 load: "STARTUP"
 authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade", "OakLoaf" ]
 website: "@WIKI@"
+<<<<<<< HEAD
 api-version: "1.21.1"
 description: "@DESCRIPTION@"
 folia-supported: true
+=======
+api-version: "1.21.8"
+description: "@DESCRIPTION@"
+folia-supported: true
+softdepend: [ "Lootin" ]
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))

@@ -9,7 +9,11 @@ import com.dfsek.terra.bukkit.util.VersionUtil;
 
 
 public interface NMSInitializer {
+<<<<<<< HEAD
     List<String> SUPPORTED_VERSIONS = List.of("v1.21.9", "v1.21.10");
+=======
+    List<String> SUPPORTED_VERSIONS = List.of("v1.21.8", "v1.21.9", "v1.21.10", "v1.21.11");
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
     String MINECRAFT_VERSION = VersionUtil.getMinecraftVersionInfo().toString();
     String TERRA_PACKAGE = NMSInitializer.class.getPackageName();
 

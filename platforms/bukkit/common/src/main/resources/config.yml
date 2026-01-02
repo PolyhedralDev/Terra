@@ -1,0 +1,24 @@
+loot-fix:
+  enabled: true
+  debug: false
+
+  radius:
+    xz: 4
+    y: 2
+
+  dungeons:
+    enabled: true
+    loot-table: "minecraft:chests/simple_dungeon"
+
+  retroactive:
+    enabled: false
+    only-if-empty: true
+
+  integrations:
+    lootin:
+      enabled: true
+      pre-open-fix: true
+
+  commands:
+    enabled: true
+    default-scan-radius-blocks: 256

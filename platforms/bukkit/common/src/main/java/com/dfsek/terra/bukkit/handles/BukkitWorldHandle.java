@@ -40,8 +40,23 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+<<<<<<< HEAD
         org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
             data); // somehow bukkit managed to make this not thread safe! :)
+=======
+        // Bukkit's BlockData parser does not support tile-entity NBT (e.g. minecraft:chest{LootTable:'...'})
+        // Some packs use that syntax; strip the NBT portion so packs can load, and let loot-fix systems handle loot tables.
+        String sanitized = data;
+        int nbtStart = data.indexOf('{');
+        if(nbtStart >= 0) {
+            sanitized = data.substring(0, nbtStart);
+        }
+        sanitized = sanitized.trim();
+        if(sanitized.isEmpty()) {
+            sanitized = "minecraft:air";
+        }
+        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(sanitized);
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
         return BukkitBlockState.newInstance(bukkitData);
     }
 

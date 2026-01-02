@@ -35,6 +35,10 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
+<<<<<<< HEAD
+=======
+import com.dfsek.terra.bukkit.lootfix.LootFixService;
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
 
 
 public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGenerator implements GeneratorWrapper {
@@ -45,11 +49,19 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private ConfigPack pack;
 
 
+<<<<<<< HEAD
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
         this.delegate = delegate;
         this.pack = pack;
         this.air = air;
         this.blockPopulator = new BukkitBlockPopulator(pack, air);
+=======
+    public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air, LootFixService lootFixService) {
+        this.delegate = delegate;
+        this.pack = pack;
+        this.air = air;
+        this.blockPopulator = new BukkitBlockPopulator(pack, air, lootFixService);
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
     }
 
     public void setDelegate(ChunkGenerator delegate) {
@@ -124,4 +136,8 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
             return 31 * code + worldProperties.hashCode();
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))

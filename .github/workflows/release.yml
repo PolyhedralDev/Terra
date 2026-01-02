@@ -1,0 +1,39 @@
+name: Release (tagged)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build shaded jar + sources jar
+        run: ./gradlew :platforms:bukkit:shadowJar :platforms:bukkit:sourcesJar --no-daemon
+
+      - name: Compute SHA-256 checksums
+        run: |
+          cd platforms/bukkit/build/libs
+          for f in *.jar; do sha256sum "$f" > "$f.sha256"; done
+          ls -la
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: false
+          files: |
+            platforms/bukkit/build/libs/*.jar
+            platforms/bukkit/build/libs/*.sha256

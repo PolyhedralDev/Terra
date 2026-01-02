@@ -43,12 +43,28 @@ import com.dfsek.terra.bukkit.listeners.CommonListener;
 import com.dfsek.terra.bukkit.util.PaperUtil;
 import com.dfsek.terra.bukkit.util.VersionUtil;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
+<<<<<<< HEAD
+=======
+import org.incendo.cloud.CommandManager;
+import org.incendo.cloud.description.Description;
+import org.incendo.cloud.parser.standard.IntegerParser;
+import org.incendo.cloud.component.DefaultValue;
+import com.dfsek.terra.bukkit.lootfix.LootFixService;
+import com.dfsek.terra.bukkit.lootfix.LootFixSettings;
+import com.dfsek.terra.bukkit.util.RuntimeEnvLogger;
+import com.dfsek.terra.bukkit.util.SeismicUnsafeLogSuppressor;
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
 
 
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
     private PlatformImpl platform;
+<<<<<<< HEAD
+=======
+
+    private LootFixService lootFixService;
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
     private AsyncScheduler asyncScheduler = this.getServer().getAsyncScheduler();
 
     private GlobalRegionScheduler globalRegionScheduler = this.getServer().getGlobalRegionScheduler();
@@ -59,6 +75,12 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
+<<<<<<< HEAD
+=======
+        RuntimeEnvLogger.log(this);
+        SeismicUnsafeLogSuppressor.install(this);
+
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
         platform = NMSInitializer.init(this);
         if(platform == null) {
             Bukkit.getPluginManager().disablePlugin(this);
@@ -67,11 +89,26 @@ public class TerraBukkitPlugin extends JavaPlugin {
 
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
 
+<<<<<<< HEAD
+=======
+        LootFixSettings lootFixSettings = LootFixSettings.load(this);
+        lootFixService = new LootFixService(this, lootFixSettings);
+        lootFixService.registerListeners();
+
+
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
         try {
             PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
 
             platform.getEventManager().callEvent(new CommandRegistrationEvent(commandManager));
 
+<<<<<<< HEAD
+=======
+            if(lootFixService != null && lootFixService.settings().commandsEnabled) {
+                registerLootFixCommands(commandManager);
+            }
+
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
         } catch(Exception e) { // This should never happen.
             logger.error("""
                          TERRA HAS BEEN DISABLED
@@ -105,6 +142,86 @@ public class TerraBukkitPlugin extends JavaPlugin {
         return platform;
     }
 
+<<<<<<< HEAD
+=======
+    private void registerLootFixCommands(@NotNull CommandManager<CommandSender> manager) {
+        manager.command(
+            manager.commandBuilder("terra", Description.of("Terra utilities"))
+                .literal("lootfix")
+                .handler(ctx -> ctx.sender().sendMessage("Usage: /terra lootfix <status|scan>"))
+        );
+
+        manager.command(
+            manager.commandBuilder("terra", Description.of("Terra utilities"))
+                .literal("lootfix")
+                .literal("status")
+                .permission("terra.lootfix.status")
+                .handler(ctx -> ctx.sender().sendMessage(buildLootFixStatus()))
+        );
+
+        manager.command(
+            manager.commandBuilder("terra", Description.of("Terra utilities"))
+                .literal("lootfix")
+                .literal("scan")
+                .permission("terra.lootfix.scan")
+                .optional("radius",
+                    IntegerParser.integerParser(1),
+                    DefaultValue.constant(lootFixService.settings().defaultScanRadiusBlocks))
+                .handler(ctx -> {
+                    int radiusBlocks = ctx.get("radius");
+                    doLootFixScan(ctx.sender(), radiusBlocks);
+                })
+        );
+    }
+
+    private void doLootFixScan(@NotNull CommandSender sender, int radiusBlocks) {
+        var playerOpt = sender.getPlayer();
+        if(playerOpt.isEmpty()) {
+            sender.sendMessage("This command must be run by a player.");
+            return;
+        }
+
+        var bukkitPlayer = (org.bukkit.entity.Player) playerOpt.get().getHandle();
+        int radiusChunks = (int) Math.ceil(radiusBlocks / 16.0);
+
+        int baseCx = bukkitPlayer.getLocation().getBlockX() >> 4;
+        int baseCz = bukkitPlayer.getLocation().getBlockZ() >> 4;
+
+        int fixed = 0;
+        var world = bukkitPlayer.getWorld();
+        var rnd = new java.util.Random(world.getSeed() ^ ((long) baseCx << 32) ^ baseCz);
+
+        for(int dx = -radiusChunks; dx <= radiusChunks; dx++) {
+            for(int dz = -radiusChunks; dz <= radiusChunks; dz++) {
+                var chunk = world.getChunkAt(baseCx + dx, baseCz + dz);
+                fixed += lootFixService.fixChunk(chunk, rnd, lootFixService.settings().retroactiveOnlyIfEmpty);
+            }
+        }
+
+        sender.sendMessage("LootFix scan complete. Repaired " + fixed + " container(s) within ~" + radiusBlocks + " blocks.");
+    }
+
+    private @NotNull String buildLootFixStatus() {
+        if(lootFixService == null) return "LootFix: not initialized.";
+
+        var s = lootFixService.settings();
+        StringBuilder sb = new StringBuilder();
+        sb.append("LootFix Status\n");
+        sb.append(" - Enabled: ").append(s.enabled).append('\n');
+        sb.append(" - Debug: ").append(s.debug).append('\n');
+        sb.append(" - Dungeon fix: ").append(s.dungeonsEnabled).append('\n');
+        sb.append(" - Dungeon loot table: ").append(s.dungeonLootTableKey).append('\n');
+        sb.append(" - Radius (xz,y): ").append(s.radiusXZ).append(',').append(s.radiusY).append('\n');
+        sb.append(" - Retroactive: ").append(s.retroactiveEnabled).append(" (only-if-empty=").append(s.retroactiveOnlyIfEmpty).append(")\n");
+        sb.append(" - Lootin integration enabled: ").append(s.lootinEnabled).append(" (pre-open=").append(s.lootinPreOpenFix).append(")\n");
+        sb.append(" - Lootin detected: ").append(lootFixService.isLootinPresent()).append('\n');
+        sb.append(" - Minecraft: ").append(VersionUtil.getMinecraftVersionInfo()).append('\n');
+        sb.append(" - Terra version: ").append(getDescription().getVersion());
+        return sb.toString();
+    }
+
+
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
     @SuppressWarnings({ "deprecation", "AccessOfSystemProperties" })
     private boolean doVersionCheck() {
         logger.info("Running on Minecraft version {} with server implementation {}.", VersionUtil.getMinecraftVersionInfo(),
@@ -185,7 +302,11 @@ public class TerraBukkitPlugin extends JavaPlugin {
             ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
                 () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
             return pack.getGeneratorProvider().newInstance(pack);
+<<<<<<< HEAD
         }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+=======
+        }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air(), lootFixService);
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
     }
 
     public AsyncScheduler getAsyncScheduler() {
@@ -195,4 +316,8 @@ public class TerraBukkitPlugin extends JavaPlugin {
     public GlobalRegionScheduler getGlobalRegionScheduler() {
         return globalRegionScheduler;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 86e1828d0 (Initial fork: Terra 7.0.3 (lootfix + 1.21.10 compat + Java 21-25))
