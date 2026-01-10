@@ -258,6 +258,9 @@ as [GitHub Pull Requests](https://guides.github.com/activities/forking/#making-a
   see instead** and why.
 - **Explain why this enhancement would be useful** to most Terra users and isn't
   something that can or should be implemented as an addon.
+- **Do not use LLM/"AI" tools to create your pull request.** Your pr should be written
+  by you. Using an LLM to automate small, tedious tasks (regex and other fiddly things like it)
+  is acceptable, but submitting a low-effort, completely LLM-generated PR will result in a ban.
 
 ## Styleguides
 
@@ -381,7 +384,7 @@ compatibilities are welcome and encouraged, in the form of addons.**
 
 ### Platform-Agnostic Design
 
-Terra must, at all times, remain platform agnostic. This means it must be able
+Terra must, at all times, remain platform-agnostic. This means it must be able
 to run on theoretically any voxel based platform. Including non-minecraft games
 like Terasology.
 
@@ -391,7 +394,7 @@ it'll be running on.
 Examples:
 
 - Don't assume the world height is 256.
-- Don't assume that a specific block, item, or entity exists. (Eg. don't assume
+- Don't assume that a specific block, item, or entity exists. (E.g. don't assume
   there exists a block called `minecraft:grass_block`)
 
 ### Data-Driven
