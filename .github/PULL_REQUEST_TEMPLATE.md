@@ -44,6 +44,7 @@ You must put an x in all the boxes that it applies to. (Like this: [x])
   <!-- There is an included `.editorconfig` file in the base of the repo. Please use a plugin for your IDE of choice that follows those settings. -->
 - [ ] I have read the [`CONTRIBUTING.md`](https://github.com/PolyhedralDev/Terra/blob/master/CONTRIBUTING.md)
   document in the root of the git repository.
+- [ ] LLM-based tools were not used to create this PR. (ChatGPT, Claude, etc)
 
 #### Types of changes
 
@@ -98,7 +99,7 @@ You must put an x in all the boxes that it applies to. (Like this: [x])
 - [ ] I am not the original author of this code, but it is in public domain or
   released under [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) or a compatible license.
   <!--
-  Please provide reliable evidence of this.
+  Please provide reliable evidence of this. LLM-generated code does not satisfy this requirement.
   NOTE: for compatible licenses, you must make sure to add the included license somewhere in the program, if so required.
   (And even if it's not required, it's still nice to do it. Also add attribution somewhere.)
   -->
