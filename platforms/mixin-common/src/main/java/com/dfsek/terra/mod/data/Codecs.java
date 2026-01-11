@@ -18,7 +18,7 @@ public final class Codecs {
     public static final Codec<RegistryKey> TERRA_REGISTRY_KEY = RecordCodecBuilder
         .create(registryKey -> registryKey.group(Codec.STRING.fieldOf("namespace")
                     .stable()
-                    .forGetter(RegistryKey::getNamespace),
+                    .forGetter(RegistryKey::namespace),
                 Codec.STRING.fieldOf("id")
                     .stable()
                     .forGetter(RegistryKey::getID))
@@ -31,7 +31,7 @@ public final class Codecs {
             .apply(config, config.stable(id -> CommonPlatform.get()
                 .getConfigRegistry()
                 .get(id)
-                .orElseThrow(() -> new IllegalArgumentException(
+                .orThrow(() -> new IllegalArgumentException(
                     "No such config pack " +
                     id)))));
 

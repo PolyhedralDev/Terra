@@ -24,6 +24,6 @@ public class AirMatchPatternTemplate implements ObjectTemplate<Pattern> {
 
     @Override
     public Pattern get() {
-        return new MatchPattern(offset, BlockState::isAir);
+        return new MatchPattern(offset, BlockState::air);
     }
 }

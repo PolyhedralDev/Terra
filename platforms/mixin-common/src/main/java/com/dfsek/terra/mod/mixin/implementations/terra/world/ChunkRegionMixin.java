@@ -102,7 +102,7 @@ public abstract class ChunkRegionMixin implements StructureWorldAccess {
             state = arg.getBlockState();
             setBlockState(blockPos, state, flags);
             net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
-            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
+            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).data());
             MinecraftUtil.loadBlockEntity(chunk, world, blockPos, state, nbt);
         } else {
             state = (net.minecraft.block.BlockState) data;

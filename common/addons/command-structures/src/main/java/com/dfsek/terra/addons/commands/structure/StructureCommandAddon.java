@@ -34,7 +34,7 @@ public class StructureCommandAddon implements AddonInitializer {
     private BaseAddon addon;
 
     private static Registry<Structure> getStructureRegistry(CommandContext<CommandSender> sender) {
-        return sender.sender().getEntity().orElseThrow().world().getPack().getRegistry(Structure.class);
+        return sender.sender().entity().orThrow().world().getPack().getRegistry(Structure.class);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class StructureCommandAddon implements AddonInitializer {
                         .optional("rotation", EnumParser.enumParser(Rotation.class), DefaultValue.constant(Rotation.NONE))
                         .handler(context -> {
                             Structure structure = context.get("structure");
-                            Entity sender = context.sender().getEntity().orElseThrow();
+                            Entity sender = context.sender().entity().orThrow();
                             structure.generate(
                                 sender.position().toInt(),
                                 sender.world(),

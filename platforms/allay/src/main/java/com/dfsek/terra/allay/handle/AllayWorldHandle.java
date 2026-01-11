@@ -1,5 +1,8 @@
 package com.dfsek.terra.allay.handle;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.error.InvalidBlockStateError;
+import com.dfsek.terra.api.util.generic.data.types.Either;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.allay.JeBlockState;
@@ -16,9 +19,13 @@ import com.dfsek.terra.api.handle.WorldHandle;
 public class AllayWorldHandle implements WorldHandle {
 
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
-        JeBlockState jeBlockState = JeBlockState.fromString(data);
-        return new AllayBlockState(Mapping.blockStateJeToBe(jeBlockState), jeBlockState);
+    public @NotNull Either<Invalid, BlockState> createBlockState(@NotNull String data) {
+        try {
+            JeBlockState jeBlockState = JeBlockState.fromString(data);
+            return Either.right(new AllayBlockState(Mapping.blockStateJeToBe(jeBlockState), jeBlockState));
+        } catch(Exception e) {
+            return new InvalidBlockStateError(e).left();
+        }
     }
 
     @Override

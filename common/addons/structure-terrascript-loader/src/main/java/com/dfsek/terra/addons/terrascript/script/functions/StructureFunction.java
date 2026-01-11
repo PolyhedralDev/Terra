@@ -91,10 +91,10 @@ public class StructureFunction implements Function<Boolean> {
                         FloatingPointFunctions.round(xz.getZ())),
                 arguments.getRandom(),
                 arguments.getRotation().rotate(rotation1));
-        }).orElseGet(() -> {
+        }).collect(left -> {
             LOGGER.error("No such structure {}", app);
             return false;
-        });
+        }, java.util.function.Function.identity());
     }
 
     @Override

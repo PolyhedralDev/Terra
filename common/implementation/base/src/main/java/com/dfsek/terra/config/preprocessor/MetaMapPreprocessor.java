@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
@@ -60,7 +60,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                         List<String> keys = (List<String>) loader.loadType(STRING_LIST.getAnnotatedType(), map.get("<<"), depthTracker);
                         keys.forEach(key -> {
                             Pair<Configuration, Object> pair = getMetaValue(key, depthTracker);
-                            Object meta = pair.getRight();
+                            Object meta = pair.right();
                             if(!(meta instanceof Map)) {
                                 throw new LoadException(
                                     "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(),
@@ -69,10 +69,10 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                             newMap.putAll((Map<?, ?>) meta);
 
                             String configName;
-                            if(pair.getLeft().getName() == null) {
+                            if(pair.left().getName() == null) {
                                 configName = "Anonymous Configuration";
                             } else {
-                                configName = pair.getLeft().getName();
+                                configName = pair.left().getName();
                             }
 
                             depthTracker.addIntrinsicLevel(level -> {

@@ -1,5 +1,7 @@
 package com.dfsek.terra.minestom.api;
 
+import com.dfsek.terra.api.error.Invalid;
+
 import net.minestom.server.instance.Instance;
 import net.minestom.server.registry.RegistryKey;
 import net.minestom.server.world.DimensionType;
@@ -39,14 +41,14 @@ public class TerraMinestomWorldBuilder {
     }
 
     public TerraMinestomWorldBuilder packById(String id) {
-        this.pack = platform.getConfigRegistry().getByID(id).orElseThrow();
+        this.pack = platform.getConfigRegistry().getByID(id).collectThrow(Invalid::toIllegal);
         return this;
     }
 
     public TerraMinestomWorldBuilder packByMeta(String metaPack, RegistryKey<@NonNull DimensionType> dimensionType) {
         this.pack = platform.getMetaConfigRegistry()
             .getByID(metaPack)
-            .orElseThrow(() -> new RuntimeException("MetaPack " + metaPack + " could not be found"))
+            .collectThrow(left -> new RuntimeException("MetaPack " + metaPack + " could not be found: " + left))
             .packs()
             .get(dimensionType.key().asString());
         return this;

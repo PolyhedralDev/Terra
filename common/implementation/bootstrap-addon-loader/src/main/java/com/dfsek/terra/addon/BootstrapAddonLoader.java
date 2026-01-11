@@ -63,7 +63,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
                 }
 
                 logger.debug("Loaded bootstrap addon {}@{} with entry point {}",
-                    addon.getID(), addon.getVersion().getFormatted(), addonObject.getClass());
+                    addon.getID(), addon.version().getFormatted(), addonObject.getClass());
                 return addon;
             } catch(InvocationTargetException e) {
                 throw new AddonLoadException("Exception occurred while instantiating addon", e);
@@ -103,7 +103,7 @@ public class BootstrapAddonLoader implements BootstrapBaseAddon<BootstrapBaseAdd
     }
 
     @Override
-    public Version getVersion() {
+    public Version version() {
         return VERSION;
     }
 }

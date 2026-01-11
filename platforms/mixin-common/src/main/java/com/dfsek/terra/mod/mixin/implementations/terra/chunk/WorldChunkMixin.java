@@ -66,7 +66,7 @@ public abstract class WorldChunkMixin {
             BlockStateArgument arg = ((BlockStateArgument) data);
             state = arg.getBlockState();
             setBlockState(blockPos, state, 0);
-            loadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).getData()));
+            loadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).data()));
         } else {
             state = (net.minecraft.block.BlockState) data;
             setBlockState(blockPos, state, 0);

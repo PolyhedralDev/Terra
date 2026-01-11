@@ -138,11 +138,11 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
                         com.dfsek.terra.api.block.state.BlockState data = delegate.getPalette(x + xi, y, z + zi, world, biomeProvider).get(
                             depth, x + xi, y, z + zi, world.getSeed());
                         BlockPos blockPos = new BlockPos(x, y, z);
-                        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+                        boolean isExtended = data.extended() && data.getClass().equals(BlockStateArgument.class);
                         if(isExtended) {
                             BlockStateExtended blockStateExtended = (BlockStateExtended) data;
 
-                            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.getState();
+                            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.state();
                             chunk.setBlockState(blockPos, blockState, 0);
                         } else {
                             chunk.setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
@@ -196,7 +196,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         for(int y = height.getTopYInclusive() - 1; y >= min; y--) {
             com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
             BlockState blockState =
-                (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
+                (BlockState) (terraBlockState.extended() ? ((BlockStateExtended) terraBlockState).state() : terraBlockState);
             if(heightmap
                 .getBlockPredicate()
                 .test(blockState)) return y + 1;
@@ -212,7 +212,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
         for(int y = height.getTopYInclusive() - 1; y >= height.getBottomY(); y--) {
             com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
             BlockState blockState =
-                (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
+                (BlockState) (terraBlockState.extended() ? ((BlockStateExtended) terraBlockState).state() : terraBlockState);
             array[y - height.getBottomY()] = blockState;
         }
         return new VerticalBlockSample(height.getBottomY(), array);

@@ -61,7 +61,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.variables.reference.StrVar
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
 import com.dfsek.terra.addons.terrascript.tokenizer.Token;
 import com.dfsek.terra.addons.terrascript.tokenizer.Tokenizer;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 
 
 @SuppressWarnings("unchecked")

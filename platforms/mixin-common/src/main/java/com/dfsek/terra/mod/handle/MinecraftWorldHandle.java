@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.mod.handle;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.error.InvalidBlockStateError;
+import com.dfsek.terra.api.util.generic.data.types.Either;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.block.BlockEntityProvider;
@@ -51,7 +54,7 @@ public class MinecraftWorldHandle implements WorldHandle {
 
     @SuppressWarnings("DataFlowIssue")
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
+    public @NotNull Either<Invalid, BlockState> createBlockState(@NotNull String data) {
         try {
             BlockResult blockResult = BlockArgumentParser.block(Registries.BLOCK, data, true);
             BlockState blockState;
@@ -76,10 +79,10 @@ public class MinecraftWorldHandle implements WorldHandle {
                 blockState = (BlockState) blockResult.blockState();
             }
 
-            if(blockState == null) throw new IllegalArgumentException("Invalid data: " + data);
-            return blockState;
+            if(blockState == null) return new InvalidBlockStateError(new IllegalArgumentException("Invalid data: " + data)).left();
+            return Either.right(blockState);
         } catch(CommandSyntaxException e) {
-            throw new IllegalArgumentException(e);
+            return new InvalidBlockStateError(e).left();
         }
     }
 

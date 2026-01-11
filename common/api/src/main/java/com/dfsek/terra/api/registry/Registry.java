@@ -8,6 +8,14 @@
 package com.dfsek.terra.api.registry;
 
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
+
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.error.InvalidLookup;
+import com.dfsek.terra.api.error.InvalidLookup.AmbiguousKey;
+import com.dfsek.terra.api.error.InvalidLookup.NoSuchElement;
+import com.dfsek.terra.api.util.generic.data.types.Either;
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +29,7 @@ import java.util.function.Function;
 
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+import static com.dfsek.terra.api.util.function.FunctionUtils.*;
 
 
 public interface Registry<T> extends TypeLoader<T> {
@@ -32,7 +41,11 @@ public interface Registry<T> extends TypeLoader<T> {
      * @return Value matching the identifier, {@code null} if no value is present.
      */
     @Contract(pure = true)
-    Optional<T> get(@NotNull RegistryKey key);
+    Maybe<T> get(@NotNull RegistryKey key);
+
+    default Either<Invalid, T> getEither(@NotNull RegistryKey key) {
+        return get(key).toEither(new NoSuchElement("No such element " + key));
+    }
 
     /**
      * Check if the registry contains a value.
@@ -82,17 +95,17 @@ public interface Registry<T> extends TypeLoader<T> {
         return getType().getRawType();
     }
 
-    default Optional<T> getByID(String id) {
+    default Either<Invalid, T> getByID(String id) {
         return getByID(id, map -> {
-            if(map.isEmpty()) return Optional.empty();
+            if(map.isEmpty()) return left(new NoSuchElement("No such value \"" + id + "\""));
             if(map.size() == 1) {
-                return map.values().stream().findFirst(); // only one value.
+                return right(map.values().stream().findFirst().get()); // only one value.
             }
-            throw new IllegalArgumentException("ID \"" + id + "\" is ambiguous; matches: " + map
+            return left(new AmbiguousKey("ID \"" + id + "\" is ambiguous; matches: " + map
                 .keySet()
                 .stream()
                 .map(RegistryKey::toString)
-                .reduce("", (a, b) -> a + "\n - " + b));
+                .reduce("", (a, b) -> a + "\n - " + b)));
         });
     }
 
@@ -102,9 +115,10 @@ public interface Registry<T> extends TypeLoader<T> {
 
     Map<RegistryKey, T> getMatches(String id);
 
-    default Optional<T> getByID(String attempt, Function<Map<RegistryKey, T>, Optional<T>> reduction) {
+    default Either<Invalid, T> getByID(String attempt, Function<Map<RegistryKey, T>, Either<Invalid, T>> reduction) {
         if(attempt.contains(":")) {
-            return get(RegistryKey.parse(attempt));
+            return RegistryKey.parse(attempt)
+                    .bind(this::getEither);
         }
         return reduction.apply(getMatches(attempt));
     }

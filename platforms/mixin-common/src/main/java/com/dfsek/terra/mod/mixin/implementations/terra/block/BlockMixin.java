@@ -29,16 +29,16 @@ import com.dfsek.terra.api.block.BlockType;
 @Mixin(Block.class)
 @Implements(@Interface(iface = BlockType.class, prefix = "terra$"))
 public abstract class BlockMixin {
-    public com.dfsek.terra.api.block.state.BlockState terra$getDefaultState() {
+    public com.dfsek.terra.api.block.state.BlockState terra$defaultState() {
         return (com.dfsek.terra.api.block.state.BlockState) ((Block) (Object) this).getDefaultState();
     }
 
-    public boolean terra$isSolid() {
+    public boolean terra$solid() {
         return ((Block) (Object) this).getDefaultState().isOpaque();
     }
 
     @SuppressWarnings("ConstantConditions")
-    public boolean terra$isWater() {
+    public boolean terra$water() {
         return ((Object) this) == Blocks.WATER;
     }
 }

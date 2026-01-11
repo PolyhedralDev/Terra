@@ -17,6 +17,10 @@
 
 package registry;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.error.InvalidLookup;
+import com.dfsek.terra.api.util.generic.data.types.Either;
+
 import org.junit.jupiter.api.Test;
 
 import com.dfsek.terra.api.registry.CheckedRegistry;
@@ -35,19 +39,19 @@ public class RegistryTest {
     public void openRegistry() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
 
-        test.register(RegistryKey.parse("test:test"), "bazinga");
+        RegistryKey.parse("test:test").ifRight(r -> test.register(r, "bazinga"));
 
-        assertEquals(test.get(RegistryKey.parse("test:test")).orElseThrow(), "bazinga");
+        assertEquals("bazinga", test.get(RegistryKey.parse("test:test").getRight().orThrow()).orThrow());
     }
 
     @Test
     public void openRegistryChecked() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
 
-        test.registerChecked(RegistryKey.parse("test:test"), "bazinga");
+        RegistryKey.parse("test:test").ifRight(r -> test.registerChecked(r, "bazinga"));
 
         try {
-            test.registerChecked(RegistryKey.parse("test:test"), "bazinga2");
+            RegistryKey.parse("test:test").ifRight(r -> test.registerChecked(r, "bazinga2"));
             fail("Shouldn't be able to re-register with #registerChecked!");
         } catch(DuplicateEntryException ignore) {
 
@@ -58,12 +62,12 @@ public class RegistryTest {
     public void checkedRegistry() {
         CheckedRegistry<String> test = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(String.class)));
 
-        test.register(RegistryKey.parse("test:test"), "bazinga");
+        RegistryKey.parse("test:test").ifRight(r -> test.register(r, "bazinga"));
 
-        assertEquals(test.get(RegistryKey.parse("test:test")).orElseThrow(), "bazinga");
+        assertEquals("bazinga", test.get(RegistryKey.parse("test:test").getRight().orThrow()).orThrow());
 
         try {
-            test.register(RegistryKey.parse("test:test"), "bazinga2");
+            RegistryKey.parse("test:test").ifRight(r -> test.register(r, "bazinga2"));
             fail("Shouldn't be able to re-register in CheckedRegistry!");
         } catch(DuplicateEntryException ignore) {
 
@@ -74,23 +78,20 @@ public class RegistryTest {
     public void getID() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
 
-        test.register(RegistryKey.parse("test:test"), "bazinga");
+        RegistryKey.parse("test:test").ifRight(r -> test.register(r, "bazinga"));
 
-        assertEquals(test.getByID("test").orElseThrow(), "bazinga");
+        assertEquals(test.getByID("test").collectThrow(Invalid::toIllegal), "bazinga");
     }
 
     @Test
     public void getIDAmbiguous() {
         OpenRegistry<String> test = new OpenRegistryImpl<>(TypeKey.of(String.class));
 
-        test.registerChecked(RegistryKey.parse("test:test"), "bazinga");
-        test.registerChecked(RegistryKey.parse("test2:test"), "bazinga");
+        RegistryKey.parse("test:test").ifRight(r -> test.register(r, "bazinga"));
+        RegistryKey.parse("test3:test").ifRight(r -> test.register(r, "bazinga"));
 
-        try {
-            test.getByID("test");
-            fail("Shouldn't be able to get with ambiguous ID!");
-        } catch(IllegalArgumentException ignore) {
+        Either<Invalid, String> result = test.getByID("test");
+        assertTrue(result.isLeft());
 
-        }
     }
 }

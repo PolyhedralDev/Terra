@@ -23,7 +23,7 @@ public interface BlockState extends Handle, Extendable {
     /**
      * Whether this {@link BlockState} matches another.
      * <p>
-     * "matches" is defined as this {@link BlockState} holding a matching {@link #getBlockType()}.
+     * "matches" is defined as this {@link BlockState} holding a matching {@link #blockType()}.
      *
      * @param other Other {@link BlockState}
      *
@@ -90,15 +90,15 @@ public interface BlockState extends Handle, Extendable {
      *
      * @return Block type.
      */
-    BlockType getBlockType();
+    BlockType blockType();
 
     /**
      * Get this state and its properties as a String
      *
      * @return String representation of this state
      */
-    default String getAsString() {
-        return getAsString(true);
+    default String asString() {
+        return asString(true);
     }
 
     /**
@@ -108,12 +108,12 @@ public interface BlockState extends Handle, Extendable {
      *
      * @return String representation of this state
      */
-    String getAsString(boolean properties);
+    String asString(boolean properties);
 
     /**
      * Get whether this BlockState is air
      *
      * @return Whether this state is air
      */
-    boolean isAir();
+    boolean air();
 }

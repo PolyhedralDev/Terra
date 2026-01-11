@@ -114,12 +114,12 @@ public record MinestomBlockState(Block block) implements BlockState {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType blockType() {
         return new MinestomBlockType(block);
     }
 
     @Override
-    public String getAsString(boolean properties) {
+    public String asString(boolean properties) {
         String name = block.key().asString();
         if(!properties || block.properties().isEmpty()) {
             return name;
@@ -132,7 +132,7 @@ public record MinestomBlockState(Block block) implements BlockState {
     }
 
     @Override
-    public boolean isAir() {
+    public boolean air() {
         return block.isAir();
     }
 

@@ -64,17 +64,17 @@ public class CLIBlockState implements BlockState {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType blockType() {
         return type;
     }
 
     @Override
-    public String getAsString(boolean properties) {
+    public String asString(boolean properties) {
         return value;
     }
 
     @Override
-    public boolean isAir() {
+    public boolean air() {
         return isAir;
     }
 

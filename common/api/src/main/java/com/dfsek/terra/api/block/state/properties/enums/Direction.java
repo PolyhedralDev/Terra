@@ -9,7 +9,7 @@ package com.dfsek.terra.api.block.state.properties.enums;
 
 import com.dfsek.seismic.type.Rotation;
 
-import com.dfsek.terra.api.util.generic.Construct;
+import com.dfsek.terra.api.util.function.FunctionUtils;
 
 
 public enum Direction {
@@ -20,7 +20,7 @@ public enum Direction {
     UP(-1, 0, 1, 0),
     DOWN(-1, 0, -1, 0);
 
-    private static final Direction[] rotations = Construct.construct(() -> new Direction[]{ NORTH, SOUTH, EAST, WEST });
+    private static final Direction[] rotations = FunctionUtils.construct(() -> new Direction[]{ NORTH, SOUTH, EAST, WEST });
 
     private final int rotation;
 

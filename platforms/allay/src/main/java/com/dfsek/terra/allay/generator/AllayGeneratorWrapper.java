@@ -1,5 +1,7 @@
 package com.dfsek.terra.allay.generator;
 
+import com.dfsek.terra.api.util.function.FunctionUtils;
+
 import com.google.common.base.Preconditions;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
@@ -23,6 +25,8 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
+
+import java.util.function.Function;
 
 
 /**
@@ -91,14 +95,16 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
         return TerraAllayPlugin.platform
             .getConfigRegistry()
             .getByID(packId)
-            .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packId));
+            .collectThrow(
+                left -> new IllegalArgumentException("Cant find terra config pack named " + packId + ": " + left));
     }
 
     protected static ConfigPack getConfigPackByMeta(String metaPackId, DimensionInfo dimensionInfo) {
         return TerraAllayPlugin.platform
             .getMetaConfigRegistry()
             .getByID(metaPackId)
-            .orElseThrow(() -> new IllegalArgumentException("Cant find terra meta pack named " + metaPackId))
+            .collectThrow(
+                left -> new IllegalArgumentException("Cant find terra meta pack named " + metaPackId + ": " + left))
             .packs()
             .get(Mapping.dimensionIdBeToJe(dimensionInfo.toString()));
     }

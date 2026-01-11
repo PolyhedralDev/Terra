@@ -1,5 +1,7 @@
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.ChatColor;
 
@@ -24,19 +26,19 @@ public class CloudCommandSender implements CommandSender {
     }
 
     @Override
-    public Optional<Entity> getEntity() {
+    public Maybe<Entity> entity() {
         if(delegate instanceof org.bukkit.entity.Entity entity) {
-            return Optional.of(BukkitAdapter.adapt(entity));
+            return Maybe.just(BukkitAdapter.adapt(entity));
         }
-        return Optional.empty();
+        return Maybe.nothing();
     }
 
     @Override
-    public Optional<Player> getPlayer() {
+    public Maybe<Player> player() {
         if(delegate instanceof org.bukkit.entity.Player player) {
-            return Optional.of(BukkitAdapter.adapt(player));
+            return Maybe.just(BukkitAdapter.adapt(player));
         }
-        return Optional.empty();
+        return Maybe.nothing();
     }
 
     @Override

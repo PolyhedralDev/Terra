@@ -8,18 +8,13 @@
 package com.dfsek.terra.addons.biome.single;
 
 import java.util.Collections;
-import java.util.Optional;
 
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-public class SingleBiomeProvider implements BiomeProvider {
-    private final Biome biome;
-
-    public SingleBiomeProvider(Biome biome) {
-        this.biome = biome;
-    }
+public record SingleBiomeProvider(Biome biome) implements BiomeProvider {
 
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
@@ -27,8 +22,8 @@ public class SingleBiomeProvider implements BiomeProvider {
     }
 
     @Override
-    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return Optional.of(biome);
+    public Maybe<Biome> getBaseBiome(int x, int z, long seed) {
+        return Maybe.just(biome);
     }
 
     @Override

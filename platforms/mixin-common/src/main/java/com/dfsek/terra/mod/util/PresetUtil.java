@@ -27,7 +27,7 @@ import java.util.Locale;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.MetaPack;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.config.VanillaWorldProperties;
@@ -49,7 +49,7 @@ public class PresetUtil {
 
 
         Identifier generatorID = Identifier.tryParse(
-            "terra:" + pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.getNamespace().toLowerCase(
+            "terra:" + pack.getID().toLowerCase(Locale.ROOT) + "/" + pack.namespace().toLowerCase(
                 Locale.ROOT));
 
         PRESETS.add(Pair.of(generatorID, extended));
@@ -74,7 +74,7 @@ public class PresetUtil {
             platform.multiNoiseBiomeSourceParameterListRegistry();
 
         Identifier generatorID = Identifier.of("terra",
-            metaPack.getID().toLowerCase(Locale.ROOT) + "/" + metaPack.getNamespace().toLowerCase(
+            metaPack.getID().toLowerCase(Locale.ROOT) + "/" + metaPack.namespace().toLowerCase(
                 Locale.ROOT));
 
         PRESETS.add(Pair.of(generatorID, extended));

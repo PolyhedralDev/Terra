@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable.ReturnType;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 
 
 public class Scope {
@@ -121,11 +121,11 @@ public class Scope {
         }
 
         public int getIndex(String id) {
-            return indices.get(id).getLeft();
+            return indices.get(id).left();
         }
 
         public ReturnType getType(String id) {
-            return indices.get(id).getRight();
+            return indices.get(id).right();
         }
 
 

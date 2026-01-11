@@ -15,7 +15,7 @@ public class EphemeralAddon implements BaseAddon {
     }
 
     @Override
-    public Version getVersion() {
+    public Version version() {
         return version;
     }
 

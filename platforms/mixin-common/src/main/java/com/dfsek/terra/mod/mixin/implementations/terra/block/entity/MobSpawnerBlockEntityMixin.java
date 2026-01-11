@@ -68,7 +68,7 @@ public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
             rand = Random.create();
         }
         net.minecraft.entity.EntityType<?> entityType =
-            (((net.minecraft.entity.EntityType<?>) (creatureType.isExtended() && creatureType.getClass().equals(
+            (((net.minecraft.entity.EntityType<?>) (creatureType.extended() && creatureType.getClass().equals(
                 MinecraftEntityTypeExtended.class) ? ((MinecraftEntityTypeExtended) creatureType).getType() : creatureType)));
         setEntityType(entityType, rand);
     }

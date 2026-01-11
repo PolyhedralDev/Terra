@@ -11,4 +11,4 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-  library-image: "1.+"
+  api-image: "1.+"

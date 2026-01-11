@@ -20,6 +20,10 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+
+import com.dfsek.terra.api.util.function.FunctionUtils;
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
@@ -29,18 +33,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.dfsek.terra.api.registry.OpenRegistry;
 import com.dfsek.terra.api.registry.exception.DuplicateEntryException;
 import com.dfsek.terra.api.registry.key.RegistryKey;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
 
@@ -68,9 +72,11 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public T load(@NotNull AnnotatedType type, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
-        return getByID((String) o).orElseThrow(() -> new LoadException("No such " + type.getType().getTypeName() + " matching \"" + o +
-                                                                       "\" was found in this registry. Registry contains items: " +
-                                                                       getItemsFormatted(), depthTracker));
+        return getByID((String) o)
+            .collect(left -> FunctionUtils.throw_(new LoadException("Unable to retrieve " + type.getType().getTypeName() + " matching \"" + o +
+                                                                    "\" was found in this registry. Registry contains items: " +
+                                                                    getItemsFormatted() + "\n\nError:" + left, depthTracker)),
+                Function.identity());
     }
 
     private String getItemsFormatted() {
@@ -112,8 +118,8 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Optional<T> get(@NotNull RegistryKey key) {
-        return Optional.ofNullable(objects.getOrDefault(key, (Entry<T>) NULL).getValue());
+    public Maybe<T> get(@NotNull RegistryKey key) {
+        return Maybe.ofNullable(objects.getOrDefault(key, (Entry<T>) NULL).getValue());
     }
 
     @Override
@@ -151,7 +157,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
         return objectIDs
             .get(id)
             .stream()
-            .collect(HashMap::new, (map, pair) -> map.put(pair.getLeft(), pair.getRight().getValue()), Map::putAll);
+            .collect(HashMap::new, (map, pair) -> map.put(pair.left(), pair.right().getValue()), Map::putAll);
     }
 
     public Map<RegistryKey, T> getDeadEntries() {

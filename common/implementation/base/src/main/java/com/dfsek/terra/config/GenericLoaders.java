@@ -24,17 +24,19 @@ import com.dfsek.tectonic.api.TypeRegistry;
 
 import java.util.LinkedHashMap;
 
+import com.dfsek.tectonic.api.exception.LoadException;
+
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.config.loaders.ExpressionParserOptionsTemplate;
 import com.dfsek.terra.config.loaders.LinkedHashMapLoader;
-import com.dfsek.terra.config.loaders.MaterialSetLoader;
+import com.dfsek.terra.config.loaders.BlockStateSetLoader;
 import com.dfsek.terra.config.loaders.ProbabilityCollectionLoader;
 import com.dfsek.terra.config.loaders.RangeLoader;
 import com.dfsek.terra.config.loaders.VersionLoader;
@@ -53,7 +55,7 @@ public class GenericLoaders implements LoaderRegistrar {
         registry.registerLoader(ProbabilityCollection.class, new ProbabilityCollectionLoader())
             .registerLoader(Range.class, new RangeLoader())
             .registerLoader(Version.class, new VersionLoader())
-            .registerLoader(MaterialSet.class, new MaterialSetLoader())
+            .registerLoader(BlockStateSet.class, new BlockStateSetLoader())
             .registerLoader(VersionRange.class, new VersionRangeLoader())
             .registerLoader(LinkedHashMap.class, new LinkedHashMapLoader())
             .registerLoader(ParseOptions.class, ExpressionParserOptionsTemplate::new);
@@ -61,9 +63,9 @@ public class GenericLoaders implements LoaderRegistrar {
         if(platform != null) {
             registry.registerLoader(BaseAddon.class, platform.getAddons())
                 .registerLoader(BlockType.class, (type, object, configLoader, depthTracker) -> platform
-                    .getWorldHandle().createBlockState((String) object).getBlockType())
+                    .getWorldHandle().createBlockState((String) object).collectThrow(left -> new LoadException(left.message(), depthTracker)).blockType())
                 .registerLoader(BlockState.class, (type, object, configLoader, depthTracker) -> platform
-                    .getWorldHandle().createBlockState((String) object));
+                    .getWorldHandle().createBlockState((String) object).collectThrow(left -> new LoadException("Invalid BlockState \"" + object + "\": " + left.message(), depthTracker)));
         }
     }
 }

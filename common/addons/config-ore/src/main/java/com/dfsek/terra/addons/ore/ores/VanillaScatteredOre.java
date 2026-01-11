@@ -8,7 +8,7 @@ import java.util.random.RandomGenerator;
 
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
@@ -17,7 +17,7 @@ import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
 public class VanillaScatteredOre extends VanillaOre {
     protected final int spread;
 
-    public VanillaScatteredOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity, double exposed,
+    public VanillaScatteredOre(BlockState material, double size, BlockStateSet replaceable, boolean applyGravity, double exposed,
                                Map<BlockType, BlockState> materials, int spread) {
         super(material, size, replaceable, applyGravity, exposed, materials);
 
@@ -31,7 +31,7 @@ public class VanillaScatteredOre extends VanillaOre {
 
         for(int j = 0; j < i; ++j) {
             this.setPos(mutable, random, location, Math.min(j, spread));
-            BlockType block = world.getBlockState(mutable).getBlockType();
+            BlockType block = world.getBlockState(mutable).blockType();
             if(shouldPlace(getReplaceable(), block, exposed, random, world, mutable.getX(), mutable.getY(), mutable.getZ())) {
                 world.setBlockState(mutable, getMaterial(block), isApplyGravity());
             }

@@ -20,7 +20,7 @@ import java.util.random.RandomGenerator;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 import com.dfsek.terra.api.world.WritableWorld;
 
 import static com.dfsek.terra.addons.ore.utils.VanillaOreUtils.shouldPlace;
@@ -31,12 +31,12 @@ public class VanillaOre implements Structure {
     protected final BlockState material;
 
     protected final double size;
-    protected final MaterialSet replaceable;
+    protected final BlockStateSet replaceable;
     protected final boolean applyGravity;
     protected final double exposed;
     protected final Map<BlockType, BlockState> materials;
 
-    public VanillaOre(BlockState material, double size, MaterialSet replaceable, boolean applyGravity,
+    public VanillaOre(BlockState material, double size, BlockStateSet replaceable, boolean applyGravity,
                       double exposed, Map<BlockType, BlockState> materials) {
         this.material = material;
         this.size = size;
@@ -149,7 +149,7 @@ public class VanillaOre implements Structure {
                                         if(!visited.get(index)) { // Skip blocks that have already been visited
 
                                             visited.set(index);
-                                            BlockType block = world.getBlockState(xi, yi, zi).getBlockType();
+                                            BlockType block = world.getBlockState(xi, yi, zi).blockType();
                                             if(shouldPlace(getReplaceable(), block, exposed, random, world, xi, yi, zi)) {
                                                 world.setBlockState(xi, yi, zi, getMaterial(block), isApplyGravity());
                                                 ++blockCount;
@@ -171,7 +171,7 @@ public class VanillaOre implements Structure {
         return materials.getOrDefault(replace, material);
     }
 
-    public MaterialSet getReplaceable() {
+    public BlockStateSet getReplaceable() {
         return replaceable;
     }
 

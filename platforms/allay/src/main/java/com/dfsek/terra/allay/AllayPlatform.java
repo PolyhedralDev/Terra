@@ -42,7 +42,7 @@ public class AllayPlatform extends AbstractPlatform {
         boolean succeed = loadConfigPacks();
 
         GENERATOR_WRAPPERS.forEach(wrapper -> {
-            getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).ifPresent(pack -> {
+            getConfigRegistry().get(wrapper.getConfigPack().getRegistryKey()).consume(pack -> {
                 wrapper.setConfigPack(pack);
                 var dimension = wrapper.getAllayWorldGenerator().getDimension();
                 TerraAllayPlugin.instance.getPluginLogger().info(

@@ -37,15 +37,15 @@ public final class TagUtil {
         PresetUtil
             .getPresets()
             .forEach(pair -> MinecraftUtil
-                .getEntry(registry, pair.getLeft())
+                .getEntry(registry, pair.left())
                 .ifPresentOrElse(
                     preset -> {
-                        boolean useExtendedTag = pair.getRight(); // Get the boolean value from the pair
+                        boolean useExtendedTag = pair.right(); // Get the boolean value from the pair
                         collect
                             .computeIfAbsent(useExtendedTag ? WorldPresetTags.EXTENDED : WorldPresetTags.NORMAL, tag -> new ArrayList<>())
                             .add(preset);
                     },
-                    () -> logger.error("Preset {} does not exist!", pair.getLeft())));
+                    () -> logger.error("Preset {} does not exist!", pair.left())));
 
         registry.startTagReload(new RegistryTags<>(registry.getKey(), collect)).apply();
 

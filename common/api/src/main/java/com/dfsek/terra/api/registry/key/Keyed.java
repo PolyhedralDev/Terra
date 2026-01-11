@@ -5,8 +5,8 @@ public interface Keyed<T extends Keyed<T>> extends Namespaced, StringIdentifiabl
     RegistryKey getRegistryKey();
 
     @Override
-    default String getNamespace() {
-        return getRegistryKey().getNamespace();
+    default String namespace() {
+        return getRegistryKey().namespace();
     }
 
     @Override

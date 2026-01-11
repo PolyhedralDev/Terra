@@ -11,4 +11,4 @@ website:
   docs: https://terra.polydev.org
 license: MIT License
 depends:
-  biome-query-api: "1.+"
+  api-biome-query: "1.+"

@@ -17,6 +17,9 @@
 
 package com.dfsek.terra.bukkit.handles;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.error.InvalidBlockStateError;
+import com.dfsek.terra.api.util.generic.data.types.Either;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -39,10 +42,14 @@ public class BukkitWorldHandle implements WorldHandle {
     }
 
     @Override
-    public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
-        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
-            data); // somehow bukkit managed to make this not thread safe! :)
-        return BukkitBlockState.newInstance(bukkitData);
+    public synchronized @NotNull Either<Invalid, BlockState> createBlockState(@NotNull String data) {
+        try {
+            org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
+                data); // somehow bukkit managed to make this not thread safe! :)
+            return Either.right(BukkitBlockState.newInstance(bukkitData));
+        } catch(Exception e) {
+            return new InvalidBlockStateError(e).left();
+        }
     }
 
     @Override

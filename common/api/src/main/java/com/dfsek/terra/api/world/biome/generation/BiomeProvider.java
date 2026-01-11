@@ -9,6 +9,9 @@ package com.dfsek.terra.api.world.biome.generation;
 
 import com.dfsek.seismic.type.vector.Vector3;
 import com.dfsek.seismic.type.vector.Vector3Int;
+
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import org.jetbrains.annotations.Contract;
 
 import java.util.Optional;
@@ -64,8 +67,8 @@ public interface BiomeProvider {
         return getBiome(vector3.getX(), vector3.getY(), vector3.getZ(), seed);
     }
 
-    default Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return Optional.empty();
+    default Maybe<Biome> getBaseBiome(int x, int z, long seed) {
+        return Maybe.nothing();
     }
 
 

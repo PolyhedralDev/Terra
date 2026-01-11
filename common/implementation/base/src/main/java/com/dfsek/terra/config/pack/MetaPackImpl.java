@@ -104,13 +104,13 @@ public class MetaPackImpl implements MetaPack {
         logger.info("Loading metapack \"{}:{}\"", id, namespace);
 
         template.getPacks().forEach((k, v) -> {
-            RegistryKey registryKey = RegistryKey.parse(v);
-            if(configRegistry.contains(registryKey)) {
-                packs.put(k, configRegistry.get(registryKey).get());
-                logger.info("Linked config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
-            } else {
-                logger.warn("Failed to link config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
-            }
+            RegistryKey.parse(v)
+                .bind(configRegistry::getEither)
+                .consume(left -> logger.warn("Failed to link config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id),
+                    right -> {
+                        packs.put(k, right);
+                        logger.info("Linked config pack \"{}\" to metapack \"{}:{}\".", v, namespace, id);
+                    });
         });
 
         HashSet<String> authors = new HashSet<>();

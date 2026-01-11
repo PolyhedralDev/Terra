@@ -21,6 +21,6 @@ public class SolidMatchPatternTemplate implements ObjectTemplate<Pattern> {
 
     @Override
     public Pattern get() {
-        return new MatchPattern(offset, blockState -> blockState.getBlockType().isSolid());
+        return new MatchPattern(offset, blockState -> blockState.blockType().solid());
     }
 }

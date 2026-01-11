@@ -101,7 +101,7 @@ public abstract class ServerWorldMixin extends World {
             state = arg.getBlockState();
             setBlockState(blockPos, state, flags);
             net.minecraft.world.chunk.Chunk chunk = getWorldChunk(blockPos);
-            ((WorldChunkAccessor) chunk).invokeLoadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).getData()));
+            ((WorldChunkAccessor) chunk).invokeLoadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).data()));
         } else {
             state = (net.minecraft.block.BlockState) data;
             setBlockState(blockPos, state, flags);

@@ -10,6 +10,10 @@ package com.dfsek.terra.addons.terrascript.script.functions;
 import com.dfsek.seismic.math.floatingpoint.FloatingPointFunctions;
 import com.dfsek.seismic.type.vector.Vector2;
 import com.dfsek.seismic.type.vector.Vector3;
+
+import com.dfsek.terra.addons.terrascript.parser.exceptions.ParseException;
+import com.dfsek.terra.api.handle.WorldHandle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +80,7 @@ public class BlockFunction implements Function<Void> {
                 y.apply(implementationArguments, scope).doubleValue(),
                 FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
             BlockState current = arguments.getWorld().getBlockState(set);
-            if(overwrite.apply(implementationArguments, scope) || current.isAir()) {
+            if(overwrite.apply(implementationArguments, scope) || current.air()) {
                 arguments.getWorld().setBlockState(set, rot, physics.apply(implementationArguments, scope));
             }
         } catch(RuntimeException e) {
@@ -85,7 +89,11 @@ public class BlockFunction implements Function<Void> {
     }
 
     protected BlockState getBlockState(ImplementationArguments arguments, Scope scope) {
-        return data.computeIfAbsent(blockData.apply(arguments, scope), platform.getWorldHandle()::createBlockState);
+        WorldHandle handle = platform.getWorldHandle();
+        return data.computeIfAbsent(blockData.apply(arguments, scope), s -> handle.createBlockState(s).collect(left -> {
+            logger.error("Invalid block state \"" + s + "\": " + left.message());
+            return handle.air();
+        }, java.util.function.Function.identity()));
     }
 
 
@@ -95,7 +103,8 @@ public class BlockFunction implements Function<Void> {
         public Constant(Returnable<Number> x, Returnable<Number> y, Returnable<Number> z, StringConstant blockData,
                         Returnable<Boolean> overwrite, Returnable<Boolean> physics, Platform platform, Position position) {
             super(x, y, z, blockData, overwrite, physics, platform, position);
-            this.state = platform.getWorldHandle().createBlockState(blockData.getConstant());
+            this.state = platform.getWorldHandle().createBlockState(blockData.getConstant()).collectThrow(
+                left -> new ParseException("Invalid block state: \"" + blockData.getConstant() + "\": " + left.message(), position));
         }
 
         @Override

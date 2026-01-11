@@ -48,17 +48,17 @@ public final class AllayBlockState implements com.dfsek.terra.api.block.state.Bl
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType blockType() {
         return new AllayBlockType(allayBlockState.getBlockType());
     }
 
     @Override
-    public String getAsString(boolean properties) {
+    public String asString(boolean properties) {
         return jeBlockState.toString(properties);
     }
 
     @Override
-    public boolean isAir() {
+    public boolean air() {
         return allayBlockState.getBlockType() == BlockTypes.AIR;
     }
 

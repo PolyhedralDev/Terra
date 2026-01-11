@@ -8,6 +8,9 @@
 package com.dfsek.terra.addons.biome.pipeline;
 
 import com.dfsek.seismic.type.sampler.Sampler;
+
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
@@ -106,8 +109,8 @@ public class PipelineBiomeProvider implements BiomeProvider {
     }
 
     @Override
-    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return Optional.of(getBiome(x, z, seed));
+    public Maybe<Biome> getBaseBiome(int x, int z, long seed) {
+        return Maybe.just(getBiome(x, z, seed));
     }
 
     @Override

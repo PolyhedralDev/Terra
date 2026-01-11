@@ -7,5 +7,5 @@ public interface Extendable {
      *
      * @return Whether this state is extended.
      */
-    default boolean isExtended() { return false; }
+    default boolean extended() { return false; }
 }

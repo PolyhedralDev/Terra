@@ -39,7 +39,7 @@ public class AddonsCommandAddon implements AddonInitializer {
                                         .append(" - ")
                                         .append(addon.getID())
                                         .append('@')
-                                        .append(addon.getVersion().getFormatted())
+                                        .append(addon.version().getFormatted())
                                         .append('\n'));
                                 context.sender().sendMessage(addons.toString());
                             })
@@ -52,10 +52,10 @@ public class AddonsCommandAddon implements AddonInitializer {
                                 BaseAddon addon = context.get("addon");
                                 StringBuilder addonInfo = new StringBuilder("Addon ").append(addon.getID()).append('\n');
 
-                                addonInfo.append("Version: ").append(addon.getVersion().getFormatted()).append('\n');
+                                addonInfo.append("Version: ").append(addon.version().getFormatted()).append('\n');
 
                                 addonInfo.append("Dependencies:\n");
-                                addon.getDependencies().forEach((id, versions) -> addonInfo
+                                addon.dependencies().forEach((id, versions) -> addonInfo
                                     .append(" - ")
                                     .append(id)
                                     .append('@')

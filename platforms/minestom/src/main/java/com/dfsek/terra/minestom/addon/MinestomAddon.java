@@ -36,7 +36,7 @@ public class MinestomAddon implements BaseAddon {
     }
 
     @Override
-    public Version getVersion() { return VERSION; }
+    public Version version() { return VERSION; }
 
     @Override
     public String getID() { return "terra-minestom"; }

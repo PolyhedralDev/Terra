@@ -19,7 +19,7 @@ import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 
 
 @SuppressWarnings({ "unused", "FieldMayBeFinal" })
@@ -36,7 +36,7 @@ public class OreTemplate implements AbstractableTemplate {
     private @Meta Map<@Meta BlockType, @Meta BlockState> materials = new HashMap<>();
 
     @Value("replace")
-    private @Meta MaterialSet replaceable;
+    private @Meta BlockStateSet replaceable;
 
     @Value("physics")
     @Default
@@ -62,7 +62,7 @@ public class OreTemplate implements AbstractableTemplate {
         return material;
     }
 
-    public MaterialSet getReplaceable() {
+    public BlockStateSet getReplaceable() {
         return replaceable;
     }
 

@@ -18,6 +18,9 @@
 package com.dfsek.terra;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+
+import com.dfsek.terra.api.util.generic.data.BiFunctor;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +67,7 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.GenericLoaders;
@@ -274,7 +277,7 @@ public abstract class AbstractPlatform implements Platform {
                     .append("- ")
                     .append(addon.getID())
                     .append("@")
-                    .append(addon.getVersion().getFormatted());
+                    .append(addon.version().getFormatted());
             }
 
             logger.info(builder.toString());
@@ -308,7 +311,7 @@ public abstract class AbstractPlatform implements Platform {
                 .walk(addonsPath)
                 .map(path -> Pair.of(path, data.relativize(path).toString()))
 
-                .map(Pair.mapRight(s -> {
+                .map(p -> p.mapRight(s -> {
                     if(s.contains("+")) { // remove commit hash
                         return s.substring(0, s.lastIndexOf('+'));
                     }
@@ -316,18 +319,18 @@ public abstract class AbstractPlatform implements Platform {
                 }))
 
                 .filter(Pair.testRight(s -> s.contains("."))) // remove patch version
-                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+                .map(p -> p.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
 
                 .filter(Pair.testRight(s -> s.contains("."))) // remove minor version
-                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
+                .map(p -> p.mapRight(s -> s.substring(0, s.lastIndexOf('.'))))
 
                 .collect(Collectors.toSet());
 
             Set<String> pathsNoMajor = paths
                 .stream()
                 .filter(Pair.testRight(s -> s.contains(".")))
-                .map(Pair.mapRight(s -> s.substring(0, s.lastIndexOf('.')))) // remove major version
-                .map(Pair.unwrapRight())
+                .map(p -> p.mapRight(s -> s.substring(0, s.lastIndexOf('.')))) // remove major version
+                .map(Pair::right)
                 .collect(Collectors.toSet());
 
 
@@ -352,7 +355,7 @@ public abstract class AbstractPlatform implements Platform {
                         paths
                             .stream()
                             .filter(Pair.testRight(resourcePath::startsWith))
-                            .forEach(Pair.consumeLeft(path -> {
+                            .forEach(BiFunctor.consumeLeft(path -> {
                                 logger.info("Removing outdated resource {}, replacing with {}", path, resourcePath);
                                 try {
                                     Files.delete(path);
@@ -366,7 +369,7 @@ public abstract class AbstractPlatform implements Platform {
                                .anyMatch(resourcePath::startsWith) && // if any share name
                            paths
                                .stream()
-                               .map(Pair.unwrapRight())
+                               .map(Pair::right)
                                .noneMatch(resourcePath::startsWith)) { // but dont share major version
                             logger.warn(
                                 "Addon {} has a new major version available. It will not be automatically updated; you will need to " +

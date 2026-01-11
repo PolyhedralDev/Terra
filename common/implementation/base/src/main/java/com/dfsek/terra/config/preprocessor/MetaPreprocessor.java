@@ -25,7 +25,7 @@ import com.dfsek.tectonic.api.preprocessor.ValuePreprocessor;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 
 
 public abstract class MetaPreprocessor<A extends Annotation> implements ValuePreprocessor<A> {

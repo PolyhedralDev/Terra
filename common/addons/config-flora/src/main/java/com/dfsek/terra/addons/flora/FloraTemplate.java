@@ -17,7 +17,7 @@ import java.util.List;
 import com.dfsek.terra.addons.flora.flora.gen.BlockLayer;
 import com.dfsek.terra.api.config.AbstractableTemplate;
 import com.dfsek.terra.api.config.meta.Meta;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
@@ -27,7 +27,7 @@ public class FloraTemplate implements AbstractableTemplate {
     private String id;
     @Value("rotatable")
     @Default
-    private @Meta MaterialSet rotatable = MaterialSet.empty();
+    private @Meta BlockStateSet rotatable = BlockStateSet.empty();
 
     @Value("physics")
     @Default
@@ -63,7 +63,7 @@ public class FloraTemplate implements AbstractableTemplate {
         return ceiling;
     }
 
-    public MaterialSet getRotatable() {
+    public BlockStateSet getRotatable() {
         return rotatable;
     }
 }

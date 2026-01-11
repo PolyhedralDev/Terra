@@ -80,7 +80,7 @@ public class CommonListener implements Listener {
             return;
         }
 
-        ConfigPack pack = platform.getConfigRegistry().get(wrapper.getPack().getRegistryKey()).orElse(null);
+        ConfigPack pack = platform.getConfigRegistry().get(wrapper.getPack().getRegistryKey()).get((ConfigPack) null);
         if(pack == null) {
             return;
         }

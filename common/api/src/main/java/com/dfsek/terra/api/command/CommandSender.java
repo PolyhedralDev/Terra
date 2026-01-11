@@ -7,17 +7,16 @@
 
 package com.dfsek.terra.api.command;
 
-import java.util.Optional;
-
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.entity.Entity;
 import com.dfsek.terra.api.entity.Player;
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
 
 
 public interface CommandSender extends Handle {
     void sendMessage(String message);
 
-    Optional<Entity> getEntity();
+    Maybe<Entity> entity();
 
-    Optional<Player> getPlayer();
+    Maybe<Player> player();
 }

@@ -28,5 +28,5 @@ public interface EntityTypeExtended extends EntityType {
     EntityType getType();
 
     @Override
-    default boolean isExtended() { return true; }
+    default boolean extended() { return true; }
 }

@@ -39,17 +39,17 @@ public class BukkitBlockTypeAndItem implements BlockType, Item {
     }
 
     @Override
-    public BlockState getDefaultState() {
+    public BlockState defaultState() {
         return BukkitAdapter.adapt(delegate.createBlockData());
     }
 
     @Override
-    public boolean isSolid() {
+    public boolean solid() {
         return delegate.isOccluding();
     }
 
     @Override
-    public boolean isWater() {
+    public boolean water() {
         return delegate == Material.WATER;
     }
 

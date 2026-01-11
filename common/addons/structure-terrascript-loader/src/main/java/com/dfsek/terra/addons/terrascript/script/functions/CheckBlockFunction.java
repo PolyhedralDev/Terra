@@ -45,7 +45,7 @@ public class CheckBlockFunction implements Function<String> {
                 .add(Vector3.of(FloatingPointFunctions.round(xz.getX()),
                     y.apply(implementationArguments, scope)
                         .doubleValue(), FloatingPointFunctions.round(xz.getZ()))))
-            .getAsString();
+            .asString();
         if(data.contains("[")) return data.substring(0, data.indexOf('[')); // Strip properties
         else return data;
     }

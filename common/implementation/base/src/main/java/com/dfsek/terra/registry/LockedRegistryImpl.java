@@ -20,6 +20,9 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
+
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
@@ -48,7 +51,7 @@ public class LockedRegistryImpl<T> implements Registry<T> {
     }
 
     @Override
-    public Optional<T> get(@NotNull RegistryKey key) {
+    public Maybe<T> get(@NotNull RegistryKey key) {
         return registry.get(key);
     }
 

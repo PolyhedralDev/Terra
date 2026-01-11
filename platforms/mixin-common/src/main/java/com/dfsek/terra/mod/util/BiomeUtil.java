@@ -103,7 +103,7 @@ public class BiomeUtil {
 
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID()
-                   .toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
+                   .toLowerCase() + "/" + biomeID.namespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
     }
 
     public static Map<Identifier, List<Identifier>> getTerraBiomeMap() {

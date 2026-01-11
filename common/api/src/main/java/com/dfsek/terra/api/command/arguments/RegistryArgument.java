@@ -12,7 +12,7 @@ import org.incendo.cloud.parser.ParserDescriptor;
 import org.incendo.cloud.suggestion.Suggestion;
 import org.incendo.cloud.suggestion.SuggestionProvider;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,8 +22,12 @@ import com.dfsek.terra.api.registry.exception.NoSuchEntryException;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class RegistryArgument {
+    private static final Logger logger = LoggerFactory.getLogger(RegistryArgument.class);
 
     public static <T, R> Builder<T, R> builder(String name, Registry<R> registry) {
         return new Builder<>(name, registry);
@@ -100,20 +104,16 @@ public class RegistryArgument {
 
             Registry<R> registry = registryFunction.apply(commandContext);
 
-            Optional<R> result;
-            try {
-                result = registry.get(RegistryKey.parse(input));
-            } catch(IllegalArgumentException e) {
-                try {
-                    result = registry.getByID(input);
-                } catch(IllegalArgumentException e1) {
-                    return ArgumentParseResult.failure(e1);
-                }
-            }
-
-            return result
+            String finalInput = input;
+            return RegistryKey.parse(finalInput)
+                .bind(registry::getEither)
                 .map(ArgumentParseResult::success)
-                .orElse(ArgumentParseResult.failure(new NoSuchEntryException("No such entry: " + input)));
+                .collect(l -> registry
+                    .getByID(finalInput)
+                    .collect(
+                        left -> ArgumentParseResult.failure(left.toIllegal()),
+                        ArgumentParseResult::success
+                    ), Function.identity());
         }
 
         @Override

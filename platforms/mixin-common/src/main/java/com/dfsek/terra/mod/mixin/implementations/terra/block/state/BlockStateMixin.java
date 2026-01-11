@@ -60,12 +60,12 @@ public abstract class BlockStateMixin extends State<Block, net.minecraft.block.B
     }
 
     @Intrinsic
-    public BlockType terra$getBlockType() {
+    public BlockType terra$blockType() {
         return (BlockType) getBlock();
     }
 
     @Intrinsic
-    public String terra$getAsString(boolean properties) {
+    public String terra$asString(boolean properties) {
         StringBuilder data = new StringBuilder(Registries.BLOCK.getId(getBlock()).toString());
         if(properties && !getEntries().isEmpty()) {
             data.append('[');
@@ -77,7 +77,7 @@ public abstract class BlockStateMixin extends State<Block, net.minecraft.block.B
     }
 
     @Intrinsic
-    public boolean terra$isAir() {
+    public boolean terra$air() {
         return isAir();
     }
 }

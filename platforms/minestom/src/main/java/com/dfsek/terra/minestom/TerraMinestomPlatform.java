@@ -1,6 +1,7 @@
 package com.dfsek.terra.minestom;
 
 import com.dfsek.tectonic.api.TypeRegistry;
+import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.util.RGBLike;
@@ -81,7 +82,7 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
             .registerLoader(EntityType.class,
                 (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
             .registerLoader(BlockState.class,
-                (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o))
+                (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o).collectThrow(left -> new LoadException("Invalid BlockState \"" + o + "\": " + left.message(), depthTracker)))
             .registerLoader(BiomeEffects.Particle.class, BiomeParticleConfigTemplate::new)
             .registerLoader(BiomeEffects.MoodSound.class, BiomeMoodSoundTemplate::new)
             .registerLoader(BiomeEffects.AdditionsSound.class, BiomeAdditionsSoundTemplate::new)
@@ -95,7 +96,7 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
 
         MinecraftServer.getInstanceManager().getInstances().forEach(world -> {
             if(world.generator() instanceof MinestomChunkGeneratorWrapper wrapper) {
-                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).consume(pack -> {
                     wrapper.setPack(pack);
                     LOGGER.info("Replaced pack in chunk generator for instance {}", world.getUuid());
                 });

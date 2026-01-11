@@ -7,6 +7,7 @@ import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
+import java.util.function.Function;
 
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.api.registry.Registry;
@@ -27,6 +28,6 @@ public class PipelineBiomeLoader implements TypeLoader<PipelineBiome> {
         return biomeRegistry
             .getByID((String) c)
             .map(PipelineBiome::from)
-            .orElseGet(() -> PipelineBiome.placeholder((String) c));
+            .collect(left -> PipelineBiome.placeholder((String) c), Function.identity());
     }
 }

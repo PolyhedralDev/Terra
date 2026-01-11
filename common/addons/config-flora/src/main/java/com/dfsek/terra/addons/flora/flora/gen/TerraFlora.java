@@ -20,7 +20,7 @@ import java.util.random.RandomGeneratorFactory;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.enums.Direction;
 import com.dfsek.terra.api.structure.Structure;
-import com.dfsek.terra.api.util.collection.MaterialSet;
+import com.dfsek.terra.api.util.collection.BlockStateSet;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
 import com.dfsek.terra.api.world.WritableWorld;
 
@@ -30,14 +30,14 @@ public class TerraFlora implements Structure {
     private final boolean physics;
     private final boolean ceiling;
 
-    private final MaterialSet testRotation;
+    private final BlockStateSet testRotation;
 
     private final Sampler distribution;
 
     private final String id;
 
     public TerraFlora(List<BlockLayer> layers, boolean physics, boolean ceiling,
-                      MaterialSet testRotation,
+                      BlockStateSet testRotation,
                       Sampler distribution, String id) {
         this.physics = physics;
         this.testRotation = testRotation;
@@ -55,7 +55,7 @@ public class TerraFlora implements Structure {
 
     private void test(EnumSet<Direction> faces, Direction f, Vector3Int b, WritableWorld world) {
         if(testRotation.contains(
-            world.getBlockState(b.getX() + f.getModX(), b.getY() + f.getModY(), b.getZ() + f.getModZ()).getBlockType()))
+            world.getBlockState(b.getX() + f.getModX(), b.getY() + f.getModY(), b.getZ() + f.getModZ()).blockType()))
             faces.add(f);
     }
 

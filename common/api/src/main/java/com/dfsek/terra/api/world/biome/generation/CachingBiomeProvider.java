@@ -1,16 +1,16 @@
 package com.dfsek.terra.api.world.biome.generation;
 
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import com.github.benmanes.caffeine.cache.Scheduler;
 
-import java.util.Optional;
-
 import com.dfsek.terra.api.Handle;
 import com.dfsek.terra.api.util.cache.SeededVector2Key;
 import com.dfsek.terra.api.util.cache.SeededVector3Key;
-import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.generic.pair.Pair.Mutable;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair.Mutable;
 import com.dfsek.terra.api.world.biome.Biome;
 
 import static com.dfsek.terra.api.util.cache.CacheUtils.CACHE_EXECUTOR;
@@ -25,14 +25,14 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     protected final BiomeProvider delegate;
     private final int res;
     private final ThreadLocal<Pair.Mutable<SeededVector3Key, LoadingCache<SeededVector3Key, Biome>>> cache;
-    private final ThreadLocal<Pair.Mutable<SeededVector2Key, LoadingCache<SeededVector2Key, Optional<Biome>>>> baseCache;
+    private final ThreadLocal<Pair.Mutable<SeededVector2Key, LoadingCache<SeededVector2Key, Maybe<Biome>>>> baseCache;
 
     protected CachingBiomeProvider(BiomeProvider delegate) {
         this.delegate = delegate;
         this.res = delegate.resolution();
 
         this.baseCache = ThreadLocal.withInitial(() -> {
-            LoadingCache<SeededVector2Key, Optional<Biome>> cache = Caffeine
+            LoadingCache<SeededVector2Key, Maybe<Biome>> cache = Caffeine
                 .newBuilder()
                 .executor(CACHE_EXECUTOR)
                 .scheduler(Scheduler.systemScheduler())
@@ -56,7 +56,7 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
 
     }
 
-    private Optional<Biome> sampleBiome(SeededVector2Key vec) {
+    private Maybe<Biome> sampleBiome(SeededVector2Key vec) {
         this.baseCache.get().setLeft(new SeededVector2Key(0, 0, 0));
         return this.delegate.getBaseBiome(vec.x * res, vec.z * res, vec.seed);
     }
@@ -74,17 +74,17 @@ public class CachingBiomeProvider implements BiomeProvider, Handle {
     @Override
     public Biome getBiome(int x, int y, int z, long seed) {
         Mutable<SeededVector3Key, LoadingCache<SeededVector3Key, Biome>> cachePair = cache.get();
-        SeededVector3Key mutableKey = cachePair.getLeft();
+        SeededVector3Key mutableKey = cachePair.left();
         mutableKey.set(x, y, z, seed);
-        return cachePair.getRight().get(mutableKey);
+        return cachePair.right().get(mutableKey);
     }
 
     @Override
-    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        Mutable<SeededVector2Key, LoadingCache<SeededVector2Key, Optional<Biome>>> cachePair = baseCache.get();
-        SeededVector2Key mutableKey = cachePair.getLeft();
+    public Maybe<Biome> getBaseBiome(int x, int z, long seed) {
+        Mutable<SeededVector2Key, LoadingCache<SeededVector2Key, Maybe<Biome>>> cachePair = baseCache.get();
+        SeededVector2Key mutableKey = cachePair.left();
         mutableKey.set(x, z, seed);
-        return cachePair.getRight().get(mutableKey);
+        return cachePair.right().get(mutableKey);
     }
 
     @Override

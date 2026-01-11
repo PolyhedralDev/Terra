@@ -36,7 +36,7 @@ public class InternalAddon implements BaseAddon {
     }
 
     @Override
-    public Version getVersion() {
+    public Version version() {
         return VERSION;
     }
 }

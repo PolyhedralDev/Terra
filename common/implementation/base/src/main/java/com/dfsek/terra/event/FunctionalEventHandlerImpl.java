@@ -59,7 +59,7 @@ public class FunctionalEventHandlerImpl implements FunctionalEventHandler {
                     throw e; // Rethrow if it's fail-through.
                 // else warn
                 logger.warn("Exception occurred during event handling. Report this to the maintainers of {}@{}",
-                    context.getAddon().getID(), context.getAddon().getVersion().getFormatted(), e);
+                    context.getAddon().getID(), context.getAddon().version().getFormatted(), e);
             }
         });
     }

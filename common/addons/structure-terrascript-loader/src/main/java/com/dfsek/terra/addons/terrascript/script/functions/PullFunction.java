@@ -33,7 +33,9 @@ public class PullFunction implements Function<Void> {
         this.position = position;
         if(!(data instanceof ConstantExpression)) throw new ParseException("Block data must be constant", data.getPosition());
 
-        this.data = platform.getWorldHandle().createBlockState(((ConstantExpression<String>) data).getConstant());
+        String constant = ((ConstantExpression<String>) data).getConstant();
+        this.data = platform.getWorldHandle().createBlockState(constant).collectThrow(
+            left -> new ParseException("Invalid block state: \"" + constant + "\": " + left.message(), position));
         this.x = x;
         this.y = y;
         this.z = z;
@@ -48,7 +50,7 @@ public class PullFunction implements Function<Void> {
         Vector3.Mutable mutable = Vector3.of(FloatingPointFunctions.round(xz.getX()), y.apply(implementationArguments, scope).intValue(),
             FloatingPointFunctions.round(xz.getZ())).mutable().add(arguments.getOrigin().toFloat());
         while(mutable.getY() > arguments.getWorld().getMinHeight()) {
-            if(!arguments.getWorld().getBlockState(mutable).isAir()) {
+            if(!arguments.getWorld().getBlockState(mutable).air()) {
                 arguments.getWorld().setBlockState(mutable, data);
                 break;
             }

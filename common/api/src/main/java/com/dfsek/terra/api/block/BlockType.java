@@ -20,19 +20,19 @@ public interface BlockType extends Handle {
      *
      * @return Default block state
      */
-    BlockState getDefaultState();
+    BlockState defaultState();
 
     /**
      * Get whether this block is solid.
      *
      * @return Whether this block is solid.
      */
-    boolean isSolid();
+    boolean solid();
 
     /**
      * Get whether this block is water.
      *
      * @return Whether this block is water.
      */
-    boolean isWater();
+    boolean water();
 }

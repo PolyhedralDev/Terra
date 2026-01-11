@@ -41,13 +41,13 @@ public class DependencySorter {
     }
 
     private void sortDependencies(BaseAddon addon, List<BaseAddon> sort) {
-        addon.getDependencies().forEach((id, range) -> {
+        addon.dependencies().forEach((id, range) -> {
             BaseAddon dependency = get(id, addon);
 
-            if(!range.isSatisfiedBy(dependency.getVersion())) {
+            if(!range.isSatisfiedBy(dependency.version())) {
                 throw new DependencyVersionException(
                     "Addon " + addon.getID() + " specifies dependency on " + id + ", versions " + range.getFormatted() +
-                    ", but non-matching version " + dependency.getVersion().getFormatted() + " is installed.");
+                    ", but non-matching version " + dependency.version().getFormatted() + " is installed.");
             }
 
             if(!visited.get(dependency.getID())) { // if we've not visited it yet
@@ -63,14 +63,14 @@ public class DependencySorter {
     private BaseAddon get(String id, BaseAddon addon) {
         if(!addons.containsKey(id)) {
             throw new DependencyException("Addon " + addon.getID() + " specifies dependency on " + id + ", versions " +
-                                          addon.getDependencies().get(id).getFormatted() +
+                                          addon.dependencies().get(id).getFormatted() +
                                           ", but no such addon is installed.");
         }
         return addons.get(id);
     }
 
     private void checkDependencies(BaseAddon base, BaseAddon current) {
-        current.getDependencies().forEach((id, range) -> {
+        current.dependencies().forEach((id, range) -> {
             BaseAddon dependency = get(id, current);
             if(dependency.getID().equals(base.getID())) {
                 throw new CircularDependencyException(

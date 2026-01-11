@@ -80,7 +80,7 @@ public final class MinecraftUtil {
     }
 
     public static boolean isCompatibleBlockStateExtended(com.dfsek.terra.api.block.state.BlockState blockState) {
-        return blockState.isExtended() && BlockStateArgument.class.isAssignableFrom(blockState.getClass());
+        return blockState.extended() && BlockStateArgument.class.isAssignableFrom(blockState.getClass());
     }
 
     //[Vanilla Copy]
@@ -103,7 +103,7 @@ public final class MinecraftUtil {
     }
 
     public static boolean isCompatibleEntityTypeExtended(EntityType entityType) {
-        return entityType.isExtended() && MinecraftEntityTypeExtended.class.isAssignableFrom(entityType.getClass());
+        return entityType.extended() && MinecraftEntityTypeExtended.class.isAssignableFrom(entityType.getClass());
     }
 
     public static void registerIntProviderTypes() {

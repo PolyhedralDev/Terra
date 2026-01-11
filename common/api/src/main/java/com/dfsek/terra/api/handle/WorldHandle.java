@@ -7,6 +7,9 @@
 
 package com.dfsek.terra.api.handle;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.util.generic.data.types.Either;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +23,7 @@ import com.dfsek.terra.api.entity.EntityType;
 public interface WorldHandle {
     @NotNull
     @Contract("_ -> new")
-    BlockState createBlockState(@NotNull String data);
+    Either<Invalid, BlockState> createBlockState(@NotNull String data);
 
     @NotNull
     @Contract(pure = true)

@@ -73,7 +73,7 @@ public class PlatformImpl extends AbstractPlatform {
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
-                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                getConfigRegistry().get(wrapper.getPack().getRegistryKey()).consume(pack -> {
                     wrapper.setPack(pack);
                     LOGGER.info("Replaced pack in chunk generator for world {}", world);
                 });

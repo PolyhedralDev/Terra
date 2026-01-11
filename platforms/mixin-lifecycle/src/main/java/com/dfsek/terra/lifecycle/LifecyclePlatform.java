@@ -92,7 +92,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
             }).join();
             server.getWorlds().forEach(world -> {
                 if(world.getChunkManager().getChunkGenerator() instanceof MinecraftChunkGeneratorWrapper chunkGeneratorWrapper) {
-                    getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                    getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).consume(pack -> {
                         chunkGeneratorWrapper.setPack(pack);
                         LOGGER.info("Replaced pack in chunk generator for world {}", world);
                     });

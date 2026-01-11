@@ -54,11 +54,11 @@ public abstract class ProtoChunkMixin extends Chunk {
 
     public void terra$setBlock(int x, int y, int z, @NotNull BlockState data) {
         BlockPos blockPos = new BlockPos(x, y, z);
-        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+        boolean isExtended = data.extended() && data.getClass().equals(BlockStateArgument.class);
         if(isExtended) {
             BlockStateExtended blockStateExtended = (BlockStateExtended) data;
 
-            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.getState();
+            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.state();
             this.setBlockState(blockPos, blockState, 0);
         } else {
             this.setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);

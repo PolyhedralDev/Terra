@@ -61,17 +61,17 @@ public class BukkitBlockState implements BlockState {
     }
 
     @Override
-    public BlockType getBlockType() {
+    public BlockType blockType() {
         return BukkitAdapter.adapt(delegate.getMaterial());
     }
 
     @Override
-    public String getAsString(boolean properties) {
+    public String asString(boolean properties) {
         return delegate.getAsString(!properties);
     }
 
     @Override
-    public boolean isAir() {
+    public boolean air() {
         return delegate.getMaterial().isAir();
     }
 }

@@ -1,5 +1,7 @@
 package com.dfsek.terra.cli.handle;
 
+import com.dfsek.terra.api.error.Invalid;
+import com.dfsek.terra.api.util.generic.data.types.Either;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -16,8 +18,8 @@ public class CLIWorldHandle implements WorldHandle {
     }
 
     @Override
-    public @NotNull BlockState createBlockState(@NotNull String data) {
-        return new CLIBlockState(data);
+    public @NotNull Either<Invalid, BlockState> createBlockState(@NotNull String data) {
+        return Either.right(new CLIBlockState(data));
     }
 
     @Override

@@ -10,15 +10,14 @@ import java.lang.reflect.AnnotatedType;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
 
 
 public class ShortcutHolder<T> implements TypeLoader<T> {
     private final Map<String, ShortcutLoader<T>> shortcuts = new HashMap<>();
-    private final Registry<T> back;
+    private final TypeLoader<T> back;
 
-    public ShortcutHolder(Registry<T> back) {
+    public ShortcutHolder(TypeLoader<T> back) {
         this.back = back;
     }
 
@@ -36,14 +35,12 @@ public class ShortcutHolder<T> implements TypeLoader<T> {
     @Override
     public T load(@NotNull AnnotatedType annotatedType, @NotNull Object o, @NotNull ConfigLoader configLoader, DepthTracker depthTracker)
     throws LoadException {
-        String id = (String) o;
-        if(id.contains(":")) {
+        if(o instanceof String id && id.contains(":")) {
             String shortcut = id.substring(0, id.indexOf(":"));
             if(shortcuts.containsKey(shortcut)) {
                 return shortcuts.get(shortcut).load(configLoader, id.substring(id.indexOf(":") + 1),
                     depthTracker.intrinsic("Using shortcut \"" + shortcut + "\""));
             }
-            throw new LoadException("Shortcut \"" + shortcut + "\" is not defined.", depthTracker);
         }
         return back.load(annotatedType, o, configLoader, depthTracker);
     }

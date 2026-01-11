@@ -11,7 +11,7 @@ import java.util.function.IntConsumer;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.structure.feature.BinaryColumn;
-import com.dfsek.terra.api.util.function.IntToBooleanFunction;
+import com.dfsek.terra.api.util.function.IntPredicate;
 import com.dfsek.terra.api.world.WritableWorld;
 
 
@@ -75,7 +75,7 @@ public class Column<T extends WritableWorld> {
         return new Column<>(x, z, world, min, max);
     }
 
-    public BinaryColumn newBinaryColumn(IntToBooleanFunction function) {
+    public BinaryColumn newBinaryColumn(IntPredicate function) {
         return new BinaryColumn(getMinY(), getMaxY(), function);
     }
 

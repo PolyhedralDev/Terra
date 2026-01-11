@@ -41,7 +41,7 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
     public @NotNull <T> Result<T> process(AnnotatedType t, T c, ConfigLoader loader, Meta annotation, DepthTracker depthTracker) {
         if(String.class.equals(t.getType()) && c instanceof String candidate) { // String is final so we use #equals
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
-                Object meta = getMetaValue(key, depthTracker).getRight();
+                Object meta = getMetaValue(key, depthTracker).right();
                 if(!(meta instanceof String) && !(meta instanceof Number) && !(meta instanceof Character) && !(meta instanceof Boolean)) {
                     throw new LoadException("MetaString template injection candidate must be string or primitive, is type " +
                                             meta.getClass().getCanonicalName(), depthTracker);

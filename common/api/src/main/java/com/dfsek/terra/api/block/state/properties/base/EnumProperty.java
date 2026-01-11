@@ -11,13 +11,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.dfsek.terra.api.block.state.properties.Property;
-import com.dfsek.terra.api.util.generic.Lazy;
+import com.dfsek.terra.api.util.generic.Memo;
 
 
 public interface EnumProperty<T extends Enum<T>> extends Property<T> {
     static <T extends Enum<T>> EnumProperty<T> of(String name, Class<T> clazz) {
         return new EnumProperty<>() {
-            private final Lazy<Collection<T>> constants = Lazy.lazy(() -> Arrays.asList(clazz.getEnumConstants()));
+            private final Memo<Collection<T>> constants = Memo.lazy(() -> Arrays.asList(clazz.getEnumConstants()));
 
             @Override
             public Collection<T> values() {

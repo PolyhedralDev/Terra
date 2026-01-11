@@ -9,6 +9,7 @@ import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipeline;
 import com.dfsek.terra.addons.biome.extrusion.utils.ExtrusionPipelineFactory;
 import com.dfsek.terra.api.util.Column;
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
@@ -39,11 +40,11 @@ public class BiomeExtrusionProvider implements BiomeProvider {
     public Column<Biome> getColumn(int x, int z, long seed, int min, int max) {
         return delegate.getBaseBiome(x, z, seed)
             .map(base -> (Column<Biome>) new BaseBiomeColumn(this, base, min, max, x, z, seed))
-            .orElseGet(() -> BiomeProvider.super.getColumn(x, z, seed, min, max));
+            .get(() -> BiomeProvider.super.getColumn(x, z, seed, min, max));
     }
 
     @Override
-    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
+    public Maybe<Biome> getBaseBiome(int x, int z, long seed) {
         return delegate.getBaseBiome(x, z, seed);
     }
 

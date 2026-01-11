@@ -3,13 +3,14 @@ package com.dfsek.terra.addons.commands.locate;
 
 import com.dfsek.seismic.type.vector.Vector2Int;
 import com.dfsek.seismic.type.vector.Vector3Int;
+
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import org.incendo.cloud.CommandManager;
 import org.incendo.cloud.component.DefaultValue;
 import org.incendo.cloud.context.CommandContext;
 import org.incendo.cloud.description.Description;
 import org.incendo.cloud.parser.standard.IntegerParser;
-
-import java.util.Optional;
 
 import com.dfsek.terra.addons.manifest.api.AddonInitializer;
 import com.dfsek.terra.api.Platform;
@@ -21,10 +22,12 @@ import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.inject.annotations.Inject;
 import com.dfsek.terra.api.registry.Registry;
-import com.dfsek.terra.api.util.generic.either.Either;
+import com.dfsek.terra.api.util.generic.data.types.Either;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.World;
 import com.dfsek.terra.api.world.biome.Biome;
+
+import static com.dfsek.terra.api.util.generic.data.types.Either.collapse;
 
 
 public class LocateCommandAddon implements AddonInitializer {
@@ -35,7 +38,7 @@ public class LocateCommandAddon implements AddonInitializer {
     private BaseAddon addon;
 
     private static Registry<Biome> getBiomeRegistry(CommandContext<CommandSender> sender) {
-        return sender.sender().getEntity().orElseThrow().world().getPack().getRegistry(Biome.class);
+        return sender.sender().entity().orThrow().world().getPack().getRegistry(Biome.class);
     }
 
     @Override
@@ -63,7 +66,7 @@ public class LocateCommandAddon implements AddonInitializer {
                         .handler(context -> {
                             // 1. Gather Context & Arguments
                             Biome targetBiome = context.get("biome");
-                            Entity sender = context.sender().getEntity().orElseThrow(
+                            Entity sender = context.sender().entity().orThrow(
                                 () -> new Error("Only entities can run this command."));
                             World world = sender.world();
 
@@ -83,7 +86,7 @@ public class LocateCommandAddon implements AddonInitializer {
                             context.sender().sendMessage(
                                 "Searching for " + targetBiome.getID() + " within " + radius + " blocks" + modeMsg + "...");
 
-                            Optional<Either<Vector3Int, Vector2Int>> result;
+                            Maybe<Either<Vector3Int, Vector2Int>> result;
 
                             // 3. Execute Search Loop
                             while(true) {
@@ -100,7 +103,7 @@ public class LocateCommandAddon implements AddonInitializer {
 
                                 // Exit Conditions:
                                 // 1. Found a result
-                                if(result.isPresent()) {
+                                if(result.isJust()) {
                                     break;
                                 }
                                 // 2. Not in auto mode (only run once)
@@ -118,22 +121,11 @@ public class LocateCommandAddon implements AddonInitializer {
                             }
 
                             // 4. Handle Result
-                            if(result.isPresent()) {
-                                Either<Vector3Int, Vector2Int> location = result.get();
-                                String coords;
-
-                                if(location.hasLeft()) { // 3D Result
-                                    Vector3Int vec = location.getLeft().get();
-                                    coords = String.format("%d, %d, %d", vec.getX(), vec.getY(), vec.getZ());
-                                } else { // 2D Result
-                                    Vector2Int vec = location.getRight().get();
-                                    coords = String.format("%d, ~, %d", vec.getX(), vec.getZ());
-                                }
-
-                                context.sender().sendMessage("Found " + targetBiome.getID() + " at [" + coords + "]");
-                            } else {
-                                context.sender().sendMessage("Could not find " + targetBiome.getID() + " within " + radius + " blocks.");
-                            }
+                            context.sender().sendMessage(collapse(result.map(location -> location.collect(
+                                    left -> String.format("%d, %d, %d", left.getX(), left.getY(), left.getZ()),
+                                    right -> String.format("%d, ~, %d", right.getX(), right.getZ())))
+                                .map(coords -> "Found " + targetBiome.getID() + " at [" + coords + "]")
+                                .toEither("Could not find " + targetBiome.getID() + " within " + radius + " blocks.")));
                         })
                         .permission("terra.locate.biome")
                 );

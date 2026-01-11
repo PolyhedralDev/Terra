@@ -12,17 +12,17 @@ import com.dfsek.terra.api.block.state.BlockState;
  */
 public record AllayBlockType(BlockType<?> allayBlockType) implements com.dfsek.terra.api.block.BlockType {
     @Override
-    public BlockState getDefaultState() {
+    public BlockState defaultState() {
         return new AllayBlockState(allayBlockType.getDefaultState(), Mapping.blockStateBeToJe(allayBlockType.getDefaultState()));
     }
 
     @Override
-    public boolean isSolid() {
+    public boolean solid() {
         return allayBlockType.getDefaultState().getBlockStateData().isSolid();
     }
 
     @Override
-    public boolean isWater() {
+    public boolean water() {
         return allayBlockType.hasBlockTag(BlockTags.WATER);
     }
 

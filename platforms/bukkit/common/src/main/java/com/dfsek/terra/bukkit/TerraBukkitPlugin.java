@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.bukkit;
 
+import com.dfsek.terra.api.error.Invalid;
+
 import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import org.bukkit.Bukkit;
@@ -182,10 +184,10 @@ public class TerraBukkitPlugin extends JavaPlugin {
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         if(id == null || id.trim().isEmpty()) { return null; }
         return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
-                () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
+            ConfigPack pack = platform.getConfigRegistry().getByID(id).collectThrow(
+                left -> new IllegalArgumentException("No such config pack \"" + id + "\": " + left));
             return pack.getGeneratorProvider().newInstance(pack);
-        }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+        }), platform.getRawConfigRegistry().getByID(id).collectThrow(Invalid::toIllegal), platform.getWorldHandle().air());
     }
 
     public AsyncScheduler getAsyncScheduler() {

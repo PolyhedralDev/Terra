@@ -23,10 +23,14 @@ import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
 import com.dfsek.tectonic.api.loader.type.TypeLoader;
 import com.dfsek.tectonic.impl.MapConfiguration;
+
+import com.dfsek.terra.api.util.function.FunctionUtils;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.dfsek.terra.api.registry.Registry;
@@ -46,7 +50,7 @@ public class GenericTemplateSupplierLoader<T> implements TypeLoader<T> {
         String type = (String) map.get("type");
         return loader
             .load(registry.getByID(type)
-                .orElseThrow(() -> new LoadException("No such entry: " + map.get("type"), depthTracker))
+                .collect(left -> FunctionUtils.throw_(new LoadException("Failed to load entry " + map.get("type") + ": " + left, depthTracker)), Function.identity())
                 .get(), new MapConfiguration(map), depthTracker.intrinsic("With type \"" + type + "\"")).get();
 
     }

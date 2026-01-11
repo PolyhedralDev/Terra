@@ -30,7 +30,7 @@ public class ElevationInterpolator {
                 gens[x + 1 + smooth][z + 1 + smooth] =
                     provider
                         .getBaseBiome(bx, bz, seed)
-                        .orElseGet(() -> provider.getBiome(bx, 0, bz, seed)) // kind of a hack
+                        .get(() -> provider.getBiome(bx, 0, bz, seed)) // kind of a hack
                         .getContext()
                         .get(noisePropertiesKey);
             }

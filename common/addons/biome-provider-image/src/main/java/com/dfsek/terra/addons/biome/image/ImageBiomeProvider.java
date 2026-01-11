@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import com.dfsek.terra.addons.image.colorsampler.ColorSampler;
 import com.dfsek.terra.addons.image.converter.ColorConverter;
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
@@ -40,8 +41,8 @@ public class ImageBiomeProvider implements BiomeProvider {
     }
 
     @Override
-    public Optional<Biome> getBaseBiome(int x, int z, long seed) {
-        return Optional.of(getBiome(x, z));
+    public Maybe<Biome> getBaseBiome(int x, int z, long seed) {
+        return Maybe.just(getBiome(x, z));
     }
 
     @Override

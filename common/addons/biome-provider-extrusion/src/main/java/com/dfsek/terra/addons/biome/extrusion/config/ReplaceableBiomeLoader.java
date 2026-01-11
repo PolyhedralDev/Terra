@@ -27,6 +27,6 @@ public class ReplaceableBiomeLoader implements TypeLoader<ReplaceableBiome> {
         return biomeRegistry
             .getByID((String) c)
             .map(ReplaceableBiome::of)
-            .orElseThrow(() -> new LoadException("No such biome: " + c, depthTracker));
+            .collectThrow(left -> new LoadException("No such biome: " + c + ": " + left, depthTracker));
     }
 }

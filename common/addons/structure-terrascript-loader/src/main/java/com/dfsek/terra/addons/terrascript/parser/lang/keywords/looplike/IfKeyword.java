@@ -17,7 +17,7 @@ import com.dfsek.terra.addons.terrascript.parser.lang.Keyword;
 import com.dfsek.terra.addons.terrascript.parser.lang.Returnable;
 import com.dfsek.terra.addons.terrascript.parser.lang.Scope;
 import com.dfsek.terra.addons.terrascript.tokenizer.Position;
-import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.generic.data.types.Pair;
 
 
 public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
@@ -41,8 +41,8 @@ public class IfKeyword implements Keyword<Block.ReturnInfo<?>> {
         if(statement.apply(implementationArguments, scope)) return conditional.apply(implementationArguments, scope);
         else {
             for(Pair<Returnable<Boolean>, Block> pair : elseIf) {
-                if(pair.getLeft().apply(implementationArguments, scope)) {
-                    return pair.getRight().apply(implementationArguments, scope);
+                if(pair.left().apply(implementationArguments, scope)) {
+                    return pair.right().apply(implementationArguments, scope);
                 }
             }
             if(elseBlock != null) return elseBlock.apply(implementationArguments, scope);

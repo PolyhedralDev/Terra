@@ -9,7 +9,7 @@ public interface BlockStateExtended extends BlockState {
      *
      * @return BlockData of this BlockStateExtended
      */
-    ExtendedData getData();
+    ExtendedData data();
 
     /**
      * Sets the BlockData.
@@ -25,8 +25,8 @@ public interface BlockStateExtended extends BlockState {
      *
      * @return Raw BlockState of this BlockStateExtended
      */
-    BlockState getState();
+    BlockState state();
 
     @Override
-    default boolean isExtended() { return true; }
+    default boolean extended() { return true; }
 }

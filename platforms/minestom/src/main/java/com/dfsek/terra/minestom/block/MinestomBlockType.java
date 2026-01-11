@@ -14,17 +14,17 @@ public class MinestomBlockType implements BlockType {
     }
 
     @Override
-    public BlockState getDefaultState() {
+    public BlockState defaultState() {
         return new MinestomBlockState(block);
     }
 
     @Override
-    public boolean isSolid() {
+    public boolean solid() {
         return block.isSolid();
     }
 
     @Override
-    public boolean isWater() {
+    public boolean water() {
         return block.isLiquid();
     }
 

@@ -62,9 +62,10 @@ public class LootFunction implements Function<Void> {
 
         String id = data.apply(implementationArguments, scope);
 
-
-        registry.get(RegistryKey.parse(id))
-            .ifPresentOrElse(table -> {
+        RegistryKey.parse(id)
+            .bind(registry::getEither)
+            .consume(left -> LOGGER.error("No such loot table {}", id),
+                table -> {
                     Vector3 apply = Vector3.of(FloatingPointFunctions.round(xz.getX()),
                         y.apply(implementationArguments, scope)
                             .intValue(),
@@ -91,8 +92,8 @@ public class LootFunction implements Function<Void> {
                         LOGGER.error("Could not apply loot at {}", apply, e);
                         e.printStackTrace();
                     }
-                },
-                () -> LOGGER.error("No such loot table {}", id));
+                }
+            );
         return null;
     }
 

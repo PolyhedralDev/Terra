@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.entity;
 
+import com.dfsek.terra.api.util.generic.data.types.Maybe;
+
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,8 +28,6 @@ import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.Optional;
 
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.entity.Entity;
@@ -52,15 +52,15 @@ public abstract class ServerCommandSourceMixin {
     }
 
     @Nullable
-    public Optional<Entity> terra$getEntity() {
-        return Optional.ofNullable((Entity) getEntity());
+    public Maybe<Entity> terra$entity() {
+        return Maybe.ofNullable((Entity) getEntity());
     }
 
-    public Optional<Player> terra$getPlayer() {
+    public Maybe<Player> terra$player() {
         try {
-            return Optional.ofNullable((Player) getPlayer());
+            return Maybe.ofNullable((Player) getPlayer());
         } catch(CommandSyntaxException e) {
-            return Optional.empty();
+            return Maybe.nothing();
         }
     }
 }

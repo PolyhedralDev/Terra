@@ -8,6 +8,9 @@
 package com.dfsek.terra.addons.sponge;
 
 import com.dfsek.seismic.type.vector.Vector3Int;
+
+import com.dfsek.terra.api.error.Invalid;
+
 import net.querz.nbt.io.NBTDeserializer;
 import net.querz.nbt.tag.ByteArrayTag;
 import net.querz.nbt.tag.CompoundTag;
@@ -129,7 +132,7 @@ public class SpongeSchematicAddon implements AddonInitializer {
                     for(int y = 0; y < hei; y++) {
                         String block = data.get((int) arr[x + z * wid + y * wid * len]);
                         if(block.startsWith("minecraft:structure_void")) continue;
-                        states[x][z][y] = platform.getWorldHandle().createBlockState(block);
+                        states[x][z][y] = platform.getWorldHandle().createBlockState(block).collectThrow(Invalid::toIllegal);
                     }
                 }
             }
