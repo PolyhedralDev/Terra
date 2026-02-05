@@ -48,15 +48,25 @@ fun Project.configureDependencies() {
         maven("https://files.minecraftforge.net/maven/") {
             name = "Forge"
         }
+        maven("https://maven.architectury.dev/") {
+            name = "Architectury"
+        }
+        maven("https://maven.neoforged.net/releases/") {
+            name = "NeoForge"
+            content {
+                includeGroupByRegex("net\\.neoforged(\\..*)?")
+            }
+        }
         maven("https://maven.quiltmc.org/repository/release/") {
             name = "Quilt"
         }
         maven("https://jitpack.io") {
             name = "JitPack"
         }
-        maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-            name = "Sonatype Snapshots"
-        }
+        // Temporarily disabled due to 504 Gateway Timeout
+        // maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        //     name = "Sonatype Snapshots"
+        // }
         maven("https://repo.onarandombox.com/multiverse-releases") {
             name = "onarandombox"
         }

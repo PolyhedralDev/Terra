@@ -164,6 +164,10 @@ fun Project.configureDistribution() {
         configurations = listOf(project.configurations["shaded"])
         archiveClassifier.set("shaded")
         version = project.version
+        // Avoid JPMS module conflicts (e.g., com.google.errorprone.annotations)
+        exclude("com/google/errorprone/**")
+        // Avoid JPMS module conflicts with Checker Framework annotations
+        exclude("org/checkerframework/**")
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
         relocate("org.objectweb.asm", "com.dfsek.terra.lib.asm")
         relocate("org.json", "com.dfsek.terra.lib.json")
