@@ -25,15 +25,15 @@ public class CloudCommandSender implements CommandSender {
 
     @Override
     public Optional<Entity> getEntity() {
-        if(delegate instanceof org.bukkit.entity.Entity entity) {
-            return Optional.of(BukkitAdapter.adapt(entity));
+        if(delegate.getExecutor() != null) {
+            return Optional.of(BukkitAdapter.adapt(delegate.getExecutor()));
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<Player> getPlayer() {
-        if(delegate instanceof org.bukkit.entity.Player player) {
+        if(delegate.getSender() instanceof org.bukkit.entity.Player player) {
             return Optional.of(BukkitAdapter.adapt(player));
         }
         return Optional.empty();
