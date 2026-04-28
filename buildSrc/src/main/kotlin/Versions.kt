@@ -96,6 +96,6 @@ object Versions {
     }
     
     object Minestom {
-        const val minestom = "2025.10.31-1.21.10"
+        const val minestom = "2025.12.20c-1.21.11"
     }
 }

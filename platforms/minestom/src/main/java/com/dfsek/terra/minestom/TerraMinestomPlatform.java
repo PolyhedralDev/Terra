@@ -7,6 +7,8 @@ import net.kyori.adventure.util.RGBLike;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.sound.SoundEvent;
+import net.minestom.server.world.attribute.AmbientParticle;
+import net.minestom.server.world.attribute.AmbientSounds;
 import net.minestom.server.world.biome.BiomeEffects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -82,9 +84,9 @@ public final class TerraMinestomPlatform extends AbstractPlatform {
                 (TypeLoader<EntityType>) (annotatedType, o, configLoader, depthTracker) -> new MinestomEntityType((String) o))
             .registerLoader(BlockState.class,
                 (TypeLoader<BlockState>) (annotatedType, o, configLoader, depthTracker) -> worldHandle.createBlockState((String) o))
-            .registerLoader(BiomeEffects.Particle.class, BiomeParticleConfigTemplate::new)
-            .registerLoader(BiomeEffects.MoodSound.class, BiomeMoodSoundTemplate::new)
-            .registerLoader(BiomeEffects.AdditionsSound.class, BiomeAdditionsSoundTemplate::new)
+            .registerLoader(AmbientParticle.class, BiomeParticleConfigTemplate::new)
+            .registerLoader(AmbientSounds.Mood.class, BiomeMoodSoundTemplate::new)
+            .registerLoader(AmbientSounds.Additions.class, BiomeAdditionsSoundTemplate::new)
             .registerLoader(SoundEvent.class, SoundEventTemplate::new);
     }
 

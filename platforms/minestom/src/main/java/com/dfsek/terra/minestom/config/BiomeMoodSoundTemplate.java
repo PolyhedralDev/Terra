@@ -4,10 +4,11 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minestom.server.sound.SoundEvent;
+import net.minestom.server.world.attribute.AmbientSounds;
 import net.minestom.server.world.biome.BiomeEffects;
 
 
-public class BiomeMoodSoundTemplate implements ObjectTemplate<BiomeEffects.MoodSound> {
+public class BiomeMoodSoundTemplate implements ObjectTemplate<AmbientSounds.Mood> {
     @Value("sound")
     @Default
     private SoundEvent sound = null;
@@ -25,9 +26,9 @@ public class BiomeMoodSoundTemplate implements ObjectTemplate<BiomeEffects.MoodS
     private Double soundExtraDistance = null;
 
     @Override
-    public BiomeEffects.MoodSound get() {
+    public AmbientSounds.Mood get() {
         if(sound == null) return null;
-        return new BiomeEffects.MoodSound(
+        return new AmbientSounds.Mood(
             sound,
             soundCultivationTicks,
             soundSpawnRange,
