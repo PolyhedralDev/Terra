@@ -1,7 +1,7 @@
 import java.util.*
 
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("dev.architectury.loom") version Versions.Mod.architecturyLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 

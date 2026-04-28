@@ -1,25 +1,21 @@
 import java.io.ByteArrayOutputStream
 import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.support.serviceOf
 
 
 var isPrerelease = false
 
 
 fun Project.getGitHash(): String {
-    val stdout = ByteArrayOutputStream()
-    exec {
+    return providers.exec {
         commandLine = mutableListOf("git", "rev-parse", "--short", "HEAD")
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
+    }.standardOutput.asText.get().trim()
 }
 
 fun Project.gitClone(name: String) {
-    val stdout = ByteArrayOutputStream()
-    exec {
+    providers.exec {
         commandLine = mutableListOf("git", "clone", name)
-        standardOutput = stdout
     }
 }
 

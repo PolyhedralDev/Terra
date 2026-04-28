@@ -1,5 +1,5 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("dev.architectury.loom") version Versions.Mod.architecturyLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 
@@ -9,7 +9,7 @@ dependencies {
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     compileOnly("io.github.llamalad7:mixinextras-common:${Versions.Mod.mixinExtras}")
     annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecturyLoom}")
 
     implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
 
