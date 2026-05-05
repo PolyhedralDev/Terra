@@ -67,9 +67,9 @@ object Versions {
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.3"
         const val paperDevBundle = paperBuild
-        const val runPaper = "2.3.1"
+        const val runPaper = "3.0.2"
         const val paperWeight = "2.0.0-beta.21"
-        const val cloud = "2.0.0-beta.12"
+        const val cloud = "2.0.0-beta.15"
         const val multiverse = "5.3.0"
     }
     

@@ -1,18 +1,29 @@
 package com.dfsek.terra.bukkit.nms;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
-import net.minecraft.core.HolderSet;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,7 +131,7 @@ public class AwfulBukkitHacks {
     }
 
     private static <T> void bindTags(MappedRegistry<T> registry, Map<TagKey<T>, List<Holder<T>>> tagEntries) {
-        Map<Holder.Reference<T>, List<TagKey<T>>> map = new IdentityHashMap<>();
+        Map<Reference<T>, List<TagKey<T>>> map = new IdentityHashMap<>();
         Reflection.MAPPED_REGISTRY.getByKey(registry).values().forEach(entry -> map.put(entry, new ArrayList<>()));
         tagEntries.forEach((tag, entries) -> {
             for(Holder<T> holder : entries) {
@@ -145,7 +156,7 @@ public class AwfulBukkitHacks {
         //            );
         //        }
 
-        Map<TagKey<T>, HolderSet.Named<T>> map2 = new IdentityHashMap<>(registry.getTags().collect(Collectors.toMap(
+        Map<TagKey<T>, Named<T>> map2 = new IdentityHashMap<>(registry.getTags().collect(Collectors.toMap(
             Named::key,
             (named) -> named
         )));
@@ -159,6 +170,15 @@ public class AwfulBukkitHacks {
         registry.getTags().forEach(entryList -> Reflection.HOLDER_SET.invokeBind(entryList, List.of()));
         Reflection.MAPPED_REGISTRY.getByKey(registry).values().forEach(
             entry -> Reflection.HOLDER_REFERENCE.invokeBindTags(entry, Set.of()));
+    }
+
+    // used by BukkitWorldHandle
+    public static BlockData createBlockState(@NotNull String data) throws CommandSyntaxException {
+        MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
+        HolderLookup.Provider lookup = server.registryAccess();
+        final HolderLookup<Block> blocks = lookup.lookupOrThrow(Registries.BLOCK);
+        BlockResult result = BlockStateParser.parseForBlock(blocks, new StringReader(data), true);
+        return CraftBlockData.createData(result.blockState());
     }
 }
 

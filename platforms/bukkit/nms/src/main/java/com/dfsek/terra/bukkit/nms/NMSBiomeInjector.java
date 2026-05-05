@@ -11,11 +11,13 @@ import net.minecraft.world.attribute.AmbientMoodSettings;
 import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.attribute.AmbientSounds;
 import net.minecraft.world.attribute.BackgroundMusic;
+import net.minecraft.world.attribute.EnvironmentAttribute;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.attribute.EnvironmentAttributeMap.Entry;
 import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.minecraft.world.attribute.modifier.AttributeModifier;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biome.BiomeBuilder;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 
@@ -42,19 +44,22 @@ public class NMSBiomeInjector {
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
         EnvironmentAttributeMap attributes = vanilla.getAttributes();
 
-        Integer vanillaFogColour = (Integer) Objects.requireNonNull(attributes.get(EnvironmentAttributes.FOG_COLOR)).argument();
-        Integer vanillaWaterFogColour = (Integer) Objects.requireNonNull(attributes.get(EnvironmentAttributes.WATER_FOG_COLOR)).argument();
-        Integer vanillaSkyColour = (Integer) Objects.requireNonNull(attributes.get(EnvironmentAttributes.SKY_COLOR)).argument();
-        Float vanillaMusicVolume = (Float) Objects.requireNonNull(attributes.get(EnvironmentAttributes.MUSIC_VOLUME)).argument();
+        Integer vanillaFogColour = extractInt(attributes, EnvironmentAttributes.FOG_COLOR);
+        Integer vanillaWaterFogColour = extractInt(attributes, EnvironmentAttributes.WATER_FOG_COLOR);
+        Integer vanillaSkyColour = extractInt(attributes, EnvironmentAttributes.SKY_COLOR);
+        Float vanillaMusicVolume = extractFloat(attributes, EnvironmentAttributes.MUSIC_VOLUME);
 
-        builder.modifyAttribute(EnvironmentAttributes.FOG_COLOR, AttributeModifier.override(),
-            Objects.requireNonNullElse(vanillaBiomeProperties.getFogColor(), vanillaFogColour));
-        builder.modifyAttribute(EnvironmentAttributes.WATER_FOG_COLOR, AttributeModifier.override(),
-            Objects.requireNonNullElse(vanillaBiomeProperties.getWaterFogColor(), vanillaWaterFogColour));
-        builder.modifyAttribute(EnvironmentAttributes.SKY_COLOR, AttributeModifier.override(),
-            Objects.requireNonNullElse(vanillaBiomeProperties.getSkyColor(), vanillaSkyColour));
-        builder.modifyAttribute(EnvironmentAttributes.MUSIC_VOLUME, AttributeModifier.override(),
-            Objects.requireNonNullElse(vanillaBiomeProperties.getMusicVolume(), vanillaMusicVolume));
+        applyIfPresent(builder, EnvironmentAttributes.FOG_COLOR,
+            vanillaBiomeProperties.getFogColor(), vanillaFogColour);
+
+        applyIfPresent(builder, EnvironmentAttributes.WATER_FOG_COLOR,
+            vanillaBiomeProperties.getWaterFogColor(), vanillaWaterFogColour);
+
+        applyIfPresent(builder, EnvironmentAttributes.SKY_COLOR,
+            vanillaBiomeProperties.getSkyColor(), vanillaSkyColour);
+
+        applyIfPresent(builder, EnvironmentAttributes.MUSIC_VOLUME,
+            vanillaBiomeProperties.getMusicVolume(), vanillaMusicVolume);
 
         effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()));
         effects.grassColorModifier(
@@ -151,5 +156,32 @@ public class NMSBiomeInjector {
     public static String createBiomeID(ConfigPack pack, RegistryKey biomeID) {
         return pack.getID().toLowerCase() + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT) + "/" + biomeID.getID().toLowerCase(
             Locale.ROOT);
+    }
+
+    private static Integer extractInt(EnvironmentAttributeMap attributes,
+                                      EnvironmentAttribute<Integer> key) {
+        Entry<Integer, ?> attr = attributes.get(key);
+        return attr != null ? (Integer) attr.argument() : null;
+    }
+
+    private static Float extractFloat(EnvironmentAttributeMap attributes,
+                                      EnvironmentAttribute<Float> key) {
+        Entry<Float, ?> attr = attributes.get(key);
+        return attr != null ? (Float) attr.argument() : null;
+    }
+
+    private static <T> void applyIfPresent(
+        BiomeBuilder builder,
+        EnvironmentAttribute<T> attr,
+        T overrideValue,
+        T fallbackValue
+    ) {
+        T value = overrideValue != null ? overrideValue : fallbackValue;
+
+        if (value == null) {
+            return;
+        }
+
+        builder.modifyAttribute(attr, AttributeModifier.override(), value);
     }
 }
