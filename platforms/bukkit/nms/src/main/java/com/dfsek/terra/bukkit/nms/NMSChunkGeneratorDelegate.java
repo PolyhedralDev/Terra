@@ -106,8 +106,8 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
         Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor, chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
-        int xi = chunk.getPos().x << 4;
-        int zi = chunk.getPos().z << 4;
+        int xi = chunk.getPos().x() << 4;
+        int zi = chunk.getPos().z() << 4;
         for(int x = 0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
                 int depth = 0;
