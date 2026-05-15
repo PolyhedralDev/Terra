@@ -3,10 +3,14 @@ package com.dfsek.terra.minestom.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
+import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.minestom.server.adventure.MinestomAdventure;
+import net.minestom.server.codec.Transcoder;
 import net.minestom.server.particle.Particle;
 import net.minestom.server.world.attribute.AmbientParticle;
-import net.minestom.server.world.biome.BiomeEffects;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 
 public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientParticle> {
@@ -25,16 +29,38 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
         }
 
         String[] parts = particle.split("\\{");
-        Particle parsedParticle = Particle.fromKey(parts[0]);
+        String key = parts[0];
+        Particle parsedParticle = Particle.fromKey(key);
         if(parts.length > 1) {
-            LoggerFactory.getLogger(BiomeParticleConfigTemplate.class).warn("Particle {} has additional data, particle will be ignored.",
-                particle);
-            return null;
+            int start = particle.indexOf("{");
+            String dataString = particle.substring(start);
+            parsedParticle = parseAdditionalParticleData(dataString, key);
+            if (parsedParticle == null) return null;
         }
 
         return new AmbientParticle(
             parsedParticle,
             probability
         );
+    }
+
+    private Particle parseAdditionalParticleData(String dataString, String key) {
+        CompoundBinaryTag nbt = null;
+        Particle parsedParticle;
+        try {
+            nbt = MinestomAdventure.NBT_CODEC.decode(dataString);
+            // transform minecraft:x{a:"b"} into {type:"minecraft:x", a:"b"} as described in Particle.CODEC
+            nbt = nbt.putString("type", key);
+            parsedParticle = Particle.CODEC.decode(Transcoder.NBT, nbt).orElseThrow();
+        } catch(Exception e) {
+            String nbtString = "null";
+            try {
+                nbtString = (nbt == null ? "null" : MinestomAdventure.NBT_CODEC.encode(nbt));
+            } catch(IOException _) { }
+            LoggerFactory.getLogger(BiomeParticleConfigTemplate.class).warn(
+                "Failed to decode particle from '" + particle + "', nbt: '" + nbtString + "'. This particle will be ignored.", e);
+            return null;
+        }
+        return parsedParticle;
     }
 }
