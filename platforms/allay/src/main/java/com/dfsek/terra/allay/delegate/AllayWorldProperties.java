@@ -1,6 +1,6 @@
 package com.dfsek.terra.allay.delegate;
 
-import org.allaymc.api.world.data.DimensionInfo;
+import org.allaymc.api.world.dimension.DimensionType;
 
 import com.dfsek.terra.api.world.info.WorldProperties;
 
@@ -12,12 +12,12 @@ public class AllayWorldProperties implements WorldProperties {
 
     private final Object fakeHandle;
     private final long seed;
-    private final DimensionInfo dimensionInfo;
+    private final DimensionType dimensionType;
 
-    public AllayWorldProperties(long seed, DimensionInfo dimensionInfo) {
+    public AllayWorldProperties(long seed, DimensionType dimensionType) {
         this.fakeHandle = new Object();
         this.seed = seed;
-        this.dimensionInfo = dimensionInfo;
+        this.dimensionType = dimensionType;
     }
 
     @Override
@@ -27,12 +27,12 @@ public class AllayWorldProperties implements WorldProperties {
 
     @Override
     public int getMaxHeight() {
-        return dimensionInfo.maxHeight();
+        return dimensionType.getMaxHeight();
     }
 
     @Override
     public int getMinHeight() {
-        return dimensionInfo.minHeight();
+        return dimensionType.getMinHeight();
     }
 
     @Override

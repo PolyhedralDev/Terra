@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import org.allaymc.api.utils.AllayStringUtils;
 import org.allaymc.api.world.biome.BiomeType;
 import org.allaymc.api.world.chunk.UnsafeChunk;
-import org.allaymc.api.world.data.DimensionInfo;
+import org.allaymc.api.world.dimension.DimensionType;
 import org.allaymc.api.world.generator.WorldGenerator;
 import org.allaymc.api.world.generator.context.NoiseContext;
 import org.allaymc.api.world.generator.context.PopulateContext;
@@ -55,11 +55,11 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .populators(new AllayPopulator())
             .onDimensionSet(dimension -> {
                 this.allayServerWorld = new AllayServerWorld(this, dimension);
-                this.worldProperties = new AllayWorldProperties(this.seed, dimension.getDimensionInfo());
+                this.worldProperties = new AllayWorldProperties(this.seed, dimension.getDimensionType());
 
                 var metaPackName = options.get(OPTION_META_PACK_NAME);
                 if(metaPackName != null) {
-                    setConfigPack(getConfigPackByMeta(metaPackName, dimension.getDimensionInfo()));
+                    setConfigPack(getConfigPackByMeta(metaPackName, dimension.getDimensionType()));
                     return;
                 }
 
@@ -94,13 +94,13 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
             .orElseThrow(() -> new IllegalArgumentException("Cant find terra config pack named " + packId));
     }
 
-    protected static ConfigPack getConfigPackByMeta(String metaPackId, DimensionInfo dimensionInfo) {
+    protected static ConfigPack getConfigPackByMeta(String metaPackId, DimensionType dimensionType) {
         return TerraAllayPlugin.platform
             .getMetaConfigRegistry()
             .getByID(metaPackId)
             .orElseThrow(() -> new IllegalArgumentException("Cant find terra meta pack named " + metaPackId))
             .packs()
-            .get(Mapping.dimensionIdBeToJe(dimensionInfo.toString()));
+            .get(Mapping.dimensionIdBeToJe(dimensionType.getIdentifier().toString()));
     }
 
     protected static ChunkGenerator createGenerator(ConfigPack configPack) {
@@ -148,8 +148,8 @@ public class AllayGeneratorWrapper implements GeneratorWrapper {
                 worldProperties, biomeProvider,
                 chunkX, chunkZ
             );
-            int minHeight = context.getDimensionInfo().minHeight();
-            int maxHeight = context.getDimensionInfo().maxHeight();
+            int minHeight = context.getDimensionType().getMinHeight();
+            int maxHeight = context.getDimensionType().getMaxHeight();
             for(int x = 0; x < 16; x++) {
                 for(int y = minHeight; y < maxHeight; y++) {
                     for(int z = 0; z < 16; z++) {

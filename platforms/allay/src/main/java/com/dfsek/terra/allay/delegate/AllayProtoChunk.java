@@ -21,15 +21,15 @@ public record AllayProtoChunk(UnsafeChunk allayChunk) implements ProtoChunk {
 
     @Override
     public int getMaxHeight() {
-        return allayChunk.getDimensionInfo().maxHeight();
+        return allayChunk.getDimensionType().getMaxHeight();
     }
 
     @Override
     public void setBlock(int x, int y, int z, @NotNull BlockState blockState) {
-        var dimensionInfo = allayChunk.getDimensionInfo();
+        var dimensionType = allayChunk.getDimensionType();
         if(x < 0 || x > 15 ||
            z < 0 || z > 15 ||
-           y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+           y < dimensionType.getMinHeight() || y > dimensionType.getMaxHeight()) {
             return;
         }
 

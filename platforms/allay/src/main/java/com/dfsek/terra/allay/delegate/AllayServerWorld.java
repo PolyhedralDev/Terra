@@ -27,8 +27,8 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        var dimensionInfo = allayDimension.getDimensionInfo();
-        if(y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+        var dimensionType = allayDimension.getDimensionType();
+        if(y < dimensionType.getMinHeight() || y > dimensionType.getMaxHeight()) {
             return;
         }
 
@@ -74,12 +74,12 @@ public record AllayServerWorld(AllayGeneratorWrapper allayGeneratorWrapper, Dime
 
     @Override
     public int getMaxHeight() {
-        return allayDimension.getDimensionInfo().maxHeight();
+        return allayDimension.getDimensionType().getMaxHeight();
     }
 
     @Override
     public int getMinHeight() {
-        return allayDimension.getDimensionInfo().minHeight();
+        return allayDimension.getDimensionType().getMinHeight();
     }
 
     @Override
