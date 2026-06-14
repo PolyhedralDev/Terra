@@ -53,7 +53,6 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.addon.bootstrap.BootstrapAddonClassLoader;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
@@ -76,7 +75,6 @@ import com.dfsek.terra.registry.LockedRegistryImpl;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
-import com.dfsek.terra.registry.master.MetaConfigRegistry;
 
 
 /**
@@ -91,9 +89,7 @@ public abstract class AbstractPlatform implements Platform {
     private static final String moonrise = "Moonrise";
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
-    private final MetaConfigRegistry metaConfigRegistry = new MetaConfigRegistry();
     private final CheckedRegistry<ConfigPack> checkedConfigRegistry = new CheckedRegistryImpl<>(configRegistry);
-    private final CheckedRegistry<MetaPack> checkedMetaConfigRegistry = new CheckedRegistryImpl<>(metaConfigRegistry);
     private final Profiler profiler = new ProfilerImpl();
     private final GenericLoaders loaders = new GenericLoaders(this);
     private final PluginConfigImpl config = new PluginConfigImpl();
@@ -143,10 +139,6 @@ public abstract class AbstractPlatform implements Platform {
         return configRegistry;
     }
 
-    public MetaConfigRegistry getRawMetaConfigRegistry() {
-        return metaConfigRegistry;
-    }
-
     protected Iterable<BaseAddon> platformAddon() {
         return Collections.emptySet();
     }
@@ -192,12 +184,6 @@ public abstract class AbstractPlatform implements Platform {
             .then(event -> loadConfigPacks())
             .global();
 
-        eventManager.getHandler(FunctionalEventHandler.class)
-            .register(internalAddon, PlatformInitializationEvent.class)
-            .then(event -> loadMetaConfigPacks())
-            .global();
-
-
         logger.info("Terra addons successfully loaded.");
         logger.info("Finished initialization.");
 
@@ -215,22 +201,6 @@ public abstract class AbstractPlatform implements Platform {
             return false;
         } catch(PackLoadFailuresException e) {
             e.getExceptions().forEach(ex -> logger.error("Failed to load config pack", ex));
-            return false;
-        }
-        return true;
-    }
-
-    protected boolean loadMetaConfigPacks() {
-        logger.info("Loading meta config packs...");
-        MetaConfigRegistry metaConfigRegistry = getRawMetaConfigRegistry();
-        metaConfigRegistry.clear();
-        try {
-            metaConfigRegistry.loadAll(this, configRegistry);
-        } catch(IOException e) {
-            logger.error("Failed to load meta config packs", e);
-            return false;
-        } catch(PackLoadFailuresException e) {
-            e.getExceptions().forEach(ex -> logger.error("Failed to meta load config pack", ex));
             return false;
         }
         return true;
@@ -405,12 +375,6 @@ public abstract class AbstractPlatform implements Platform {
     public @NotNull CheckedRegistry<ConfigPack> getConfigRegistry() {
         return checkedConfigRegistry;
     }
-
-    @Override
-    public @NotNull CheckedRegistry<MetaPack> getMetaConfigRegistry() {
-        return checkedMetaConfigRegistry;
-    }
-
 
     @Override
     public @NotNull Registry<BaseAddon> getAddons() {

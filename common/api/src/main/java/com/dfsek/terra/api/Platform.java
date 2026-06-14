@@ -14,7 +14,6 @@ import java.io.File;
 
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.config.PluginConfig;
 import com.dfsek.terra.api.event.EventManager;
 import com.dfsek.terra.api.handle.ItemHandle;
@@ -61,10 +60,6 @@ public interface Platform extends LoaderRegistrar {
     @NotNull
     @Contract(pure = true)
     CheckedRegistry<ConfigPack> getConfigRegistry();
-
-    @NotNull
-    @Contract(pure = true)
-    CheckedRegistry<MetaPack> getMetaConfigRegistry();
 
     @NotNull
     @Contract(pure = true)
