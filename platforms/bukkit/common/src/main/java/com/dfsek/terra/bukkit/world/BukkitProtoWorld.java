@@ -51,6 +51,7 @@ public class BukkitProtoWorld implements ProtoWorld {
         access(x, y, z, () -> {
             BlockData bukkitData = BukkitAdapter.adapt(data);
             delegate.setBlockData(x, y, z, bukkitData);
+            ((BukkitBlockState) data).applyBlockEntityData(delegate.getBlockState(x, y, z));
             if(physics) {
                 if(BukkitUtils.isLiquid(bukkitData)) {
                     delegate.scheduleFluidUpdate(x, y, z);

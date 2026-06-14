@@ -17,6 +17,15 @@
 
 package com.dfsek.terra.bukkit.world.block.data;
 
+import net.kyori.adventure.nbt.CompoundBinaryTag;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.loot.LootTables;
+import org.bukkit.loot.Lootable;
+
+import java.util.HashSet;
+import java.util.Set;
+
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
@@ -24,14 +33,46 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
 
 public class BukkitBlockState implements BlockState {
+    private static final Set<String> SUPPORTED_BLOCK_ENTITY_TAGS = Set.of("LootTable", "LootTableSeed");
     private final org.bukkit.block.data.BlockData delegate;
+    private final CompoundBinaryTag blockEntityData;
 
     protected BukkitBlockState(org.bukkit.block.data.BlockData delegate) {
+        this(delegate, null);
+    }
+
+    protected BukkitBlockState(org.bukkit.block.data.BlockData delegate, CompoundBinaryTag blockEntityData) {
         this.delegate = delegate;
+        this.blockEntityData = blockEntityData;
     }
 
     public static BlockState newInstance(org.bukkit.block.data.BlockData bukkitData) {
         return new BukkitBlockState(bukkitData);
+    }
+
+    public static BlockState newInstance(org.bukkit.block.data.BlockData bukkitData, CompoundBinaryTag blockEntityData) {
+        return new BukkitBlockState(bukkitData, blockEntityData);
+    }
+
+    public void applyBlockEntityData(org.bukkit.block.BlockState state) {
+        if(blockEntityData == null || blockEntityData.isEmpty()) return;
+
+        Set<String> unsupported = new HashSet<>(blockEntityData.keySet());
+        unsupported.removeAll(SUPPORTED_BLOCK_ENTITY_TAGS);
+        if(!unsupported.isEmpty()) throw new IllegalArgumentException("Unsupported block entity tags: " + unsupported);
+        if(!blockEntityData.contains("LootTable")) return;
+        if(!(state instanceof Lootable lootable)) {
+            throw new IllegalArgumentException(state.getType() + " does not support a loot table");
+        }
+
+        String id = blockEntityData.getString("LootTable");
+        NamespacedKey key = id.indexOf(':') < 0 ? NamespacedKey.minecraft(id) : NamespacedKey.fromString(id);
+        if(key == null) throw new IllegalArgumentException("Invalid loot table identifier: " + id);
+        LootTables lootTables = Registry.LOOT_TABLES.get(key);
+        if(lootTables == null) throw new IllegalArgumentException("Unknown loot table: " + key);
+
+        lootable.setLootTable(lootTables.getLootTable(), blockEntityData.getLong("LootTableSeed", 0L));
+        state.update(true, false);
     }
 
 

@@ -58,6 +58,7 @@ object Versions {
         const val paperBuild = "$nms-20260511.115010-91"
         const val paper = paperBuild
         const val paperLib = "1.0.8"
+        const val adventureNbt = "4.26.1"
         const val reflectionRemapper = "0.1.3"
         const val paperDevBundle = paperBuild
         const val runPaper = "2.3.1"

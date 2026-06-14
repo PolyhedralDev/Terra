@@ -17,6 +17,8 @@
 
 package com.dfsek.terra.bukkit.handles;
 
+import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.kyori.adventure.nbt.TagStringIO;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,8 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
+import java.io.IOException;
+
 
 public class BukkitWorldHandle implements WorldHandle {
     private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
@@ -40,9 +44,19 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
-        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
-            data); // somehow bukkit managed to make this not thread safe! :)
-        return BukkitBlockState.newInstance(bukkitData);
+        int nbtStart = data.indexOf('{');
+        String blockData = nbtStart < 0 ? data : data.substring(0, nbtStart);
+        CompoundBinaryTag blockEntityData = nbtStart < 0 ? null : parseBlockEntityData(data.substring(nbtStart));
+        // Bukkit's block-data parser is not thread safe.
+        return BukkitBlockState.newInstance(Bukkit.createBlockData(blockData), blockEntityData);
+    }
+
+    static CompoundBinaryTag parseBlockEntityData(String input) {
+        try {
+            return TagStringIO.tagStringIO().asCompound(input);
+        } catch(IOException | RuntimeException e) {
+            throw new IllegalArgumentException("Invalid block entity SNBT: " + input, e);
+        }
     }
 
     @Override

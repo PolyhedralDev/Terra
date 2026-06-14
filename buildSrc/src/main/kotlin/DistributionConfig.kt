@@ -167,6 +167,10 @@ fun Project.configureDistribution() {
 
     generateResourceManifest.dependsOn(bundleOverworldPack)
 
+    tasks.named("compileTestJava") {
+        dependsOn(generateResourceManifest)
+    }
+
     tasks.named<Jar>("jar") {
         dependsOn(generateResourceManifest)
     }

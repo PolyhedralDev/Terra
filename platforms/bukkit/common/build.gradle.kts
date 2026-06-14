@@ -6,6 +6,7 @@ dependencies {
     shadedApi(project(":common:implementation:base"))
 
     compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
+    shadedApi("net.kyori", "adventure-nbt", Versions.Bukkit.adventureNbt)
 
     compileOnly("org.mvplugins.multiverse.core", "multiverse-core", Versions.Bukkit.multiverse)
 
