@@ -14,7 +14,36 @@ includeImmediateChildren(file("common/api"), "API")
 
 includeImmediateChildren(file("common/implementation"), "implementation")
 
-includeImmediateChildren(file("common/addons"), "addon")
+// OVERWORLD requirements plus the loaders and transitive biome query API.
+val bundledAddons = listOf(
+    "api-addon-loader",
+    "manifest-addon-loader",
+    "biome-query-api",
+    "biome-provider-pipeline",
+    "biome-provider-single",
+    "biome-provider-extrusion",
+    "chunk-generator-noise-3d",
+    "config-biome",
+    "config-flora",
+    "config-noise-function",
+    "config-ore",
+    "config-palette",
+    "config-distributors",
+    "config-locators",
+    "config-feature",
+    "config-number-predicate",
+    "structure-terrascript-loader",
+    "structure-sponge-loader",
+    "language-yaml",
+    "generation-stage-feature",
+    "terrascript-function-check-noise-3d",
+    "palette-block-shortcut",
+    "structure-block-shortcut",
+    "terrascript-function-sampler",
+    "locator-slant-noise-3d"
+)
+
+bundledAddons.forEach { include(":common:addons:$it") }
 
 include(":platforms:bukkit")
 include(":platforms:bukkit:common")
