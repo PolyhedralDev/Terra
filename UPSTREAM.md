@@ -26,8 +26,8 @@ forked. The `upstream` Git remote should point to the repository above.
 - Pack version: `2.0.0`
 
 This commit is the only approved starting point for the bundled Overworld
-pack. The method used to vendor it and its license attribution are documented
-separately when the pack is added to this repository.
+pack. It is vendored as the `packs/overworld` Git submodule with a detached
+HEAD at the commit above. License attribution is documented separately.
 
 ## Update Policy
 
