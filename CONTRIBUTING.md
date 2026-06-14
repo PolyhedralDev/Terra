@@ -1,4 +1,16 @@
-# Contributing to Terra
+# Contributing to NullNomadsWorldgen
+
+NullNomadsWorldgen retains the upstream Terra source layout so that attribution
+and future upstream comparisons remain practical.
+
+## Fork Package Policy
+
+- Keep existing upstream classes in their original `com.dfsek.terra` packages.
+- Put new fork-owned Java and Kotlin classes in `org.nullnomads.worldgen` or one
+  of its subpackages.
+- Do not move or wrap upstream classes solely to change package ownership.
+- Preserve the original copyright and license headers when modifying upstream
+  files.
 
 First off, thank you for considering contributing to Terra. It's people like you
 that make Terra such a great tool.
