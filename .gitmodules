@@ -1,0 +1,3 @@
+[submodule "packs/overworld"]
+	path = packs/overworld
+	url = https://github.com/PolyhedralDev/TerraOverworldConfig.git

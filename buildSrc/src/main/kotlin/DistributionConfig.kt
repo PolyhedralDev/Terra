@@ -2,13 +2,14 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.papermc.paperweight.util.path
 import java.io.File
 import java.io.FileWriter
-import java.net.URL
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.jvm.tasks.Jar
+import org.gradle.api.tasks.bundling.Zip
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.extra
@@ -44,25 +45,37 @@ private fun Project.installAddonsInto(dest: Path) {
 fun Project.configureDistribution() {
     apply(plugin = "com.gradleup.shadow")
     
-    val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
+    val bundleOverworldPack = tasks.register("bundleOverworldPack", Zip::class.java) {
         group = "terra"
+        description = "Bundles the pinned TerraOverworldConfig submodule."
+
+        val packDirectory = rootProject.file("packs/overworld")
+        inputs.dir(packDirectory)
+        archiveFileName.set("Overworld.zip")
+        destinationDirectory.set(layout.buildDirectory.dir("resources/main/packs"))
+        isPreserveFileTimestamps = false
+        isReproducibleFileOrder = true
+
+        from(packDirectory) {
+            exclude(
+                ".git",
+                ".github/**",
+                ".scripts/**",
+                ".wiki/**",
+                ".gitignore",
+                ".gitmodules",
+                "CHANGELOG.md",
+                "DESIGN.md",
+                "README.md"
+            )
+        }
+
         doFirst {
-            try {
-                file("${buildDir}/resources/main/packs/").deleteRecursively()
-                file("${buildDir}/resources/main/metapacks/").deleteRecursively()
-                val overworldPackUrl =
-                    URL("https://github.com/PolyhedralDev/TerraOverworldConfig/releases/download/" + Versions.Terra.overworldConfig + "/Overworld.zip")
-                val reimagENDPackUrl =
-                    URL("https://github.com/PolyhedralDev/ReimagEND/releases/download/" + Versions.Terra.reimagENDConfig + "/ReimagEND.zip")
-                val tartarusPackUrl =
-                    URL("https://github.com/PolyhedralDev/Tartarus/releases/download/" + Versions.Terra.tartarusConfig + "/Tartarus.zip")
-                val defaultPackUrl =
-                    URL("https://github.com/PolyhedralDev/DefaultMetapack/releases/download/" + Versions.Terra.defaultConfig + "/default.zip")
-                downloadPack(overworldPackUrl, project)
-                downloadPack(reimagENDPackUrl, project)
-                downloadPack(tartarusPackUrl, project)
-                downloadPack(defaultPackUrl, project, true)
-            } catch (_: Exception) {
+            if (!packDirectory.resolve("pack.yml").isFile) {
+                throw GradleException(
+                    "Pinned Overworld pack is missing. Run " +
+                    "'git submodule update --init packs/overworld'."
+                )
             }
         }
     }
@@ -152,15 +165,18 @@ fun Project.configureDistribution() {
     }
     
     tasks.named("processResources") {
-        generateResourceManifest.mustRunAfter(downloadDefaultPacks)
-        finalizedBy(downloadDefaultPacks)
         finalizedBy(generateResourceManifest)
     }
+
+    bundleOverworldPack.configure {
+        mustRunAfter(tasks.named("processResources"))
+    }
+
+    generateResourceManifest.dependsOn(bundleOverworldPack)
     
     
     tasks.named<ShadowJar>("shadowJar") {
-        // Tell shadow to download the packs
-        dependsOn(downloadDefaultPacks)
+        dependsOn(generateResourceManifest)
         configurations = listOf(project.configurations["shaded"])
         archiveClassifier.set("shaded")
         version = project.version
@@ -179,14 +195,6 @@ fun Project.configureDistribution() {
     tasks.named<DefaultTask>("build") {
         dependsOn(tasks["shadowJar"])
     }
-}
-
-fun downloadPack(packUrl: URL, project: Project, metapack: Boolean = false) {
-    val fileName = packUrl.file.substring(packUrl.file.lastIndexOf("/"))
-    val resourceType = if (metapack) "metapacks" else "packs"
-    val file = File("${project.buildDir}/resources/main/${resourceType}/${fileName}")
-    file.parentFile.mkdirs()
-    file.outputStream().write(packUrl.readBytes())
 }
 
 fun Project.getJarTask() = tasks.named("shadowJar").get() as ShadowJar
