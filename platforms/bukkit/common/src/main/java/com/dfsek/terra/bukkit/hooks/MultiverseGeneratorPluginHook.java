@@ -37,18 +37,18 @@ public final class MultiverseGeneratorPluginHook implements GeneratorPlugin {
             .entries()
             .stream()
             .map(Keyed::getID)
-            .map("/mv create example_world NORMAL -g Terra:%s"::formatted)
+            .map("/mv create example_world NORMAL -g NullNomadsWorldgen:%s"::formatted)
             .limit(5) // reasonable amount
             .toList();
     }
 
     @Override
     public @Nullable String getInfoLink() {
-        return "https://terra.polydev.org/";
+        return "https://github.com/NullNomads/NullNomadsWorldgen";
     }
 
     @Override
     public @NotNull String getPluginName() {
-        return "Terra";
+        return "NullNomadsWorldgen";
     }
 }

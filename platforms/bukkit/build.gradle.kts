@@ -3,6 +3,18 @@ plugins {
     id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
+group = "org.nullnomads"
+
+tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
+    archiveBaseName.set("NullNomadsWorldgen")
+}
+
+extensions.configure<org.gradle.api.publish.PublishingExtension> {
+    publications.withType<org.gradle.api.publish.maven.MavenPublication>().configureEach {
+        artifactId = "NullNomadsWorldgen"
+    }
+}
+
 dependencies {
     // Required for :platforms:bukkit:runDevBundleServer task
     paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
@@ -39,4 +51,4 @@ tasks {
 }
 
 
-addonDir(project.file("./run/plugins/Terra/addons"), tasks.named("runServer").get())
+addonDir(project.file("./run/plugins/NullNomadsWorldgen/addons"), tasks.named("runServer").get())

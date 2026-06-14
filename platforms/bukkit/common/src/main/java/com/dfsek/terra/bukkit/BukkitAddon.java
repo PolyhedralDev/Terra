@@ -34,6 +34,6 @@ public class BukkitAddon implements BaseAddon {
 
     @Override
     public String getID() {
-        return "terra-bukkit";
+        return "nullnomads-worldgen-bukkit";
     }
 }

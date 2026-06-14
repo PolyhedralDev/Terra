@@ -1,4 +1,4 @@
-rootProject.name = "Terra"
+rootProject.name = "NullNomadsWorldgen"
 
 
 fun includeImmediateChildren(dir: File, type: String) {

@@ -1,32 +1,15 @@
-<img align="left" width="64" height="64" src="https://raw.githubusercontent.com/wiki/PolyhedralDev/Terra/images/terra_logo.png" alt="Terra Logo">
+# NullNomadsWorldgen
 
-# Terra
+NullNomadsWorldgen is a standalone Paper plugin for vanilla-like Overworld
+generation. It is derived from a pinned
+[Terra](https://github.com/PolyhedralDev/Terra) source snapshot and bundles one
+pinned `OVERWORLD` configuration.
 
-Terra is a modern world generation modding platform, primarily for Minecraft.
-Terra allows complete customization of world generation with an advanced API,
-tightly integrated with a powerful configuration system.
+This project is not an official Polyhedral Development release and is not
+affiliated with or endorsed by Polyhedral Development. The first release
+targets only Paper; other Terra platforms are intentionally excluded.
 
-Terra consists of several parts:
-
-* A voxel world generation API with emphasis on configuration and extensibility
-* Several platform implementations, the layer between the API and the platform
-  it's running on.
-* An addon loader, which allows addons to interface with the Terra API in a
-  platform-agnostic setting
-* Several "core addons," which implement the "default" configurations of Terra.
-  These addons can be thought of as the config "standard library"
-
-Terra currently officially supports the Fabric mod loader and the Bukkit API
-(Paper and friends). We welcome Pull Requests implementing additional platforms!
-
-## Downloads:
-
-* Fabric: [Modrinth](https://modrinth.com/mod/terra)
-  / [CurseForge](https://www.curseforge.com/minecraft/mc-mods/terra-world-generator)
-* Paper+ servers (Paper, Tuinity, Purpur,
-  etc): [SpigotMC](https://www.spigotmc.org/resources/85151/)
-
-## Building and Running Terra
+## Building and Running
 
 Clone this repository with submodules, or initialize the pinned Overworld pack
 before building:
@@ -39,36 +22,22 @@ The build packages this local snapshot and does not download config packs from
 GitHub. A missing submodule is reported as a build error instead of falling
 back to a moving release.
 
-To build, simply run `./gradlew build` (`gradlew.bat build` on Windows). This
-will build all platforms, and produce JARs in `platforms/<platform>/build/libs`
+To build, run `./gradlew build` (`gradlew.bat build` on Windows).
 
-### Production JARs:
+### Production JAR
 
-* Bukkit: `Terra-<version>-shaded.jar`
-* Fabric: `Terra-<version>-shaded-mapped.jar`
+- `platforms/bukkit/build/libs/NullNomadsWorldgen-<version>-shaded.jar`
 
-### Building a Specific Platform
+### Building Paper Only
 
-To build a specific platform, run `gradlew :platforms:<platform>:build`.
+Run `gradlew :platforms:bukkit:build`.
 
-JARs are produced in `platforms/<platform>/build/libs`.
-
-### Running Minecraft in the IDE
-
-To run Minecraft with Terra in the IDE (for testing) use the following tasks:
-
-* Bukkit
-    * `runServer` - Run the Paper test server with Terra installed.
-* Fabric
-    * `runClient` - Run a Minecraft Fabric client with Terra installed.
-    * `runServer` - Run a Minecraft Fabric server with Terra installed.
+Use `gradlew :platforms:bukkit:runServer` to run the Paper test server.
 
 ## Contributing
 
-Contributions are welcome! If you want to see a feature in Terra, please, open
-an issue, or implement it yourself and submit a PR!
-Join the discord [here](https://discord.gg/PXUEbbF) if you would like to talk
-more about the project!
+Contributions are welcome through the
+[NullNomadsWorldgen repository](https://github.com/NullNomads/NullNomadsWorldgen).
 
 ## Licensing
 
@@ -96,10 +65,10 @@ If you're not sure which license a particular file is under, check:
 * The file's header
 * The LICENSE file in the closest parent folder of the file in question
 
-## Beta
+## Development Status
 
-Terra is still in beta! While it is stable, it is not feature-complete. There is
-a lot to be added!
+NullNomadsWorldgen is under active pre-release development and is not ready for
+production worlds yet.
 
 ## Special Thanks
 
