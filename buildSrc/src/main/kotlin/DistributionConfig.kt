@@ -173,6 +173,10 @@ fun Project.configureDistribution() {
     }
 
     generateResourceManifest.dependsOn(bundleOverworldPack)
+
+    tasks.named<Jar>("jar") {
+        dependsOn(generateResourceManifest)
+    }
     
     
     tasks.named<ShadowJar>("shadowJar") {
