@@ -64,15 +64,21 @@ more about the project!
 Parts of Terra are licensed under either the MIT License or the GNU General
 Public License, version 3.0.
 
-* Our API is licensed under the [MIT License](LICENSE), to ensure that everyone
-  is able to freely use it however they want.
-* Our core addons are also licensed under the [MIT License](LICENSE), to ensure
-  that people can freely use code from them to learn and make their own addons,
-  without worrying about GPL infection.
+* Our API is licensed under the [MIT License](LICENSES/TERRA-MIT.txt), to ensure
+  that everyone is able to freely use it however they want.
+* Our core addons are also licensed under the
+  [MIT License](LICENSES/TERRA-MIT.txt), to ensure that people can freely use
+  code from them to learn and make their own addons, without worrying about
+  GPL infection.
 * Our platform-agnostic implementations and platform implementations are
   licensed under
   the [GNU General Public License, version 3.0](common/implementation/LICENSE),
   to ensure that they remain free software wherever they are used.
+
+The combined NullNomadsWorldgen Paper plugin and new implementation code are
+distributed under [GPL-3.0-or-later](LICENSE). See
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for pinned sources,
+attribution, and the applicable license boundaries.
 
 If you're not sure which license a particular file is under, check:
 
