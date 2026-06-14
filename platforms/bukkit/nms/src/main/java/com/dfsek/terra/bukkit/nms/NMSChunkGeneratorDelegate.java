@@ -2,7 +2,12 @@ package com.dfsek.terra.bukkit.nms;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.util.random.WeightedList;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.NoiseColumn;
@@ -18,6 +23,7 @@ import net.minecraft.world.level.levelgen.DensityFunction.SinglePointContext;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -77,6 +83,25 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
     @Override
     public void spawnOriginalMobs(@NotNull WorldGenRegion region) {
         vanilla.spawnOriginalMobs(region);
+    }
+
+    @Override
+    public WeightedList<net.minecraft.world.level.biome.MobSpawnSettings.SpawnerData> getMobsAt(
+        @NotNull net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome> biome,
+        @NotNull StructureManager structureManager,
+        @NotNull MobCategory category,
+        @NotNull BlockPos pos) {
+        return vanilla.getMobsAt(biome, structureManager, category, pos);
+    }
+
+    @Override
+    public void createStructures(@NotNull RegistryAccess registryAccess,
+                                 @NotNull net.minecraft.world.level.chunk.ChunkGeneratorStructureState structureState,
+                                 @NotNull StructureManager structureManager,
+                                 @NotNull ChunkAccess chunk,
+                                 @NotNull StructureTemplateManager structureTemplateManager,
+                                 @NotNull ResourceKey<Level> levelKey) {
+        vanilla.createStructures(registryAccess, structureState, structureManager, chunk, structureTemplateManager, levelKey);
     }
 
     @Override

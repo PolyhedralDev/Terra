@@ -7,7 +7,7 @@ import net.minecraft.core.MappedRegistry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.npc.VillagerType;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.biome.Biome;

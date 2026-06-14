@@ -8,12 +8,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.commands.arguments.ParticleArgument;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.biome.AmbientParticleSettings;
+import net.minecraft.world.attribute.AmbientParticle;
 
 import java.util.stream.Stream;
 
 
-public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientParticleSettings> {
+public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientParticle> {
     @Value("particle")
     @Default
     private String particle = null;
@@ -23,13 +23,13 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
     private Float probability = 0.1f;
 
     @Override
-    public AmbientParticleSettings get() {
+    public AmbientParticle get() {
         if(particle == null) {
             return null;
         }
 
         try {
-            return new AmbientParticleSettings(ParticleArgument.readParticle(new StringReader(particle),
+            return new AmbientParticle(ParticleArgument.readParticle(new StringReader(particle),
                 HolderLookup.Provider.create(Stream.of(BuiltInRegistries.PARTICLE_TYPE))), probability);
         } catch(CommandSyntaxException e) {
             throw new RuntimeException(e);
