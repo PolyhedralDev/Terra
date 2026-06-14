@@ -28,6 +28,17 @@ Terra currently officially supports the Fabric mod loader and the Bukkit API
 
 ## Building and Running Terra
 
+Clone this repository with submodules, or initialize the pinned Overworld pack
+before building:
+
+```shell
+git submodule update --init packs/overworld
+```
+
+The build packages this local snapshot and does not download config packs from
+GitHub. A missing submodule is reported as a build error instead of falling
+back to a moving release.
+
 To build, simply run `./gradlew build` (`gradlew.bat build` on Windows). This
 will build all platforms, and produce JARs in `platforms/<platform>/build/libs`
 

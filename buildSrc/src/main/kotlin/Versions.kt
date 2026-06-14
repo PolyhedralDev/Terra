@@ -1,11 +1,4 @@
 object Versions {
-    object Terra {
-        const val overworldConfig = "latest"
-        const val reimagENDConfig = "latest"
-        const val tartarusConfig = "latest"
-        const val defaultConfig = "latest"
-    }
-    
     object Libraries {
         const val tectonic = "4.3.1"
         const val paralithic = "2.0.1"
