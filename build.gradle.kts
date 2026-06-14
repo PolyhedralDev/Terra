@@ -55,3 +55,34 @@ afterEvaluate {
         }
     }
 }
+
+val requiredLicenseFiles = listOf(
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "common/implementation/LICENSE",
+    "platforms/LICENSE",
+    "packs/LICENSE-CC-BY-4.0.txt",
+    "packs/overworld/LICENSE"
+).map(layout.projectDirectory::file)
+
+tasks.register("verifyLicenseFiles") {
+    group = "verification"
+    description = "Verifies required fork, upstream, and bundled pack license files."
+    inputs.files(requiredLicenseFiles)
+
+    doLast {
+        val missingOrEmpty = requiredLicenseFiles
+            .filter { !it.asFile.isFile || it.asFile.length() == 0L }
+            .map { it.asFile.relativeTo(rootDir).invariantSeparatorsPath }
+        check(missingOrEmpty.isEmpty()) {
+            "Required license files are missing or empty: ${missingOrEmpty.joinToString()}"
+        }
+
+        check(file("THIRD_PARTY_NOTICES.md").readText().contains("PolyhedralDev/Terra")) {
+            "THIRD_PARTY_NOTICES.md must retain the Terra source attribution."
+        }
+        check(file("packs/LICENSE-CC-BY-4.0.txt").readText().contains("Attribution 4.0 International")) {
+            "The bundled Overworld pack must retain the CC BY 4.0 license."
+        }
+    }
+}

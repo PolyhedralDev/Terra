@@ -33,6 +33,8 @@ To build, run `./gradlew build` (`gradlew.bat build` on Windows).
 Run `gradlew :platforms:bukkit:build`.
 
 Use `gradlew :platforms:bukkit:runServer` to run the Paper test server.
+Use `gradlew :platforms:bukkit:runCleanServer` to recreate a clean Paper
+1.21.11 server with only the production plugin JAR installed.
 
 ## Contributing
 

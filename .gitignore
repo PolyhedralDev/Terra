@@ -248,6 +248,7 @@ nbdist/
 **/testDir/
 
 platforms/**/run/**
+platforms/**/run-clean/**
 
 #Vale Config File
 **/.vale.ini

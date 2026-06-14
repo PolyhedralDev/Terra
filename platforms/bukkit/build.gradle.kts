@@ -27,6 +27,7 @@ dependencies {
 tasks {
     shadowJar {
         relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
+        relocate("net.kyori.adventure.nbt", "org.nullnomads.worldgen.lib.adventure.nbt")
         relocate("com.google.common", "com.dfsek.terra.lib.google.common")
         relocate("org.apache.logging.slf4j", "com.dfsek.terra.lib.slf4j-over-log4j")
         exclude("org/slf4j/**")
@@ -47,6 +48,28 @@ tasks {
             modrinth("viaversion", "5.5.0")
             modrinth("viabackwards", "5.5.0")
         }
+    }
+
+    val cleanPaperTestServer = register<Delete>("cleanPaperTestServer") {
+        delete(layout.projectDirectory.dir("run-clean"))
+    }
+
+    val prepareCleanPaperTestServer = register("prepareCleanPaperTestServer") {
+        dependsOn(cleanPaperTestServer)
+        doLast {
+            val runDirectory = layout.projectDirectory.dir("run-clean").asFile
+            runDirectory.mkdirs()
+            runDirectory.resolve("eula.txt").writeText("eula=true\n")
+        }
+    }
+
+    register<xyz.jpenilla.runpaper.task.RunServer>("runCleanServer") {
+        group = "application"
+        description = "Runs a fresh Paper 1.21.11 server with only NullNomadsWorldgen installed."
+        minecraftVersion(Versions.Bukkit.minecraft)
+        runDirectory(project.file("./run-clean"))
+        dependsOn(prepareCleanPaperTestServer, shadowJar)
+        pluginJars(shadowJar.get().archiveFile)
     }
 }
 

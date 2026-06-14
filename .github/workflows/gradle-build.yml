@@ -1,17 +1,16 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
-# For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
+name: Build
 
-name: Gradle Build
+on:
+  pull_request:
+  push:
+    branches: [ master ]
 
-on: [ pull_request ]
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,26 +23,11 @@ jobs:
         uses: actions/setup-java@v4.7.1
         with:
           java-version: '21'
-          distribution: 'temurin'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
-
-      - uses: burrunan/gradle-cache-action@v3.0.1
-        name: Build Terra
-        with:
-          # Specifies arguments for Gradle execution
-          # If arguments is missing or empty, then Gradle is not executed
-          arguments: build
-          # arguments can be multi-line for better readability
-          # arguments: |
-          #  --no-paralell
-          #  build
-          #  -x test
-          # Gradle version to use for execution:
-          #   wrapper (default), current, rc, nightly, release-nightly, or
-          #   versions like 6.6 (see https://services.gradle.org/versions/all)
-          gradle-version: wrapper
-          # Properties are passed as -Pname=value
-          properties: |
-            kotlin.js.compiler=ir
-            kotlin.parallel.tasks.in.project=true
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify license files
+        run: ./gradlew verifyLicenseFiles --no-daemon
+      - name: Run unit tests
+        run: ./gradlew test --no-daemon
+      - name: Clean build
+        run: ./gradlew clean build --no-daemon
