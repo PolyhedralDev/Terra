@@ -1,6 +1,9 @@
 repositories {
 
 }
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
+}
 
 dependencies {
     shadedApi(project(":common:implementation:base"))

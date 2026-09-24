@@ -12,6 +12,10 @@ dependencies {
     shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
+}
+
 tasks {
     shadowJar {
         relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")

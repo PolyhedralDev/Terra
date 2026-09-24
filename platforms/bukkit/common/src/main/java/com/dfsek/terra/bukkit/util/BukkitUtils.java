@@ -23,6 +23,13 @@ public class BukkitUtils {
         if(!id.startsWith("minecraft:")) throw new IllegalArgumentException("Invalid entity identifier " + id);
         String entityID = id.toUpperCase(Locale.ROOT).substring(10);
 
+        // TODO: remove this
+        // the default end seems to use this, this should be removed otherwise
+        // or replaced by a proper entity & NBT loader
+        if (entityID.contains("END_CRYSTAL")) {
+            entityID = "END_CRYSTAL";
+        }
+
         return new BukkitEntityType(switch(entityID) {
             case "END_CRYSTAL" -> org.bukkit.entity.EntityType.END_CRYSTAL;
             case "ENDER_CRYSTAL" -> throw new IllegalArgumentException(
