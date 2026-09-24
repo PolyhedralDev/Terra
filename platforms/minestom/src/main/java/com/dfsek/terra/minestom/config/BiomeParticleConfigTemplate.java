@@ -4,11 +4,12 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.minestom.server.particle.Particle;
+import net.minestom.server.world.attribute.AmbientParticle;
 import net.minestom.server.world.biome.BiomeEffects;
 import org.slf4j.LoggerFactory;
 
 
-public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeEffects.Particle> {
+public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientParticle> {
     @Value("particle")
     @Default
     private String particle = null;
@@ -18,7 +19,7 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeEffects.
     private Float probability = null;
 
     @Override
-    public BiomeEffects.Particle get() {
+    public AmbientParticle get() {
         if(particle == null || probability == null) {
             return null;
         }
@@ -31,9 +32,9 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<BiomeEffects.
             return null;
         }
 
-        return new BiomeEffects.Particle(
-            probability,
-            parsedParticle
+        return new AmbientParticle(
+            parsedParticle,
+            probability
         );
     }
 }
