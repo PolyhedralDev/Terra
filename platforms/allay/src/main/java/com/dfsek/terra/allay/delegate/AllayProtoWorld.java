@@ -31,11 +31,11 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
         var currentChunk = context.getCurrentChunk();
         var currentChunkX = currentChunk.getX();
         var currentChunkZ = currentChunk.getZ();
-        var dimInfo = currentChunk.getDimensionInfo();
+        var dimensionType = currentChunk.getDimensionType();
 
         if(x >= currentChunkX * 16 && x < currentChunkX * 16 + 16 &&
            z >= currentChunkZ * 16 && z < currentChunkZ * 16 + 16 &&
-           y >= dimInfo.minHeight() && y <= dimInfo.maxHeight()) {
+           y >= dimensionType.getMinHeight() && y <= dimensionType.getMaxHeight()) {
             return currentChunk.getBlockEntity(x & 15, y, z & 15);
         } else {
             var chunk = context.getChunkSource().getChunk(x >> 4, z >> 4);
@@ -60,8 +60,8 @@ public record AllayProtoWorld(AllayServerWorld allayServerWorld, OtherChunkAcces
 
     @Override
     public void setBlockState(int x, int y, int z, BlockState data, boolean physics) {
-        var dimensionInfo = allayServerWorld.allayDimension().getDimensionInfo();
-        if(y < dimensionInfo.minHeight() || y > dimensionInfo.maxHeight()) {
+        var dimensionType = allayServerWorld.allayDimension().getDimensionType();
+        if(y < dimensionType.getMinHeight() || y > dimensionType.getMaxHeight()) {
             return;
         }
 

@@ -82,12 +82,11 @@ public final class Mapping {
     }
 
     public static String dimensionIdBeToJe(String beDimensionId) {
-        return switch(beDimensionId) {
-            case "overworld" -> "minecraft:overworld";
-            case "nether" -> "minecraft:the_nether";
-            case "the_end" -> "minecraft:the_end";
-            default -> beDimensionId;
-        };
+        if(beDimensionId.equals("minecraft:nether")) {
+            return "minecraft:the_nether";
+        }
+
+        return beDimensionId;
     }
 
     public static Map<String, String> getJeBlockDefaultProperties(String jeBlockIdentifier) {
