@@ -8,7 +8,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.attribute.AmbientAdditionsSettings;
 import net.minecraft.world.attribute.AmbientMoodSettings;
-import net.minecraft.world.attribute.AmbientParticle;
 import net.minecraft.world.attribute.AmbientSounds;
 import net.minecraft.world.attribute.BackgroundMusic;
 import net.minecraft.world.attribute.EnvironmentAttribute;
@@ -19,6 +18,7 @@ import net.minecraft.world.attribute.modifier.AttributeModifier;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biome.BiomeBuilder;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 
 import java.util.Collections;
@@ -37,29 +37,18 @@ public class NMSBiomeInjector {
         return registry.getOptional(identifier).flatMap(registry::getResourceKey).flatMap(registry::get);
     }
 
-    public static Biome createBiome(Biome vanilla, VanillaBiomeProperties vanillaBiomeProperties)
+    public static Biome createBiome(Biome vanilla, VanillaBiomeProperties vanillaBiomeProperties, NMSVersionBindings bindings)
     throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         Biome.BiomeBuilder builder = new Biome.BiomeBuilder();
 
         BiomeSpecialEffects.Builder effects = new BiomeSpecialEffects.Builder();
         EnvironmentAttributeMap attributes = vanilla.getAttributes();
+        builder.putAttributes(attributes);
 
-        Integer vanillaFogColour = extractInt(attributes, EnvironmentAttributes.FOG_COLOR);
-        Integer vanillaWaterFogColour = extractInt(attributes, EnvironmentAttributes.WATER_FOG_COLOR);
-        Integer vanillaSkyColour = extractInt(attributes, EnvironmentAttributes.SKY_COLOR);
-        Float vanillaMusicVolume = extractFloat(attributes, EnvironmentAttributes.MUSIC_VOLUME);
-
-        applyIfPresent(builder, EnvironmentAttributes.FOG_COLOR,
-            vanillaBiomeProperties.getFogColor(), vanillaFogColour);
-
-        applyIfPresent(builder, EnvironmentAttributes.WATER_FOG_COLOR,
-            vanillaBiomeProperties.getWaterFogColor(), vanillaWaterFogColour);
-
-        applyIfPresent(builder, EnvironmentAttributes.SKY_COLOR,
-            vanillaBiomeProperties.getSkyColor(), vanillaSkyColour);
-
-        applyIfPresent(builder, EnvironmentAttributes.MUSIC_VOLUME,
-            vanillaBiomeProperties.getMusicVolume(), vanillaMusicVolume);
+        bindings.applyBiomeColorOverrides(builder, vanillaBiomeProperties);
+        if(vanillaBiomeProperties.getMusicVolume() != null) {
+            builder.modifyAttribute(EnvironmentAttributes.MUSIC_VOLUME, AttributeModifier.override(), vanillaBiomeProperties.getMusicVolume());
+        }
 
         effects.waterColor(Objects.requireNonNullElse(vanillaBiomeProperties.getWaterColor(), vanilla.getWaterColor()));
         effects.grassColorModifier(
@@ -77,27 +66,7 @@ public class NMSBiomeInjector {
             effects.foliageColorOverride(vanillaBiomeProperties.getFoliageColor());
         }
 
-        if(vanillaBiomeProperties.getParticleConfig() == null) {
-            Entry<?, ?> ambientEntry = attributes.get(EnvironmentAttributes.AMBIENT_PARTICLES);
-            if(ambientEntry != null) {
-                Object arg = ambientEntry.argument();
-
-                // this is not nice
-                if(arg instanceof List<?> rawList) {
-                    List<AmbientParticle> ambientParticles =
-                        rawList.stream()
-                            .filter(AmbientParticle.class::isInstance)
-                            .map(AmbientParticle.class::cast)
-                            .toList();
-
-                    builder.modifyAttribute(
-                        EnvironmentAttributes.AMBIENT_PARTICLES,
-                        AttributeModifier.override(),
-                        ambientParticles
-                    );
-                }
-            }
-        } else {
+        if(vanillaBiomeProperties.getParticleConfig() != null) {
             builder.modifyAttribute(EnvironmentAttributes.AMBIENT_PARTICLES, AttributeModifier.override(),
                 List.of(vanillaBiomeProperties.getParticleConfig()));
         }
@@ -106,10 +75,8 @@ public class NMSBiomeInjector {
         Optional<AmbientMoodSettings> mood = Optional.empty();
         List<AmbientAdditionsSettings> additions = Collections.emptyList();
 
-        if(attributes.contains(EnvironmentAttributes.AMBIENT_SOUNDS)) {
-            AmbientSounds sounds =
-                (AmbientSounds) Objects.requireNonNull(attributes.get(EnvironmentAttributes.AMBIENT_SOUNDS)).argument();
-
+        AmbientSounds sounds = getAttribute(attributes, EnvironmentAttributes.AMBIENT_SOUNDS);
+        if(sounds != null) {
             loop = sounds.loop();
             mood = sounds.mood();
             additions = sounds.additions();
@@ -132,13 +99,7 @@ public class NMSBiomeInjector {
         builder.modifyAttribute(EnvironmentAttributes.AMBIENT_SOUNDS, AttributeModifier.override(),
             new AmbientSounds(loop, mood, additions));
 
-        if(vanillaBiomeProperties.getMusic() == null) {
-            if(attributes.contains(EnvironmentAttributes.BACKGROUND_MUSIC)) {
-                BackgroundMusic music = (BackgroundMusic) Objects.requireNonNull(attributes.get(EnvironmentAttributes.BACKGROUND_MUSIC))
-                    .argument();
-                builder.modifyAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, AttributeModifier.override(), music);
-            }
-        } else {
+        if(vanillaBiomeProperties.getMusic() != null) {
             builder.modifyAttribute(EnvironmentAttributes.BACKGROUND_MUSIC, AttributeModifier.override(),
                 new BackgroundMusic(vanillaBiomeProperties.getMusic()));
         }
@@ -148,7 +109,12 @@ public class NMSBiomeInjector {
         builder.downfall(Objects.requireNonNullElse(vanillaBiomeProperties.getDownfall(), vanilla.climateSettings.downfall()));
         builder.temperatureAdjustment(
             Objects.requireNonNullElse(vanillaBiomeProperties.getTemperatureModifier(), vanilla.climateSettings.temperatureModifier()));
-        builder.mobSpawnSettings(Objects.requireNonNullElse(vanillaBiomeProperties.getSpawnSettings(), vanilla.getMobSettings()));
+        MobSpawnSettings spawnSettings = vanillaBiomeProperties.getSpawnSettings();
+        if(spawnSettings == null) {
+            bindings.copyVanillaSpawnSettings(builder, vanilla);
+        } else {
+            bindings.setSpawnSettings(builder, spawnSettings);
+        }
 
         return builder.specialEffects(effects.build()).generationSettings(new BiomeGenerationSettings.PlainBuilder().build()).build();
     }
@@ -158,30 +124,8 @@ public class NMSBiomeInjector {
             Locale.ROOT);
     }
 
-    private static Integer extractInt(EnvironmentAttributeMap attributes,
-                                      EnvironmentAttribute<Integer> key) {
-        Entry<Integer, ?> attr = attributes.get(key);
-        return attr != null ? (Integer) attr.argument() : null;
-    }
-
-    private static Float extractFloat(EnvironmentAttributeMap attributes,
-                                      EnvironmentAttribute<Float> key) {
-        Entry<Float, ?> attr = attributes.get(key);
-        return attr != null ? (Float) attr.argument() : null;
-    }
-
-    private static <T> void applyIfPresent(
-        BiomeBuilder builder,
-        EnvironmentAttribute<T> attr,
-        T overrideValue,
-        T fallbackValue
-    ) {
-        T value = overrideValue != null ? overrideValue : fallbackValue;
-
-        if (value == null) {
-            return;
-        }
-
-        builder.modifyAttribute(attr, AttributeModifier.override(), value);
+    private static <T> T getAttribute(EnvironmentAttributeMap attributes, EnvironmentAttribute<T> key) {
+        Entry<T, ?> entry = attributes.get(key);
+        return entry == null ? null : entry.applyModifier(key.defaultValue());
     }
 }

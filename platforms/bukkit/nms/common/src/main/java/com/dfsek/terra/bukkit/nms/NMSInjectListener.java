@@ -24,6 +24,11 @@ public class NMSInjectListener implements Listener {
     private static final Logger LOGGER = LoggerFactory.getLogger(NMSInjectListener.class);
     private static final Set<World> INJECTED = new HashSet<>();
     private static final ReentrantLock INJECT_LOCK = new ReentrantLock();
+    private final NMSVersionBindings bindings;
+
+    public NMSInjectListener(NMSVersionBindings bindings) {
+        this.bindings = bindings;
+    }
 
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
@@ -43,7 +48,7 @@ public class NMSInjectListener implements Listener {
             WorldGenContext worldGenContext = Reflection.CHUNKMAP.getWorldGenContext(chunkMap);
             Reflection.CHUNKMAP.setWorldGenContext(chunkMap, new WorldGenContext(
                 worldGenContext.level(),
-                new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed()),
+                new NMSChunkGeneratorDelegate(vanilla, pack, provider, craftWorld.getSeed(), bindings),
                 worldGenContext.structureManager(),
                 worldGenContext.lightEngine(),
                 worldGenContext.mainThreadExecutor(),

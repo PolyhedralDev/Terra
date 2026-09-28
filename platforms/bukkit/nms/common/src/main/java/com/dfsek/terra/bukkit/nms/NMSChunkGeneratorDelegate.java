@@ -9,19 +9,14 @@ import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Beardifier;
-import net.minecraft.world.level.levelgen.DensityFunction.SinglePointContext;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -30,25 +25,25 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.bukkit.world.BukkitWorldProperties;
-import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 
 public class NMSChunkGeneratorDelegate extends ChunkGenerator {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NMSChunkGeneratorDelegate.class);
     private final com.dfsek.terra.api.world.chunk.generation.ChunkGenerator delegate;
 
     private final ChunkGenerator vanilla;
     private final ConfigPack pack;
+    private final NMSVersionBindings bindings;
 
     private final long seed;
 
-    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed) {
+    public NMSChunkGeneratorDelegate(ChunkGenerator vanilla, ConfigPack pack, NMSBiomeProvider biomeProvider, long seed,
+                                     NMSVersionBindings bindings) {
         super(biomeProvider);
         this.delegate = pack.getGeneratorProvider().newInstance(pack);
         this.vanilla = vanilla;
         this.pack = pack;
         this.seed = seed;
+        this.bindings = bindings;
     }
 
     @Override
@@ -94,38 +89,12 @@ public class NMSChunkGeneratorDelegate extends ChunkGenerator {
                 BiomeProvider biomeProvider = pack.getBiomeProvider();
                 PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
                 if(compatibilityOptions.isBeard()) {
-                    beard(structureAccessor, chunk, new BukkitWorldProperties(level.getMinecraftWorld().getWorld()),
+                    bindings.applyStructureBeard(delegate, structureAccessor, chunk,
+                        new com.dfsek.terra.bukkit.world.BukkitWorldProperties(level.getMinecraftWorld().getWorld()),
                         biomeProvider, compatibilityOptions);
                 }
                 return c;
             });
-    }
-
-    private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
-                       PreLoadCompatibilityOptions compatibilityOptions) {
-        Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor, chunk.getPos());
-        double threshold = compatibilityOptions.getBeardThreshold();
-        double airThreshold = compatibilityOptions.getAirThreshold();
-        int xi = chunk.getPos().x() << 4;
-        int zi = chunk.getPos().z() << 4;
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                int depth = 0;
-                for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
-                    double noise = structureWeightSampler.compute(new SinglePointContext(x + xi, y, z + zi));
-                    if(noise > threshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), ((CraftBlockData) ((BukkitBlockState) delegate
-                            .getPalette(x + xi, y, z + zi, world, biomeProvider)
-                            .get(depth, x + xi, y, z + zi, world.getSeed())).getHandle()).getState(), 0);
-                        depth++;
-                    } else if(noise < airThreshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), 0);
-                    } else {
-                        depth = 0;
-                    }
-                }
-            }
-        }
     }
 
     @Override

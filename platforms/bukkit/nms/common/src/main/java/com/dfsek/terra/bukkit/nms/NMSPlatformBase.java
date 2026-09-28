@@ -16,17 +16,20 @@ import net.minecraft.world.level.biome.Biome.TemperatureModifier;
 import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import org.bukkit.Bukkit;
+import org.bukkit.block.CreatureSpawner;
 
 import java.util.List;
 import java.util.Locale;
 
 import com.dfsek.terra.addon.InternalAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
+import com.dfsek.terra.api.entity.EntityTypeExtended;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.PlatformImpl;
 import com.dfsek.terra.bukkit.TerraBukkitPlugin;
+import com.dfsek.terra.bukkit.util.BukkitNMSAccess;
 import com.dfsek.terra.bukkit.nms.config.BiomeAdditionsSoundTemplate;
 import com.dfsek.terra.bukkit.nms.config.BiomeMoodSoundTemplate;
 import com.dfsek.terra.bukkit.nms.config.BiomeParticleConfigTemplate;
@@ -40,12 +43,30 @@ import com.dfsek.terra.bukkit.nms.config.SpawnTypeConfig;
 import com.dfsek.terra.bukkit.nms.config.VillagerTypeTemplate;
 
 
-public class NMSPlatform extends PlatformImpl {
+public class NMSPlatformBase extends PlatformImpl implements BukkitNMSAccess {
+    private final NMSVersionBindings bindings;
 
-    public NMSPlatform(TerraBukkitPlugin plugin) {
+    public NMSPlatformBase(TerraBukkitPlugin plugin, NMSVersionBindings bindings) {
         super(plugin);
+        this.bindings = bindings;
 
-        Bukkit.getPluginManager().registerEvents(new NMSInjectListener(), plugin);
+        Bukkit.getPluginManager().registerEvents(new NMSInjectListener(bindings), plugin);
+    }
+
+    @Override
+    public com.dfsek.terra.api.entity.EntityType getEntityType(String data) {
+        return AwfulBukkitHacks.getEntityType(data);
+    }
+
+    @Override
+    public org.bukkit.entity.Entity spawnEntity(Object target, org.bukkit.Location location,
+                                                com.dfsek.terra.api.entity.EntityType type) {
+        return AwfulBukkitHacks.spawnEntity(target, location, type);
+    }
+
+    @Override
+    public void setSpawnerEntity(CreatureSpawner spawner, EntityTypeExtended type) {
+        AwfulBukkitHacks.setSpawnerEntity(spawner, type);
     }
 
     @Override
@@ -76,7 +97,7 @@ public class NMSPlatform extends PlatformImpl {
             .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
             .registerLoader(SpawnEntryConfig.class, SpawnEntryConfig::new)
             .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-            .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
+            .registerLoader(MobSpawnSettings.class, () -> new SpawnSettingsTemplate(bindings))
             .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
     }
 
@@ -87,7 +108,7 @@ public class NMSPlatform extends PlatformImpl {
         this.getEventManager().getHandler(FunctionalEventHandler.class)
             .register(internalAddon, PlatformInitializationEvent.class)
             .priority(1)
-            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry()))
+            .then(event -> AwfulBukkitHacks.registerBiomes(this.getRawConfigRegistry(), bindings))
             .global();
 
         return internalAddon;

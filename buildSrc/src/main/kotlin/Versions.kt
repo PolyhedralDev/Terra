@@ -12,7 +12,7 @@ object Versions {
         const val strata = "1.3.2"
         const val seismic = "2.5.7"
         
-        const val cloud = "2.0.0"
+        const val cloud = "2.1.0"
         
         const val caffeine = "3.2.2"
         
@@ -67,9 +67,10 @@ object Versions {
         const val paperLib = "1.0.8"
         const val reflectionRemapper = "0.1.3"
         const val paperDevBundle = paperBuild
+        const val paperDevBundle26_3 = "26.3.build.49-alpha"
         const val runPaper = "3.0.2"
         const val paperWeight = "2.0.0-beta.21"
-        const val cloud = "2.0.0-beta.17"
+        const val cloud = "2.0.1"
         const val multiverse = "5.3.0"
     }
     
