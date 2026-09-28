@@ -29,13 +29,14 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.pack.ConfigPackImpl;
+import com.dfsek.terra.registry.ExtensibleRegistry;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 
 
 /**
  * Class to hold config packs
  */
-public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
+public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> implements ExtensibleRegistry {
 
     public ConfigRegistry() {
         super(TypeKey.of(ConfigPack.class));
@@ -45,7 +46,7 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("packs");
         Files.createDirectories(packsDirectory);
         List<Exception> failedLoads = new CopyOnWriteArrayList<>();
-        try(Stream<Path> packs = Files.list(packsDirectory)) {
+        try(Stream<Path> packs = getMemberPaths(packsDirectory)) {
             packs.parallel().forEach(path -> {
                 try {
                     ConfigPack pack = new ConfigPackImpl(path, platform);
@@ -58,6 +59,16 @@ public class ConfigRegistry extends OpenRegistryImpl<ConfigPack> {
         if(!failedLoads.isEmpty()) {
             throw new PackLoadFailuresException(failedLoads);
         }
+    }
+
+    @Override
+    public String getRegistryName() {
+        return "config";
+    }
+
+    @Override
+    public boolean validatePathIsMember(Path path) {
+        return Files.isDirectory(path)|| path.getFileName().endsWith(".zip");
     }
 
     public static class PackLoadFailuresException extends Exception {

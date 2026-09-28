@@ -28,6 +28,7 @@ import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.config.pack.MetaPackImpl;
+import com.dfsek.terra.registry.ExtensibleRegistry;
 import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 
@@ -35,7 +36,7 @@ import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 /**
  * Class to hold config packs
  */
-public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> {
+public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> implements ExtensibleRegistry {
 
     public MetaConfigRegistry() {
         super(TypeKey.of(MetaPack.class));
@@ -45,8 +46,8 @@ public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> {
         Path packsDirectory = platform.getDataFolder().toPath().resolve("metapacks");
         Files.createDirectories(packsDirectory);
         List<IOException> failedLoads = new ArrayList<>();
-        try(Stream<Path> packs = Files.list(packsDirectory)) {
-            packs.forEach(path -> {
+        try(Stream<Path> paths = getMemberPaths(packsDirectory)) {
+            paths.forEach(path -> {
                 try {
                     MetaPack pack = new MetaPackImpl(path, platform, configRegistry);
                     registerChecked(pack.getRegistryKey(), pack);
@@ -58,5 +59,15 @@ public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> {
         if(!failedLoads.isEmpty()) {
             throw new PackLoadFailuresException(failedLoads);
         }
+    }
+
+    @Override
+    public String getRegistryName() {
+        return "metaconfig";
+    }
+
+    @Override
+    public boolean validatePathIsMember(Path path) {
+        return Files.isDirectory(path) || path.getFileName().endsWith(".zip");
     }
 }

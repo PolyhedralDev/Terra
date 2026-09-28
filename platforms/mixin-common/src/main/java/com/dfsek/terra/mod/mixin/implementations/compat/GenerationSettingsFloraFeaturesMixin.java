@@ -4,7 +4,9 @@ import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
+import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -23,7 +25,7 @@ public class GenerationSettingsFloraFeaturesMixin {
         this.flora = features;
     }
 
-    @Inject(method = "getFlowerFeatures", cancellable = true, at = @At("HEAD"))
+    @Inject(method = "getFlowerFeatures()Ljava/util/List;", cancellable = true, at = @At("HEAD"))
     public void inject(CallbackInfoReturnable<List<ConfiguredFeature<?, ?>>> cir) {
         if(flora != null) {
             cir.setReturnValue(flora);

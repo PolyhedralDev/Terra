@@ -5,6 +5,7 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.color.Color;
 import net.minestom.server.registry.DynamicRegistry;
 import net.minestom.server.registry.RegistryKey;
+import net.minestom.server.world.attribute.EnvironmentAttribute;
 import net.minestom.server.world.biome.Biome;
 import net.minestom.server.world.biome.BiomeEffects;
 import org.intellij.lang.annotations.Subst;
@@ -27,6 +28,11 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
         return first;
     }
 
+    private static <T> void applyAttributeIfNotNull(Biome.Builder biomeBuilder, EnvironmentAttribute<T> attribute, T value) {
+        if (value == null) return;
+        biomeBuilder.setAttribute(attribute, value);
+    }
+
     @Subst("value")
     protected static String createBiomeID(ConfigPack pack, String biomeId) {
         return pack.getID().toLowerCase() + "/" + biomeId.toLowerCase(Locale.ROOT);
@@ -41,32 +47,25 @@ public class MinestomUserDefinedBiomeFactory implements BiomeFactory {
         Key key = Key.key("terra", createBiomeID(pack, source.getID()));
 
         BiomeEffects.Builder effectsBuilder = BiomeEffects.builder()
-            .fogColor(mergeNullable(properties.getFogColor(), parentEffects.fogColor()))
-            .skyColor(mergeNullable(properties.getSkyColor(), parentEffects.skyColor()))
             .waterColor(mergeNullable(properties.getWaterColor(), parentEffects.waterColor()))
-            .waterFogColor(mergeNullable(properties.getWaterFogColor(), parentEffects.waterFogColor()))
             .foliageColor(mergeNullable(properties.getFoliageColor(), parentEffects.foliageColor()))
             .grassColor(mergeNullable(properties.getGrassColor(), parentEffects.grassColor()))
-            .grassColorModifier(mergeNullable(properties.getGrassColorModifier(), parentEffects.grassColorModifier()))
-            .biomeParticle(mergeNullable(properties.getParticleConfig(), parentEffects.biomeParticle()))
-            .ambientSound(mergeNullable(properties.getLoopSound(), parentEffects.ambientSound()))
-            .moodSound(mergeNullable(properties.getMoodSound(), parentEffects.moodSound()))
-            .additionsSound(mergeNullable(properties.getAdditionsSound(), parentEffects.additionsSound()))
-            // TODO music
-            .music(parentEffects.music())
-            .musicVolume(parentEffects.musicVolume());
+            .grassColorModifier(mergeNullable(properties.getGrassColorModifier(), parentEffects.grassColorModifier()));
 
-        if(effectsBuilder.build().equals(BiomeEffects.PLAINS_EFFECTS)) {
-            effectsBuilder.fogColor(new Color(0xC0D8FE)); // circumvent a minestom bug
-        }
-
-        Biome target = Biome.builder()
+        Biome.Builder targetBuilder = Biome.builder()
             .downfall(mergeNullable(properties.getDownfall(), parent.downfall()))
-            .hasPrecipitation(mergeNullable(properties.getPrecipitation(), parent.hasPrecipitation()))
+            .precipitation(mergeNullable(properties.getPrecipitation(), parent.hasPrecipitation()))
             .temperature(mergeNullable(properties.getTemperature(), parent.temperature()))
-            .temperatureModifier(mergeNullable(properties.getTemperatureModifier(), parent.temperatureModifier()))
-            .effects(effectsBuilder.build())
-            .build();
+            .effects(effectsBuilder.build());
+
+        applyAttributeIfNotNull(targetBuilder, EnvironmentAttribute.FOG_COLOR, properties.getFogColor());
+        applyAttributeIfNotNull(targetBuilder, EnvironmentAttribute.SKY_COLOR, properties.getSkyColor());
+        applyAttributeIfNotNull(targetBuilder, EnvironmentAttribute.WATER_FOG_COLOR, properties.getWaterFogColor());
+        applyAttributeIfNotNull(targetBuilder, EnvironmentAttribute.AMBIENT_PARTICLES, properties.getParticleConfig());
+        applyAttributeIfNotNull(targetBuilder, EnvironmentAttribute.AMBIENT_SOUNDS, properties.getAmbientSoundConfig());
+        // TODO music
+
+        Biome target = targetBuilder.build();
 
         RegistryKey<Biome> registryKey = MinecraftServer.getBiomeRegistry().register(key, target);
         return new UserDefinedBiome(key, registryKey, source.getID(), target);

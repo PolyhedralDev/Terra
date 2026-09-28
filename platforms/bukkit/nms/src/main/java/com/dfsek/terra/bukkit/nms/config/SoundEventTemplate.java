@@ -3,14 +3,14 @@ package com.dfsek.terra.bukkit.nms.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 
 public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
     @Value("id")
     @Default
-    private ResourceLocation id = null;
+    private Identifier id = null;
 
     @Value("distance-to-travel")
     @Default
