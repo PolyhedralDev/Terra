@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import com.dfsek.terra.api.block.entity.MobSpawner;
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
+import com.dfsek.terra.api.entity.EntityTypeExtended;
 import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
@@ -39,7 +40,12 @@ public class BukkitMobSpawner extends BukkitBlockEntity implements MobSpawner {
 
     @Override
     public void setSpawnedType(@NotNull EntityType creatureType) {
-        ((CreatureSpawner) getHandle()).setSpawnedType(((BukkitEntityType) creatureType).getHandle());
+        CreatureSpawner spawner = (CreatureSpawner) getHandle();
+        if(creatureType instanceof EntityTypeExtended extended) {
+            BukkitUtils.setSpawnerEntity(spawner, extended);
+        } else {
+            spawner.setSpawnedType(((BukkitEntityType) creatureType).getHandle());
+        }
     }
 
     @Override

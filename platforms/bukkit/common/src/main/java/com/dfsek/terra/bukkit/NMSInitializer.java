@@ -6,10 +6,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import com.dfsek.terra.bukkit.util.VersionUtil;
+import com.dfsek.terra.bukkit.util.BukkitNMSAccess;
+import com.dfsek.terra.bukkit.util.BukkitUtils;
 
 
 public interface NMSInitializer {
-    List<String> SUPPORTED_VERSIONS = List.of("v1.21.9", "v1.21.10");
+    List<String> SUPPORTED_VERSIONS = List.of("v26.1.2", "v26.2", "v26.3");
     String MINECRAFT_VERSION = VersionUtil.getMinecraftVersionInfo().toString();
     String TERRA_PACKAGE = NMSInitializer.class.getPackageName();
 
@@ -44,10 +46,19 @@ public interface NMSInitializer {
 
     private static PlatformImpl constructPlatform(TerraBukkitPlugin plugin) {
         try {
-            Class<?> platformClass = Class.forName(TERRA_PACKAGE + ".nms.NMSPlatform");
-            return (PlatformImpl) platformClass
+            String bindingsVersion = switch(MINECRAFT_VERSION) {
+                case "v26.3" -> "v26_3";
+                case "v26.1.2", "v26.2" -> "v26_1";
+                default -> "v26_1";
+            };
+            Class<?> platformClass = Class.forName(TERRA_PACKAGE + ".nms." + bindingsVersion + ".NMSPlatform");
+            PlatformImpl platform = (PlatformImpl) platformClass
                 .getConstructor(TerraBukkitPlugin.class)
                 .newInstance(plugin);
+            if(platform instanceof BukkitNMSAccess nmsAccess) {
+                BukkitUtils.setNMSAccess(nmsAccess);
+            }
+            return platform;
         } catch(ReflectiveOperationException e) {
             throw new RuntimeException("Error initializing NMS bindings. Report this to Terra.", e);
         }

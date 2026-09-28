@@ -1,9 +1,17 @@
 plugins {
-    id("io.papermc.paperweight.userdev")
+    `java-library`
+}
+
+subprojects {
+    group = "com.dfsek.terra.bukkit.nms"
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
 }
 
 dependencies {
-    api(project(":platforms:bukkit:common"))
-    paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
-    implementation("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
+    api(project(path = ":platforms:bukkit:nms:common", configuration = "runtimeElements"))
+    api(project(path = ":platforms:bukkit:nms:26.1", configuration = "runtimeElements"))
+    api(project(path = ":platforms:bukkit:nms:26.3", configuration = "runtimeElements"))
 }
