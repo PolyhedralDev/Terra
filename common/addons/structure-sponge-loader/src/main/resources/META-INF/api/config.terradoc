@@ -1,0 +1,11 @@
+{
+  "id": "structure-sponge-loader",
+  "docVersion": 1,
+  "description": "Recursively scans the pack root for case-sensitive .schem files during pack preload and registers raw Structure entries under structure-sponge-loader:<basename-without-extension>. Directory names do not contribute to IDs, so equal basenames collide. Reads gzip or uncompressed NBT. The converter accepts Version 2 and 3 offset branches, but assumes root-level Palette and BlockData and reads one signed byte per block; this is not a claim of complete Sponge format compatibility. V2 uses a complete WEOffsetX/Y/Z metadata triplet or zero offset; V3 reads Offset. minecraft:structure_void states are skipped. V1 metadata cannot discover these IDs or validate binary schematic contents.",
+  "types": {
+    "terra:Structure": {
+      "kind": "string",
+      "description": "Recursively scans the pack root for case-sensitive .schem files during pack preload and registers raw Structure entries under structure-sponge-loader:<basename-without-extension>. Directory names do not contribute to IDs, so equal basenames collide. Reads gzip or uncompressed NBT. The converter accepts Version 2 and 3 offset branches, but assumes root-level Palette and BlockData and reads one signed byte per block; this is not a claim of complete Sponge format compatibility. V2 uses a complete WEOffsetX/Y/Z metadata triplet or zero offset; V3 reads Offset. minecraft:structure_void states are skipped. V1 metadata cannot discover these IDs or validate binary schematic contents."
+    }
+  }
+}

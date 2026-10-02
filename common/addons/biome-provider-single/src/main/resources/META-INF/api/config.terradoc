@@ -1,0 +1,25 @@
+{
+  "id": "biome-provider-single",
+  "docVersion": 1,
+  "description": "A biome provider that returns one registered biome everywhere.",
+  "types": {
+    "terra:BiomeProvider": {
+      "kind": "union",
+      "values": {
+        "SINGLE": {
+          "kind": "object",
+          "fields": {
+            "biome": {
+              "schema": {
+                "kind": "ref",
+                "target": "terra:Biome"
+              },
+              "required": true,
+              "summary": "Registered Terra biome to use everywhere."
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "id": "pipeline-image",
+  "docVersion": 1,
+  "description": "Image pipeline source with PipelineBiome outputs.",
+  "types": {
+    "biome-provider-pipeline:Source": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "IMAGE": {
+          "kind": "object",
+          "fields": {
+            "color-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "library-image:ColorSampler"
+              },
+              "required": true
+            },
+            "color-conversion": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorConverter"
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "ColorConverter": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "EXACT": {
+          "kind": "object",
+          "fields": {
+            "match": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorMapping"
+              },
+              "required": true
+            },
+            "else": {
+              "schema": {
+                "kind": "type",
+                "target": "biome-provider-pipeline:PipelineBiome"
+              },
+              "required": true,
+              "summary": "Required fallback for colors with no exact mapping."
+            },
+            "ignore-alpha": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            }
+          },
+          "description": "Exact color matching with a fallback; alpha is ignored by default."
+        },
+        "CLOSEST": {
+          "kind": "object",
+          "fields": {
+            "match": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorMapping"
+              },
+              "required": true
+            }
+          },
+          "description": "Closest color using summed absolute RGB differences; alpha is ignored. An empty map cannot produce a biome."
+        }
+      }
+    },
+    "ColorMapping": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "USE_BIOME_COLORS": {
+          "kind": "object",
+          "fields": {},
+          "description": "Build the mapping from registered Terra biome color values."
+        },
+        "MAP": {
+          "kind": "object",
+          "fields": {
+            "map": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "library-image:Color"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "biome-provider-pipeline:PipelineBiome"
+                }
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  }
+}
