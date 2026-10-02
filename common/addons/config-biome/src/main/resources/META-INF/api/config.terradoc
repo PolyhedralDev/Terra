@@ -1,0 +1,120 @@
+{
+  "id": "config-biome",
+  "docVersion": 1,
+  "description": "Registered biome configurations and a height-indexed palette-holder loader. Other addons contribute terrain, decoration and platform fields.",
+  "types": {
+    "terra:Biome": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; must be present on this file even when inherited."
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration identifiers. This field is final and is read from the current file."
+        },
+        "vanilla": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:PlatformBiome"
+          },
+          "required": true,
+          "summary": "Platform biome used for vanilla behavior."
+        },
+        "color": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ],
+            "nullable": true
+          },
+          "required": false,
+          "default": 0,
+          "summary": "Biome mapping color; runtime forces the alpha byte to 0xff. Final: not inherited."
+        },
+        "tags": {
+          "schema": {
+            "kind": "set",
+            "element": {
+              "kind": "type",
+              "target": "terra:Tag"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "User tags; runtime also adds ALL and BIOME:<id>."
+        }
+      }
+    },
+    "PaletteHolder": {
+      "kind": "list",
+      "element": {
+        "kind": "keyMap",
+        "keys": {
+          "kind": "type",
+          "target": "terra:PaletteReference"
+        },
+        "values": {
+          "kind": "integer"
+        }
+      },
+      "description": "Sequence of palette-reference to inclusive upper-Y maps. This loader reads raw integer map values, without numeric expression preprocessing. Heights select the first upper boundary at or above Y; duplicate heights replace earlier entries. Empty input cannot build a holder."
+    },
+    "terra:PaletteReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Palette"
+        }
+      ]
+    }
+  },
+  "files": {
+    "BIOME": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "BIOME"
+          },
+          "required": true
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations are inherited rather than registered."
+        }
+      },
+      "extends": [
+        "terra:Biome"
+      ]
+    }
+  }
+}

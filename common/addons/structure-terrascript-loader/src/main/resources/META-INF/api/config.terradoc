@@ -1,0 +1,11 @@
+{
+  "id": "structure-terrascript-loader",
+  "docVersion": 1,
+  "description": "Recursively scans the pack root for case-sensitive .tesf files during pack preload at priority 100 and registers raw Structure entries under structure-terrascript-loader:<basename-without-extension>. Directory names do not contribute to IDs, so equal basenames collide. Files are parsed as TerraScript structures with access to pack Structure, LootTable and FunctionBuilder registries. Additional addons may supply script functions. V1 metadata cannot discover these IDs or describe TerraScript grammar and callable signatures.",
+  "types": {
+    "terra:Structure": {
+      "kind": "string",
+      "description": "Recursively scans the pack root for case-sensitive .tesf files during pack preload at priority 100 and registers raw Structure entries under structure-terrascript-loader:<basename-without-extension>. Directory names do not contribute to IDs, so equal basenames collide. Files are parsed as TerraScript structures with access to pack Structure, LootTable and FunctionBuilder registries. Additional addons may supply script functions. V1 metadata cannot discover these IDs or describe TerraScript grammar and callable signatures."
+    }
+  }
+}

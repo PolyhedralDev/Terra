@@ -1,0 +1,26 @@
+{
+  "id": "locator-slant-noise-3d",
+  "docVersion": 1,
+  "description": "SLANT locator tests the noise generator's slant value with a numeric predicate.",
+  "types": {
+    "terra:Locator": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "SLANT": {
+          "kind": "object",
+          "fields": {
+            "condition": {
+              "schema": {
+                "kind": "type",
+                "target": "config-number-predicate:NumberPredicate"
+              },
+              "required": true
+            }
+          },
+          "description": "Requires a numeric predicate loader and a world using NoiseChunkGenerator3D; sampling casts the world generator to that implementation."
+        }
+      }
+    }
+  }
+}

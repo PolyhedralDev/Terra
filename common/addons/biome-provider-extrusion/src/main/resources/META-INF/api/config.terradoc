@@ -1,0 +1,215 @@
+{
+  "id": "biome-provider-extrusion",
+  "docVersion": 1,
+  "description": "EXTRUSION biome provider and SET/REPLACE vertical extrusion variants.",
+  "types": {
+    "terra:BiomeProvider": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "EXTRUSION": {
+          "kind": "object",
+          "fields": {
+            "provider": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:BiomeProvider"
+              },
+              "required": true
+            },
+            "resolution": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 4
+            },
+            "extrusions": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "Extrusion"
+                }
+              },
+              "required": true,
+              "summary": "Ordered extrusion steps."
+            }
+          }
+        }
+      }
+    },
+    "Extrusion": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "SET": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedBiomes"
+              },
+              "required": true
+            }
+          },
+          "description": "Selects a replacement biome within the height range."
+        },
+        "REPLACE": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedBiomes"
+              },
+              "required": true
+            },
+            "from": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Biome tag required before replacing."
+            }
+          },
+          "description": "Replaces biomes matching from within the height range."
+        }
+      }
+    },
+    "ReplaceableBiome": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Biome"
+        },
+        {
+          "kind": "literal",
+          "value": "SELF",
+          "description": "Keep the input biome at this extrusion step."
+        }
+      ],
+      "description": "Registered biome identifier or SELF. Unknown identifiers are rejected rather than becoming placeholders."
+    },
+    "WeightedBiomes": {
+      "kind": "oneOf",
+      "description": "Replaceable biome, biome-to-weight map, or list of maps. Singleton weights are ignored; all other weights are raw integers.",
+      "options": [
+        {
+          "kind": "type",
+          "target": "ReplaceableBiome"
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "ReplaceableBiome"
+          },
+          "values": {
+            "kind": "any",
+            "name": "Ignored singleton weight"
+          },
+          "maxEntries": 1
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "ReplaceableBiome"
+          },
+          "values": {
+            "kind": "integer"
+          },
+          "minEntries": 2
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "ReplaceableBiome"
+                },
+                "values": {
+                  "kind": "any",
+                  "name": "Ignored singleton weight"
+                },
+                "maxEntries": 1
+              },
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "ReplaceableBiome"
+                },
+                "values": {
+                  "kind": "integer"
+                },
+                "minEntries": 2
+              }
+            ]
+          },
+          "maxItems": 1
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "ReplaceableBiome"
+            },
+            "values": {
+              "kind": "integer"
+            }
+          },
+          "minItems": 2
+        }
+      ]
+    }
+  }
+}

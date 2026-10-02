@@ -1,0 +1,16 @@
+{
+  "id": "config-number-predicate",
+  "docVersion": 1,
+  "description": "Loads numeric predicates from Paralithic expression strings.",
+  "types": {
+    "NumberPredicate": {
+      "kind": "expr",
+      "name": "Paralithic",
+      "description": "String expression with invocation variable value. Evaluation is true when the numeric result is nonzero. YAML booleans and numeric values are rejected. Uses pack expression parse options, but this loader does not inject pack variables or noise functions.",
+      "examples": [
+        "value > 3",
+        "value >= 0 && value < 1"
+      ]
+    }
+  }
+}

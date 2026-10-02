@@ -1,0 +1,6039 @@
+{
+  "id": "config-noise-function",
+  "docVersion": 1,
+  "description": "Inline noise samplers and pack-level named samplers and expression functions.",
+  "types": {
+    "terra:NoiseSampler": {
+      "kind": "union",
+      "values": {
+        "LINEAR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "min": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "max": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Transforms or clamps sampler output using min and max."
+        },
+        "LINEAR_MAP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "from": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "a": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": -1
+                  },
+                  "b": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 1
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "to": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "a": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ]
+                    },
+                    "required": true
+                  },
+                  "b": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ]
+                    },
+                    "required": true
+                  }
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Maps values from the source interval to the destination interval."
+        },
+        "NORMAL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "mean": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "standard-deviation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "groups": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 16384
+            }
+          },
+          "description": "Normalizes sampler output using the specified distribution."
+        },
+        "CLAMP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "min": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "max": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Transforms or clamps sampler output using min and max."
+        },
+        "PROBABILITY": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            }
+          },
+          "description": "Converts sampler output to probability values."
+        },
+        "SCALE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "amplitude": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Multiplies sampler output by an amplitude."
+        },
+        "POSTERIZATION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "steps": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Quantizes sampler output into steps."
+        },
+        "CUBIC_SPLINE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "points": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "CubicSplinePoint"
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Maps sampler output through cubic spline control points."
+        },
+        "DOMAIN_WARP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "warp": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "amplitude": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Warps sample coordinates using another sampler."
+        },
+        "FBM": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Fractal Brownian motion."
+        },
+        "PING_PONG": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "ping-pong": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            }
+          },
+          "description": "Ping-pong fractal noise."
+        },
+        "RIDGED": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Ridged fractal noise."
+        },
+        "OPEN_SIMPLEX_2": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "OpenSimplex2 noise."
+        },
+        "OPEN_SIMPLEX_2S": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "OpenSimplex2S noise."
+        },
+        "PERLIN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Perlin noise."
+        },
+        "SIMPLEX": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Simplex noise."
+        },
+        "GABOR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "rotation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.25
+            },
+            "isotropic": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            },
+            "deviation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "impulses": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 64
+            },
+            "frequency_0": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.625
+            },
+            "a": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.1
+            }
+          },
+          "description": "Gabor noise."
+        },
+        "PSEUDOEROSION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "integer",
+                "nullable": true
+              },
+              "required": false,
+              "default": 4
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "gain": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "slope-strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "branch-strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.04
+            },
+            "erosion-frequency": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02
+            },
+            "jitter": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Must support derivatives. Defaults to internal OpenSimplex2 with frequency 0.02 and salt 0."
+            },
+            "slope-mask": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "enable": {
+                    "schema": {
+                      "kind": "boolean",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": true
+                  },
+                  "none": {
+                    "schema": {
+                      "kind": "float",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": -0.5
+                  },
+                  "full": {
+                    "schema": {
+                      "kind": "float",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 1
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "average-impulses": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            }
+          },
+          "description": "Pseudo erosion based on a differentiable height sampler. Derivative support is checked at runtime."
+        },
+        "VALUE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Value noise."
+        },
+        "VALUE_CUBIC": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Cubic value noise."
+        },
+        "CELLULAR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "distance": {
+              "schema": {
+                "kind": "type",
+                "target": "DistanceFunction",
+                "nullable": true
+              },
+              "required": false,
+              "default": "EuclideanSq"
+            },
+            "return": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "CellValue",
+                  "Distance",
+                  "Distance2",
+                  "Distance2Add",
+                  "Distance2Sub",
+                  "Distance2Mul",
+                  "Distance2Div",
+                  "NoiseLookup",
+                  "LocalNoiseLookup",
+                  "Distance3",
+                  "Distance3Add",
+                  "Distance3Sub",
+                  "Distance3Mul",
+                  "Distance3Div",
+                  "Angle"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "Distance"
+            },
+            "jitter": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "lookup": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Defaults to an internal OpenSimplex2 sampler with frequency 0.02 and salt 0."
+            },
+            "salt-lookup": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            }
+          },
+          "description": "Cellular noise with selectable distance and return modes."
+        },
+        "WHITE_NOISE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "White noise."
+        },
+        "POSITIVE_WHITE_NOISE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Positive white noise."
+        },
+        "GAUSSIAN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Gaussian noise."
+        },
+        "DISTANCE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "distance-function": {
+              "schema": {
+                "kind": "type",
+                "target": "DistanceFunction",
+                "nullable": true
+              },
+              "required": false,
+              "default": "Euclidean"
+            },
+            "point": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "x": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  },
+                  "y": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  },
+                  "z": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "normalize": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "radius": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 100
+            }
+          },
+          "description": "Distance from a configured point. The inherited frequency field is loaded but not passed to DistanceSampler."
+        },
+        "CONSTANT": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "value": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            }
+          },
+          "description": "Returns a constant value."
+        },
+        "KERNEL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "kernel": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "list",
+                  "element": {
+                    "kind": "oneOf",
+                    "options": [
+                      {
+                        "kind": "float"
+                      },
+                      {
+                        "kind": "type",
+                        "target": "terra:Expression"
+                      }
+                    ]
+                  },
+                  "minItems": 1
+                },
+                "minItems": 1
+              },
+              "required": true,
+              "summary": "Nonempty rectangular matrix; all rows must have the same length."
+            },
+            "factor": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Applies a rectangular sampling kernel."
+        },
+        "LINEAR_HEIGHTMAP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Defaults to an internal sampler returning zero."
+            },
+            "base": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "scale": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Produces a linear heightmap using a base height and scaled sampler."
+        },
+        "TRANSLATE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "x": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "y": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "z": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            }
+          },
+          "description": "Translates sample coordinates."
+        },
+        "ADD": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Adds the left and right sampler outputs."
+        },
+        "SUB": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Subtracts the left and right sampler outputs."
+        },
+        "MUL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Multiplies the left and right sampler outputs."
+        },
+        "DIV": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Divides the left and right sampler outputs."
+        },
+        "MAX": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Takes the maximum of the left and right sampler outputs."
+        },
+        "MIN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Takes the minimum of the left and right sampler outputs."
+        },
+        "CACHE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "No fallback sampler is supplied. Omitting it leaves null and sampling will fail.",
+              "default": null
+            }
+          },
+          "description": "Experimental sampler cache. Match sampling dimensionality to dimensions."
+        },
+        "EXPRESSION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "expression": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Expression"
+              },
+              "required": true
+            },
+            "variables": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "oneOf",
+                  "options": [
+                    {
+                      "kind": "float"
+                    },
+                    {
+                      "kind": "type",
+                      "target": "terra:Expression"
+                    }
+                  ]
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {}
+            },
+            "samplers": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "DimensionedSampler"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local named samplers override pack samplers with the same name."
+            },
+            "functions": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "Function"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local functions override pack functions with the same name."
+            }
+          },
+          "description": "Paralithic coordinate expression with local variables, samplers and functions."
+        },
+        "EXPRESSION_NORMALIZER": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "expression": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Expression"
+              },
+              "required": true
+            },
+            "variables": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "oneOf",
+                  "options": [
+                    {
+                      "kind": "float"
+                    },
+                    {
+                      "kind": "type",
+                      "target": "terra:Expression"
+                    }
+                  ]
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {}
+            },
+            "samplers": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "DimensionedSampler"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local named samplers override pack samplers with the same name."
+            },
+            "functions": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "Function"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local functions override pack functions with the same name."
+            }
+          },
+          "description": "Paralithic expression transforming sampler output."
+        }
+      }
+    },
+    "DimensionedSampler": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "A named sampler used as an expression function. dimensions is mandatory because DimensionApplicableSampler reads it without a default.",
+      "values": {
+        "LINEAR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "min": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "max": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Transforms or clamps sampler output using min and max."
+        },
+        "LINEAR_MAP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "from": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "a": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": -1
+                  },
+                  "b": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 1
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "to": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "a": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ]
+                    },
+                    "required": true
+                  },
+                  "b": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ]
+                    },
+                    "required": true
+                  }
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Maps values from the source interval to the destination interval."
+        },
+        "NORMAL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "mean": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "standard-deviation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "groups": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 16384
+            }
+          },
+          "description": "Normalizes sampler output using the specified distribution."
+        },
+        "CLAMP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "min": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "max": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Transforms or clamps sampler output using min and max."
+        },
+        "PROBABILITY": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            }
+          },
+          "description": "Converts sampler output to probability values."
+        },
+        "SCALE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "amplitude": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Multiplies sampler output by an amplitude."
+        },
+        "POSTERIZATION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "steps": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Quantizes sampler output into steps."
+        },
+        "CUBIC_SPLINE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "points": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "CubicSplinePoint"
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Maps sampler output through cubic spline control points."
+        },
+        "DOMAIN_WARP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "warp": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "amplitude": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Warps sample coordinates using another sampler."
+        },
+        "FBM": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Fractal Brownian motion."
+        },
+        "PING_PONG": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "ping-pong": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            }
+          },
+          "description": "Ping-pong fractal noise."
+        },
+        "RIDGED": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 3
+            },
+            "gain": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "weighted-strength": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Ridged fractal noise."
+        },
+        "OPEN_SIMPLEX_2": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "OpenSimplex2 noise."
+        },
+        "OPEN_SIMPLEX_2S": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "OpenSimplex2S noise."
+        },
+        "PERLIN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Perlin noise."
+        },
+        "SIMPLEX": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Simplex noise."
+        },
+        "GABOR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "rotation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.25
+            },
+            "isotropic": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            },
+            "deviation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "impulses": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 64
+            },
+            "frequency_0": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.625
+            },
+            "a": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.1
+            }
+          },
+          "description": "Gabor noise."
+        },
+        "PSEUDOEROSION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "octaves": {
+              "schema": {
+                "kind": "integer",
+                "nullable": true
+              },
+              "required": false,
+              "default": 4
+            },
+            "lacunarity": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 2
+            },
+            "gain": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.5
+            },
+            "slope-strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "branch-strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "strength": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.04
+            },
+            "erosion-frequency": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02
+            },
+            "jitter": {
+              "schema": {
+                "kind": "float",
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Must support derivatives. Defaults to internal OpenSimplex2 with frequency 0.02 and salt 0."
+            },
+            "slope-mask": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "enable": {
+                    "schema": {
+                      "kind": "boolean",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": true
+                  },
+                  "none": {
+                    "schema": {
+                      "kind": "float",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": -0.5
+                  },
+                  "full": {
+                    "schema": {
+                      "kind": "float",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 1
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "average-impulses": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            }
+          },
+          "description": "Pseudo erosion based on a differentiable height sampler. Derivative support is checked at runtime."
+        },
+        "VALUE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Value noise."
+        },
+        "VALUE_CUBIC": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Cubic value noise."
+        },
+        "CELLULAR": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "distance": {
+              "schema": {
+                "kind": "type",
+                "target": "DistanceFunction",
+                "nullable": true
+              },
+              "required": false,
+              "default": "EuclideanSq"
+            },
+            "return": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "CellValue",
+                  "Distance",
+                  "Distance2",
+                  "Distance2Add",
+                  "Distance2Sub",
+                  "Distance2Mul",
+                  "Distance2Div",
+                  "NoiseLookup",
+                  "LocalNoiseLookup",
+                  "Distance3",
+                  "Distance3Add",
+                  "Distance3Sub",
+                  "Distance3Mul",
+                  "Distance3Div",
+                  "Angle"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "Distance"
+            },
+            "jitter": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "lookup": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Defaults to an internal OpenSimplex2 sampler with frequency 0.02 and salt 0."
+            },
+            "salt-lookup": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true
+            }
+          },
+          "description": "Cellular noise with selectable distance and return modes."
+        },
+        "WHITE_NOISE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "White noise."
+        },
+        "POSITIVE_WHITE_NOISE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Positive white noise."
+        },
+        "GAUSSIAN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            }
+          },
+          "description": "Gaussian noise."
+        },
+        "DISTANCE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0.02,
+              "summary": "Coordinate frequency before sampling."
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0,
+              "summary": "Salt added to the seed."
+            },
+            "distance-function": {
+              "schema": {
+                "kind": "type",
+                "target": "DistanceFunction",
+                "nullable": true
+              },
+              "required": false,
+              "default": "Euclidean"
+            },
+            "point": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "x": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  },
+                  "y": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  },
+                  "z": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "normalize": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "radius": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 100
+            }
+          },
+          "description": "Distance from a configured point. The inherited frequency field is loaded but not passed to DistanceSampler."
+        },
+        "CONSTANT": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "value": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            }
+          },
+          "description": "Returns a constant value."
+        },
+        "KERNEL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "kernel": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "list",
+                  "element": {
+                    "kind": "oneOf",
+                    "options": [
+                      {
+                        "kind": "float"
+                      },
+                      {
+                        "kind": "type",
+                        "target": "terra:Expression"
+                      }
+                    ]
+                  },
+                  "minItems": 1
+                },
+                "minItems": 1
+              },
+              "required": true,
+              "summary": "Nonempty rectangular matrix; all rows must have the same length."
+            },
+            "factor": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "frequency": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Applies a rectangular sampling kernel."
+        },
+        "LINEAR_HEIGHTMAP": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "Defaults to an internal sampler returning zero."
+            },
+            "base": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "scale": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1
+            }
+          },
+          "description": "Produces a linear heightmap using a base height and scaled sampler."
+        },
+        "TRANSLATE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "x": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "y": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "z": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            }
+          },
+          "description": "Translates sample coordinates."
+        },
+        "ADD": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Adds the left and right sampler outputs."
+        },
+        "SUB": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Subtracts the left and right sampler outputs."
+        },
+        "MUL": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Multiplies the left and right sampler outputs."
+        },
+        "DIV": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Divides the left and right sampler outputs."
+        },
+        "MAX": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Takes the maximum of the left and right sampler outputs."
+        },
+        "MIN": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "left": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "right": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Takes the minimum of the left and right sampler outputs."
+        },
+        "CACHE": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler",
+                "nullable": true
+              },
+              "required": false,
+              "summary": "No fallback sampler is supplied. Omitting it leaves null and sampling will fail.",
+              "default": null
+            }
+          },
+          "description": "Experimental sampler cache. Match sampling dimensionality to dimensions."
+        },
+        "EXPRESSION": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "expression": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Expression"
+              },
+              "required": true
+            },
+            "variables": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "oneOf",
+                  "options": [
+                    {
+                      "kind": "float"
+                    },
+                    {
+                      "kind": "type",
+                      "target": "terra:Expression"
+                    }
+                  ]
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {}
+            },
+            "samplers": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "DimensionedSampler"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local named samplers override pack samplers with the same name."
+            },
+            "functions": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "Function"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local functions override pack functions with the same name."
+            }
+          },
+          "description": "Paralithic coordinate expression with local variables, samplers and functions."
+        },
+        "EXPRESSION_NORMALIZER": {
+          "kind": "object",
+          "fields": {
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "enum",
+                    "values": [
+                      2,
+                      3
+                    ]
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Number of dimensions; runtime accepts only 2 or 3."
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler whose output is transformed."
+            },
+            "expression": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Expression"
+              },
+              "required": true
+            },
+            "variables": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "oneOf",
+                  "options": [
+                    {
+                      "kind": "float"
+                    },
+                    {
+                      "kind": "type",
+                      "target": "terra:Expression"
+                    }
+                  ]
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {}
+            },
+            "samplers": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "DimensionedSampler"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local named samplers override pack samplers with the same name."
+            },
+            "functions": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "string"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "Function"
+                },
+                "nullable": true
+              },
+              "required": false,
+              "default": {},
+              "summary": "Local functions override pack functions with the same name."
+            }
+          },
+          "description": "Paralithic expression transforming sampler output."
+        }
+      }
+    },
+    "DistanceFunction": {
+      "kind": "enum",
+      "values": [
+        "Euclidean",
+        "EuclideanSq",
+        "Manhattan",
+        "Hybrid"
+      ]
+    },
+    "CubicSplinePoint": {
+      "kind": "object",
+      "fields": {
+        "from": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        },
+        "to": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        },
+        "gradient": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        }
+      }
+    },
+    "Function": {
+      "kind": "object",
+      "fields": {
+        "arguments": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            }
+          },
+          "required": true,
+          "summary": "Ordered argument names for this function."
+        },
+        "expression": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:Expression"
+          },
+          "required": true
+        },
+        "functions": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "type",
+              "target": "Function"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Nested function definitions."
+        }
+      }
+    }
+  },
+  "files": {
+    "pack.yml": {
+      "kind": "object",
+      "fields": {
+        "samplers": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "type",
+              "target": "DimensionedSampler"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Named samplers callable from expressions; each requires dimensions."
+        },
+        "functions": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "type",
+              "target": "Function"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Pack-wide expression functions."
+        }
+      }
+    }
+  }
+}
