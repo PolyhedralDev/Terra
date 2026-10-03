@@ -4,6 +4,7 @@ import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 import net.kyori.adventure.nbt.CompoundBinaryTag;
+import net.kyori.adventure.nbt.StringBinaryTag;
 import net.minestom.server.adventure.MinestomAdventure;
 import net.minestom.server.codec.Transcoder;
 import net.minestom.server.particle.Particle;
@@ -51,6 +52,17 @@ public class BiomeParticleConfigTemplate implements ObjectTemplate<AmbientPartic
             nbt = MinestomAdventure.NBT_CODEC.decode(dataString);
             // transform minecraft:x{a:"b"} into {type:"minecraft:x", a:"b"} as described in Particle.CODEC
             nbt = nbt.putString("type", key);
+
+            // TODO fix this
+            CompoundBinaryTag blockState = nbt.getCompound("block_state", null);
+            if (blockState != null) {
+                String name = blockState.getString("Name", null);
+                if (name != null) {
+                    blockState = blockState.put("id", StringBinaryTag.stringBinaryTag(name));
+                    nbt = nbt.put("block_state", blockState);
+                }
+            }
+
             parsedParticle = Particle.CODEC.decode(Transcoder.NBT, nbt).orElseThrow();
         } catch(Exception e) {
             String nbtString = "null";
