@@ -1,0 +1,29 @@
+{
+  "id": "palette-block-shortcut",
+  "docVersion": 1,
+  "description": "BLOCK:<block-state> creates a palette containing one block at every depth.",
+  "types": {
+    "PaletteBlockShortcut": {
+      "kind": "string",
+      "pattern": "^BLOCK:.+$",
+      "description": "BLOCK: followed by a platform block state; the prefix is case-sensitive.",
+      "examples": [
+        "BLOCK:minecraft:stone",
+        "BLOCK:minecraft:oak_log[axis=y]"
+      ]
+    },
+    "terra:PaletteReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Palette"
+        },
+        {
+          "kind": "type",
+          "target": "PaletteBlockShortcut"
+        }
+      ]
+    }
+  }
+}

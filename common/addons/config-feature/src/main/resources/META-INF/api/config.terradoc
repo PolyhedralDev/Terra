@@ -1,0 +1,183 @@
+{
+  "id": "config-feature",
+  "docVersion": 1,
+  "description": "FEATURE files register configured placement features, with inline distributor/locator definitions and weighted raw structure references.",
+  "types": {
+    "terra:Feature": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; final and not inherited."
+        },
+        "distributor": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:Distributor"
+          },
+          "required": true
+        },
+        "locator": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:Locator"
+          },
+          "required": true
+        },
+        "structures": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "distribution": {
+                "schema": {
+                  "kind": "type",
+                  "target": "terra:NoiseSampler"
+                },
+                "required": true,
+                "summary": "Sampler that chooses a structure from the weighted collection."
+              },
+              "structures": {
+                "schema": {
+                  "kind": "type",
+                  "target": "WeightedStructures"
+                },
+                "required": true
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "terra:StructureReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Structure"
+        }
+      ]
+    },
+    "WeightedStructures": {
+      "kind": "oneOf",
+      "description": "A raw structure reference, reference-to-weight map, or list of maps. Singleton weights are ignored; all other weights are raw integers.",
+      "options": [
+        {
+          "kind": "type",
+          "target": "terra:StructureReference"
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:StructureReference"
+          },
+          "values": {
+            "kind": "any",
+            "name": "Ignored singleton weight"
+          },
+          "maxEntries": 1
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:StructureReference"
+          },
+          "values": {
+            "kind": "integer"
+          },
+          "minEntries": 2
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:StructureReference"
+                },
+                "values": {
+                  "kind": "any",
+                  "name": "Ignored singleton weight"
+                },
+                "maxEntries": 1
+              },
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:StructureReference"
+                },
+                "values": {
+                  "kind": "integer"
+                },
+                "minEntries": 2
+              }
+            ]
+          },
+          "maxItems": 1
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "terra:StructureReference"
+            },
+            "values": {
+              "kind": "integer"
+            }
+          },
+          "minItems": 2
+        }
+      ]
+    }
+  },
+  "files": {
+    "FEATURE": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "FEATURE"
+          },
+          "required": true
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration IDs; non-final fields may be inherited."
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations supply inherited values and are not registered."
+        }
+      },
+      "extends": [
+        "terra:Feature"
+      ]
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "id": "config-flora",
+  "docVersion": 1,
+  "description": "FLORA configurations register layered block structures in the raw structure registry.",
+  "types": {
+    "Flora": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; final and not inherited."
+        },
+        "rotatable": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:MaterialSet",
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Block types whose states may be rotated."
+        },
+        "physics": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false
+        },
+        "ceiling": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false
+        },
+        "layers": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "type",
+              "target": "BlockLayer"
+            }
+          },
+          "required": true
+        },
+        "layer-distribution": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:NoiseSampler"
+          },
+          "required": true
+        }
+      }
+    },
+    "BlockLayer": {
+      "kind": "object",
+      "fields": {
+        "layers": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        },
+        "materials": {
+          "schema": {
+            "kind": "type",
+            "target": "WeightedBlocks"
+          },
+          "required": true
+        }
+      }
+    },
+    "WeightedBlocks": {
+      "kind": "oneOf",
+      "description": "A block state, block-to-weight map, or list of maps. Singleton weights are ignored; all other weights are raw integers.",
+      "options": [
+        {
+          "kind": "type",
+          "target": "terra:Block"
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "values": {
+            "kind": "any",
+            "name": "Ignored singleton weight"
+          },
+          "maxEntries": 1
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "values": {
+            "kind": "integer"
+          },
+          "minEntries": 2
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:Block"
+                },
+                "values": {
+                  "kind": "any",
+                  "name": "Ignored singleton weight"
+                },
+                "maxEntries": 1
+              },
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:Block"
+                },
+                "values": {
+                  "kind": "integer"
+                },
+                "minEntries": 2
+              }
+            ]
+          },
+          "maxItems": 1
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "values": {
+              "kind": "integer"
+            }
+          },
+          "minItems": 2
+        }
+      ]
+    }
+  },
+  "files": {
+    "FLORA": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "FLORA"
+          },
+          "required": true
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration IDs; non-final fields may be inherited."
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations supply inherited values and are not registered."
+        }
+      },
+      "extends": [
+        "Flora"
+      ]
+    }
+  }
+}

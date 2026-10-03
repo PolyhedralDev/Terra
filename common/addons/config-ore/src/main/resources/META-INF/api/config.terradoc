@@ -1,0 +1,253 @@
+{
+  "id": "config-ore",
+  "docVersion": 1,
+  "description": "ORE and SCATTERED_ORE configurations register raw structures. Scattered size remains required despite its field initializer.",
+  "types": {
+    "Ore": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; final and not inherited."
+        },
+        "material": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "required": true
+        },
+        "material-overrides": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "values": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Override material by replaced block type. Key state properties are reduced to the block type."
+        },
+        "replace": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:MaterialSet"
+          },
+          "required": true
+        },
+        "physics": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false
+        },
+        "size": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true,
+          "summary": "Ore vein size."
+        },
+        "exposed": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ],
+            "nullable": true
+          },
+          "required": false,
+          "default": 1,
+          "summary": "Chance of accepting ore bordering air: 0 rejects, 1 accepts. Source does not enforce a 0\u20131 bound."
+        }
+      }
+    },
+    "ScatteredOre": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; final and not inherited."
+        },
+        "material": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "required": true
+        },
+        "material-overrides": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "values": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Override material by replaced block type. Key state properties are reduced to the block type."
+        },
+        "replace": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:MaterialSet"
+          },
+          "required": true
+        },
+        "physics": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false
+        },
+        "size": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true,
+          "summary": "Required size, loaded into both an integer spread and the inherited double vein size. The initializer 7 is not a default."
+        },
+        "exposed": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ],
+            "nullable": true
+          },
+          "required": false,
+          "default": 1,
+          "summary": "Chance of accepting ore bordering air: 0 rejects, 1 accepts. Source does not enforce a 0\u20131 bound."
+        }
+      }
+    }
+  },
+  "files": {
+    "ORE": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "ORE"
+          },
+          "required": true
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration IDs; non-final fields may be inherited."
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations supply inherited values and are not registered."
+        }
+      },
+      "extends": [
+        "Ore"
+      ]
+    },
+    "SCATTERED_ORE": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "SCATTERED_ORE"
+          },
+          "required": true
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration IDs; non-final fields may be inherited."
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations supply inherited values and are not registered."
+        }
+      },
+      "extends": [
+        "ScatteredOre"
+      ]
+    }
+  }
+}

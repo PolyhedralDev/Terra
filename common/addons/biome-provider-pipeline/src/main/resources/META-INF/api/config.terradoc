@@ -1,0 +1,420 @@
+{
+  "id": "biome-provider-pipeline",
+  "docVersion": 1,
+  "description": "Pipeline biome provider, sampler source and six grid-processing stages. Pipeline stages are distinct from world generation stages.",
+  "types": {
+    "terra:BiomeProvider": {
+      "kind": "union",
+      "values": {
+        "PIPELINE": {
+          "kind": "object",
+          "fields": {
+            "resolution": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 1,
+              "summary": "Biome sample spacing in blocks. Higher values reduce work and detail; there is no template range validator."
+            },
+            "blend": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "sampler": {
+                    "schema": {
+                      "kind": "type",
+                      "target": "terra:NoiseSampler",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "summary": "Coordinate-warping sampler; defaults to an internal zero sampler."
+                  },
+                  "amplitude": {
+                    "schema": {
+                      "kind": "oneOf",
+                      "options": [
+                        {
+                          "kind": "float"
+                        },
+                        {
+                          "kind": "type",
+                          "target": "terra:Expression"
+                        }
+                      ],
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            },
+            "pipeline": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "source": {
+                    "schema": {
+                      "kind": "type",
+                      "target": "Source"
+                    },
+                    "required": true
+                  },
+                  "stages": {
+                    "schema": {
+                      "kind": "list",
+                      "element": {
+                        "kind": "type",
+                        "target": "Stage"
+                      }
+                    },
+                    "required": true,
+                    "summary": "Ordered stages; required even when the list is empty."
+                  }
+                }
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "Source": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "SAMPLER": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            },
+            "biomes": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedPipelineBiomes"
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "Stage": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "FRACTAL_EXPAND": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            }
+          },
+          "description": "Expands the biome grid using fractal interpolation."
+        },
+        "SMOOTH": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            }
+          },
+          "description": "Smooths the biome grid using neighboring biomes."
+        },
+        "REPLACE": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            },
+            "from": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Tag identifying biomes to replace."
+            },
+            "to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedPipelineBiomes"
+              },
+              "required": true,
+              "summary": "Replacement biomes; SELF preserves the current biome."
+            }
+          }
+        },
+        "REPLACE_LIST": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            },
+            "default-from": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Tag to match when the current biome is not a key in to."
+            },
+            "default-to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedPipelineBiomes"
+              },
+              "required": true,
+              "summary": "Replacement distribution for default-from."
+            },
+            "to": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "PipelineBiome"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "WeightedPipelineBiomes"
+                }
+              },
+              "required": true,
+              "summary": "Explicit per-biome replacements, checked before the default tag."
+            }
+          }
+        },
+        "BORDER": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            },
+            "from": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Tag to look for among the eight neighboring cells."
+            },
+            "replace": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Tag that the center biome must have."
+            },
+            "to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedPipelineBiomes"
+              },
+              "required": true,
+              "summary": "Replacement biomes when the center and a neighbor match."
+            }
+          }
+        },
+        "BORDER_LIST": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true,
+              "summary": "Sampler used to choose among replacements or neighboring biomes."
+            },
+            "from": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Tag to look for among the eight neighboring cells."
+            },
+            "default-replace": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Tag"
+              },
+              "required": true,
+              "summary": "Required tag for the center biome, including explicit map entries."
+            },
+            "default-to": {
+              "schema": {
+                "kind": "type",
+                "target": "WeightedPipelineBiomes"
+              },
+              "required": true,
+              "summary": "Replacement when the center has no entry in replace."
+            },
+            "replace": {
+              "schema": {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "PipelineBiome"
+                },
+                "values": {
+                  "kind": "type",
+                  "target": "WeightedPipelineBiomes"
+                }
+              },
+              "required": true,
+              "summary": "Explicit center-biome replacements after tag and neighbor checks."
+            }
+          }
+        }
+      }
+    },
+    "PipelineBiome": {
+      "kind": "oneOf",
+      "description": "Pipeline biome loader input: a registered biome identifier, SELF, or an unregistered placeholder string. Placeholders must be removed before producing final biomes.",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Biome"
+        },
+        {
+          "kind": "literal",
+          "value": "SELF",
+          "description": "Keep the current biome when used as a stage replacement."
+        },
+        {
+          "kind": "string",
+          "description": "An identifier not found in the biome registry becomes a placeholder with tags ALL and its own identifier."
+        }
+      ],
+      "examples": [
+        "PLAINS",
+        "SELF",
+        "PLACEHOLDER"
+      ]
+    },
+    "WeightedPipelineBiomes": {
+      "kind": "oneOf",
+      "description": "A pipeline biome, a pipeline-biome-to-integer-weight map, or a list of such maps. Singleton weights are ignored. Other weights are raw integers.",
+      "options": [
+        {
+          "kind": "type",
+          "target": "PipelineBiome"
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "PipelineBiome"
+          },
+          "values": {
+            "kind": "any",
+            "name": "Ignored singleton weight"
+          },
+          "maxEntries": 1
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "PipelineBiome"
+          },
+          "values": {
+            "kind": "integer"
+          },
+          "minEntries": 2
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "PipelineBiome"
+                },
+                "values": {
+                  "kind": "any",
+                  "name": "Ignored singleton weight"
+                },
+                "maxEntries": 1
+              },
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "PipelineBiome"
+                },
+                "values": {
+                  "kind": "integer"
+                },
+                "minEntries": 2
+              }
+            ]
+          },
+          "maxItems": 1
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "PipelineBiome"
+            },
+            "values": {
+              "kind": "integer"
+            }
+          },
+          "minItems": 2
+        }
+      ]
+    }
+  }
+}

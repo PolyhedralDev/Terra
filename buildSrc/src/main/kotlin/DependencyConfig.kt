@@ -60,6 +60,12 @@ fun Project.configureDependencies() {
         maven("https://repo.onarandombox.com/multiverse-releases") {
             name = "onarandombox"
         }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            content {
+                includeModule("net.minestom", "minestom")
+                includeModule("net.minestom", "testing")
+            }
+        }
     }
     
     dependencies {
