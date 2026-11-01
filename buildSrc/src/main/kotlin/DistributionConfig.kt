@@ -161,7 +161,7 @@ fun Project.configureDistribution() {
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
-        configurations = listOf(project.configurations["shaded"])
+        configurations.set(listOf(project.configurations["shaded"]))
         archiveClassifier.set("shaded")
         version = project.version
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")
