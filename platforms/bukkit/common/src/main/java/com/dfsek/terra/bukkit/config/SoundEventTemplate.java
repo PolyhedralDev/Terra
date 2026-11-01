@@ -1,16 +1,16 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.resources.Identifier;
-import net.minecraft.sounds.SoundEvent;
+import dev.wyck.environment.sounds.SoundEvent;
+import dev.wyck.keys.ResourceKey;
 
 
 public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
     @Value("id")
     @Default
-    private Identifier id = null;
+    private ResourceKey id = null;
 
     @Value("distance-to-travel")
     @Default
@@ -21,9 +21,9 @@ public class SoundEventTemplate implements ObjectTemplate<SoundEvent> {
         if(id == null) {
             return null;
         } else if(distanceToTravel == null) {
-            return SoundEvent.createVariableRangeEvent(id);
+            return SoundEvent.variableRange(id);
         } else {
-            return SoundEvent.createFixedRangeEvent(id, distanceToTravel);
+            return SoundEvent.fixedRange(id, distanceToTravel);
         }
     }
 }

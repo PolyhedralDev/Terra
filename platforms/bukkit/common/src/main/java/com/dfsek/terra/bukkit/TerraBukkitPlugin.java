@@ -48,7 +48,7 @@ import com.dfsek.terra.bukkit.world.BukkitAdapter;
 public class TerraBukkitPlugin extends JavaPlugin {
     private static final Logger logger = LoggerFactory.getLogger(TerraBukkitPlugin.class);
     private final Map<String, com.dfsek.terra.api.world.chunk.generation.ChunkGenerator> generatorMap = new HashMap<>();
-    private PlatformImpl platform;
+    private BukkitPlatform platform;
     private AsyncScheduler asyncScheduler = this.getServer().getAsyncScheduler();
 
     private GlobalRegionScheduler globalRegionScheduler = this.getServer().getGlobalRegionScheduler();
@@ -101,7 +101,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         return commandManager;
     }
 
-    public PlatformImpl getPlatform() {
+    public BukkitPlatform getPlatform() {
         return platform;
     }
 

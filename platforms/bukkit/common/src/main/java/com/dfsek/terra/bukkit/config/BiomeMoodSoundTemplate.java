@@ -1,11 +1,10 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.attribute.AmbientMoodSettings;
+import dev.wyck.environment.sounds.AmbientMoodSettings;
+import dev.wyck.environment.sounds.SoundEvent;
 
 
 public class BiomeMoodSoundTemplate implements ObjectTemplate<AmbientMoodSettings> {
@@ -30,8 +29,12 @@ public class BiomeMoodSoundTemplate implements ObjectTemplate<AmbientMoodSetting
         if(sound == null || soundCultivationTicks == null || soundSpawnRange == null || soundExtraDistance == null) {
             return null;
         } else {
-            return new AmbientMoodSettings(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), soundCultivationTicks, soundSpawnRange,
-                soundExtraDistance);
+            return AmbientMoodSettings.builder()
+                .soundEvent(sound)
+                .tickDelay(soundCultivationTicks)
+                .blockSearchExtent(soundSpawnRange)
+                .soundPositionOffset(soundExtraDistance)
+                .build();
         }
     }
 }

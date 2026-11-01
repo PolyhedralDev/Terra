@@ -13,7 +13,7 @@ public interface NMSInitializer {
     String MINECRAFT_VERSION = VersionUtil.getMinecraftVersionInfo().toString();
     String TERRA_PACKAGE = NMSInitializer.class.getPackageName();
 
-    static PlatformImpl init(TerraBukkitPlugin plugin) {
+    static BukkitPlatform init(TerraBukkitPlugin plugin) {
         Logger logger = LoggerFactory.getLogger(NMSInitializer.class);
 
         if(!SUPPORTED_VERSIONS.contains(MINECRAFT_VERSION)) {
@@ -42,10 +42,10 @@ public interface NMSInitializer {
         return constructPlatform(plugin);
     }
 
-    private static PlatformImpl constructPlatform(TerraBukkitPlugin plugin) {
+    private static BukkitPlatform constructPlatform(TerraBukkitPlugin plugin) {
         try {
             Class<?> platformClass = Class.forName(TERRA_PACKAGE + ".nms.NMSPlatform");
-            return (PlatformImpl) platformClass
+            return (BukkitPlatform) platformClass
                 .getConstructor(TerraBukkitPlugin.class)
                 .newInstance(plugin);
         } catch(ReflectiveOperationException e) {

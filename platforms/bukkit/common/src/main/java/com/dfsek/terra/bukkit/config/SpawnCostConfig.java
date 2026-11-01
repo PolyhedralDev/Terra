@@ -1,15 +1,15 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.world.entity.EntityType;
+import org.bukkit.entity.EntityType;
 
 
 public class SpawnCostConfig implements ObjectTemplate<SpawnCostConfig> {
     @Value("type")
     @Default
-    private EntityType<?> type = null;
+    private EntityType type = null;
 
     @Value("mass")
     @Default
@@ -19,7 +19,7 @@ public class SpawnCostConfig implements ObjectTemplate<SpawnCostConfig> {
     @Default
     private Double gravity = null;
 
-    public EntityType<?> getType() {
+    public EntityType getType() {
         return type;
     }
 
