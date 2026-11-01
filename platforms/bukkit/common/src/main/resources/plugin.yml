@@ -4,6 +4,7 @@ version: "@VERSION@"
 load: "STARTUP"
 authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade", "OakLoaf" ]
 website: "@WIKI@"
-api-version: "1.21.1"
+api-version: "26.3"
 description: "@DESCRIPTION@"
 folia-supported: true
+depend: [ "Wyck" ]
