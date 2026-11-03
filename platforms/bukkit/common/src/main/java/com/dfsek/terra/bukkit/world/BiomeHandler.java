@@ -27,7 +27,7 @@ public class BiomeHandler {
     }
 
     public static Biome getBiomeOrThrow(ResourceKey key) {
-        return KeyChains.BIOMES.getOrThrow(key);
+        return KeyChains.BIOMES.getOrThrow(key).wrap();
     }
 
     public static Biome createBiome(ResourceKey vanillaBiomeKey, VanillaBiomeProperties vanillaBiomeProperties)
