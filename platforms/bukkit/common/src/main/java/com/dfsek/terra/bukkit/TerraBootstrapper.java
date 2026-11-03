@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Bootstrapper implements PluginBootstrap {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Bootstrapper.class);
+public class TerraBootstrapper implements PluginBootstrap {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerraBootstrapper.class);
 
     private static final Map<ResourceKey, List<ResourceKey>> terraBiomeMap = new HashMap<>();
 
