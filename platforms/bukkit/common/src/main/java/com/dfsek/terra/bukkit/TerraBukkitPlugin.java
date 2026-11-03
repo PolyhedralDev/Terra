@@ -59,12 +59,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
             return;
         }
 
-        platform = NMSInitializer.init(this);
-        if(platform == null) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
+        platform = new BukkitPlatform(this);
         platform.getEventManager().callEvent(new PlatformInitializationEvent());
 
         try {
