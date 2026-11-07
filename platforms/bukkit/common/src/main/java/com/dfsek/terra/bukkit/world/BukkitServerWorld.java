@@ -30,8 +30,8 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.bukkit.BukkitEntity;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.state.BukkitBlockEntity;
-import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
 
 
 public class BukkitServerWorld implements ServerWorld {
@@ -43,8 +43,7 @@ public class BukkitServerWorld implements ServerWorld {
 
     @Override
     public Entity spawnEntity(double x, double y, double z, EntityType entityType) {
-        return new BukkitEntity(
-            delegate.spawnEntity(new Location(delegate, x, y, z), ((BukkitEntityType) entityType).getHandle()));
+        return new BukkitEntity(BukkitUtils.spawnEntity(delegate, new Location(delegate, x, y, z), entityType));
     }
 
     @Override

@@ -10,19 +10,32 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet.Named;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistrationInfo;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.World;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.CraftServer;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.entity.CraftEntitySnapshot;
+import org.bukkit.craftbukkit.generator.CraftLimitedRegion;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +49,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.dfsek.terra.bukkit.nms.config.VanillaBiomeProperties;
+import com.dfsek.terra.api.entity.EntityTypeExtended;
 import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.bukkit.nms.config.VanillaBiomeProperties;
+import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
+import com.dfsek.terra.bukkit.world.entity.BukkitEntityTypeExtended;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 
 
@@ -47,7 +63,7 @@ public class AwfulBukkitHacks {
 
     private static final Map<Identifier, List<Identifier>> terraBiomeMap = new HashMap<>();
 
-    public static void registerBiomes(ConfigRegistry configRegistry) {
+    public static void registerBiomes(ConfigRegistry configRegistry, NMSVersionBindings bindings) {
         try {
             LOGGER.info("Hacking biome registry...");
             MappedRegistry<Biome> biomeRegistry = (MappedRegistry<Biome>) RegistryFetcher.biomeRegistry();
@@ -67,7 +83,7 @@ public class AwfulBukkitHacks {
                     VanillaBiomeProperties vanillaBiomeProperties = biome.getContext().get(VanillaBiomeProperties.class);
 
                     Biome platform = NMSBiomeInjector.createBiome(biomeRegistry.get(vanillaMinecraftKey).orElseThrow().value(),
-                        vanillaBiomeProperties);
+                        vanillaBiomeProperties, bindings);
 
                     Identifier delegateMinecraftKey = Identifier.fromNamespaceAndPath("terra",
                         NMSBiomeInjector.createBiomeID(pack, key));
@@ -180,5 +196,88 @@ public class AwfulBukkitHacks {
         BlockResult result = BlockStateParser.parseForBlock(blocks, new StringReader(data), true);
         return CraftBlockData.createData(result.blockState());
     }
-}
 
+    public static com.dfsek.terra.api.entity.EntityType getEntityType(@NotNull String data) {
+        StringReader reader = new StringReader(data);
+        Identifier identifier;
+        CompoundTag entityNbt = null;
+        try {
+            identifier = Identifier.read(reader);
+            if(reader.canRead()) {
+                if(reader.peek() != '{') throw new IllegalArgumentException("Unexpected data after entity identifier: " + data);
+                entityNbt = TagParser.parseCompoundAsArgument(reader);
+                if(reader.canRead()) throw new IllegalArgumentException("Unexpected data after entity NBT: " + data);
+                entityNbt.putString("id", identifier.toString());
+            }
+        } catch(CommandSyntaxException e) {
+            throw new IllegalArgumentException("Invalid entity data: " + data, e);
+        }
+
+        if(BuiltInRegistries.ENTITY_TYPE.getOptional(identifier).isEmpty()) {
+            throw new IllegalArgumentException("Unknown entity type: " + identifier);
+        }
+
+        NamespacedKey key = NamespacedKey.fromString(identifier.toString());
+        org.bukkit.entity.EntityType bukkitType = key == null ? null : Registry.ENTITY_TYPE.get(key);
+        if(bukkitType == null) throw new IllegalArgumentException("Bukkit has no entity type for " + identifier);
+
+        if(entityNbt == null) return new BukkitEntityType(bukkitType);
+        return new BukkitEntityTypeExtended(bukkitType, entityNbt.toString());
+    }
+
+    public static org.bukkit.entity.Entity spawnEntity(Object target, org.bukkit.Location location,
+                                                        com.dfsek.terra.api.entity.EntityType type) {
+        if(!(type instanceof BukkitEntityTypeExtended extended)) {
+            throw new IllegalArgumentException("Expected a Bukkit entity type with NBT data");
+        }
+        CompoundTag nbt = parseEntityNbt(extended);
+
+        CraftLimitedRegion limitedRegion = target instanceof CraftLimitedRegion region ? region : null;
+        World world = limitedRegion == null ? (World) target : limitedRegion.getWorld();
+        if(!(world instanceof CraftWorld craftWorld)) throw new IllegalArgumentException("Unsupported Bukkit world: " + world);
+        ServerLevel level = craftWorld.getHandle();
+
+        String entityIDText = nbt.getString("id")
+            .orElseThrow(() -> new IllegalArgumentException("Missing entity identifier in NBT"));
+        Identifier entityID;
+        try {
+            entityID = Identifier.read(new StringReader(entityIDText));
+        } catch(CommandSyntaxException e) {
+            throw new IllegalArgumentException("Invalid entity identifier in NBT: " + entityIDText, e);
+        }
+        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(entityID)
+            .orElseThrow(() -> new IllegalArgumentException("Unknown entity type in NBT: " + entityID));
+
+        net.minecraft.world.entity.Entity entity = EntityType.loadEntityRecursive(entityType, nbt, level, EntitySpawnReason.STRUCTURE, loaded -> {
+            loaded.snapTo(location.getX(), location.getY(), location.getZ(), loaded.getYRot(), loaded.getXRot());
+            return loaded;
+        });
+        if(entity == null) throw new IllegalArgumentException("Could not load entity from NBT: " + nbt);
+
+        if(limitedRegion != null) {
+            limitedRegion.addEntityWithPassengers(entity, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        } else if(!level.tryAddFreshEntityWithPassengers(entity, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
+            throw new IllegalStateException("Could not add entity to world: " + nbt);
+        }
+
+        return entity.getBukkitEntity();
+    }
+
+    public static void setSpawnerEntity(CreatureSpawner spawner, EntityTypeExtended type) {
+        if(!(type instanceof BukkitEntityTypeExtended extended)) {
+            throw new IllegalArgumentException("Expected a Bukkit entity type with NBT data");
+        }
+        spawner.setSpawnedEntity(CraftEntitySnapshot.create(parseEntityNbt(extended), extended.getHandle()));
+    }
+
+    private static CompoundTag parseEntityNbt(BukkitEntityTypeExtended extended) {
+        Object rawData = extended.getData().getHandle();
+        if(!(rawData instanceof String snbt)) throw new IllegalArgumentException("Bukkit entity data must contain SNBT text");
+
+        try {
+            return TagParser.parseCompoundFully(snbt);
+        } catch(CommandSyntaxException e) {
+            throw new IllegalArgumentException("Invalid entity NBT: " + snbt, e);
+        }
+    }
+}
