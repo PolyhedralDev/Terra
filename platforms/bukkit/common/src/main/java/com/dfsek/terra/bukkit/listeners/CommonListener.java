@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
+import dev.wyck.keys.ResourceKey;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -85,10 +86,10 @@ public class CommonListener implements Listener {
             return;
         }
 
-        NamespacedKey biomeKey = wolf.getWorld().getBiome(wolf.getLocation()).getKey();
+        ResourceKey biomeKey = ResourceKey.of(wolf.getWorld().getBiome(wolf.getLocation()).getKey());
         pack.getBiomeProvider().stream()
             .filter(biome -> {
-                NamespacedKey key = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
+                ResourceKey key = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
                     .get(BukkitBiomeInfo.class)
                     .biomeKey();
                 return key.equals(biomeKey);

@@ -17,31 +17,39 @@
 
 package com.dfsek.terra.bukkit.world.block.state;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.block.entity.Sign;
 
 
-@SuppressWarnings("deprecation")
 public class BukkitSign extends BukkitBlockEntity implements Sign {
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacySection();
+
     protected BukkitSign(org.bukkit.block.Sign block) {
         super(block);
     }
 
     @Override
     public void setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
-        ((org.bukkit.block.Sign) getHandle()).setLine(index, line);
+        front().line(index, LEGACY.deserialize(line));
     }
 
     @Override
     public @NotNull String[] getLines() {
-        return ((org.bukkit.block.Sign) getHandle()).getLines();
+        return front().lines().stream().map(LEGACY::serialize).toArray(String[]::new);
     }
 
     @Override
     public @NotNull String getLine(int index) throws IndexOutOfBoundsException {
-        return ((org.bukkit.block.Sign) getHandle()).getLine(index);
+        return LEGACY.serialize(front().line(index));
+    }
+
+    private SignSide front() {
+        return ((org.bukkit.block.Sign) getHandle()).getSide(Side.FRONT);
     }
 
     @Override

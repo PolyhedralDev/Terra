@@ -10,9 +10,9 @@ dependencies {
 
     compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
 
-    compileOnly("org.mvplugins.multiverse.core", "multiverse-core", Versions.Bukkit.multiverse)
+    compileOnly("dev.wyck", "Wyck", Versions.Bukkit.wyck)
 
-    shadedApi("io.papermc", "paperlib", Versions.Bukkit.paperLib)
+    compileOnly("org.mvplugins.multiverse.core", "multiverse-core", Versions.Bukkit.multiverse)
 
     shadedApi("com.google.guava", "guava", Versions.Libraries.Internal.guava)
 

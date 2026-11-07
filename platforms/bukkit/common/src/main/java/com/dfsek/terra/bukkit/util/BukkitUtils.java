@@ -1,62 +1,82 @@
 package com.dfsek.terra.bukkit.util;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import org.bukkit.RegionAccessor;
+import org.bukkit.World;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntitySnapshot;
+import org.bukkit.generator.LimitedRegion;
+
+import java.math.BigDecimal;
+import java.util.Locale;
 
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.entity.EntityTypeExtended;
 import com.dfsek.terra.bukkit.world.entity.BukkitEntityType;
+import com.dfsek.terra.bukkit.world.entity.BukkitEntityTypeExtended;
 
 
 public class BukkitUtils {
-    private static volatile BukkitNMSAccess nmsAccess;
-
     public static boolean isLiquid(BlockData blockState) {
         Material material = blockState.getMaterial();
         return material == Material.WATER || material == Material.LAVA;
     }
 
-    public static void setNMSAccess(BukkitNMSAccess access) {
-        nmsAccess = access;
+    public static EntityType getEntityType(String data) {
+        int nbtStart = data.indexOf('{');
+        String id = nbtStart >= 0 ? data.substring(0, nbtStart) : data;
+
+        NamespacedKey key = NamespacedKey.fromString(id.toLowerCase(Locale.ROOT));
+        org.bukkit.entity.EntityType type = key == null ? null : RegistryAccess.registryAccess().getRegistry(RegistryKey.ENTITY_TYPE).get(key);
+        if(type == null) throw new IllegalArgumentException("Invalid entity identifier " + data);
+        if(nbtStart < 0) return new BukkitEntityType(type);
+
+        String snbt = data.substring(nbtStart);
+        createSnapshot(type, snbt, null); // fail on invalid SNBT while the pack loads
+        return new BukkitEntityTypeExtended(type, snbt);
     }
 
-    public static EntityType getEntityType(String id) {
-        BukkitNMSAccess access = nmsAccess;
-        return access == null ? getBukkitEntityType(id) : access.getEntityType(id);
-    }
-
-    public static org.bukkit.entity.Entity spawnEntity(Object region, org.bukkit.Location location, EntityType entityType) {
-        if(entityType instanceof EntityTypeExtended) {
-            BukkitNMSAccess access = nmsAccess;
-            if(access == null) throw new IllegalStateException("Entity NBT loading requires Terra's NMS bindings");
-            return access.spawnEntity(region, location, entityType);
+    public static Entity spawnEntity(RegionAccessor region, Location location, EntityType entityType) {
+        if(entityType instanceof BukkitEntityTypeExtended extended) {
+            World world = region instanceof LimitedRegion limitedRegion ? limitedRegion.getWorld() : (World) region;
+            // LimitedRegion only accepts entities already inside it.
+            Entity entity = createSnapshot(extended.getHandle(), (String) extended.getData().getHandle(), location).createEntity(world);
+            return region.addEntity(entity);
         }
-
-        org.bukkit.entity.EntityType bukkitType = ((BukkitEntityType) entityType).getHandle();
-        if(region instanceof org.bukkit.generator.LimitedRegion limitedRegion) {
-            return limitedRegion.spawnEntity(location, bukkitType);
-        }
-        return ((org.bukkit.World) region).spawnEntity(location, bukkitType);
+        return region.spawnEntity(location, ((BukkitEntityType) entityType).getHandle());
     }
 
     public static void setSpawnerEntity(CreatureSpawner spawner, EntityTypeExtended type) {
-        BukkitNMSAccess access = nmsAccess;
-        if(access == null) throw new IllegalStateException("Entity NBT loading requires Terra's NMS bindings");
-        access.setSpawnerEntity(spawner, type);
+        if(!(type instanceof BukkitEntityTypeExtended extended)) {
+            throw new IllegalArgumentException("Expected a Bukkit entity type with NBT data");
+        }
+        spawner.setSpawnedEntity(createSnapshot(extended.getHandle(), (String) extended.getData().getHandle(), null));
     }
 
-    private static EntityType getBukkitEntityType(String data) {
-        int nbtStart = data.indexOf('{');
-        if(nbtStart >= 0) {
-            throw new IllegalArgumentException("Entity NBT loading requires Terra's NMS bindings: " + data);
-        }
+    private static EntitySnapshot createSnapshot(org.bukkit.entity.EntityType type, String snbt, Location position) {
+        String body = snbt.strip();
+        if(!body.startsWith("{") || !body.endsWith("}")) throw new IllegalArgumentException("Invalid entity NBT: " + snbt);
+        body = body.substring(1, body.length() - 1).strip();
 
-        NamespacedKey key = NamespacedKey.fromString(data);
-        org.bukkit.entity.EntityType type = key == null ? null : Registry.ENTITY_TYPE.get(key);
-        if(type == null) throw new IllegalArgumentException("Invalid entity identifier " + data);
-        return new BukkitEntityType(type);
+        StringBuilder compound = new StringBuilder("{id:\"").append(type.getKey()).append('"');
+        if(position != null) {
+            compound.append(",Pos:[").append(snbtDouble(position.getX())).append(',').append(snbtDouble(position.getY()))
+                .append(',').append(snbtDouble(position.getZ())).append(']');
+        }
+        if(!body.isEmpty()) compound.append(',').append(body);
+        compound.append('}');
+
+        return Bukkit.getEntityFactory().createEntitySnapshot(compound.toString());
+    }
+
+    private static String snbtDouble(double value) {
+        return BigDecimal.valueOf(value).toPlainString() + "d";
     }
 }

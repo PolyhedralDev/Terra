@@ -89,6 +89,11 @@ public abstract class AbstractPlatform implements Platform {
 
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private static final String moonrise = "Moonrise";
+    private static final String PACK_LOAD_FAILURE_QUOTE = """
+                                                          > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
+                                                          > I fear something terrible has happened.
+                                                          > - Astrash
+                                                          """.strip();
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final MetaConfigRegistry metaConfigRegistry = new MetaConfigRegistry();
@@ -215,6 +220,7 @@ public abstract class AbstractPlatform implements Platform {
             return false;
         } catch(PackLoadFailuresException e) {
             e.getExceptions().forEach(ex -> logger.error("Failed to load config pack", ex));
+            logger.error(PACK_LOAD_FAILURE_QUOTE);
             return false;
         }
         return true;
@@ -231,6 +237,7 @@ public abstract class AbstractPlatform implements Platform {
             return false;
         } catch(PackLoadFailuresException e) {
             e.getExceptions().forEach(ex -> logger.error("Failed to meta load config pack", ex));
+            logger.error(PACK_LOAD_FAILURE_QUOTE);
             return false;
         }
         return true;

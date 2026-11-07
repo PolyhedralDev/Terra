@@ -1,0 +1,15 @@
+name: "Terra"
+main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
+version: "@VERSION@"
+load: "STARTUP"
+authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade", "OakLoaf" ]
+website: "@WIKI@"
+api-version: "26.3"
+description: "@DESCRIPTION@"
+folia-supported: true
+dependencies:
+  server:
+    Wyck:
+      load: BEFORE
+      required: true
+      join-classpath: true

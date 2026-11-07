@@ -15,7 +15,7 @@ allprojects {
     tasks.withType<JavaCompile>().configureEach {
         options.isFork = true
         options.isIncremental = true
-        options.release.set(21)
+        options.release.set(25)
     }
 
     tasks.withType<Test>().configureEach {
@@ -47,10 +47,6 @@ afterEvaluate {
     project(":platforms:minestom:example").configureDistribution()
     forSubProjects(":common:addons") {
         apply(plugin = "com.gradleup.shadow")
-
-        tasks.named("build") {
-            finalizedBy(tasks.named("shadowJar"))
-        }
 
         dependencies {
             "compileOnly"(project(":common:api"))
