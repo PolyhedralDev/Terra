@@ -1,5 +1,8 @@
-package com.dfsek.terra.bukkit.world;
+package com.dfsek.terra.bukkit.generator;
 
+import com.dfsek.terra.bukkit.world.BiomeHandler;
+import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
+import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 import dev.wyck.biome.Biome;
 import dev.wyck.worldgen.biome.custom.BiomeSourceContext;
 import dev.wyck.worldgen.biome.custom.CustomBiomeSource;
@@ -10,11 +13,11 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
 
 
-public class BukkitBiomeProvider extends CustomBiomeSource {
+public class WyckBiomeProvider extends CustomBiomeSource {
     private final BiomeProvider delegate;
     private final long seed;
 
-    public BukkitBiomeProvider(BiomeProvider delegate, long seed) {
+    public WyckBiomeProvider(BiomeProvider delegate, long seed) {
         super();
         this.delegate = delegate;
         this.seed = seed;
