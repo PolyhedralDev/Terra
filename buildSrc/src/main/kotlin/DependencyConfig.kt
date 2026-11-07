@@ -57,6 +57,9 @@ fun Project.configureDependencies() {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "Sonatype Snapshots"
         }
+        maven("https://repo.wyck.dev/snapshots") {
+            name = "Wyck Snapshots"
+        }
         maven("https://repo.onarandombox.com/multiverse-releases") {
             name = "onarandombox"
         }
