@@ -24,6 +24,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntitySpawnRequest;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -75,7 +76,7 @@ public abstract class ServerLevelMixin extends Level {
         if(isExtended) {
             MinecraftEntityTypeExtended type = ((MinecraftEntityTypeExtended) data);
             CompoundTag nbt = (CompoundTag) ((Object) type.getData());
-            entity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nbt, this, EntitySpawnReason.CHUNK_GENERATION, (entityx) -> {
+            entity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nbt, this, new EntitySpawnRequest(EntitySpawnReason.CHUNK_GENERATION, false), (entityx) -> {
                 entityx.snapTo(x, y, z, entityx.getYRot(), entityx.getXRot());
                 return entityx;
             });

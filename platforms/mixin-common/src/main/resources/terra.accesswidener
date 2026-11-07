@@ -1,7 +1,6 @@
-accessWidener	v1	named
+accessWidener	v2	official
 accessible	class	net/minecraft/world/level/biome/Biome$ClimateSettings
 accessible	class	net/minecraft/world/level/levelgen/presets/WorldPresets$Bootstrap
 accessible	field	net/minecraft/world/level/levelgen/WorldDimensions	BUILTIN_ORDER	Ljava/util/Set;
-accessible	class	net/minecraft/resources/RegistryDataLoader$Loader
 extendable	class	net/minecraft/nbt/Tag
 accessible	field	net/minecraft/world/level/block/entity/BlockEntity	TYPE_CODEC	Lcom/mojang/serialization/Codec;

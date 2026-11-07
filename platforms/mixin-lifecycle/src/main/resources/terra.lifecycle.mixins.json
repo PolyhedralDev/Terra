@@ -2,10 +2,11 @@
     "required": true,
     "minVersion": "0.8",
     "package": "com.dfsek.terra.lifecycle.mixin",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
     "mixins": [
         "RandomStateMixin",
         "HolderReferenceInvoker",
+        "RegistryLoadTaskAccessor",
         "BuiltInRegistriesMixin",
         "MappedRegistryMixin",
         "lifecycle.MinecraftServerMixin",
@@ -16,6 +17,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    },
-    "refmap": "terra.lifecycle.refmap.json"
+    }
 }

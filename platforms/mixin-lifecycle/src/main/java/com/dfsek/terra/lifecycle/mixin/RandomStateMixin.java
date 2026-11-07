@@ -1,16 +1,14 @@
 package com.dfsek.terra.lifecycle.mixin;
 
-import net.minecraft.core.HolderGetter;
 import net.minecraft.world.level.biome.Climate.Sampler;
-import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraft.world.level.levelgen.densityfunction.SamplerContext;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.dfsek.terra.mod.util.SeedHack;
 
@@ -22,13 +20,11 @@ import com.dfsek.terra.mod.util.SeedHack;
 public class RandomStateMixin {
     @Shadow
     @Final
-    private Sampler sampler;
+    private long seed;
 
-    @Inject(method = "<init>(Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;Lnet/minecraft/core/HolderGetter;J)V",
-            at = @At("TAIL"))
-    private void mapMultiNoise(NoiseGeneratorSettings chunkGeneratorSettings,
-                               HolderGetter<NormalNoise.NoiseParameters> noiseParametersLookup, long seed,
-                               CallbackInfo ci) {
-        SeedHack.register(sampler, seed);
+    @Inject(method = "createClimateSampler(Lnet/minecraft/world/level/levelgen/densityfunction/SamplerContext;)Lnet/minecraft/world/level/biome/Climate$Sampler;",
+            at = @At("RETURN"))
+    private void mapMultiNoise(SamplerContext context, CallbackInfoReturnable<Sampler> cir) {
+        SeedHack.register(cir.getReturnValue(), seed);
     }
 }

@@ -28,15 +28,15 @@ public class SpawnSettingsTemplate implements ObjectTemplate<MobSpawnSettings> {
         for(SpawnTypeConfig spawn : spawns) {
             MobCategory group = spawn.getGroup();
             for(SpawnEntryConfig entry : spawn.getEntries()) {
-                builder.addSpawn(group, entry.getWeight(), entry.getSpawnEntry());
+                MobSpawnSettings.SpawnerData spawnEntry = entry.getSpawnEntry();
+                builder.addSpawn(spawnEntry.type(), group, entry.getWeight(), spawnEntry.count());
             }
         }
         for(SpawnCostConfig cost : costs) {
-            builder.addMobCharge(cost.getType(), cost.getMass(), cost.getGravity());
+            builder.addMobSpawnCost(cost.getType(), cost.getMass(), cost.getGravity());
         }
-        if(probability != null) {
-            builder.creatureGenerationProbability(probability);
-        }
+        // TODO: environment attributes. Creature generation probability is now the
+        //  gameplay/creature_world_gen_spawn_probability biome attribute, so it is ignored here.
 
         return builder.build();
     }

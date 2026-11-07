@@ -20,11 +20,14 @@ package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+
+import java.util.List;
 
 import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.block.entity.Sign;
@@ -37,23 +40,23 @@ public abstract class SignBlockEntityMixin {
     private SignText frontText;
 
     @Shadow
-    public abstract boolean setText(SignText text, boolean front);
+    public abstract void setText(SignText text, SignTextSlot slot);
 
     public void terra$setLine(int index, @NotNull String line) throws IndexOutOfBoundsException {
-        setText(frontText.setMessage(index, Component.literal(line)), true);
+        setText(frontText.asMutable().setLine(index, Component.literal(line)).asImmutable(), SignTextSlot.FRONT);
     }
 
     public @NotNull String[] terra$getLines() {
-        Component[] texts = frontText.getMessages(false);
-        String[] lines = new String[texts.length];
-        for(int i = 0; i < texts.length; i++) {
-            lines[i] = texts[i].getString();
+        List<Component> texts = frontText.getMessages(false);
+        String[] lines = new String[texts.size()];
+        for(int i = 0; i < texts.size(); i++) {
+            lines[i] = texts.get(i).getString();
         }
         return lines;
     }
 
     public @NotNull String terra$getLine(int index) throws IndexOutOfBoundsException {
-        return frontText.getMessage(index, false).getString();
+        return frontText.getMessages(false).get(index).getString();
     }
 
     public void terra$applyState(String state) {

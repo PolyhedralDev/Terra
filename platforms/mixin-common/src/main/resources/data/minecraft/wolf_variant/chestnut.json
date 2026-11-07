@@ -4,6 +4,11 @@
         "tame": "minecraft:entity/wolf/wolf_chestnut_tame",
         "wild": "minecraft:entity/wolf/wolf_chestnut"
     },
+    "baby_assets": {
+        "angry": "minecraft:entity/wolf/wolf_chestnut_angry_baby",
+        "tame": "minecraft:entity/wolf/wolf_chestnut_tame_baby",
+        "wild": "minecraft:entity/wolf/wolf_chestnut_baby"
+    },
     "spawn_conditions": [
         {
             "condition": {

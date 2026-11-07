@@ -73,8 +73,8 @@ public final class Codecs {
 
     public static final MapCodec<TerraIntProvider> TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE = RecordCodecBuilder.mapCodec(
         range -> range.group(
-                Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::getMinValue),
-                Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::getMaxValue))
+                Codec.INT.fieldOf("min").stable().forGetter(TerraIntProvider::minInclusive),
+                Codec.INT.fieldOf("max").stable().forGetter(TerraIntProvider::maxInclusive))
             .apply(range, range.stable((min, max) -> new TerraIntProvider(new ConstantRange(
                 min, max)))));
 }

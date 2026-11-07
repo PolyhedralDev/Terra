@@ -88,11 +88,11 @@ public abstract class LevelChunkMixin {
     }
 
     public int terra$getX() {
-        return ((net.minecraft.world.level.chunk.ChunkAccess) (Object) this).getPos().x;
+        return ((net.minecraft.world.level.chunk.ChunkAccess) (Object) this).getPos().x();
     }
 
     public int terra$getZ() {
-        return ((net.minecraft.world.level.chunk.ChunkAccess) (Object) this).getPos().z;
+        return ((net.minecraft.world.level.chunk.ChunkAccess) (Object) this).getPos().z();
     }
 
     public ServerWorld terra$getWorld() {

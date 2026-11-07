@@ -1,5 +1,5 @@
 val platformOverrides = mapOf(
-    "fabric" to "remapJar"
+    "fabric" to "shadowJar"
 )
 
 dependencies {

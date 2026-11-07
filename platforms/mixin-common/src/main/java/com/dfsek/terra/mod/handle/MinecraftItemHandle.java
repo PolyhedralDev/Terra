@@ -58,7 +58,7 @@ public class MinecraftItemHandle implements ItemHandle {
                 public <T> Optional<RegistryLookup<T>> lookup(ResourceKey<? extends Registry<? extends T>> registryRef) {
                     return Optional.of(CommonPlatform.get().getServer().registryAccess().lookupOrThrow(registryRef));
                 }
-            }).parse(new StringReader(data)).getItem();
+            }).parse(new StringReader(data)).item().value();
         } catch(CommandSyntaxException e) {
             throw new IllegalArgumentException("Invalid item data \"" + data + "\"", e);
         }

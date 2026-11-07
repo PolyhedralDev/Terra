@@ -1,8 +1,6 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.block.state;
 
 
-import com.mojang.serialization.MapCodec;
-import it.unimi.dsi.fastutil.objects.Reference2ObjectArrayMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour.BlockStateBase;
@@ -18,15 +16,14 @@ import java.util.stream.Collectors;
 import com.dfsek.terra.api.block.BlockType;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.block.state.properties.Property;
-import com.dfsek.terra.mod.mixin.access.StateHolderAccessor;
 
 
 @Mixin(BlockStateBase.class)
 @Implements(@Interface(iface = BlockState.class, prefix = "terra$"))
 public abstract class BlockStateBaseMixin extends StateHolder<Block, net.minecraft.world.level.block.state.BlockState> {
-    private BlockStateBaseMixin(Block owner, Reference2ObjectArrayMap<net.minecraft.world.level.block.state.properties.Property<?>, Comparable<?>> entries,
-                            MapCodec<net.minecraft.world.level.block.state.BlockState> codec) {
-        super(owner, entries, codec);
+    private BlockStateBaseMixin(Block owner, net.minecraft.world.level.block.state.properties.Property<?>[] propertyKeys,
+                            Comparable<?>[] propertyValues) {
+        super(owner, propertyKeys, propertyValues);
     }
 
     @Shadow
@@ -67,10 +64,10 @@ public abstract class BlockStateBaseMixin extends StateHolder<Block, net.minecra
     @Intrinsic
     public String terra$getAsString(boolean properties) {
         StringBuilder data = new StringBuilder(BuiltInRegistries.BLOCK.getKey(getBlock()).toString());
-        if(properties && !getValues().isEmpty()) {
+        if(properties && !isSingletonState()) {
             data.append('[');
             data.append(
-                getValues().entrySet().stream().map(StateHolderAccessor.getPropertyMapPrinter()).collect(Collectors.joining(",")));
+                getValues().map(net.minecraft.world.level.block.state.properties.Property.Value::toString).collect(Collectors.joining(",")));
             data.append(']');
         }
         return data.toString();

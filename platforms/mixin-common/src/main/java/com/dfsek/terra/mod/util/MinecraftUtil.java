@@ -1,14 +1,15 @@
 package com.dfsek.terra.mod.util;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.valueproviders.IntProviderType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.ticks.ScheduledTick;
 import net.minecraft.world.ticks.TickAccess;
@@ -107,7 +108,7 @@ public final class MinecraftUtil {
     }
 
     public static void registerIntProviderTypes() {
-        IntProviderType<TerraIntProvider> CONSTANT = IntProviderType.register("terra:constant_range",
+        MapCodec<TerraIntProvider> CONSTANT = Registry.register(BuiltInRegistries.INT_PROVIDER_TYPE, "terra:constant_range",
             Codecs.TERRA_CONSTANT_RANGE_INT_PROVIDER_TYPE);
 
         TerraIntProvider.TERRA_RANGE_TYPE_TO_INT_PROVIDER_TYPE.put(ConstantRange.class, CONSTANT);
@@ -135,9 +136,9 @@ public final class MinecraftUtil {
                     Identifier terraBiomeIdentifier = Identifier.fromNamespaceAndPath("terra", BiomeUtil.createBiomeID(pack, id));
                     biomeRegistry.getOptional(terraBiomeIdentifier).ifPresentOrElse(
                         terraBiome -> {
-                            List<ConfiguredFeature<?, ?>> flowerFeatures = List.copyOf(
+                            List<Feature> flowerFeatures = List.copyOf(
                                 vanillaBiome.getGenerationSettings()
-                                    .getFlowerFeatures());
+                                    .getBoneMealFeatures());
                             logger.debug("Injecting flora into biome" +
                                          " {} : {}", terraBiomeIdentifier,
                                 flowerFeatures);

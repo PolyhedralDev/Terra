@@ -14,7 +14,12 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 @Mixin(WorldLoader.class)
 public class WorldLoaderMixin {
     @ModifyArg(
-        method = "load(Lnet/minecraft/server/WorldLoader$InitConfig;Lnet/minecraft/server/WorldLoader$WorldDataSupplier;Lnet/minecraft/server/WorldLoader$ResultFactory;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;",
+        // The innermost thenComposeAsync callback of WorldLoader.load, which builds the server resources.
+        method = "lambda$load$2(Lcom/mojang/datafixers/util/Pair;Ljava/util/List;Lnet/minecraft/server/WorldLoader$WorldDataSupplier;" +
+                 "Lnet/minecraft/server/packs/resources/CloseableResourceManager;Lnet/minecraft/core/LayeredRegistryAccess;" +
+                 "Lnet/minecraft/core/RegistryAccess$Frozen;Ljava/util/List;Lnet/minecraft/server/WorldLoader$InitConfig;" +
+                 "Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;Lnet/minecraft/server/WorldLoader$ResultFactory;" +
+                 "Lnet/minecraft/core/RegistryAccess$Frozen;)Ljava/util/concurrent/CompletionStage;",
         at = @At(
             value = "INVOKE",
             target = "Lnet/minecraft/server/ReloadableServerResources;loadResources(Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/core/LayeredRegistryAccess;Ljava/util/List;Lnet/minecraft/world/flag/FeatureFlagSet;Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/server/permissions/PermissionSet;Ljava/util/concurrent/Executor;Ljava/util/concurrent/Executor;)Ljava/util/concurrent/CompletableFuture;"),

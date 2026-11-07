@@ -72,8 +72,8 @@ public abstract class WorldGenRegionMixin implements WorldGenLevel {
 
     public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState data, boolean physics) {
         ChunkPos pos = center.getPos();
-        BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x, x), y,
-            CoordFunctions.chunkAndRelativeToAbsolute(pos.z, z));
+        BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x(), x), y,
+            CoordFunctions.chunkAndRelativeToAbsolute(pos.z(), z));
         net.minecraft.world.level.block.state.BlockState state;
 
         boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
@@ -97,14 +97,14 @@ public abstract class WorldGenRegionMixin implements WorldGenLevel {
 
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
         return (BlockState) ((WorldGenRegion) (Object) this).getBlockState(
-            new BlockPos(x + (center.getPos().x << 4), y, z + (center.getPos().z << 4)));
+            new BlockPos(x + (center.getPos().x() << 4), y, z + (center.getPos().z() << 4)));
     }
 
     public int terraChunk$getX() {
-        return center.getPos().x;
+        return center.getPos().x();
     }
 
     public int terraChunk$getZ() {
-        return center.getPos().z;
+        return center.getPos().z();
     }
 }

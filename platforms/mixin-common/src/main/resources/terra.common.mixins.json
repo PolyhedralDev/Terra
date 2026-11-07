@@ -2,11 +2,10 @@
     "required": true,
     "minVersion": "0.8",
     "package": "com.dfsek.terra.mod.mixin",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
     "mixins": [
         "access.BiomeAccessor",
         "access.BaseSpawnerAccessor",
-        "access.StateHolderAccessor",
         "access.StructureManagerAccessor",
         "access.VillagerTypeAccessor",
         "access.LevelChunkAccessor",
@@ -48,6 +47,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    },
-    "refmap": "terra.common.refmap.json"
+    }
 }

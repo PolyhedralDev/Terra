@@ -23,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.StaticCache2D;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntitySpawnRequest;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -151,7 +152,7 @@ public abstract class WorldGenRegionMixin implements WorldGenLevel {
         if(isExtended) {
             MinecraftEntityTypeExtended type = ((MinecraftEntityTypeExtended) data);
             CompoundTag nbt = (CompoundTag) ((Object) type.getData());
-            entity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nbt, level, EntitySpawnReason.CHUNK_GENERATION, (entityx) -> {
+            entity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nbt, level, new EntitySpawnRequest(EntitySpawnReason.CHUNK_GENERATION, false), (entityx) -> {
                 entityx.snapTo(x, y, z, entityx.getYRot(), entityx.getXRot());
                 return entityx;
             });
@@ -166,11 +167,11 @@ public abstract class WorldGenRegionMixin implements WorldGenLevel {
     }
 
     public int terraWorld$centerChunkX() {
-        return center.getPos().x;
+        return center.getPos().x();
     }
 
     public int terraWorld$centerChunkZ() {
-        return center.getPos().z;
+        return center.getPos().z();
     }
 
     public ServerWorld terraWorld$getWorld() {
