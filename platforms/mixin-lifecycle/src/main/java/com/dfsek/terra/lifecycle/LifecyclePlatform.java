@@ -4,15 +4,15 @@ import ca.solostudios.strata.Versions;
 import ca.solostudios.strata.parser.tokenizer.ParseException;
 import ca.solostudios.strata.version.Version;
 import net.minecraft.SharedConstants;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +34,10 @@ public abstract class LifecyclePlatform extends ModPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(LifecyclePlatform.class);
     private static final AtomicReference<Registry<Biome>> BIOMES = new AtomicReference<>();
     private static final AtomicReference<Registry<DimensionType>> DIMENSIONS = new AtomicReference<>();
-    private static final AtomicReference<Registry<ChunkGeneratorSettings>> SETTINGS = new AtomicReference<>();
+    private static final AtomicReference<Registry<NoiseGeneratorSettings>> SETTINGS = new AtomicReference<>();
     private static final AtomicReference<Registry<MultiNoiseBiomeSourceParameterList>> NOISE = new AtomicReference<>();
     private static final AtomicReference<Registry<Enchantment>> ENCHANTMENT = new AtomicReference<>();
-    private static final AtomicReference<DynamicRegistryManager.Immutable> DYNAMIC_REGISTRY_MANAGER = new AtomicReference<>();
+    private static final AtomicReference<RegistryAccess.Frozen> DYNAMIC_REGISTRY_MANAGER = new AtomicReference<>();
     private static MinecraftServer server;
     private int generationThreads;
 
@@ -56,7 +56,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
     public static void setRegistries(Registry<Biome> biomeRegistry,
                                      Registry<DimensionType> dimensionTypeRegistry,
-                                     Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry,
+                                     Registry<NoiseGeneratorSettings> chunkGeneratorSettingsRegistry,
                                      Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry,
                                      Registry<Enchantment> enchantmentRegistry) {
         BIOMES.set(biomeRegistry);
@@ -66,7 +66,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
         ENCHANTMENT.set(enchantmentRegistry);
     }
 
-    public static void setDynamicRegistryManager(DynamicRegistryManager.Immutable dynamicRegistryManager) {
+    public static void setDynamicRegistryManager(RegistryAccess.Frozen dynamicRegistryManager) {
         DYNAMIC_REGISTRY_MANAGER.set(dynamicRegistryManager);
     }
 
@@ -85,13 +85,13 @@ public abstract class LifecyclePlatform extends ModPlatform {
         boolean succeed = loadConfigPacks();
 
         if(server != null) {
-            LifecycleBiomeUtil.registerBiomes(server.getRegistryManager().getOrThrow(RegistryKeys.BIOME));
-            server.reloadResources(server.getDataPackManager().getEnabledIds()).exceptionally(throwable -> {
+            LifecycleBiomeUtil.registerBiomes(server.registryAccess().lookupOrThrow(Registries.BIOME));
+            server.reloadResources(server.getPackRepository().getSelectedIds()).exceptionally(throwable -> {
                 LOGGER.warn("Failed to execute reload", throwable);
                 return null;
             }).join();
-            server.getWorlds().forEach(world -> {
-                if(world.getChunkManager().getChunkGenerator() instanceof MinecraftChunkGeneratorWrapper chunkGeneratorWrapper) {
+            server.getAllLevels().forEach(world -> {
+                if(world.getChunkSource().getGenerator() instanceof MinecraftChunkGeneratorWrapper chunkGeneratorWrapper) {
                     getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
                         chunkGeneratorWrapper.setPack(pack);
                         LOGGER.info("Replaced pack in chunk generator for world {}", world);
@@ -108,7 +108,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
 
         super.platformAddon().forEach(addons::add);
 
-        String mcVersion = SharedConstants.getGameVersion().name();
+        String mcVersion = SharedConstants.getCurrentVersion().name();
         try {
             addons.add(new EphemeralAddon(Versions.parseVersion(mcVersion), "minecraft"));
         } catch(ParseException e) {
@@ -149,7 +149,7 @@ public abstract class LifecyclePlatform extends ModPlatform {
     }
 
     @Override
-    public Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry() {
+    public Registry<NoiseGeneratorSettings> chunkGeneratorSettingsRegistry() {
         return SETTINGS.get();
     }
 

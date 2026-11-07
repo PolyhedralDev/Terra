@@ -15,21 +15,16 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
+package com.dfsek.terra.mod.mixin.access;
 
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import org.spongepowered.asm.mixin.Implements;
-import org.spongepowered.asm.mixin.Interface;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.SpawnData;
 import org.spongepowered.asm.mixin.Mixin;
-
-import com.dfsek.terra.api.block.entity.Container;
-import com.dfsek.terra.api.inventory.Inventory;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
 
-@Mixin(LootableContainerBlockEntity.class)
-@Implements(@Interface(iface = Container.class, prefix = "terra$"))
-public abstract class LootableContainerBlockEntityMixin extends BlockEntityMixin {
-    public Inventory terra$getInventory() {
-        return (Inventory) this;
-    }
+@Mixin(BaseSpawner.class)
+public interface BaseSpawnerAccessor {
+    @Accessor("nextSpawnData")
+    SpawnData getSpawnEntry();
 }

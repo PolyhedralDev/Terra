@@ -3,19 +3,19 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.minecraft.village.VillagerType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.npc.villager.VillagerType;
 
 
-public class VillagerTypeTemplate implements ObjectTemplate<RegistryKey<VillagerType>> {
+public class VillagerTypeTemplate implements ObjectTemplate<ResourceKey<VillagerType>> {
     @Value("id")
     @Default
     private Identifier id = null;
 
     @Override
-    public RegistryKey<VillagerType> get() {
-        return RegistryKey.of(RegistryKeys.VILLAGER_TYPE, id);
+    public ResourceKey<VillagerType> get() {
+        return ResourceKey.create(Registries.VILLAGER_TYPE, id);
     }
 }

@@ -19,13 +19,13 @@ package com.dfsek.terra.mod.handle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.ItemStackArgumentType;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryWrapper.Impl;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.arguments.item.ItemArgument;
+import net.minecraft.core.HolderLookup.RegistryLookup;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.flag.FeatureFlagSet;
 
 import java.util.Optional;
 import java.util.Set;
@@ -43,20 +43,20 @@ public class MinecraftItemHandle implements ItemHandle {
     @Override
     public Item createItem(String data) {
         try {
-            return (Item) new ItemStackArgumentType(new CommandRegistryAccess() {
+            return (Item) new ItemArgument(new CommandBuildContext() {
                 @Override
-                public FeatureSet getEnabledFeatures() {
-                    return FeatureSet.empty();
+                public FeatureFlagSet enabledFeatures() {
+                    return FeatureFlagSet.of();
                 }
 
                 @Override
-                public Stream<RegistryKey<? extends Registry<?>>> streamAllRegistryKeys() {
-                    return CommonPlatform.get().getServer().getRegistryManager().streamAllRegistryKeys();
+                public Stream<ResourceKey<? extends Registry<?>>> listRegistryKeys() {
+                    return CommonPlatform.get().getServer().registryAccess().listRegistryKeys();
                 }
 
                 @Override
-                public <T> Optional<Impl<T>> getOptional(RegistryKey<? extends Registry<? extends T>> registryRef) {
-                    return Optional.of(CommonPlatform.get().getServer().getRegistryManager().getOrThrow(registryRef));
+                public <T> Optional<RegistryLookup<T>> lookup(ResourceKey<? extends Registry<? extends T>> registryRef) {
+                    return Optional.of(CommonPlatform.get().getServer().registryAccess().lookupOrThrow(registryRef));
                 }
             }).parse(new StringReader(data)).getItem();
         } catch(CommandSyntaxException e) {
@@ -66,7 +66,7 @@ public class MinecraftItemHandle implements ItemHandle {
 
     @Override
     public Enchantment getEnchantment(String id) {
-        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().getEntry(Identifier.tryParse(id)));
+        return (Enchantment) (Object) (CommonPlatform.get().enchantmentRegistry().get(Identifier.tryParse(id)));
     }
 
     @Override

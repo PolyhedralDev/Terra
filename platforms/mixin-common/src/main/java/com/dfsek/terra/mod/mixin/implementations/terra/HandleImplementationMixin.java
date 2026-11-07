@@ -1,21 +1,21 @@
 package com.dfsek.terra.mod.mixin.implementations.terra;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.block.entity.LootableContainerBlockEntity;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.ProtoChunk;
-import net.minecraft.world.chunk.WorldChunk;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -28,23 +28,23 @@ import com.dfsek.terra.api.Handle;
  * A ton of Minecraft classes must implement Handle identically, we can just take care of it here
  */
 @Mixin({
-    ServerWorld.class,
-    ChunkRegion.class,
+    ServerLevel.class,
+    WorldGenRegion.class,
 
     Block.class,
     BlockState.class,
 
     BlockEntity.class,
-    LootableContainerBlockEntity.class,
-    LockableContainerBlockEntity.class,
+    RandomizableContainerBlockEntity.class,
+    BaseContainerBlockEntity.class,
 
     ProtoChunk.class,
-    WorldChunk.class,
+    LevelChunk.class,
 
     Entity.class,
     EntityType.class,
 
-    ServerCommandSource.class,
+    CommandSourceStack.class,
 
     Item.class,
     ItemStack.class,

@@ -4,13 +4,13 @@
     "package": "com.dfsek.terra.lifecycle.mixin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
-        "NoiseConfigMixin",
-        "RegistryEntryReferenceInvoker",
-        "RegistryMixin",
-        "SimpleRegistryMixin",
+        "RandomStateMixin",
+        "HolderReferenceInvoker",
+        "BuiltInRegistriesMixin",
+        "MappedRegistryMixin",
         "lifecycle.MinecraftServerMixin",
-        "lifecycle.RegistryLoaderMixin",
-        "lifecycle.SaveLoadingMixin"
+        "lifecycle.RegistryDataLoaderMixin",
+        "lifecycle.WorldLoaderMixin"
     ],
     "server": [
     ],

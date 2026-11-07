@@ -17,15 +17,15 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.block.spawner.MobSpawnerLogic;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -37,40 +37,40 @@ import com.dfsek.terra.api.block.entity.SerialState;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
-import com.dfsek.terra.mod.mixin.access.MobSpawnerLogicAccessor;
+import com.dfsek.terra.mod.mixin.access.BaseSpawnerAccessor;
 
 
-@Mixin(MobSpawnerBlockEntity.class)
+@Mixin(SpawnerBlockEntity.class)
 @Implements(@Interface(iface = MobSpawner.class, prefix = "terra$"))
-public abstract class MobSpawnerBlockEntityMixin extends BlockEntity {
-    private MobSpawnerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+public abstract class SpawnerBlockEntityMixin extends BlockEntity {
+    private SpawnerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
     @Shadow
-    public abstract MobSpawnerLogic getLogic();
+    public abstract BaseSpawner getSpawner();
 
     //method_46408
     @Shadow
-    public abstract void setEntityType(net.minecraft.entity.EntityType<?> entityType, Random random);
+    public abstract void setEntityId(net.minecraft.world.entity.EntityType<?> entityType, RandomSource random);
 
     public EntityType terra$getSpawnedType() {
-        return (EntityType) Registries.ENTITY_TYPE.getEntry(
-                Identifier.tryParse(((MobSpawnerLogicAccessor) getLogic()).getSpawnEntry().getNbt().getString("id").orElseThrow()))
+        return (EntityType) BuiltInRegistries.ENTITY_TYPE.get(
+                Identifier.tryParse(((BaseSpawnerAccessor) getSpawner()).getSpawnEntry().getEntityToSpawn().getString("id").orElseThrow()))
             .orElseThrow();
     }
 
     public void terra$setSpawnedType(@NotNull EntityType creatureType) {
-        Random rand;
-        if(hasWorld()) {
-            rand = world.getRandom();
+        RandomSource rand;
+        if(hasLevel()) {
+            rand = level.getRandom();
         } else {
-            rand = Random.create();
+            rand = RandomSource.create();
         }
-        net.minecraft.entity.EntityType<?> entityType =
-            (((net.minecraft.entity.EntityType<?>) (creatureType.isExtended() && creatureType.getClass().equals(
+        net.minecraft.world.entity.EntityType<?> entityType =
+            (((net.minecraft.world.entity.EntityType<?>) (creatureType.isExtended() && creatureType.getClass().equals(
                 MinecraftEntityTypeExtended.class) ? ((MinecraftEntityTypeExtended) creatureType).getType() : creatureType)));
-        setEntityType(entityType, rand);
+        setEntityId(entityType, rand);
     }
 
     public int terra$getDelay() {

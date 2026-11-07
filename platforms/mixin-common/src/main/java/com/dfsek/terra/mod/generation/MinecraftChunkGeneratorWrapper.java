@@ -18,30 +18,30 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.argument.BlockStateArgument;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.commands.arguments.blocks.BlockInput;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.random.CheckedRandom;
-import net.minecraft.util.math.random.ChunkRandom;
-import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.HeightLimitView;
-import net.minecraft.world.Heightmap.Type;
-import net.minecraft.world.SpawnHelper;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.StructureAccessor;
-import net.minecraft.world.gen.StructureWeightSampler;
-import net.minecraft.world.gen.chunk.Blender;
-import net.minecraft.world.gen.chunk.VerticalBlockSample;
-import net.minecraft.world.gen.densityfunction.DensityFunction.UnblendedNoisePos;
-import net.minecraft.world.gen.noise.NoiseConfig;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.LevelHeightAccessor;
+import net.minecraft.world.level.NaturalSpawner;
+import net.minecraft.world.level.NoiseColumn;
+import net.minecraft.world.level.StructureManager;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.levelgen.Beardifier;
+import net.minecraft.world.level.levelgen.DensityFunction.SinglePointContext;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomState;
+import net.minecraft.world.level.levelgen.RandomSupport;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.blending.Blender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,12 +59,12 @@ import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.api.world.info.WorldProperties;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.data.Codecs;
-import com.dfsek.terra.mod.mixin.access.StructureAccessorAccessor;
+import com.dfsek.terra.mod.mixin.access.StructureManagerAccessor;
 import com.dfsek.terra.mod.util.MinecraftAdapter;
 import com.dfsek.terra.mod.util.SeedHack;
 
 
-public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chunk.ChunkGenerator implements GeneratorWrapper {
+public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.level.chunk.ChunkGenerator implements GeneratorWrapper {
     private static final Logger logger = LoggerFactory.getLogger(MinecraftChunkGeneratorWrapper.class);
 
     private final TerraBiomeSource biomeSource;
@@ -85,31 +85,31 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    protected MapCodec<? extends net.minecraft.world.gen.chunk.ChunkGenerator> getCodec() {
+    protected MapCodec<? extends net.minecraft.world.level.chunk.ChunkGenerator> codec() {
         return Codecs.MINECRAFT_CHUNK_GENERATOR_WRAPPER;
     }
 
     @Override
-    public void buildSurface(ChunkRegion region, StructureAccessor structures, NoiseConfig noiseConfig, Chunk chunk) {
+    public void buildSurface(WorldGenRegion region, StructureManager structures, RandomState noiseConfig, ChunkAccess chunk) {
         // no op
     }
 
     @Override
-    public void populateEntities(ChunkRegion region) {
+    public void spawnOriginalMobs(WorldGenRegion region) {
         if(this.settings.mobGeneration()) {
-            ChunkPos chunkPos = region.getCenterPos();
-            RegistryEntry<Biome> registryEntry = region.getBiome(chunkPos.getStartPos().withY(region.getTopYInclusive() - 1));
-            ChunkRandom chunkRandom = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
-            chunkRandom.setPopulationSeed(region.getSeed(), chunkPos.getStartX(), chunkPos.getStartZ());
-            SpawnHelper.populateEntities(region, registryEntry, chunkPos, chunkRandom);
+            ChunkPos chunkPos = region.getCenter();
+            Holder<Biome> registryEntry = region.getBiome(chunkPos.getWorldPosition().atY(region.getMaxY() - 1));
+            WorldgenRandom chunkRandom = new WorldgenRandom(new LegacyRandomSource(RandomSupport.generateUniqueSeed()));
+            chunkRandom.setDecorationSeed(region.getSeed(), chunkPos.getMinBlockX(), chunkPos.getMinBlockZ());
+            NaturalSpawner.spawnMobsForChunkGeneration(region, registryEntry, chunkPos, chunkRandom);
         }
     }
 
     @Override
-    public CompletableFuture<Chunk> populateNoise(Blender blender, NoiseConfig noiseConfig, StructureAccessor structureAccessor,
-                                                  Chunk chunk) {
+    public CompletableFuture<ChunkAccess> fillFromNoise(Blender blender, RandomState noiseConfig, StructureManager structureAccessor,
+                                                  ChunkAccess chunk) {
         return CompletableFuture.supplyAsync(() -> {
-            ProtoWorld world = (ProtoWorld) ((StructureAccessorAccessor) structureAccessor).getWorld();
+            ProtoWorld world = (ProtoWorld) ((StructureManagerAccessor) structureAccessor).getLevel();
             BiomeProvider biomeProvider = pack.getBiomeProvider();
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x, chunk.getPos().z);
 
@@ -118,12 +118,12 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
                 beard(structureAccessor, chunk, world, biomeProvider, compatibilityOptions);
             }
             return chunk;
-        }, Util.getMainWorkerExecutor());
+        }, Util.backgroundExecutor());
     }
 
-    private void beard(StructureAccessor structureAccessor, Chunk chunk, WorldProperties world, BiomeProvider biomeProvider,
+    private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
                        PreLoadCompatibilityOptions compatibilityOptions) {
-        StructureWeightSampler structureWeightSampler = StructureWeightSampler.createStructureWeightSampler(structureAccessor,
+        Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor,
             chunk.getPos());
         double threshold = compatibilityOptions.getBeardThreshold();
         double airThreshold = compatibilityOptions.getAirThreshold();
@@ -133,23 +133,23 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
             for(int z = 0; z < 16; z++) {
                 int depth = 0;
                 for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
-                    double noise = structureWeightSampler.sample(new UnblendedNoisePos(x + xi, y, z + zi));
+                    double noise = structureWeightSampler.compute(new SinglePointContext(x + xi, y, z + zi));
                     if(noise > threshold) {
                         com.dfsek.terra.api.block.state.BlockState data = delegate.getPalette(x + xi, y, z + zi, world, biomeProvider).get(
                             depth, x + xi, y, z + zi, world.getSeed());
                         BlockPos blockPos = new BlockPos(x, y, z);
-                        boolean isExtended = data.isExtended() && data.getClass().equals(BlockStateArgument.class);
+                        boolean isExtended = data.isExtended() && data.getClass().equals(BlockInput.class);
                         if(isExtended) {
                             BlockStateExtended blockStateExtended = (BlockStateExtended) data;
 
-                            net.minecraft.block.BlockState blockState = (net.minecraft.block.BlockState) blockStateExtended.getState();
+                            net.minecraft.world.level.block.state.BlockState blockState = (net.minecraft.world.level.block.state.BlockState) blockStateExtended.getState();
                             chunk.setBlockState(blockPos, blockState, 0);
                         } else {
-                            chunk.setBlockState(blockPos, (net.minecraft.block.BlockState) data, 0);
+                            chunk.setBlockState(blockPos, (net.minecraft.world.level.block.state.BlockState) data, 0);
                         }
                         depth++;
                     } else if(noise < airThreshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState(), 0);
+                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), 0);
                     } else {
                         depth = 0;
                     }
@@ -159,8 +159,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    public void generateFeatures(StructureWorldAccess world, Chunk chunk, StructureAccessor structureAccessor) {
-        super.generateFeatures(world, chunk, structureAccessor);
+    public void applyBiomeDecoration(WorldGenLevel world, ChunkAccess chunk, StructureManager structureAccessor) {
+        super.applyBiomeDecoration(world, chunk, structureAccessor);
         pack.getStages().forEach(populator -> {
             if(!(populator instanceof Chunkified)) {
                 populator.populate((ProtoWorld) world);
@@ -169,7 +169,7 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    public int getWorldHeight() {
+    public int getGenDepth() {
         return settings.height().getRange();
     }
 
@@ -179,47 +179,47 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
     }
 
     @Override
-    public int getMinimumY() {
+    public int getMinY() {
         return settings.height().getMin();
     }
 
     @Override
-    public int getSpawnHeight(HeightLimitView world) {
+    public int getSpawnHeight(LevelHeightAccessor world) {
         return settings.spawnHeight();
     }
 
     @Override
-    public int getHeight(int x, int z, Type heightmap, HeightLimitView height, NoiseConfig noiseConfig) {
-        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
+    public int getBaseHeight(int x, int z, Types heightmap, LevelHeightAccessor height, RandomState noiseConfig) {
+        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.sampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
-        int min = height.getBottomY();
-        for(int y = height.getTopYInclusive() - 1; y >= min; y--) {
+        int min = height.getMinY();
+        for(int y = height.getMaxY() - 1; y >= min; y--) {
             com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
             BlockState blockState =
                 (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
             if(heightmap
-                .getBlockPredicate()
+                .isOpaque()
                 .test(blockState)) return y + 1;
         }
         return min;
     }
 
     @Override
-    public VerticalBlockSample getColumnSample(int x, int z, HeightLimitView height, NoiseConfig noiseConfig) {
+    public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState noiseConfig) {
         BlockState[] array = new BlockState[height.getHeight()];
-        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.getMultiNoiseSampler()));
+        WorldProperties properties = MinecraftAdapter.adapt(height, SeedHack.getSeed(noiseConfig.sampler()));
         BiomeProvider biomeProvider = pack.getBiomeProvider();
-        for(int y = height.getTopYInclusive() - 1; y >= height.getBottomY(); y--) {
+        for(int y = height.getMaxY() - 1; y >= height.getMinY(); y--) {
             com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
             BlockState blockState =
                 (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
-            array[y - height.getBottomY()] = blockState;
+            array[y - height.getMinY()] = blockState;
         }
-        return new VerticalBlockSample(height.getBottomY(), array);
+        return new NoiseColumn(height.getMinY(), array);
     }
 
     @Override
-    public void appendDebugHudText(List<String> text, NoiseConfig noiseConfig, BlockPos pos) {
+    public void addDebugScreenInfo(List<String> text, RandomState noiseConfig, BlockPos pos) {
         // no op
     }
 
@@ -237,8 +237,8 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.gen.chun
 
 
     @Override
-    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess,
-                      StructureAccessor structureAccessor, Chunk chunk) {
+    public void applyCarvers(WorldGenRegion chunkRegion, long seed, RandomState noiseConfig, BiomeManager biomeAccess,
+                      StructureManager structureAccessor, ChunkAccess chunk) {
         //no op
     }
 

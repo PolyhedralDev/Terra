@@ -19,7 +19,7 @@ dependencies {
     annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecturyLoom}")
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
+    mappings(loom.officialMojangMappings())
 }
 
 architectury {

@@ -17,9 +17,9 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import com.dfsek.terra.api.inventory.ItemStack;
 import com.dfsek.terra.mod.CommonPlatform;
 
-import static net.minecraft.enchantment.Enchantment.canBeCombined;
+import static net.minecraft.world.item.enchantment.Enchantment.areCompatible;
 
 
 @Mixin(Enchantment.class)
@@ -39,21 +39,21 @@ import static net.minecraft.enchantment.Enchantment.canBeCombined;
 public abstract class EnchantmentMixin {
     @Shadow
     @Final
-    private RegistryEntryList<Enchantment> exclusiveSet;
+    private HolderSet<Enchantment> exclusiveSet;
 
     @Shadow
-    public abstract boolean isAcceptableItem(net.minecraft.item.ItemStack stack);
+    public abstract boolean canEnchant(net.minecraft.world.item.ItemStack stack);
 
     @SuppressWarnings("ConstantConditions")
     public boolean terra$canEnchantItem(ItemStack itemStack) {
-        return isAcceptableItem((net.minecraft.item.ItemStack) (Object) itemStack);
+        return canEnchant((net.minecraft.world.item.ItemStack) (Object) itemStack);
     }
 
     public boolean terra$conflictsWith(com.dfsek.terra.api.inventory.item.Enchantment other) {
-        return canBeCombined(RegistryEntry.of((Enchantment) (Object) this), RegistryEntry.of((Enchantment) (Object) other));
+        return areCompatible(Holder.direct((Enchantment) (Object) this), Holder.direct((Enchantment) (Object) other));
     }
 
     public String terra$getID() {
-        return Objects.requireNonNull(CommonPlatform.get().enchantmentRegistry().getId((Enchantment) (Object) this)).toString();
+        return Objects.requireNonNull(CommonPlatform.get().enchantmentRegistry().getKey((Enchantment) (Object) this)).toString();
     }
 }

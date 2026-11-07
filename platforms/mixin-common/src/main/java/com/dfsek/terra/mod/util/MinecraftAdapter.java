@@ -18,9 +18,9 @@
 package com.dfsek.terra.mod.util;
 
 import com.dfsek.seismic.type.vector.Vector3;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.HeightLimitView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.LevelHeightAccessor;
 
 import java.util.random.RandomGenerator;
 
@@ -33,7 +33,7 @@ public final class MinecraftAdapter {
         return Vector3.of(pos.getX(), pos.getY(), pos.getZ());
     }
 
-    public static WorldProperties adapt(HeightLimitView height, long seed) {
+    public static WorldProperties adapt(LevelHeightAccessor height, long seed) {
         return new WorldProperties() {
             @Override
             public long getSeed() {
@@ -42,12 +42,12 @@ public final class MinecraftAdapter {
 
             @Override
             public int getMaxHeight() {
-                return height.getTopYInclusive();
+                return height.getMaxY();
             }
 
             @Override
             public int getMinHeight() {
-                return height.getBottomY();
+                return height.getMinY();
             }
 
             @Override
@@ -57,7 +57,7 @@ public final class MinecraftAdapter {
         };
     }
 
-    public static RandomGenerator adapt(Random random) {
+    public static RandomGenerator adapt(RandomSource random) {
         return new RandomGenerator() {
             @Override
             public boolean nextBoolean() {
@@ -96,7 +96,7 @@ public final class MinecraftAdapter {
 
             @Override
             public int nextInt(int origin, int bound) {
-                return random.nextBetween(origin, bound);
+                return random.nextIntBetweenInclusive(origin, bound);
             }
         };
     }

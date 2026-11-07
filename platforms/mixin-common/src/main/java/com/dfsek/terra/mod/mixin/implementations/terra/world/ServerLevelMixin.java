@@ -17,19 +17,19 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.world;
 
-import net.minecraft.block.Block;
-import net.minecraft.command.argument.BlockStateArgument;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.MutableWorldProperties;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.tick.WorldTickScheduler;
+import net.minecraft.commands.arguments.blocks.BlockInput;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.WritableLevelData;
+import net.minecraft.world.ticks.LevelTicks;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -49,41 +49,41 @@ import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
 import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
-import com.dfsek.terra.mod.mixin.access.WorldChunkAccessor;
+import com.dfsek.terra.mod.mixin.access.LevelChunkAccessor;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
-@Mixin(net.minecraft.server.world.ServerWorld.class)
+@Mixin(net.minecraft.server.level.ServerLevel.class)
 @Implements(@Interface(iface = ServerWorld.class, prefix = "terra$"))
-public abstract class ServerWorldMixin extends World {
-    protected ServerWorldMixin(MutableWorldProperties properties, RegistryKey<World> registryRef, DynamicRegistryManager registryManager,
-                               RegistryEntry<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed,
+public abstract class ServerLevelMixin extends Level {
+    protected ServerLevelMixin(WritableLevelData properties, ResourceKey<Level> registryRef, RegistryAccess registryManager,
+                               Holder<DimensionType> dimensionEntry, boolean isClient, boolean debugWorld, long seed,
                                int maxChainedNeighborUpdates) {
         super(properties, registryRef, registryManager, dimensionEntry, isClient, debugWorld, seed, maxChainedNeighborUpdates);
     }
 
     @Shadow
-    public abstract WorldTickScheduler<Block> getBlockTickScheduler();
+    public abstract LevelTicks<Block> getBlockTicks();
 
     @Shadow
-    public abstract WorldTickScheduler<Fluid> getFluidTickScheduler();
+    public abstract LevelTicks<Fluid> getFluidTicks();
 
 
     public Entity terra$spawnEntity(double x, double y, double z, EntityType data) {
         boolean isExtended = MinecraftUtil.isCompatibleEntityTypeExtended(data);
-        net.minecraft.entity.Entity entity;
+        net.minecraft.world.entity.Entity entity;
         if(isExtended) {
             MinecraftEntityTypeExtended type = ((MinecraftEntityTypeExtended) data);
-            NbtCompound nbt = (NbtCompound) ((Object) type.getData());
-            entity = net.minecraft.entity.EntityType.loadEntityWithPassengers(nbt, this, SpawnReason.CHUNK_GENERATION, (entityx) -> {
-                entityx.refreshPositionAndAngles(x, y, z, entityx.getYaw(), entityx.getPitch());
+            CompoundTag nbt = (CompoundTag) ((Object) type.getData());
+            entity = net.minecraft.world.entity.EntityType.loadEntityRecursive(nbt, this, EntitySpawnReason.CHUNK_GENERATION, (entityx) -> {
+                entityx.snapTo(x, y, z, entityx.getYRot(), entityx.getXRot());
                 return entityx;
             });
-            spawnEntity(entity);
+            addFreshEntity(entity);
         } else {
-            entity = ((net.minecraft.entity.EntityType<?>) data).create(this, SpawnReason.CHUNK_GENERATION);
-            entity.setPos(x, y, z);
-            spawnEntity(entity);
+            entity = ((net.minecraft.world.entity.EntityType<?>) data).create(this, EntitySpawnReason.CHUNK_GENERATION);
+            entity.setPosRaw(x, y, z);
+            addFreshEntity(entity);
         }
 
         return (Entity) entity;
@@ -91,35 +91,35 @@ public abstract class ServerWorldMixin extends World {
 
     public void terra$setBlockState(int x, int y, int z, BlockState data, boolean physics) {
         BlockPos blockPos = new BlockPos(x, y, z);
-        net.minecraft.block.BlockState state;
+        net.minecraft.world.level.block.state.BlockState state;
 
         int flags = physics ? 3 : 1042;
         boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
 
         if(isExtended) {
-            BlockStateArgument arg = ((BlockStateArgument) data);
-            state = arg.getBlockState();
-            setBlockState(blockPos, state, flags);
-            net.minecraft.world.chunk.Chunk chunk = getWorldChunk(blockPos);
-            ((WorldChunkAccessor) chunk).invokeLoadBlockEntity(blockPos, ((NbtCompound) (Object) ((BlockStateExtended) data).getData()));
+            BlockInput arg = ((BlockInput) data);
+            state = arg.getState();
+            setBlock(blockPos, state, flags);
+            net.minecraft.world.level.chunk.ChunkAccess chunk = getChunkAt(blockPos);
+            ((LevelChunkAccessor) chunk).invokeLoadBlockEntity(blockPos, ((CompoundTag) (Object) ((BlockStateExtended) data).getData()));
         } else {
-            state = (net.minecraft.block.BlockState) data;
-            setBlockState(blockPos, state, flags);
+            state = (net.minecraft.world.level.block.state.BlockState) data;
+            setBlock(blockPos, state, flags);
         }
 
         if(physics) {
-            MinecraftUtil.schedulePhysics(state, blockPos, this.getFluidTickScheduler(), this.getBlockTickScheduler());
+            MinecraftUtil.schedulePhysics(state, blockPos, this.getFluidTicks(), this.getBlockTicks());
         }
     }
 
 
     @Intrinsic
     public long terra$getSeed() {
-        return ((net.minecraft.server.world.ServerWorld) (Object) this).getSeed();
+        return ((net.minecraft.server.level.ServerLevel) (Object) this).getSeed();
     }
 
     public int terra$getMaxHeight() {
-        return ((this).getBottomY()) +
+        return ((this).getMinY()) +
                (this).getHeight();
     }
 
@@ -136,23 +136,23 @@ public abstract class ServerWorldMixin extends World {
     }
 
     public int terra$getMinHeight() {
-        return (this).getBottomY();
+        return (this).getMinY();
     }
 
     public ChunkGenerator terra$getGenerator() {
-        return ((MinecraftChunkGeneratorWrapper) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
-            .getChunkGenerator()).getHandle();
+        return ((MinecraftChunkGeneratorWrapper) ((net.minecraft.server.level.ServerLevel) (Object) this).getChunkSource()
+            .getGenerator()).getHandle();
     }
 
     public BiomeProvider terra$getBiomeProvider() {
-        return ((TerraBiomeSource) ((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()
-            .getChunkGenerator()
+        return ((TerraBiomeSource) ((net.minecraft.server.level.ServerLevel) (Object) this).getChunkSource()
+            .getGenerator()
             .getBiomeSource()).getProvider();
     }
 
     public ConfigPack terra$getPack() {
-        net.minecraft.world.gen.chunk.ChunkGenerator generator =
-            (((net.minecraft.server.world.ServerWorld) (Object) this).getChunkManager()).getChunkGenerator();
+        net.minecraft.world.level.chunk.ChunkGenerator generator =
+            (((net.minecraft.server.level.ServerLevel) (Object) this).getChunkSource()).getGenerator();
         if(generator instanceof MinecraftChunkGeneratorWrapper minecraftChunkGeneratorWrapper) {
             return minecraftChunkGeneratorWrapper.getPack();
         }

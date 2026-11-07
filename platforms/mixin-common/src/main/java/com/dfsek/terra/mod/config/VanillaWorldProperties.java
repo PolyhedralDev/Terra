@@ -3,7 +3,7 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.Identifier;
 
 import com.dfsek.terra.api.properties.Properties;
 import com.dfsek.terra.api.util.range.ConstantRange;

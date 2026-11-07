@@ -15,21 +15,21 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.mod.mixin.access;
+package com.dfsek.terra.mod.mixin.implementations.terra.block.entity;
 
-import net.minecraft.state.State;
-import net.minecraft.state.property.Property;
+import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
+import org.spongepowered.asm.mixin.Implements;
+import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Accessor;
 
-import java.util.Map;
-import java.util.function.Function;
+import com.dfsek.terra.api.block.entity.Container;
+import com.dfsek.terra.api.inventory.Inventory;
 
 
-@Mixin(State.class)
-public interface StateAccessor {
-    @Accessor("PROPERTY_MAP_PRINTER")
-    static Function<Map.Entry<Property<?>, Comparable<?>>, String> getPropertyMapPrinter() {
-        throw new UnsupportedOperationException();
+@Mixin(RandomizableContainerBlockEntity.class)
+@Implements(@Interface(iface = Container.class, prefix = "terra$"))
+public abstract class RandomizableContainerBlockEntityMixin extends BlockEntityMixin {
+    public Inventory terra$getInventory() {
+        return (Inventory) this;
     }
 }

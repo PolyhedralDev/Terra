@@ -3,12 +3,12 @@ package com.dfsek.terra.mod.config;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.registry.Registries;
-import net.minecraft.sound.BiomeAdditionsSound;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.attribute.AmbientAdditionsSettings;
 
 
-public class BiomeAdditionsSoundTemplate implements ObjectTemplate<BiomeAdditionsSound> {
+public class BiomeAdditionsSoundTemplate implements ObjectTemplate<AmbientAdditionsSettings> {
     @Value("sound")
     @Default
     private SoundEvent sound = null;
@@ -18,11 +18,11 @@ public class BiomeAdditionsSoundTemplate implements ObjectTemplate<BiomeAddition
     private Double soundChance = null;
 
     @Override
-    public BiomeAdditionsSound get() {
+    public AmbientAdditionsSettings get() {
         if(sound == null || soundChance == null) {
             return null;
         } else {
-            return new BiomeAdditionsSound(Registries.SOUND_EVENT.getEntry(sound), soundChance);
+            return new AmbientAdditionsSettings(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), soundChance);
         }
     }
 }

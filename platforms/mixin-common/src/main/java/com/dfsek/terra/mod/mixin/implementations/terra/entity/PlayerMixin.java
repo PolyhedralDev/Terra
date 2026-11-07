@@ -17,7 +17,6 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.entity;
 
-import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +24,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import com.dfsek.terra.api.entity.Player;
 
 
-@Mixin(PlayerEntity.class)
+@Mixin(net.minecraft.world.entity.player.Player.class)
 @Implements(@Interface(iface = Player.class, prefix = "terra$"))
-public abstract class PlayerEntityMixin extends EntityMixin {
+public abstract class PlayerMixin extends EntityMixin {
 }

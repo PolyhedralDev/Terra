@@ -17,8 +17,8 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory;
 
-import net.minecraft.block.entity.LockableContainerBlockEntity;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -27,21 +27,21 @@ import com.dfsek.terra.api.inventory.Inventory;
 import com.dfsek.terra.api.inventory.ItemStack;
 
 
-@Mixin(LockableContainerBlockEntity.class)
+@Mixin(BaseContainerBlockEntity.class)
 @Implements(@Interface(iface = Inventory.class, prefix = "terra$"))
-public class LockableContainerBlockEntityMixin {
+public class BaseContainerBlockEntityMixin {
     @SuppressWarnings("ConstantConditions")
     public void terra$setItem(int slot, ItemStack newStack) {
-        ((LockableContainerBlockEntity) (Object) this).setStack(slot, (net.minecraft.item.ItemStack) (Object) newStack);
+        ((BaseContainerBlockEntity) (Object) this).setItem(slot, (net.minecraft.world.item.ItemStack) (Object) newStack);
     }
 
     public int terra$getSize() {
-        return ((LockableContainerBlockEntity) (Object) this).size();
+        return ((BaseContainerBlockEntity) (Object) this).getContainerSize();
     }
 
     @SuppressWarnings("ConstantConditions")
     public ItemStack terra$getItem(int slot) {
-        net.minecraft.item.ItemStack itemStack = ((LockableContainerBlockEntity) (Object) this).getStack(slot);
+        net.minecraft.world.item.ItemStack itemStack = ((BaseContainerBlockEntity) (Object) this).getItem(slot);
         return itemStack.getItem() == Items.AIR ? null : (ItemStack) (Object) itemStack;
     }
 }

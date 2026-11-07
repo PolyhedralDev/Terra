@@ -1,7 +1,7 @@
 package com.dfsek.terra.mod.mixin.implementations.compat;
 
-import net.minecraft.world.biome.GenerationSettings;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -16,9 +16,9 @@ import java.util.List;
 import com.dfsek.terra.mod.mixin_ifaces.FloraFeatureHolder;
 
 
-@Mixin(GenerationSettings.class)
+@Mixin(BiomeGenerationSettings.class)
 @Implements(@Interface(iface = FloraFeatureHolder.class, prefix = "terra$"))
-public class GenerationSettingsFloraFeaturesMixin {
+public class BiomeGenerationSettingsFloraFeaturesMixin {
     private List<ConfiguredFeature<?, ?>> flora;
 
     public void terra$setFloraFeatures(List<ConfiguredFeature<?, ?>> features) {

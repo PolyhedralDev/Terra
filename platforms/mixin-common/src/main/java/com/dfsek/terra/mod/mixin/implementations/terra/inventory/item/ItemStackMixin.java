@@ -17,10 +17,10 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.item;
 
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.component.ComponentMap;
-import net.minecraft.component.MergedComponentMap;
-import net.minecraft.item.ItemStack;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
@@ -37,7 +37,7 @@ import com.dfsek.terra.api.inventory.item.ItemMeta;
 public abstract class ItemStackMixin {
     @Shadow
     @Final
-    private MergedComponentMap components;
+    private PatchedDataComponentMap components;
 
     @Shadow
     public abstract int getCount();
@@ -46,13 +46,13 @@ public abstract class ItemStackMixin {
     public abstract void setCount(int count);
 
     @Shadow
-    public abstract net.minecraft.item.Item getItem();
+    public abstract net.minecraft.world.item.Item getItem();
 
     @Shadow
-    public abstract boolean isDamageable();
+    public abstract boolean isDamageableItem();
 
     @Shadow
-    public abstract ComponentMap getComponents();
+    public abstract DataComponentMap getComponents();
 
     public int terra$getAmount() {
         return getCount();
@@ -72,17 +72,17 @@ public abstract class ItemStackMixin {
 
     @SuppressWarnings("ConstantConditions")
     public void terra$setItemMeta(ItemMeta meta) {
-        ComponentChanges.Builder builder = ComponentChanges.builder();
-        this.getComponents().getTypes().forEach(builder::remove);
+        DataComponentPatch.Builder builder = DataComponentPatch.builder();
+        this.getComponents().keySet().forEach(builder::remove);
 
-        ComponentMap components = ((ItemStack) (Object) meta).getComponents();
-        components.forEach(builder::add);
+        DataComponentMap components = ((ItemStack) (Object) meta).getComponents();
+        components.forEach(builder::set);
 
-        this.components.applyChanges(builder.build());
+        this.components.applyPatch(builder.build());
     }
 
     @Intrinsic
     public boolean terra$isDamageable() {
-        return isDamageable();
+        return isDamageableItem();
     }
 }

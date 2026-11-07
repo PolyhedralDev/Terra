@@ -1,9 +1,9 @@
 package com.dfsek.terra.mod.util;
 
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.dimension.DimensionType.MonsterSettings;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.DimensionType.MonsterSettings;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.OptionalLong;
@@ -48,7 +48,7 @@ public class DimensionUtil {
             : vanillaWorldProperties.getLogicalHeight(),
             vanillaWorldProperties.getInfiniburn() == null
             ? defaultDimension.infiniburn()
-            : TagKey.of(RegistryKeys.BLOCK, vanillaWorldProperties.getInfiniburn()),
+            : TagKey.create(Registries.BLOCK, vanillaWorldProperties.getInfiniburn()),
             vanillaWorldProperties.getEffects() == null ? defaultDimension.effects() : vanillaWorldProperties.getEffects(),
             vanillaWorldProperties.getAmbientLight() == null ? defaultDimension.ambientLight() : vanillaWorldProperties.getAmbientLight(),
             vanillaWorldProperties.getCloudHeight() == null

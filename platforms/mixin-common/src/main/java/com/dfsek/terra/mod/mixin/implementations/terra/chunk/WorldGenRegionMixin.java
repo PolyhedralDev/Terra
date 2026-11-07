@@ -18,16 +18,16 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.chunk;
 
 import com.dfsek.seismic.math.coord.CoordFunctions;
-import net.minecraft.block.Block;
-import net.minecraft.command.argument.BlockStateArgument;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.ChunkRegion;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.tick.MultiTickScheduler;
+import net.minecraft.commands.arguments.blocks.BlockInput;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.ticks.WorldGenTickAccess;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -42,69 +42,69 @@ import com.dfsek.terra.api.world.chunk.Chunk;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
-@Mixin(ChunkRegion.class)
+@Mixin(WorldGenRegion.class)
 @Implements(@Interface(iface = Chunk.class, prefix = "terraChunk$"))
-public abstract class ChunkRegionMixin implements StructureWorldAccess {
+public abstract class WorldGenRegionMixin implements WorldGenLevel {
 
     @Shadow
     @Final
-    private net.minecraft.world.chunk.Chunk centerPos;
+    private net.minecraft.world.level.chunk.ChunkAccess center;
 
     @Shadow
     @Final
-    private ServerWorld world;
+    private ServerLevel level;
 
     @Shadow
     @Final
-    private MultiTickScheduler<Block> blockTickScheduler;
+    private WorldGenTickAccess<Block> blockTicks;
 
     @Shadow
     @Final
-    private MultiTickScheduler<Fluid> fluidTickScheduler;
+    private WorldGenTickAccess<Fluid> fluidTicks;
 
     @Shadow
-    public abstract net.minecraft.block.BlockState getBlockState(BlockPos pos);
+    public abstract net.minecraft.world.level.block.state.BlockState getBlockState(BlockPos pos);
 
     @Shadow
     @Nullable
-    public abstract boolean setBlockState(BlockPos pos, net.minecraft.block.BlockState state, int flags, int maxUpdateDepth);
+    public abstract boolean setBlock(BlockPos pos, net.minecraft.world.level.block.state.BlockState state, int flags, int maxUpdateDepth);
 
 
     public void terraChunk$setBlock(int x, int y, int z, @NotNull BlockState data, boolean physics) {
-        ChunkPos pos = centerPos.getPos();
+        ChunkPos pos = center.getPos();
         BlockPos blockPos = new BlockPos(CoordFunctions.chunkAndRelativeToAbsolute(pos.x, x), y,
             CoordFunctions.chunkAndRelativeToAbsolute(pos.z, z));
-        net.minecraft.block.BlockState state;
+        net.minecraft.world.level.block.state.BlockState state;
 
         boolean isExtended = MinecraftUtil.isCompatibleBlockStateExtended(data);
 
         if(isExtended) {
-            BlockStateArgument arg = ((BlockStateArgument) data);
-            state = arg.getBlockState();
-            setBlockState(blockPos, state, 0, 512);
-            net.minecraft.world.chunk.Chunk chunk = getChunk(blockPos);
-            NbtCompound nbt = ((NbtCompound) (Object) ((BlockStateExtended) data).getData());
-            MinecraftUtil.loadBlockEntity(chunk, world, blockPos, state, nbt);
+            BlockInput arg = ((BlockInput) data);
+            state = arg.getState();
+            setBlock(blockPos, state, 0, 512);
+            net.minecraft.world.level.chunk.ChunkAccess chunk = getChunk(blockPos);
+            CompoundTag nbt = ((CompoundTag) (Object) ((BlockStateExtended) data).getData());
+            MinecraftUtil.loadBlockEntity(chunk, level, blockPos, state, nbt);
         } else {
-            state = (net.minecraft.block.BlockState) data;
-            setBlockState(blockPos, state, 0, 512);
+            state = (net.minecraft.world.level.block.state.BlockState) data;
+            setBlock(blockPos, state, 0, 512);
         }
 
         if(physics) {
-            MinecraftUtil.schedulePhysics(state, blockPos, getFluidTickScheduler(), getBlockTickScheduler());
+            MinecraftUtil.schedulePhysics(state, blockPos, getFluidTicks(), getBlockTicks());
         }
     }
 
     public @NotNull BlockState terraChunk$getBlock(int x, int y, int z) {
-        return (BlockState) ((ChunkRegion) (Object) this).getBlockState(
-            new BlockPos(x + (centerPos.getPos().x << 4), y, z + (centerPos.getPos().z << 4)));
+        return (BlockState) ((WorldGenRegion) (Object) this).getBlockState(
+            new BlockPos(x + (center.getPos().x << 4), y, z + (center.getPos().z << 4)));
     }
 
     public int terraChunk$getX() {
-        return centerPos.getPos().x;
+        return center.getPos().x;
     }
 
     public int terraChunk$getZ() {
-        return centerPos.getPos().z;
+        return center.getPos().z;
     }
 }

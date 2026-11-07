@@ -17,11 +17,11 @@
 
 package com.dfsek.terra.mod.config;
 
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 
 import java.util.Objects;
 
@@ -32,14 +32,14 @@ import com.dfsek.terra.mod.util.MinecraftUtil;
 public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
 
-    private RegistryEntry<Biome> delegate;
+    private Holder<Biome> delegate;
 
     public ProtoPlatformBiome(Identifier identifier) {
         this.identifier = identifier;
     }
 
-    public RegistryKey<Biome> get(Registry<net.minecraft.world.biome.Biome> registry) {
-        return MinecraftUtil.getEntry(registry, identifier).orElseThrow().getKey().orElseThrow();
+    public ResourceKey<Biome> get(Registry<net.minecraft.world.level.biome.Biome> registry) {
+        return MinecraftUtil.getEntry(registry, identifier).orElseThrow().unwrapKey().orElseThrow();
     }
 
     @Override
@@ -47,11 +47,11 @@ public class ProtoPlatformBiome implements PlatformBiome {
         return identifier;
     }
 
-    public RegistryEntry<Biome> getDelegate() {
+    public Holder<Biome> getDelegate() {
         return delegate;
     }
 
-    public void setDelegate(RegistryEntry<Biome> delegate) {
+    public void setDelegate(Holder<Biome> delegate) {
         this.delegate = Objects.requireNonNull(delegate);
     }
 }

@@ -19,20 +19,20 @@ package com.dfsek.terra.mod.handle;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.command.argument.BlockArgumentParser;
-import net.minecraft.command.argument.BlockArgumentParser.BlockResult;
-import net.minecraft.command.argument.BlockStateArgument;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.StringNbtReader;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry.Reference;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.commands.arguments.blocks.BlockInput;
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.commands.arguments.blocks.BlockStateParser.BlockResult;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder.Reference;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 import com.dfsek.terra.api.block.state.BlockState;
@@ -41,33 +41,33 @@ import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.mod.implmentation.MinecraftEntityTypeExtended;
 
-import static net.minecraft.command.argument.BlockArgumentParser.INVALID_BLOCK_ID_EXCEPTION;
+import static net.minecraft.commands.arguments.blocks.BlockStateParser.ERROR_UNKNOWN_BLOCK;
 
 
 public class MinecraftWorldHandle implements WorldHandle {
 
 
-    private static final BlockState AIR = (BlockState) Blocks.AIR.getDefaultState();
+    private static final BlockState AIR = (BlockState) Blocks.AIR.defaultBlockState();
 
     @SuppressWarnings("DataFlowIssue")
     @Override
     public @NotNull BlockState createBlockState(@NotNull String data) {
         try {
-            BlockResult blockResult = BlockArgumentParser.block(Registries.BLOCK, data, true);
+            BlockResult blockResult = BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK, data, true);
             BlockState blockState;
             if(blockResult.nbt() != null) {
-                net.minecraft.block.BlockState state = blockResult.blockState();
-                NbtCompound nbtCompound = blockResult.nbt();
+                net.minecraft.world.level.block.state.BlockState state = blockResult.blockState();
+                CompoundTag nbtCompound = blockResult.nbt();
                 if(state.hasBlockEntity()) {
-                    BlockEntity blockEntity = ((BlockEntityProvider) state.getBlock()).createBlockEntity(new BlockPos(0, 0, 0), state);
+                    BlockEntity blockEntity = ((EntityBlock) state.getBlock()).newBlockEntity(new BlockPos(0, 0, 0), state);
 
                     nbtCompound.putInt("x", 0);
                     nbtCompound.putInt("y", 0);
                     nbtCompound.putInt("z", 0);
 
-                    nbtCompound.put("id", BlockEntity.TYPE_CODEC, blockEntity.getType());
+                    nbtCompound.store("id", BlockEntity.TYPE_CODEC, blockEntity.getType());
 
-                    blockState = (BlockStateExtended) new BlockStateArgument(state, blockResult.properties().keySet(), nbtCompound);
+                    blockState = (BlockStateExtended) new BlockInput(state, blockResult.properties().keySet(), nbtCompound);
                 } else {
                     blockState = (BlockState) state;
                 }
@@ -92,23 +92,23 @@ public class MinecraftWorldHandle implements WorldHandle {
     public @NotNull EntityType getEntity(@NotNull String data) {
         try {
             Identifier identifier;
-            NbtCompound nbtData = null;
+            CompoundTag nbtData = null;
             StringReader reader = new StringReader(data);
 
             int i = reader.getCursor();
 
-            identifier = Identifier.fromCommandInput(reader);
+            identifier = Identifier.read(reader);
 
-            net.minecraft.entity.EntityType<?> entity =
-                (net.minecraft.entity.EntityType<?>) ((Reference<?>) Registries.ENTITY_TYPE.getOptional(
-                    RegistryKey.of(RegistryKeys.ENTITY_TYPE, identifier)).orElseThrow(() -> {
+            net.minecraft.world.entity.EntityType<?> entity =
+                (net.minecraft.world.entity.EntityType<?>) ((Reference<?>) BuiltInRegistries.ENTITY_TYPE.get(
+                    ResourceKey.create(Registries.ENTITY_TYPE, identifier)).orElseThrow(() -> {
                     reader.setCursor(i);
-                    return INVALID_BLOCK_ID_EXCEPTION.createWithContext(reader, identifier.toString());
+                    return ERROR_UNKNOWN_BLOCK.createWithContext(reader, identifier.toString());
                 })).value();
 
             if(reader.canRead() && reader.peek() == '{') {
-                nbtData = StringNbtReader.readCompoundAsArgument(reader);
-                nbtData.putString("id", entity.getRegistryEntry().registryKey().getValue().toString());
+                nbtData = TagParser.parseCompoundAsArgument(reader);
+                nbtData.putString("id", entity.builtInRegistryHolder().key().identifier().toString());
             }
 
             EntityType entityType;

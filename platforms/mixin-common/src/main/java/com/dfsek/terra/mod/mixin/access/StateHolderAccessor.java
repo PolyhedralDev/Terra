@@ -17,14 +17,19 @@
 
 package com.dfsek.terra.mod.mixin.access;
 
-import net.minecraft.block.spawner.MobSpawnerEntry;
-import net.minecraft.block.spawner.MobSpawnerLogic;
+import net.minecraft.world.level.block.state.StateHolder;
+import net.minecraft.world.level.block.state.properties.Property;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
+import java.util.Map;
+import java.util.function.Function;
 
-@Mixin(MobSpawnerLogic.class)
-public interface MobSpawnerLogicAccessor {
-    @Accessor("spawnEntry")
-    MobSpawnerEntry getSpawnEntry();
+
+@Mixin(StateHolder.class)
+public interface StateHolderAccessor {
+    @Accessor("PROPERTY_ENTRY_TO_STRING_FUNCTION")
+    static Function<Map.Entry<Property<?>, Comparable<?>>, String> getPropertyMapPrinter() {
+        throw new UnsupportedOperationException();
+    }
 }
