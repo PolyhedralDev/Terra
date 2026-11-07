@@ -1,9 +1,9 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.world.entity.MobCategory;
+import dev.wyck.biome.entity.MobCategory;
 
 import java.util.List;
 

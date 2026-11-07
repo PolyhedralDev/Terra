@@ -4,6 +4,18 @@ version: "@VERSION@"
 load: "STARTUP"
 authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade", "OakLoaf" ]
 website: "@WIKI@"
-api-version: "1.21.1"
+api-version: "26.3"
+bootstrapper: "com.dfsek.terra.bukkit.TerraBootstrapper"
 description: "@DESCRIPTION@"
 folia-supported: true
+depend:
+  bootstrap:
+    Wyck:
+      load: BEFORE
+      required: true
+      join-classpath: true
+  server:
+    Wyck:
+      load: BEFORE
+      required: true
+      join-classpath: true

@@ -1,20 +1,21 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.npc.VillagerType;
-import net.minecraft.world.level.biome.AmbientAdditionsSettings;
-import net.minecraft.world.level.biome.AmbientMoodSettings;
-import net.minecraft.world.level.biome.AmbientParticleSettings;
-import net.minecraft.world.level.biome.Biome.TemperatureModifier;
-import net.minecraft.world.level.biome.BiomeSpecialEffects.GrassColorModifier;
-import net.minecraft.world.level.biome.MobSpawnSettings;
 
 import com.dfsek.terra.api.properties.Properties;
+
+import dev.wyck.biome.TemperatureModifier;
+import dev.wyck.biome.entity.MobSpawnSettings;
+import dev.wyck.environment.GrassColorModifier;
+import dev.wyck.environment.particle.AmbientParticle;
+import dev.wyck.environment.particle.ParticleCatalog;
+import dev.wyck.environment.sounds.AmbientAdditionsSettings;
+import dev.wyck.environment.sounds.AmbientMoodSettings;
+import dev.wyck.environment.sounds.Music;
+import dev.wyck.environment.sounds.SoundEvent;
+import org.bukkit.entity.Villager;
 
 
 public class VanillaBiomeProperties implements ConfigTemplate, Properties {
@@ -52,7 +53,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("particles")
     @Default
-    private AmbientParticleSettings particleConfig = null;
+    private ParticleCatalog particleConfig = null;
 
     @Value("climate.precipitation")
     @Default
@@ -96,7 +97,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
 
     @Value("villager-type")
     @Default
-    private ResourceKey<VillagerType> villagerType = null;
+    private Villager.Type villagerType = null;
 
     public Integer getFogColor() {
         return fogColor;
@@ -130,7 +131,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return grassColorModifier;
     }
 
-    public AmbientParticleSettings getParticleConfig() {
+    public ParticleCatalog getParticles() {
         return particleConfig;
     }
 
@@ -174,7 +175,7 @@ public class VanillaBiomeProperties implements ConfigTemplate, Properties {
         return spawnSettings;
     }
 
-    public ResourceKey<VillagerType> getVillagerType() {
+    public Villager.Type getVillagerType() {
         return villagerType;
     }
 }

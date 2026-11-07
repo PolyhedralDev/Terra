@@ -1,11 +1,10 @@
-package com.dfsek.terra.bukkit.nms.config;
+package com.dfsek.terra.bukkit.config;
 
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.sounds.Music;
-import net.minecraft.sounds.SoundEvent;
+import dev.wyck.environment.sounds.Music;
+import dev.wyck.environment.sounds.SoundEvent;
 
 
 public class MusicSoundTemplate implements ObjectTemplate<Music> {
@@ -30,7 +29,12 @@ public class MusicSoundTemplate implements ObjectTemplate<Music> {
         if(sound == null || minDelay == null || maxDelay == null || replaceCurrentMusic == null) {
             return null;
         } else {
-            return new Music(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), minDelay, maxDelay, replaceCurrentMusic);
+            return Music.builder()
+                .sound(sound)
+                .minDelay(minDelay)
+                .maxDelay(maxDelay)
+                .replaceCurrentMusic(replaceCurrentMusic)
+                .build();
         }
     }
 }
