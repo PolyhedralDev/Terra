@@ -1,0 +1,29 @@
+{
+  "id": "structure-block-shortcut",
+  "docVersion": 1,
+  "description": "BLOCK:<block-state> creates a structure that places one block at its generation location.",
+  "types": {
+    "StructureBlockShortcut": {
+      "kind": "string",
+      "pattern": "^BLOCK:.+$",
+      "description": "Case-sensitive BLOCK: prefix followed by a platform block state. Rotation and random arguments do not change the placed block state.",
+      "examples": [
+        "BLOCK:minecraft:stone",
+        "BLOCK:minecraft:oak_log[axis=y]"
+      ]
+    },
+    "terra:StructureReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Structure"
+        },
+        {
+          "kind": "type",
+          "target": "StructureBlockShortcut"
+        }
+      ]
+    }
+  }
+}
