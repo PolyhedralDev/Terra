@@ -20,12 +20,12 @@ public class MinestomBlockType implements BlockType {
 
     @Override
     public boolean isSolid() {
-        return block.isSolid();
+        return block.solid();
     }
 
     @Override
     public boolean isWater() {
-        return block.isLiquid();
+        return block.liquid();
     }
 
     @Override

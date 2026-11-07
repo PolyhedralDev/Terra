@@ -133,7 +133,7 @@ public record MinestomBlockState(Block block) implements BlockState {
 
     @Override
     public boolean isAir() {
-        return block.isAir();
+        return block.air();
     }
 
     @Override

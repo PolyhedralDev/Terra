@@ -21,6 +21,6 @@ public class MinestomBiomeLoader implements TypeLoader<PlatformBiome> {
         @Subst("name:value")
         String id = (String) o;
         Key key = Key.key(id);
-        return new MinestomBiome(RegistryKey.unsafeOf(key));
+        return new MinestomBiome(RegistryKey.of(key));
     }
 }
