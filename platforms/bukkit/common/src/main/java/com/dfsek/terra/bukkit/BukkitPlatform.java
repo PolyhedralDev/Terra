@@ -66,6 +66,7 @@ import com.dfsek.terra.api.world.biome.PlatformBiome;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
+import com.dfsek.terra.bukkit.world.BiomeHandler;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
@@ -97,6 +98,8 @@ public class BukkitPlatform extends AbstractPlatform {
     public boolean reload() {
         getTerraConfig().load(this);
         boolean succeed = loadConfigPacks();
+        BiomeHandler.registerBiomes(getRawConfigRegistry());
+        BiomeHandler.addToVanillaTags(getRawConfigRegistry());
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
@@ -150,18 +153,15 @@ public class BukkitPlatform extends AbstractPlatform {
         super.register(registry);
         registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> handle.createBlockState((String) o))
             .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-            .registerLoader(EntityType.class, (type, o, loader, depthTracker) -> EntityType.valueOf((String) o))
-            .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
             .registerLoader(ResourceKey.class, (type, o, loader, depthTracker) -> {
-                String[] parts = ((String) o).split(":", 2);
-                if(parts.length == 0 || parts.length > 2)
-                    throw new LoadException("Invalid identifier: " + o, depthTracker);
-                return ResourceKey.of(parts[0], parts[1]);
+                NamespacedKey key = NamespacedKey.fromString(((String) o).toLowerCase(Locale.ROOT));
+                if(key == null) throw new LoadException("Invalid identifier: " + o, depthTracker);
+                return ResourceKey.of(key);
             })
             .registerLoader(GrassColorModifier.class,
                 (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
-            .registerLoader(GrassColorModifier.class,
+            .registerLoader(TemperatureModifier.class,
                 (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
                     Locale.ROOT)))
             .registerLoader(MobCategory.class, (type, o, loader, depthTracker) -> MobCategory.valueOf((String) o))
@@ -181,6 +181,8 @@ public class BukkitPlatform extends AbstractPlatform {
     protected BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {
         NamespacedKey key = NamespacedKey.fromString(id);
         if(key == null || !key.namespace().equals("minecraft")) throw new LoadException("Invalid biome identifier " + id, depthTracker);
-        return new BukkitPlatformBiome(RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME).getOrThrow(key));
+        org.bukkit.block.Biome biome = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME).get(key);
+        if(biome == null) throw new LoadException("No such biome " + id, depthTracker);
+        return new BukkitPlatformBiome(biome);
     }
 }

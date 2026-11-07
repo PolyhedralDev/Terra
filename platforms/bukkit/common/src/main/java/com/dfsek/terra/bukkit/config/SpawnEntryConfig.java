@@ -6,7 +6,6 @@ import com.dfsek.tectonic.api.config.template.object.ObjectTemplate;
 
 import com.dfsek.terra.api.util.range.Range;
 
-import dev.wyck.biome.entity.SpawnerData;
 import dev.wyck.worldgen.valueproviders.IntProvider;
 import org.bukkit.entity.EntityType;
 
@@ -28,8 +27,12 @@ public class SpawnEntryConfig implements ObjectTemplate<SpawnEntryConfig> {
         return weight;
     }
 
-    public SpawnerData getSpawnEntry() {
-        return SpawnerData.of(type, IntProvider.uniform(groupSize.getMin(), groupSize.getMax()));
+    public EntityType getType() {
+        return type;
+    }
+
+    public IntProvider getCount() {
+        return IntProvider.uniform(groupSize.getMin(), groupSize.getMax());
     }
 
     @Override

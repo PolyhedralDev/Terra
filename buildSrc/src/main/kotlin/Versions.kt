@@ -62,7 +62,6 @@ object Versions {
         const val minecraft = "26.3"
         const val paperBuild = "$minecraft.build.244-stable"
         const val paper = paperBuild
-        const val paperLib = "1.0.8"
         const val runPaper = "3.0.2"
         const val wyck = "4.0.0-837d6ec"
         const val cloud = "2.0.1"

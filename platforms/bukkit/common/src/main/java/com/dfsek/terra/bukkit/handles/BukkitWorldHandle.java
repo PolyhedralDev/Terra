@@ -19,7 +19,6 @@ package com.dfsek.terra.bukkit.handles;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,6 @@ import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 
 public class BukkitWorldHandle implements WorldHandle {
@@ -44,18 +41,13 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
+        // BlockData can't hold block entity NBT.
+        int nbtStart = data.indexOf('{');
+        String state = nbtStart >= 0 ? data.substring(0, nbtStart) : data;
         try {
-            org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(data); // somehow bukkit managed to make this not thread safe! :)
-            return BukkitBlockState.newInstance(bukkitData);
-        } catch (Exception ignored) {
-            try {
-                Class<?> hacks = Class.forName("com.dfsek.terra.bukkit.nms.AwfulBukkitHacks");
-                Method method = hacks.getMethod("createBlockState", String.class);
-                Object result = method.invoke(null, data);
-                return BukkitBlockState.newInstance((BlockData) result);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new IllegalArgumentException("Invalid block state data: " + data);
-            }
+            return BukkitBlockState.newInstance(Bukkit.createBlockData(state)); // somehow bukkit managed to make this not thread safe! :)
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid block state data: " + data, e);
         }
     }
 

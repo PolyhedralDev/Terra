@@ -68,6 +68,6 @@ public class MetaConfigRegistry extends OpenRegistryImpl<MetaPack> implements Ex
 
     @Override
     public boolean validatePathIsMember(Path path) {
-        return Files.isDirectory(path) || path.getFileName().endsWith(".zip");
+        return Files.isDirectory(path) || path.getFileName().toString().endsWith(".zip");
     }
 }
