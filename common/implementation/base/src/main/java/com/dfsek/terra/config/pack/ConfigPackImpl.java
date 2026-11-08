@@ -73,8 +73,11 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
+import com.dfsek.terra.api.world.biome.tag.BiomeTagIndex;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
+import com.dfsek.terra.config.loaders.BiomeTagLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
@@ -105,6 +108,8 @@ public class ConfigPackImpl implements ConfigPack {
     private final Map<BaseAddon, VersionRange> addons;
 
     private final BiomeProvider seededBiomeProvider;
+
+    private final BiomeTagIndex biomeTagIndex = new BiomeTagIndex();
 
     private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
     private final Map<Type, ShortcutHolder<?>> shortcuts = new HashMap<>();
@@ -147,6 +152,8 @@ public class ConfigPackImpl implements ConfigPack {
 
         register(abstractConfigLoader);
         platform.register(abstractConfigLoader);
+
+        applyLoader(BiomeTag.class, new BiomeTagLoader(biomeTagIndex));
 
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
@@ -222,6 +229,8 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.load(packPostTemplate, packManifest);
         seededBiomeProvider =
             template.getBiomeCache() ? packPostTemplate.getProviderBuilder().caching(platform) : packPostTemplate.getProviderBuilder();
+        // Must stay inside the constructor: generation threads read tag bitsets without volatile reads.
+        biomeTagIndex.seal();
         checkDeadEntries();
     }
 
@@ -295,6 +304,11 @@ public class ConfigPackImpl implements ConfigPack {
     @Override
     public BiomeProvider getBiomeProvider() {
         return seededBiomeProvider;
+    }
+
+    @Override
+    public BiomeTagIndex getBiomeTagIndex() {
+        return biomeTagIndex;
     }
 
     @Override

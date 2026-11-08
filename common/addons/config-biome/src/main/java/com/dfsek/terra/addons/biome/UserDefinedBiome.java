@@ -7,10 +7,11 @@
 
 package com.dfsek.terra.addons.biome;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.api.properties.Context;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
 
@@ -24,6 +25,7 @@ public class UserDefinedBiome implements Biome {
     private final BiomeTemplate config;
     private final int color;
     private final Set<String> tags;
+    private final Set<RegistryKey> platformTags;
 
     private final Context context = new Context();
     private final int intID;
@@ -33,10 +35,12 @@ public class UserDefinedBiome implements Biome {
         this.id = config.getID();
         this.config = config;
         this.color = config.getColor();
-        this.tags = config.getTags();
-        this.intID = INT_ID_COUNTER.getAndIncrement();
-        tags.add("BIOME:" + id);
-        tags.add("ALL");
+        Set<String> allTags = new HashSet<>(config.getTags());
+        allTags.add("BIOME:" + id);
+        allTags.add("ALL");
+        this.tags = Set.copyOf(allTags);
+        this.platformTags = Set.copyOf(config.getPlatformTags());
+        this.intID = config.getPack().getBiomeTagIndex().register(tags);
     }
 
     @Override
@@ -62,6 +66,11 @@ public class UserDefinedBiome implements Biome {
     @Override
     public Set<String> getTags() {
         return tags;
+    }
+
+    @Override
+    public Set<RegistryKey> getPlatformTags() {
+        return platformTags;
     }
 
     @Override

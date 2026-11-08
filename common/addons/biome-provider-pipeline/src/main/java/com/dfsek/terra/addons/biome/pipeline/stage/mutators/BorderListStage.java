@@ -21,24 +21,29 @@ import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 public class BorderListStage implements Stage {
-    private final String border;
+    private final BiomeTag border;
     private final Sampler Sampler;
     private final ProbabilityCollection<PipelineBiome> replaceDefault;
-    private final String defaultReplace;
+    private final BiomeTag defaultReplace;
     private final Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace;
+    // By PipelineBiome#getIntID(); relies on one ID per biome name.
+    private final ProbabilityCollection<PipelineBiome>[] replaceById;
 
     private final Vector2Int[] borderPoints;
 
-    public BorderListStage(Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace, String border, String defaultReplace,
+    public BorderListStage(Map<PipelineBiome, ProbabilityCollection<PipelineBiome>> replace, BiomeTag border,
+                           BiomeTag defaultReplace,
                            Sampler Sampler, ProbabilityCollection<PipelineBiome> replaceDefault) {
         this.border = border;
         this.Sampler = Sampler;
         this.replaceDefault = replaceDefault;
         this.defaultReplace = defaultReplace;
         this.replace = replace;
+        this.replaceById = ReplaceTable.byId(replace);
 
         List<Vector2Int> points = new ArrayList<>();
         for(int x = -1; x <= 1; x++) {
@@ -63,12 +68,14 @@ public class BorderListStage implements Stage {
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         PipelineBiome center = viewPoint.getBiome();
-        if(center.getTags().contains(defaultReplace)) {
+        int centerId = center.getIntID();
+        if(defaultReplace.has(centerId)) {
             for(Vector2Int point : borderPoints) {
                 PipelineBiome current = viewPoint.getRelativeBiome(point.getX(), point.getZ());
-                if(current != null && current.getTags().contains(border)) {
-                    if(replace.containsKey(center)) {
-                        PipelineBiome replacement = replace.get(center).get(Sampler, viewPoint.worldX(), viewPoint.worldZ(),
+                if(current != null && border.has(current.getIntID())) {
+                    ProbabilityCollection<PipelineBiome> collection = centerId < replaceById.length ? replaceById[centerId] : null;
+                    if(collection != null) {
+                        PipelineBiome replacement = collection.get(Sampler, viewPoint.worldX(), viewPoint.worldZ(),
                             viewPoint.worldSeed());
                         return replacement.isSelf() ? center : replacement;
                     }

@@ -6,11 +6,11 @@ import java.util.Set;
 import com.dfsek.terra.api.world.biome.Biome;
 
 
-final class SelfPipelineBiome implements PipelineBiome {
+final class SelfPipelineBiome extends PipelineBiome {
     public static final SelfPipelineBiome INSTANCE = new SelfPipelineBiome();
 
     private SelfPipelineBiome() {
-
+        super(0); // reserved in every pack's index, untagged
     }
 
     @Override

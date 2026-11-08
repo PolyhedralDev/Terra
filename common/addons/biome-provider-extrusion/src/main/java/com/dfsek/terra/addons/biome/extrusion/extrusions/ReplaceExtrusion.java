@@ -8,11 +8,10 @@ import java.util.stream.Collectors;
 
 import com.dfsek.terra.addons.biome.extrusion.api.Extrusion;
 import com.dfsek.terra.addons.biome.extrusion.api.ReplaceableBiome;
-import com.dfsek.terra.addons.biome.query.api.BiomeQueries;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
-import com.dfsek.terra.api.util.collection.TriStateIntCache;
 import com.dfsek.terra.api.util.range.Range;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 /**
@@ -22,34 +21,19 @@ public class ReplaceExtrusion implements Extrusion {
     private final Sampler sampler;
     private final Range range;
     private final ProbabilityCollection<ReplaceableBiome> biomes;
-    private final Predicate<Biome> hasTag;
-    private final TriStateIntCache cache;
+    // Concrete final type keeps has() monomorphic for inlining.
+    private final BiomeTag from;
 
-    public ReplaceExtrusion(Sampler sampler, Range range, ProbabilityCollection<ReplaceableBiome> biomes, String tag) {
+    public ReplaceExtrusion(Sampler sampler, Range range, ProbabilityCollection<ReplaceableBiome> biomes, BiomeTag from) {
         this.sampler = sampler;
         this.range = range;
         this.biomes = biomes;
-        this.hasTag = BiomeQueries.has(tag);
-        this.cache = new TriStateIntCache(Biome.INT_ID_COUNTER.get());
+        this.from = from;
     }
 
     @Override
     public Biome extrude(Biome original, int x, int y, int z, long seed) {
-        int id = original.getIntID();
-
-        long state = cache.get(id);
-        boolean passes;
-
-        if(state == TriStateIntCache.STATE_UNSET) {
-            // Only run the test if unset in cache
-            passes = hasTag.test(original);
-            cache.set(id, passes);
-        } else {
-            // Read the primitive long directly
-            passes = (state == TriStateIntCache.STATE_TRUE);
-        }
-
-        if(passes) {
+        if(from.has(original.getIntID())) {
             if(range.isInRange(y)) {
                 return biomes.get(sampler, x, y, z, seed).get(original);
             }

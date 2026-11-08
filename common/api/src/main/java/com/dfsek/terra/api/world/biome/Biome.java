@@ -8,10 +8,12 @@
 package com.dfsek.terra.api.world.biome;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.dfsek.terra.api.properties.PropertyHolder;
+import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.registry.key.StringIdentifiable;
 
 
@@ -19,8 +21,6 @@ import com.dfsek.terra.api.registry.key.StringIdentifiable;
  * Represents a Terra biome
  */
 public interface Biome extends PropertyHolder, StringIdentifiable {
-    AtomicInteger INT_ID_COUNTER = new AtomicInteger(0);
-
     /**
      * Gets the platform biome this custom biome delegates to.
      *
@@ -42,9 +42,17 @@ public interface Biome extends PropertyHolder, StringIdentifiable {
      */
     Set<String> getTags();
 
+    /**
+     * Get the namespaced entries of this biome's config {@code tags:}, as written.
+     */
+    default @NotNull Set<RegistryKey> getPlatformTags() {
+        return Set.of();
+    }
+
 
     /**
-     * Get the numeric ID of this biome, generated at registration time
+     * Get the numeric ID of this biome: dense per pack, from 1, issued by {@code getBiomeTagIndex().register(...)} during pack
+     * load.
      *
      * @return The numeric ID.
      */

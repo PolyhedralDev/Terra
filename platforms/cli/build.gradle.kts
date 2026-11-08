@@ -41,4 +41,11 @@ application {
 
 tasks.getByName("run").setProperty("workingDir", file("./run"))
 
+// CLIPlatform uses "./" as its data folder.
+tasks.withType<Test> {
+    workingDir = file("./run").also { it.mkdirs() }
+}
+
+tasks.withType<Test> { dependsOn("moveAddonsrun") }
+
 addonDir(project.file("./run/addons"), tasks.named("run").get())

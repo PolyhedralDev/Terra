@@ -17,12 +17,13 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.stage.mutators.ReplaceListStage;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 @SuppressWarnings("unused")
 public class ReplaceListStageTemplate extends StageTemplate {
     @Value("default-from")
-    private @Meta String defaultFrom;
+    private @Meta BiomeTag defaultFrom;
 
     @Value("default-to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> defaultTo;
