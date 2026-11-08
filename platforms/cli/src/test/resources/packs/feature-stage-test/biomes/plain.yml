@@ -1,0 +1,19 @@
+id: PLAIN
+type: BIOME
+
+vanilla: minecraft:plains
+
+terrain:
+  sampler:
+    type: CONSTANT
+    value: 0
+
+palette:
+  - BLOCK:minecraft:stone: 319
+
+features:
+  nested:
+    stage:
+      - ROCK
+  flat:
+    - ROCK

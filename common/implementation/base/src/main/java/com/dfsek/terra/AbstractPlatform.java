@@ -67,6 +67,7 @@ import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+import com.dfsek.terra.api.world.attribute.AttributeHandle;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
@@ -77,6 +78,7 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 import com.dfsek.terra.registry.master.MetaConfigRegistry;
+import com.dfsek.terra.world.attribute.AttributeHandleImpl;
 
 
 /**
@@ -103,6 +105,8 @@ public abstract class AbstractPlatform implements Platform {
     private final GenericLoaders loaders = new GenericLoaders(this);
     private final PluginConfigImpl config = new PluginConfigImpl();
     private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
+    // Must exist before addons initialize: it creates the attribute context keys.
+    private final AttributeHandle attributeHandle = new AttributeHandleImpl();
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
 
     public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
@@ -432,6 +436,11 @@ public abstract class AbstractPlatform implements Platform {
     @Override
     public @NotNull Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public @NotNull AttributeHandle getAttributeHandle() {
+        return attributeHandle;
     }
 
     @Override

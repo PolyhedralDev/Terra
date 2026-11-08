@@ -1,0 +1,8 @@
+# Extends META, so META's meta include is expanded while it is an inherited layer. The water colour is a "$file:key" meta value.
+id: META_CHILD
+type: BIOME
+extends: META
+
+attributes:
+  terra:biome/downfall: 0.75
+  terra:biome/water_color: $meta.yml:shared-water-color

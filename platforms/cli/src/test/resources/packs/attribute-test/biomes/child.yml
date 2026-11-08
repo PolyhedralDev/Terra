@@ -1,0 +1,6 @@
+id: CHILD
+type: BIOME
+extends: BASE
+
+attributes:
+  minecraft:visual/fog_color: "#a0b0c0"

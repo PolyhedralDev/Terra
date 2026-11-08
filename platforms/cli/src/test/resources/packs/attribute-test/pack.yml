@@ -1,0 +1,43 @@
+id: ATTRIBUTE_TEST
+version: 1.0.0
+author: Terra contributors
+
+generator: NOISE_3D
+
+vanilla: minecraft:overworld
+vanilla-generation: minecraft:overworld
+
+addons:
+  biome-provider-single: "1.+"
+  chunk-generator-noise-3d: "1.+"
+  config-attributes: "1.+"
+  config-biome: "1.+"
+  config-noise-function: "1.+"
+  config-palette: "1.+"
+  language-yaml: "1.+"
+  minecraft-attributes: "1.+"
+  palette-block-shortcut: "1.+"
+
+biomes:
+  type: SINGLE
+  biome: PLAIN
+
+attributes:
+  minecraft:visual/water_fog_end_distance: 96
+  minecraft:gameplay/fast_lava: true
+  minecraft:visual/fog_color: null
+
+schedules:
+  - "#minecraft:in_overworld"
+
+schedule-definitions:
+  terra:test_cycle:
+    clock: minecraft:overworld
+    period_ticks: "20 * 60 * 20"
+    tracks:
+      minecraft:visual/sky_color:
+        keyframes:
+          - ticks: 0
+            value: "$meta.yml:night-sky"
+          - ticks: "6000 * 2"
+            value: "#ffffff"

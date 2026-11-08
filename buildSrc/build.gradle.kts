@@ -4,6 +4,12 @@ plugins {
 }
 
 repositories {
+    // TODO: remove once Tectonic 4.4.0 is published
+    mavenLocal {
+        content {
+            includeGroup("com.dfsek.tectonic")
+        }
+    }
     mavenCentral()
     gradlePluginPortal()
     maven("https://maven.solo-studios.ca/releases") {
@@ -26,6 +32,6 @@ dependencies {
 
     implementation("org.ow2.asm", "asm", "9.9")
     implementation("org.ow2.asm", "asm-tree", "9.9")
-    implementation("com.dfsek.tectonic", "common", "4.3.1")
+    implementation("com.dfsek.tectonic", "common", "4.4.0")
     implementation("org.yaml", "snakeyaml", "2.5")
 }

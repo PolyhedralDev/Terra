@@ -63,7 +63,7 @@ public class MetaMapPreprocessor extends MetaPreprocessor<Meta> {
                             Object meta = pair.getRight();
                             if(!(meta instanceof Map)) {
                                 throw new LoadException(
-                                    "MetaMap injection candidate must be list, is type " + meta.getClass().getCanonicalName(),
+                                    "MetaMap injection candidate must be map, is " + describe(meta),
                                     depthTracker);
                             }
                             newMap.putAll((Map<?, ?>) meta);

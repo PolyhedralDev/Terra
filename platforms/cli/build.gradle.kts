@@ -17,7 +17,9 @@ dependencies {
 
     shadedImplementation("ch.qos.logback", "logback-classic", Versions.CLI.logback)
 
-
+    // Addon class loaders find minecraft-attributes on the test class path first; its entrypoint needs the manifest addon API.
+    testImplementation(project(":common:addons:minecraft-attributes"))
+    testImplementation(project(":common:addons:manifest-addon-loader"))
 }
 
 tasks.withType<Jar> {

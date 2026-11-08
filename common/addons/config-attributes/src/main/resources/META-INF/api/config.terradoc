@@ -1,0 +1,122 @@
+{
+  "id": "config-attributes",
+  "docVersion": 1,
+  "description": "Environment attributes for biomes and packs. Contributes the attributes key to biome configurations, and attributes, schedules, schedule-definitions and vanilla-generation to pack.yml, and reads pack.yml's vanilla key when it is a string. The pack must list this addon under addons: in pack.yml, along with the addon that registers the attributes it uses (minecraft-attributes for the minecraft: and terra: ones); an unknown key's warning names that addon when none of its attributes are registered. Attribute keys must be fully namespaced (minecraft:visual/fog_color); a bad entry logs a warning and is skipped without affecting the rest of the pack.",
+  "types": {
+    "terra:AttributeEntry": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "object",
+          "fields": {
+            "modifier": {
+              "schema": {
+                "kind": "string"
+              },
+              "required": true,
+              "summary": "Modifier name. The modifier form is exactly the two keys modifier and argument. Examples: override, add, subtract, multiply, minimum, maximum, overlay, alpha_blend or blend_to_gray. Which modifiers are valid depends on the attribute's value type."
+            },
+            "argument": {
+              "schema": {
+                "kind": "any"
+              },
+              "required": true,
+              "summary": "Modifier argument, in the attribute's value format or the modifier's own argument format. Range validation applies to plain values and override arguments; other modifier arguments are clamped when the value is resolved."
+            }
+          },
+          "description": "Modifier form. Any map containing a modifier key is read as this form, never as a plain value."
+        },
+        {
+          "kind": "any"
+        }
+      ],
+      "description": "A plain value in the attribute's vanilla format (for example \"#c0d8ff\", 0.5, true, or a list or map for complex types), or a modifier object. Particle options and text components are kept as opaque raw values for platforms to decode, with meta resolved."
+    },
+    "terra:Biome": {
+      "kind": "object",
+      "fields": {
+        "attributes": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "type",
+              "target": "terra:AttributeEntry"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Maps namespaced attribute IDs (for example minecraft:visual/fog_color) to a value or a {modifier, argument} object. Merged per key through extends, nearest config winning, and << meta includes work at every layer. A key without a namespace, an unknown key, a value that does not decode, or a non-biome attribute logs a warning and is skipped. Attributes not set here are inherited, not defaulted. An explicit null value for a known attribute that is allowed in biomes clears the inherited entry without a warning, so the attribute falls back to the lower layers (the platform's biome parent, the pack, the platform's pack parent, the default). Setting attributes: null on a child does not clear what it inherits, because inheritance merges per key and skips a null layer; clear entries one key at a time instead. Meta features work inside values at any depth: $file:key references, ${file:key} interpolation, << includes in maps and lists, and number expressions wherever a number is expected. A meta error inside a value logs a warning and skips that entry."
+        }
+      }
+    }
+  },
+  "files": {
+    "BIOME": {
+      "kind": "object",
+      "fields": {},
+      "extends": [
+        "terra:Biome"
+      ]
+    },
+    "pack.yml": {
+      "kind": "object",
+      "fields": {
+        "attributes": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "type",
+              "target": "terra:AttributeEntry"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Pack-level (dimension) attribute values, keyed by namespaced attribute ID. They layer over the platform's pack parent, which it may take from the IDs in vanilla: and vanilla-generation:, and biome values layer on top of them. Bad entries warn and are skipped. An explicit null value for a known attribute sets no entry, without a warning."
+        },
+        "schedules": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Schedule IDs or #tags to attach to the pack's dimension, each with a namespace (mypack:seasons, #mypack:in_overworld); an entry without one logs a warning and is skipped. Entries are resolved by the platform; they may also name schedules declared in schedule-definitions. A single string is accepted as a one-entry list. Platforms map schedules to Minecraft timelines."
+        },
+        "schedule-definitions": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "any"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": {},
+          "summary": "Maps schedule IDs to schedule objects in vanilla's format (clock, period_ticks, time_markers, tracks of keyframes). IDs must include a namespace (mypack:seasons), must not be tags, and must be unique; the first definition with an ID wins. Clock and time-marker IDs must include a namespace too; one without skips the whole definition. A shape error skips the whole definition; an unknown attribute, a modifier invalid for the attribute's type, or a bad keyframe value drops only that track. An unknown modifier name skips the whole definition."
+        },
+        "vanilla-generation": {
+          "schema": {
+            "kind": "string",
+            "nullable": true
+          },
+          "required": false,
+          "summary": "Parent ID for the platform's generation settings (for example minecraft:overworld). Like pack.yml's vanilla: key, which this addon reads only when it is a string ID (a map there is for other settings and is ignored here), it must include a namespace. An ID without one, or an invalid ID, in either key logs a warning and is ignored. The platform decides what each parent supplies and to which attributes; without platform support these layers are empty."
+        }
+      }
+    }
+  }
+}

@@ -52,6 +52,14 @@ public class Context {
         return (T) list[key.key];
     }
 
+    /**
+     * Unlike {@link #get(PropertyKey)}, safe for keys created after this context last stored a value.
+     */
+    public boolean has(PropertyKey<?> key) {
+        Properties[] current = list;
+        return key.key < current.length && current[key.key] != null;
+    }
+
     public <T extends Properties> boolean has(Class<T> test) {
         return map.containsKey(test);
     }

@@ -1,0 +1,11 @@
+# A reference to a reference is followed once, at the top level and nested alike, as for a @Meta String field: both entries
+# get the literal "$meta.yml:sky-hex", which is not a colour, and are skipped with a warning.
+id: CHAIN
+type: BIOME
+extends: GROUND
+
+attributes:
+  minecraft:visual/sky_color: "$meta.yml:chained-color"
+  minecraft:visual/fog_color:
+    modifier: override
+    argument: "$meta.yml:chained-color"

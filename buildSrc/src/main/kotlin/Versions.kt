@@ -7,7 +7,7 @@ object Versions {
     }
     
     object Libraries {
-        const val tectonic = "4.3.1"
+        const val tectonic = "4.4.0"
         const val paralithic = "2.0.1"
         const val strata = "1.3.2"
         const val seismic = "2.5.7"

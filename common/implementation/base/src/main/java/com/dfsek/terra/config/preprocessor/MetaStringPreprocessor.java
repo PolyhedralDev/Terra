@@ -43,8 +43,8 @@ public class MetaStringPreprocessor extends MetaPreprocessor<Meta> {
             StringSubstitutor substitutor = new StringSubstitutor(key -> {
                 Object meta = getMetaValue(key, depthTracker).getRight();
                 if(!(meta instanceof String) && !(meta instanceof Number) && !(meta instanceof Character) && !(meta instanceof Boolean)) {
-                    throw new LoadException("MetaString template injection candidate must be string or primitive, is type " +
-                                            meta.getClass().getCanonicalName(), depthTracker);
+                    throw new LoadException("MetaString template injection candidate must be string or primitive, is " + describe(meta),
+                        depthTracker);
                 }
                 return meta.toString();
             });
