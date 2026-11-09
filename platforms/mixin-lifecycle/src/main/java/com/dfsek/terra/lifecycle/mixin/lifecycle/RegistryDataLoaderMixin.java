@@ -33,9 +33,9 @@ import com.dfsek.terra.lifecycle.mixin.RegistryLoadTaskAccessor;
 import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 import com.dfsek.terra.lifecycle.util.LoadContextHolder;
 import com.dfsek.terra.lifecycle.util.RegistryHack;
+import com.dfsek.terra.minecraft.attribute.VanillaContext;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.attribute.VanillaContext;
 import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 
 

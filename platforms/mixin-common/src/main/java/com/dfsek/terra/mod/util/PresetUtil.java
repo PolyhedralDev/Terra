@@ -5,6 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
+import net.minecraft.world.timeline.Timeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,24 +30,26 @@ import java.util.Locale;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
+import com.dfsek.terra.api.util.range.ConstantRange;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.minecraft.attribute.MinecraftDimensionFactory;
+import com.dfsek.terra.minecraft.attribute.MinecraftTimelines;
+import com.dfsek.terra.minecraft.attribute.PackParents;
+import com.dfsek.terra.minecraft.attribute.TimelineRef;
+import com.dfsek.terra.minecraft.attribute.VanillaContext;
+import com.dfsek.terra.minecraft.attribute.WorldSettings;
 import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.attribute.AttributeReport;
-import com.dfsek.terra.mod.attribute.MinecraftAttributeParents;
-import com.dfsek.terra.mod.attribute.MinecraftDimensionFactory;
-import com.dfsek.terra.mod.attribute.MinecraftTimelines;
-import com.dfsek.terra.mod.attribute.PackParents;
-import com.dfsek.terra.mod.attribute.VanillaContext;
 import com.dfsek.terra.mod.generation.GenerationSettings;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
+import com.dfsek.terra.world.attribute.platform.AttributeReport;
 
 
 public class PresetUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetUtil.class);
     private static final List<Pair<Identifier, Boolean>> PRESETS = new ArrayList<>();
 
-    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform, boolean extended,
-                                                              boolean packInMetapack) {
+    public static Pair<Identifier, WorldPreset> createDefault(ConfigPack pack, ModPlatform platform, boolean extended) {
         Registry<DimensionType> dimensionTypeRegistry = platform.dimensionTypeRegistry();
         Registry<NoiseGeneratorSettings> chunkGeneratorSettingsRegistry = platform.chunkGeneratorSettingsRegistry();
         Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists =
@@ -60,7 +64,7 @@ public class PresetUtil {
 
         HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap = new HashMap<>();
 
-        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, dimensionMap, packInMetapack);
+        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, dimensionMap);
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(),
             dimensionMap);
@@ -85,7 +89,7 @@ public class PresetUtil {
         HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap = new HashMap<>();
 
         metaPack.packs().forEach((key, pack) -> {
-            insertCustom(platform, key, pack, dimensionTypeRegistry, dimensionMap, false);
+            insertCustom(platform, key, pack, dimensionTypeRegistry, dimensionMap);
         });
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(),
@@ -97,33 +101,37 @@ public class PresetUtil {
     }
 
     private static void insertCustom(ModPlatform platform, String key, ConfigPack pack, Registry<DimensionType> dimensionTypeRegistry,
-                                     HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap, boolean packInMetapack) {
+                                     HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap) {
         Identifier demensionIdentifier = Identifier.parse(key);
 
         MinecraftAttributeParents parents = platform.attributeParents();
         VanillaContext context = parents.context();
         if(context == null) throw new IllegalStateException("no registry load has begun");
-        PackParents packParents = parents.prepare(pack, platform.getAttributeHandle().pack(pack), AttributeReport.logging(pack));
+        ResourceKey<DimensionType> filled = MinecraftUtil.registerDimensionTypeKey(demensionIdentifier);
+        if(context.dimensionTypes().get(filled).isEmpty()) filled = BuiltinDimensionTypes.OVERWORLD;
+        PackParents packParents = parents.prepare(pack, platform.getAttributeHandle().pack(pack), AttributeReport.logging(pack), filled);
         MinecraftDimensionFactory factory = new MinecraftDimensionFactory(platform.getAttributeHandle(), context);
 
-        Identifier dimensionTypeID = Identifier.fromNamespaceAndPath("terra", pack.getID().toLowerCase(Locale.ROOT));
+        Identifier dimensionTypeID = MinecraftDimensionFactory.typeId(pack, filled, false);
+        ResourceKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(dimensionTypeID);
 
         DimensionType dimensionType;
-        if(!packInMetapack) {
-            dimensionType = factory.create(packParents, MinecraftTimelines.tagFor(pack, packParents));
-            ResourceKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(
-                dimensionTypeID);
-
-            Registry.registerForHolder(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
+        if(dimensionTypeRegistry.containsKey(dimensionTypeRegistryKey)) {
+            // Relies on Fabric API binding values at register; vanilla binds them at the freeze.
+            dimensionType = dimensionTypeRegistry.getValue(dimensionTypeRegistryKey);
         } else {
-            dimensionType = dimensionTypeRegistry.getValue(dimensionTypeID);
+            TagKey<Timeline> timelines = MinecraftTimelines.tagFor(dimensionTypeID, pack, packParents);
+            dimensionType = factory.create(packParents, timelines == null ? null : new TimelineRef.Tag(timelines));
+            Registry.registerForHolder(dimensionTypeRegistry, dimensionTypeRegistryKey, dimensionType);
         }
 
         Holder<DimensionType> dimensionTypeRegistryEntry = dimensionTypeRegistry.wrapAsHolder(dimensionType);
 
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
 
-        GenerationSettings generatorSettings = factory.generationSettings(packParents, dimensionType);
+        WorldSettings s = factory.worldSettings(packParents, dimensionType);
+        GenerationSettings generatorSettings = new GenerationSettings(new ConstantRange(s.minY(), s.minY() + s.height()),
+            s.seaLevel(), s.mobGeneration(), s.spawnHeight());
 
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
 

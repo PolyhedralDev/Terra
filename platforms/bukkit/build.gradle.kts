@@ -27,11 +27,18 @@ tasks {
         minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
+        // Modrinth's Wyck lacks our fixes.
+        val wyckJar = file("${System.getProperty("user.home")}/Wyck/paper/build/libs/Wyck-${Versions.Bukkit.wyck}.jar")
+        pluginJars(wyckJar)
+        doFirst {
+            if(!wyckJar.isFile) {
+                throw GradleException("No Wyck plugin jar at $wyckJar: build and publish ~/Wyck (Wyck ${Versions.Bukkit.wyck}) first")
+            }
+        }
 
         downloadPlugins {
             modrinth("viaversion", "5.12.2")
             modrinth("viabackwards", "5.12.2")
-            modrinth("wyck", Versions.Bukkit.wyck)
         }
     }
 }

@@ -15,9 +15,13 @@ import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
 
 
 public class BukkitBiomeProvider extends BiomeProvider implements Handle {
-    private final com.dfsek.terra.api.world.biome.generation.BiomeProvider delegate;
+    private volatile com.dfsek.terra.api.world.biome.generation.BiomeProvider delegate;
 
     public BukkitBiomeProvider(com.dfsek.terra.api.world.biome.generation.BiomeProvider delegate) { this.delegate = delegate; }
+
+    public void setDelegate(com.dfsek.terra.api.world.biome.generation.BiomeProvider delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     public @NotNull org.bukkit.block.Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {

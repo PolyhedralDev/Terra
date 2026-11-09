@@ -11,18 +11,18 @@ import java.util.ArrayList;
 
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.minecraft.attribute.BiomeTags.PlatformTagSource;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
+import com.dfsek.terra.minecraft.attribute.PackParents;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.attribute.AttributeReport;
-import com.dfsek.terra.mod.attribute.MinecraftAttributeParents;
-import com.dfsek.terra.mod.attribute.MinecraftBiomeFactory;
-import com.dfsek.terra.mod.attribute.PackParents;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 import com.dfsek.terra.mod.util.BiomeUtil;
 import com.dfsek.terra.mod.util.MinecraftUtil;
-import com.dfsek.terra.mod.util.TagUtil;
+import com.dfsek.terra.world.attribute.platform.AttributeReport;
 
 
 public final class LifecycleBiomeUtil {
@@ -81,14 +81,15 @@ public final class LifecycleBiomeUtil {
             // Registered by an earlier load; edits wait for the next registry load.
             proto.setDelegate(MinecraftUtil.getEntry(registry, identifier).orElseThrow());
         } else {
-            MinecraftBiomeFactory.Built built = factory.create(vanilla, vanillaBiome, biome, packParents, packParents.report());
+            MinecraftBiomeFactory.Built built = factory.create(vanilla, vanillaBiome, biome, packParents, packParents.report(),
+                vanillaBiome.getGenerationSettings());
             proto.setDelegate(Registry.registerForHolder(registry, MinecraftUtil.registerBiomeKey(identifier).identifier(),
                 built.biome()));
             VillagerTypeAccessor.getBiomeTypeToIdMap().put(ResourceKey.create(Registries.BIOME, identifier), built.villagerType());
         }
 
         BiomeUtil.TERRA_BIOME_PLATFORM_TAGS.put(identifier,
-            new TagUtil.PlatformTagSource(packParents.report(), biome.getID(), biome.getPlatformTags()));
+            new PlatformTagSource(packParents.report(), biome.getID(), biome.getPlatformTags()));
         BiomeUtil.TERRA_BIOME_MAP.computeIfAbsent(vanilla.identifier(), i -> new ArrayList<>()).add(identifier);
     }
 }

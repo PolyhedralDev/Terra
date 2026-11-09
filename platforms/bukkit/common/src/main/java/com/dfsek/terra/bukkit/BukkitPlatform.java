@@ -22,60 +22,47 @@ import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.bukkit.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.bukkit.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.bukkit.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.bukkit.config.EntityTypeTemplate;
-import com.dfsek.terra.bukkit.config.MusicSoundTemplate;
-import com.dfsek.terra.bukkit.config.SoundEventTemplate;
-import com.dfsek.terra.bukkit.config.SpawnCostConfig;
-import com.dfsek.terra.bukkit.config.SpawnEntryConfig;
-import com.dfsek.terra.bukkit.config.SpawnSettingsTemplate;
-import com.dfsek.terra.bukkit.config.SpawnTypeConfig;
-import com.dfsek.terra.bukkit.config.VillagerTypeTemplate;
 
-import dev.wyck.biome.TemperatureModifier;
-import dev.wyck.biome.entity.MobCategory;
-import dev.wyck.biome.entity.MobSpawnSettings;
-import dev.wyck.environment.GrassColorModifier;
-import dev.wyck.environment.particle.ParticleCatalog;
-import dev.wyck.environment.sounds.AmbientAdditionsSettings;
-import dev.wyck.environment.sounds.AmbientMoodSettings;
-import dev.wyck.environment.sounds.Music;
-import dev.wyck.environment.sounds.SoundEvent;
-import dev.wyck.keys.ResourceKey;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Villager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.CancellationException;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.attribute.AttributeParents;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.bukkit.attribute.PaperDimensions;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.handles.BukkitItemHandle;
 import com.dfsek.terra.bukkit.handles.BukkitWorldHandle;
+import com.dfsek.terra.bukkit.util.ServerThread;
 import com.dfsek.terra.bukkit.world.BiomeHandler;
 import com.dfsek.terra.bukkit.world.BukkitPlatformBiome;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
 
 
 public class BukkitPlatform extends AbstractPlatform {
     private static final Logger LOGGER = LoggerFactory.getLogger(BukkitPlatform.class);
+    private static final long SERVER_THREAD_POLL_MILLIS = 50;
 
     private final ItemHandle itemHandle = new BukkitItemHandle();
 
     private final WorldHandle handle = new BukkitWorldHandle();
+
+    private final MinecraftAttributeParents attributeParents = new MinecraftAttributeParents(getAttributeHandle());
+
+    private final PaperDimensions dimensions = new PaperDimensions(getAttributeHandle(), attributeParents,
+        () -> !Bukkit.getOnlinePlayers().isEmpty());
 
     private final TerraBukkitPlugin plugin;
 
@@ -95,11 +82,43 @@ public class BukkitPlatform extends AbstractPlatform {
     }
 
     @Override
+    public AttributeParents getAttributeParents() {
+        return attributeParents;
+    }
+
+    public MinecraftAttributeParents attributeParents() {
+        return attributeParents;
+    }
+
+    public PaperDimensions dimensions() {
+        return dimensions;
+    }
+
+    @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        boolean succeed = loadConfigPacks();
-        BiomeHandler.registerBiomes(getRawConfigRegistry());
-        BiomeHandler.addToVanillaTags(getRawConfigRegistry());
+        attributeParents.beginPackReload();
+        try {
+            boolean succeed = loadConfigPacks();
+            // Packs load off the server thread; registries, tags and generators change on it.
+            ServerThread.run(this::applyReloadedPacks, task -> plugin.getGlobalRegionScheduler().execute(plugin, task),
+                Bukkit::isGlobalTickThread, () -> Bukkit.isStopping() || !plugin.isEnabled(), SERVER_THREAD_POLL_MILLIS);
+            if(succeed) {
+                LOGGER.info("Packs reloaded; dimension types, generation settings, timelines and existing biomes need a restart.");
+            }
+
+            return succeed;
+        } catch(CancellationException e) {
+            LOGGER.warn("Packs not reloaded: the server stopped before they could be applied");
+            return false;
+        } finally {
+            attributeParents.endPackReload();
+        }
+    }
+
+    private void applyReloadedPacks() {
+        BiomeHandler.registerBiomes(this);
+        BiomeHandler.addToVanillaTags(this);
 
         Bukkit.getWorlds().forEach(world -> {
             if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
@@ -109,8 +128,6 @@ public class BukkitPlatform extends AbstractPlatform {
                 });
             }
         });
-
-        return succeed;
     }
 
     @Override
@@ -152,30 +169,7 @@ public class BukkitPlatform extends AbstractPlatform {
     public void register(TypeRegistry registry) {
         super.register(registry);
         registry.registerLoader(BlockState.class, (type, o, loader, depthTracker) -> handle.createBlockState((String) o))
-            .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker))
-            .registerLoader(ResourceKey.class, (type, o, loader, depthTracker) -> {
-                NamespacedKey key = NamespacedKey.fromString(((String) o).toLowerCase(Locale.ROOT));
-                if(key == null) throw new LoadException("Invalid identifier: " + o, depthTracker);
-                return ResourceKey.of(key);
-            })
-            .registerLoader(GrassColorModifier.class,
-                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase(
-                    Locale.ROOT)))
-            .registerLoader(TemperatureModifier.class,
-                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase(
-                    Locale.ROOT)))
-            .registerLoader(MobCategory.class, (type, o, loader, depthTracker) -> MobCategory.valueOf((String) o))
-            .registerLoader(ParticleCatalog.class, BiomeParticleConfigTemplate::new)
-            .registerLoader(SoundEvent.class, SoundEventTemplate::new)
-            .registerLoader(AmbientMoodSettings.class, BiomeMoodSoundTemplate::new)
-            .registerLoader(AmbientAdditionsSettings.class, BiomeAdditionsSoundTemplate::new)
-            .registerLoader(Music.class, MusicSoundTemplate::new)
-            .registerLoader(EntityType.class, EntityTypeTemplate::new)
-            .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-            .registerLoader(SpawnEntryConfig.class, SpawnEntryConfig::new)
-            .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-            .registerLoader(MobSpawnSettings.class, SpawnSettingsTemplate::new)
-            .registerLoader(Villager.Type.class, VillagerTypeTemplate::new);
+            .registerLoader(PlatformBiome.class, (type, o, loader, depthTracker) -> parseBiome((String) o, depthTracker));
     }
 
     protected BukkitPlatformBiome parseBiome(String id, DepthTracker depthTracker) throws LoadException {

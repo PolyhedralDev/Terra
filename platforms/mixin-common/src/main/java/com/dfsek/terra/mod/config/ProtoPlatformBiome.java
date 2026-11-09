@@ -26,11 +26,12 @@ import net.minecraft.world.level.biome.Biome;
 import java.util.Objects;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.mod.attribute.AttributeSlots;
 import com.dfsek.terra.mod.util.MinecraftUtil;
+import com.dfsek.terra.world.attribute.platform.AttributeSlots;
+import com.dfsek.terra.world.attribute.platform.ParentEntryHolder;
 
 
-public class ProtoPlatformBiome implements PlatformBiome {
+public class ProtoPlatformBiome implements PlatformBiome, ParentEntryHolder {
     private final Identifier identifier;
 
     private Holder<Biome> delegate;
@@ -59,6 +60,7 @@ public class ProtoPlatformBiome implements PlatformBiome {
         this.delegate = Objects.requireNonNull(delegate);
     }
 
+    @Override
     public AttributeSlots parentEntries() {
         return parentEntries;
     }

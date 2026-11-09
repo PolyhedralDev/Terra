@@ -8,13 +8,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.minecraft.attribute.BiomeTags.PlatformTagSource;
 
 
 public class BiomeUtil {
     public static final Map<Identifier, List<Identifier>>
         TERRA_BIOME_MAP = new HashMap<>();
 
-    public static final Map<Identifier, TagUtil.PlatformTagSource>
+    public static final Map<Identifier, PlatformTagSource>
         TERRA_BIOME_PLATFORM_TAGS = new HashMap<>();
 
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
@@ -26,7 +27,7 @@ public class BiomeUtil {
         return Map.copyOf(TERRA_BIOME_MAP);
     }
 
-    public static Map<Identifier, TagUtil.PlatformTagSource> getTerraBiomePlatformTags() {
+    public static Map<Identifier, PlatformTagSource> getTerraBiomePlatformTags() {
         return Map.copyOf(TERRA_BIOME_PLATFORM_TAGS);
     }
 }

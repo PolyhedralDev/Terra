@@ -17,14 +17,19 @@
 
 package com.dfsek.terra.bukkit.world;
 
+import java.util.Objects;
+
 import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.api.properties.PropertyHolder;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.world.attribute.platform.AttributeSlots;
+import com.dfsek.terra.world.attribute.platform.ParentEntryHolder;
 
 
-public class BukkitPlatformBiome implements PlatformBiome, PropertyHolder {
+public class BukkitPlatformBiome implements PlatformBiome, PropertyHolder, ParentEntryHolder {
     private final org.bukkit.block.Biome biome;
     private final Context context = new Context();
+    private volatile AttributeSlots parentEntries = AttributeSlots.EMPTY;
 
     public BukkitPlatformBiome(org.bukkit.block.Biome biome) {
         this.biome = biome;
@@ -38,5 +43,14 @@ public class BukkitPlatformBiome implements PlatformBiome, PropertyHolder {
     @Override
     public Context getContext() {
         return context;
+    }
+
+    @Override
+    public AttributeSlots parentEntries() {
+        return parentEntries;
+    }
+
+    public void setParentEntries(AttributeSlots parentEntries) {
+        this.parentEntries = Objects.requireNonNull(parentEntries, "parentEntries");
     }
 }

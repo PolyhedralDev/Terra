@@ -129,11 +129,9 @@ public abstract class AbstractPlatform implements Platform {
 
     public static int getMoonriseGenerationThreadsWithReflection() {
         try {
-            Class<?> prioritisedThreadPoolClazz = Class.forName("ca.spottedleaf.concurrentutil.executor.thread.PrioritisedThreadPool");
-            Method getCoreThreadsMethod = prioritisedThreadPoolClazz.getDeclaredMethod("getCoreThreads");
-            getCoreThreadsMethod.setAccessible(true);
             Class<?> moonriseCommonClazz = Class.forName("ca.spottedleaf.moonrise.common.util.MoonriseCommon");
-            Object pool = moonriseCommonClazz.getDeclaredField("WORKER_POOL").get(null);
+            Object pool = moonriseCommonClazz.getField("WORKER_POOL").get(null);
+            Method getCoreThreadsMethod = pool.getClass().getMethod("getCoreThreads");
             int threads = ((Thread[]) getCoreThreadsMethod.invoke(pool)).length;
             logger.info("{} found, setting {} generation threads.", moonrise, threads);
             return threads;

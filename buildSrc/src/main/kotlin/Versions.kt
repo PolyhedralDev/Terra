@@ -63,7 +63,7 @@ object Versions {
         const val paperBuild = "$minecraft.build.244-stable"
         const val paper = paperBuild
         const val runPaper = "3.0.2"
-        const val wyck = "4.0.0-837d6ec"
+        const val wyck = "4.0.0-0f573ad7"
         const val cloud = "2.0.1"
         const val multiverse = "5.3.0"
     }

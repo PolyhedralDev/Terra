@@ -16,6 +16,9 @@ dependencies {
     implementation(project(":platforms:mixin-common")) { isTransitive = false }
     "developmentFabric"(project(":platforms:mixin-common")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-common", configuration = "transformProductionFabric")) { isTransitive = false }
+    implementation(project(":platforms:minecraft-common")) { isTransitive = false }
+    "developmentFabric"(project(":platforms:minecraft-common")) { isTransitive = false }
+    shaded(project(path = ":platforms:minecraft-common", configuration = "transformProductionFabric")) { isTransitive = false }
     implementation(project(":platforms:mixin-lifecycle")) { isTransitive = false }
     "developmentFabric"(project(":platforms:mixin-lifecycle")) { isTransitive = false }
     shaded(project(path = ":platforms:mixin-lifecycle", configuration = "transformProductionFabric")) { isTransitive = false }

@@ -1,5 +1,6 @@
 name: "Terra"
 main: "com.dfsek.terra.bukkit.TerraBukkitPlugin"
+bootstrapper: "com.dfsek.terra.bukkit.TerraBukkitBootstrap"
 version: "@VERSION@"
 load: "STARTUP"
 authors: [ "dfsek", "duplexsystem", "Astrash", "solonovamax", "Sancires", "Aureus", "RogueShade", "OakLoaf" ]

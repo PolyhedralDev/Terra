@@ -47,8 +47,10 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private static final Logger LOGGER = LoggerFactory.getLogger(BukkitChunkGeneratorWrapper.class);
     private final BlockState air;
     private final BukkitBlockPopulator blockPopulator;
-    private ChunkGenerator delegate;
-    private ConfigPack pack;
+    private volatile @Nullable BukkitBiomeProvider biomeProvider;
+    private volatile ChunkGenerator delegate;
+    private volatile ConfigPack pack;
+    private volatile boolean mobGeneration = true;
 
 
     public BukkitChunkGeneratorWrapper(ChunkGenerator delegate, ConfigPack pack, BlockState air) {
@@ -64,7 +66,9 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
 
     @Override
     public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
-        return new BukkitBiomeProvider(pack.getBiomeProvider());
+        BukkitBiomeProvider provider = new BukkitBiomeProvider(pack.getBiomeProvider());
+        biomeProvider = provider;
+        return provider;
     }
 
     @Override
@@ -117,7 +121,11 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
 
     @Override
     public boolean shouldGenerateMobs() {
-        return true;
+        return mobGeneration;
+    }
+
+    public void setMobGeneration(boolean mobGeneration) {
+        this.mobGeneration = mobGeneration;
     }
 
     @Override
@@ -132,6 +140,9 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     public void setPack(ConfigPack pack) {
         this.pack = pack;
         setDelegate(pack.getGeneratorProvider().newInstance(pack));
+        BukkitBiomeProvider provider = biomeProvider;
+        if(provider != null) provider.setDelegate(pack.getBiomeProvider());
+        blockPopulator.setPack(pack);
     }
 
     @Override

@@ -38,9 +38,10 @@ import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.bukkit.attribute.PaperVanilla;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
-import com.dfsek.terra.bukkit.listeners.BiomeListener;
 import com.dfsek.terra.bukkit.listeners.CommonListener;
+import com.dfsek.terra.bukkit.listeners.DimensionListener;
 import com.dfsek.terra.bukkit.world.BiomeHandler;
 import com.dfsek.terra.bukkit.world.BukkitAdapter;
 
@@ -56,8 +57,10 @@ public class TerraBukkitPlugin extends JavaPlugin {
 
         platform = new BukkitPlatform(this);
         platform.getEventManager().callEvent(new PlatformInitializationEvent()); // Loads config packs
-        BiomeHandler.registerBiomes(platform.getRawConfigRegistry());
-        BiomeHandler.addToVanillaTags(platform.getRawConfigRegistry());
+        platform.attributeParents().beginLoad(PaperVanilla.context(PaperVanilla.server().registryAccess()));
+        BiomeHandler.registerBiomes(platform);
+        platform.dimensions().registerPacks(platform.getRawConfigRegistry().entries());
+        BiomeHandler.addToVanillaTags(platform);
 
         try {
             PaperCommandManager<CommandSender> commandManager = getCommandSenderPaperCommandManager();
@@ -76,7 +79,7 @@ public class TerraBukkitPlugin extends JavaPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(new CommonListener(platform), this); // Register master event listener
-        Bukkit.getPluginManager().registerEvents(new BiomeListener(platform), this);
+        Bukkit.getPluginManager().registerEvents(new DimensionListener(platform.dimensions()), this);
     }
 
     @NotNull

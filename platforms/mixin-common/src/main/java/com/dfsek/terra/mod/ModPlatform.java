@@ -24,7 +24,7 @@ import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.attribute.AttributeParents;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.mod.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
 import com.dfsek.terra.mod.handle.MinecraftItemHandle;
 import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
@@ -47,7 +47,7 @@ public abstract class ModPlatform extends AbstractPlatform {
         getRawConfigRegistry()
             .forEach(pack -> {
                 boolean packInMetapack = configPacksInMetaPack.contains(pack.getID());
-                PresetUtil.createDefault(pack, this, packInMetapack, packInMetapack).apply(registerFunction);
+                PresetUtil.createDefault(pack, this, packInMetapack).apply(registerFunction);
             });
     }
 

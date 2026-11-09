@@ -11,14 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
+import com.dfsek.terra.minecraft.attribute.MinecraftTimelines;
+import com.dfsek.terra.minecraft.attribute.PackParents;
+import com.dfsek.terra.minecraft.attribute.VanillaContext;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.attribute.AttributeReport;
-import com.dfsek.terra.mod.attribute.MinecraftAttributeParents;
-import com.dfsek.terra.mod.attribute.MinecraftBiomeFactory;
-import com.dfsek.terra.mod.attribute.MinecraftTimelines;
-import com.dfsek.terra.mod.attribute.PackParents;
-import com.dfsek.terra.mod.attribute.VanillaContext;
+import com.dfsek.terra.world.attribute.platform.AttributeReport;
 
 
 public final class LifecycleUtil {

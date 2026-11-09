@@ -10,6 +10,7 @@ dependencies {
     compileOnly("io.github.llamalad7:mixinextras-common:${Versions.Mod.mixinExtras}")
 
     implementation(project(":platforms:mixin-common")) { isTransitive = false }
+    implementation(project(":platforms:minecraft-common")) { isTransitive = false }
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
 

@@ -1,22 +1,21 @@
 package com.dfsek.terra.bukkit.world;
 
-import dev.wyck.biome.Biome;
-import dev.wyck.biome.BiomeSpecialEffects;
-import dev.wyck.biome.ClimateSettings;
-import dev.wyck.environment.attribute.EnvironmentAttributeMap;
-import dev.wyck.environment.attribute.EnvironmentAttributeSupplier;
-import dev.wyck.environment.attribute.EnvironmentAttributes;
-import dev.wyck.environment.sounds.AmbientSounds;
-import dev.wyck.environment.sounds.BackgroundMusic;
-import dev.wyck.keys.ResourceKey;
-import dev.wyck.registry.BiomeRegistry;
-import dev.wyck.tags.TagSet;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
-import io.papermc.paper.registry.tag.Tag;
+import io.papermc.paper.tag.PostFlattenTagRegistrar;
+import net.kyori.adventure.key.Key;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.npc.villager.VillagerType;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Villager;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,147 +23,345 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import com.dfsek.terra.api.config.ConfigPack;
-import com.dfsek.terra.api.properties.Context;
-import com.dfsek.terra.bukkit.config.VanillaBiomeProperties;
-import com.dfsek.terra.registry.master.ConfigRegistry;
+import com.dfsek.terra.bukkit.BukkitPlatform;
+import com.dfsek.terra.bukkit.attribute.PaperVanilla;
+import com.dfsek.terra.bukkit.attribute.WyckBridge;
+import com.dfsek.terra.minecraft.attribute.BiomeTags;
+import com.dfsek.terra.minecraft.attribute.BiomeTags.PlatformTagSource;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
+import com.dfsek.terra.minecraft.attribute.PackParents;
+import com.dfsek.terra.minecraft.attribute.VanillaContext;
+import com.dfsek.terra.world.attribute.platform.AttributeReport;
+import com.dfsek.terra.world.attribute.platform.AttributeSlots;
 
 
 public final class BiomeHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiomeHandler.class);
-    private static final Map<NamespacedKey, Villager.Type> VILLAGER_TYPES = new ConcurrentHashMap<>();
+    private static final Map<Identifier, List<Identifier>> BY_PARENT = new HashMap<>();
+    private static final Map<Identifier, PlatformTagSource> PLATFORM_TAGS = new HashMap<>();
 
     private BiomeHandler() { }
 
-    public static void registerBiomes(ConfigRegistry configRegistry) {
+    /**
+     * Must run on the server thread.
+     */
+    public static synchronized void registerBiomes(BukkitPlatform platform) {
+        MinecraftAttributeParents parents = platform.attributeParents();
+        VanillaContext context = parents.context();
+        if(context == null) throw new IllegalStateException("no registry load has begun");
+        MinecraftBiomeFactory factory = new MinecraftBiomeFactory(platform.getAttributeHandle(), context);
+        Registry<Biome> registry = PaperVanilla.server().registryAccess().lookupOrThrow(Registries.BIOME);
         org.bukkit.Registry<org.bukkit.block.Biome> bukkitRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-        List<Biome> toRegister = new ArrayList<>();
-        List<Runnable> afterRegistration = new ArrayList<>();
+        boolean playersOnline = !Bukkit.getOnlinePlayers().isEmpty();
+        AtomicInteger deferred = new AtomicInteger();
 
-        configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((key, biome) -> {
-            BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
-            ResourceKey vanillaKey = ResourceKey.of(platformBiome.getHandle().getKey());
-            ResourceKey terraKey = ResourceKey.of("terra", createBiomeID(pack, key));
-
-            NamespacedKey bukkitKey = new NamespacedKey(terraKey.namespace(), terraKey.path());
-            VanillaBiomeProperties properties = biome.getContext().has(VanillaBiomeProperties.class)
-                                                ? biome.getContext().get(VanillaBiomeProperties.class)
-                                                : new VanillaBiomeProperties();
-
-            if(bukkitRegistry.get(bukkitKey) == null) {
-                toRegister.add(createBiome(terraKey, getBiomeOrThrow(vanillaKey), properties));
-            }
-
-            afterRegistration.add(() -> {
-                org.bukkit.block.Biome bukkitBiome = bukkitRegistry.getOrThrow(bukkitKey);
-                platformBiome.getContext().put(new BukkitBiomeInfo(terraKey, vanillaKey, bukkitBiome));
-                if(properties.getVillagerType() != null) {
-                    VILLAGER_TYPES.put(bukkitKey, properties.getVillagerType());
+        Run<dev.wyck.biome.Biome> run = collect(platform.getRawConfigRegistry().entries(),
+            pack -> parents.prepare(pack, platform.getAttributeHandle().pack(pack), AttributeReport.logging(pack)),
+            (pack, packParents, packRun) -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach((id, biome) -> {
+                BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
+                ResourceKey<Biome> parentKey = ResourceKey.create(Registries.BIOME,
+                    Identifier.parse(platformBiome.getHandle().getKey().toString()));
+                Biome parent = registry.getValue(parentKey);
+                if(parent == null) {
+                    LOGGER.error("Pack \"{}\", config \"{}\": biome skipped: no vanilla biome \"{}\"", pack.getID(), biome.getID(),
+                        parentKey.identifier());
+                    return;
                 }
-            });
-        }));
+                platformBiome.setParentEntries(parentEntries(() -> parents.biomeEntries(packParents, parentKey, parent), pack.getID(),
+                    biome.getID(), LOGGER::warn));
 
-        LOGGER.info("Registering {} custom biomes through Wyck...", toRegister.size());
-        BiomeRegistry.registry().register(toRegister);
-        afterRegistration.forEach(Runnable::run);
+                Identifier terraId = Identifier.fromNamespaceAndPath("terra", createBiomeID(pack, id));
+                packRun.add(terraId, parentKey.identifier(), registry.containsKey(terraId), () -> {
+                    if(playersOnline) {
+                        deferred.incrementAndGet();
+                        return null;
+                    }
+                    ResourceKey<VillagerType> parentVillagerType = Objects.requireNonNullElse(context.villagerTypes().apply(parentKey),
+                        VillagerType.PLAINS);
+                    return registration(() -> build(factory, parentKey, parent, biome, packParents), b -> WyckBridge.biome(terraId, b),
+                        parent, parentVillagerType, pack.getID(), biome.getID(), LOGGER::warn);
+                }, new PlatformTagSource(packParents.report(), biome.getID(), biome.getPlatformTags()), () -> {
+                    NamespacedKey bukkitKey = new NamespacedKey(terraId.getNamespace(), terraId.getPath());
+                    org.bukkit.block.Biome bukkitBiome = bukkitRegistry.get(bukkitKey);
+                    if(bukkitBiome == null) {
+                        LOGGER.error("Pack \"{}\", config \"{}\": biome not registered as \"{}\"", pack.getID(), biome.getID(),
+                            terraId);
+                        return;
+                    }
+                    platformBiome.getContext().put(new BukkitBiomeInfo(dev.wyck.keys.ResourceKey.of(bukkitKey), bukkitBiome));
+                }, pack.getID(), biome.getID(), LOGGER::warn);
+            }), LOGGER::warn);
+
+        if(deferred.get() > 0) {
+            LOGGER.info("Players are online, so {} new custom biomes generate as their vanilla biomes until the server restarts.",
+                        deferred.get());
+        }
+        registerNew(run.toRegister, WyckBridge::registerBiomes, LOGGER::info);
+        Map<ResourceKey<Biome>, ResourceKey<VillagerType>> villagerTypes = PaperVanilla.villagerTypes();
+        run.villagerTypes.forEach((terraId, type) -> villagerTypes.put(ResourceKey.create(Registries.BIOME, terraId), type));
+        BY_PARENT.clear();
+        BY_PARENT.putAll(run.byParent);
+        PLATFORM_TAGS.clear();
+        PLATFORM_TAGS.putAll(run.platformTags);
+        run.afterRegistration.forEach(Runnable::run);
     }
 
-    public static void addToVanillaTags(ConfigRegistry configRegistry) {
-        Map<TypedKey<org.bukkit.block.Biome>, Set<Biome>> terraBiomesByVanilla = new HashMap<>();
-        configRegistry.forEach(pack -> pack.getRegistry(com.dfsek.terra.api.world.biome.Biome.class).forEach(biome -> {
-            Context context = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext();
-            if(context.has(BukkitBiomeInfo.class)) {
-                BukkitBiomeInfo info = context.get(BukkitBiomeInfo.class);
-                TypedKey<org.bukkit.block.Biome> vanillaKey = TypedKey.create(RegistryKey.BIOME, info.vanillaKey().key());
-                terraBiomesByVanilla.computeIfAbsent(vanillaKey, k -> new HashSet<>()).add(Biome.reference(info.biomeKey()));
+    static <P, B> Run<B> collect(Iterable<ConfigPack> packs, Function<ConfigPack, P> prepare, PackCollector<P, B> collectPack,
+                                 Consumer<String> warn) {
+        Run<B> run = new Run<>(null);
+        for(ConfigPack pack : packs) {
+            P prepared;
+            try {
+                prepared = prepare.apply(pack);
+            } catch(RuntimeException e) {
+                LOGGER.debug("Failed to read the attributes of pack {}", pack.getID(), e);
+                warn.accept("Pack \"" + pack.getID() + "\": biomes skipped: its attributes could not be read");
+                continue;
             }
-        }));
+            Run<B> packRun = new Run<>(run);
+            try {
+                collectPack.collect(pack, prepared, packRun);
+            } catch(RuntimeException e) {
+                LOGGER.debug("Failed to collect the biomes of pack {}", pack.getID(), e);
+                warn.accept("Pack \"" + pack.getID() + "\": biomes skipped: they could not be built");
+                continue;
+            }
+            run.addAll(packRun);
+        }
+        return run;
+    }
 
-        org.bukkit.Registry<org.bukkit.block.Biome> bukkitRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
-        int count = 0;
-        for(Tag<org.bukkit.block.Biome> tag : bukkitRegistry.getTags()) {
-            Set<Biome> members = new HashSet<>();
-            terraBiomesByVanilla.forEach((vanillaKey, terraBiomes) -> {
-                if(tag.contains(vanillaKey)) {
-                    members.addAll(terraBiomes);
+    @FunctionalInterface
+    interface PackCollector<P, B> {
+        void collect(ConfigPack pack, P prepared, Run<B> run);
+    }
+
+    static AttributeSlots parentEntries(Supplier<AttributeSlots> read, String pack, String config, Consumer<String> warn) {
+        try {
+            return read.get();
+        } catch(RuntimeException e) {
+            LOGGER.debug("Failed to read the parent attributes of Terra biome {} of pack {}", config, pack, e);
+            warn.accept("Pack \"" + pack + "\", config \"" + config + "\": parent attributes ignored: they could not be read");
+            return AttributeSlots.EMPTY;
+        }
+    }
+
+    static final class Run<B> {
+        private final @Nullable Run<B> before;
+        final List<B> toRegister = new ArrayList<>();
+        final Map<Identifier, ResourceKey<VillagerType>> villagerTypes = new LinkedHashMap<>();
+        final Map<Identifier, List<Identifier>> byParent = new LinkedHashMap<>();
+        final Map<Identifier, PlatformTagSource> platformTags = new LinkedHashMap<>();
+        final List<Runnable> afterRegistration = new ArrayList<>();
+
+        Run(@Nullable Run<B> before) {
+            this.before = before;
+        }
+
+        void add(Identifier terraId, Identifier parent, boolean registered, Supplier<@Nullable Registration<B>> registration,
+                 PlatformTagSource tags, Runnable after, String pack, String config, Consumer<String> warn) {
+            if(recorded(terraId)) {
+                warn.accept("Pack \"" + pack + "\", config \"" + config + "\": biome \"" + terraId
+                            + "\" shared with another config: their IDs differ only in case");
+                afterRegistration.add(after);
+                return;
+            }
+            if(!registered) {
+                Registration<B> queued = registration.get();
+                if(queued == null) return;
+                toRegister.add(queued.biome());
+                villagerTypes.put(terraId, queued.villagerType());
+            }
+            byParent.computeIfAbsent(parent, i -> new ArrayList<>()).add(terraId);
+            platformTags.put(terraId, tags);
+            afterRegistration.add(after);
+        }
+
+        private boolean recorded(Identifier terraId) {
+            return platformTags.containsKey(terraId) || (before != null && before.recorded(terraId));
+        }
+
+        private void addAll(Run<B> run) {
+            toRegister.addAll(run.toRegister);
+            villagerTypes.putAll(run.villagerTypes);
+            run.byParent.forEach((parent, biomes) -> byParent.computeIfAbsent(parent, i -> new ArrayList<>()).addAll(biomes));
+            platformTags.putAll(run.platformTags);
+            afterRegistration.addAll(run.afterRegistration);
+        }
+    }
+
+    static <B> void registerNew(List<B> biomes, Consumer<List<B>> register, Consumer<String> info) {
+        if(biomes.isEmpty()) {
+            info.accept("No new custom biomes to register.");
+            return;
+        }
+        info.accept("Registering " + biomes.size() + " custom biomes through Wyck...");
+        register.accept(biomes);
+    }
+
+    public static MinecraftBiomeFactory.Built build(MinecraftBiomeFactory factory, ResourceKey<Biome> parentKey, Biome parent,
+                                                    com.dfsek.terra.api.world.biome.Biome terraBiome, PackParents pack) {
+        return factory.create(parentKey, parent, terraBiome, pack, pack.report(), BiomeGenerationSettings.EMPTY);
+    }
+
+    /**
+     * Must run on the server thread.
+     */
+    public static synchronized void addToVanillaTags(BukkitPlatform platform) {
+        Registry<Biome> registry = PaperVanilla.server().registryAccess().lookupOrThrow(Registries.BIOME);
+        Map<TagKey<Biome>, List<Holder<Biome>>> before = new LinkedHashMap<>();
+        registry.getTags().forEach(tag -> before.put(tag.key(), new ArrayList<>(tag.stream().toList())));
+        Map<TagKey<Biome>, List<Holder<Biome>>> after = new LinkedHashMap<>();
+        before.forEach((tag, members) -> after.put(tag, new ArrayList<>(members)));
+
+        BiomeTags.addTerraBiomes(after, id -> registry.get(id).map(h -> h), BY_PARENT, PLATFORM_TAGS);
+
+        Map<TagKey<Biome>, List<Identifier>> additions = additions(before, after);
+        int added = appendAll(additions, WyckBridge::appendBiomeTag, "wyck could not append to the tag", LOGGER::warn);
+        LOGGER.info("Added Terra biomes to {} biome tags.", added);
+    }
+
+    /**
+     * Must not throw: an exception fails the data pack reload.
+     */
+    public static synchronized void addToReloadedTags(PostFlattenTagRegistrar<org.bukkit.block.Biome> registrar) {
+        try {
+            Registry<Biome> registry = PaperVanilla.server().registryAccess().lookupOrThrow(Registries.BIOME);
+            Map<TagKey<Biome>, List<Identifier>> tags = new LinkedHashMap<>();
+            registrar.getAllTags().forEach((tag, members) -> tags.put(TagKey.create(Registries.BIOME, identifier(tag.key())),
+                members.stream().map(member -> identifier(member.key())).toList()));
+
+            Map<TagKey<Biome>, List<Identifier>> additions = reloadAdditions(tags, id -> registry.get(id).map(h -> h), BY_PARENT,
+                PLATFORM_TAGS);
+            int added = appendAll(additions, (tag, biomes) -> registrar.addToTag(
+                io.papermc.paper.registry.tag.TagKey.create(RegistryKey.BIOME, key(tag.location())),
+                biomes.stream().map(biome -> TypedKey.create(RegistryKey.BIOME, key(biome))).toList()),
+                "the reload could not add them", LOGGER::warn);
+            LOGGER.info("Added Terra biomes to {} reloaded biome tags.", added);
+        } catch(RuntimeException e) {
+            LOGGER.debug("Failed to add Terra biomes to the reloaded biome tags", e);
+            LOGGER.warn("Terra biomes not added to the reloaded biome tags; restart the server to restore them");
+        }
+    }
+
+    /**
+     * Parent tags come from {@code tags}: the parent's holder still has its pre-reload tags.
+     */
+    static Map<TagKey<Biome>, List<Identifier>> reloadAdditions(Map<TagKey<Biome>, List<Identifier>> tags,
+                                                                Function<Identifier, Optional<Holder<Biome>>> lookup,
+                                                                Map<Identifier, List<Identifier>> byParent,
+                                                                Map<Identifier, PlatformTagSource> platformTags) {
+        Map<TagKey<Biome>, List<Holder<Biome>>> before = new LinkedHashMap<>();
+        Map<TagKey<Biome>, List<Holder<Biome>>> after = new LinkedHashMap<>();
+        tags.forEach((tag, members) -> {
+            List<Holder<Biome>> old = members.stream().map(lookup).flatMap(Optional::stream).toList();
+            List<Holder<Biome>> biomes = new ArrayList<>(old);
+            for(Identifier member : members) {
+                for(Identifier terra : byParent.getOrDefault(member, List.of())) {
+                    lookup.apply(terra).ifPresentOrElse(biomes::add,
+                        () -> LOGGER.debug("Terra biome {} is not registered, so it is not added to the reloaded tag {}", terra,
+                            tag.location()));
                 }
-            });
-            if(!members.isEmpty()) {
-                TagSet.ofBiomes(ResourceKey.of(tag.tagKey().key()), members).append();
-                count++;
+            }
+            before.put(tag, old);
+            after.put(tag, biomes);
+        });
+        BiomeTags.addTerraBiomes(after, lookup, Map.of(), platformTags);
+        return additions(before, after);
+    }
+
+    private static Identifier identifier(Key key) {
+        return Identifier.fromNamespaceAndPath(key.namespace(), key.value());
+    }
+
+    private static Key key(Identifier id) {
+        return Key.key(id.getNamespace(), id.getPath());
+    }
+
+    public static Map<TagKey<Biome>, List<Identifier>> additions(Map<TagKey<Biome>, List<Holder<Biome>>> before,
+                                                                Map<TagKey<Biome>, List<Holder<Biome>>> after) {
+        Map<TagKey<Biome>, List<Identifier>> additions = new LinkedHashMap<>();
+        after.forEach((tag, members) -> {
+            Set<Holder<Biome>> old = new HashSet<>(before.getOrDefault(tag, List.of()));
+            Set<Identifier> added = new LinkedHashSet<>();
+            for(Holder<Biome> member : members) {
+                if(!old.contains(member)) member.unwrapKey().ifPresent(key -> added.add(key.identifier()));
+            }
+            if(!added.isEmpty()) additions.put(tag, List.copyOf(added));
+        });
+        return additions;
+    }
+
+    record Registration<B>(B biome, ResourceKey<VillagerType> villagerType) { }
+
+    static <B> @Nullable Registration<B> registration(Supplier<MinecraftBiomeFactory.Built> build, Function<Biome, B> wyck,
+                                                      Biome parent, ResourceKey<VillagerType> parentVillagerType, String pack,
+                                                      String config, Consumer<String> warn) {
+        String prefix = "Pack \"" + pack + "\", config \"" + config + "\": ";
+        MinecraftBiomeFactory.Built built;
+        try {
+            built = build.get();
+        } catch(RuntimeException e) {
+            LOGGER.debug("Failed to build Terra biome {} of pack {}", config, pack, e);
+            return parent(wyck, parent, parentVillagerType, prefix, "its attributes could not be applied",
+                "its attributes could not be applied, and wyck could not read its parent", warn);
+        }
+        try {
+            return new Registration<>(wyck.apply(built.biome()), built.villagerType());
+        } catch(RuntimeException e) {
+            LOGGER.debug("Wyck failed to read Terra biome {} of pack {}", config, pack, e);
+            return parent(wyck, parent, parentVillagerType, prefix, "wyck could not read its attributes",
+                "wyck could not read its attributes or its parent", warn);
+        }
+    }
+
+    private static <B> @Nullable Registration<B> parent(Function<Biome, B> wyck, Biome parent, ResourceKey<VillagerType> villagerType,
+                                                        String prefix, String reason, String skipReason, Consumer<String> warn) {
+        try {
+            Registration<B> registration = new Registration<>(wyck.apply(parent), villagerType);
+            warn.accept(prefix + "biome built from its parent: " + reason);
+            return registration;
+        } catch(RuntimeException e) {
+            LOGGER.debug("Wyck failed to read the parent of a Terra biome", e);
+            warn.accept(prefix + "biome skipped: " + skipReason);
+            return null;
+        }
+    }
+
+    static int appendAll(Map<TagKey<Biome>, List<Identifier>> additions, BiConsumer<TagKey<Biome>, List<Identifier>> append,
+                         String failure, Consumer<String> warn) {
+        int appended = 0;
+        for(Map.Entry<TagKey<Biome>, List<Identifier>> entry : additions.entrySet()) {
+            try {
+                append.accept(entry.getKey(), entry.getValue());
+                appended++;
+            } catch(RuntimeException e) {
+                LOGGER.debug("Failed to append Terra biomes to biome tag {}", entry.getKey().location(), e);
+                warn.accept("Biome tag \"" + entry.getKey().location() + "\": terra biomes not added: " + failure);
             }
         }
-        LOGGER.info("Added Terra biomes to {} vanilla biome tags.", count);
-    }
-
-    public static @Nullable Villager.Type getVillagerType(org.bukkit.block.Biome biome) {
-        return VILLAGER_TYPES.get(biome.getKey());
-    }
-
-    public static Biome getBiomeOrThrow(ResourceKey key) {
-        return Biome.reference(key).wrap();
-    }
-
-    public static Biome createBiome(ResourceKey key, Biome vanilla, VanillaBiomeProperties properties) {
-        EnvironmentAttributeMap attributes = vanilla.attributes();
-        attributes = override(attributes, EnvironmentAttributes.FOG_COLOR, properties.getFogColor());
-        attributes = override(attributes, EnvironmentAttributes.WATER_FOG_COLOR, properties.getWaterFogColor());
-        attributes = override(attributes, EnvironmentAttributes.SKY_COLOR, properties.getSkyColor());
-        attributes = override(attributes, EnvironmentAttributes.AMBIENT_PARTICLES, properties.getParticles());
-        attributes = override(attributes, EnvironmentAttributes.MUSIC_VOLUME, properties.getMusicVolume());
-        attributes = override(attributes, EnvironmentAttributes.NATURAL_MOB_SPAWNS, properties.getSpawnSettings());
-        if(properties.getMusic() != null) {
-            attributes = attributes.with(EnvironmentAttributes.BACKGROUND_MUSIC,
-                BackgroundMusic.builder().defaultMusic(properties.getMusic()).build());
-        }
-        if(properties.getLoopSound() != null || properties.getMoodSound() != null || properties.getAdditionsSound() != null) {
-            AmbientSounds sounds = Objects.requireNonNullElse(attributes.get(EnvironmentAttributes.AMBIENT_SOUNDS), AmbientSounds.EMPTY);
-            attributes = attributes.with(EnvironmentAttributes.AMBIENT_SOUNDS, AmbientSounds.of(
-                properties.getLoopSound() != null ? properties.getLoopSound() : sounds.loop().orElse(null),
-                properties.getMoodSound() != null ? properties.getMoodSound() : sounds.mood().orElse(null),
-                properties.getAdditionsSound() != null ? List.of(properties.getAdditionsSound()) : sounds.additions()));
-        }
-
-        ClimateSettings climate = vanilla.climateSettings();
-        BiomeSpecialEffects effects = vanilla.specialEffects();
-
-        return Biome.builder(key)
-            .attributes(attributes)
-            .climateSettings(ClimateSettings.builder()
-                .hasPrecipitation(Objects.requireNonNullElse(properties.getPrecipitation(), climate.hasPrecipitation()))
-                .temperature(Objects.requireNonNullElse(properties.getTemperature(), climate.temperature()))
-                .temperatureModifier(Objects.requireNonNullElse(properties.getTemperatureModifier(), climate.temperatureModifier()))
-                .downfall(Objects.requireNonNullElse(properties.getDownfall(), climate.downfall()))
-                .build())
-            .specialEffects(BiomeSpecialEffects.builder()
-                .waterColor(Objects.requireNonNullElse(properties.getWaterColor(), effects.waterColor()))
-                .grassColorModifier(Objects.requireNonNullElse(properties.getGrassColorModifier(), effects.grassColorModifier()))
-                .grassColorOverride(orElse(properties.getGrassColor(), effects.grassColorOverride().orElse(null)))
-                .foliageColorOverride(orElse(properties.getFoliageColor(), effects.foliageColorOverride().orElse(null)))
-                .dryFoliageColorOverride(orElse(properties.getDryFoliageColor(), effects.dryFoliageColorOverride().orElse(null)))
-                .build())
-            .build();
+        return appended;
     }
 
     public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
         return pack.getID().toLowerCase(Locale.ROOT)
                + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT)
                + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
-    }
-
-    private static <T> EnvironmentAttributeMap override(EnvironmentAttributeMap map, EnvironmentAttributeSupplier<T> attribute,
-                                                        @Nullable T value) {
-        return value == null ? map : map.with(attribute, value);
-    }
-
-    private static @Nullable Integer orElse(@Nullable Integer value, @Nullable Integer fallback) {
-        return value != null ? value : fallback;
     }
 }

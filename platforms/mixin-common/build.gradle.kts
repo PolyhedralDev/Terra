@@ -12,10 +12,9 @@ dependencies {
 
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
 
-    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
+    api(project(":platforms:minecraft-common")) { isTransitive = false }
 
-    // Tests only: the addon ships as its own jar.
-    testImplementation(project(":common:addons:minecraft-attributes"))
+    minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
 }
 
 architectury {
