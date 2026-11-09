@@ -33,11 +33,13 @@ public final class MinecraftAttributeTypes {
         this.particle = handle.typeBuilder("particle", codecs.particle()).build();
         this.ambientParticles = handle.typeBuilder("ambient_particles", codecs.ambientParticles())
             .op(Operation.APPEND, codecs.ambientParticles(), MinecraftAttributeTypes::append)
+            .composable(Operation.APPEND, MinecraftAttributeTypes::append)
             .build();
         this.backgroundMusic = handle.typeBuilder("background_music", codecs.backgroundMusic()).build();
         this.ambientSounds = handle.typeBuilder("ambient_sounds", codecs.ambientSounds()).build();
         this.mobSpawnSettings = handle.typeBuilder("mob_spawn_settings", codecs.mobSpawnSettings())
             .op(Operation.OVERLAY, codecs.mobSpawnSettings(), MinecraftAttributeTypes::overlay)
+            .composable(Operation.OVERLAY, MinecraftAttributeTypes::overlay)
             .build();
         this.identifier = handle.typeBuilder("identifier", codecs.identifier()).build();
         this.identifierOrTag = handle.typeBuilder("identifier_or_tag", codecs.identifierOrTag()).build();

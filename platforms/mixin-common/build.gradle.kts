@@ -13,6 +13,9 @@ dependencies {
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
+
+    // Tests only: the addon ships as its own jar.
+    testImplementation(project(":common:addons:minecraft-attributes"))
 }
 
 architectury {

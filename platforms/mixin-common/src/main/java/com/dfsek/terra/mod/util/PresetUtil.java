@@ -28,9 +28,13 @@ import java.util.Locale;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.util.generic.pair.Pair;
-import com.dfsek.terra.api.util.range.ConstantRange;
 import com.dfsek.terra.mod.ModPlatform;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
+import com.dfsek.terra.mod.attribute.AttributeReport;
+import com.dfsek.terra.mod.attribute.MinecraftAttributeParents;
+import com.dfsek.terra.mod.attribute.MinecraftDimensionFactory;
+import com.dfsek.terra.mod.attribute.MinecraftTimelines;
+import com.dfsek.terra.mod.attribute.PackParents;
+import com.dfsek.terra.mod.attribute.VanillaContext;
 import com.dfsek.terra.mod.generation.GenerationSettings;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
 import com.dfsek.terra.mod.generation.TerraBiomeSource;
@@ -56,8 +60,7 @@ public class PresetUtil {
 
         HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap = new HashMap<>();
 
-        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap,
-            packInMetapack);
+        insertCustom(platform, "minecraft:overworld", pack, dimensionTypeRegistry, dimensionMap, packInMetapack);
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(),
             dimensionMap);
@@ -82,7 +85,7 @@ public class PresetUtil {
         HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap = new HashMap<>();
 
         metaPack.packs().forEach((key, pack) -> {
-            insertCustom(platform, key, pack, dimensionTypeRegistry, chunkGeneratorSettingsRegistry, dimensionMap, false);
+            insertCustom(platform, key, pack, dimensionTypeRegistry, dimensionMap, false);
         });
 
         insertDefaults(dimensionTypeRegistry, chunkGeneratorSettingsRegistry, multiNoiseBiomeSourceParameterLists, platform.biomeRegistry(),
@@ -94,27 +97,20 @@ public class PresetUtil {
     }
 
     private static void insertCustom(ModPlatform platform, String key, ConfigPack pack, Registry<DimensionType> dimensionTypeRegistry,
-                                     Registry<NoiseGeneratorSettings> chunkGeneratorSettingsRegistry,
                                      HashMap<ResourceKey<LevelStem>, LevelStem> dimensionMap, boolean packInMetapack) {
         Identifier demensionIdentifier = Identifier.parse(key);
 
-        VanillaWorldProperties vanillaWorldProperties;
-
-        if(pack.getContext().has(VanillaWorldProperties.class)) {
-            vanillaWorldProperties = pack.getContext().get(VanillaWorldProperties.class);
-        } else {
-            vanillaWorldProperties = new VanillaWorldProperties();
-        }
-
-        DimensionType defaultDimension = dimensionTypeRegistry.getValue(Identifier.parse(vanillaWorldProperties.getVanillaDimension()));
-
-        assert defaultDimension != null;
+        MinecraftAttributeParents parents = platform.attributeParents();
+        VanillaContext context = parents.context();
+        if(context == null) throw new IllegalStateException("no registry load has begun");
+        PackParents packParents = parents.prepare(pack, platform.getAttributeHandle().pack(pack), AttributeReport.logging(pack));
+        MinecraftDimensionFactory factory = new MinecraftDimensionFactory(platform.getAttributeHandle(), context);
 
         Identifier dimensionTypeID = Identifier.fromNamespaceAndPath("terra", pack.getID().toLowerCase(Locale.ROOT));
 
         DimensionType dimensionType;
         if(!packInMetapack) {
-            dimensionType = DimensionUtil.createDimension(vanillaWorldProperties, defaultDimension, platform);
+            dimensionType = factory.create(packParents, MinecraftTimelines.tagFor(pack, packParents));
             ResourceKey<DimensionType> dimensionTypeRegistryKey = MinecraftUtil.registerDimensionTypeKey(
                 dimensionTypeID);
 
@@ -127,20 +123,7 @@ public class PresetUtil {
 
         TerraBiomeSource biomeSource = new TerraBiomeSource(pack);
 
-        Holder<NoiseGeneratorSettings> defaultGeneratorSettings = chunkGeneratorSettingsRegistry.wrapAsHolder(
-            chunkGeneratorSettingsRegistry.getValue(Identifier.parse(vanillaWorldProperties.getVanillaGeneration())));
-
-        GenerationSettings generatorSettings = new GenerationSettings(
-            vanillaWorldProperties.getHeight() == null ? new ConstantRange(
-                defaultGeneratorSettings.value().noiseSettings().minY(),
-                defaultGeneratorSettings.value().noiseSettings().height()) : vanillaWorldProperties.getHeight(),
-            vanillaWorldProperties.getSealevel() == null
-            ? defaultGeneratorSettings.value().seaLevel()
-            : vanillaWorldProperties.getSealevel(),
-            vanillaWorldProperties.getMobGeneration() == null
-            ? !defaultGeneratorSettings.value().disableMobGeneration()
-            : vanillaWorldProperties.getMobGeneration(),
-            vanillaWorldProperties.getSpawnHeight());
+        GenerationSettings generatorSettings = factory.generationSettings(packParents, dimensionType);
 
         ChunkGenerator generator = new MinecraftChunkGeneratorWrapper(biomeSource, pack, generatorSettings);
 

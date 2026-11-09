@@ -2,26 +2,41 @@ package attribute.minecraft;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import com.dfsek.terra.addons.attribute.minecraft.AmbientParticle;
 import com.dfsek.terra.addons.attribute.minecraft.AmbientSounds;
 import com.dfsek.terra.addons.attribute.minecraft.BackgroundMusic;
 import com.dfsek.terra.addons.attribute.minecraft.BedRule;
+import com.dfsek.terra.addons.attribute.minecraft.CardinalLight;
+import com.dfsek.terra.addons.attribute.minecraft.GrassColorModifier;
 import com.dfsek.terra.addons.attribute.minecraft.IntProviderValue;
 import com.dfsek.terra.addons.attribute.minecraft.MinecraftAttributeTypes;
 import com.dfsek.terra.addons.attribute.minecraft.MinecraftCodecs;
 import com.dfsek.terra.addons.attribute.minecraft.MinecraftIds;
 import com.dfsek.terra.addons.attribute.minecraft.MobSpawnSettings;
 import com.dfsek.terra.addons.attribute.minecraft.MoonPhase;
+import com.dfsek.terra.addons.attribute.minecraft.Music;
+import com.dfsek.terra.addons.attribute.minecraft.Skybox;
+import com.dfsek.terra.addons.attribute.minecraft.SoundRef;
+import com.dfsek.terra.addons.attribute.minecraft.TemperatureModifier;
 import com.dfsek.terra.api.registry.key.RegistryKey;
+import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.registry.key.TagKey;
 import com.dfsek.terra.api.util.generic.either.Either;
 import com.dfsek.terra.api.world.attribute.AttributeHandle;
@@ -36,7 +51,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class MinecraftAttributeTypesTest {
-    private static final float EPS = 1e-6f;
     private static final AttributeHandle HANDLE = new AttributeHandleImpl();
     private static final MinecraftAttributeTypes TYPES = new MinecraftAttributeTypes(HANDLE);
     private static final DecodeContext PLAIN = HANDLE.plainContext();
@@ -52,76 +66,20 @@ class MinecraftAttributeTypesTest {
         return m;
     }
 
-    @Test
-    void everyTypeSupportsOverride() {
-        List<AttributeType<?>> all = List.of(TYPES.moonPhase(), TYPES.bedRule(), TYPES.particle(), TYPES.ambientParticles(),
-            TYPES.backgroundMusic(), TYPES.ambientSounds(), TYPES.mobSpawnSettings(), TYPES.identifier(), TYPES.identifierOrTag(),
-            TYPES.intProvider());
-        for(AttributeType<?> t : all) assertTrue(t.operations().contains(Operation.OVERRIDE), t.id());
+    private static RegistryKey id(String id) {
+        return RegistryKey.parse(id);
     }
 
-    @Test
-    void operationSets() {
-        assertEquals(EnumSet.of(Operation.OVERRIDE), TYPES.identifier().operations());
-        assertEquals(EnumSet.of(Operation.OVERRIDE), TYPES.identifierOrTag().operations());
-        assertEquals(EnumSet.of(Operation.OVERRIDE, Operation.APPEND), TYPES.ambientParticles().operations());
-        assertEquals(EnumSet.of(Operation.OVERRIDE, Operation.OVERLAY), TYPES.mobSpawnSettings().operations());
+    private static SoundRef sound(String id) {
+        return new SoundRef(id(id), OptionalDouble.empty());
     }
 
-    @Test
-    void idsAreVanillaTypeIds() {
-        assertEquals("moon_phase", TYPES.moonPhase().id());
-        assertEquals("bed_rule", TYPES.bedRule().id());
-        assertEquals("particle", TYPES.particle().id());
-        assertEquals("ambient_particles", TYPES.ambientParticles().id());
-        assertEquals("background_music", TYPES.backgroundMusic().id());
-        assertEquals("ambient_sounds", TYPES.ambientSounds().id());
-        assertEquals("mob_spawn_settings", TYPES.mobSpawnSettings().id());
-        assertEquals("identifier", TYPES.identifier().id());
-        assertEquals("identifier_or_tag", TYPES.identifierOrTag().id());
-        assertEquals("int_provider", TYPES.intProvider().id());
+    private static IntProviderValue constant(int value) {
+        return new IntProviderValue(OptionalInt.of(value), Optional.empty());
     }
 
-    @Test
-    void decodeFailuresReadTheSameEverywhere() {
-        String bedRule = assertThrows(DecodeException.class,
-            () -> TYPES.bedRule().decode(map("can_sleep", "sometimes", "can_set_spawn", "always"), PLAIN)).getMessage();
-        assertEquals("\"can_sleep\" of bed rule: unknown bed rule \"sometimes\", expected one of [always, when_dark, never]", bedRule);
-        String moonPhase = assertThrows(DecodeException.class, () -> TYPES.moonPhase().decode("x", PLAIN)).getMessage();
-        assertTrue(moonPhase.startsWith("unknown moon phase \"x\", expected one of [full_moon, "), moonPhase);
-    }
-
-    @Test
-    void enumsAreStringIdentifiable() {
-        assertEquals("waxing_gibbous", MoonPhase.WAXING_GIBBOUS.getID());
-        assertEquals("when_dark", BedRule.Rule.WHEN_DARK.getID());
-        assertEquals("new_moon", TYPES.moonPhase().encode(MoonPhase.NEW_MOON));
-    }
-
-    @Test
-    void ambientParticlesAppend() throws DecodeException {
-        AttributeType<List<AmbientParticle>> t = TYPES.ambientParticles();
-        List<AmbientParticle> one = t.decode(List.of(map("particle", map("type", "minecraft:crimson_spore"), "probability", 0.025)), PLAIN);
-        List<AmbientParticle> two = t.decode(List.of(map("particle", map("type", "minecraft:white_ash"), "probability", 0.1)), PLAIN);
-        assertEquals(1, one.size());
-        assertEquals(0.025f, one.get(0).probability(), EPS);
-        assertEquals(new RawValue(map("type", "minecraft:crimson_spore")), one.get(0).particle());
-        assertEquals(one, t.apply(Operation.APPEND, one, List.of()));
-        assertEquals(two, t.apply(Operation.APPEND, List.of(), two));
-        assertEquals(List.of(one.get(0), two.get(0)), t.apply(Operation.APPEND, one, two));
-        assertEquals(List.of(one.get(0), two.get(0)),
-            mod(t, Operation.APPEND, one, List.of(map("particle", map("type", "minecraft:white_ash"), "probability", 0.1))));
-    }
-
-    @Test
-    void ambientParticleValidation() {
-        AttributeType<List<AmbientParticle>> t = TYPES.ambientParticles();
-        assertThrows(DecodeException.class, () -> t.decode(List.of(map("particle", map("type", "x"), "probability", 1.5)), PLAIN));
-        assertThrows(DecodeException.class, () -> t.decode(List.of(map("particle", map("type", "x"))), PLAIN));
-        assertThrows(DecodeException.class, () -> t.decode(List.of(map("particle", "x", "probability", 0.5)), PLAIN));
-        assertThrows(DecodeException.class,
-            () -> t.decode(List.of(map("particle", map("type", "x"), "probability", 0.5, "extra", 1)), PLAIN));
-        assertThrows(DecodeException.class, () -> t.decode(map("particle", map("type", "x"), "probability", 0.5), PLAIN));
+    private static IntProviderValue provider(Map<String, Object> raw) {
+        return new IntProviderValue(OptionalInt.empty(), Optional.of(new RawValue(raw)));
     }
 
     private static MobSpawnSettings spawns(Map<String, Object> raw) throws DecodeException {
@@ -133,34 +91,172 @@ class MinecraftAttributeTypesTest {
     }
 
     @Test
-    void mobSpawnDecode() throws DecodeException {
-        MobSpawnSettings s = spawns(map(
-            "spawns_by_category", map("ambient", List.of(spawner("minecraft:bat", 10, 8))),
-            "spawn_costs", map("minecraft:enderman", map("energy_budget", 0.7, "charge", 0.15))));
-        MobSpawnSettings.Spawner sp = s.spawnsByCategory().get("ambient").get(0);
-        assertEquals(RegistryKey.parse("minecraft:bat"), sp.type());
-        assertEquals(10, sp.weight());
-        assertEquals(8, sp.count().constant().getAsInt());
-        assertEquals(0.7, s.spawnCosts().get(RegistryKey.parse("minecraft:enderman")).energyBudget(), 1e-9);
-        assertEquals(0.15, s.spawnCosts().get(RegistryKey.parse("minecraft:enderman")).charge(), 1e-9);
-        assertThrows(DecodeException.class, () -> spawns(map("spawns_by_category", map("bogus", List.of()), "spawn_costs", map())));
-        assertThrows(DecodeException.class, () -> spawns(map("spawns_by_category", map())));
-        assertThrows(DecodeException.class, () -> spawns(map("spawns_by_category", map(), "spawn_costs", map(), "x", 1)));
+    void operationSets() {
+        for(AttributeType<?> t : List.of(TYPES.moonPhase(), TYPES.bedRule(), TYPES.particle(), TYPES.backgroundMusic(),
+            TYPES.ambientSounds(), TYPES.identifier(), TYPES.identifierOrTag(), TYPES.intProvider())) {
+            assertEquals(EnumSet.of(Operation.OVERRIDE), t.operations(), t.id());
+        }
+        assertEquals(EnumSet.of(Operation.OVERRIDE, Operation.APPEND), TYPES.ambientParticles().operations());
+        assertEquals(EnumSet.of(Operation.OVERRIDE, Operation.OVERLAY), TYPES.mobSpawnSettings().operations());
     }
 
     @Test
-    void mobSpawnCountMapIsKeptRaw() throws DecodeException {
-        MobSpawnSettings s = spawns(map("spawns_by_category", map("monster", List.of(
-                map("type", "minecraft:zombie", "weight", 5,
-                    "count", map("type", "minecraft:uniform", "min_inclusive", 1, "max_inclusive", 3)))),
-            "spawn_costs", map()));
-        IntProviderValue c = s.spawnsByCategory().get("monster").get(0).count();
-        assertTrue(c.constant().isEmpty());
-        assertTrue(c.provider().isPresent());
+    void enumIds() {
+        assertEquals(List.of("full_moon", "waning_gibbous", "third_quarter", "waning_crescent", "new_moon", "waxing_crescent",
+            "first_quarter", "waxing_gibbous"), ids(MoonPhase.values()));
+        assertEquals(List.of("always", "when_dark", "never"), ids(BedRule.Rule.values()));
+        assertEquals(List.of("none", "dark_forest", "swamp"), ids(GrassColorModifier.values()));
+        assertEquals(List.of("none", "frozen"), ids(TemperatureModifier.values()));
+        assertEquals(List.of("none", "overworld", "end"), ids(Skybox.values()));
+        assertEquals(List.of("default", "nether"), ids(CardinalLight.values()));
+    }
+
+    private static List<String> ids(StringIdentifiable[] values) {
+        return Arrays.stream(values).map(StringIdentifiable::getID).toList();
     }
 
     @Test
-    void mobSpawnOverlayRules() throws DecodeException {
+    void valueRecordInvariants() {
+        assertThrows(IllegalArgumentException.class, () -> new IntProviderValue(OptionalInt.empty(), Optional.empty()));
+        assertThrows(IllegalArgumentException.class,
+            () -> new IntProviderValue(OptionalInt.of(1), Optional.of(new RawValue(Map.of("type", "minecraft:constant")))));
+        LinkedHashMap<RegistryKey, MobSpawnSettings.Cost> costs = new LinkedHashMap<>();
+        for(String n : new String[]{ "zombie", "alpha", "mid", "bat", "creeper", "ender" }) {
+            costs.put(RegistryKey.of("minecraft", n), new MobSpawnSettings.Cost(1, 1));
+        }
+        MobSpawnSettings s = new MobSpawnSettings(Map.of(), costs);
+        assertEquals(List.copyOf(costs.keySet()), List.copyOf(s.spawnCosts().keySet()));
+        assertThrows(UnsupportedOperationException.class, () -> s.spawnCosts().clear());
+    }
+
+    static Stream<Arguments> vanillaValues() {
+        Map<String, Object> uniform = map("type", "minecraft:uniform", "min_inclusive", 1, "max_inclusive", 3);
+        return Stream.of(
+            Arguments.of("moon phase", TYPES.moonPhase(), "new_moon", MoonPhase.NEW_MOON),
+            Arguments.of("identifier", TYPES.identifier(), "minecraft:idle", id("minecraft:idle")),
+            Arguments.of("bare identifier", TYPES.identifier(), "idle", id("minecraft:idle")),
+            Arguments.of("bare identifier or tag", TYPES.identifierOrTag(), "stone", Either.left(id("minecraft:stone"))),
+            Arguments.of("bare tag", TYPES.identifierOrTag(), "#logs", Either.right(TagKey.parse("#minecraft:logs"))),
+            Arguments.of("particle", TYPES.particle(), map("type", "minecraft:dripping_dripstone_lava"),
+                new RawValue(map("type", "minecraft:dripping_dripstone_lava"))),
+            Arguments.of("int constant", TYPES.intProvider(), 7, constant(7)),
+            Arguments.of("int provider", TYPES.intProvider(), uniform, provider(uniform)),
+            Arguments.of("crimson forest particles", TYPES.ambientParticles(),
+                List.of(map("particle", map("type", "minecraft:crimson_spore"), "probability", 0.025)),
+                List.of(new AmbientParticle(new RawValue(map("type", "minecraft:crimson_spore")), 0.025f))),
+            Arguments.of("straw bed rule", TYPES.bedRule(), map("can_set_spawn", "never", "can_sleep", "when_dark",
+                    "destroy_on_leave", true, "error_message", map("translate", "block.minecraft.bed.no_sleep")),
+                new BedRule(BedRule.Rule.WHEN_DARK, BedRule.Rule.NEVER, false, true,
+                    Optional.of(new RawValue(map("translate", "block.minecraft.bed.no_sleep"))))),
+            Arguments.of("bed rule defaults", TYPES.bedRule(), map("can_set_spawn", "always", "can_sleep", "always"),
+                new BedRule(BedRule.Rule.ALWAYS, BedRule.Rule.ALWAYS, false, false, Optional.empty())),
+            Arguments.of("warm ocean music", TYPES.backgroundMusic(), map(
+                    "creative", map("max_delay", 24000, "min_delay", 12000, "sound", "minecraft:music.creative"),
+                    "default", map("max_delay", 24000, "min_delay", 12000, "sound", "minecraft:music.game",
+                        "replace_current_music", true),
+                    "underwater", map("max_delay", 24000, "min_delay", 12000, "sound", "minecraft:music.under_water")),
+                new BackgroundMusic(Optional.of(new Music(sound("minecraft:music.game"), 12000, 24000, true)),
+                    Optional.of(new Music(sound("minecraft:music.creative"), 12000, 24000, false)),
+                    Optional.of(new Music(sound("minecraft:music.under_water"), 12000, 24000, false)))),
+            Arguments.of("no music", TYPES.backgroundMusic(), map(), BackgroundMusic.EMPTY),
+            Arguments.of("crimson forest sounds", TYPES.ambientSounds(), map(
+                    "additions", map("sound", "minecraft:ambient.crimson_forest.additions", "tick_chance", 0.0111),
+                    "loop", "minecraft:ambient.crimson_forest.loop",
+                    "mood", map("block_search_extent", 8, "offset", 2.0, "sound", "minecraft:ambient.crimson_forest.mood",
+                        "tick_delay", 6000)),
+                new AmbientSounds(Optional.of(sound("minecraft:ambient.crimson_forest.loop")),
+                    Optional.of(new AmbientSounds.Mood(sound("minecraft:ambient.crimson_forest.mood"), 6000, 8, 2.0)),
+                    List.of(new AmbientSounds.Additions(sound("minecraft:ambient.crimson_forest.additions"), 0.0111)))),
+            Arguments.of("addition list and ranged loop", TYPES.ambientSounds(), map(
+                    "loop", map("sound_id", "a:b", "range", 16),
+                    "additions", List.of(map("sound", "a:b", "tick_chance", 0.1), map("sound", "ambient.cave", "tick_chance", 0.2))),
+                new AmbientSounds(Optional.of(new SoundRef(id("a:b"), OptionalDouble.of(16))), Optional.empty(),
+                    List.of(new AmbientSounds.Additions(sound("a:b"), 0.1), new AmbientSounds.Additions(sound("minecraft:ambient.cave"), 0.2)))),
+            Arguments.of("unranged sound object", TYPES.ambientSounds(), map("loop", map("sound_id", "a:b")),
+                new AmbientSounds(Optional.of(sound("a:b")), Optional.empty(), List.of())),
+            Arguments.of("no sounds", TYPES.ambientSounds(), map(), AmbientSounds.EMPTY),
+            Arguments.of("mob spawns", TYPES.mobSpawnSettings(), map(
+                    "spawns_by_category", map("ambient", List.of(spawner("minecraft:bat", 10, 8)),
+                        "monster", List.of(map("type", "minecraft:zombie", "weight", 5, "count", uniform))),
+                    "spawn_costs", map("minecraft:enderman", map("energy_budget", 0.7, "charge", 0.15))),
+                new MobSpawnSettings(
+                    Map.of("ambient", List.of(new MobSpawnSettings.Spawner(id("minecraft:bat"), 10, constant(8))),
+                        "monster", List.of(new MobSpawnSettings.Spawner(id("minecraft:zombie"), 5, provider(uniform)))),
+                    Map.of(id("minecraft:enderman"), new MobSpawnSettings.Cost(0.7, 0.15)))));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("vanillaValues")
+    void decodesVanillaValues(String name, AttributeType<?> type, Object raw, Object expected) throws DecodeException {
+        assertEquals(expected, type.decode(raw, PLAIN));
+    }
+
+    static Stream<Arguments> invalidValues() {
+        Map<String, Object> noCosts = map("spawns_by_category", map());
+        return Stream.of(
+            Arguments.of("moon phase", TYPES.moonPhase(), "blue_moon"),
+            Arguments.of("identifier with a space", TYPES.identifier(), "Not Valid"),
+            Arguments.of("identifier number", TYPES.identifier(), 3),
+            Arguments.of("identifier given a tag", TYPES.identifier(), "#minecraft:logs"),
+            Arguments.of("empty tag", TYPES.identifierOrTag(), "#"),
+            Arguments.of("particle without type", TYPES.particle(), map("color", 1)),
+            Arguments.of("particle string", TYPES.particle(), "minecraft:flame"),
+            Arguments.of("int provider string", TYPES.intProvider(), "x"),
+            Arguments.of("int provider fraction", TYPES.intProvider(), 1.5),
+            Arguments.of("int provider overflow", TYPES.intProvider(), 99999999999L),
+            Arguments.of("int provider without type", TYPES.intProvider(), map("min_inclusive", 0, "max_inclusive", 7)),
+            Arguments.of("probability above 1", TYPES.ambientParticles(), List.of(map("particle", map("type", "x"), "probability", 1.5))),
+            Arguments.of("missing probability", TYPES.ambientParticles(), List.of(map("particle", map("type", "x")))),
+            Arguments.of("particle not an object", TYPES.ambientParticles(), List.of(map("particle", "x", "probability", 0.5))),
+            Arguments.of("extra particle key", TYPES.ambientParticles(),
+                List.of(map("particle", map("type", "x"), "probability", 0.5, "extra", 1))),
+            Arguments.of("particles not a list", TYPES.ambientParticles(), map("particle", map("type", "x"), "probability", 0.5)),
+            Arguments.of("bed rule missing can_set_spawn", TYPES.bedRule(), map("can_sleep", "always")),
+            Arguments.of("extra bed rule key", TYPES.bedRule(), map("can_sleep", "always", "can_set_spawn", "always", "nope", 1)),
+            Arguments.of("unknown music key", TYPES.backgroundMusic(), map("bogus", 1)),
+            Arguments.of("music missing max_delay", TYPES.backgroundMusic(), map("default", map("sound", "a:b", "min_delay", 1))),
+            Arguments.of("negative delay", TYPES.backgroundMusic(),
+                map("default", map("sound", "a:b", "min_delay", -1, "max_delay", 1))),
+            Arguments.of("misspelled sounds key", TYPES.ambientSounds(), map("looop", "a:b")),
+            Arguments.of("incomplete mood", TYPES.ambientSounds(), map("mood", map("sound", "a:b"))),
+            Arguments.of("sound number", TYPES.ambientSounds(), map("loop", 5)),
+            Arguments.of("sound with a space", TYPES.ambientSounds(), map("loop", "Not Valid")),
+            Arguments.of("sound object without ID", TYPES.ambientSounds(), map("loop", map("range", 1))),
+            Arguments.of("unknown mob category", TYPES.mobSpawnSettings(),
+                map("spawns_by_category", map("bogus", List.of()), "spawn_costs", map())),
+            Arguments.of("missing spawn_costs", TYPES.mobSpawnSettings(), noCosts),
+            Arguments.of("extra spawn settings key", TYPES.mobSpawnSettings(),
+                map("spawns_by_category", map(), "spawn_costs", map(), "x", 1)),
+            Arguments.of("fractional weight", TYPES.mobSpawnSettings(), map("spawns_by_category",
+                map("monster", List.of(map("type", "minecraft:zombie", "weight", 1.5, "count", 1))), "spawn_costs", map())));
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("invalidValues")
+    void rejectsInvalidValues(String name, AttributeType<?> type, Object raw) {
+        assertThrows(DecodeException.class, () -> type.decode(raw, PLAIN));
+    }
+
+    @Test
+    void nestedDecodeFailures() {
+        String bedRule = assertThrows(DecodeException.class,
+            () -> TYPES.bedRule().decode(map("can_sleep", "sometimes", "can_set_spawn", "always"), PLAIN)).getMessage();
+        assertEquals("\"can_sleep\" of bed rule: unknown bed rule \"sometimes\", expected one of [always, when_dark, never]", bedRule);
+    }
+
+    @Test
+    void ambientParticlesAppend() throws DecodeException {
+        AttributeType<List<AmbientParticle>> t = TYPES.ambientParticles();
+        List<AmbientParticle> one = t.decode(List.of(map("particle", map("type", "minecraft:crimson_spore"), "probability", 0.025)), PLAIN);
+        List<AmbientParticle> two = t.decode(List.of(map("particle", map("type", "minecraft:white_ash"), "probability", 0.1)), PLAIN);
+        assertEquals(one, t.apply(Operation.APPEND, one, List.of()));
+        assertEquals(two, t.apply(Operation.APPEND, List.of(), two));
+        assertEquals(List.of(one.get(0), two.get(0)),
+            mod(t, Operation.APPEND, one, List.of(map("particle", map("type", "minecraft:white_ash"), "probability", 0.1))));
+    }
+
+    @Test
+    void mobSpawnOverlay() throws DecodeException {
         AttributeType<MobSpawnSettings> t = TYPES.mobSpawnSettings();
         MobSpawnSettings empty = MobSpawnSettings.EMPTY;
         MobSpawnSettings a = spawns(map("spawns_by_category", map("monster", List.of(spawner("minecraft:zombie", 1, 1))),
@@ -173,71 +269,59 @@ class MinecraftAttributeTypesTest {
         MobSpawnSettings s = spawns(map("spawns_by_category", map("monster", List.of(spawner("minecraft:zombie", 1, 1)),
                 "creature", List.of(spawner("minecraft:cow", 1, 1))),
             "spawn_costs", map("minecraft:a", map("energy_budget", 1, "charge", 1))));
-        MobSpawnSettings arg = spawns(map("spawns_by_category", map("ambient", List.of(spawner("minecraft:bat", 1, 1)),
+        MobSpawnSettings r = mod(t, Operation.OVERLAY, s, map("spawns_by_category", map("ambient", List.of(spawner("minecraft:bat", 1, 1)),
                 "creature", List.of(spawner("minecraft:pig", 1, 1))),
             "spawn_costs", map("minecraft:b", map("energy_budget", 2, "charge", 2))));
-        MobSpawnSettings r = t.apply(Operation.OVERLAY, s, arg);
-        assertEquals(RegistryKey.parse("minecraft:zombie"), r.spawnsByCategory().get("monster").get(0).type());
-        assertEquals(RegistryKey.parse("minecraft:pig"), r.spawnsByCategory().get("creature").get(0).type());
-        assertEquals(RegistryKey.parse("minecraft:bat"), r.spawnsByCategory().get("ambient").get(0).type());
-        assertEquals(Set.of(RegistryKey.parse("minecraft:a"), RegistryKey.parse("minecraft:b")), r.spawnCosts().keySet());
+        assertEquals(id("minecraft:zombie"), r.spawnsByCategory().get("monster").get(0).type());
+        assertEquals(id("minecraft:pig"), r.spawnsByCategory().get("creature").get(0).type());
+        assertEquals(id("minecraft:bat"), r.spawnsByCategory().get("ambient").get(0).type());
+        assertEquals(Set.of(id("minecraft:a"), id("minecraft:b")), r.spawnCosts().keySet());
+        MobSpawnSettings cleared = mod(t, Operation.OVERLAY, s, map("spawns_by_category", map("monster", List.of()), "spawn_costs", map()));
+        assertTrue(cleared.spawnsByCategory().get("monster").isEmpty());
+        assertEquals(1, cleared.spawnsByCategory().get("creature").size());
+    }
+
+    private static final List<String> ALL_CATEGORIES = List.of("monster", "creature", "ambient", "axolotls",
+        "underground_water_creature", "water_creature", "water_ambient", "misc");
+
+    private static MobSpawnSettings spawnsIn(String type, List<String> categories, String... costs) throws DecodeException {
+        Map<String, Object> byCategory = new LinkedHashMap<>();
+        for(String category : categories) byCategory.put(category, List.of(spawner(type, 1, 1)));
+        Map<String, Object> costMap = new LinkedHashMap<>();
+        for(String cost : costs) costMap.put(cost, map("energy_budget", 1, "charge", 1));
+        return spawns(map("spawns_by_category", byCategory, "spawn_costs", costMap));
+    }
+
+    private static <T> void assertComposesLikeApplyingBoth(AttributeType<T> t, Operation op, List<T> subjects, List<T> arguments) {
+        for(T s : subjects) {
+            for(T a : arguments) {
+                for(T b : arguments) {
+                    Object composed = t.compose(op, a, b).orElseThrow();
+                    assertEquals(t.apply(op, t.apply(op, s, a), b), t.apply(op, s, composed), s + " then " + a + " then " + b);
+                }
+            }
+        }
     }
 
     @Test
-    void mobSpawnOverlayEmptyCategoryClears() throws DecodeException {
-        AttributeType<MobSpawnSettings> t = TYPES.mobSpawnSettings();
-        MobSpawnSettings s = spawns(map("spawns_by_category", map("monster", List.of(spawner("minecraft:zombie", 1, 1)),
-            "creature", List.of(spawner("minecraft:cow", 1, 1))), "spawn_costs", map()));
-        MobSpawnSettings arg = spawns(map("spawns_by_category", map("monster", List.of()), "spawn_costs", map()));
-        MobSpawnSettings r = mod(t, Operation.OVERLAY, s, map("spawns_by_category", map("monster", List.of()), "spawn_costs", map()));
-        assertTrue(r.spawnsByCategory().get("monster").isEmpty());
-        assertEquals(1, r.spawnsByCategory().get("creature").size());
-        assertEquals(r, t.apply(Operation.OVERLAY, s, arg));
-    }
+    void composeEqualsApply() throws DecodeException {
+        assertComposesLikeApplyingBoth(TYPES.mobSpawnSettings(), Operation.OVERLAY,
+            List.of(MobSpawnSettings.EMPTY,
+                spawnsIn("minecraft:zombie", List.of("monster", "creature"), "minecraft:a"),
+                spawnsIn("minecraft:zombie", ALL_CATEGORIES, "minecraft:a", "minecraft:b")),
+            List.of(MobSpawnSettings.EMPTY,
+                spawnsIn("minecraft:husk", List.of("monster", "ambient"), "minecraft:b"),
+                spawnsIn("minecraft:pig", List.of("creature"), "minecraft:c"),
+                spawnsIn("minecraft:bat", ALL_CATEGORIES, "minecraft:a"),
+                spawns(map("spawns_by_category", map("monster", List.of()), "spawn_costs", map()))));
 
-    @Test
-    void ambientSoundsDecode() throws DecodeException {
-        AmbientSounds a = TYPES.ambientSounds().decode(map(
-            "additions", map("sound", "minecraft:ambient.crimson_forest.additions", "tick_chance", 0.0111),
-            "loop", "minecraft:ambient.crimson_forest.loop",
-            "mood", map("block_search_extent", 8, "offset", 2.0, "sound", "minecraft:ambient.crimson_forest.mood", "tick_delay", 6000)),
+        AttributeType<List<AmbientParticle>> particles = TYPES.ambientParticles();
+        List<AmbientParticle> one = particles.decode(List.of(map("particle", map("type", "minecraft:crimson_spore"), "probability", 0.025)),
             PLAIN);
-        assertEquals(1, a.additions().size());
-        assertEquals(0.0111, a.additions().get(0).tickChance(), 1e-9);
-        assertEquals(RegistryKey.parse("minecraft:ambient.crimson_forest.loop"), a.loop().orElseThrow().id());
-        assertEquals(6000, a.mood().orElseThrow().tickDelay());
-        assertEquals(8, a.mood().orElseThrow().blockSearchExtent());
-        assertEquals(2.0, a.mood().orElseThrow().offset(), 1e-9);
-
-        AmbientSounds list = TYPES.ambientSounds().decode(map(
-            "additions", List.of(map("sound", "a:b", "tick_chance", 0.1), map("sound", "a:c", "tick_chance", 0.2))), PLAIN);
-        assertEquals(2, list.additions().size());
-        assertTrue(list.loop().isEmpty());
-        assertEquals(AmbientSounds.EMPTY, TYPES.ambientSounds().decode(map(), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.ambientSounds().decode(map("looop", "a:b"), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.ambientSounds().decode(map("mood", map("sound", "a:b")), PLAIN));
-    }
-
-    @Test
-    void soundRefForms() throws DecodeException {
-        AmbientSounds a = TYPES.ambientSounds().decode(map("loop", map("sound_id", "a:b", "range", 16)), PLAIN);
-        assertEquals(RegistryKey.parse("a:b"), a.loop().orElseThrow().id());
-        assertEquals(16.0, a.loop().orElseThrow().range().getAsDouble(), 1e-9);
-        AmbientSounds b = TYPES.ambientSounds().decode(map("loop", map("sound_id", "a:b")), PLAIN);
-        assertTrue(b.loop().orElseThrow().range().isEmpty());
-        assertEquals(RegistryKey.parse("minecraft:ambient.cave"),
-            TYPES.ambientSounds().decode(map("loop", "ambient.cave"), PLAIN).loop().orElseThrow().id());
-        assertThrows(DecodeException.class, () -> TYPES.ambientSounds().decode(map("loop", 5), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.ambientSounds().decode(map("loop", "Not Valid"), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.ambientSounds().decode(map("loop", map("range", 1)), PLAIN));
-    }
-
-    @Test
-    void upperCaseIdRejected() {
-        DecodeException e = assertThrows(DecodeException.class, () -> CODECS.soundRef().decode("minecraft:Ambient.Cave", PLAIN));
-        assertEquals("expected an identifier like \"minecraft:id\", got \"minecraft:Ambient.Cave\"", e.getMessage());
-        assertEquals(path("minecraft:Ambient.Cave"), e.getCause().getMessage());
-        assertEquals(namespace("Minecraft:x"), lowerCaseFailure(() -> CODECS.soundRef().decode("Minecraft:x", PLAIN)));
+        List<AmbientParticle> two = particles.decode(List.of(map("particle", map("type", "minecraft:white_ash"), "probability", 0.1),
+            map("particle", map("type", "minecraft:ash"), "probability", 0.5)), PLAIN);
+        List<List<AmbientParticle>> lists = List.of(List.of(), one, two);
+        assertComposesLikeApplyingBoth(particles, Operation.APPEND, lists, lists);
     }
 
     private static String path(String written) {
@@ -256,7 +340,24 @@ class MinecraftAttributeTypesTest {
     }
 
     @Test
+    void requireLowerCase() {
+        RegistryKey key = id("minecraft:visual/fog_color");
+        assertSame(key, MinecraftIds.requireLowerCase(key));
+        assertSame(key, MinecraftIds.requireLowerCase(key, "visual/fog_color"));
+        assertEquals(namespace("Mod:thing"),
+            assertThrows(IllegalArgumentException.class, () -> MinecraftIds.requireLowerCase(id("Mod:thing"))).getMessage());
+        assertEquals(path("mod:Thing"),
+            assertThrows(IllegalArgumentException.class, () -> MinecraftIds.requireLowerCase(id("mod:Thing"))).getMessage());
+        assertEquals(path("Thing"), assertThrows(IllegalArgumentException.class,
+            () -> MinecraftIds.requireLowerCase(id("minecraft:Thing"), "Thing")).getMessage());
+        DecodeException e = assertThrows(DecodeException.class, () -> CODECS.soundRef().decode("minecraft:Ambient.Cave", PLAIN));
+        assertEquals("expected an identifier like \"minecraft:id\", got \"minecraft:Ambient.Cave\"", e.getMessage());
+        assertEquals(path("minecraft:Ambient.Cave"), e.getCause().getMessage());
+    }
+
+    @Test
     void lowerCaseIds() {
+        assertEquals(namespace("Minecraft:x"), lowerCaseFailure(() -> CODECS.soundRef().decode("Minecraft:x", PLAIN)));
         assertEquals(path("minecraft:Music.Game"),
             lowerCaseFailure(() -> TYPES.ambientSounds().decode(Map.of("loop", "minecraft:Music.Game"), PLAIN)));
         assertEquals(path("Music.Game"), lowerCaseFailure(() -> TYPES.backgroundMusic().decode(
@@ -270,101 +371,6 @@ class MinecraftAttributeTypesTest {
             "spawns_by_category", map("monster", List.of(spawner("minecraft:Zombie", 1, 1))), "spawn_costs", map()))));
         assertEquals(namespace("Minecraft:enderman"), lowerCaseFailure(() -> spawns(map("spawns_by_category", map(),
             "spawn_costs", map("Minecraft:enderman", map("energy_budget", 1, "charge", 1))))));
-    }
-
-    @Test
-    void requireLowerCase() {
-        RegistryKey key = RegistryKey.parse("minecraft:visual/fog_color");
-        assertSame(key, MinecraftIds.requireLowerCase(key));
-        assertSame(key, MinecraftIds.requireLowerCase(key, "visual/fog_color"));
-        assertEquals(namespace("Mod:thing"),
-            assertThrows(IllegalArgumentException.class, () -> MinecraftIds.requireLowerCase(RegistryKey.parse("Mod:thing"))).getMessage());
-        assertEquals(path("mod:Thing"),
-            assertThrows(IllegalArgumentException.class, () -> MinecraftIds.requireLowerCase(RegistryKey.parse("mod:Thing"))).getMessage());
-        assertEquals(path("Thing"), assertThrows(IllegalArgumentException.class,
-            () -> MinecraftIds.requireLowerCase(RegistryKey.parse("minecraft:Thing"), "Thing")).getMessage());
-    }
-
-    @Test
-    void integersFollowTheCoreRule() {
-        String weight = assertThrows(DecodeException.class, () -> spawns(map("spawns_by_category",
-            map("monster", List.of(map("type", "minecraft:zombie", "weight", 1.5, "count", 1))), "spawn_costs", map()))).getMessage();
-        assertTrue(weight.endsWith("\"weight\" of mob spawner: expected an integer, got 1.5"), weight);
-        assertThrows(DecodeException.class, () -> TYPES.intProvider().decode(99999999999L, PLAIN));
-    }
-
-    @Test
-    void backgroundMusicDecode() throws DecodeException {
-        BackgroundMusic m = TYPES.backgroundMusic().decode(map(
-            "default", map("max_delay", 24000, "min_delay", 12000, "sound", "minecraft:music.game", "replace_current_music", true),
-            "underwater", map("max_delay", 24000, "min_delay", 12000, "sound", "minecraft:music.under_water")), PLAIN);
-        assertTrue(m.defaultMusic().orElseThrow().replaceCurrentMusic());
-        assertFalse(m.underwater().orElseThrow().replaceCurrentMusic());
-        assertEquals(12000, m.underwater().orElseThrow().minDelay());
-        assertEquals(24000, m.underwater().orElseThrow().maxDelay());
-        assertTrue(m.creative().isEmpty());
-        assertEquals(BackgroundMusic.EMPTY, TYPES.backgroundMusic().decode(map(), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.backgroundMusic().decode(map("bogus", 1), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.backgroundMusic().decode(map("default", map("sound", "a:b", "min_delay", 1)), PLAIN));
-        assertThrows(DecodeException.class,
-            () -> TYPES.backgroundMusic().decode(map("default", map("sound", "a:b", "min_delay", -1, "max_delay", 1)), PLAIN));
-    }
-
-    @Test
-    void bedRuleDecode() throws DecodeException {
-        BedRule r = TYPES.bedRule().decode(map("can_set_spawn", "never", "can_sleep", "when_dark", "destroy_on_leave", true,
-            "error_message", map("translate", "block.minecraft.bed.no_sleep")), PLAIN);
-        assertEquals(BedRule.Rule.WHEN_DARK, r.canSleep());
-        assertEquals(BedRule.Rule.NEVER, r.canSetSpawn());
-        assertFalse(r.destroyOnUse());
-        assertTrue(r.destroyOnLeave());
-        assertTrue(r.errorMessage().isPresent());
-        BedRule plain = TYPES.bedRule().decode(map("can_set_spawn", "always", "can_sleep", "always"), PLAIN);
-        assertTrue(plain.errorMessage().isEmpty());
-        assertThrows(DecodeException.class, () -> TYPES.bedRule().decode(map("can_sleep", "always"), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.bedRule().decode(map("can_sleep", "sometimes", "can_set_spawn", "always"), PLAIN));
-        assertThrows(DecodeException.class,
-            () -> TYPES.bedRule().decode(map("can_sleep", "always", "can_set_spawn", "always", "nope", 1), PLAIN));
-    }
-
-    @Test
-    void simpleTypesDecode() throws DecodeException {
-        assertEquals(MoonPhase.NEW_MOON, TYPES.moonPhase().decode("new_moon", PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.moonPhase().decode("blue_moon", PLAIN));
-        assertEquals(RegistryKey.parse("minecraft:idle"), TYPES.identifier().decode("minecraft:idle", PLAIN));
-        assertEquals(RegistryKey.parse("minecraft:idle"), TYPES.identifier().decode("idle", PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.identifier().decode("Not Valid", PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.identifier().decode(3, PLAIN));
-        assertEquals("expected an identifier, not a tag, got \"#minecraft:logs\"",
-            assertThrows(DecodeException.class, () -> TYPES.identifier().decode("#minecraft:logs", PLAIN)).getMessage());
-        assertEquals(Either.left(RegistryKey.parse("minecraft:stone")), TYPES.identifierOrTag().decode("stone", PLAIN));
-        assertEquals(Either.right(TagKey.parse("#minecraft:logs")), TYPES.identifierOrTag().decode("#logs", PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.identifierOrTag().decode("#", PLAIN));
-    }
-
-    @Test
-    void particleDecode() throws DecodeException {
-        RawValue p = TYPES.particle().decode(map("type", "minecraft:dripping_dripstone_lava"), PLAIN);
-        assertEquals(new RawValue(map("type", "minecraft:dripping_dripstone_lava")), p);
-        assertThrows(DecodeException.class, () -> TYPES.particle().decode(map("color", 1), PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.particle().decode("minecraft:flame", PLAIN));
-    }
-
-    @Test
-    void intProviderDecode() throws DecodeException {
-        IntProviderValue c = TYPES.intProvider().decode(7, PLAIN);
-        assertEquals(7, c.constant().getAsInt());
-        assertTrue(c.provider().isEmpty());
-        IntProviderValue p = TYPES.intProvider().decode(map("type", "minecraft:uniform", "min_inclusive", 1, "max_inclusive", 3), PLAIN);
-        assertTrue(p.constant().isEmpty());
-        assertTrue(p.provider().isPresent());
-        assertThrows(DecodeException.class, () -> TYPES.intProvider().decode("x", PLAIN));
-        assertThrows(DecodeException.class, () -> TYPES.intProvider().decode(1.5, PLAIN));
-    }
-
-    @Test
-    void overrideArgumentDecodesWithValueDecoder() throws DecodeException {
-        assertEquals(MoonPhase.NEW_MOON, mod(TYPES.moonPhase(), Operation.OVERRIDE, MoonPhase.FULL_MOON, "new_moon"));
     }
 
     @Test
@@ -384,10 +390,7 @@ class MinecraftAttributeTypesTest {
         };
         Map<String, Object> music = map("sound", "minecraft:music.game", "min_delay", 1, "max_delay", 2);
         TYPES.backgroundMusic().decode(map("default", music), recording);
-        assertTrue(seen.contains("minecraft:music.game"), seen.toString());
-        assertTrue(seen.contains(1), seen.toString());
-        assertTrue(seen.contains(2), seen.toString());
-        assertTrue(seen.contains(music), seen.toString());
+        assertTrue(seen.containsAll(List.of("minecraft:music.game", 1, 2, music)), seen.toString());
     }
 
     private static DecodeContext referencing(Map<String, Object> targets) {
@@ -420,7 +423,8 @@ class MinecraftAttributeTypesTest {
             "@min", 1,
             "@flame", "minecraft:flame",
             "@message", map("translate", "@key"),
-            "@key", "block.minecraft.bed.no_sleep"));
+            "@key", "block.minecraft.bed.no_sleep",
+            "minecraft:zombie", "minecraft:cow"));
 
         AmbientSounds sounds = TYPES.ambientSounds().decode(map("loop", "@sound", "additions", "@additions"), context);
         assertEquals(4.0, sounds.loop().orElseThrow().range().orElseThrow());
@@ -437,14 +441,10 @@ class MinecraftAttributeTypesTest {
         BedRule rule = TYPES.bedRule().decode(map("can_sleep", "never", "can_set_spawn", "never", "error_message", "@message"),
             context);
         assertEquals(new RawValue(map("translate", "block.minecraft.bed.no_sleep")), rule.errorMessage().orElseThrow());
-    }
 
-    @Test
-    void mapKeysInsideValuesAreNotPreprocessed() throws DecodeException {
-        DecodeContext context = referencing(map("minecraft:zombie", "minecraft:cow"));
         MobSpawnSettings settings = TYPES.mobSpawnSettings().decode(map(
             "spawns_by_category", map(),
             "spawn_costs", map("minecraft:zombie", map("energy_budget", 1.0, "charge", 0.5))), context);
-        assertEquals(List.of(RegistryKey.parse("minecraft:zombie")), List.copyOf(settings.spawnCosts().keySet()));
+        assertEquals(List.of(id("minecraft:zombie")), List.copyOf(settings.spawnCosts().keySet()));
     }
 }

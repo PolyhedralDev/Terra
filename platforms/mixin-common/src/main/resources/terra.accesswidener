@@ -4,3 +4,4 @@ accessible	class	net/minecraft/world/level/levelgen/presets/WorldPresets$Bootstr
 accessible	field	net/minecraft/world/level/levelgen/WorldDimensions	BUILTIN_ORDER	Ljava/util/Set;
 extendable	class	net/minecraft/nbt/Tag
 accessible	field	net/minecraft/world/level/block/entity/BlockEntity	TYPE_CODEC	Lcom/mojang/serialization/Codec;
+accessible	field	net/minecraft/world/level/biome/Biome	climateSettings	Lnet/minecraft/world/level/biome/Biome$ClimateSettings;

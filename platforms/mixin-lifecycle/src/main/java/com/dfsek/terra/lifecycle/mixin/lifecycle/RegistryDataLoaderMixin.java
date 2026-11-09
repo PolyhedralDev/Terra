@@ -1,11 +1,13 @@
 package com.dfsek.terra.lifecycle.mixin.lifecycle;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.RegistryLoadTask;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceManagerRegistryLoadTask;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.presets.WorldPreset;
+import net.minecraft.world.timeline.Timeline;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,18 +25,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.dfsek.terra.lifecycle.LifecyclePlatform;
 import com.dfsek.terra.lifecycle.mixin.RegistryLoadTaskAccessor;
 import com.dfsek.terra.lifecycle.util.LifecycleUtil;
+import com.dfsek.terra.lifecycle.util.LoadContextHolder;
 import com.dfsek.terra.lifecycle.util.RegistryHack;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
+import com.dfsek.terra.mod.attribute.VanillaContext;
+import com.dfsek.terra.mod.mixin.access.VillagerTypeAccessor;
 
 
 @Mixin(RegistryDataLoader.class)
 public class RegistryDataLoaderMixin {
+    // Until the load finishes, the static registries' tags are only in these lookups.
+    @Inject(method = "createContext", at = @At("HEAD"))
+    private static void captureContext(List<HolderLookup.RegistryLookup<?>> contextRegistries, List<RegistryLoadTask<?>> loadTasks,
+                                       CallbackInfoReturnable<RegistryOps.RegistryInfoLookup> cir) {
+        for(RegistryLoadTask<?> task : loadTasks) ((LoadContextHolder) task).terra_setContextRegistries(contextRegistries);
+    }
+
     // The thenApplyAsync callback in load(LoaderFactory, List, List, Executor): every registry populated, none frozen.
     @Inject(
         method = "lambda$load$2(Ljava/util/List;Ljava/util/Map;Ljava/lang/Void;)Lnet/minecraft/core/RegistryAccess$Frozen;",
@@ -54,10 +68,18 @@ public class RegistryDataLoaderMixin {
             WritableRegistry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterLists = extractRegistry(loadTasks,
                 Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST).orElseThrow();
             WritableRegistry<Enchantment> enchantments = extractRegistry(loadTasks, Registries.ENCHANTMENT).orElseThrow();
+            // Binds the datapack's timelines before the freeze, for the time-marker check.
+            WritableRegistry<Timeline> timelines = extractRegistry(loadTasks, Registries.TIMELINE).orElseThrow();
 
             LifecyclePlatform.setRegistries(biomes, dimensionTypes, chunkGeneratorSettings, multiNoiseBiomeSourceParameterLists,
                 enchantments);
-            LifecycleUtil.initialize(biomes, worldPresets);
+            // After extractRegistry: its terra_bind gives the parents' holders their values before the freeze.
+            List<? extends WritableRegistry<?>> loaded = loadTasks.stream().map(RegistryDataLoaderMixin::getRegistry).toList();
+            List<HolderLookup.RegistryLookup<?>> context = Objects.requireNonNull(
+                ((LoadContextHolder) loadTasks.getFirst()).terra_contextRegistries(), "the load built no context");
+            platform.attributeParents().beginLoad(
+                VanillaContext.ofLoad(loaded, context, VillagerTypeAccessor.getBiomeTypeToIdMap()::get));
+            LifecycleUtil.initialize(biomes, timelines, worldPresets);
         }
     }
 

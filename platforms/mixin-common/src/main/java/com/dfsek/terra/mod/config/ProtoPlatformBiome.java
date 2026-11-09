@@ -26,6 +26,7 @@ import net.minecraft.world.level.biome.Biome;
 import java.util.Objects;
 
 import com.dfsek.terra.api.world.biome.PlatformBiome;
+import com.dfsek.terra.mod.attribute.AttributeSlots;
 import com.dfsek.terra.mod.util.MinecraftUtil;
 
 
@@ -33,6 +34,9 @@ public class ProtoPlatformBiome implements PlatformBiome {
     private final Identifier identifier;
 
     private Holder<Biome> delegate;
+
+    // Volatile for generation threads; AttributeSlots is immutable.
+    private volatile AttributeSlots parentEntries = AttributeSlots.EMPTY;
 
     public ProtoPlatformBiome(Identifier identifier) {
         this.identifier = identifier;
@@ -53,5 +57,13 @@ public class ProtoPlatformBiome implements PlatformBiome {
 
     public void setDelegate(Holder<Biome> delegate) {
         this.delegate = Objects.requireNonNull(delegate);
+    }
+
+    public AttributeSlots parentEntries() {
+        return parentEntries;
+    }
+
+    public void setParentEntries(AttributeSlots parentEntries) {
+        this.parentEntries = Objects.requireNonNull(parentEntries);
     }
 }

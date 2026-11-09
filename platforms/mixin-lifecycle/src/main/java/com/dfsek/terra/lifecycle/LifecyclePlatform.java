@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import com.dfsek.terra.addon.EphemeralAddon;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.lifecycle.util.LifecycleBiomeUtil;
+import com.dfsek.terra.lifecycle.util.LifecycleUtil;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.ModPlatform;
 import com.dfsek.terra.mod.generation.MinecraftChunkGeneratorWrapper;
@@ -82,22 +83,32 @@ public abstract class LifecyclePlatform extends ModPlatform {
     @Override
     public boolean reload() {
         getTerraConfig().load(this);
-        boolean succeed = loadConfigPacks();
+        // Old packs keep their parents until the reloaded packs are prepared and in the chunk generators.
+        attributeParents().beginPackReload();
+        boolean succeed;
+        try {
+            succeed = loadConfigPacks();
 
-        if(server != null) {
-            LifecycleBiomeUtil.registerBiomes(server.registryAccess().lookupOrThrow(Registries.BIOME));
-            server.reloadResources(server.getPackRepository().getSelectedIds()).exceptionally(throwable -> {
-                LOGGER.warn("Failed to execute reload", throwable);
-                return null;
-            }).join();
-            server.getAllLevels().forEach(world -> {
-                if(world.getChunkSource().getGenerator() instanceof MinecraftChunkGeneratorWrapper chunkGeneratorWrapper) {
-                    getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
-                        chunkGeneratorWrapper.setPack(pack);
-                        LOGGER.info("Replaced pack in chunk generator for world {}", world);
-                    });
-                }
-            });
+            if(server != null) {
+                LifecycleBiomeUtil.registerBiomes(server.registryAccess().lookupOrThrow(Registries.BIOME),
+                    LifecycleUtil.biomeFactory(this));
+                server.reloadResources(server.getPackRepository().getSelectedIds()).exceptionally(throwable -> {
+                    LOGGER.warn("Failed to execute reload", throwable);
+                    return null;
+                }).join();
+                server.getAllLevels().forEach(world -> {
+                    if(world.getChunkSource().getGenerator() instanceof MinecraftChunkGeneratorWrapper chunkGeneratorWrapper) {
+                        getConfigRegistry().get(chunkGeneratorWrapper.getPack().getRegistryKey()).ifPresent(pack -> {
+                            chunkGeneratorWrapper.setPack(pack);
+                            LOGGER.info("Replaced pack in chunk generator for world {}", world);
+                        });
+                    }
+                });
+                LOGGER.info("Packs reloaded; dimension types, generation settings, timelines and existing biomes need a restart " +
+                            "or new world.");
+            }
+        } finally {
+            attributeParents().endPackReload();
         }
         return succeed;
     }

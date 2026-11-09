@@ -23,15 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.dfsek.terra.api.addon.BaseAddon;
-import com.dfsek.terra.api.event.events.config.ConfigurationLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPostLoadEvent;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.api.world.biome.Biome;
 import com.dfsek.terra.mod.config.PostLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
-import com.dfsek.terra.mod.config.VanillaBiomeProperties;
-import com.dfsek.terra.mod.config.VanillaWorldProperties;
 
 
 public abstract class MinecraftAddon implements BaseAddon {
@@ -47,12 +43,6 @@ public abstract class MinecraftAddon implements BaseAddon {
     public void initialize() {
         modPlatform.getEventManager()
             .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigPackPostLoadEvent.class)
-            .then(event -> event.getPack().getContext().put(event.loadTemplate(new VanillaWorldProperties())))
-            .priority(100)
-            .global();
-        modPlatform.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPreLoadEvent.class)
             .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
             .global();
@@ -62,16 +52,6 @@ public abstract class MinecraftAddon implements BaseAddon {
             .register(this, ConfigPackPostLoadEvent.class)
             .then(event -> event.getPack().getContext().put(event.loadTemplate(new PostLoadCompatibilityOptions())))
             .priority(100)
-            .global();
-
-        modPlatform.getEventManager()
-            .getHandler(FunctionalEventHandler.class)
-            .register(this, ConfigurationLoadEvent.class)
-            .then(event -> {
-                if(event.is(Biome.class)) {
-                    event.getLoadedObject(Biome.class).getContext().put(event.load(new VanillaBiomeProperties()));
-                }
-            })
             .global();
     }
 

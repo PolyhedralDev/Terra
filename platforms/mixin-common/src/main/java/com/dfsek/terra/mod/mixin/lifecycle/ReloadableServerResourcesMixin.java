@@ -48,6 +48,8 @@ public class ReloadableServerResourcesMixin {
         RegistryAccess.Frozen dynamicRegistryManager = dynamicRegistries.compositeAccess();
         TagUtil.registerWorldPresetTags(dynamicRegistryManager.lookupOrThrow(Registries.WORLD_PRESET));
 
+        TagUtil.registerTimelineTags(dynamicRegistryManager.lookupOrThrow(Registries.TIMELINE));
+
         Registry<Biome> biomeRegistry = dynamicRegistryManager.lookupOrThrow(Registries.BIOME);
         TagUtil.registerBiomeTags(biomeRegistry);
         MinecraftUtil.registerFlora(biomeRegistry);
