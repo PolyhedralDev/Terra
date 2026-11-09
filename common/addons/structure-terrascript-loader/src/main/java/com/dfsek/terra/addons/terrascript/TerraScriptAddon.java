@@ -40,6 +40,8 @@ public class TerraScriptAddon implements AddonInitializer {
             .then(event -> {
                 CheckedRegistry<Structure> structureRegistry = event.getPack().getOrCreateRegistry(Structure.class);
                 CheckedRegistry<LootTable> lootRegistry = event.getPack().getOrCreateRegistry(LootTable.class);
+                // Pack registries must not be created from worker threads.
+                CheckedRegistry<FunctionBuilder> functionRegistry = event.getPack().getOrCreateRegistry(FunctionBuilder.class);
                 try {
                     FileUtil.filesWithExtension(event.getPack().getRootPath(), ".tesf")
                         .entrySet()
@@ -53,11 +55,12 @@ public class TerraScriptAddon implements AddonInitializer {
                                     platform,
                                     structureRegistry,
                                     lootRegistry,
-                                    event.getPack().getOrCreateRegistry(FunctionBuilder.class));
+                                    functionRegistry);
                             } catch(ParseException | IOException e) {
                                 throw new RuntimeException("Failed to load script \"" + entry.getKey() + "\"", e);
                             }
                         })
+                        .toList()
                         .forEach(structureRegistry::register);
                 } catch(IOException e) {
                     throw new RuntimeException("Error occurred while reading config pack files", e);
