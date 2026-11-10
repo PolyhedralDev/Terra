@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        jdk "Temurin Java 21"
+        jdk "Temurin Java 25"
     }
 
     triggers {

@@ -1,11 +1,11 @@
 import com.dfsek.terra.tectonicdoc.TectonicDocPlugin
 import org.apache.tools.ant.filters.ReplaceTokens
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.filter
@@ -30,8 +30,7 @@ fun Project.configureCompilation() {
     }
     
     configure<JavaPluginExtension> {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
     
     tasks.withType<JavaCompile> {

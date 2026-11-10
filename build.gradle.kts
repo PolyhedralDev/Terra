@@ -15,7 +15,6 @@ allprojects {
     tasks.withType<JavaCompile>().configureEach {
         options.isFork = true
         options.isIncremental = true
-        options.release.set(25)
     }
 
     tasks.withType<Test>().configureEach {

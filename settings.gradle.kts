@@ -45,6 +45,10 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 // settings.gradle.kts
 val isCiServer = System.getenv().containsKey("CI")
 // Cache build artifacts, so expensive operations do not need to be re-computed
