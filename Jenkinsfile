@@ -29,8 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 withGradle {
-                    sh './gradlew build --rerun-tasks -x check'
-                    sh './gradlew javadoc'
+                    sh './gradlew build javadoc -x check'
                 }
             }
 
@@ -46,7 +45,7 @@ pipeline {
         stage('Tests') {
             steps {
                 withGradle {
-                    sh './gradlew test --rerun-tasks'
+                    sh './gradlew test --rerun'
                 }
             }
         }
