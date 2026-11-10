@@ -7,7 +7,13 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import org.gradle.api.DefaultTask
-import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.PathSensitive
+import org.gradle.api.tasks.PathSensitivity
 import org.gradle.api.tasks.TaskAction
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
@@ -15,11 +21,18 @@ import org.objectweb.asm.tree.FieldNode
 
 
 abstract class GenerateDocsTask : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val classDirectories: ListProperty<Directory>
+    
+    @get:OutputDirectory
+    abstract val docsDirectory: DirectoryProperty
+    
     @TaskAction
     fun generateDocs() {
-        project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.forEach { sources ->
+        classDirectories.get().forEach { classesDirectory ->
             val classes = HashMap<String, ClassNode>()
-            sources.java.classesDirectory.get().asFileTree.forEach { file ->
+            classesDirectory.asFileTree.forEach { file ->
                 if (file.name.endsWith(".class")) {
                     val node = createClassNode(FileInputStream(file))
                     if (node.fields.stream().anyMatch { field ->
@@ -27,10 +40,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                                 it.desc.equals(descriptor(Value::class.java.canonicalName))
                             } == true
                         }) {
-                        var name = sources
-                            .java
-                            .classesDirectory
-                            .get()
+                        var name = classesDirectory
                             .asFile
                             .toPath()
                             .relativize(file.toPath())
@@ -44,7 +54,7 @@ abstract class GenerateDocsTask : DefaultTask() {
                 }
             }
             
-            val docsDir = File(project.buildDir, "tectonic")
+            val docsDir = docsDirectory.get().asFile
             docsDir.mkdirs()
             
             classes.forEach { (name, clazz) ->

@@ -14,7 +14,7 @@ dependencies {
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
 
-    implementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+    implementation("org.incendo:cloud-fabric:${Versions.Fabric.cloud}") {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
         exclude("me.lucko", "fabric-permissions-api")

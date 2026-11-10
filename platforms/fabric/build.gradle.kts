@@ -28,12 +28,12 @@ dependencies {
 
     implementation("net.fabricmc:fabric-loader:${Versions.Mod.fabricLoader}")
 
-    implementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+    implementation("org.incendo:cloud-fabric:${Versions.Fabric.cloud}") {
         exclude("me.lucko", "fabric-permissions-api")
     }
-    include("org.incendo", "cloud-fabric", Versions.Fabric.cloud)
+    include("org.incendo:cloud-fabric:${Versions.Fabric.cloud}")
 
-    runtimeOnly("net.fabricmc.fabric-api", "fabric-api", Versions.Fabric.fabricAPI)
+    runtimeOnly("net.fabricmc.fabric-api:fabric-api:${Versions.Fabric.fabricAPI}")
 }
 
 loom {

@@ -27,18 +27,18 @@ dependencies {
     implementation(project(":platforms:minecraft-common")) { isTransitive = false }
     shaded(project(":platforms:minecraft-common")) { isTransitive = false }
 
-    compileOnly("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
+    compileOnly("io.papermc.paper:paper-api:${Versions.Bukkit.paper}")
 
-    compileOnly("com.dfsek.wyck", "Wyck", Versions.Bukkit.wyck)
+    compileOnly("com.dfsek.wyck:Wyck:${Versions.Bukkit.wyck}")
 
-    compileOnly("org.mvplugins.multiverse.core", "multiverse-core", Versions.Bukkit.multiverse)
+    compileOnly("org.mvplugins.multiverse.core:multiverse-core:${Versions.Bukkit.multiverse}")
 
-    shadedApi("com.google.guava", "guava", Versions.Libraries.Internal.guava)
+    shadedApi("com.google.guava:guava:${Versions.Libraries.Internal.guava}")
 
-    shadedApi("org.incendo", "cloud-paper", Versions.Bukkit.cloud)
+    shadedApi("org.incendo:cloud-paper:${Versions.Bukkit.cloud}")
 
     testImplementation(testFixtures(project(":platforms:minecraft-common")))
     testImplementation(project(":common:addons:minecraft-attributes"))
-    testImplementation("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
-    testImplementation("com.dfsek.wyck", "Wyck", Versions.Bukkit.wyck)
+    testImplementation("io.papermc.paper:paper-api:${Versions.Bukkit.paper}")
+    testImplementation("com.dfsek.wyck:Wyck:${Versions.Bukkit.wyck}")
 }

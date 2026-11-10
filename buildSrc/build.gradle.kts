@@ -28,10 +28,10 @@ repositories {
 
 dependencies {
     //TODO Allow pulling from Versions.kt
-    implementation("com.gradleup.shadow", "shadow-gradle-plugin", "9.3.1")
+    implementation("com.gradleup.shadow:shadow-gradle-plugin:9.6.1")
 
-    implementation("org.ow2.asm", "asm", "9.9")
-    implementation("org.ow2.asm", "asm-tree", "9.9")
-    implementation("com.dfsek.tectonic", "common", "4.4.0")
-    implementation("org.yaml", "snakeyaml", "2.5")
+    implementation("org.ow2.asm:asm:9.11.1")
+    implementation("org.ow2.asm:asm-tree:9.11.1")
+    implementation("com.dfsek.tectonic:common:4.4.0")
+    implementation("org.yaml:snakeyaml:2.7")
 }

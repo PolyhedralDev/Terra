@@ -26,13 +26,13 @@ fun Project.configurePublishing() {
             //val mavenSnapshotUrl = "https://repo.codemc.io/repository/maven-snapshots/"
             
             maven(mavenUrl) {
-                val SoloStudiosReleasesUsername: String? by project
-                val SoloStudiosReleasesPassword: String? by project
+                val releasesUsername = findProperty("SoloStudiosReleasesUsername") as String?
+                val releasesPassword = findProperty("SoloStudiosReleasesPassword") as String?
                 
-                if (SoloStudiosReleasesUsername != null && SoloStudiosReleasesPassword != null) {
+                if (releasesUsername != null && releasesPassword != null) {
                     credentials {
-                        username = SoloStudiosReleasesUsername
-                        password = SoloStudiosReleasesPassword
+                        username = releasesUsername
+                        password = releasesPassword
                     }
                 }
             }

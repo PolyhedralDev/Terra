@@ -14,25 +14,25 @@ object Versions {
         
         const val cloud = "2.1.0"
         
-        const val caffeine = "3.2.2"
+        const val caffeine = "3.3.1"
         
-        const val slf4j = "2.0.17"
+        const val slf4j = "2.0.20"
 
         object Internal {
-            const val shadow = "9.3.1"
-            const val apacheText = "1.14.0"
-            const val apacheIO = "2.20.0"
-            const val guava = "33.5.0-jre"
-            const val asm = "9.9"
-            const val snakeYml = "2.5"
-            const val jetBrainsAnnotations = "26.0.2-1"
-            const val junit = "6.0.0"
+            const val shadow = "9.6.1"
+            const val apacheText = "1.15.0"
+            const val apacheIO = "2.22.0"
+            const val guava = "33.8.0-jre"
+            const val asm = "9.11.1"
+            const val snakeYml = "2.7"
+            const val jetBrainsAnnotations = "26.1.0"
+            const val junit = "6.1.3"
             const val nbt = "6.1"
         }
     }
     
     object Fabric {
-        const val fabricAPI = "0.165.2+${Mod.minecraft}"
+        const val fabricAPI = "0.166.0+${Mod.minecraft}"
         const val cloud = "2.1.0"
     }
 //
@@ -60,12 +60,12 @@ object Versions {
     
     object Bukkit {
         const val minecraft = "26.3"
-        const val paperBuild = "$minecraft.build.244-stable"
+        const val paperBuild = "$minecraft.build.246-stable"
         const val paper = paperBuild
-        const val runPaper = "3.0.2"
+        const val runPaper = "3.1.0"
         const val wyck = "4.0.0-0f573ad7"
         const val cloud = "2.0.1"
-        const val multiverse = "5.3.0"
+        const val multiverse = "5.8.2"
     }
     
 //
@@ -76,7 +76,7 @@ object Versions {
 //    }
 //
     object CLI {
-        const val logback = "1.5.19"
+        const val logback = "1.6.6"
         const val picocli = "4.7.7"
     }
     

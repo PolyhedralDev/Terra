@@ -12,18 +12,14 @@ allprojects {
     configureDependencies()
     configurePublishing()
 
-    tasks.withType<JavaCompile>().configureEach {
-        options.isFork = true
-        options.isIncremental = true
-    }
-
     tasks.withType<Test>().configureEach {
         useJUnitPlatform()
 
         maxHeapSize = "2G"
         ignoreFailures = false
         failFast = true
-        maxParallelForks = (Runtime.getRuntime().availableProcessors() - 1).takeIf { it > 0 } ?: 1
+        // Projects already test in parallel, more forks per task mostly adds JVM and Minecraft bootstrap time.
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 8).coerceIn(1, 4)
 
         reports.html.required.set(false)
         reports.junitXml.required.set(false)

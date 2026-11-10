@@ -7,8 +7,8 @@ val javaMainClass = "com.dfsek.terra.minestom.TerraMinestomExample"
 dependencies {
     shadedApi(project(":platforms:minestom"))
 
-    implementation("net.minestom", "minestom", Versions.Minestom.minestom)
-    implementation("org.slf4j", "slf4j-simple", Versions.Libraries.slf4j)
+    implementation("net.minestom:minestom:${Versions.Minestom.minestom}")
+    implementation("org.slf4j:slf4j-simple:${Versions.Libraries.slf4j}")
 }
 
 tasks.withType<Jar> {

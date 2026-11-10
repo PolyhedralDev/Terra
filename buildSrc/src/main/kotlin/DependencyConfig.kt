@@ -1,28 +1,23 @@
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.creating
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.getting
 import org.gradle.kotlin.dsl.maven
 import org.gradle.kotlin.dsl.repositories
 
 fun Project.configureDependencies() {
-    val testImplementation by configurations.getting
-    val compileOnly by configurations.getting
+    val testImplementation = configurations.getByName("testImplementation")
+    val compileOnly = configurations.getByName("compileOnly")
     
-    val api by configurations.getting
-    val implementation by configurations.getting
+    val api = configurations.getByName("api")
+    val implementation = configurations.getByName("implementation")
     
-    val shaded by configurations.creating
+    val shaded = configurations.create("shaded")
     
-    @Suppress("UNUSED_VARIABLE")
-    val shadedApi by configurations.creating {
+    configurations.create("shadedApi") {
         shaded.extendsFrom(this)
         api.extendsFrom(this)
     }
     
-    @Suppress("UNUSED_VARIABLE")
-    val shadedImplementation by configurations.creating {
+    configurations.create("shadedImplementation") {
         shaded.extendsFrom(this)
         implementation.extendsFrom(this)
     }
@@ -72,11 +67,11 @@ fun Project.configureDependencies() {
     }
     
     dependencies {
-        testImplementation("org.junit.jupiter", "junit-jupiter", Versions.Libraries.Internal.junit)
-        "testRuntimeOnly"("org.junit.platform", "junit-platform-launcher")
-        compileOnly("org.jetbrains", "annotations", Versions.Libraries.Internal.jetBrainsAnnotations)
+        testImplementation("org.junit.jupiter:junit-jupiter:${Versions.Libraries.Internal.junit}")
+        "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+        compileOnly("org.jetbrains:annotations:${Versions.Libraries.Internal.jetBrainsAnnotations}")
         
-        compileOnly("com.google.guava", "guava", Versions.Libraries.Internal.guava)
-        testImplementation("com.google.guava", "guava", Versions.Libraries.Internal.guava)
+        compileOnly("com.google.guava:guava:${Versions.Libraries.Internal.guava}")
+        testImplementation("com.google.guava:guava:${Versions.Libraries.Internal.guava}")
     }
 }

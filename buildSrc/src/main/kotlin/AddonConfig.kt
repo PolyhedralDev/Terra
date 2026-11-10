@@ -3,7 +3,7 @@ import java.io.File
 import java.util.function.Predicate
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.named
 import kotlin.streams.asStream
 
 
@@ -11,8 +11,13 @@ import kotlin.streams.asStream
  * Configures a directory where addons will be put.
  */
 fun Project.addonDir(dir: File, task: Task) {
+    val addonProjects = project(":common:addons").subprojects
     val moveAddons = tasks.register("moveAddons" + task.name) {
         dependsOn("compileAddons")
+        // Resolved here rather than in doLast: task actions can't reach into other projects.
+        val jars = addonProjects.map { addon ->
+            (if (addon.isBootstrapAddon()) "bootstrap/" else "") to addon.tasks.named<ShadowJar>("shadowJar").flatMap { it.archiveFile }
+        }
         doLast {
             dir.parentFile.mkdirs()
             matchingAddons(dir) {
@@ -21,20 +26,13 @@ fun Project.addonDir(dir: File, task: Task) {
                 logger.info("Deleting old addon: " + it.absolutePath)
                 it.delete()
             }
-            forSubProjects(":common:addons") {
-                val jar = tasks.named("shadowJar").get() as ShadowJar
-                
-                val boot = if (extra.has("bootstrap") && extra.get("bootstrap") as Boolean) "bootstrap/" else ""
-                val target = File(dir, boot + jar.archiveFileName.get())
-                
-                val base = "${jar.archiveBaseName.get()}-${version}"
-                
-                logger.info("Copying addon ${jar.archiveFileName.get()} to ${target.absolutePath}. Base name: $base")
-                
-                jar.archiveFile.orNull?.asFile?.copyTo(target)
+            jars.forEach { (subdirectory, jar) ->
+                val file = jar.get().asFile
+                val target = File(dir, subdirectory + file.name)
+                logger.info("Copying addon ${file.name} to ${target.absolutePath}")
+                file.copyTo(target)
             }
         }
-        
     }
     
     task.dependsOn(moveAddons)

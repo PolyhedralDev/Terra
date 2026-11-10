@@ -35,18 +35,16 @@ fun Project.configureCompilation() {
     
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        doFirst {
-            options.compilerArgs.add("-Xlint:all")
-        }
+        options.compilerArgs.add("-Xlint:all")
     }
     
     // Gradle doesn't fingerprint filter arguments; the tokens are declared as inputs.
     val metadataTokens = mapOf(
-        "DESCRIPTION" to properties["terra.description"],
-        "WIKI" to properties["terra.wiki"],
-        "SOURCE" to properties["terra.source"],
-        "ISSUES" to properties["terra.issues"],
-        "LICENSE" to properties["terra.license"]
+        "DESCRIPTION" to findProperty("terra.description"),
+        "WIKI" to findProperty("terra.wiki"),
+        "SOURCE" to findProperty("terra.source"),
+        "ISSUES" to findProperty("terra.issues"),
+        "LICENSE" to findProperty("terra.license")
                               )
     tasks.withType<ProcessResources> {
         include("**/*.*")

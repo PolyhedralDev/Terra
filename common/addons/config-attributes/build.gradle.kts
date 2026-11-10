@@ -6,5 +6,5 @@ dependencies {
     testImplementation(project(":common:implementation:base"))
     testImplementation(project(":common:addons:minecraft-attributes"))
     testImplementation(project(":common:addons:manifest-addon-loader"))
-    testImplementation("com.dfsek", "paralithic", Versions.Libraries.paralithic)
+    testImplementation("com.dfsek:paralithic:${Versions.Libraries.paralithic}")
 }
