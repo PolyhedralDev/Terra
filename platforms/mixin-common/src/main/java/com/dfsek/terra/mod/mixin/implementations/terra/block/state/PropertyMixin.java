@@ -14,27 +14,27 @@ import java.util.List;
 import com.dfsek.terra.api.block.state.properties.Property;
 
 
-@Mixin(net.minecraft.state.property.Property.class)
+@Mixin(net.minecraft.world.level.block.state.properties.Property.class)
 @Implements(@Interface(iface = Property.class, prefix = "terra$", remap = Remap.NONE))
 public abstract class PropertyMixin<T> {
     @Shadow
     @Final
-    private Class<T> type;
+    private Class<T> clazz;
     @Shadow
     @Final
     private String name;
 
     @Shadow
-    public abstract List<T> getValues();
+    public abstract List<T> getPossibleValues();
 
     @Intrinsic
     public Collection<T> terra$values() {
-        return getValues();
+        return getPossibleValues();
     }
 
     @Intrinsic
     public Class<T> terra$getType() {
-        return type;
+        return clazz;
     }
 
     @Intrinsic

@@ -2,20 +2,21 @@
     "required": true,
     "minVersion": "0.8",
     "package": "com.dfsek.terra.lifecycle.mixin",
-    "compatibilityLevel": "JAVA_21",
+    "compatibilityLevel": "JAVA_25",
     "mixins": [
-        "NoiseConfigMixin",
-        "RegistryEntryReferenceInvoker",
-        "RegistryMixin",
-        "SimpleRegistryMixin",
+        "RandomStateMixin",
+        "HolderReferenceInvoker",
+        "RegistryLoadTaskAccessor",
+        "RegistryLoadTaskMixin",
+        "BuiltInRegistriesMixin",
+        "MappedRegistryMixin",
         "lifecycle.MinecraftServerMixin",
-        "lifecycle.RegistryLoaderMixin",
-        "lifecycle.SaveLoadingMixin"
+        "lifecycle.RegistryDataLoaderMixin",
+        "lifecycle.WorldLoaderMixin"
     ],
     "server": [
     ],
     "injectors": {
         "defaultRequire": 1
-    },
-    "refmap": "terra.lifecycle.refmap.json"
+    }
 }

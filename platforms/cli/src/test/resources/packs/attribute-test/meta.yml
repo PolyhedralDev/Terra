@@ -1,0 +1,22 @@
+shared-attributes:
+  minecraft:visual/fog_color: "#010203"
+  minecraft:visual/sky_color: "#0a0b0c"
+  terra:biome/downfall: 0.25
+shared-water-color: "#112233"
+music-delay: 6000
+fog-scale: 0.5
+cave-loop: minecraft:ambient.cave
+cave-mood:
+  sound: minecraft:ambient.cave
+  block_search_extent: 8
+  offset: 2.0
+cave-additions:
+  - sound: minecraft:ambient.crimson_forest.additions
+    tick_chance: 0.0111
+particle-name: dust
+particle-options:
+  color: [1.0, 0.0, 0.0]
+  scale: 1.0
+night-sky: "#000000"
+chained-color: "$meta.yml:sky-hex"
+sky-hex: "#0a0b0c"

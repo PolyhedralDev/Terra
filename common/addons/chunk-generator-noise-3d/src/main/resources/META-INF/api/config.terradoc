@@ -1,0 +1,388 @@
+{
+  "id": "chunk-generator-noise-3d",
+  "docVersion": 1,
+  "description": "Registers NOISE_3D and contributes pack options and biome terrain, carving and palette fields whenever this addon loads. Existing core metadata documents blend.terrain.elevation (default 4).",
+  "types": {
+    "terra:PaletteReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Palette"
+        }
+      ]
+    },
+    "HeightPalettes": {
+      "kind": "list",
+      "element": {
+        "kind": "keyMap",
+        "keys": {
+          "kind": "type",
+          "target": "terra:PaletteReference"
+        },
+        "values": {
+          "kind": "oneOf",
+          "options": [
+            {
+              "kind": "integer"
+            },
+            {
+              "kind": "type",
+              "target": "terra:Expression"
+            }
+          ]
+        }
+      },
+      "description": "Palette references mapped to inclusive upper Y boundaries, in a sequence of maps. Duplicate heights replace earlier entries. At least one entry is needed, and the highest boundary must cover the builder's range through Y=255. Boundary values may be numeric expressions.",
+      "minItems": 1
+    },
+    "SlantLayer": {
+      "kind": "object",
+      "fields": {
+        "threshold": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "float"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true,
+          "summary": "Slant threshold. Derivative uses the floor threshold; DotProduct uses the ceiling threshold. Multiple slant layers must use distinct thresholds."
+        },
+        "palette": {
+          "schema": {
+            "kind": "type",
+            "target": "HeightPalettes"
+          },
+          "required": true
+        }
+      }
+    },
+    "terra:Biome": {
+      "kind": "object",
+      "fields": {
+        "terrain": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "sampler": {
+                "schema": {
+                  "kind": "type",
+                  "target": "terra:NoiseSampler"
+                },
+                "required": true,
+                "summary": "Required terrain-density sampler."
+              },
+              "sampler-2d": {
+                "schema": {
+                  "kind": "type",
+                  "target": "terra:NoiseSampler",
+                  "nullable": true
+                },
+                "required": false,
+                "summary": "Elevation sampler; defaults to an internal zero sampler."
+              },
+              "blend": {
+                "schema": {
+                  "kind": "object",
+                  "fields": {
+                    "distance": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "integer"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 3,
+                      "summary": "Blend radius in sample steps."
+                    },
+                    "weight": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "float"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 1
+                    },
+                    "step": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "integer"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 4,
+                      "summary": "Distance between blend samples."
+                    },
+                    "weight-2d": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "float"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 1
+                    }
+                  },
+                  "nullable": true
+                },
+                "required": false
+              }
+            }
+          },
+          "required": true
+        },
+        "carving": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "sampler": {
+                "schema": {
+                  "kind": "type",
+                  "target": "terra:NoiseSampler",
+                  "nullable": true
+                },
+                "required": false,
+                "summary": "Carving sampler; defaults to an internal zero sampler."
+              },
+              "update-palette": {
+                "schema": {
+                  "kind": "boolean",
+                  "nullable": true
+                },
+                "required": false,
+                "default": false,
+                "summary": "Update palette depth when carving removes blocks."
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        },
+        "palette": {
+          "schema": {
+            "kind": "type",
+            "target": "HeightPalettes"
+          },
+          "required": true,
+          "summary": "Height-indexed terrain palettes."
+        },
+        "slant": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "type",
+              "target": "SlantLayer"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Optional palettes selected by terrain slant."
+        },
+        "slant-depth": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ],
+            "nullable": true
+          },
+          "required": false,
+          "default": 2147483647,
+          "summary": "Maximum depth at which to apply a slant palette."
+        },
+        "ocean": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "level": {
+                "schema": {
+                  "kind": "oneOf",
+                  "options": [
+                    {
+                      "kind": "integer"
+                    },
+                    {
+                      "kind": "type",
+                      "target": "terra:Expression"
+                    }
+                  ],
+                  "nullable": true
+                },
+                "required": false,
+                "default": 0,
+                "summary": "Sea level."
+              },
+              "palette": {
+                "schema": {
+                  "kind": "type",
+                  "target": "terra:PaletteReference",
+                  "nullable": true
+                },
+                "required": false,
+                "summary": "Defaults to an internal palette returning platform air."
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        }
+      }
+    },
+    "Noise3DGenerator": {
+      "kind": "literal",
+      "value": "NOISE_3D",
+      "description": "Registered chunk generator provider identifier. generator in pack.yml is a scalar identifier, not an inline object."
+    },
+    "terra:ChunkGenerator": {
+      "kind": "string",
+      "description": "This addon registers the NOISE_3D chunk generator provider identifier.",
+      "examples": [
+        "NOISE_3D"
+      ]
+    }
+  },
+  "files": {
+    "pack.yml": {
+      "kind": "object",
+      "fields": {
+        "carving": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "resolution": {
+                "schema": {
+                  "kind": "object",
+                  "fields": {
+                    "horizontal": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "integer"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 4
+                    },
+                    "vertical": {
+                      "schema": {
+                        "kind": "oneOf",
+                        "options": [
+                          {
+                            "kind": "integer"
+                          },
+                          {
+                            "kind": "type",
+                            "target": "terra:Expression"
+                          }
+                        ],
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 2
+                    }
+                  },
+                  "nullable": true
+                },
+                "required": false
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        },
+        "slant": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "calculation-method": {
+                "schema": {
+                  "kind": "enum",
+                  "values": [
+                    "DotProduct",
+                    "Derivative"
+                  ],
+                  "nullable": true
+                },
+                "required": false,
+                "default": "Derivative",
+                "summary": "Slant calculation method; spelling is case-sensitive."
+              },
+              "disable-palettes": {
+                "schema": {
+                  "kind": "boolean",
+                  "nullable": true
+                },
+                "required": false,
+                "default": false,
+                "summary": "Disable use of slant palettes; the biome slant fields are still loaded."
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        }
+      }
+    },
+    "BIOME": {
+      "kind": "object",
+      "fields": {},
+      "extends": [
+        "terra:Biome"
+      ]
+    }
+  }
+}

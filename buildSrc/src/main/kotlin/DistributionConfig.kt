@@ -1,5 +1,4 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import io.papermc.paperweight.util.path
 import java.io.File
 import java.io.FileWriter
 import java.net.URL
@@ -43,6 +42,16 @@ private fun Project.installAddonsInto(dest: Path) {
 
 fun Project.configureDistribution() {
     apply(plugin = "com.gradleup.shadow")
+
+    listOf("jar", "shadowJar").forEach { taskName ->
+        tasks.named<Jar>(taskName) {
+            manifest.attributes(mapOf(
+                "Implementation-Title" to "Terra",
+                "Implementation-Version" to project.version.toString(),
+                "Terra-Platform" to project.name
+            ))
+        }
+    }
     
     val downloadDefaultPacks = tasks.create("downloadDefaultPacks") {
         group = "terra"
@@ -81,7 +90,7 @@ fun Project.configureDistribution() {
         
         doLast {
             // https://github.com/johnrengelman/shadow/issues/111
-            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().path
+            val dest = tasks.named<ShadowJar>("shadowJar").get().archiveFile.get().asFile.toPath()
             installAddonsInto(dest)
         }
     }
@@ -91,7 +100,7 @@ fun Project.configureDistribution() {
         dependsOn(compileAddons)
         
         doLast {
-            val dest = tasks.named<Jar>("jar").get().archiveFile.get().path
+            val dest = tasks.named<Jar>("jar").get().archiveFile.get().asFile.toPath()
             installAddonsInto(dest)
         }
     }
@@ -161,7 +170,7 @@ fun Project.configureDistribution() {
     tasks.named<ShadowJar>("shadowJar") {
         // Tell shadow to download the packs
         dependsOn(downloadDefaultPacks)
-        configurations = listOf(project.configurations["shaded"])
+        configurations.set(listOf(project.configurations["shaded"]))
         archiveClassifier.set("shaded")
         version = project.version
         relocate("org.apache.commons", "com.dfsek.terra.lib.commons")

@@ -3,27 +3,15 @@ package com.dfsek.terra.mod;
 import com.dfsek.tectonic.api.TypeRegistry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.sound.BiomeAdditionsSound;
-import net.minecraft.sound.BiomeMoodSound;
-import net.minecraft.sound.MusicSound;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import net.minecraft.village.VillagerType;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.Precipitation;
-import net.minecraft.world.biome.Biome.TemperatureModifier;
-import net.minecraft.world.biome.BiomeEffects.GrassColorModifier;
-import net.minecraft.world.biome.BiomeParticleConfig;
-import net.minecraft.world.biome.SpawnSettings;
-import net.minecraft.world.biome.source.MultiNoiseBiomeSourceParameterList;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.gen.WorldPreset;
-import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MultiNoiseBiomeSourceParameterList;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
+import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -34,19 +22,10 @@ import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
+import com.dfsek.terra.api.world.attribute.AttributeParents;
 import com.dfsek.terra.api.world.biome.PlatformBiome;
-import com.dfsek.terra.mod.config.BiomeAdditionsSoundTemplate;
-import com.dfsek.terra.mod.config.BiomeMoodSoundTemplate;
-import com.dfsek.terra.mod.config.BiomeParticleConfigTemplate;
-import com.dfsek.terra.mod.config.EntityTypeTemplate;
-import com.dfsek.terra.mod.config.MusicSoundTemplate;
+import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
-import com.dfsek.terra.mod.config.SoundEventTemplate;
-import com.dfsek.terra.mod.config.SpawnCostConfig;
-import com.dfsek.terra.mod.config.SpawnEntryConfig;
-import com.dfsek.terra.mod.config.SpawnSettingsTemplate;
-import com.dfsek.terra.mod.config.SpawnTypeConfig;
-import com.dfsek.terra.mod.config.VillagerTypeTemplate;
 import com.dfsek.terra.mod.handle.MinecraftItemHandle;
 import com.dfsek.terra.mod.handle.MinecraftWorldHandle;
 import com.dfsek.terra.mod.util.PresetUtil;
@@ -55,6 +34,7 @@ import com.dfsek.terra.mod.util.PresetUtil;
 public abstract class ModPlatform extends AbstractPlatform {
     private final ItemHandle itemHandle = new MinecraftItemHandle();
     private final WorldHandle worldHandle = new MinecraftWorldHandle();
+    private final MinecraftAttributeParents attributeParents = new MinecraftAttributeParents(getAttributeHandle());
 
     public abstract MinecraftServer getServer();
 
@@ -67,7 +47,7 @@ public abstract class ModPlatform extends AbstractPlatform {
         getRawConfigRegistry()
             .forEach(pack -> {
                 boolean packInMetapack = configPacksInMetaPack.contains(pack.getID());
-                PresetUtil.createDefault(pack, this, packInMetapack, packInMetapack).apply(registerFunction);
+                PresetUtil.createDefault(pack, this, packInMetapack).apply(registerFunction);
             });
     }
 
@@ -80,29 +60,12 @@ public abstract class ModPlatform extends AbstractPlatform {
                 if(identifier == null)
                     throw new LoadException("Invalid identifier: " + o, depthTracker);
                 return identifier;
-            })
-            .registerLoader(Precipitation.class, (type, o, loader, depthTracker) -> Precipitation.valueOf(((String) o).toUpperCase()))
-            .registerLoader(GrassColorModifier.class,
-                (type, o, loader, depthTracker) -> GrassColorModifier.valueOf(((String) o).toUpperCase()))
-            .registerLoader(TemperatureModifier.class,
-                (type, o, loader, depthTracker) -> TemperatureModifier.valueOf(((String) o).toUpperCase()))
-            .registerLoader(SpawnGroup.class, (type, o, loader, depthTracker) -> SpawnGroup.valueOf((String) o))
-            .registerLoader(BiomeParticleConfig.class, BiomeParticleConfigTemplate::new)
-            .registerLoader(SoundEvent.class, SoundEventTemplate::new)
-            .registerLoader(BiomeMoodSound.class, BiomeMoodSoundTemplate::new)
-            .registerLoader(BiomeAdditionsSound.class, BiomeAdditionsSoundTemplate::new)
-            .registerLoader(MusicSound.class, MusicSoundTemplate::new)
-            .registerLoader(EntityType.class, EntityTypeTemplate::new)
-            .registerLoader(SpawnCostConfig.class, SpawnCostConfig::new)
-            .registerLoader(SpawnEntryConfig.class, SpawnEntryConfig::new)
-            .registerLoader(SpawnTypeConfig.class, SpawnTypeConfig::new)
-            .registerLoader(SpawnSettings.class, SpawnSettingsTemplate::new)
-            .registerLoader(VillagerType.class, VillagerTypeTemplate::new);
+            });
     }
 
     private ProtoPlatformBiome parseBiome(String id, DepthTracker tracker) throws LoadException {
         Identifier identifier = Identifier.tryParse(id);
-        if(!biomeRegistry().containsId(identifier)) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
+        if(!biomeRegistry().containsKey(identifier)) throw new LoadException("Invalid Biome ID: " + identifier, tracker); // failure.
         return new ProtoPlatformBiome(identifier);
     }
 
@@ -117,7 +80,7 @@ public abstract class ModPlatform extends AbstractPlatform {
 
     public abstract Registry<Biome> biomeRegistry();
 
-    public abstract Registry<ChunkGeneratorSettings> chunkGeneratorSettingsRegistry();
+    public abstract Registry<NoiseGeneratorSettings> chunkGeneratorSettingsRegistry();
 
     public abstract Registry<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterListRegistry();
 
@@ -131,6 +94,15 @@ public abstract class ModPlatform extends AbstractPlatform {
     @Override
     public @NotNull ItemHandle getItemHandle() {
         return itemHandle;
+    }
+
+    @Override
+    public @NotNull AttributeParents getAttributeParents() {
+        return attributeParents;
+    }
+
+    public MinecraftAttributeParents attributeParents() {
+        return attributeParents;
     }
 
 

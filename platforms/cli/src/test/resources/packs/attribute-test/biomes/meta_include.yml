@@ -1,0 +1,8 @@
+id: META
+type: BIOME
+extends: GROUND
+
+attributes:
+  "<<":
+    - meta.yml:shared-attributes
+  minecraft:visual/fog_color: "#ffffff"

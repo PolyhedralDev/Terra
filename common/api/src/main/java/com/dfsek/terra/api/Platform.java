@@ -23,6 +23,8 @@ import com.dfsek.terra.api.profiler.Profiler;
 import com.dfsek.terra.api.registry.CheckedRegistry;
 import com.dfsek.terra.api.registry.Registry;
 import com.dfsek.terra.api.tectonic.LoaderRegistrar;
+import com.dfsek.terra.api.world.attribute.AttributeHandle;
+import com.dfsek.terra.api.world.attribute.AttributeParents;
 
 
 /**
@@ -89,4 +91,17 @@ public interface Platform extends LoaderRegistrar {
 
     @Contract(pure = true)
     int getGenerationThreads();
+
+    @NotNull
+    @Contract(pure = true)
+    AttributeHandle getAttributeHandle();
+
+    /**
+     * Each pack reads these once, when it loads.
+     */
+    @NotNull
+    @Contract(pure = true)
+    default AttributeParents getAttributeParents() {
+        return AttributeParents.NONE;
+    }
 }

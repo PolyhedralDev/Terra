@@ -20,14 +20,13 @@ package com.dfsek.terra.registry;
 import com.dfsek.tectonic.api.depth.DepthTracker;
 import com.dfsek.tectonic.api.exception.LoadException;
 import com.dfsek.tectonic.api.loader.ConfigLoader;
-import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multimaps;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AnnotatedType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -46,15 +45,20 @@ import com.dfsek.terra.api.util.reflection.TypeKey;
 
 /**
  * Registry implementation with read/write access. For internal use only.
+ * <p>
+ * {@link #registerChecked} calls {@link #register} under a private lock: a subclass that locks in {@code register} must take
+ * that lock first in {@code registerChecked} too.
  *
  * @param <T>
  */
 public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     private static final Entry<?> NULL = new Entry<>(null);
     private final Map<RegistryKey, Entry<T>> objects;
-    private final ListMultimap<String, Pair<RegistryKey, Entry<T>>> objectIDs = Multimaps.newListMultimap(new ConcurrentHashMap<>(),
-        ArrayList::new);
+    /** Lists are immutable and replaced on write. */
+    private final Map<String, List<Pair<RegistryKey, Entry<T>>>> objectIDs = new ConcurrentHashMap<>();
     private final TypeKey<T> typeKey;
+    /** Not {@code this}: {@code ConfigRegistry.loadAll} holds the monitor while workers register. */
+    private final Object mutationLock = new Object();
 
     public OpenRegistryImpl(TypeKey<T> typeKey) {
         this(new ConcurrentHashMap<>(), typeKey);
@@ -92,22 +96,34 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
 
     @Override
     public void registerChecked(@NotNull RegistryKey identifier, @NotNull T value) throws DuplicateEntryException {
-        if(objects.containsKey(identifier))
-            throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
-        register(identifier, value);
+        synchronized(mutationLock) {
+            if(objects.containsKey(identifier))
+                throw new DuplicateEntryException("Value with identifier \"" + identifier + "\" is already defined in registry.");
+            register(identifier, value);
+        }
     }
 
     @Override
     public void clear() {
-        objects.clear();
-        objectIDs.clear();
+        synchronized(mutationLock) {
+            objects.clear();
+            objectIDs.clear();
+        }
     }
 
     private boolean register(RegistryKey identifier, Entry<T> value) {
-        boolean exists = objects.containsKey(identifier);
-        objects.put(identifier, value);
-        objectIDs.put(identifier.getID(), Pair.of(identifier, value));
-        return exists;
+        synchronized(mutationLock) {
+            boolean exists = objects.containsKey(identifier);
+            objects.put(identifier, value);
+            Pair<RegistryKey, Entry<T>> pair = Pair.of(identifier, value);
+            objectIDs.merge(identifier.getID(), List.of(pair), (existing, added) -> {
+                List<Pair<RegistryKey, Entry<T>>> merged = new ArrayList<>(existing.size() + 1);
+                merged.addAll(existing);
+                merged.add(pair);
+                return List.copyOf(merged);
+            });
+            return exists;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -149,7 +165,7 @@ public class OpenRegistryImpl<T> implements OpenRegistry<T> {
     @Override
     public Map<RegistryKey, T> getMatches(String id) {
         return objectIDs
-            .get(id)
+            .getOrDefault(id, List.of())
             .stream()
             .collect(HashMap::new, (map, pair) -> map.put(pair.getLeft(), pair.getRight().getValue()), Map::putAll);
     }

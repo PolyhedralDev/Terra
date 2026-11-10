@@ -12,9 +12,9 @@ import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
 public class BukkitAddon implements BaseAddon {
     private static final Version VERSION = Versions.getVersion(1, 0, 0);
 
-    protected final PlatformImpl terraBukkitPlugin;
+    protected final BukkitPlatform terraBukkitPlugin;
 
-    public BukkitAddon(PlatformImpl terraBukkitPlugin) {
+    public BukkitAddon(BukkitPlatform terraBukkitPlugin) {
         this.terraBukkitPlugin = terraBukkitPlugin;
     }
 

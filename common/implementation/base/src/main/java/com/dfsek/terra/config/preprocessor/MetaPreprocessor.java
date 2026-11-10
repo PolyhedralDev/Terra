@@ -35,8 +35,13 @@ public abstract class MetaPreprocessor<A extends Annotation> implements ValuePre
         this.configs = configs;
     }
 
+    protected static String describe(Object value) {
+        return value == null ? "null" : "type " + value.getClass().getCanonicalName();
+    }
+
     protected Pair<Configuration, Object> getMetaValue(String meta, DepthTracker depthTracker) {
         int sep = meta.indexOf(':');
+        if(sep < 0) throw new LoadException("meta reference \"" + meta + "\" must have the form file:key", depthTracker);
         String file = meta.substring(0, sep);
         String key = meta.substring(sep + 1);
 
@@ -44,10 +49,16 @@ public abstract class MetaPreprocessor<A extends Annotation> implements ValuePre
 
         Configuration config = configs.get(file);
 
-        if(!config.contains(key)) {
-            throw new LoadException("Cannot fetch metavalue: No such key " + key + " in configuration " + config.getName(), depthTracker);
+        try {
+            if(!config.contains(key)) {
+                throw new LoadException("Cannot fetch metavalue: No such key " + key + " in configuration " + config.getName(),
+                    depthTracker);
+            }
+            return Pair.of(config, config.get(key));
+        } catch(IllegalArgumentException e) {
+            // Tectonic's key path messages are Java-style.
+            throw new LoadException("meta reference \"" + meta + "\" has an invalid key path: use \\. for a dot in a key and \\\\ "
+                                    + "for a backslash", e, depthTracker);
         }
-
-        return Pair.of(config, config.get(key));
     }
 }

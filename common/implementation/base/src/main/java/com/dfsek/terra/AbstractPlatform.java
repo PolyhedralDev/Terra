@@ -67,6 +67,7 @@ import com.dfsek.terra.api.registry.key.StringIdentifiable;
 import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.mutable.MutableBoolean;
 import com.dfsek.terra.api.util.reflection.TypeKey;
+import com.dfsek.terra.api.world.attribute.AttributeHandle;
 import com.dfsek.terra.config.GenericLoaders;
 import com.dfsek.terra.config.PluginConfigImpl;
 import com.dfsek.terra.event.EventManagerImpl;
@@ -77,6 +78,7 @@ import com.dfsek.terra.registry.OpenRegistryImpl;
 import com.dfsek.terra.registry.master.ConfigRegistry;
 import com.dfsek.terra.registry.master.ConfigRegistry.PackLoadFailuresException;
 import com.dfsek.terra.registry.master.MetaConfigRegistry;
+import com.dfsek.terra.world.attribute.AttributeHandleImpl;
 
 
 /**
@@ -89,6 +91,11 @@ public abstract class AbstractPlatform implements Platform {
 
     private static final MutableBoolean LOADED = new MutableBoolean(false);
     private static final String moonrise = "Moonrise";
+    private static final String PACK_LOAD_FAILURE_QUOTE = """
+                                                          > I felt a great disturbance in the JVM, as if millions of plugins suddenly cried out in stack traces and were suddenly silenced.
+                                                          > I fear something terrible has happened.
+                                                          > - Astrash
+                                                          """.strip();
     private final EventManager eventManager = new EventManagerImpl();
     private final ConfigRegistry configRegistry = new ConfigRegistry();
     private final MetaConfigRegistry metaConfigRegistry = new MetaConfigRegistry();
@@ -98,6 +105,8 @@ public abstract class AbstractPlatform implements Platform {
     private final GenericLoaders loaders = new GenericLoaders(this);
     private final PluginConfigImpl config = new PluginConfigImpl();
     private final CheckedRegistry<BaseAddon> addonRegistry = new CheckedRegistryImpl<>(new OpenRegistryImpl<>(TypeKey.of(BaseAddon.class)));
+    // Must exist before addons initialize: it creates the attribute context keys.
+    private final AttributeHandle attributeHandle = new AttributeHandleImpl();
     private final Registry<BaseAddon> lockedAddonRegistry = new LockedRegistryImpl<>(addonRegistry);
 
     public static int getGenerationThreadsWithReflection(String className, String fieldName, String project) {
@@ -120,11 +129,9 @@ public abstract class AbstractPlatform implements Platform {
 
     public static int getMoonriseGenerationThreadsWithReflection() {
         try {
-            Class<?> prioritisedThreadPoolClazz = Class.forName("ca.spottedleaf.concurrentutil.executor.thread.PrioritisedThreadPool");
-            Method getCoreThreadsMethod = prioritisedThreadPoolClazz.getDeclaredMethod("getCoreThreads");
-            getCoreThreadsMethod.setAccessible(true);
             Class<?> moonriseCommonClazz = Class.forName("ca.spottedleaf.moonrise.common.util.MoonriseCommon");
-            Object pool = moonriseCommonClazz.getDeclaredField("WORKER_POOL").get(null);
+            Object pool = moonriseCommonClazz.getField("WORKER_POOL").get(null);
+            Method getCoreThreadsMethod = pool.getClass().getMethod("getCoreThreads");
             int threads = ((Thread[]) getCoreThreadsMethod.invoke(pool)).length;
             logger.info("{} found, setting {} generation threads.", moonrise, threads);
             return threads;
@@ -215,6 +222,7 @@ public abstract class AbstractPlatform implements Platform {
             return false;
         } catch(PackLoadFailuresException e) {
             e.getExceptions().forEach(ex -> logger.error("Failed to load config pack", ex));
+            logger.error(PACK_LOAD_FAILURE_QUOTE);
             return false;
         }
         return true;
@@ -231,6 +239,7 @@ public abstract class AbstractPlatform implements Platform {
             return false;
         } catch(PackLoadFailuresException e) {
             e.getExceptions().forEach(ex -> logger.error("Failed to meta load config pack", ex));
+            logger.error(PACK_LOAD_FAILURE_QUOTE);
             return false;
         }
         return true;
@@ -425,6 +434,11 @@ public abstract class AbstractPlatform implements Platform {
     @Override
     public @NotNull Profiler getProfiler() {
         return profiler;
+    }
+
+    @Override
+    public @NotNull AttributeHandle getAttributeHandle() {
+        return attributeHandle;
     }
 
     @Override

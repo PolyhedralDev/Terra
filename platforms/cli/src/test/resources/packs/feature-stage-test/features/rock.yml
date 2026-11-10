@@ -1,0 +1,15 @@
+id: ROCK
+type: FEATURE
+
+distributor:
+  type: "NO"
+
+locator:
+  type: SURFACE
+  range: 0
+
+structures:
+  distribution:
+    type: CONSTANT
+    value: 0
+  structures: BLOCK:minecraft:stone

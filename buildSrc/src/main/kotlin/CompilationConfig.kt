@@ -41,22 +41,26 @@ fun Project.configureCompilation() {
         }
     }
     
+    // Gradle doesn't fingerprint filter arguments; the tokens are declared as inputs.
+    val metadataTokens = mapOf(
+        "DESCRIPTION" to properties["terra.description"],
+        "WIKI" to properties["terra.wiki"],
+        "SOURCE" to properties["terra.source"],
+        "ISSUES" to properties["terra.issues"],
+        "LICENSE" to properties["terra.license"]
+                              )
     tasks.withType<ProcessResources> {
         include("**/*.*")
+        inputs.properties(metadataTokens.mapKeys { "token.${it.key}" }.mapValues { it.value.toString() })
         filter<ReplaceTokens>(
-            "tokens" to mapOf(
-                "DESCRIPTION" to properties["terra.description"],
-                "WIKI" to properties["terra.wiki"],
-                "SOURCE" to properties["terra.source"],
-                "ISSUES" to properties["terra.issues"],
-                "LICENSE" to properties["terra.license"]
-                             )
+            "tokens" to metadataTokens
                              )
     }
     
     afterEvaluate {
         tasks.withType<ProcessResources> {
             include("**/*.*")
+            inputs.property("token.VERSION", version.toString())
             filter<ReplaceTokens>(
                 "tokens" to mapOf(
                     "VERSION" to version.toString()

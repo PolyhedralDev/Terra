@@ -4,17 +4,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.dfsek.terra.api.world.biome.Biome;
+import com.dfsek.terra.api.world.biome.tag.BiomeTagIndex;
 
 
-final class PlaceholderPipelineBiome implements PipelineBiome {
+final class PlaceholderPipelineBiome extends PipelineBiome {
     private final Set<String> tags;
     private final String id;
 
-    public PlaceholderPipelineBiome(String id) {
+    public PlaceholderPipelineBiome(String id, BiomeTagIndex index) {
+        this(id, tagsOf(id), index);
+    }
+
+    private PlaceholderPipelineBiome(String id, Set<String> tags, BiomeTagIndex index) {
+        super(index.register(tags));
         this.id = id;
-        tags = new HashSet<>();
+        this.tags = tags;
+    }
+
+    private static Set<String> tagsOf(String id) {
+        Set<String> tags = new HashSet<>();
         tags.add(id);
         tags.add("ALL");
+        return Set.copyOf(tags);
     }
 
     @Override

@@ -1,0 +1,265 @@
+{
+  "id": "terra",
+  "docVersion": 1,
+  "description": "Terra core configuration types and pack manifest fields. Shared object shapes and union variants are contributed by the addons that register their implementations.",
+  "types": {
+    "Expression": {
+      "kind": "expr",
+      "name": "Paralithic",
+      "description": "A mathematical expression evaluated to a floating-point number. Available variables and functions depend on the consuming configuration; pack variables are configured under variables.",
+      "examples": ["3 + 2 / 8", "atan2(x, z)"]
+    },
+    "Range": {
+      "kind": "oneOf",
+      "description": "An integer range with an inclusive minimum and exclusive maximum. A single integer n denotes [n, n + 1).",
+      "options": [
+        { "kind": "integer" },
+        {
+          "kind": "object",
+          "fields": {
+            "min": { "schema": { "kind": "integer" }, "required": true, "summary": "Inclusive minimum." },
+            "max": { "schema": { "kind": "integer" }, "required": true, "summary": "Exclusive maximum." }
+          }
+        }
+      ],
+      "examples": [3, { "min": 2, "max": 5 }]
+    },
+    "Version": {
+      "kind": "string",
+      "description": "A version string parsed by Strata. Quote versions in YAML so they remain strings.",
+      "examples": ["1.0.0"]
+    },
+    "VersionRange": {
+      "kind": "string",
+      "description": "An addon dependency version range parsed by Strata. It must be a YAML string."
+    },
+    "WeightedList": {
+      "kind": "oneOf",
+      "description": "The unparameterized ProbabilityCollection representation: an item identifier, an item-to-integer-weight mapping, or a sequence of such mappings. A singleton collection with one entry ignores its weight. Addons must specialize the item schema for their consuming type; v1 has no generic type parameters.",
+      "options": [
+        { "kind": "string" },
+        {
+          "kind": "keyMap",
+          "maxEntries": 1,
+          "keys": { "kind": "any", "name": "Collection item" },
+          "values": { "kind": "any", "name": "Ignored singleton weight" }
+        },
+        {
+          "kind": "keyMap",
+          "minEntries": 2,
+          "keys": { "kind": "string" },
+          "values": { "kind": "integer" }
+        },
+        {
+          "kind": "list",
+          "maxItems": 1,
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "maxEntries": 1,
+                "keys": { "kind": "any", "name": "Collection item" },
+                "values": { "kind": "any", "name": "Ignored singleton weight" }
+              },
+              {
+                "kind": "keyMap",
+                "minEntries": 2,
+                "keys": { "kind": "string" },
+                "values": { "kind": "integer" }
+              }
+            ]
+          }
+        },
+        {
+          "kind": "list",
+          "minItems": 2,
+          "element": {
+            "kind": "keyMap",
+            "keys": { "kind": "string" },
+            "values": { "kind": "integer" }
+          }
+        }
+      ],
+      "examples": ["PLAINS", { "PLAINS": 3, "FOREST": 1 }, [{ "PLAINS": 3 }, { "FOREST": 1 }]]
+    },
+    "NoiseSampler": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "An inline sampler that produces a numeric value from a position and seed. Sampler addons contribute variants selected by type."
+    },
+    "BiomeProvider": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "An inline biome provider that chooses a Terra biome for a position. Biome provider addons contribute variants selected by type."
+    },
+    "Distributor": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "An inline distributor that determines which columns allow feature placement. Distributor addons contribute variants selected by type."
+    },
+    "Locator": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "An inline locator that determines eligible vertical positions for feature placement. Locator addons contribute variants selected by type."
+    },
+    "GenerationStage": {
+      "kind": "union",
+      "discriminator": "type",
+      "description": "An inline generation stage. Stages run in the order listed in pack.yml after the initial chunk generator. Stage addons contribute variants selected by type."
+    },
+    "ChunkGenerator": {
+      "kind": "string",
+      "description": "A registered chunk generator provider identifier, not an inline type-discriminated object. Generator addons register the available identifiers.",
+      "examples": ["NOISE_3D"]
+    },
+    "Biome": {
+      "kind": "object",
+      "description": "Shared configuration target for registered Terra biomes. The config-biome addon contributes its configuration shape; consumers use ref targeting terra:Biome for biome identifiers."
+    },
+    "Palette": {
+      "kind": "object",
+      "description": "Shared configuration target for registered palettes. The config-palette addon contributes its configuration shape; consumers use ref targeting terra:Palette for palette identifiers. Shortcut representations belong to their registering addons."
+    },
+    "Feature": {
+      "kind": "object",
+      "description": "Shared configuration target for registered features. The config-feature addon contributes its configuration shape; consumers use ref targeting terra:Feature for feature identifiers."
+    },
+    "Structure": {
+      "kind": "string",
+      "description": "A raw structure registry identifier, for example a TerraScript or schematic structure. This is distinct from a STRUCTURE configuration producing a ConfiguredStructure. Loader addons define the available identifiers and shortcuts."
+    },
+    "Block": {
+      "kind": "string",
+      "description": "A platform-specific block state identifier. Minecraft platforms accept a block identifier with optional bracketed state properties.",
+      "examples": ["minecraft:grass_block", "minecraft:note_block[instrument=harp,note=9]"]
+    },
+    "MaterialSet": {
+      "kind": "list",
+      "element": { "kind": "type", "target": "Block" },
+      "description": "A sequence of platform block identifiers loaded into a MaterialSet. Repeated identifiers collapse into the same material."
+    },
+    "Tag": {
+      "kind": "string",
+      "description": "A biome tag used to group biomes for distribution. Biomes also have the implicit ALL tag and their own identifier as a tag."
+    },
+    "PlatformBiome": {
+      "kind": "string",
+      "description": "A platform-specific biome identifier. Minecraft platforms use identifiers such as minecraft:plains; available values depend on the platform and installed content.",
+      "examples": ["minecraft:plains"]
+    },
+    "ExpressionOptions": {
+      "kind": "object",
+      "fields": {
+        "use-let-expressions": {
+          "schema": { "kind": "boolean" },
+          "required": false,
+          "default": false,
+          "summary": "Enable Paralithic let expressions."
+        }
+      }
+    }
+  },
+  "files": {
+    "pack.yml": {
+      "kind": "object",
+      "description": "The config pack manifest. Addons may contribute additional pack-wide fields directly to this root object.",
+      "fields": {
+        "id": { "schema": { "kind": "string" }, "required": true, "summary": "The config pack identifier used by the platform to select a world generator." },
+        "author": { "schema": { "kind": "string" }, "required": false, "default": "Anon Y. Mous", "summary": "Who developed the config pack." },
+        "version": { "schema": { "kind": "type", "target": "Version" }, "required": true, "summary": "The config pack version." },
+        "addons": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": { "kind": "string", "description": "An installed addon identifier." },
+            "values": { "kind": "type", "target": "VersionRange" }
+          },
+          "required": false,
+          "default": {},
+          "summary": "Addon dependencies and their allowed version ranges."
+        },
+        "variables": {
+          "schema": { "kind": "keyMap", "keys": { "kind": "string" }, "values": { "kind": "float" } },
+          "required": false,
+          "default": {},
+          "summary": "Pack-wide numeric expression variables."
+        },
+        "generator": { "schema": { "kind": "type", "target": "ChunkGenerator" }, "required": true, "summary": "The generator used for initial chunk generation." },
+        "biomes": { "schema": { "kind": "type", "target": "BiomeProvider" }, "required": true, "summary": "Determines which biomes generate at each position." },
+        "stages": { "schema": { "kind": "list", "element": { "kind": "type", "target": "GenerationStage" } }, "required": false, "default": [], "summary": "Generation stages applied sequentially after initial chunk generation." },
+        "expressions": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "options": { "schema": { "kind": "type", "target": "ExpressionOptions" }, "required": false, "default": { "use-let-expressions": false } }
+            }
+          },
+          "required": false
+        },
+        "beta": {
+          "schema": { "kind": "object", "fields": { "carving": { "schema": { "kind": "boolean" }, "required": false, "default": false } } },
+          "required": false
+        },
+        "structures": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "locatable": { "schema": { "kind": "keyMap", "keys": { "kind": "string" }, "values": { "kind": "string" } }, "required": false, "default": {} }
+            }
+          },
+          "required": false
+        },
+        "blend": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "terrain": {
+                "schema": { "kind": "object", "fields": { "elevation": { "schema": { "kind": "integer" }, "required": false, "default": 4 } } },
+                "required": false
+              }
+            }
+          },
+          "required": false
+        },
+        "vanilla": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "mobs": { "schema": { "kind": "boolean" }, "required": false, "default": true },
+              "caves": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "decorations": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "structures": { "schema": { "kind": "boolean" }, "required": false, "default": false }
+            }
+          },
+          "required": false
+        },
+        "disable": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "sapling": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "carvers": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "structures": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "ores": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "trees": { "schema": { "kind": "boolean" }, "required": false, "default": false },
+              "flora": { "schema": { "kind": "boolean" }, "required": false, "default": false }
+            }
+          },
+          "required": false
+        },
+        "cache": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "biome": {
+                "schema": { "kind": "object", "fields": { "enable": { "schema": { "kind": "boolean" }, "required": false, "default": false } } },
+                "required": false
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 package com.dfsek.terra.lifecycle;
 
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.commands.CommandSourceStack;
 import org.incendo.cloud.SenderMapper;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.fabric.FabricServerCommandManager;
@@ -21,7 +21,7 @@ public final class LifecycleEntryPoint {
             ExecutionCoordinator.asyncCoordinator(),
             SenderMapper.create(
                 serverCommandSource -> (CommandSender) serverCommandSource,
-                commandSender -> (ServerCommandSource) commandSender)
+                commandSender -> (CommandSourceStack) commandSender)
         );
 
 

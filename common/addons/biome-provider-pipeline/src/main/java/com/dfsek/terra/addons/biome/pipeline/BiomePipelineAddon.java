@@ -83,7 +83,7 @@ public class BiomePipelineAddon implements AddonInitializer {
             .register(addon, ConfigPackPostLoadEvent.class)
             .then(event -> {
                 Registry<Biome> biomeRegistry = event.getPack().getRegistry(Biome.class);
-                event.getPack().applyLoader(PipelineBiome.class, new PipelineBiomeLoader(biomeRegistry));
+                event.getPack().applyLoader(PipelineBiome.class, new PipelineBiomeLoader(biomeRegistry, event.getPack().getBiomeTagIndex()));
             });
     }
 }

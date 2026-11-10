@@ -26,6 +26,7 @@ import com.dfsek.terra.api.tectonic.LoaderRegistrar;
 import com.dfsek.terra.api.tectonic.ShortcutLoader;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.biome.tag.BiomeTagIndex;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
 
@@ -42,6 +43,11 @@ public interface ConfigPack extends LoaderRegistrar,
     Map<BaseAddon, VersionRange> addons();
 
     BiomeProvider getBiomeProvider();
+
+    /**
+     * @return this pack's biome tag index; sealed once the pack has finished loading
+     */
+    BiomeTagIndex getBiomeTagIndex();
 
     List<GenerationStage> getStages();
 

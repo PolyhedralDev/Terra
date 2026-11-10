@@ -15,12 +15,13 @@ import com.dfsek.terra.addons.biome.pipeline.config.stage.StageTemplate;
 import com.dfsek.terra.addons.biome.pipeline.stage.mutators.ReplaceStage;
 import com.dfsek.terra.api.config.meta.Meta;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 @SuppressWarnings("unused")
 public class ReplaceStageTemplate extends StageTemplate {
     @Value("from")
-    private @Meta String from;
+    private @Meta BiomeTag from;
 
     @Value("to")
     private @Meta ProbabilityCollection<@Meta PipelineBiome> to;

@@ -1,0 +1,9 @@
+id: BASE
+type: BIOME
+abstract: true
+extends: GROUND
+
+attributes:
+  minecraft:visual/fog_color: "#102030"
+  minecraft:visual/sky_color: "#405060"
+  terra:biome/temperature: 0.8

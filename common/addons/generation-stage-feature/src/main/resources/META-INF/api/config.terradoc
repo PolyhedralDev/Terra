@@ -1,0 +1,99 @@
+{
+  "id": "generation-stage-feature",
+  "docVersion": 1,
+  "description": "FEATURE generation stages and the per-stage feature lists contributed to biome configurations.",
+  "types": {
+    "terra:GenerationStage": {
+      "kind": "union",
+      "values": {
+        "FEATURE": {
+          "kind": "object",
+          "fields": {
+            "id": {
+              "schema": {
+                "kind": "string"
+              },
+              "required": true,
+              "summary": "Stage identifier used to load biome features.<id> lists. IDs containing dots are interpreted as nested YAML paths by the runtime."
+            },
+            "resolution": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  1,
+                  2,
+                  4,
+                  8,
+                  16
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 4,
+              "summary": "Biome column sample resolution; must be one of these powers of two."
+            },
+            "blend": {
+              "schema": {
+                "kind": "object",
+                "fields": {
+                  "sampler": {
+                    "schema": {
+                      "kind": "type",
+                      "target": "terra:NoiseSampler",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "summary": "Coordinate-warping sampler; defaults to an internal zero sampler."
+                  },
+                  "amplitude": {
+                    "schema": {
+                      "kind": "float",
+                      "nullable": true
+                    },
+                    "required": false,
+                    "default": 0
+                  }
+                },
+                "nullable": true
+              },
+              "required": false
+            }
+          },
+          "description": "Runs feature placement using biome lists indexed by this stage ID."
+        }
+      }
+    },
+    "terra:Biome": {
+      "kind": "object",
+      "fields": {
+        "features": {
+          "schema": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "string"
+            },
+            "values": {
+              "kind": "list",
+              "element": {
+                "kind": "ref",
+                "target": "terra:Feature"
+              }
+            },
+            "nullable": true
+          },
+          "required": false,
+          "summary": "Maps configured FEATURE stage IDs to ordered feature identifiers. Missing lists default to empty. Only IDs present in pack stages are loaded; v1 cannot derive or restrict these keys. Dotted stage IDs require nested maps and are not fully represented by this keyMap."
+        }
+      }
+    }
+  },
+  "files": {
+    "BIOME": {
+      "kind": "object",
+      "fields": {},
+      "extends": [
+        "terra:Biome"
+      ]
+    }
+  }
+}

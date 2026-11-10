@@ -1,0 +1,49 @@
+id: SCHEDULE_TEST
+version: 1.0.0
+author: Terra contributors
+
+generator: NOISE_3D
+
+vanilla: minecraft:overworld
+vanilla-generation: minecraft:overworld
+
+addons:
+  biome-provider-single: "1.+"
+  chunk-generator-noise-3d: "1.+"
+  config-attributes: "1.+"
+  config-biome: "1.+"
+  config-noise-function: "1.+"
+  config-palette: "1.+"
+  language-yaml: "1.+"
+  minecraft-attributes: "1.+"
+  palette-block-shortcut: "1.+"
+
+biomes:
+  type: SINGLE
+  biome: PLAIN
+
+schedules: "#minecraft:in_overworld"
+
+schedule-definitions:
+  mypack:seasons:
+    clock: minecraft:overworld
+    period_ticks: 24000
+    tracks:
+      minecraft:visual/sky_color:
+        keyframes:
+          - ticks: 0
+            value: "#000000"
+  seasons:
+    clock: minecraft:overworld
+  "#mypack:tagged":
+    clock: minecraft:overworld
+  "mypack:not valid":
+    clock: minecraft:overworld
+  mypack:dropping:
+    clock: minecraft:overworld
+    tracks:
+      minecraft:visual/moon_phase:
+        modifier: add
+        keyframes:
+          - ticks: 0
+            value: full_moon

@@ -20,16 +20,17 @@ import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 public class BorderStage implements Stage {
-    private final String border;
+    private final BiomeTag border;
     private final Sampler Sampler;
     private final ProbabilityCollection<PipelineBiome> replace;
-    private final String replaceTag;
+    private final BiomeTag replaceTag;
     private final Vector2Int[] borderPoints;
 
-    public BorderStage(String border, String replaceTag, Sampler Sampler, ProbabilityCollection<PipelineBiome> replace) {
+    public BorderStage(BiomeTag border, BiomeTag replaceTag, Sampler Sampler, ProbabilityCollection<PipelineBiome> replace) {
         this.border = border;
         this.Sampler = Sampler;
         this.replace = replace;
@@ -47,10 +48,10 @@ public class BorderStage implements Stage {
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
         PipelineBiome center = viewPoint.getBiome();
-        if(center.getTags().contains(replaceTag)) {
+        if(replaceTag.has(center.getIntID())) {
             for(Vector2Int point : borderPoints) {
                 PipelineBiome current = viewPoint.getRelativeBiome(point.getX(), point.getZ());
-                if(current != null && current.getTags().contains(border)) {
+                if(current != null && border.has(current.getIntID())) {
                     PipelineBiome replacement = replace.get(Sampler, viewPoint.worldX(), viewPoint.worldZ(), viewPoint.worldSeed());
                     return replacement.isSelf() ? center : replacement;
                 }

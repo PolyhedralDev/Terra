@@ -1,5 +1,5 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("dev.architectury.loom-no-remap") version Versions.Mod.architecturyLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 
@@ -8,15 +8,13 @@ dependencies {
 
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
     compileOnly("io.github.llamalad7:mixinextras-common:${Versions.Mod.mixinExtras}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
 
-    implementation(project(path = ":platforms:mixin-common", configuration = "namedElements")) { isTransitive = false }
+    implementation(project(":platforms:mixin-common")) { isTransitive = false }
+    implementation(project(":platforms:minecraft-common")) { isTransitive = false }
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 
-    modImplementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
+    implementation("org.incendo", "cloud-fabric", Versions.Fabric.cloud) {
         exclude("net.fabricmc")
         exclude("net.fabricmc.fabric-api")
         exclude("me.lucko", "fabric-permissions-api")
@@ -25,19 +23,13 @@ dependencies {
 
 loom {
     accessWidenerPath.set(project(":platforms:mixin-common").file("src/main/resources/terra.accesswidener"))
-
-    mixin {
-        defaultRefmapName.set("terra.lifecycle.refmap.json")
-    }
-}
-
-tasks {
-    remapJar {
-        inputFile.set(shadowJar.get().archiveFile)
-    }
 }
 
 architectury {
     common("fabric")
     minecraft = Versions.Mod.minecraft
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
 }

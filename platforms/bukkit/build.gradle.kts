@@ -1,20 +1,17 @@
 plugins {
-    id("io.papermc.paperweight.userdev")
     id("xyz.jpenilla.run-paper") version Versions.Bukkit.runPaper
 }
 
 dependencies {
-    // Required for :platforms:bukkit:runDevBundleServer task
-    paperweight.paperDevBundle(Versions.Bukkit.paperDevBundle)
-
     shaded(project(":platforms:bukkit:common"))
-    shaded(project(":platforms:bukkit:nms"))
-    shaded("xyz.jpenilla", "reflection-remapper", Versions.Bukkit.reflectionRemapper)
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
 }
 
 tasks {
     shadowJar {
-        relocate("io.papermc.lib", "com.dfsek.terra.lib.paperlib")
         relocate("com.google.common", "com.dfsek.terra.lib.google.common")
         relocate("org.apache.logging.slf4j", "com.dfsek.terra.lib.slf4j-over-log4j")
         exclude("org/slf4j/**")
@@ -30,10 +27,18 @@ tasks {
         minecraftVersion(Versions.Bukkit.minecraft)
         dependsOn(shadowJar)
         pluginJars(shadowJar.get().archiveFile)
+        // Modrinth's Wyck lacks our fixes.
+        val wyckJar = file("${System.getProperty("user.home")}/Wyck/paper/build/libs/Wyck-${Versions.Bukkit.wyck}.jar")
+        pluginJars(wyckJar)
+        doFirst {
+            if(!wyckJar.isFile) {
+                throw GradleException("No Wyck plugin jar at $wyckJar: build and publish ~/Wyck (Wyck ${Versions.Bukkit.wyck}) first")
+            }
+        }
 
         downloadPlugins {
-            modrinth("viaversion", "5.5.0")
-            modrinth("viabackwards", "5.5.0")
+            modrinth("viaversion", "5.12.2")
+            modrinth("viabackwards", "5.12.2")
         }
     }
 }

@@ -14,7 +14,7 @@ import com.dfsek.terra.bukkit.world.BukkitProtoWorld;
 
 public class BukkitBlockPopulator extends BlockPopulator {
     private final BlockState air;
-    private ConfigPack pack;
+    private volatile ConfigPack pack;
 
     public BukkitBlockPopulator(ConfigPack pack, BlockState air) {
         this.pack = pack;

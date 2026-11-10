@@ -18,8 +18,8 @@
 package com.dfsek.terra.mod.mixin.implementations.terra.entity;
 
 import com.dfsek.seismic.type.vector.Vector3;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,23 +33,23 @@ import com.dfsek.terra.mod.util.MinecraftAdapter;
 @Implements(@Interface(iface = com.dfsek.terra.api.entity.Entity.class, prefix = "terra$"))
 public abstract class EntityMixin {
     @Shadow
-    private net.minecraft.world.World world;
+    private net.minecraft.world.level.Level level;
 
     @Shadow
-    private BlockPos blockPos;
+    private BlockPos blockPosition;
 
     @Shadow
-    public abstract void updatePosition(double destX, double destY, double destZ);
+    public abstract void absSnapTo(double destX, double destY, double destZ);
 
     public Vector3 terra$position() {
-        return MinecraftAdapter.adapt(blockPos);
+        return MinecraftAdapter.adapt(blockPosition);
     }
 
     public void terra$position(Vector3 location) {
-        updatePosition(location.getX(), location.getY(), location.getZ());
+        absSnapTo(location.getX(), location.getY(), location.getZ());
     }
 
     public ServerWorld terra$world() {
-        return (ServerWorld) world;
+        return (ServerWorld) level;
     }
 }

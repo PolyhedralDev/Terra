@@ -57,8 +57,17 @@ fun Project.configureDependencies() {
         maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
             name = "Sonatype Snapshots"
         }
+        maven("https://repo.wyck.dev/snapshots") {
+            name = "Wyck Snapshots"
+        }
         maven("https://repo.onarandombox.com/multiverse-releases") {
             name = "onarandombox"
+        }
+        maven(url = "https://central.sonatype.com/repository/maven-snapshots/") {
+            content {
+                includeModule("net.minestom", "minestom")
+                includeModule("net.minestom", "testing")
+            }
         }
     }
     

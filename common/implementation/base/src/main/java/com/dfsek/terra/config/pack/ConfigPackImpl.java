@@ -73,8 +73,11 @@ import com.dfsek.terra.api.util.generic.pair.Pair;
 import com.dfsek.terra.api.util.reflection.ReflectionUtil;
 import com.dfsek.terra.api.util.reflection.TypeKey;
 import com.dfsek.terra.api.world.biome.generation.BiomeProvider;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
+import com.dfsek.terra.api.world.biome.tag.BiomeTagIndex;
 import com.dfsek.terra.api.world.chunk.generation.stage.GenerationStage;
 import com.dfsek.terra.api.world.chunk.generation.util.provider.ChunkGeneratorProvider;
+import com.dfsek.terra.config.loaders.BiomeTagLoader;
 import com.dfsek.terra.config.loaders.GenericTemplateSupplierLoader;
 import com.dfsek.terra.config.preprocessor.MetaListLikePreprocessor;
 import com.dfsek.terra.config.preprocessor.MetaMapPreprocessor;
@@ -106,7 +109,14 @@ public class ConfigPackImpl implements ConfigPack {
 
     private final BiomeProvider seededBiomeProvider;
 
-    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new HashMap<>();
+    private final BiomeTagIndex biomeTagIndex = new BiomeTagIndex();
+
+    /**
+     * Guards writes to registryMap, shortcuts, configTypes and the loaders' type maps. Reads of registryMap take no lock:
+     * publish a registry there only after its loaders are registered.
+     */
+    private final Object registrationLock = new Object();
+    private final Map<Type, CheckedRegistryImpl<?>> registryMap = new ConcurrentHashMap<>();
     private final Map<Type, ShortcutHolder<?>> shortcuts = new HashMap<>();
 
     private final OpenRegistry<ConfigType<?, ?>> configTypeRegistry;
@@ -147,6 +157,8 @@ public class ConfigPackImpl implements ConfigPack {
 
         register(abstractConfigLoader);
         platform.register(abstractConfigLoader);
+
+        applyLoader(BiomeTag.class, new BiomeTagLoader(biomeTagIndex));
 
         ConfigPackAddonsTemplate addonsTemplate = new ConfigPackAddonsTemplate();
         selfLoader.load(addonsTemplate, packManifest);
@@ -222,6 +234,8 @@ public class ConfigPackImpl implements ConfigPack {
         selfLoader.load(packPostTemplate, packManifest);
         seededBiomeProvider =
             template.getBiomeCache() ? packPostTemplate.getProviderBuilder().caching(platform) : packPostTemplate.getProviderBuilder();
+        // Must stay inside the constructor: generation threads read tag bitsets without volatile reads.
+        biomeTagIndex.seal();
         checkDeadEntries();
     }
 
@@ -257,33 +271,41 @@ public class ConfigPackImpl implements ConfigPack {
 
     @Override
     public <T> ConfigPackImpl applyLoader(Type type, TypeLoader<T> loader) {
-        abstractConfigLoader.registerLoader(type, loader);
-        selfLoader.registerLoader(type, loader);
+        synchronized(registrationLock) {
+            abstractConfigLoader.registerLoader(type, loader);
+            selfLoader.registerLoader(type, loader);
+        }
         return this;
     }
 
     @Override
     public <T> ConfigPackImpl applyLoader(Type type, Supplier<ObjectTemplate<T>> loader) {
-        abstractConfigLoader.registerLoader(type, loader);
-        selfLoader.registerLoader(type, loader);
+        synchronized(registrationLock) {
+            abstractConfigLoader.registerLoader(type, loader);
+            selfLoader.registerLoader(type, loader);
+        }
         return this;
     }
 
     @Override
     public void register(TypeRegistry registry) {
-        registry.registerLoader(ConfigType.class, configTypeRegistry);
-        registryMap.forEach(registry::registerLoader);
-        shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
+        synchronized(registrationLock) {
+            registry.registerLoader(ConfigType.class, configTypeRegistry);
+            registryMap.forEach(registry::registerLoader);
+            shortcuts.forEach(registry::registerLoader); // overwrite with delegated shortcuts if present
+        }
     }
 
     @Override
     public ConfigPack registerConfigType(ConfigType<?, ?> type, RegistryKey key, int priority) {
-        Set<RegistryKey> contained = new HashSet<>();
-        configTypes.forEach((p, configs) -> configs.forEach(pair -> {
-            if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config key: " + key);
-            contained.add(key);
-        }));
-        configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(key, type));
+        synchronized(registrationLock) {
+            Set<RegistryKey> contained = new HashSet<>();
+            configTypes.forEach((p, configs) -> configs.forEach(pair -> {
+                if(contained.contains(pair.getLeft())) throw new IllegalArgumentException("Duplicate config key: " + key);
+                contained.add(key);
+            }));
+            configTypes.computeIfAbsent(priority, p -> new ArrayList<>()).add(Pair.of(key, type));
+        }
         return this;
     }
 
@@ -298,8 +320,18 @@ public class ConfigPackImpl implements ConfigPack {
     }
 
     @Override
+    public BiomeTagIndex getBiomeTagIndex() {
+        return biomeTagIndex;
+    }
+
+    @Override
     public <T> CheckedRegistry<T> getOrCreateRegistry(TypeKey<T> typeKey) {
-        return (CheckedRegistry<T>) registryMap.computeIfAbsent(typeKey.getType(), c -> {
+        Type c = typeKey.getType();
+        CheckedRegistryImpl<?> existing = registryMap.get(c);
+        if(existing != null) return (CheckedRegistry<T>) existing;
+        synchronized(registrationLock) {
+            existing = registryMap.get(c);
+            if(existing != null) return (CheckedRegistry<T>) existing;
             OpenRegistry<T> registry = new OpenRegistryImpl<>(typeKey);
             selfLoader.registerLoader(c, registry);
             abstractConfigLoader.registerLoader(c, registry);
@@ -325,8 +357,10 @@ public class ConfigPackImpl implements ConfigPack {
                 }
             }
 
-            return new CheckedRegistryImpl<>(registry);
-        });
+            CheckedRegistryImpl<T> checked = new CheckedRegistryImpl<>(registry);
+            registryMap.put(c, checked);
+            return checked;
+        }
     }
 
     @Override
@@ -357,11 +391,16 @@ public class ConfigPackImpl implements ConfigPack {
     @SuppressWarnings("rawtypes")
     @Override
     public <T> ConfigPack registerShortcut(TypeKey<T> clazz, String shortcut, ShortcutLoader<T> loader) {
-        ShortcutHolder<?> holder = shortcuts
-            .computeIfAbsent(clazz.getType(), c -> new ShortcutHolder<>(getOrCreateRegistry(clazz)))
-            .register(shortcut, (ShortcutLoader) loader);
-        selfLoader.registerLoader(clazz.getType(), holder);
-        abstractConfigLoader.registerLoader(clazz.getType(), holder);
+        synchronized(registrationLock) {
+            ShortcutHolder<?> holder = shortcuts.get(clazz.getType());
+            if(holder == null) {
+                holder = new ShortcutHolder<>(getOrCreateRegistry(clazz));
+                shortcuts.put(clazz.getType(), holder);
+            }
+            holder.register(shortcut, (ShortcutLoader) loader);
+            selfLoader.registerLoader(clazz.getType(), holder);
+            abstractConfigLoader.registerLoader(clazz.getType(), holder);
+        }
         return this;
     }
 
@@ -374,15 +413,25 @@ public class ConfigPackImpl implements ConfigPack {
         return new OpenRegistryImpl<>(new LinkedHashMap<>(), CONFIG_TYPE_TYPE_KEY) {
             @Override
             public boolean register(@NotNull RegistryKey key, @NotNull ConfigType<?, ?> value) {
-                if(!registryMap
-                    .containsKey(value.getTypeKey()
-                        .getType())) {
-                    OpenRegistry<?> openRegistry = new OpenRegistryImpl<>(value.getTypeKey());
-                    selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
-                    abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
-                    registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
+                synchronized(registrationLock) {
+                    if(!registryMap
+                        .containsKey(value.getTypeKey()
+                            .getType())) {
+                        OpenRegistry<?> openRegistry = new OpenRegistryImpl<>(value.getTypeKey());
+                        selfLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
+                        abstractConfigLoader.registerLoader(value.getTypeKey().getType(), openRegistry);
+                        registryMap.put(value.getTypeKey().getType(), new CheckedRegistryImpl<>(openRegistry));
+                    }
+                    return super.register(key, value);
                 }
-                return super.register(key, value);
+            }
+
+            @Override
+            public void registerChecked(@NotNull RegistryKey key, @NotNull ConfigType<?, ?> value) {
+                // Same lock order as register: registrationLock, then the registry's own lock.
+                synchronized(registrationLock) {
+                    super.registerChecked(key, value);
+                }
             }
         };
     }

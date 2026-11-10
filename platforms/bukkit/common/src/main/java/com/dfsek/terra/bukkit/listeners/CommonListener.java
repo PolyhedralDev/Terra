@@ -17,6 +17,7 @@
 
 package com.dfsek.terra.bukkit.listeners;
 
+import dev.wyck.keys.ResourceKey;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import com.dfsek.terra.api.Platform;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.properties.Context;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
 import com.dfsek.terra.bukkit.hooks.MultiverseGeneratorPluginHook;
 import com.dfsek.terra.bukkit.world.BukkitBiomeInfo;
@@ -85,13 +87,11 @@ public class CommonListener implements Listener {
             return;
         }
 
-        NamespacedKey biomeKey = wolf.getWorld().getBiome(wolf.getLocation()).getKey();
+        ResourceKey biomeKey = ResourceKey.of(wolf.getWorld().getBiome(wolf.getLocation()).getKey());
         pack.getBiomeProvider().stream()
             .filter(biome -> {
-                NamespacedKey key = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext()
-                    .get(BukkitBiomeInfo.class)
-                    .biomeKey();
-                return key.equals(biomeKey);
+                Context context = ((BukkitPlatformBiome) biome.getPlatformBiome()).getContext();
+                return context.has(BukkitBiomeInfo.class) && context.get(BukkitBiomeInfo.class).biomeKey().equals(biomeKey);
             })
             .findFirst()
             .ifPresent(biome -> {

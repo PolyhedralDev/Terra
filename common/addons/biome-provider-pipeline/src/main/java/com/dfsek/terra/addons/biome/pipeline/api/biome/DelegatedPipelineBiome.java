@@ -5,10 +5,11 @@ import java.util.Set;
 import com.dfsek.terra.api.world.biome.Biome;
 
 
-public final class DelegatedPipelineBiome implements PipelineBiome {
+public final class DelegatedPipelineBiome extends PipelineBiome {
     private final Biome biome;
 
     public DelegatedPipelineBiome(Biome biome) {
+        super(biome.getIntID());
         this.biome = biome;
     }
 

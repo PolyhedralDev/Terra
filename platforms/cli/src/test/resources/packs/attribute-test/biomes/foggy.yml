@@ -1,0 +1,8 @@
+id: FOGGY
+type: BIOME
+extends: GROUND
+
+attributes:
+  minecraft:visual/water_fog_end_distance:
+    modifier: multiply
+    argument: 0.85

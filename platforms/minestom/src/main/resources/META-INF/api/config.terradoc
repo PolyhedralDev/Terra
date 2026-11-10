@@ -1,0 +1,314 @@
+{
+  "id": "terra-minestom",
+  "docVersion": 1,
+  "description": "Platform addon biome extensions registered directly by TerraMinestomPlatform. Covers active VanillaBiomeProperties fields and platform object loaders; commented-out music configuration is not registered.",
+  "types": {
+    "terra:Biome": {
+      "kind": "object",
+      "fields": {
+        "colors": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "grass": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "fog": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "water": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "water-fog": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "foliage": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "sky": {
+                "schema": {
+                  "kind": "type",
+                  "target": "RGBColor",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Packed integer RGB; high bits are ignored by Minestom Color."
+              },
+              "modifier": {
+                "schema": {
+                  "kind": "enum",
+                  "values": [
+                    "NONE",
+                    "DARK_FOREST",
+                    "SWAMP"
+                  ],
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        },
+        "climate": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "precipitation": {
+                "schema": {
+                  "kind": "boolean",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              },
+              "temperature": {
+                "schema": {
+                  "kind": "float",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              },
+              "temperature-modifier": {
+                "schema": {
+                  "kind": "enum",
+                  "values": [
+                    "NONE",
+                    "FROZEN"
+                  ],
+                  "nullable": true
+                },
+                "required": false,
+                "default": null,
+                "summary": "Loaded into properties but not applied by the current default biome factory."
+              },
+              "downfall": {
+                "schema": {
+                  "kind": "float",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        },
+        "particles": {
+          "schema": {
+            "kind": "type",
+            "target": "Particle",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        },
+        "sound": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "loop-sound": {
+                "schema": {
+                  "kind": "object",
+                  "fields": {
+                    "sound": {
+                      "schema": {
+                        "kind": "type",
+                        "target": "SoundEvent",
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": null
+                    }
+                  },
+                  "nullable": true
+                },
+                "required": false
+              },
+              "mood-sound": {
+                "schema": {
+                  "kind": "type",
+                  "target": "MoodSound",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              },
+              "additions-sound": {
+                "schema": {
+                  "kind": "type",
+                  "target": "AdditionsSound",
+                  "nullable": true
+                },
+                "required": false,
+                "default": null
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        }
+      },
+      "description": "Minestom biome fields loaded for every Terra biome. No numeric expression preprocessing. Water/foliage/grass/modifier and precipitation/temperature/downfall fall back to the platform biome (or plains if absent). Fog/sky/water-fog, particles and ambient sounds are applied separately as environment attributes; no parent fallback is supplied for these fields."
+    },
+    "RGBColor": {
+      "kind": "integer",
+      "description": "RGBLikeLoader requires a Java Integer. Minestom Color extracts the low 24 bits as RGB; no 0\u20130xFFFFFF bound is enforced."
+    },
+    "Key": {
+      "kind": "string",
+      "description": "Adventure key string: optional lowercase namespace followed by colon and value. Omitted or empty namespace defaults to minecraft. Key.key validates character sets.",
+      "pattern": "^(?:[a-z0-9_.-]*:)?[a-z0-9_./-]*$"
+    },
+    "SoundEvent": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "type",
+            "target": "Key",
+            "nullable": true
+          },
+          "required": false,
+          "default": null,
+          "summary": "Without an ID this template returns null."
+        },
+        "distance-to-travel": {
+          "schema": {
+            "kind": "float",
+            "nullable": true
+          },
+          "required": false,
+          "default": null,
+          "summary": "Null is explicitly supported by SoundEvent.of."
+        }
+      },
+      "description": "Inline sound event object, not a bare sound ID."
+    },
+    "MoodSound": {
+      "kind": "object",
+      "fields": {
+        "sound": {
+          "schema": {
+            "kind": "type",
+            "target": "SoundEvent",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        },
+        "cultivation-ticks": {
+          "schema": {
+            "kind": "integer",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        },
+        "spawn-range": {
+          "schema": {
+            "kind": "integer",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        },
+        "extra-distance": {
+          "schema": {
+            "kind": "float",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        }
+      },
+      "description": "Returns null without sound. With sound present, the remaining values are passed to primitive constructor parameters: omitted/null values can fail by unboxing. Template loading itself marks all fields optional."
+    },
+    "AdditionsSound": {
+      "kind": "object",
+      "fields": {
+        "sound": {
+          "schema": {
+            "kind": "type",
+            "target": "SoundEvent",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        },
+        "sound-chance": {
+          "schema": {
+            "kind": "float",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        }
+      },
+      "description": "Returns null without sound. With sound present, sound-chance is unboxed by the constructor and omission/null can fail. Template loading marks both fields optional."
+    },
+    "Particle": {
+      "kind": "object",
+      "fields": {
+        "particle": {
+          "schema": {
+            "kind": "string",
+            "nullable": true
+          },
+          "required": false,
+          "default": null,
+          "summary": "Particle key, optionally followed by an SNBT compound; data is decoded through Particle.CODEC."
+        },
+        "probability": {
+          "schema": {
+            "kind": "float",
+            "nullable": true
+          },
+          "required": false,
+          "default": null
+        }
+      },
+      "description": "Returns null unless both particle and probability are supplied. Invalid additional SNBT data is logged and ignored. No template probability bounds are enforced."
+    }
+  }
+}

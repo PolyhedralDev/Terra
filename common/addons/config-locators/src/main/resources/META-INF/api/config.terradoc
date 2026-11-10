@@ -1,0 +1,388 @@
+{
+  "id": "config-locators",
+  "docVersion": 1,
+  "description": "Eleven registered vertical locator variants and eight inline block-pattern variants.",
+  "types": {
+    "terra:Locator": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "SURFACE": {
+          "kind": "object",
+          "fields": {
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          },
+          "description": "Finds air above a non-air block within the search range. May return multiple surfaces."
+        },
+        "TOP": {
+          "kind": "object",
+          "fields": {
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          },
+          "description": "Finds air above a non-air block within the search range. Returns only the top result; its implementation starts at range.max inclusively."
+        },
+        "RANDOM": {
+          "kind": "object",
+          "fields": {
+            "height": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "amount": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            }
+          },
+          "description": "Chooses seeded heights using a uniform distribution."
+        },
+        "GAUSSIAN_RANDOM": {
+          "kind": "object",
+          "fields": {
+            "height": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "amount": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "standard-deviation": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Chooses seeded heights using a Gaussian distribution."
+        },
+        "PATTERN": {
+          "kind": "object",
+          "fields": {
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "pattern": {
+              "schema": {
+                "kind": "type",
+                "target": "Pattern"
+              },
+              "required": true
+            }
+          }
+        },
+        "ADJACENT_PATTERN": {
+          "kind": "object",
+          "fields": {
+            "range": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            },
+            "pattern": {
+              "schema": {
+                "kind": "type",
+                "target": "Pattern"
+              },
+              "required": true
+            },
+            "match-all": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false,
+              "summary": "Require all four horizontal neighbors instead of at least one."
+            }
+          }
+        },
+        "SAMPLER": {
+          "kind": "object",
+          "fields": {
+            "samplers": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:NoiseSampler"
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Each 2D sampler output is floored to a height; results outside the column are discarded."
+        },
+        "SAMPLER_3D": {
+          "kind": "object",
+          "fields": {
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Accepts each height where the 3D sampler returns a value greater than zero."
+        },
+        "AND": {
+          "kind": "object",
+          "fields": {
+            "locators": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Locator"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of locator results using AND."
+        },
+        "OR": {
+          "kind": "object",
+          "fields": {
+            "locators": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Locator"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of locator results using OR."
+        },
+        "XOR": {
+          "kind": "object",
+          "fields": {
+            "locators": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Locator"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of locator results using XOR."
+        }
+      }
+    },
+    "Pattern": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "MATCH_AIR": {
+          "kind": "object",
+          "fields": {
+            "offset": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          },
+          "description": "Checks air in the relative offset range."
+        },
+        "MATCH_SOLID": {
+          "kind": "object",
+          "fields": {
+            "offset": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          },
+          "description": "Checks solid blocks in the relative offset range."
+        },
+        "MATCH": {
+          "kind": "object",
+          "fields": {
+            "block": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Block"
+              },
+              "required": true
+            },
+            "offset": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          }
+        },
+        "MATCH_SET": {
+          "kind": "object",
+          "fields": {
+            "blocks": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:MaterialSet"
+              },
+              "required": true
+            },
+            "offset": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:Range"
+              },
+              "required": true
+            }
+          }
+        },
+        "AND": {
+          "kind": "object",
+          "fields": {
+            "patterns": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "Pattern"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of patterns using AND."
+        },
+        "OR": {
+          "kind": "object",
+          "fields": {
+            "patterns": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "Pattern"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of patterns using OR."
+        },
+        "XOR": {
+          "kind": "object",
+          "fields": {
+            "patterns": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "Pattern"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of patterns using XOR."
+        },
+        "NOT": {
+          "kind": "object",
+          "fields": {
+            "pattern": {
+              "schema": {
+                "kind": "type",
+                "target": "Pattern"
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

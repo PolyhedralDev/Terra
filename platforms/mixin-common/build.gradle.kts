@@ -1,25 +1,20 @@
 plugins {
-    id("dev.architectury.loom") version Versions.Mod.architecuryLoom
+    id("dev.architectury.loom-no-remap") version Versions.Mod.architecturyLoom
     id("architectury-plugin") version Versions.Mod.architecturyPlugin
 }
 
 loom {
     accessWidenerPath.set(file("src/main/resources/terra.accesswidener"))
-
-    mixin {
-        defaultRefmapName.set("terra.common.refmap.json")
-    }
 }
 
 dependencies {
     shadedApi(project(":common:implementation:base"))
 
     compileOnly("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("net.fabricmc:sponge-mixin:${Versions.Mod.mixin}")
-    annotationProcessor("dev.architectury:architectury-loom:${Versions.Mod.architecuryLoom}")
+
+    api(project(":platforms:minecraft-common")) { isTransitive = false }
 
     minecraft("com.mojang:minecraft:${Versions.Mod.minecraft}")
-    mappings("net.fabricmc:yarn:${Versions.Mod.yarn}:v2")
 }
 
 architectury {
@@ -27,3 +22,6 @@ architectury {
     minecraft = Versions.Mod.minecraft
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.release = 25
+}

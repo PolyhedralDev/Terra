@@ -1,0 +1,7 @@
+id: BAD
+type: BIOME
+extends: GROUND
+
+attributes:
+  minecraft:visual/fog_color: "#00ff00"
+  minecraft:visual/sky_color: "not a colour"

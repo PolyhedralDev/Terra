@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.entity;
 
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.entity.EntityType;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;

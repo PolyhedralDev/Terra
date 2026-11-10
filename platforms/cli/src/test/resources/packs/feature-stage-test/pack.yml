@@ -1,0 +1,30 @@
+id: FEATURE_STAGE_TEST
+version: 1.0.0
+author: Terra contributors
+
+generator: NOISE_3D
+
+addons:
+  biome-provider-single: "1.+"
+  chunk-generator-noise-3d: "1.+"
+  config-biome: "1.+"
+  config-distributors: "1.+"
+  config-feature: "1.+"
+  config-locators: "1.+"
+  config-noise-function: "1.+"
+  config-palette: "1.+"
+  generation-stage-feature: "1.+"
+  language-yaml: "1.+"
+  palette-block-shortcut: "1.+"
+  structure-block-shortcut: "1.+"
+
+biomes:
+  type: SINGLE
+  biome: PLAIN
+
+# A dotted stage ID reads a nested path in biome configs: "nested.stage" reads features.nested.stage.
+stages:
+  - id: nested.stage
+    type: FEATURE
+  - id: flat
+    type: FEATURE

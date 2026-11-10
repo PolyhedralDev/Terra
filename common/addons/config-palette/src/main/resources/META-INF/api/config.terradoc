@@ -1,0 +1,204 @@
+{
+  "id": "config-palette",
+  "docVersion": 1,
+  "description": "Registered palette configurations and their weighted block layers.",
+  "types": {
+    "terra:Palette": {
+      "kind": "object",
+      "fields": {
+        "id": {
+          "schema": {
+            "kind": "string",
+            "pattern": "^[a-zA-Z0-9_-]*$"
+          },
+          "required": true,
+          "summary": "Registry identifier; must be present on this file even when inherited."
+        },
+        "layers": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "type",
+              "target": "PaletteLayer"
+            }
+          },
+          "required": true,
+          "summary": "Layers in order from the surface inward."
+        },
+        "sampler": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:NoiseSampler",
+            "nullable": true
+          },
+          "required": false,
+          "summary": "Defaults to an internal sampler returning zero."
+        }
+      }
+    },
+    "terra:PaletteReference": {
+      "kind": "oneOf",
+      "options": [
+        {
+          "kind": "ref",
+          "target": "terra:Palette"
+        }
+      ]
+    },
+    "PaletteLayer": {
+      "kind": "object",
+      "fields": {
+        "materials": {
+          "schema": {
+            "kind": "type",
+            "target": "WeightedBlocks"
+          },
+          "required": true
+        },
+        "sampler": {
+          "schema": {
+            "kind": "type",
+            "target": "terra:NoiseSampler",
+            "nullable": true
+          },
+          "required": false,
+          "summary": "When absent or YAML null, use the palette-level sampler.",
+          "default": null
+        },
+        "layers": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true,
+          "summary": "Number of depth layers using these materials; the runtime does not enforce a positive minimum."
+        }
+      }
+    },
+    "WeightedBlocks": {
+      "kind": "oneOf",
+      "description": "A block, a block-to-weight map, or a list of such maps. A singleton entry ignores its weight.",
+      "options": [
+        {
+          "kind": "type",
+          "target": "terra:Block"
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "values": {
+            "kind": "any",
+            "name": "Ignored singleton weight"
+          },
+          "maxEntries": 1
+        },
+        {
+          "kind": "keyMap",
+          "keys": {
+            "kind": "type",
+            "target": "terra:Block"
+          },
+          "values": {
+            "kind": "integer"
+          },
+          "minEntries": 2
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:Block"
+                },
+                "values": {
+                  "kind": "any",
+                  "name": "Ignored singleton weight"
+                },
+                "maxEntries": 1
+              },
+              {
+                "kind": "keyMap",
+                "keys": {
+                  "kind": "type",
+                  "target": "terra:Block"
+                },
+                "values": {
+                  "kind": "integer"
+                },
+                "minEntries": 2
+              }
+            ]
+          },
+          "maxItems": 1
+        },
+        {
+          "kind": "list",
+          "element": {
+            "kind": "keyMap",
+            "keys": {
+              "kind": "type",
+              "target": "terra:Block"
+            },
+            "values": {
+              "kind": "integer"
+            }
+          },
+          "minItems": 2
+        }
+      ]
+    }
+  },
+  "files": {
+    "PALETTE": {
+      "kind": "object",
+      "fields": {
+        "type": {
+          "schema": {
+            "kind": "literal",
+            "value": "PALETTE"
+          },
+          "required": true
+        },
+        "extends": {
+          "schema": {
+            "kind": "list",
+            "element": {
+              "kind": "string"
+            },
+            "nullable": true
+          },
+          "required": false,
+          "default": [],
+          "summary": "Parent configuration identifiers; non-final fields can be inherited."
+        },
+        "abstract": {
+          "schema": {
+            "kind": "boolean",
+            "nullable": true
+          },
+          "required": false,
+          "default": false,
+          "summary": "Abstract configurations are available for inheritance and are not registered."
+        }
+      },
+      "extends": [
+        "terra:Palette"
+      ]
+    }
+  }
+}

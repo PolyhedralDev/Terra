@@ -1,0 +1,206 @@
+{
+  "id": "config-distributors",
+  "docVersion": 1,
+  "description": "Eight registered distributor variants and explicit x/z point objects.",
+  "types": {
+    "terra:Distributor": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "AND": {
+          "kind": "object",
+          "fields": {
+            "distributors": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Distributor"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of distributor predicates using AND."
+        },
+        "OR": {
+          "kind": "object",
+          "fields": {
+            "distributors": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Distributor"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of distributor predicates using OR."
+        },
+        "XOR": {
+          "kind": "object",
+          "fields": {
+            "distributors": {
+              "schema": {
+                "kind": "list",
+                "element": {
+                  "kind": "type",
+                  "target": "terra:Distributor"
+                },
+                "minItems": 1
+              },
+              "required": true
+            }
+          },
+          "description": "Combines a nonempty list of distributor predicates using XOR."
+        },
+        "YES": {
+          "kind": "object",
+          "fields": {},
+          "description": "Accepts every column."
+        },
+        "NO": {
+          "kind": "object",
+          "fields": {},
+          "description": "Rejects every column."
+        },
+        "SAMPLER": {
+          "kind": "object",
+          "fields": {
+            "threshold": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "float"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": 0
+            },
+            "sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "terra:NoiseSampler"
+              },
+              "required": true
+            }
+          },
+          "description": "Accepts a column when its 2D sampler value is strictly less than threshold."
+        },
+        "POINTS": {
+          "kind": "object",
+          "fields": {
+            "points": {
+              "schema": {
+                "kind": "set",
+                "element": {
+                  "kind": "type",
+                  "target": "Point"
+                }
+              },
+              "required": true
+            }
+          },
+          "description": "Matches the configured x/z positions."
+        },
+        "PADDED_GRID": {
+          "kind": "object",
+          "fields": {
+            "width": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "padding": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            },
+            "salt": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true
+            }
+          },
+          "description": "Chooses a seeded point inside each width-sized square separated by padding. No template numeric bounds are enforced; zero width or cell width can fail during sampling."
+        }
+      }
+    },
+    "Point": {
+      "kind": "object",
+      "fields": {
+        "x": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        },
+        "z": {
+          "schema": {
+            "kind": "oneOf",
+            "options": [
+              {
+                "kind": "integer"
+              },
+              {
+                "kind": "type",
+                "target": "terra:Expression"
+              }
+            ]
+          },
+          "required": true
+        }
+      }
+    }
+  }
+}

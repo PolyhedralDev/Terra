@@ -30,6 +30,7 @@ import com.dfsek.terra.bukkit.util.BukkitUtils;
 import com.dfsek.terra.bukkit.world.block.data.BukkitBlockState;
 
 
+
 public class BukkitWorldHandle implements WorldHandle {
     private static final Logger logger = LoggerFactory.getLogger(BukkitWorldHandle.class);
     private final BlockState air;
@@ -40,9 +41,14 @@ public class BukkitWorldHandle implements WorldHandle {
 
     @Override
     public synchronized @NotNull BlockState createBlockState(@NotNull String data) {
-        org.bukkit.block.data.BlockData bukkitData = Bukkit.createBlockData(
-            data); // somehow bukkit managed to make this not thread safe! :)
-        return BukkitBlockState.newInstance(bukkitData);
+        // BlockData can't hold block entity NBT.
+        int nbtStart = data.indexOf('{');
+        String state = nbtStart >= 0 ? data.substring(0, nbtStart) : data;
+        try {
+            return BukkitBlockState.newInstance(Bukkit.createBlockData(state)); // somehow bukkit managed to make this not thread safe! :)
+        } catch(IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid block state data: " + data, e);
+        }
     }
 
     @Override

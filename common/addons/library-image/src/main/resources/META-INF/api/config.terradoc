@@ -1,0 +1,520 @@
+{
+  "id": "library-image",
+  "docVersion": 1,
+  "description": "Inline bitmap images, color samplers, two numeric image sampler variants and pack image-cache options.",
+  "types": {
+    "Image": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "BITMAP": {
+          "kind": "object",
+          "fields": {
+            "path": {
+              "schema": {
+                "kind": "string"
+              },
+              "required": true,
+              "summary": "Path resolved against the pack root and read by ImageIO."
+            }
+          }
+        },
+        "STITCHED_BITMAP": {
+          "kind": "object",
+          "fields": {
+            "path-format": {
+              "schema": {
+                "kind": "string",
+                "pattern": "^(?=[\\s\\S]*\\{row\\})(?=[\\s\\S]*\\{column\\})[\\s\\S]*$"
+              },
+              "required": true,
+              "summary": "Must contain {row} and {column}; the first occurrence of each is substituted."
+            },
+            "rows": {
+              "schema": {
+                "kind": "integer",
+                "minimum": 1
+              },
+              "required": true
+            },
+            "columns": {
+              "schema": {
+                "kind": "integer",
+                "minimum": 1
+              },
+              "required": true
+            },
+            "zero-indexed": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false,
+              "summary": "Use tile indices starting at 0 rather than 1."
+            }
+          }
+        }
+      }
+    },
+    "ColorSampler": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "COLOR": {
+          "kind": "object",
+          "fields": {
+            "color": {
+              "schema": {
+                "kind": "type",
+                "target": "Color"
+              },
+              "required": true
+            }
+          }
+        },
+        "SINGLE_IMAGE": {
+          "kind": "object",
+          "fields": {
+            "image": {
+              "schema": {
+                "kind": "type",
+                "target": "Image"
+              },
+              "required": true
+            },
+            "align": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "NONE",
+                  "CENTER"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "NONE"
+            },
+            "outside-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorSampler"
+              },
+              "required": true,
+              "summary": "Required fallback sampler for positions outside the image."
+            }
+          }
+        },
+        "TILED_IMAGE": {
+          "kind": "object",
+          "fields": {
+            "image": {
+              "schema": {
+                "kind": "type",
+                "target": "Image"
+              },
+              "required": true
+            },
+            "align": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "NONE",
+                  "CENTER"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "NONE"
+            }
+          }
+        },
+        "ROTATE": {
+          "kind": "object",
+          "fields": {
+            "color-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorSampler"
+              },
+              "required": true
+            },
+            "angle": {
+              "schema": {
+                "kind": "float"
+              },
+              "required": true,
+              "summary": "Rotation angle in degrees."
+            }
+          }
+        },
+        "TRANSLATE": {
+          "kind": "object",
+          "fields": {
+            "color-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorSampler"
+              },
+              "required": true
+            },
+            "x": {
+              "schema": {
+                "kind": "integer"
+              },
+              "required": true
+            },
+            "z": {
+              "schema": {
+                "kind": "integer"
+              },
+              "required": true
+            }
+          }
+        }
+      }
+    },
+    "Color": {
+      "kind": "string",
+      "minLength": 1,
+      "description": "Quoted color string: RRGGBB or AARRGGBB hex, optionally prefixed with #; or comma-separated red,green,blue / alpha,red,green,blue channels. Numeric channels use Integer.decode (decimal, hexadecimal or octal) and must be 0\u2013255.",
+      "examples": [
+        "#ff0000",
+        "80ff0000",
+        "255,0,0",
+        "128,255,0,0"
+      ]
+    },
+    "terra:NoiseSampler": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "CHANNEL": {
+          "kind": "object",
+          "fields": {
+            "color-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorSampler"
+              },
+              "required": true
+            },
+            "channel": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "RED",
+                  "GREEN",
+                  "BLUE",
+                  "GRAYSCALE",
+                  "ALPHA"
+                ]
+              },
+              "required": true
+            },
+            "normalize": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true,
+              "summary": "Normalize output into [-1, 1] instead of channel values."
+            },
+            "premultiply": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false,
+              "summary": "Multiply RGB by alpha before reading the channel."
+            }
+          }
+        },
+        "DISTANCE_TRANSFORM": {
+          "kind": "object",
+          "fields": {
+            "image": {
+              "schema": {
+                "kind": "type",
+                "target": "Image"
+              },
+              "required": true
+            },
+            "threshold": {
+              "schema": {
+                "kind": "integer",
+                "nullable": true
+              },
+              "required": false,
+              "default": 127,
+              "summary": "Channel threshold used by binary cost functions."
+            },
+            "clamp-to-max-edge": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "channel": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "RED",
+                  "GREEN",
+                  "BLUE",
+                  "GRAYSCALE",
+                  "ALPHA"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "GRAYSCALE"
+            },
+            "cost-function": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "Channel",
+                  "Threshold",
+                  "ThresholdEdge",
+                  "ThresholdEdgeSigned"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "Channel"
+            },
+            "invert-threshold": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "normalization": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "None",
+                  "Linear",
+                  "SmoothPreserveZero"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "None"
+            }
+          }
+        }
+      }
+    },
+    "config-noise-function:DimensionedSampler": {
+      "kind": "union",
+      "discriminator": "type",
+      "values": {
+        "CHANNEL": {
+          "kind": "object",
+          "fields": {
+            "color-sampler": {
+              "schema": {
+                "kind": "type",
+                "target": "ColorSampler"
+              },
+              "required": true
+            },
+            "channel": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "RED",
+                  "GREEN",
+                  "BLUE",
+                  "GRAYSCALE",
+                  "ALPHA"
+                ]
+              },
+              "required": true
+            },
+            "normalize": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": true,
+              "summary": "Normalize output into [-1, 1] instead of channel values."
+            },
+            "premultiply": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false,
+              "summary": "Multiply RGB by alpha before reading the channel."
+            },
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Required by the expression sampler wrapper; 2 selects 2D, other integers select 3D."
+            }
+          }
+        },
+        "DISTANCE_TRANSFORM": {
+          "kind": "object",
+          "fields": {
+            "image": {
+              "schema": {
+                "kind": "type",
+                "target": "Image"
+              },
+              "required": true
+            },
+            "threshold": {
+              "schema": {
+                "kind": "integer",
+                "nullable": true
+              },
+              "required": false,
+              "default": 127,
+              "summary": "Channel threshold used by binary cost functions."
+            },
+            "clamp-to-max-edge": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "channel": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "RED",
+                  "GREEN",
+                  "BLUE",
+                  "GRAYSCALE",
+                  "ALPHA"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "GRAYSCALE"
+            },
+            "cost-function": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "Channel",
+                  "Threshold",
+                  "ThresholdEdge",
+                  "ThresholdEdgeSigned"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "Channel"
+            },
+            "invert-threshold": {
+              "schema": {
+                "kind": "boolean",
+                "nullable": true
+              },
+              "required": false,
+              "default": false
+            },
+            "normalization": {
+              "schema": {
+                "kind": "enum",
+                "values": [
+                  "None",
+                  "Linear",
+                  "SmoothPreserveZero"
+                ],
+                "nullable": true
+              },
+              "required": false,
+              "default": "None"
+            },
+            "dimensions": {
+              "schema": {
+                "kind": "oneOf",
+                "options": [
+                  {
+                    "kind": "integer"
+                  },
+                  {
+                    "kind": "type",
+                    "target": "terra:Expression"
+                  }
+                ]
+              },
+              "required": true,
+              "summary": "Required by the expression sampler wrapper; 2 selects 2D, other integers select 3D."
+            }
+          }
+        }
+      }
+    }
+  },
+  "files": {
+    "pack.yml": {
+      "kind": "object",
+      "fields": {
+        "images": {
+          "schema": {
+            "kind": "object",
+            "fields": {
+              "cache": {
+                "schema": {
+                  "kind": "object",
+                  "fields": {
+                    "load-on-use": {
+                      "schema": {
+                        "kind": "boolean",
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": false,
+                      "summary": "Load images when first used rather than during pack loading."
+                    },
+                    "timeout": {
+                      "schema": {
+                        "kind": "integer",
+                        "nullable": true
+                      },
+                      "required": false,
+                      "default": 0,
+                      "summary": "Seconds after last use before unloading; values <= 0 keep images cached."
+                    }
+                  },
+                  "nullable": true
+                },
+                "required": false
+              }
+            },
+            "nullable": true
+          },
+          "required": false
+        }
+      }
+    }
+  }
+}

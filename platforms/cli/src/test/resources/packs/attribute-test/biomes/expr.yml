@@ -1,0 +1,31 @@
+# Meta features inside attribute values: number expressions, "${file:key}" interpolation, "$file:key" references and "<<" includes
+# at every depth of a value, including a modifier argument and an opaque particle body.
+id: EXPR
+type: BIOME
+extends: GROUND
+
+attributes:
+  minecraft:audio/background_music:
+    default:
+      sound: minecraft:music.game
+      min_delay: "2 * 6000"
+      max_delay: "${meta.yml:music-delay} * 4"
+  minecraft:visual/water_fog_end_distance:
+    modifier: multiply
+    argument: "$meta.yml:fog-scale"
+  minecraft:audio/ambient_sounds:
+    loop: "$meta.yml:cave-loop"
+    mood:
+      "<<":
+        - meta.yml:cave-mood
+      tick_delay: "3000 * 2"
+    additions:
+      - "<< meta.yml:cave-additions"
+      - sound: minecraft:ambient.basalt_deltas.additions
+        tick_chance: 0.5
+  minecraft:visual/ambient_particles:
+    - particle:
+        "<<":
+          - meta.yml:particle-options
+        type: "minecraft:${meta.yml:particle-name}"
+      probability: "1 / 40"

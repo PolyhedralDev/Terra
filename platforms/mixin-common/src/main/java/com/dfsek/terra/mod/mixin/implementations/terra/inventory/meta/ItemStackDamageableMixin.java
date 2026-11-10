@@ -17,7 +17,7 @@
 
 package com.dfsek.terra.mod.mixin.implementations.terra.inventory.meta;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -34,19 +34,19 @@ public abstract class ItemStackDamageableMixin {
     public abstract boolean isDamaged();
 
     @Shadow
-    public abstract int getDamage();
+    public abstract int getDamageValue();
 
     @Shadow
-    public abstract void setDamage(int damage);
+    public abstract void setDamageValue(int damage);
 
     @Intrinsic
     public int terra$getDamage() {
-        return getDamage();
+        return getDamageValue();
     }
 
     @Intrinsic
     public void terra$setDamage(int damage) {
-        setDamage(damage);
+        setDamageValue(damage);
     }
 
     public boolean terra$hasDamage() {

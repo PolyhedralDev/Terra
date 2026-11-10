@@ -1,0 +1,6 @@
+id: NULLED
+type: BIOME
+extends: CHILD
+
+attributes:
+  minecraft:visual/sky_color: null

@@ -1,0 +1,11 @@
+# Config preprocessing errors inside attribute values: each warns once for its entry, and the other entries still load.
+id: EXPR_BAD
+type: BIOME
+extends: GROUND
+
+attributes:
+  minecraft:visual/fog_color: "#123456"
+  minecraft:visual/fog_start_distance: "${meta.yml:no-such-key} * 2"
+  minecraft:visual/sky_fog_end_distance:
+    modifier: add
+    argument: "${2 * 6000}"

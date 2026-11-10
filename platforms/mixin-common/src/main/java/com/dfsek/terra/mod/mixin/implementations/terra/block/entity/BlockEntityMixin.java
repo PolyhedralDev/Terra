@@ -25,30 +25,30 @@ import com.dfsek.terra.api.block.entity.BlockEntity;
 import com.dfsek.terra.api.block.state.BlockState;
 
 
-@Mixin(net.minecraft.block.entity.BlockEntity.class)
+@Mixin(net.minecraft.world.level.block.entity.BlockEntity.class)
 @Implements(@Interface(iface = BlockEntity.class, prefix = "terra$"))
 public abstract class BlockEntityMixin {
     public boolean terra$update(boolean applyPhysics) {
-        if(((net.minecraft.block.entity.BlockEntity) (Object) this).hasWorld()) //noinspection ConstantConditions
-            ((net.minecraft.block.entity.BlockEntity) (Object) this).getWorld().getChunk(
-                ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos()).setBlockEntity(
-                (net.minecraft.block.entity.BlockEntity) (Object) this);
+        if(((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).hasLevel()) //noinspection ConstantConditions
+            ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getLevel().getChunk(
+                ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getBlockPos()).setBlockEntity(
+                (net.minecraft.world.level.block.entity.BlockEntity) (Object) this);
         return true;
     }
 
     public int terra$getX() {
-        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getX();
+        return ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getBlockPos().getX();
     }
 
     public int terra$getY() {
-        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getY();
+        return ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getBlockPos().getY();
     }
 
     public int terra$getZ() {
-        return ((net.minecraft.block.entity.BlockEntity) (Object) this).getPos().getZ();
+        return ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getBlockPos().getZ();
     }
 
     public BlockState terra$getBlockState() {
-        return (BlockState) ((net.minecraft.block.entity.BlockEntity) (Object) this).getCachedState();
+        return (BlockState) ((net.minecraft.world.level.block.entity.BlockEntity) (Object) this).getBlockState();
     }
 }

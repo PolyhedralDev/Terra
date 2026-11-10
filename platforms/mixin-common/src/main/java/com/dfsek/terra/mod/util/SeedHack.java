@@ -1,29 +1,28 @@
 package com.dfsek.terra.mod.util;
 
-import it.unimi.dsi.fastutil.objects.Object2LongMap;
-import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
-import net.minecraft.world.biome.source.util.MultiNoiseUtil.MultiNoiseSampler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.MapMaker;
+import net.minecraft.world.level.biome.Climate.Sampler;
+
+import java.util.concurrent.ConcurrentMap;
 
 
 /**
- * Holder for hacky biome source seed workaround
+ * Maps climate samplers to world seeds.
+ * <p>
+ * {@link net.minecraft.world.level.levelgen.RandomState} creates a new {@link Sampler} for every sampling context.
  */
 public class SeedHack {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SeedHack.class);
+    private static final ConcurrentMap<Sampler, Long> seedMap = new MapMaker().weakKeys().makeMap();
 
-    private static final Object2LongMap<MultiNoiseSampler> seedMap = new Object2LongOpenHashMap<>();
-
-    public static long getSeed(MultiNoiseSampler sampler) {
-        if(!seedMap.containsKey(sampler)) {
+    public static long getSeed(Sampler sampler) {
+        Long seed = seedMap.get(sampler);
+        if(seed == null) {
             throw new IllegalArgumentException("Sampler is not registered: " + sampler);
         }
-        return seedMap.getLong(sampler);
+        return seed;
     }
 
-    public static void register(MultiNoiseSampler sampler, long seed) {
-        LOGGER.info("Registered seed {} to sampler {}", seed, sampler.hashCode());
+    public static void register(Sampler sampler, long seed) {
         seedMap.put(sampler, seed);
     }
 }

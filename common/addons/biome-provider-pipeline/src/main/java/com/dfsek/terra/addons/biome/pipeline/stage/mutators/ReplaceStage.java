@@ -17,14 +17,15 @@ import com.dfsek.terra.addons.biome.pipeline.api.Stage;
 import com.dfsek.terra.addons.biome.pipeline.api.biome.PipelineBiome;
 import com.dfsek.terra.addons.biome.pipeline.pipeline.BiomeChunkImpl;
 import com.dfsek.terra.api.util.collection.ProbabilityCollection;
+import com.dfsek.terra.api.world.biome.tag.BiomeTag;
 
 
 public class ReplaceStage implements Stage {
-    private final String replaceableTag;
+    private final BiomeTag replaceableTag;
     private final ProbabilityCollection<PipelineBiome> replace;
     private final Sampler sampler;
 
-    public ReplaceStage(String replaceable, ProbabilityCollection<PipelineBiome> replace, Sampler sampler) {
+    public ReplaceStage(BiomeTag replaceable, ProbabilityCollection<PipelineBiome> replace, Sampler sampler) {
         this.replaceableTag = replaceable;
         this.replace = replace;
         this.sampler = sampler;
@@ -32,7 +33,7 @@ public class ReplaceStage implements Stage {
 
     @Override
     public PipelineBiome apply(BiomeChunkImpl.ViewPoint viewPoint) {
-        if(viewPoint.getBiome().getTags().contains(replaceableTag)) {
+        if(replaceableTag.has(viewPoint.getBiome().getIntID())) {
             PipelineBiome biome = replace.get(sampler, viewPoint.worldX(), viewPoint.worldZ(), viewPoint.worldSeed());
             return biome.isSelf() ? viewPoint.getBiome() : biome;
         }
@@ -49,7 +50,7 @@ public class ReplaceStage implements Stage {
         Set<PipelineBiome> biomeSet = new HashSet<>();
         Set<PipelineBiome> reject = new HashSet<>();
         biomes.forEach(biome -> {
-            if(!biome.getTags().contains(replaceableTag)) {
+            if(!biome.getTags().contains(replaceableTag.name())) {
                 biomeSet.add(biome);
             } else {
                 reject.add(biome);
