@@ -36,6 +36,7 @@ import java.util.Random;
 
 import com.dfsek.terra.api.block.state.BlockState;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.world.chunk.generation.ChunkGenerator;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
 import com.dfsek.terra.bukkit.util.BukkitUtils;
@@ -48,8 +49,9 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     private final BlockState air;
     private final BukkitBlockPopulator blockPopulator;
     private volatile @Nullable BukkitBiomeProvider biomeProvider;
-    private volatile ChunkGenerator delegate;
-    private volatile ConfigPack pack;
+    private volatile @Nullable ChunkGenerator delegate;
+    private volatile @Nullable ConfigPack pack;
+    private volatile @Nullable MetaPack metaPack;
     private volatile boolean mobGeneration = true;
 
 
@@ -60,19 +62,38 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
         this.blockPopulator = new BukkitBlockPopulator(pack, air);
     }
 
+    public BukkitChunkGeneratorWrapper(MetaPack metaPack, BlockState air) {
+        this.metaPack = metaPack;
+        this.air = air;
+        this.blockPopulator = new BukkitBlockPopulator(null, air);
+    }
+
+    /**
+     * Picks the world's pack from the metapack on the first call.
+     */
+    public ConfigPack bind(WorldInfo world) {
+        ConfigPack bound = pack;
+        if(bound != null) return bound;
+        synchronized(this) {
+            if(pack == null) setPack(MetaPackWorlds.packFor(metaPack, world.getEnvironment(), world.getName()));
+            return pack;
+        }
+    }
+
     public void setDelegate(ChunkGenerator delegate) {
         this.delegate = delegate;
     }
 
     @Override
     public @Nullable BiomeProvider getDefaultBiomeProvider(@NotNull WorldInfo worldInfo) {
-        BukkitBiomeProvider provider = new BukkitBiomeProvider(pack.getBiomeProvider());
+        BukkitBiomeProvider provider = new BukkitBiomeProvider(bind(worldInfo).getBiomeProvider());
         biomeProvider = provider;
         return provider;
     }
 
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull ChunkData chunkData) {
+        ConfigPack pack = bind(worldInfo);
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
         delegate.generateChunkData(new BukkitProtoChunk(chunkData), properties, pack.getBiomeProvider(), x, z);
     }
@@ -80,7 +101,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     @Override
     public int getBaseHeight(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z, @NotNull HeightMap heightMap) {
         BukkitWorldProperties properties = new BukkitWorldProperties(worldInfo);
-        com.dfsek.terra.api.world.biome.generation.BiomeProvider biomeProvider = pack.getBiomeProvider();
+        com.dfsek.terra.api.world.biome.generation.BiomeProvider biomeProvider = bind(worldInfo).getBiomeProvider();
         int y = properties.getMaxHeight();
         while(y > properties.getMinHeight() &&
               !isHeightmapBlock(heightMap, ((BukkitBlockState) delegate.getBlock(properties, x, y - 1, z, biomeProvider)).getHandle())) {
@@ -105,6 +126,7 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
 
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
+        bind(world);
         return List.of(blockPopulator);
     }
 
@@ -134,15 +156,27 @@ public class BukkitChunkGeneratorWrapper extends org.bukkit.generator.ChunkGener
     }
 
     public ConfigPack getPack() {
-        return pack;
+        ConfigPack bound = pack;
+        if(bound == null) throw new IllegalStateException("Metapack \"" + metaPack.getID() + "\" has no world to pick a pack for yet");
+        return bound;
+    }
+
+    public @Nullable MetaPack getMetaPack() {
+        return metaPack;
+    }
+
+    public synchronized void setMetaPack(MetaPack metaPack, World world) {
+        ConfigPack pack = MetaPackWorlds.packFor(metaPack, world.getEnvironment(), world.getName());
+        this.metaPack = metaPack;
+        setPack(pack);
     }
 
     public void setPack(ConfigPack pack) {
-        this.pack = pack;
         setDelegate(pack.getGeneratorProvider().newInstance(pack));
         BukkitBiomeProvider provider = biomeProvider;
         if(provider != null) provider.setDelegate(pack.getBiomeProvider());
         blockPopulator.setPack(pack);
+        this.pack = pack; // last: bind() reads it without locking
     }
 
     @Override

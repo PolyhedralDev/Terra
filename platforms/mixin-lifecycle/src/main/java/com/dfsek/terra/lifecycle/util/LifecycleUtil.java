@@ -40,8 +40,7 @@ public final class LifecycleUtil {
 
     private static void registerTimelines(ModPlatform platform, WritableRegistry<Timeline> timelines) {
         MinecraftAttributeParents parents = platform.attributeParents();
-        VanillaContext context = parents.context();
-        if(context == null) throw new IllegalStateException("no registry load has begun");
+        VanillaContext context = parents.requireContext();
         platform.getConfigRegistry().forEach(pack -> {
             PackParents packParents = parents.prepare(pack, platform.getAttributeHandle().pack(pack),
                 AttributeReport.logging(pack));
@@ -50,8 +49,6 @@ public final class LifecycleUtil {
     }
 
     public static MinecraftBiomeFactory biomeFactory(ModPlatform platform) {
-        VanillaContext context = platform.attributeParents().context();
-        if(context == null) throw new IllegalStateException("no registry load has begun");
-        return new MinecraftBiomeFactory(platform.getAttributeHandle(), context);
+        return new MinecraftBiomeFactory(platform.getAttributeHandle(), platform.attributeParents().requireContext());
     }
 }

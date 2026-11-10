@@ -6,7 +6,7 @@ import ca.solostudios.strata.version.Version;
 import com.dfsek.terra.api.addon.BaseAddon;
 import com.dfsek.terra.api.event.events.config.pack.ConfigPackPreLoadEvent;
 import com.dfsek.terra.api.event.functional.FunctionalEventHandler;
-import com.dfsek.terra.bukkit.config.PreLoadCompatibilityOptions;
+import com.dfsek.terra.minecraft.config.MinecraftCompatibilityOptions;
 
 
 public class BukkitAddon implements BaseAddon {
@@ -23,7 +23,7 @@ public class BukkitAddon implements BaseAddon {
         terraBukkitPlugin.getEventManager()
             .getHandler(FunctionalEventHandler.class)
             .register(this, ConfigPackPreLoadEvent.class)
-            .then(event -> event.getPack().getContext().put(event.loadTemplate(new PreLoadCompatibilityOptions())))
+            .then(event -> event.getPack().getContext().put(event.loadTemplate(new MinecraftCompatibilityOptions())))
             .global();
     }
 

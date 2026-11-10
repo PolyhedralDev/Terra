@@ -14,9 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.api.world.attribute.Attribute;
 import com.dfsek.terra.api.world.attribute.AttributeEntry;
@@ -32,6 +34,12 @@ public final class MinecraftBiomeFactory {
     private final AttributeHandle handle;
     private final VanillaContext context;
     private final VanillaAttributeMaps maps;
+
+    public static Identifier terraId(ConfigPack pack, RegistryKey biome) {
+        return Identifier.fromNamespaceAndPath("terra", pack.getID().toLowerCase(Locale.ROOT) + "/"
+                                                        + biome.getNamespace().toLowerCase(Locale.ROOT) + "/"
+                                                        + biome.getID().toLowerCase(Locale.ROOT));
+    }
 
     public MinecraftBiomeFactory(AttributeHandle handle, VanillaContext context) {
         this.handle = Objects.requireNonNull(handle, "handle");

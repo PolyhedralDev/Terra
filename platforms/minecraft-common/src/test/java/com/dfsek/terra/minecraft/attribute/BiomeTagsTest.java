@@ -49,10 +49,14 @@ class BiomeTagsTest {
             .map(h -> h);
     }
 
-    private void add(Map<Identifier, List<Identifier>> byParent, String... tags) {
+    private PlatformTagSource source(String... tags) {
         Set<RegistryKey> keys = new LinkedHashSet<>();
         for(String t : tags) keys.add(RegistryKey.parse(t));
-        BiomeTags.addTerraBiomes(collect, this::lookup, byParent, Map.of(TERRA_ID, new PlatformTagSource(report, "BIOME", keys)));
+        return new PlatformTagSource(report, "BIOME", keys);
+    }
+
+    private void add(String... tags) {
+        BiomeTags.addPlatformTags(collect, this::lookup, Map.of(TERRA_ID, source(tags)));
     }
 
     private static void bindTags(Holder<Biome> holder, TagKey<Biome> tag) throws ReflectiveOperationException {
@@ -66,7 +70,7 @@ class BiomeTagsTest {
         Holder<Biome> forest = registry.get(Biomes.FOREST).orElseThrow();
         collect.put(IS_FOREST, new ArrayList<>(List.of(forest)));
 
-        add(Map.of(), "mypack:has_snow", "minecraft:is_forest");
+        add("mypack:has_snow", "minecraft:is_forest");
 
         assertEquals(List.of(terra), collect.get(HAS_SNOW));
         assertEquals(List.of(forest, terra), collect.get(IS_FOREST));
@@ -79,7 +83,9 @@ class BiomeTagsTest {
         bindTags(forest, IS_FOREST);
         Identifier forestId = Biomes.FOREST.identifier();
 
-        add(Map.of(forestId, List.of(TERRA_ID)));
+        TerraBiomeIndex biomes = new TerraBiomeIndex();
+        biomes.record(TERRA_ID, forestId, source());
+        BiomeTags.addTerraBiomes(collect, this::lookup, biomes);
 
         assertEquals(List.of(terra), collect.get(IS_FOREST));
         assertEquals(List.of(), warnings);
@@ -87,7 +93,7 @@ class BiomeTagsTest {
 
     @Test
     void upperCaseTagIsIgnored() {
-        add(Map.of(), "mypack:Has_Snow");
+        add("mypack:Has_Snow");
 
         assertTrue(collect.isEmpty(), collect.toString());
         assertEquals(1, warnings.size(), warnings.toString());
@@ -97,7 +103,7 @@ class BiomeTagsTest {
 
     @Test
     void missingMinecraftTagWarnsAndIsCreated() {
-        add(Map.of(), "minecraft:is_forrest");
+        add("minecraft:is_forrest");
 
         assertEquals(List.of("Pack \"test\", config \"BIOME\": tag \"minecraft:is_forrest\" created: no such tag in the minecraft namespace"),
                      warnings);

@@ -73,8 +73,7 @@ public final class TagUtil {
         logger.info("Doing biome tag garbage....");
         Map<TagKey<Biome>, List<Holder<Biome>>> collect = tagsToMutableMap(registry);
 
-        BiomeTags.addTerraBiomes(collect, id -> MinecraftUtil.getEntry(registry, id), BiomeUtil.getTerraBiomeMap(),
-            BiomeUtil.getTerraBiomePlatformTags());
+        BiomeTags.addTerraBiomes(collect, id -> MinecraftUtil.getEntry(registry, id), BiomeUtil.terraBiomes());
 
         registry.prepareTagReload(new LoadResult<>(registry.key(), collect)).apply();
 

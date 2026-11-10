@@ -30,9 +30,8 @@ public final class BiomeTags {
     public record PlatformTagSource(AttributeReport report, String config, Set<RegistryKey> tags) { }
 
     public static void addTerraBiomes(Map<TagKey<Biome>, List<Holder<Biome>>> collect,
-                                      Function<Identifier, Optional<Holder<Biome>>> lookup,
-                                      Map<Identifier, List<Identifier>> byParent, Map<Identifier, PlatformTagSource> platformTags) {
-        byParent.forEach((vb, terraBiomes) ->
+                                      Function<Identifier, Optional<Holder<Biome>>> lookup, TerraBiomeIndex biomes) {
+        biomes.byParent().forEach((vb, terraBiomes) ->
             lookup.apply(vb).ifPresentOrElse(
                 vanilla -> terraBiomes.forEach(tb -> lookup.apply(tb).ifPresentOrElse(
                     terra -> {
@@ -42,7 +41,12 @@ public final class BiomeTags {
                     },
                     () -> logger.error("No such biome: {}", tb))),
                 () -> logger.error("No vanilla biome: {}", vb)));
+        addPlatformTags(collect, lookup, biomes.tags());
+    }
 
+    public static void addPlatformTags(Map<TagKey<Biome>, List<Holder<Biome>>> collect,
+                                       Function<Identifier, Optional<Holder<Biome>>> lookup,
+                                       Map<Identifier, PlatformTagSource> platformTags) {
         Set<TagKey<Biome>> existing = new HashSet<>(collect.keySet());
         platformTags.forEach((tb, source) -> {
             if(source.tags().isEmpty()) return;

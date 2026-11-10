@@ -105,8 +105,7 @@ public class PresetUtil {
         Identifier demensionIdentifier = Identifier.parse(key);
 
         MinecraftAttributeParents parents = platform.attributeParents();
-        VanillaContext context = parents.context();
-        if(context == null) throw new IllegalStateException("no registry load has begun");
+        VanillaContext context = parents.requireContext();
         ResourceKey<DimensionType> filled = MinecraftUtil.registerDimensionTypeKey(demensionIdentifier);
         if(context.dimensionTypes().get(filled).isEmpty()) filled = BuiltinDimensionTypes.OVERWORLD;
         PackParents packParents = parents.prepare(pack, platform.getAttributeHandle().pack(pack), AttributeReport.logging(pack), filled);

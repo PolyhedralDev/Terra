@@ -70,6 +70,12 @@ public final class MinecraftAttributeParents implements AttributeParents {
         return state.context();
     }
 
+    public VanillaContext requireContext() {
+        VanillaContext context = state.context();
+        if(context == null) throw new IllegalStateException("no registry load has begun");
+        return context;
+    }
+
     public PackParents prepare(ConfigPack pack, Optional<PackAttributes> attributes, AttributeReport report) {
         return prepare(pack, attributes, report, BuiltinDimensionTypes.OVERWORLD);
     }

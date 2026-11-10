@@ -15,7 +15,7 @@
  * along with Terra.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.dfsek.terra.bukkit.config;
+package com.dfsek.terra.minecraft.config;
 
 import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
@@ -25,7 +25,7 @@ import com.dfsek.terra.api.properties.Properties;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
+public class MinecraftCompatibilityOptions implements ConfigTemplate, Properties {
     @Value("minecraft.use-vanilla-biomes")
     @Default
     private boolean vanillaBiomes = false;

@@ -24,6 +24,7 @@ import org.bukkit.event.world.WorldInitEvent;
 
 import com.dfsek.terra.bukkit.attribute.PaperDimensions;
 import com.dfsek.terra.bukkit.generator.BukkitChunkGeneratorWrapper;
+import com.dfsek.terra.bukkit.generator.PaperGenerators;
 
 
 public class DimensionListener implements Listener {
@@ -36,6 +37,8 @@ public class DimensionListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
-        if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) dimensions.onWorldInit(world, wrapper);
+        if(!(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper)) return;
+        dimensions.onWorldInit(world, wrapper);
+        PaperGenerators.install(world, wrapper);
     }
 }

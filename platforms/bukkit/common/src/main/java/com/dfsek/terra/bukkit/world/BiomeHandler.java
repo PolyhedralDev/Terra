@@ -21,12 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -46,6 +44,7 @@ import com.dfsek.terra.minecraft.attribute.BiomeTags.PlatformTagSource;
 import com.dfsek.terra.minecraft.attribute.MinecraftAttributeParents;
 import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
 import com.dfsek.terra.minecraft.attribute.PackParents;
+import com.dfsek.terra.minecraft.attribute.TerraBiomeIndex;
 import com.dfsek.terra.minecraft.attribute.VanillaContext;
 import com.dfsek.terra.world.attribute.platform.AttributeReport;
 import com.dfsek.terra.world.attribute.platform.AttributeSlots;
@@ -53,8 +52,7 @@ import com.dfsek.terra.world.attribute.platform.AttributeSlots;
 
 public final class BiomeHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(BiomeHandler.class);
-    private static final Map<Identifier, List<Identifier>> BY_PARENT = new HashMap<>();
-    private static final Map<Identifier, PlatformTagSource> PLATFORM_TAGS = new HashMap<>();
+    private static TerraBiomeIndex biomes = new TerraBiomeIndex();
 
     private BiomeHandler() { }
 
@@ -63,8 +61,7 @@ public final class BiomeHandler {
      */
     public static synchronized void registerBiomes(BukkitPlatform platform) {
         MinecraftAttributeParents parents = platform.attributeParents();
-        VanillaContext context = parents.context();
-        if(context == null) throw new IllegalStateException("no registry load has begun");
+        VanillaContext context = parents.requireContext();
         MinecraftBiomeFactory factory = new MinecraftBiomeFactory(platform.getAttributeHandle(), context);
         Registry<Biome> registry = PaperVanilla.server().registryAccess().lookupOrThrow(Registries.BIOME);
         org.bukkit.Registry<org.bukkit.block.Biome> bukkitRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.BIOME);
@@ -86,7 +83,7 @@ public final class BiomeHandler {
                 platformBiome.setParentEntries(parentEntries(() -> parents.biomeEntries(packParents, parentKey, parent), pack.getID(),
                     biome.getID(), LOGGER::warn));
 
-                Identifier terraId = Identifier.fromNamespaceAndPath("terra", createBiomeID(pack, id));
+                Identifier terraId = MinecraftBiomeFactory.terraId(pack, id);
                 packRun.add(terraId, parentKey.identifier(), registry.containsKey(terraId), () -> {
                     if(playersOnline) {
                         deferred.incrementAndGet();
@@ -109,16 +106,13 @@ public final class BiomeHandler {
             }), LOGGER::warn);
 
         if(deferred.get() > 0) {
-            LOGGER.info("Players are online, so {} new custom biomes generate as their vanilla biomes until the server restarts.",
+            LOGGER.info("{} new custom biomes generate as their vanilla parents until the server restarts (players were online during the reload).",
                         deferred.get());
         }
         registerNew(run.toRegister, WyckBridge::registerBiomes, LOGGER::info);
         Map<ResourceKey<Biome>, ResourceKey<VillagerType>> villagerTypes = PaperVanilla.villagerTypes();
         run.villagerTypes.forEach((terraId, type) -> villagerTypes.put(ResourceKey.create(Registries.BIOME, terraId), type));
-        BY_PARENT.clear();
-        BY_PARENT.putAll(run.byParent);
-        PLATFORM_TAGS.clear();
-        PLATFORM_TAGS.putAll(run.platformTags);
+        biomes = run.biomes;
         run.afterRegistration.forEach(Runnable::run);
     }
 
@@ -166,8 +160,7 @@ public final class BiomeHandler {
         private final @Nullable Run<B> before;
         final List<B> toRegister = new ArrayList<>();
         final Map<Identifier, ResourceKey<VillagerType>> villagerTypes = new LinkedHashMap<>();
-        final Map<Identifier, List<Identifier>> byParent = new LinkedHashMap<>();
-        final Map<Identifier, PlatformTagSource> platformTags = new LinkedHashMap<>();
+        final TerraBiomeIndex biomes = new TerraBiomeIndex();
         final List<Runnable> afterRegistration = new ArrayList<>();
 
         Run(@Nullable Run<B> before) {
@@ -177,8 +170,7 @@ public final class BiomeHandler {
         void add(Identifier terraId, Identifier parent, boolean registered, Supplier<@Nullable Registration<B>> registration,
                  PlatformTagSource tags, Runnable after, String pack, String config, Consumer<String> warn) {
             if(recorded(terraId)) {
-                warn.accept("Pack \"" + pack + "\", config \"" + config + "\": biome \"" + terraId
-                            + "\" shared with another config: their IDs differ only in case");
+                warn.accept(TerraBiomeIndex.sharedBiome(pack, config, terraId));
                 afterRegistration.add(after);
                 return;
             }
@@ -188,20 +180,18 @@ public final class BiomeHandler {
                 toRegister.add(queued.biome());
                 villagerTypes.put(terraId, queued.villagerType());
             }
-            byParent.computeIfAbsent(parent, i -> new ArrayList<>()).add(terraId);
-            platformTags.put(terraId, tags);
+            biomes.record(terraId, parent, tags);
             afterRegistration.add(after);
         }
 
         private boolean recorded(Identifier terraId) {
-            return platformTags.containsKey(terraId) || (before != null && before.recorded(terraId));
+            return biomes.contains(terraId) || (before != null && before.recorded(terraId));
         }
 
         private void addAll(Run<B> run) {
             toRegister.addAll(run.toRegister);
             villagerTypes.putAll(run.villagerTypes);
-            run.byParent.forEach((parent, biomes) -> byParent.computeIfAbsent(parent, i -> new ArrayList<>()).addAll(biomes));
-            platformTags.putAll(run.platformTags);
+            biomes.addAll(run.biomes);
             afterRegistration.addAll(run.afterRegistration);
         }
     }
@@ -230,7 +220,7 @@ public final class BiomeHandler {
         Map<TagKey<Biome>, List<Holder<Biome>>> after = new LinkedHashMap<>();
         before.forEach((tag, members) -> after.put(tag, new ArrayList<>(members)));
 
-        BiomeTags.addTerraBiomes(after, id -> registry.get(id).map(h -> h), BY_PARENT, PLATFORM_TAGS);
+        BiomeTags.addTerraBiomes(after, id -> registry.get(id).map(h -> h), biomes);
 
         Map<TagKey<Biome>, List<Identifier>> additions = additions(before, after);
         int added = appendAll(additions, WyckBridge::appendBiomeTag, "wyck could not append to the tag", LOGGER::warn);
@@ -247,8 +237,7 @@ public final class BiomeHandler {
             registrar.getAllTags().forEach((tag, members) -> tags.put(TagKey.create(Registries.BIOME, identifier(tag.key())),
                 members.stream().map(member -> identifier(member.key())).toList()));
 
-            Map<TagKey<Biome>, List<Identifier>> additions = reloadAdditions(tags, id -> registry.get(id).map(h -> h), BY_PARENT,
-                PLATFORM_TAGS);
+            Map<TagKey<Biome>, List<Identifier>> additions = reloadAdditions(tags, id -> registry.get(id).map(h -> h), biomes);
             int added = appendAll(additions, (tag, biomes) -> registrar.addToTag(
                 io.papermc.paper.registry.tag.TagKey.create(RegistryKey.BIOME, key(tag.location())),
                 biomes.stream().map(biome -> TypedKey.create(RegistryKey.BIOME, key(biome))).toList()),
@@ -265,24 +254,23 @@ public final class BiomeHandler {
      */
     static Map<TagKey<Biome>, List<Identifier>> reloadAdditions(Map<TagKey<Biome>, List<Identifier>> tags,
                                                                 Function<Identifier, Optional<Holder<Biome>>> lookup,
-                                                                Map<Identifier, List<Identifier>> byParent,
-                                                                Map<Identifier, PlatformTagSource> platformTags) {
+                                                                TerraBiomeIndex biomes) {
         Map<TagKey<Biome>, List<Holder<Biome>>> before = new LinkedHashMap<>();
         Map<TagKey<Biome>, List<Holder<Biome>>> after = new LinkedHashMap<>();
         tags.forEach((tag, members) -> {
             List<Holder<Biome>> old = members.stream().map(lookup).flatMap(Optional::stream).toList();
-            List<Holder<Biome>> biomes = new ArrayList<>(old);
+            List<Holder<Biome>> withTerra = new ArrayList<>(old);
             for(Identifier member : members) {
-                for(Identifier terra : byParent.getOrDefault(member, List.of())) {
-                    lookup.apply(terra).ifPresentOrElse(biomes::add,
-                        () -> LOGGER.debug("Terra biome {} is not registered, so it is not added to the reloaded tag {}", terra,
+                for(Identifier terra : biomes.children(member)) {
+                    lookup.apply(terra).ifPresentOrElse(withTerra::add,
+                        () -> LOGGER.debug("Terra biome {} is not registered; left out of reloaded tag {}", terra,
                             tag.location()));
                 }
             }
             before.put(tag, old);
-            after.put(tag, biomes);
+            after.put(tag, withTerra);
         });
-        BiomeTags.addTerraBiomes(after, lookup, Map.of(), platformTags);
+        BiomeTags.addPlatformTags(after, lookup, biomes.tags());
         return additions(before, after);
     }
 
@@ -359,9 +347,4 @@ public final class BiomeHandler {
         return appended;
     }
 
-    public static String createBiomeID(ConfigPack pack, com.dfsek.terra.api.registry.key.RegistryKey biomeID) {
-        return pack.getID().toLowerCase(Locale.ROOT)
-               + "/" + biomeID.getNamespace().toLowerCase(Locale.ROOT)
-               + "/" + biomeID.getID().toLowerCase(Locale.ROOT);
-    }
 }

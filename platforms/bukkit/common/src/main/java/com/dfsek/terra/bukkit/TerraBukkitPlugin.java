@@ -36,6 +36,7 @@ import java.util.Map;
 
 import com.dfsek.terra.api.command.CommandSender;
 import com.dfsek.terra.api.config.ConfigPack;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.event.events.platform.CommandRegistrationEvent;
 import com.dfsek.terra.api.event.events.platform.PlatformInitializationEvent;
 import com.dfsek.terra.bukkit.attribute.PaperVanilla;
@@ -110,11 +111,14 @@ public class TerraBukkitPlugin extends JavaPlugin {
     public @Nullable
     ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, String id) {
         if(id == null || id.trim().isEmpty()) { return null; }
-        return new BukkitChunkGeneratorWrapper(generatorMap.computeIfAbsent(worldName, name -> {
-            ConfigPack pack = platform.getConfigRegistry().getByID(id).orElseThrow(
-                () -> new IllegalArgumentException("No such config pack \"" + id + "\""));
-            return pack.getGeneratorProvider().newInstance(pack);
-        }), platform.getRawConfigRegistry().getByID(id).orElseThrow(), platform.getWorldHandle().air());
+        ConfigPack pack = platform.getConfigRegistry().getByID(id).orElse(null);
+        if(pack == null) {
+            MetaPack metaPack = platform.getMetaConfigRegistry().getByID(id).orElseThrow(
+                () -> new IllegalArgumentException("No such config pack or metapack \"" + id + "\""));
+            return new BukkitChunkGeneratorWrapper(metaPack, platform.getWorldHandle().air());
+        }
+        var delegate = generatorMap.computeIfAbsent(worldName, name -> pack.getGeneratorProvider().newInstance(pack));
+        return new BukkitChunkGeneratorWrapper(delegate, pack, platform.getWorldHandle().air());
     }
 
     public GlobalRegionScheduler getGlobalRegionScheduler() {

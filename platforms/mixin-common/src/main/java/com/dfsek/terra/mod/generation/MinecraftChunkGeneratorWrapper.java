@@ -18,7 +18,6 @@
 package com.dfsek.terra.mod.generation;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.commands.arguments.blocks.BlockInput;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.WorldGenRegion;
@@ -31,10 +30,8 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.levelgen.Beardifier;
 import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.RandomState;
@@ -57,7 +54,7 @@ import com.dfsek.terra.api.world.chunk.generation.ProtoChunk;
 import com.dfsek.terra.api.world.chunk.generation.ProtoWorld;
 import com.dfsek.terra.api.world.chunk.generation.stage.Chunkified;
 import com.dfsek.terra.api.world.chunk.generation.util.GeneratorWrapper;
-import com.dfsek.terra.api.world.info.WorldProperties;
+import com.dfsek.terra.minecraft.generation.TerraTerrain;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.data.Codecs;
 import com.dfsek.terra.mod.mixin.access.StructureManagerAccessor;
@@ -109,49 +106,10 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.level.ch
             BiomeProvider biomeProvider = pack.getBiomeProvider();
             delegate.generateChunkData((ProtoChunk) chunk, world, biomeProvider, chunk.getPos().x(), chunk.getPos().z());
 
-            PreLoadCompatibilityOptions compatibilityOptions = pack.getContext().get(PreLoadCompatibilityOptions.class);
-            if(compatibilityOptions.isBeard()) {
-                beard(structureAccessor, chunk, world, biomeProvider, compatibilityOptions);
-            }
+            TerraTerrain.beard(chunk, structureAccessor, delegate, biomeProvider, world,
+                pack.getContext().get(PreLoadCompatibilityOptions.class), MinecraftChunkGeneratorWrapper::vanilla);
             return chunk;
         }, Util.backgroundExecutor());
-    }
-
-    private void beard(StructureManager structureAccessor, ChunkAccess chunk, WorldProperties world, BiomeProvider biomeProvider,
-                       PreLoadCompatibilityOptions compatibilityOptions) {
-        Beardifier structureWeightSampler = Beardifier.forStructuresInChunk(structureAccessor,
-            chunk.getPos());
-        double threshold = compatibilityOptions.getBeardThreshold();
-        double airThreshold = compatibilityOptions.getAirThreshold();
-        int xi = chunk.getPos().x() << 4;
-        int zi = chunk.getPos().z() << 4;
-        for(int x = 0; x < 16; x++) {
-            for(int z = 0; z < 16; z++) {
-                int depth = 0;
-                for(int y = world.getMaxHeight(); y >= world.getMinHeight(); y--) {
-                    double noise = structureWeightSampler.sampleValue(SamplerContext.EMPTY_UNCACHED, x + xi, y, z + zi);
-                    if(noise > threshold) {
-                        com.dfsek.terra.api.block.state.BlockState data = delegate.getPalette(x + xi, y, z + zi, world, biomeProvider).get(
-                            depth, x + xi, y, z + zi, world.getSeed());
-                        BlockPos blockPos = new BlockPos(x, y, z);
-                        boolean isExtended = data.isExtended() && data.getClass().equals(BlockInput.class);
-                        if(isExtended) {
-                            BlockStateExtended blockStateExtended = (BlockStateExtended) data;
-
-                            net.minecraft.world.level.block.state.BlockState blockState = (net.minecraft.world.level.block.state.BlockState) blockStateExtended.getState();
-                            chunk.setBlockState(blockPos, blockState, 0);
-                        } else {
-                            chunk.setBlockState(blockPos, (net.minecraft.world.level.block.state.BlockState) data, 0);
-                        }
-                        depth++;
-                    } else if(noise < airThreshold) {
-                        chunk.setBlockState(new BlockPos(x, y, z), Blocks.AIR.defaultBlockState(), 0);
-                    } else {
-                        depth = 0;
-                    }
-                }
-            }
-        }
     }
 
     @Override
@@ -186,32 +144,18 @@ public class MinecraftChunkGeneratorWrapper extends net.minecraft.world.level.ch
 
     @Override
     public int getBaseHeight(int x, int z, Types heightmap, LevelHeightAccessor height, RandomState noiseConfig) {
-        WorldProperties properties = MinecraftAdapter.adapt(height, noiseConfig.seed());
-        BiomeProvider biomeProvider = pack.getBiomeProvider();
-        int min = height.getMinY();
-        for(int y = height.getMaxY() - 1; y >= min; y--) {
-            com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
-            BlockState blockState =
-                (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
-            if(heightmap
-                .isOpaque()
-                .test(blockState)) return y + 1;
-        }
-        return min;
+        return TerraTerrain.baseHeight(delegate, pack.getBiomeProvider(), MinecraftAdapter.adapt(height, noiseConfig.seed()), height, x, z,
+            heightmap.isOpaque(), MinecraftChunkGeneratorWrapper::vanilla);
     }
 
     @Override
     public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor height, RandomState noiseConfig) {
-        BlockState[] array = new BlockState[height.getHeight()];
-        WorldProperties properties = MinecraftAdapter.adapt(height, noiseConfig.seed());
-        BiomeProvider biomeProvider = pack.getBiomeProvider();
-        for(int y = height.getMaxY() - 1; y >= height.getMinY(); y--) {
-            com.dfsek.terra.api.block.state.BlockState terraBlockState = delegate.getBlock(properties, x, y, z, biomeProvider);
-            BlockState blockState =
-                (BlockState) (terraBlockState.isExtended() ? ((BlockStateExtended) terraBlockState).getState() : terraBlockState);
-            array[y - height.getMinY()] = blockState;
-        }
-        return new NoiseColumn(height.getMinY(), array);
+        return TerraTerrain.baseColumn(delegate, pack.getBiomeProvider(), MinecraftAdapter.adapt(height, noiseConfig.seed()), height, x, z,
+            MinecraftChunkGeneratorWrapper::vanilla);
+    }
+
+    private static BlockState vanilla(com.dfsek.terra.api.block.state.BlockState state) {
+        return (BlockState) (state.isExtended() ? ((BlockStateExtended) state).getState() : state);
     }
 
     @Override

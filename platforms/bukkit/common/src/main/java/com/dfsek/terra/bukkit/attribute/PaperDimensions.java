@@ -222,7 +222,7 @@ public final class PaperDimensions {
      * A new type isn't registered while players are online: their clients already hold the registries.
      */
     public void onWorldInit(World world, BukkitChunkGeneratorWrapper wrapper) {
-        ConfigPack pack = wrapper.getPack();
+        ConfigPack pack = wrapper.bind(world);
         String keeps = "Pack \"" + pack.getID() + "\": world \"" + world.getName() + "\" keeps its dimension type";
         Built built;
         try {
@@ -266,9 +266,7 @@ public final class PaperDimensions {
     }
 
     private VanillaContext context() {
-        VanillaContext context = parents.context();
-        if(context == null) throw new IllegalStateException("no registry load has begun");
-        return context;
+        return parents.requireContext();
     }
 
     private PackParents prepare(ConfigPack pack, Optional<PackAttributes> attributes) {

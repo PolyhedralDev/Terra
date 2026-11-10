@@ -35,7 +35,7 @@ public class BukkitBiomeProvider extends BiomeProvider implements Handle {
             .collect(Collectors.toList());
     }
 
-    private static org.bukkit.block.Biome toBukkit(Biome biome) {
+    static org.bukkit.block.Biome toBukkit(Biome biome) {
         BukkitPlatformBiome platformBiome = (BukkitPlatformBiome) biome.getPlatformBiome();
         return platformBiome.getContext().has(BukkitBiomeInfo.class)
                ? platformBiome.getContext().get(BukkitBiomeInfo.class).bukkitBiome()

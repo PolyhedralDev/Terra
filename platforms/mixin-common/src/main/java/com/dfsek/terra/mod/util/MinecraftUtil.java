@@ -38,6 +38,7 @@ import com.dfsek.terra.api.block.entity.Sign;
 import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.entity.EntityType;
 import com.dfsek.terra.api.util.range.ConstantRange;
+import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
 import com.dfsek.terra.mod.CommonPlatform;
 import com.dfsek.terra.mod.config.PreLoadCompatibilityOptions;
 import com.dfsek.terra.mod.config.ProtoPlatformBiome;
@@ -133,7 +134,7 @@ public final class MinecraftUtil {
         ResourceKey<net.minecraft.world.level.biome.Biome> vanillaKey = ((ProtoPlatformBiome) biome.getPlatformBiome()).get(biomeRegistry);
         biomeRegistry.getOptional(vanillaKey)
             .ifPresentOrElse(vanillaBiome -> {
-                    Identifier terraBiomeIdentifier = Identifier.fromNamespaceAndPath("terra", BiomeUtil.createBiomeID(pack, id));
+                    Identifier terraBiomeIdentifier = MinecraftBiomeFactory.terraId(pack, id);
                     biomeRegistry.getOptional(terraBiomeIdentifier).ifPresentOrElse(
                         terraBiome -> {
                             List<Feature> flowerFeatures = List.copyOf(

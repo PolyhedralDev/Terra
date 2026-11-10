@@ -45,6 +45,7 @@ import com.dfsek.terra.api.config.ConfigPack;
 import com.dfsek.terra.api.registry.key.RegistryKey;
 import com.dfsek.terra.minecraft.attribute.BiomeTags.PlatformTagSource;
 import com.dfsek.terra.minecraft.attribute.MinecraftBiomeFactory;
+import com.dfsek.terra.minecraft.attribute.TerraBiomeIndex;
 import com.dfsek.terra.world.attribute.platform.AttributeReport;
 import com.dfsek.terra.world.attribute.platform.AttributeSlots;
 
@@ -188,8 +189,8 @@ class BiomeHandlerTest {
         assertEquals(List.of("first/a", "last/a"), run.toRegister);
         assertEquals(List.of(Identifier.parse("terra:first/a"), Identifier.parse("terra:last/a")),
             List.copyOf(run.villagerTypes.keySet()));
-        assertEquals(Map.of(PLAINS, List.of(Identifier.parse("terra:first/a"), Identifier.parse("terra:last/a"))), run.byParent);
-        assertEquals(Set.of(Identifier.parse("terra:first/a"), Identifier.parse("terra:last/a")), run.platformTags.keySet());
+        assertEquals(Map.of(PLAINS, List.of(Identifier.parse("terra:first/a"), Identifier.parse("terra:last/a"))), run.biomes.byParent());
+        assertEquals(Set.of(Identifier.parse("terra:first/a"), Identifier.parse("terra:last/a")), run.biomes.tags().keySet());
         assertEquals(List.of("first/a", "last/a"), after);
     }
 
@@ -202,7 +203,7 @@ class BiomeHandlerTest {
 
         assertEquals(List.of(), run.toRegister);
         assertEquals(Map.of(), run.villagerTypes);
-        assertEquals(Map.of(PLAINS, List.of(Identifier.parse("terra:test/a"))), run.byParent);
+        assertEquals(Map.of(PLAINS, List.of(Identifier.parse("terra:test/a"))), run.biomes.byParent());
         assertEquals(1, run.afterRegistration.size());
     }
 
@@ -224,12 +225,12 @@ class BiomeHandlerTest {
         Identifier snowy = Identifier.parse("terra:test/snowy");
         assertEquals(List.of("test/Snowy"), run.toRegister);
         assertEquals(Map.of(snowy, VillagerType.SNOW), run.villagerTypes);
-        assertEquals(Map.of(PLAINS, List.of(snowy)), run.byParent);
-        assertEquals("Snowy", run.platformTags.get(snowy).config());
+        assertEquals(Map.of(PLAINS, List.of(snowy)), run.biomes.byParent());
+        assertEquals("Snowy", run.biomes.tags().get(snowy).config());
         assertEquals(List.of("test/Snowy", "test/SNOWY", "TEST/snowy"), after);
         assertEquals(List.of(
-            "Pack \"test\", config \"SNOWY\": biome \"terra:test/snowy\" shared with another config: their IDs differ only in case",
-            "Pack \"TEST\", config \"snowy\": biome \"terra:test/snowy\" shared with another config: their IDs differ only in case"),
+            "Pack \"test\", config \"SNOWY\": reusing biome \"terra:test/snowy\"; another config's ID matches apart from case",
+            "Pack \"TEST\", config \"snowy\": reusing biome \"terra:test/snowy\"; another config's ID matches apart from case"),
             warnings);
     }
 
@@ -269,8 +270,10 @@ class BiomeHandlerTest {
             RegistryKey.parse("minecraft:is_forest")));
         PlatformTagSource source = new PlatformTagSource(new AttributeReport("test", warnings::add, m -> { }), "BIOME", platformTags);
 
-        Map<TagKey<Biome>, List<Identifier>> additions = BiomeHandler.reloadAdditions(tags, BiomeHandlerTest::lookup,
-            Map.of(plains, List.of(terra)), Map.of(terra, source));
+        TerraBiomeIndex biomes = new TerraBiomeIndex();
+        biomes.record(terra, plains, source);
+
+        Map<TagKey<Biome>, List<Identifier>> additions = BiomeHandler.reloadAdditions(tags, BiomeHandlerTest::lookup, biomes);
 
         assertEquals(List.of(villagePlains, isForest, hasSnow), List.copyOf(additions.keySet()));
         assertEquals(List.of(terra), additions.get(villagePlains));
@@ -280,7 +283,6 @@ class BiomeHandlerTest {
 
         Map<TagKey<Biome>, List<Identifier>> reloaded = new LinkedHashMap<>(tags);
         additions.forEach((tag, ids) -> reloaded.merge(tag, ids, (old, added) -> Stream.concat(old.stream(), added.stream()).toList()));
-        assertEquals(Map.of(), BiomeHandler.reloadAdditions(reloaded, BiomeHandlerTest::lookup, Map.of(plains, List.of(terra)),
-            Map.of(terra, source)));
+        assertEquals(Map.of(), BiomeHandler.reloadAdditions(reloaded, BiomeHandlerTest::lookup, biomes));
     }
 }

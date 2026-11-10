@@ -17,50 +17,17 @@
 
 package com.dfsek.terra.mod.config;
 
-import com.dfsek.tectonic.api.config.template.ConfigTemplate;
 import com.dfsek.tectonic.api.config.template.annotations.Default;
 import com.dfsek.tectonic.api.config.template.annotations.Value;
 
-import com.dfsek.terra.api.properties.Properties;
+import com.dfsek.terra.minecraft.config.MinecraftCompatibilityOptions;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class PreLoadCompatibilityOptions implements ConfigTemplate, Properties {
-    @Value("minecraft.use-vanilla-biomes")
-    @Default
-    private boolean vanillaBiomes = false;
-
-    @Value("minecraft.beard.enable")
-    @Default
-    private boolean beard = true;
-
-    @Value("minecraft.beard.threshold")
-    @Default
-    private double beardThreshold = 0.5;
-
-    @Value("minecraft.beard.air-threshold")
-    @Default
-    private double airThreshold = -0.5;
-
+public class PreLoadCompatibilityOptions extends MinecraftCompatibilityOptions {
     @Value("minecraft.inject-flora")
     @Default
     private boolean injectFlora = false;
-
-    public boolean useVanillaBiomes() {
-        return vanillaBiomes;
-    }
-
-    public boolean isBeard() {
-        return beard;
-    }
-
-    public double getBeardThreshold() {
-        return beardThreshold;
-    }
-
-    public double getAirThreshold() {
-        return airThreshold;
-    }
 
     public boolean isInjectFlora() {
         return injectFlora;

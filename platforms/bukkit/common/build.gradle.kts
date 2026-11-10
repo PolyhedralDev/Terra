@@ -40,4 +40,5 @@ dependencies {
     testImplementation(testFixtures(project(":platforms:minecraft-common")))
     testImplementation(project(":common:addons:minecraft-attributes"))
     testImplementation("io.papermc.paper", "paper-api", Versions.Bukkit.paper)
+    testImplementation("com.dfsek.wyck", "Wyck", Versions.Bukkit.wyck)
 }

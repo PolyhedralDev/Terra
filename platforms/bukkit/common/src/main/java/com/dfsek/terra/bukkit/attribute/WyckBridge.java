@@ -77,6 +77,10 @@ public final class WyckBridge {
         LevelStemEditor.create().dimension(Dimension.reference(key(key))).apply(world);
     }
 
+    public static void installGenerator(World world, net.minecraft.world.level.chunk.ChunkGenerator generator) {
+        LevelStemEditor.create().chunkGenerator(new MinecraftGenerator(generator)).apply(world);
+    }
+
     public static void registerBiomes(List<dev.wyck.biome.Biome> biomes) {
         BiomeRegistry.registry().register(biomes);
     }
@@ -89,5 +93,28 @@ public final class WyckBridge {
 
     private static ResourceKey key(Identifier id) {
         return ResourceKey.of(id.getNamespace(), id.getPath());
+    }
+
+    /**
+     * Wyck installs whatever generator {@link #toMinecraft()} returns.
+     */
+    private record MinecraftGenerator(net.minecraft.world.level.chunk.ChunkGenerator generator)
+        implements dev.wyck.worldgen.chunk.ChunkGenerator {
+        @Override
+        public dev.wyck.worldgen.biome.BiomeSource biomeSource() {
+            return new MinecraftBiomeSource(generator.getBiomeSource());
+        }
+
+        @Override
+        public Object toMinecraft() {
+            return generator;
+        }
+    }
+
+    private record MinecraftBiomeSource(net.minecraft.world.level.biome.BiomeSource source) implements dev.wyck.worldgen.biome.BiomeSource {
+        @Override
+        public Object toMinecraft() {
+            return source;
+        }
     }
 }

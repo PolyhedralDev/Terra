@@ -22,9 +22,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.npc.villager.VillagerType;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.data.BlockData;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +87,34 @@ public final class PaperVanilla {
         }
     }
 
+    public static BlockState blockState(BlockData data) {
+        try {
+            return (BlockState) BlockStates.GET_STATE.invokeExact(data);
+        } catch(Throwable e) {
+            throw new IllegalStateException("block data " + data + " has no vanilla state", e);
+        }
+    }
+
     public static VanillaContext context(HolderLookup.Provider registries) {
         return VanillaContext.of(registries, villagerTypes()::get);
+    }
+
+    /**
+     * Needs CraftBukkit; resolved on first use.
+     */
+    private static final class BlockStates {
+        private static final MethodHandle GET_STATE;
+
+        static {
+            try {
+                Class<?> craft = Class.forName("org.bukkit.craftbukkit.block.data.CraftBlockData", false,
+                    Bukkit.getServer().getClass().getClassLoader());
+                GET_STATE = MethodHandles.publicLookup()
+                    .findVirtual(craft, "getState", MethodType.methodType(BlockState.class))
+                    .asType(MethodType.methodType(BlockState.class, BlockData.class));
+            } catch(ReflectiveOperationException e) {
+                throw new ExceptionInInitializerError(e);
+            }
+        }
     }
 }

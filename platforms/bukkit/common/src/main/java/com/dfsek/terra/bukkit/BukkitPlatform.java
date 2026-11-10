@@ -37,6 +37,7 @@ import java.util.concurrent.CancellationException;
 
 import com.dfsek.terra.AbstractPlatform;
 import com.dfsek.terra.api.block.state.BlockState;
+import com.dfsek.terra.api.config.MetaPack;
 import com.dfsek.terra.api.handle.ItemHandle;
 import com.dfsek.terra.api.handle.WorldHandle;
 import com.dfsek.terra.api.world.attribute.AttributeParents;
@@ -121,12 +122,23 @@ public class BukkitPlatform extends AbstractPlatform {
         BiomeHandler.addToVanillaTags(this);
 
         Bukkit.getWorlds().forEach(world -> {
-            if(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper) {
+            if(!(world.getGenerator() instanceof BukkitChunkGeneratorWrapper wrapper)) return;
+            MetaPack metaPack = wrapper.getMetaPack();
+            if(metaPack == null) {
                 getConfigRegistry().get(wrapper.getPack().getRegistryKey()).ifPresent(pack -> {
                     wrapper.setPack(pack);
                     LOGGER.info("Replaced pack in chunk generator for world {}", world);
                 });
+                return;
             }
+            getMetaConfigRegistry().get(metaPack.getRegistryKey()).ifPresent(reloaded -> {
+                try {
+                    wrapper.setMetaPack(reloaded, world);
+                    LOGGER.info("Replaced pack in chunk generator for world {} from metapack {}", world, reloaded.getID());
+                } catch(IllegalArgumentException e) {
+                    LOGGER.warn("World {} keeps its pack: {}", world.getName(), e.getMessage());
+                }
+            });
         });
     }
 
